@@ -67,62 +67,85 @@ before(async () => {
 });
 after(() => server.close());
 
-const form = (o) => new URLSearchParams(o);
-async function signIn(email) {
-  const page = await (await fetch(`${base}/login`, { method: 'POST', body: form({ email }) })).text();
-  const link = /href="(http[^"]+\/auth\/[a-f0-9]+)"/.exec(page)[1];
-  const res = await fetch(link, { redirect: 'manual' });
-  return res.headers.getSetCookie().find((c) => c.startsWith('sid=')).split(';')[0];
+// A tiny browser: keeps cookies and adds the CSRF token to every POST, like the real forms do.
+function browser(root = () => base) {
+  const jar = {};
+  const remember = (res) => { for (const c of res.headers.getSetCookie()) { const [kv] = c.split(';'); const [k, v] = kv.split('='); jar[k] = v; } return res; };
+  const cookie = () => Object.entries(jar).filter(([, v]) => v).map(([k, v]) => `${k}=${v}`).join('; ');
+  const get = async (p) => remember(await fetch(root() + p, { headers: { cookie: cookie() }, redirect: 'manual' }));
+  const post = async (p, body, { csrf = true } = {}) => {
+    if (!jar.csrf) await get('/');
+    const data = new URLSearchParams({ ...body, ...(csrf ? { _csrf: jar.csrf } : {}) });
+    return remember(await fetch(root() + p, { method: 'POST', body: data, headers: { cookie: cookie() }, redirect: 'manual' }));
+  };
+  const text = async (p) => (await get(p)).text();
+  const signIn = async (email) => {
+    const page = await (await post('/login', { email })).text();
+    await get(new URL(/href="(http[^"]+\/auth\/[a-f0-9]+)"/.exec(page)[1]).pathname);
+  };
+  return { get, post, text, signIn, jar };
 }
 
 test('only @myuct.ac.za emails can sign in', async () => {
-  const res = await fetch(`${base}/login`, { method: 'POST', body: form({ email: 'someone@gmail.com' }) });
-  assert.equal(res.status, 400);
+  assert.equal((await browser().post('/login', { email: 'someone@gmail.com' })).status, 400);
+});
+
+test('posts without a valid CSRF token are refused', async () => {
+  const b = browser();
+  assert.equal((await b.post('/takedown', { name: 'x', email: 'x@y.z', details: 'x' }, { csrf: false })).status, 403);
+  assert.match(await b.text('/rules'), /x/); // sanity: normal pages still work
+  const page = await b.text('/takedown');
+  assert.match(page, new RegExp(`name="_csrf" value="${b.jar.csrf}"`), 'forms carry the token');
+});
+
+test('security headers are set', async () => {
+  const res = await fetch(base + '/');
+  assert.match(res.headers.get('content-security-policy'), /frame-ancestors 'none'/);
+  assert.equal(res.headers.get('x-content-type-options'), 'nosniff');
 });
 
 test('student reviews, report hides it, moderator restores it', async () => {
-  const student = await signIn('abcxyz001@myuct.ac.za');
-  const post = (body) => fetch(`${base}/courses/PHY1012F/review`, { method: 'POST', body: form(body), headers: { cookie: student }, redirect: 'manual' });
+  const student = browser();
+  await student.signIn('abcxyz001@myuct.ac.za');
   const good = { lecturer_id: 'none', year: String(new Date().getFullYear()), teaching: 5, engagement: 5, exams: 4, support: 5, difficulty: 3, workload: 3, body: 'Demos in lectures are the best part', agree: '1' };
 
-  assert.equal((await post(good)).status, 303);
-  assert.equal((await post(good)).status, 400, 'second review for same lecturer/year is refused');
+  assert.equal((await student.post('/courses/PHY1012F/review', good)).status, 303);
+  assert.equal((await student.post('/courses/PHY1012F/review', good)).status, 400, 'second review for same lecturer/year is refused');
 
-  let page = await (await fetch(`${base}/courses/PHY1012F`)).text();
+  const anon = browser();
+  let page = await anon.text('/courses/PHY1012F');
   assert.match(page, /Demos in lectures are the best part/);
   assert.doesNotMatch(page, /abcxyz001/, 'author email never shown');
   const id = /id="review-(\d+)"[\s\S]*?Demos in lectures/.exec(page)[1];
 
-  const report = await fetch(`${base}/reviews/${id}/report`, { method: 'POST', body: form({ reason: 'defamation' }), redirect: 'manual' });
-  assert.equal(report.status, 303);
-  page = await (await fetch(`${base}/courses/PHY1012F`)).text();
-  assert.doesNotMatch(page, /Demos in lectures/, 'serious report hides the review immediately');
+  assert.equal((await anon.post(`/reviews/${id}/report`, { reason: 'defamation' })).status, 303);
+  assert.doesNotMatch(await anon.text('/courses/PHY1012F'), /Demos in lectures/, 'serious report hides the review immediately');
 
-  assert.equal((await fetch(`${base}/mod`, { headers: { cookie: student } })).status, 404, 'students cannot moderate');
-  const mod = await signIn('mod001@myuct.ac.za');
-  assert.match(await (await fetch(`${base}/mod`, { headers: { cookie: mod } })).text(), /Demos in lectures/);
-  assert.equal((await fetch(`${base}/mod/reviews/${id}/approve`, { method: 'POST', headers: { cookie: mod }, redirect: 'manual' })).status, 303);
-  page = await (await fetch(`${base}/courses/PHY1012F`)).text();
-  assert.match(page, /Demos in lectures/);
+  assert.equal((await student.get('/mod')).status, 404, 'students cannot moderate');
+  const mod = browser();
+  await mod.signIn('mod001@myuct.ac.za');
+  assert.match(await mod.text('/mod'), /Demos in lectures/);
+  assert.equal((await mod.post(`/mod/reviews/${id}/approve`, {})).status, 303);
+  assert.match(await anon.text('/courses/PHY1012F'), /Demos in lectures/);
 });
 
 test('rule-breaking comments are held, contact details rejected', async () => {
-  const student = await signIn('def001@myuct.ac.za');
-  const post = (body) => fetch(`${base}/courses/MEC2047F/review`, { method: 'POST', body: form(body), headers: { cookie: student }, redirect: 'manual' });
-  const base2 = { lecturer_id: 'none', teaching: 2, engagement: 2, exams: 2, support: 2, difficulty: 5, workload: 5, agree: '1' };
-  assert.equal((await post({ ...base2, year: '2025', body: 'whatsapp me 0821234567' })).status, 400);
-  assert.equal((await post({ ...base2, year: '2025', body: 'he is an idiot honestly' })).status, 303);
-  const page = await (await fetch(`${base}/courses/MEC2047F`, { headers: { cookie: student } })).text();
+  const student = browser();
+  await student.signIn('def001@myuct.ac.za');
+  const review = { lecturer_id: 'none', teaching: 2, engagement: 2, exams: 2, support: 2, difficulty: 5, workload: 5, agree: '1', year: '2025' };
+  assert.equal((await student.post('/courses/MEC2047F/review', { ...review, body: 'whatsapp me 0821234567' })).status, 400);
+  assert.equal((await student.post('/courses/MEC2047F/review', { ...review, body: 'he is an idiot honestly' })).status, 303);
+  const page = await student.text('/courses/MEC2047F');
   assert.doesNotMatch(page, /idiot/);
   assert.match(page, /waiting for a moderator/);
 });
 
 test('takedown request hides the review without needing an account', async () => {
-  const page = await (await fetch(`${base}/courses/MAM1020F`)).text();
-  const id = /id="review-(\d+)"/.exec(page)[1];
-  const res = await fetch(`${base}/takedown`, { method: 'POST', body: form({ review_id: id, name: 'A Lecturer', email: 'lect@uct.ac.za', relation: 'The lecturer or staff member it is about', details: 'Not accurate' }) });
+  const b = browser();
+  const id = /id="review-(\d+)"/.exec(await b.text('/courses/MAM1020F'))[1];
+  const res = await b.post('/takedown', { review_id: id, name: 'A Lecturer', email: 'lect@uct.ac.za', relation: 'The lecturer or staff member it is about', details: 'Not accurate' });
   assert.equal(res.status, 200);
-  assert.doesNotMatch(await (await fetch(`${base}/courses/MAM1020F`)).text(), new RegExp(`id="review-${id}"`));
+  assert.doesNotMatch(await b.text('/courses/MAM1020F'), new RegExp(`id="review-${id}"`));
 });
 
 test('pages render', async () => {
@@ -138,4 +161,26 @@ test('scores built from sample reviews are badged wherever they appear', async (
   }
   // a course with no sample reviews gets no badge on its card
   assert.doesNotMatch(await (await fetch(`${base}/courses?q=APG4001S`)).text(), /<main[\s\S]*class="badge sample"/);
+});
+
+test('reports are rate limited per IP', async () => {
+  const b = browser();
+  const id = /id="review-(\d+)"/.exec(await b.text('/courses/EEE3099S'))[1];
+  const statuses = [];
+  for (let i = 0; i < 12; i++) statuses.push((await b.post(`/reviews/${id}/report`, { reason: 'spam' })).status);
+  assert.ok(statuses.includes(429), `expected a 429, got ${statuses}`);
+});
+
+test('production sign-in emails the link built from BASE_URL and never shows it', async () => {
+  const sent = [];
+  const db = openDb(':memory:');
+  seed(db, { samples: false });
+  const prod = createApp(db, { devMode: false, baseUrl: 'https://lekker.example', sendLoginEmail: async (to, link) => sent.push({ to, link }) }).listen(0);
+  await new Promise((r) => prod.once('listening', r));
+  const b = browser(() => `http://localhost:${prod.address().port}`);
+  const page = await (await b.post('/login', { email: 'ghi001@myuct.ac.za' })).text();
+  assert.equal(sent.length, 1);
+  assert.match(sent[0].link, /^https:\/\/lekker\.example\/auth\/[a-f0-9]{64}$/);
+  assert.doesNotMatch(page, /\/auth\//, 'link is not shown on the page');
+  prod.close();
 });
