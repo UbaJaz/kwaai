@@ -107,6 +107,10 @@ test('posts without a valid CSRF token are refused', async () => {
   assert.match(await b.text('/rules'), /x/); // sanity: normal pages still work
   const page = await b.text('/takedown');
   assert.match(page, new RegExp(`name="_csrf" value="${b.jar.csrf}"`), 'forms carry the token');
+  // real browsers send other cookies first
+  const res = await fetch(base + '/takedown', { method: 'POST', redirect: 'manual', headers: { cookie: `other=1; csrf=${b.jar.csrf}` },
+    body: new URLSearchParams({ _csrf: b.jar.csrf, name: 'x', email: 'bad', details: 'x' }) });
+  assert.equal(res.status, 400, 'token accepted when csrf is not the first cookie (400 = form validation, not 403)');
 });
 
 test('security headers are set', async () => {

@@ -42,7 +42,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (flash) res.clearCookie('flash');
     req.ctx = { user: req.user, isMod: !!req.user && moderators.has(req.user.email), flash: parseFlash(flash), site: { contactEmail, operator } };
     // CSRF: double-submit token, added to every POST form on its way out
-    let csrf = /(?:^|;s*)csrf=([a-f0-9]{32})/.exec(req.headers.cookie || '')?.[1];
+    let csrf = /(?:^|;\s*)csrf=([a-f0-9]{32})/.exec(req.headers.cookie || '')?.[1];
     if (!csrf) {
       csrf = crypto.randomBytes(16).toString('hex');
       res.cookie('csrf', csrf, { httpOnly: true, sameSite: 'lax', secure: !devMode });
