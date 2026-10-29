@@ -268,7 +268,9 @@ legend { font-family: var(--display); font-weight: 600; font-size: 1.1rem; paddi
   .form-row.two { grid-template-columns: 1fr; }
   .form { padding: 18px; }
   .hero { padding-top: 32px; }
-  .header-row { padding: 8px 0; }
+  .header-row { padding-top: 8px; padding-bottom: 8px; gap: 4px; min-height: 0; }
+  .logo { font-size: 1.2rem; }
+  .nav { font-size: .9rem; margin-left: -8px; }
   .nav > a, .link-btn { padding: 6px 8px; }
   .bar-row { grid-template-columns: 104px 1fr 34px; }
   .log { display: block; overflow-x: auto; }

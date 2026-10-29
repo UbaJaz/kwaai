@@ -142,7 +142,7 @@ function home(ctx, { counts, topCourses, funniest, hardest, depts }) {
     <h1>Is your course <span class="hl">lekker</span>… or nah?</h1>
     <p class="lede">Honest, anonymous ratings of UCT courses and the lecturers who teach them. Pick electives with your eyes open, and find out who sets the brutal exams before you're writing one.</p>
     <form class="search" action="/courses" role="search">
-      <input type="search" name="q" placeholder="Search a course code or name, e.g. MEC2047F or dynamics" aria-label="Search courses">
+      <input type="search" name="q" placeholder="Try MEC2047F or “dynamics”" aria-label="Search courses">
       <button class="btn">Search</button>
     </form>
     <p class="stats">${plural(counts.courses, 'course')} · ${plural(counts.lecturers, 'lecturer')} · ${plural(counts.reviews, 'review')}</p>
@@ -340,7 +340,7 @@ function rankings(ctx, { rows, depts, dept, rank, kind }) {
     <noscript><button class="btn btn-small">Go</button></noscript>
   </form>
   <div class="card panel">
-    <h2>${rank.label} ${kind === 'course' ? 'courses' : 'lecturers'}${dept ? ` · ${depts.find((d) => d.code === dept)?.name || dept}` : ''}</h2>
+    <h2>${rank.label} · ${kind === 'course' ? 'Courses' : 'Lecturers'}${dept ? ` · ${depts.find((d) => d.code === dept)?.name || dept}` : ''}</h2>
     ${rankList(rows, kind, rank)}
   </div>`);
 }
@@ -475,9 +475,9 @@ function mod(ctx, { held, takedowns, log }) {
   </div>`) : html`<p class="empty">Nothing waiting. 🎉</p>`}
 
   <h2 class="section-title">Recent decisions</h2>
-  <table class="log"><thead><tr><th>When</th><th>Review</th><th>Action</th><th>Note</th><th>By</th></tr></thead><tbody>
+  ${log.length ? html`<table class="log"><thead><tr><th>When</th><th>Review</th><th>Action</th><th>Note</th><th>By</th></tr></thead><tbody>
   ${log.map((l) => html`<tr><td>${l.created_at}</td><td>${l.review_id ? `#${l.review_id}` : '–'}</td><td>${l.action}</td><td>${l.note}</td><td>${l.moderator}</td></tr>`)}
-  </tbody></table>`);
+  </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
 module.exports = { home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, takedown, message, mod };
