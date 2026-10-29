@@ -50,7 +50,7 @@ const BODIES = {
     'Lectures are genuinely fun and the notes are excellent. Go to every single one.',
     'Explains the hard stuff slowly and properly. Consults are super helpful.',
     'Exam was exactly what we practised in tuts. No surprises.',
-    'One of the best courses in first year. Would take again.',
+    'One of the best courses I have done. Would take again.',
   ],
   mid: [
     'Content is fine but the pace picks up a lot after the first test.',
@@ -98,8 +98,10 @@ function addSamples(db) {
       r.overall = overallOf(r);
       const mood = r.overall >= 4 ? 'good' : r.overall >= 3 ? 'mid' : 'low';
       const tags = [...new Set([pick(TAG_POOL[mood]), pick(TAG_POOL[mood])])].slice(0, 1 + Math.floor(rand() * 2));
-      const created = new Date(Date.now() - Math.floor(rand() * 540) * 86400000).toISOString().slice(0, 19).replace('T', ' ');
-      addReview.run(code, rand() < 0.8 ? main : other, year - Math.floor(rand() * 2), r.teaching, r.engagement, r.exams, r.support, r.difficulty, r.workload,
+      const took = year - Math.floor(rand() * 2);
+      const start = Date.UTC(took, 4, 1); // posted some time after the course started
+      const created = new Date(start + rand() * (Date.now() - start)).toISOString().slice(0, 19).replace('T', ' ');
+      addReview.run(code, rand() < 0.8 ? main : other, took, r.teaching, r.engagement, r.exams, r.support, r.difficulty, r.workload,
         r.overall, tags.join('|'), rand() < 0.75 ? pick(BODIES[mood]) : '', created);
     }
   });
