@@ -18,10 +18,15 @@ const db = openDb();
 if (!db.prepare('SELECT COUNT(*) AS n FROM courses').get().n) {
   console.log('Empty database, seeding…', require('./scripts/seed').seed(db, { samples: devMode }));
 }
-// clear out expired sign-in links and sessions once an hour
+// Hourly clean-up: expired sign-in links and sessions, plus the 12-month retention promised in /privacy.
 const sweep = () => {
   db.prepare('DELETE FROM login_tokens WHERE expires < ?').run(Date.now());
   db.prepare('DELETE FROM sessions WHERE expires < ?').run(Date.now());
+  db.exec(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
+    UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
+    DELETE FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
+    DELETE FROM takedowns WHERE status = 'closed' AND created_at < datetime('now', '-12 months');
+    DELETE FROM lecturer_suggestions WHERE status != 'open' AND created_at < datetime('now', '-12 months');`);
 };
 sweep();
 setInterval(sweep, 60 * 60 * 1000).unref();
