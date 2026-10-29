@@ -1,0 +1,8 @@
+node_modules
+*.db
+*.db-*
+backups
+handbook-src
+.git
+.claude
+test
