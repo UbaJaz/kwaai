@@ -479,6 +479,7 @@ function login(ctx, { error, email = '' } = {}) {
         <input type="email" name="email" value="${email}" required autocomplete="email" placeholder="abcxyz001@myuct.ac.za" pattern="[A-Za-z0-9._%+-]+@myuct\\.ac\\.za">
       </label>
       <button class="btn btn-big">Email me a sign-in link</button>
+      <p class="fine">By signing in you agree to the <a href="/terms">terms of use</a> and the <a href="/privacy">privacy notice</a>. Can't find the email? Check your junk folder.</p>
     </form>
   </section>`);
 }
