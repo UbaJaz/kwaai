@@ -1,0 +1,19 @@
+{
+  "name": "lekker-or-nah",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Unofficial course and lecturer reviews by UCT students",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node scripts/seed.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
