@@ -131,3 +131,11 @@ test('pages render', async () => {
   }
   assert.equal((await fetch(`${base}/courses/NOPE123X`)).status, 404);
 });
+
+test('scores built from sample reviews are badged wherever they appear', async () => {
+  for (const p of ['/courses?q=EEE3099S', '/courses/EEE3099S', '/rankings?cat=best&kind=course']) {
+    assert.match(await (await fetch(base + p)).text(), /class="badge sample"/, p);
+  }
+  // a course with no sample reviews gets no badge on its card
+  assert.doesNotMatch(await (await fetch(`${base}/courses?q=APG4001S`)).text(), /<main[\s\S]*class="badge sample"/);
+});

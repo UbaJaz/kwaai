@@ -12,7 +12,7 @@ const parseFlash = (v) => { try { return v ? JSON.parse(decodeURIComponent(v)) :
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
 
 const STATS = `COUNT(*) AS n, AVG(overall) AS overall, AVG(teaching) AS teaching, AVG(engagement) AS engagement,
-  AVG(exams) AS exams, AVG(support) AS support, AVG(difficulty) AS difficulty, AVG(workload) AS workload`;
+  AVG(exams) AS exams, AVG(support) AS support, AVG(difficulty) AS difficulty, AVG(workload) AS workload, MAX(is_sample) AS has_sample`;
 const REVIEW_COLS = `r.*, l.name AS lecturer_name`;
 
 function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail } = {}) {
@@ -46,8 +46,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail 
 
   // ---- browsing ----
   const courseList = (where, params, order = 'c.code', limit = 500) => q(`
-    SELECT c.*, d.name AS dept_name, s.n, s.overall FROM courses c JOIN departments d ON d.code = c.dept
-    LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
+    SELECT c.*, d.name AS dept_name, s.n, s.overall, s.has_sample FROM courses c JOIN departments d ON d.code = c.dept
+    LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall, MAX(is_sample) AS has_sample FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
     ${where} ORDER BY ${order} LIMIT ${limit}`).all(...params);
 
   function ranking(kind, rank, dept, limit = 10) {

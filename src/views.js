@@ -69,7 +69,7 @@ function bars(stats) {
 
 function courseCard(c) {
   return html`<a class="card course-card" href="/courses/${c.code}">
-    <div class="course-card-top"><span class="code">${c.code}</span>${chip(c.overall)}</div>
+    <div class="course-card-top"><span class="code">${c.code}</span><span>${sampleBadge(c.has_sample)} ${chip(c.overall)}</span></div>
     <div class="course-title">${c.title}</div>
     <div class="meta">${c.dept_name}${c.credits ? ` · ${c.credits} credits` : ''} · ${c.n ? plural(c.n, 'review') : 'No reviews yet'}</div>
   </a>`;
@@ -214,7 +214,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld }) {
   <section class="course-layout">
     <aside class="card score-panel">
       ${stats.n
-        ? html`<div class="overall">${chip(stats.overall, true)}<div>${stars(stats.overall)}<div class="meta">${plural(stats.n, 'review')}</div></div></div>
+        ? html`<div class="overall">${chip(stats.overall, true)}<div>${stars(stats.overall)}<div class="meta">${plural(stats.n, 'review')} ${sampleBadge(stats.has_sample)}</div></div></div>
           ${bars(stats)}
           ${topTags.length ? html`<div class="tags">${topTags.map(([t, n]) => html`<span class="tag">${t} <b>${n}</b></span>`)}</div>` : ''}`
         : html`<div class="empty-score"><p class="big-emoji">🫥</p><p>No reviews yet.</p><a class="btn" href="/courses/${c.code}/review">Be the first</a></div>`}
