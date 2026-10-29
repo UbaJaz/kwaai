@@ -223,3 +223,17 @@ test('students can delete their account and all their reviews', async () => {
 test('privacy and terms pages render', async () => {
   for (const p of ['/privacy', '/terms']) assert.equal((await fetch(base + p)).status, 200, p);
 });
+
+test('re-running the seed keeps real reviews and only swaps demo data', () => {
+  const db = openDb(':memory:');
+  seed(db, { samples: true });
+  db.prepare("INSERT INTO users (email) VALUES ('pqr001@myuct.ac.za')").run();
+  db.prepare(`INSERT INTO reviews (course, year, user_id, teaching, engagement, exams, support, difficulty, workload, overall)
+    VALUES ('MEC2047F', 2025, 1, 4, 4, 4, 4, 4, 4, 4)`).run();
+  seed(db, { samples: false });
+  const count = (sql) => db.prepare(sql).get().n;
+  assert.equal(count('SELECT COUNT(*) AS n FROM reviews WHERE is_sample = 0'), 1);
+  assert.equal(count('SELECT COUNT(*) AS n FROM reviews WHERE is_sample = 1'), 0);
+  assert.equal(count('SELECT COUNT(*) AS n FROM lecturers WHERE is_sample = 1'), 0);
+  assert.ok(count('SELECT COUNT(*) AS n FROM courses') > 900);
+});

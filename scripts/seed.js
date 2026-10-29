@@ -1,6 +1,7 @@
-// Rebuilds the database from data/*.json.
-// Real data: courses and conveners from UCT handbooks. Demo data: made-up "Sample" lecturers and reviews,
-// flagged is_sample=1 and badged in the UI. Run with SAMPLES=0 to leave them out (do this before launch).
+// Loads courses from data/*.json into the database. Safe to re-run: once real reviews exist it never deletes them,
+// it only adds or updates courses and swaps the demo data.
+// Demo data: made-up "Sample" lecturers and reviews, flagged is_sample=1 and badged in the UI.
+// Off in production by default; SAMPLES=0 removes them, SAMPLES=1 adds them.
 const fs = require('node:fs');
 const path = require('node:path');
 const { openDb } = require('../src/db');
@@ -29,15 +30,29 @@ const DEPARTMENTS = {
 };
 
 function seed(db, { samples = true } = {}) {
-  db.exec('DELETE FROM lecturer_suggestions; DELETE FROM reports; DELETE FROM takedowns; DELETE FROM mod_log; DELETE FROM reviews; DELETE FROM lecturers; DELETE FROM courses; DELETE FROM departments;');
+  // Never wipe real students' work. Once real reviews exist, only add or update courses and swap the demo data.
+  const live = db.prepare('SELECT 1 FROM reviews WHERE is_sample = 0 LIMIT 1').get();
+  if (live) {
+    db.exec(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE is_sample = 1);
+      UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE is_sample = 1);
+      DELETE FROM reviews WHERE is_sample = 1;
+      DELETE FROM lecturers WHERE is_sample = 1 AND id NOT IN (SELECT lecturer_id FROM reviews WHERE lecturer_id IS NOT NULL);`);
+  } else {
+    db.exec('DELETE FROM lecturer_suggestions; DELETE FROM reports; DELETE FROM takedowns; DELETE FROM mod_log; DELETE FROM reviews; DELETE FROM lecturers; DELETE FROM courses; DELETE FROM departments;');
+  }
   const dataDir = path.join(__dirname, '..', 'data');
   const files = fs.readdirSync(dataDir).filter((f) => /^courses-.*\.json$/.test(f));
-  const addDept = db.prepare('INSERT OR IGNORE INTO departments (code, name) VALUES (?, ?)');
-  const addCourse = db.prepare('INSERT OR IGNORE INTO courses (code, title, dept, credits, nqf, conveners, source) VALUES (?, ?, ?, ?, ?, ?, ?)');
+  const addDept = db.prepare('INSERT INTO departments (code, name) VALUES (?, ?) ON CONFLICT(code) DO UPDATE SET name = excluded.name');
+  // first handbook to list a course wins within a run; a later run with a newer handbook updates it
+  const seen = new Set();
+  const addCourse = db.prepare(`INSERT INTO courses (code, title, dept, credits, nqf, conveners, source) VALUES (?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(code) DO UPDATE SET title = excluded.title, credits = excluded.credits, nqf = excluded.nqf, conveners = excluded.conveners, source = excluded.source`);
   const addLecturer = db.prepare('INSERT OR IGNORE INTO lecturers (name, dept, is_sample) VALUES (?, ?, ?)');
   for (const f of files) {
     const { source, courses } = JSON.parse(fs.readFileSync(path.join(dataDir, f), 'utf8'));
     for (const c of courses) {
+      if (seen.has(c.code)) continue;
+      seen.add(c.code);
       const dept = c.code.slice(0, 3);
       addDept.run(dept, DEPARTMENTS[dept] || dept);
       addCourse.run(c.code, c.title, dept, c.credits, c.nqf, c.conveners.join('|'), source);
@@ -123,7 +138,7 @@ function addSamples(db) {
 
 if (require.main === module) {
   const db = openDb();
-  console.log('seeded', seed(db, { samples: process.env.SAMPLES !== '0' }));
+  console.log('seeded', seed(db, { samples: process.env.SAMPLES ? process.env.SAMPLES !== '0' : process.env.NODE_ENV !== 'production' }));
 }
 
 module.exports = { seed };
