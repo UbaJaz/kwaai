@@ -37,7 +37,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail 
     next();
   });
   const flashRedirect = (res, to, type, text) => {
-    res.cookie('flash', encodeURIComponent(JSON.stringify({ type, text })), { httpOnly: true, sameSite: 'lax', maxAge: 60_000 });
+    res.cookie('flash', JSON.stringify({ type, text }), { httpOnly: true, sameSite: 'lax', maxAge: 60_000 });
     res.redirect(303, to);
   };
   const requireUser = (req, res, next) => (req.user ? next() : res.redirect(303, `/login?next=${encodeURIComponent(req.originalUrl)}`));
