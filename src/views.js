@@ -180,20 +180,19 @@ function home(ctx, { counts, topCourses, funniest, hardest, depts }) {
   </section>`);
 }
 
-function courses(ctx, { list, depts, q, dept }) {
+function courses(ctx, { list, total, depts, q, dept }) {
   return layout({ ...ctx, title: 'Courses' }, html`
   <h1 class="page-title">Courses</h1>
-  <form class="search search-inline" action="/courses" role="search">
+  <form class="search search-inline course-filter" action="/courses" role="search">
     <input type="search" name="q" value="${q}" placeholder="Search code or name" aria-label="Search courses">
-    ${dept ? html`<input type="hidden" name="dept" value="${dept}">` : ''}
+    <select name="dept" aria-label="Department" data-autosubmit>
+      <option value="">All departments</option>
+      ${depts.map((d) => html`<option value="${d.code}" ${dept === d.code ? 'selected' : ''}>${d.name} (${d.code})</option>`)}
+    </select>
     <button class="btn">Search</button>
   </form>
-  <div class="chips">
-    <a class="chip ${dept ? '' : 'on'}" href="/courses${q ? `?q=${encodeURIComponent(q)}` : ''}">All</a>
-    ${depts.map((d) => html`<a class="chip ${dept === d.code ? 'on' : ''}" href="/courses?dept=${d.code}${q ? `&q=${encodeURIComponent(q)}` : ''}" title="${d.name}">${d.code}</a>`)}
-  </div>
-  <p class="meta">${plural(list.length, 'course')}${dept ? ` in ${depts.find((d) => d.code === dept)?.name || dept}` : ''}${q ? ` matching “${q}”` : ''}</p>
-  ${list.length ? html`<div class="course-grid">${list.map(courseCard)}</div>` : html`<p class="empty">No courses found. Is it in another faculty? So far we've only imported the 2026 EBE handbook.</p>`}`);
+  <p class="meta">${total > list.length ? `Showing ${list.length} of ${total} courses. Search or pick a department to see the rest.` : plural(total, 'course')}${dept ? ` in ${depts.find((d) => d.code === dept)?.name || dept}` : ''}${q ? ` matching “${q}”` : ''}</p>
+  ${list.length ? html`<div class="course-grid">${list.map(courseCard)}</div>` : html`<p class="empty">No courses found. We've imported the 2026 EBE, Science, Commerce, Humanities and Health Sciences handbooks. Law isn't in yet.</p>`}`);
 }
 
 function course(ctx, { c, stats, offerings, reviews, topTags, myHeld }) {

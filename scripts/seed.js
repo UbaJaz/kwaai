@@ -12,6 +12,20 @@ const DEPARTMENTS = {
   CSC: 'Computer Science', EEE: 'Electrical Engineering', EGS: 'Environmental & Geographical Science',
   END: 'EBE Faculty (cross-department)', GEO: 'Geological Sciences', MAM: 'Mathematics & Applied Mathematics',
   MEC: 'Mechanical Engineering', PHY: 'Physics', STA: 'Statistical Sciences',
+  // Science
+  AGE: 'Archaeology', AST: 'Astronomy', MCB: 'Molecular & Cell Biology', SEA: 'Oceanography',
+  // Commerce
+  BUS: 'Business, Management & Actuarial Science', ECO: 'Economics', FTX: 'Finance & Tax', INF: 'Information Systems',
+  // Humanities
+  AFS: 'African & Gender Studies', ANS: 'Anthropology', ASL: 'Linguistics', DOH: 'Humanities Faculty (cross-department)',
+  EDN: 'Education', ELL: 'English Literary Studies', FAM: 'Film & Media Studies', FIN: 'Fine Art', HST: 'Historical Studies',
+  LIS: 'Library & Information Studies', MUZ: 'Music', PHI: 'Philosophy', POL: 'Politics & International Relations',
+  PSY: 'Psychology', REL: 'Religious Studies', SLL: 'Languages & Literatures', SOC: 'Sociology', SWK: 'Social Work',
+  TDP: 'Theatre, Dance & Performance',
+  // Health Sciences and Law
+  AHS: 'Health & Rehabilitation Sciences', FCE: 'Health Sciences Faculty (cross-department)', HSE: 'Health Sciences Education',
+  HUB: 'Human Biology', IBS: 'Integrative Biomedical Sciences', MDN: 'Medicine', PPH: 'Public Health & Family Medicine',
+  PRY: 'Psychiatry & Mental Health', PTY: 'Pathology', RAY: 'Radiation Medicine', PBL: 'Public Law', PVL: 'Private Law',
 };
 
 function seed(db, { samples = true } = {}) {

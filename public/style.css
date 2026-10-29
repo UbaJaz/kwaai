@@ -275,3 +275,10 @@ legend { font-family: var(--display); font-weight: 600; font-size: 1.1rem; paddi
   .bar-row { grid-template-columns: 104px 1fr 34px; }
   .log { display: block; overflow-x: auto; }
 }
+.course-filter { max-width: 760px; }
+.course-filter select { border: 0; border-left: 1px solid var(--line); border-radius: 0; max-width: 260px; box-shadow: none !important; }
+@media (max-width: 600px) {
+  .course-filter { flex-wrap: wrap; }
+  .course-filter input { flex: 1 1 100%; }
+  .course-filter select { flex: 1; border-left: 0; border-top: 1px solid var(--line); max-width: none; }
+}

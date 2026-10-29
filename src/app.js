@@ -122,8 +122,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const params = [];
     if (text) { where.push('(c.code LIKE ? OR c.title LIKE ?)'); params.push(`%${text}%`, `%${text}%`); }
     if (dept) { where.push('c.dept = ?'); params.push(dept); }
-    const list = courseList(where.length ? `WHERE ${where.join(' AND ')}` : '', params, 's.n IS NULL, s.n DESC, c.code');
-    res.page((views.courses(req.ctx, { list, depts: depts(), q: text, dept })));
+    const max = where.length ? 500 : 60; // the unfiltered list shows reviewed courses first, then a taste of the rest
+    const list = courseList(where.length ? `WHERE ${where.join(' AND ')}` : '', params, 's.n IS NULL, s.n DESC, c.code', max);
+    const total = q(`SELECT COUNT(*) AS n FROM courses c ${where.length ? `WHERE ${where.join(' AND ')}` : ''}`).get(...params).n;
+    res.page(views.courses(req.ctx, { list, total, depts: depts(), q: text, dept }));
   });
 
   const getCourse = (code) => q(`SELECT c.*, d.name AS dept_name FROM courses c JOIN departments d ON d.code = c.dept WHERE c.code = ?`).get(String(code).toUpperCase());
