@@ -25,7 +25,7 @@ function parseHandbook(text) {
 function splitConveners(s) {
   return s
     .split(/\s*(?:,| and |&|\/)\s*/)
-    .map((x) => x.trim())
+    .map((x) => x.replace(/\s*\(.*?\)/g, '').trim()) // drop notes like "(Semester 2)"
     .filter((x) => !/to be advised/i.test(x))
     .filter((x) => /^(Prof(essor)?|Associate Professor|A\/Prof|Dr|Mr|Ms|Mrs)?\s*[A-Z]/.test(x) && x.length > 3 && x.length < 60);
 }
