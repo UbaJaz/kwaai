@@ -16,7 +16,7 @@ const STATS = `COUNT(*) AS n, AVG(overall) AS overall, AVG(teaching) AS teaching
 const REVIEW_COLS = `r.*, l.name AS lecturer_name`;
 const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; form-action 'self'; frame-ancestors 'none'; base-uri 'none'";
 
-function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy } = {}) {
+function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'the LekkerOrNah team' } = {}) {
   const app = express();
   app.disable('x-powered-by');
   if (trustProxy) app.set('trust proxy', trustProxy); // so req.ip is the student's IP behind a host's proxy
@@ -40,7 +40,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     const flash = /(?:^|;\s*)flash=([^;]+)/.exec(req.headers.cookie || '')?.[1];
     if (flash) res.clearCookie('flash');
-    req.ctx = { user: req.user, isMod: !!req.user && moderators.has(req.user.email), flash: parseFlash(flash) };
+    req.ctx = { user: req.user, isMod: !!req.user && moderators.has(req.user.email), flash: parseFlash(flash), site: { contactEmail, operator } };
     // CSRF: double-submit token, added to every POST form on its way out
     let csrf = /(?:^|;s*)csrf=([a-f0-9]{32})/.exec(req.headers.cookie || '')?.[1];
     if (!csrf) {
@@ -163,6 +163,34 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.page((views.rankings(req.ctx, { rows: ranking(kind, rank, dept, 25), depts: all, dept, rank, kind })));
   });
 
+  app.get('/privacy', (req, res) => res.page(views.privacy(req.ctx)));
+  app.get('/terms', (req, res) => res.page(views.terms(req.ctx)));
+
+  // ---- your account (POPIA: see and delete what we hold about you) ----
+  app.get('/account', requireUser, (req, res) => {
+    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.user_id = ? ORDER BY r.created_at DESC`).all(req.user.id);
+    res.page(views.account(req.ctx, { reviews }));
+  });
+
+  app.post('/account/delete', requireUser, (req, res) => {
+    const id = req.user.id;
+    db.exec('BEGIN');
+    try {
+      q(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE user_id = ?)`).run(id);
+      q(`UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE user_id = ?)`).run(id);
+      q(`DELETE FROM reviews WHERE user_id = ?`).run(id);
+      q(`UPDATE lecturer_suggestions SET user_id = NULL WHERE user_id = ?`).run(id);
+      q(`DELETE FROM sessions WHERE user_id = ?`).run(id);
+      q(`DELETE FROM users WHERE id = ?`).run(id);
+      db.exec('COMMIT');
+    } catch (e) {
+      db.exec('ROLLBACK');
+      throw e;
+    }
+    res.clearCookie('sid');
+    flashRedirect(res, '/', 'ok', 'Your account and all your reviews have been deleted.');
+  });
+
   app.get('/rules', (req, res) => res.page((views.rules(req.ctx))));
 
   // ---- reviewing ----
@@ -204,6 +232,28 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     flashRedirect(res, `/courses/${c.code}`, status === 'held' ? 'info' : 'ok',
       status === 'held' ? 'Thanks! A moderator will check your comment before it goes live.' : 'Thanks! Your review is live. 🤙');
+  });
+
+  app.get('/courses/:code/suggest-lecturer', requireUser, (req, res) => {
+    const c = getCourse(req.params.code);
+    if (!c) return res.status(404).page(notFound(req));
+    res.page(views.suggestLecturer(req.ctx, { c }));
+  });
+
+  app.post('/courses/:code/suggest-lecturer', requireUser, limits.suggest, (req, res) => {
+    const c = getCourse(req.params.code);
+    if (!c) return res.status(404).page(notFound(req));
+    const title = ['Prof', 'Associate Professor', 'Dr', 'Mr', 'Ms', 'Mrs', 'Mx'].find((t) => t === req.body.title);
+    const name = String(req.body.name || '').trim().replace(/\s+/g, ' ');
+    if (!title || !/^[A-Z][A-Za-z.'’ -]{1,59}$/.test(name)) {
+      return res.status(400).page(views.suggestLecturer(req.ctx, { c, values: req.body, error: 'Use initials and surname, letters only, e.g. "J Smith".' }));
+    }
+    const full = `${title} ${name}`;
+    if (q(`SELECT 1 FROM lecturers WHERE dept = ? AND lower(name) = lower(?)`).get(c.dept, full)) {
+      return flashRedirect(res, `/courses/${c.code}/review`, 'info', `${full} is already in the list.`);
+    }
+    q(`INSERT INTO lecturer_suggestions (name, dept, course, user_id) VALUES (?, ?, ?, ?)`).run(full, c.dept, c.code, req.user.id);
+    flashRedirect(res, `/courses/${c.code}`, 'ok', 'Thanks! A moderator will check the name and add it, usually within a day or two.');
   });
 
   app.post('/reviews/:id/delete', requireUser, (req, res) => {
@@ -304,8 +354,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const held = q(`SELECT ${REVIEW_COLS}, (SELECT GROUP_CONCAT(NULLIF(details, ''), ' / ') FROM reports WHERE review_id = r.id AND resolved = 0) AS report_details
       FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.status = 'held' ORDER BY r.created_at`).all();
     const takedowns = q(`SELECT * FROM takedowns WHERE status = 'open' ORDER BY created_at`).all();
+    const suggestions = q(`SELECT s.*, d.name AS dept_name FROM lecturer_suggestions s JOIN departments d ON d.code = s.dept WHERE s.status = 'open' ORDER BY s.created_at`).all();
     const log = q(`SELECT * FROM mod_log ORDER BY id DESC LIMIT 30`).all();
-    res.page((views.mod(req.ctx, { held, takedowns, log })));
+    res.page(views.mod(req.ctx, { held, takedowns, suggestions, log }));
   });
 
   app.post('/mod/reviews/:id/:action', requireUser, requireMod, (req, res) => {
@@ -317,6 +368,16 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (action === 'ban' && r.user_id) q(`UPDATE users SET banned = 1 WHERE id = ?`).run(r.user_id);
     q(`INSERT INTO mod_log (review_id, action, note, moderator) VALUES (?, ?, ?, ?)`).run(r.id, action, String(req.body.note || '').slice(0, 200), req.user.email);
     flashRedirect(res, '/mod', 'ok', `Review #${r.id}: ${action === 'approve' ? 'approved and back up' : action === 'ban' ? 'removed, author banned' : 'removed'}.`);
+  });
+
+  app.post('/mod/suggestions/:id/:action', requireUser, requireMod, (req, res) => {
+    const s = q(`SELECT * FROM lecturer_suggestions WHERE id = ? AND status = 'open'`).get(Number(req.params.id) || 0);
+    const action = req.params.action;
+    if (!s || !['approve', 'reject'].includes(action)) return res.status(404).page(notFound(req));
+    if (action === 'approve') q(`INSERT OR IGNORE INTO lecturers (name, dept) VALUES (?, ?)`).run(s.name, s.dept);
+    q(`UPDATE lecturer_suggestions SET status = ? WHERE id = ?`).run(action === 'approve' ? 'approved' : 'rejected', s.id);
+    q(`INSERT INTO mod_log (action, note, moderator) VALUES (?, ?, ?)`).run(`${action} lecturer`, `${s.name} (${s.dept}, ${s.course})`, req.user.email);
+    flashRedirect(res, '/mod', 'ok', action === 'approve' ? `${s.name} added.` : 'Suggestion rejected.');
   });
 
   app.post('/mod/takedowns/:id/close', requireUser, requireMod, (req, res) => {

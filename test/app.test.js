@@ -195,3 +195,31 @@ test('production sign-in emails the link built from BASE_URL and never shows it'
   assert.doesNotMatch(page, /\/auth\//, 'link is not shown on the page');
   prod.close();
 });
+
+test('suggested lecturers only appear after a moderator approves them', async () => {
+  const student = browser();
+  await student.signIn('jkl001@myuct.ac.za');
+  assert.equal((await student.post('/courses/MEC2047F/suggest-lecturer', { title: 'Dr', name: '<script>' })).status, 400);
+  assert.equal((await student.post('/courses/MEC2047F/suggest-lecturer', { title: 'Dr', name: 'Q Newperson' })).status, 303);
+  assert.doesNotMatch(await student.text('/courses/MEC2047F/review'), /Dr Q Newperson/);
+
+  const mod = browser();
+  await mod.signIn('mod001@myuct.ac.za');
+  const id = /\/mod\/suggestions\/(\d+)\/approve/.exec(await mod.text('/mod'))[1];
+  assert.equal((await mod.post(`/mod/suggestions/${id}/approve`, {})).status, 303);
+  assert.match(await student.text('/courses/MEC2047F/review'), /Dr Q Newperson/);
+});
+
+test('students can delete their account and all their reviews', async () => {
+  const student = browser();
+  await student.signIn('mno001@myuct.ac.za');
+  await student.post('/courses/CSC1016S/review', { lecturer_id: 'none', year: '2025', teaching: 4, engagement: 4, exams: 4, support: 4, difficulty: 3, workload: 3, body: 'Delete-me marker review', agree: '1' });
+  assert.match(await student.text('/account'), /Delete-me marker review/);
+  assert.equal((await student.post('/account/delete', {})).status, 303);
+  assert.doesNotMatch(await student.text('/courses/CSC1016S'), /Delete-me marker/);
+  assert.equal((await student.get('/account')).status, 303, 'signed out afterwards');
+});
+
+test('privacy and terms pages render', async () => {
+  for (const p of ['/privacy', '/terms']) assert.equal((await fetch(base + p)).status, 200, p);
+});

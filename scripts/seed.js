@@ -29,7 +29,7 @@ const DEPARTMENTS = {
 };
 
 function seed(db, { samples = true } = {}) {
-  db.exec('DELETE FROM reports; DELETE FROM takedowns; DELETE FROM mod_log; DELETE FROM reviews; DELETE FROM lecturers; DELETE FROM courses; DELETE FROM departments;');
+  db.exec('DELETE FROM lecturer_suggestions; DELETE FROM reports; DELETE FROM takedowns; DELETE FROM mod_log; DELETE FROM reviews; DELETE FROM lecturers; DELETE FROM courses; DELETE FROM departments;');
   const dataDir = path.join(__dirname, '..', 'data');
   const files = fs.readdirSync(dataDir).filter((f) => /^courses-.*\.json$/.test(f));
   const addDept = db.prepare('INSERT OR IGNORE INTO departments (code, name) VALUES (?, ?)');

@@ -33,6 +33,7 @@ function layout({ title, user, isMod, flash }, body) {
       <a href="/courses">Courses</a>
       <a href="/rankings">Rankings</a>
       <a href="/rules">Rules</a>
+      ${user ? html`<a href="/account">My reviews</a>` : ''}
       ${isMod ? html`<a href="/mod" class="nav-mod">Moderation</a>` : ''}
       ${user
         ? html`<form method="post" action="/logout" class="inline"><button class="link-btn" title="${user.email}">Sign out</button></form>`
@@ -47,7 +48,7 @@ ${body}
 <footer class="site-footer">
   <div class="wrap footer-row">
     <p><strong>LekkerOrNah</strong> is an independent, student-run site. It is not affiliated with, endorsed by or run by the University of Cape Town. Reviews are students' personal opinions.</p>
-    <p><a href="/rules">House rules</a> · <a href="/rules#takedown">Report or request removal</a> · <a href="/rules#privacy">Privacy</a></p>
+    <p><a href="/rules">House rules</a> · <a href="/takedown">Report or request removal</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
   </div>
 </footer>
 </body>
@@ -246,7 +247,7 @@ function reviewForm(ctx, { c, conveners, others, years, values = {}, error }) {
           ${others.length ? html`<optgroup label="Others in ${c.dept_name}">${others.map((l) => html`<option value="${l.id}" ${String(v('lecturer_id')) === String(l.id) ? 'selected' : ''}>${l.name}${l.is_sample ? ' (sample)' : ''}</option>`)}</optgroup>` : ''}
           <option value="none" ${v('lecturer_id') === 'none' ? 'selected' : ''}>Not listed / not sure</option>
         </select>
-        <span class="hint">Lecturers often change between blocks. Pick the one you mostly had.</span>
+        <span class="hint">Lecturers often change between blocks. Pick the one you mostly had. Not in the list? <a href="/courses/${c.code}/suggest-lecturer">Suggest a lecturer</a>.</span>
       </label>
       <label>Year you took it
         <select name="year" required>${years.map((y) => html`<option ${String(v('year', years[0])) === String(y) ? 'selected' : ''}>${y}</option>`)}</select>
@@ -276,7 +277,7 @@ function reviewForm(ctx, { c, conveners, others, years, values = {}, error }) {
     <div class="rules-box">
       <strong>Before you post:</strong> keep it about the teaching, the course and the exams. No insults, nothing about looks or personal life, no allegations (report those to UCT's proper channels instead), and no names of students. Comments that might break these rules wait for a moderator. <a href="/rules" target="_blank">Full rules</a>
     </div>
-    <label class="check"><input type="checkbox" name="agree" value="1" required> My review is my honest opinion, follows the house rules, and is about my own experience of this course.</label>
+    <label class="check"><input type="checkbox" name="agree" value="1" required> My review is my honest opinion, follows the <a href="/rules" target="_blank">house rules</a> and <a href="/terms" target="_blank">terms</a>, and is about my own experience of this course.</label>
     <button class="btn btn-big">Post review</button>
   </form>`);
 }
@@ -378,13 +379,93 @@ function rules(ctx) {
   <p>Lecturers and staff don't need an account. Use the <a href="/takedown">removal request form</a>, or the "Request removal" link on any review. The review is hidden while we look at it.</p>
 
   <h2 id="privacy">🔒 Privacy</h2>
+  <p>Your email is never shown next to your reviews. You can delete your reviews or your whole account from <a href="/account">My reviews</a>. The full details are in the <a href="/privacy">privacy notice</a>.</p>
+  </article>`);
+}
+
+function privacy(ctx) {
+  const { operator, contactEmail } = ctx.site;
+  const contact = contactEmail ? html`<a href="mailto:${contactEmail}">${contactEmail}</a>` : html`the <a href="/takedown">contact form</a>`;
+  return layout({ ...ctx, title: 'Privacy notice' }, html`
+  <article class="prose">
+  <h1 class="page-title">Privacy notice</h1>
+  <p class="lede small">How LekkerOrNah handles personal information under South Africa's Protection of Personal Information Act (POPIA).</p>
+
+  <h2>Who is responsible</h2>
+  <p>LekkerOrNah is run by ${operator}, an independent student project. It is not run by or affiliated with the University of Cape Town. The responsible party and information officer is ${operator}, reachable at ${contact}.</p>
+
+  <h2>What we collect, and why</h2>
   <ul>
-    <li>We store your @myuct.ac.za email only to confirm you're a UCT student and to enforce bans. It is never shown next to your reviews or shared.</li>
-    <li>Lecturer names come from public UCT handbooks and course pages, and only in connection with the courses they teach.</li>
-    <li>You can delete your own reviews at any time. To have your account removed, use the <a href="/takedown">contact form</a>.</li>
-    <li>We follow the Protection of Personal Information Act (POPIA). Send any objection or request through the same form.</li>
+    <li><strong>Your @myuct.ac.za email</strong>, to check you're a UCT student, send sign-in links, and enforce bans. It is never shown publicly.</li>
+    <li><strong>Your reviews</strong> (ratings, tags, comment, course, lecturer, year). They are published without your name or email.</li>
+    <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), and a short-lived one for on-screen messages. No advertising or tracking cookies.</li>
+    <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many reports). It isn't written to our database.</li>
+    <li><strong>Removal requests:</strong> the name, email and details you give us, used only to deal with that request.</li>
+    <li><strong>Lecturers' names</strong> come from UCT's public handbooks and course pages, and are shown only in connection with the courses they teach.</li>
+  </ul>
+  <p>We process this information for our legitimate interest, and our users', in running a fair course-review service (POPIA section 11(1)(f)), and with your consent when you sign up.</p>
+
+  <h2>Who else sees it</h2>
+  <ul>
+    <li>Volunteer moderators, who can see hidden reviews and removal requests but not which student wrote a review.</li>
+    <li>Our email provider (Resend), which sends sign-in emails and may process your email address outside South Africa under its own data-protection terms.</li>
+    <li>Our hosting provider, which stores the database.</li>
+  </ul>
+  <p>We never sell personal information and never share it with UCT unless a court or the law requires us to.</p>
+
+  <h2>How long we keep it</h2>
+  <ul>
+    <li>Your account and reviews stay until you delete them.</li>
+    <li>Sign-in links expire after 15 minutes and sessions after 30 days. Both are then deleted.</li>
+    <li>Reviews removed by moderators, and handled removal requests, are deleted after 12 months.</li>
+  </ul>
+
+  <h2>Your rights</h2>
+  <ul>
+    <li>See or delete your reviews, or delete your whole account, at <a href="/account">My reviews</a>.</li>
+    <li>Ask what information we hold about you, ask for corrections, or object to processing, via ${contact}.</li>
+    <li>Lecturers can object to a review through the <a href="/takedown">removal request form</a>.</li>
+    <li>If you're unhappy with how we've handled your information, you can complain to the <a href="https://inforegulator.org.za" rel="noopener">Information Regulator</a>.</li>
   </ul>
   </article>`);
+}
+
+function terms(ctx) {
+  return layout({ ...ctx, title: 'Terms of use' }, html`
+  <article class="prose">
+  <h1 class="page-title">Terms of use</h1>
+  <p class="lede small">The short version: be honest, be fair, and remember these are students' opinions.</p>
+  <ol>
+    <li><strong>Unofficial.</strong> LekkerOrNah is an independent student project. It is not affiliated with, endorsed by or run by the University of Cape Town. Course information comes from UCT's public handbooks and may be out of date.</li>
+    <li><strong>Who can post.</strong> You need a current @myuct.ac.za email. One account per person. Don't share your sign-in link.</li>
+    <li><strong>Your reviews.</strong> You're responsible for what you post. It must be your honest opinion of a course you took, and it must follow the <a href="/rules">house rules</a>. Don't post allegations, private information, or anything defamatory, discriminatory or harassing.</li>
+    <li><strong>Permission to show your review.</strong> By posting, you let LekkerOrNah display your review on this site. You can delete it at any time.</li>
+    <li><strong>Moderation.</strong> We may hide or remove any review, and suspend any account, that breaks these terms or the house rules, or that we reasonably think could harm someone. Reviews may be hidden while a report or removal request is looked at.</li>
+    <li><strong>Opinions, not facts.</strong> Reviews are the personal opinions of individual students, not statements by LekkerOrNah. Ratings are averages of those opinions.</li>
+    <li><strong>No guarantees.</strong> The site is provided as is, for free. We don't guarantee it will always be available or accurate, and to the extent the law allows we're not liable for decisions you make using it.</li>
+    <li><strong>Changes.</strong> We may update these terms. Material changes will be announced on the site.</li>
+    <li><strong>Law.</strong> These terms are governed by South African law.</li>
+  </ol>
+  <p>Questions or complaints: use the <a href="/takedown">contact form</a>.</p>
+  </article>`);
+}
+
+function account(ctx, { reviews }) {
+  const label = { published: ['Live', 'tone-good'], held: ['Waiting for a moderator', 'tone-mid'], removed: ['Removed by a moderator', 'tone-low'] };
+  return layout({ ...ctx, title: 'My reviews' }, html`
+  <h1 class="page-title">My reviews</h1>
+  <p class="lede small">Signed in as <strong>${ctx.user.email}</strong>. Only you can see this page. Your email is never shown next to your reviews.</p>
+  ${reviews.length ? html`<div class="my-reviews">${reviews.map((r) => html`<div class="card mod-item">
+    <div class="mod-meta"><a href="/courses/${r.course}"><span class="code">${r.course}</span></a> · ${r.lecturer_name || 'Lecturer not listed'} · ${r.year} · <span class="score ${label[r.status][1]}">${label[r.status][0]}</span></div>
+    <p>${chip(r.overall)} ${r.body ? html`“${r.body}”` : html`<span class="muted">(rating only)</span>`}</p>
+    <form method="post" action="/reviews/${r.id}/delete" class="inline" data-confirm="Delete this review? This can't be undone."><button class="btn btn-small btn-quiet">Delete</button></form>
+  </div>`)}</div>` : html`<p class="empty">You haven't reviewed anything yet. <a href="/courses">Find a course</a>.</p>`}
+
+  <h2 class="section-title">Delete my account</h2>
+  <div class="card panel danger-zone">
+    <p>This permanently deletes your account, your email address and <strong>all your reviews</strong>.</p>
+    <form method="post" action="/account/delete" data-confirm="Delete your account and all your reviews? This can't be undone."><button class="btn btn-danger">Delete my account</button></form>
+  </div>`);
 }
 
 function login(ctx, { error, email = '' } = {}) {
@@ -448,7 +529,26 @@ function message(ctx, { title, emoji = '👍', text, link }) {
   </section>`);
 }
 
-function mod(ctx, { held, takedowns, log }) {
+function suggestLecturer(ctx, { c, error, values = {} }) {
+  return layout({ ...ctx, title: 'Suggest a lecturer' }, html`
+  <section class="narrow">
+    <nav class="crumbs"><a href="/courses/${c.code}">${c.code}</a> / Suggest a lecturer</nav>
+    <h1 class="page-title">Suggest a lecturer for ${c.code}</h1>
+    <p class="lede small">A moderator checks every name against UCT's public staff pages before it appears, so please use the name as UCT writes it.</p>
+    ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
+    <form method="post" action="/courses/${c.code}/suggest-lecturer" class="card form">
+      <div class="form-row two">
+        <label>Title
+          <select name="title" required>${['Prof', 'Associate Professor', 'Dr', 'Mr', 'Ms', 'Mrs', 'Mx'].map((t) => html`<option ${values.title === t ? 'selected' : ''}>${t}</option>`)}</select>
+        </label>
+        <label>Name<input name="name" value="${values.name ?? ''}" required maxlength="60" placeholder="e.g. J Smith"></label>
+      </div>
+      <button class="btn btn-big">Send suggestion</button>
+    </form>
+  </section>`);
+}
+
+function mod(ctx, { held, takedowns, suggestions, log }) {
   return layout({ ...ctx, title: 'Moderation' }, html`
   <h1 class="page-title">Moderation</h1>
   <p class="lede small">Hidden reviews wait here. <strong>Approve</strong> puts a review back up and clears its reports. <strong>Remove</strong> takes it down for good.</p>
@@ -459,6 +559,16 @@ function mod(ctx, { held, takedowns, log }) {
     <p>${t.details}</p>
     <form method="post" action="/mod/takedowns/${t.id}/close" class="inline"><button class="btn btn-small btn-quiet">Mark handled</button></form>
   </div>`) : html`<p class="empty">No open requests. 🎉</p>`}
+
+  <h2 class="section-title">Lecturer suggestions <span class="count">${suggestions.length}</span></h2>
+  ${suggestions.length ? suggestions.map((x) => html`<div class="card mod-item">
+    <div class="mod-meta">For <a href="/courses/${x.course}">${x.course}</a> · ${x.dept_name} · ${month(x.created_at)}</div>
+    <p><strong>${x.name}</strong></p>
+    <div class="mod-actions">
+      <form method="post" action="/mod/suggestions/${x.id}/approve" class="inline"><button class="btn btn-small btn-ok">Add lecturer</button></form>
+      <form method="post" action="/mod/suggestions/${x.id}/reject" class="inline"><button class="btn btn-small btn-quiet">Reject</button></form>
+    </div>
+  </div>`) : html`<p class="empty">No suggestions waiting.</p>`}
 
   <h2 class="section-title">Hidden reviews <span class="count">${held.length}</span></h2>
   ${held.length ? held.map((r) => html`<div class="card mod-item" id="held-${r.id}">
@@ -479,4 +589,4 @@ function mod(ctx, { held, takedowns, log }) {
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, takedown, message, mod };
+module.exports = { home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, takedown, message, mod, suggestLecturer, privacy, terms, account };

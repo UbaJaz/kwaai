@@ -282,3 +282,6 @@ legend { font-family: var(--display); font-weight: 600; font-size: 1.1rem; paddi
   .course-filter input { flex: 1 1 100%; }
   .course-filter select { flex: 1; border-left: 0; border-top: 1px solid var(--line); max-width: none; }
 }
+.danger-zone { border-color: color-mix(in srgb, var(--low) 40%, var(--line)); }
+.danger-zone p { margin-top: 0; }
+.my-reviews .mod-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
