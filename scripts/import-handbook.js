@@ -4,26 +4,39 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
+// Course descriptions look like:
+//   "MEC2047F ENGINEERING DYNAMICS 16 NQF credits at NQF level 6 Convener: Professor M Ngoepe Course outline: ..."
+// Some faculties put a note between the title and the credits, so find the UPPERCASE heading first,
+// then look for credits and convener in the text before the next heading.
+const WORD = "[A-Z0-9][A-Z0-9,&:()'’\\-\\/–.]*";
+const HEADING = new RegExp(`\\b([A-Z]{3}\\d{4}[A-Z]) ((?:${WORD} )*?${WORD})(?= (?:\\+ )?\\d+ NQF credits| [A-Z][a-z])`, 'g');
+const NOT_A_COURSE = /thesis|dissertation|departments in the faculty|research (paper|report|project)$/i;
+
 function parseHandbook(text) {
   const flat = text.replace(/\s+/g, ' ');
-  // Course descriptions look like: "MEC2047F ENGINEERING DYNAMICS 16 NQF credits at NQF level 6 Convener: Professor M Ngoepe Course outline: ..."
-  const re = /\b([A-Z]{3}\d{4}[A-Z])\s+([A-Z][A-Z0-9 ,&:()'\-\/]+?)\s+(\d+)\s+NQF credits at NQF level (\d+)\s*(?:Convener:\s*(.+?)\s*)?(?=Course outline|Course entry|Co-requisites|Objective)/g;
+  const heads = [...flat.matchAll(HEADING)];
   const courses = new Map();
-  for (const m of flat.matchAll(re)) {
-    if (courses.has(m[1])) continue;
+  heads.forEach((m, i) => {
+    const after = flat.slice(m.index + m[0].length, Math.min(heads[i + 1]?.index ?? flat.length, m.index + 4000));
+    const credits = /^.{0,600}?(\d+) NQF credits at NQF level (\d+)/.exec(after);
+    if (!credits || courses.has(m[1]) || NOT_A_COURSE.test(m[2])) return;
+    const convener = /Conveners?:\s*(.+?)(?=\s*(?:Course outline|Course entry|Entry requirements|Co-requisites|Prerequisites|Objective|Lecture times|DP requirements|Assessment))/.exec(after);
     courses.set(m[1], {
       code: m[1],
-      title: titleCase(m[2].trim()),
-      credits: Number(m[3]),
-      nqf: Number(m[4]),
-      conveners: splitConveners(m[5] || ''),
+      // drop a page number/header or a "NOTE:" glued on the end
+      title: titleCase(m[2].replace(/ (NOTES?|NB):( \d\))?$/, '').replace(/(,? SCHOOL OF)? \d{2,3}$/, '').trim()),
+      credits: Number(credits[1]),
+      nqf: Number(credits[2]),
+      conveners: splitConveners(convener?.[1] || ''),
     });
-  }
+  });
   return [...courses.values()].sort((a, b) => a.code.localeCompare(b.code));
 }
 
 function splitConveners(s) {
   return s
+    .replace(/\s+(\d+|[A-Z]{4,})\b.*$/, '') // cut off running page headers like "166 SCHOOL OF ECONOMICS"
+    .replace(/^Doctor\b/, 'Dr')
     .split(/\s*(?:,| and |&|\/)\s*/)
     .map((x) => x.replace(/\s*\(.*?\)/g, '').trim()) // drop notes like "(Semester 2)"
     .filter((x) => !/to be advised/i.test(x))
@@ -36,8 +49,8 @@ function titleCase(s) {
     .toLowerCase()
     .split(' ')
     .map((w, i, all) => {
-      // roman numerals and part letters: "II", "1A", "IB", trailing "A"
-      if (/^(i|ii|iii|iv|v|vi|\d+[a-z]|i{1,3}[ab])$/.test(w) || (i === all.length - 1 && /^[ab]$/.test(w))) return w.toUpperCase();
+      // roman numerals and part letters: "II", "1A", "IB", and "A"/"B" at the end or before a small word ("Physics A for Engineers")
+      if (/^(i|ii|iii|iv|v|vi|\d+[a-z]|i{1,3}[ab])$/.test(w) || (/^[ab]$/.test(w) && (i === all.length - 1 || SMALL.has(all[i + 1])))) return w.toUpperCase();
       if (i > 0 && SMALL.has(w)) return w;
       return w.replace(/^[a-z(]/, (c) => c.toUpperCase()).replace(/-([a-z])/g, (_, c) => '-' + c.toUpperCase());
     })

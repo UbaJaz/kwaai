@@ -1,0 +1,1099 @@
+{
+  "source": "UCT 2026 Health Sciences undergraduate handbook (8A)",
+  "courses": [
+    {
+      "code": "AHS1003F",
+      "title": "Speech and Hearing Sciences",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Professor L Ramma",
+        "Mr S Segoneco"
+      ]
+    },
+    {
+      "code": "AHS1025S",
+      "title": "Early Intervention",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Mrs J le Roux"
+      ]
+    },
+    {
+      "code": "AHS1032S",
+      "title": "Occupational Perspectives on Health and Well-Being",
+      "credits": 20,
+      "nqf": 5,
+      "conveners": [
+        "MLM Krenzer",
+        "Mrs L Richards"
+      ]
+    },
+    {
+      "code": "AHS1033F",
+      "title": "Movement Science I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "AHS1034S",
+      "title": "Introduction to Applied Physiotherapy",
+      "credits": 22,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "AHS1035F",
+      "title": "Human Occupation and Development",
+      "credits": 22,
+      "nqf": 5,
+      "conveners": [
+        "MLMM Krenzer",
+        "Mrs L Richards"
+      ]
+    },
+    {
+      "code": "AHS1042F",
+      "title": "Human Communication Development",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr K Abrahams"
+      ]
+    },
+    {
+      "code": "AHS1045S",
+      "title": "Basis of Hearing and Balance",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "AHS1054W",
+      "title": "South African Sign Language",
+      "credits": 8,
+      "nqf": 5,
+      "conveners": [
+        "Miss F Camroodien-Surve"
+      ]
+    },
+    {
+      "code": "AHS1068W",
+      "title": "Disability Information Management and Communication Systems",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr I Nwanze"
+      ]
+    },
+    {
+      "code": "AHS1069W",
+      "title": "Health and Functional Ability",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [
+        "Ms S Gabriels"
+      ]
+    },
+    {
+      "code": "AHS1070W",
+      "title": "Work Integrated Practice Learning",
+      "credits": 50,
+      "nqf": 5,
+      "conveners": [
+        "Ms S Damonse"
+      ]
+    },
+    {
+      "code": "AHS2002W",
+      "title": "Clinical Sciences I",
+      "credits": 13,
+      "nqf": 6,
+      "conveners": [
+        "Dr MA De Souza"
+      ]
+    },
+    {
+      "code": "AHS2043W",
+      "title": "Occupational Therapy II",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [
+        "Dr S Pillay",
+        "Mrs S Damonse"
+      ]
+    },
+    {
+      "code": "AHS2046F",
+      "title": "Diagnostic Audiology",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Dr L Petersen"
+      ]
+    },
+    {
+      "code": "AHS2047S",
+      "title": "Paediatric Rehabilitative Audiology",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "AHS2050H",
+      "title": "Clinical Physiotherapy I",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Mrs I Du Plessis"
+      ]
+    },
+    {
+      "code": "AHS2052H",
+      "title": "Movement Science II",
+      "credits": 38,
+      "nqf": 6,
+      "conveners": [
+        "Dr C Hendricks"
+      ]
+    },
+    {
+      "code": "AHS2053H",
+      "title": "Applied Physiotherapy I",
+      "credits": 32,
+      "nqf": 6,
+      "conveners": [
+        "Mrs N Edries-Khan"
+      ]
+    },
+    {
+      "code": "AHS2106F",
+      "title": "Child Language",
+      "credits": 21,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor M Harty"
+      ]
+    },
+    {
+      "code": "AHS2107F",
+      "title": "Child Speech",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "AHS2108W",
+      "title": "Clinical Speech Therapy 1",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Mrs J le Roux"
+      ]
+    },
+    {
+      "code": "AHS2109S",
+      "title": "School-Based Interventions",
+      "credits": 21,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "AHS2110W",
+      "title": "Clinical Audiology I",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Miss N Luwaca"
+      ]
+    },
+    {
+      "code": "AHS2111S",
+      "title": "Diagnostic Audiology in Special Populations",
+      "credits": 15,
+      "nqf": 6,
+      "conveners": [
+        "Dr L Petersen"
+      ]
+    },
+    {
+      "code": "AHS3004W",
+      "title": "Clinical Sciences II",
+      "credits": 10,
+      "nqf": 7,
+      "conveners": [
+        "Dr MA De Souza"
+      ]
+    },
+    {
+      "code": "AHS3005W",
+      "title": "Clinical Speech Therapy II",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Miss F Camroodien-Surve"
+      ]
+    },
+    {
+      "code": "AHS3008W",
+      "title": "Clinical Audiology II",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Mrs T Kuhn"
+      ]
+    },
+    {
+      "code": "AHS3062F",
+      "title": "Rehabilitation Technology",
+      "credits": 22,
+      "nqf": 7,
+      "conveners": [
+        "Dr L Petersen"
+      ]
+    },
+    {
+      "code": "AHS3065S",
+      "title": "Adult Rehabilitative Audiology",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "AHS3069W",
+      "title": "Clinical Physiotherapy II",
+      "credits": 62,
+      "nqf": 7,
+      "conveners": [
+        "Ms N Arends"
+      ]
+    },
+    {
+      "code": "AHS3070H",
+      "title": "Becoming a Rehabilitation Professional I",
+      "credits": 22,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor S Maart"
+      ]
+    },
+    {
+      "code": "AHS3071F",
+      "title": "Acquired Neurogenic Language Disorders",
+      "credits": 22,
+      "nqf": 7,
+      "conveners": [
+        "Dr C Legg"
+      ]
+    },
+    {
+      "code": "AHS3072S",
+      "title": "Paediatric Motor Speech Disorders and Dysphagia",
+      "credits": 22,
+      "nqf": 7,
+      "conveners": [
+        "Mrs V Norman"
+      ]
+    },
+    {
+      "code": "AHS3073F",
+      "title": "Adult Dysphagia and Motor Speech",
+      "credits": 22,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor S Singh"
+      ]
+    },
+    {
+      "code": "AHS3075F",
+      "title": "Oaes and Electrophysiology",
+      "credits": 22,
+      "nqf": 7,
+      "conveners": [
+        "S Segoneco"
+      ]
+    },
+    {
+      "code": "AHS3076H",
+      "title": "Movement Science III",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "Mrs H Talberg"
+      ]
+    },
+    {
+      "code": "AHS3077H",
+      "title": "Applied Physiotherapy II",
+      "credits": 22,
+      "nqf": 7,
+      "conveners": [
+        "Dr M Naidoo"
+      ]
+    },
+    {
+      "code": "AHS3078H",
+      "title": "Research Methods and Biostatistics I",
+      "credits": 10,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor G Ferguson",
+        "Associate Professor P Gretschel"
+      ]
+    },
+    {
+      "code": "AHS3102S",
+      "title": "Child Language II",
+      "credits": 15,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor M Harty"
+      ]
+    },
+    {
+      "code": "AHS3103F",
+      "title": "Voice",
+      "credits": 15,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "AHS3104S",
+      "title": "Vestibular Management",
+      "credits": 15,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "AHS3105F",
+      "title": "Public Health Audiology",
+      "credits": 15,
+      "nqf": 7,
+      "conveners": [
+        "Professor L Ramma"
+      ]
+    },
+    {
+      "code": "AHS3107W",
+      "title": "Occupational Therapy Theory and Practice in Physical Health",
+      "credits": 38,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor A Sonday",
+        "Associate Professor H Buchanan"
+      ]
+    },
+    {
+      "code": "AHS3108W",
+      "title": "Occupational Therapy Theory and Practice in Mental Health",
+      "credits": 38,
+      "nqf": 7,
+      "conveners": [
+        "Mr I Abbas",
+        "Dr O Silaule"
+      ]
+    },
+    {
+      "code": "AHS3113W",
+      "title": "Foundation Theory for Occupational Therapy Practice I",
+      "credits": 26,
+      "nqf": 7,
+      "conveners": [
+        "Dr O Silaule"
+      ]
+    },
+    {
+      "code": "AHS4005H",
+      "title": "Clinical Speech Therapy IIIA",
+      "credits": 45,
+      "nqf": 8,
+      "conveners": [
+        "K Murray"
+      ]
+    },
+    {
+      "code": "AHS4006H",
+      "title": "Clinical Speech Therapy IIIB",
+      "credits": 45,
+      "nqf": 8,
+      "conveners": [
+        "K Murray"
+      ]
+    },
+    {
+      "code": "AHS4008H",
+      "title": "Clinical Audiology IIIA",
+      "credits": 45,
+      "nqf": 8,
+      "conveners": [
+        "Dr N Keeton"
+      ]
+    },
+    {
+      "code": "AHS4009H",
+      "title": "Clinical Audiology IIIB",
+      "credits": 45,
+      "nqf": 8,
+      "conveners": [
+        "Dr N Keeton"
+      ]
+    },
+    {
+      "code": "AHS4065W",
+      "title": "Clinical Physiotherapy III",
+      "credits": 98,
+      "nqf": 8,
+      "conveners": [
+        "Ms N Arends"
+      ]
+    },
+    {
+      "code": "AHS4065X",
+      "title": "Clinical Physiotherapy IIIA",
+      "credits": 98,
+      "nqf": 8,
+      "conveners": [
+        "Ms N Arends"
+      ]
+    },
+    {
+      "code": "AHS4066F",
+      "title": "Becoming a Rehabilitation Professional III",
+      "credits": 4,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor S Maart"
+      ]
+    },
+    {
+      "code": "AHS4067S",
+      "title": "Seminars in Communication Sciences",
+      "credits": 4,
+      "nqf": 8,
+      "conveners": []
+    },
+    {
+      "code": "AHS4071F",
+      "title": "Applied Physiotherapy III",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Manie"
+      ]
+    },
+    {
+      "code": "AHS4072H",
+      "title": "Research Methods and Biostatistics II",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor G Ferguson"
+      ]
+    },
+    {
+      "code": "AHS4119W",
+      "title": "Occupational Therapy Research and Practice Management",
+      "credits": 48,
+      "nqf": 8,
+      "conveners": [
+        "Prof P Gretschel"
+      ]
+    },
+    {
+      "code": "AHS4120W",
+      "title": "Foundation Theory for Occupational Therapy Practice II",
+      "credits": 48,
+      "nqf": 8,
+      "conveners": [
+        "MLM Krenzer"
+      ]
+    },
+    {
+      "code": "AHS4121W",
+      "title": "Occupational Therapy Practice and Service Learning",
+      "credits": 48,
+      "nqf": 8,
+      "conveners": [
+        "Mrs T Mohomed",
+        "Mrs M Francke"
+      ]
+    },
+    {
+      "code": "AHS4122X",
+      "title": "Occupational Therapy Practice and Service Learning Adjusted One",
+      "credits": 32,
+      "nqf": 8,
+      "conveners": [
+        "Mrs T Mohomed",
+        "Mrs M Francke"
+      ]
+    },
+    {
+      "code": "AHS4123X",
+      "title": "Occupational Therapy Practice and Service Learning Adjusted Two",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Mrs T Mohomed",
+        "Mrs M Francke"
+      ]
+    },
+    {
+      "code": "AHS4184S",
+      "title": "Applied Physiotherapy III",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor S Maart"
+      ]
+    },
+    {
+      "code": "AHS4185S",
+      "title": "Becoming a Rehabilitation Professional II",
+      "credits": 4,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor S Maart"
+      ]
+    },
+    {
+      "code": "ASL1301S",
+      "title": "Introduction to Sociolinguistics",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "ASL1302S",
+      "title": "Linguistics Foundation",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "ASL1303F",
+      "title": "Sociolinguistics Foundation",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "FCE2000W",
+      "title": "Becoming a Doctor Part 1A",
+      "credits": 21,
+      "nqf": 6,
+      "conveners": [
+        "Dr D Matthews",
+        "Mr J Muller-Stuurman",
+        "Dr Joel Claassen"
+      ]
+    },
+    {
+      "code": "FCE3000F",
+      "title": "Becoming a Doctor Part 2A",
+      "credits": 10,
+      "nqf": 7,
+      "conveners": [
+        "Dr D Matthews",
+        "Dr Sibusiso Buthelezi",
+        "Dr Joel Claassen"
+      ]
+    },
+    {
+      "code": "HSE1014S",
+      "title": "Fundamentals of Movement Science and Applied Physiotherapy IA",
+      "credits": 0,
+      "nqf": 5,
+      "conveners": [
+        "Dr B Ige",
+        "Dr N Naidoo"
+      ]
+    },
+    {
+      "code": "HSE2000W",
+      "title": "Becoming a Doctor Part 1C",
+      "credits": 22,
+      "nqf": 6,
+      "conveners": [
+        "J Muller-Stuurman"
+      ]
+    },
+    {
+      "code": "HSE6004W",
+      "title": "Exit Examination on Procedural Competence",
+      "credits": 0,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Jansen"
+      ]
+    },
+    {
+      "code": "HUB1006F",
+      "title": "Introduction to Integrated Health Sciences Part I",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [
+        "Dr K Bugarith",
+        "L de Paulo"
+      ]
+    },
+    {
+      "code": "HUB1014S",
+      "title": "Anatomy for Communication Sciences",
+      "credits": 20,
+      "nqf": 5,
+      "conveners": [
+        "Dr K Mpolokeng"
+      ]
+    },
+    {
+      "code": "HUB1019F",
+      "title": "Anatomy and Physiology IA",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Ms J Luckrajh-Williams"
+      ]
+    },
+    {
+      "code": "HUB1020S",
+      "title": "Anatomy and Physiology IB",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr C D’Alton"
+      ]
+    },
+    {
+      "code": "HUB1022F",
+      "title": "Biosciences for Physiotherapy IA",
+      "credits": 9,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor T Mutsvangwa"
+      ]
+    },
+    {
+      "code": "HUB1023S",
+      "title": "Biosciences for Physiotherapy IB",
+      "credits": 9,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor T Mutsvangwa"
+      ]
+    },
+    {
+      "code": "HUB2005F",
+      "title": "Introduction to Medical Engineering",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "Dr B Malila"
+      ]
+    },
+    {
+      "code": "HUB2015W",
+      "title": "Anatomy and Physiology II for Health and Rehabilitation Sciences",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Friedling",
+        "Dr Y Albertus"
+      ]
+    },
+    {
+      "code": "HUB2017H",
+      "title": "Integrated Health Systems Part IA",
+      "credits": 57,
+      "nqf": 6,
+      "conveners": [
+        "Dr A Abrahams",
+        "Doctor A Bhagwandin"
+      ]
+    },
+    {
+      "code": "HUB2019F",
+      "title": "Integrated Anatomical and Physiological Sciences Part A",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr J Harbron",
+        "Assoc Professor D Lang"
+      ]
+    },
+    {
+      "code": "HUB2021S",
+      "title": "Integrated Anatomical and Physiological Sciences Part B",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Assoc Professor A Gwanyanya"
+      ]
+    },
+    {
+      "code": "HUB2023W",
+      "title": "Biosciences for Physiotherapy II",
+      "credits": 9,
+      "nqf": 6,
+      "conveners": [
+        "Professor T Franz"
+      ]
+    },
+    {
+      "code": "HUB3006F",
+      "title": "Applied Human Biology",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor DE Rae"
+      ]
+    },
+    {
+      "code": "HUB3007S",
+      "title": "Human Neurosciences",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr R Dangarembizi"
+      ]
+    },
+    {
+      "code": "HUB4071F",
+      "title": "Applied Electrophysiology",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Dr LR John"
+      ]
+    },
+    {
+      "code": "IBS1007S",
+      "title": "Introduction to Integrated Health Sciences Part II",
+      "credits": 35,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor Z Woodman",
+        "Doctor R Ebrahim"
+      ]
+    },
+    {
+      "code": "IBS3020W",
+      "title": "Molecular Medicine",
+      "credits": 72,
+      "nqf": 7,
+      "conveners": [
+        "Professor AA Katz"
+      ]
+    },
+    {
+      "code": "MDN3001S",
+      "title": "Introduction to Clinical Practice",
+      "credits": 68,
+      "nqf": 7,
+      "conveners": [
+        "Dr A Esmail"
+      ]
+    },
+    {
+      "code": "MDN3003W",
+      "title": "Introduction to Clinical Practice Part II",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Hoosain"
+      ]
+    },
+    {
+      "code": "MDN3005W",
+      "title": "Scientific Principles of Cosmetic Formulations",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr N Sishi",
+        "Dr N Vorster"
+      ]
+    },
+    {
+      "code": "MDN3006W",
+      "title": "Cosmetic Formulation Technology",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr N Sishi",
+        "Dr N Vorster"
+      ]
+    },
+    {
+      "code": "MDN3007W",
+      "title": "Hair and Skin Biology for the Cosmetic Formulator",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr J van Wyk"
+      ]
+    },
+    {
+      "code": "MDN3008W",
+      "title": "Cosmetics: Claims, Regulation and Ethics",
+      "credits": 15,
+      "nqf": 7,
+      "conveners": [
+        "Dr J van Wyk"
+      ]
+    },
+    {
+      "code": "MDN3009W",
+      "title": "Professional Communication and Project Management for Cosmetic Scientists",
+      "credits": 15,
+      "nqf": 7,
+      "conveners": [
+        "Dr N Sishi"
+      ]
+    },
+    {
+      "code": "MDN3010W",
+      "title": "Cosmetic Formulation Science Inservice Training",
+      "credits": 0,
+      "nqf": 7,
+      "conveners": [
+        "Dr N Sishi"
+      ]
+    },
+    {
+      "code": "MDN4001W",
+      "title": "Medicine: Ambulatory Care",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Dr R Gill (AmbuCare",
+        "Dr H Zaayman",
+        "Dr S CrawfordBrowne",
+        "Dr R Krause"
+      ]
+    },
+    {
+      "code": "MDN4011W",
+      "title": "Medicine: Ward Care",
+      "credits": 40,
+      "nqf": 8,
+      "conveners": [
+        "Dr R Gill",
+        "Dr T Papavarnavas",
+        "Dr I Van Rooyen",
+        "Dr T Isaacs"
+      ]
+    },
+    {
+      "code": "PHY1025F",
+      "title": "Physics 1025",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor S W Peterson"
+      ]
+    },
+    {
+      "code": "PPH1001F",
+      "title": "Becoming a Professional",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Mr S Toto"
+      ]
+    },
+    {
+      "code": "PPH1002S",
+      "title": "Becoming a Health Professional",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr N Mapukata"
+      ]
+    },
+    {
+      "code": "PRY2002W",
+      "title": "Psychiatry for Occupational Therapists",
+      "credits": 14,
+      "nqf": 6,
+      "conveners": [
+        "Dr M Karjiker",
+        "Dr C Vlotman"
+      ]
+    },
+    {
+      "code": "PRY4001W",
+      "title": "Psychiatry for External Credit",
+      "credits": 15,
+      "nqf": 8,
+      "conveners": [
+        "Dr Q Cossie",
+        "Dr Karjiker"
+      ]
+    },
+    {
+      "code": "PSY1006F",
+      "title": "Introduction to Psychology Part 1",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "H Matutu"
+      ]
+    },
+    {
+      "code": "PSY1007S",
+      "title": "Introduction to Psychology Part 2",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "H Matutu"
+      ]
+    },
+    {
+      "code": "PSY1009F",
+      "title": "Introduction to Psychology Part 1",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "PSY1010S",
+      "title": "Introduction to Psychology Part 2",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "H Matutu"
+      ]
+    },
+    {
+      "code": "PSY2013F",
+      "title": "Social and Developmental Psychology",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr M Malinga; Associate Professor L Wild"
+      ]
+    },
+    {
+      "code": "PSY2014S",
+      "title": "Cognitive Neuroscience and Abnormal Psychology",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr S Mkabile"
+      ]
+    },
+    {
+      "code": "PSY2015F",
+      "title": "Research in Psychology I",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor C Ward"
+      ]
+    },
+    {
+      "code": "PTY2000S",
+      "title": "Integrated Health Systems Part IB",
+      "credits": 47,
+      "nqf": 6,
+      "conveners": [
+        "Dr J Ramesar",
+        "Doctor J Jayakumar"
+      ]
+    },
+    {
+      "code": "PTY3009F",
+      "title": "Integrated Health Systems Part II",
+      "credits": 59,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Ramesar",
+        "Doctor J Jayakumar"
+      ]
+    },
+    {
+      "code": "PTY4008S",
+      "title": "Medicina Forensis",
+      "credits": 9,
+      "nqf": 8,
+      "conveners": [
+        "Dr Y van der Heyde"
+      ]
+    },
+    {
+      "code": "RAY2001W",
+      "title": "Radiobiology",
+      "credits": 48,
+      "nqf": 6,
+      "conveners": [
+        "Dr AS Hendrikse",
+        "Dr AJ Hunter"
+      ]
+    },
+    {
+      "code": "SLL1028H",
+      "title": "Xhosa for Health and Rehabilitation Sciences",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor R Possa"
+      ]
+    },
+    {
+      "code": "SLL1041S",
+      "title": "Beginners' Xhosa for Mbchb",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "T Skade"
+      ]
+    },
+    {
+      "code": "SLL1044S",
+      "title": "Beginners' Afrikaans for Mbchb",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Lewis-Adams"
+      ]
+    },
+    {
+      "code": "SLL1048H",
+      "title": "Afrikaans for Health and Rehabilitation Sciences",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr J Claassen"
+      ]
+    },
+    {
+      "code": "SLL2002H",
+      "title": "Becoming a Doctor: Part IB",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Dr J Claassen"
+      ]
+    },
+    {
+      "code": "SLL3002F",
+      "title": "Becoming a Doctor: Part 2B",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Claassen"
+      ]
+    },
+    {
+      "code": "SLL3103X",
+      "title": "Clinical Language",
+      "credits": 0,
+      "nqf": 7,
+      "conveners": [
+        "C Reyneke"
+      ]
+    }
+  ]
+}

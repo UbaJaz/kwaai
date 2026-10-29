@@ -1,0 +1,1551 @@
+{
+  "source": "UCT 2026 Science handbook (11)",
+  "courses": [
+    {
+      "code": "ACC1021F",
+      "title": "Accounting for Business I",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Muhammad West"
+      ]
+    },
+    {
+      "code": "AGE1002S",
+      "title": "The Human Planet: Prehistory to Present",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr V J Hare"
+      ]
+    },
+    {
+      "code": "AGE2011S",
+      "title": "Human Evolution",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Ackermann"
+      ]
+    },
+    {
+      "code": "AGE2012F",
+      "title": "The First People",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr Y Sahle"
+      ]
+    },
+    {
+      "code": "AGE3011F",
+      "title": "The Roots of Recent African Identities",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor A Esterhuysen"
+      ]
+    },
+    {
+      "code": "AGE3012S",
+      "title": "Archaeologies of Dominance and Resistance in the Last-500 Years",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr V Lupuwana"
+      ]
+    },
+    {
+      "code": "AGE3013H",
+      "title": "Archaeology in Practice",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor D Stynder"
+      ]
+    },
+    {
+      "code": "AGE4000W",
+      "title": "Archaeology Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Dr Y Sahle"
+      ]
+    },
+    {
+      "code": "AST1000S",
+      "title": "Introduction to Astronomy",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor S-L Blyth"
+      ]
+    },
+    {
+      "code": "AST2002H",
+      "title": "Astrophysics",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr L Marchetti"
+      ]
+    },
+    {
+      "code": "AST2003H",
+      "title": "Astronomical Techniques",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor P A Woudt"
+      ]
+    },
+    {
+      "code": "AST3002F",
+      "title": "Stellar Astrophysics",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr I Monageng"
+      ]
+    },
+    {
+      "code": "AST5004Z",
+      "title": "Data Science for Astronomy",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": []
+    },
+    {
+      "code": "BIO1000F",
+      "title": "Cell Biology",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J M Bishop"
+      ]
+    },
+    {
+      "code": "BIO1000H",
+      "title": "Cell Biology",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Vaaltyn"
+      ]
+    },
+    {
+      "code": "BIO1004S",
+      "title": "Biological Diversity",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr S Welman"
+      ]
+    },
+    {
+      "code": "BIO2017S",
+      "title": "Plant Diversity and Functional Biology",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor S B M Chimphango"
+      ]
+    },
+    {
+      "code": "BIO3002F",
+      "title": "Marine Ecosystems",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr N Karenyi"
+      ]
+    },
+    {
+      "code": "BIO3013F",
+      "title": "Global Change Ecology",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Professor A G West"
+      ]
+    },
+    {
+      "code": "BIO3019S",
+      "title": "Quantitative Biology",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Professor T A Hedderson"
+      ]
+    },
+    {
+      "code": "BIO3022S",
+      "title": "People and the Sea",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Professor P W Froneman"
+      ]
+    },
+    {
+      "code": "BIO4000W",
+      "title": "Biological Sciences Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Professor A M Muasya"
+      ]
+    },
+    {
+      "code": "BIO4001W",
+      "title": "Marine Biology Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Professor A M Muasya"
+      ]
+    },
+    {
+      "code": "BIO5007H",
+      "title": "Conservation Biology Coursework",
+      "credits": 90,
+      "nqf": 9,
+      "conveners": [
+        "Dr G Jamie"
+      ]
+    },
+    {
+      "code": "BIO5012W",
+      "title": "Applied Ocean Sciences Coursework",
+      "credits": 0,
+      "nqf": 9,
+      "conveners": [
+        "Professor M Vichi",
+        "Dr L C Gammage"
+      ]
+    },
+    {
+      "code": "BIO5013Z",
+      "title": "Fundamentals of Applied Ocean Sciences",
+      "credits": 40,
+      "nqf": 9,
+      "conveners": [
+        "Professor M Vichi",
+        "Dr L C Gammage"
+      ]
+    },
+    {
+      "code": "BIO5014Z",
+      "title": "Applied Marine Biology",
+      "credits": 50,
+      "nqf": 9,
+      "conveners": [
+        "Dr L C Gammage"
+      ]
+    },
+    {
+      "code": "CEM1000W",
+      "title": "Chemistry 1000",
+      "credits": 36,
+      "nqf": 5,
+      "conveners": [
+        "Professor G S Smith"
+      ]
+    },
+    {
+      "code": "CEM1009H",
+      "title": "Chemistry 1009",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr C Edmonds-Smith"
+      ]
+    },
+    {
+      "code": "CEM1010H",
+      "title": "Chemistry 1010",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr S Douman"
+      ]
+    },
+    {
+      "code": "CEM2005W",
+      "title": "Intermediate Chemistry",
+      "credits": 48,
+      "nqf": 6,
+      "conveners": [
+        "Dr G A Venter"
+      ]
+    },
+    {
+      "code": "CEM3005W",
+      "title": "Chemistry 3005",
+      "credits": 72,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor C Veale"
+      ]
+    },
+    {
+      "code": "CEM4000W",
+      "title": "Chemistry Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Ngubane"
+      ]
+    },
+    {
+      "code": "CSC1010H",
+      "title": "Computer Science 1010",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "G Stewart"
+      ]
+    },
+    {
+      "code": "CSC1011H",
+      "title": "Computer Science 1011",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "G Stewart"
+      ]
+    },
+    {
+      "code": "CSC1016S",
+      "title": "Computer Science 1016",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "A Safla"
+      ]
+    },
+    {
+      "code": "CSC2001F",
+      "title": "Computer Science 2001",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "F Meyer"
+      ]
+    },
+    {
+      "code": "CSC2002S",
+      "title": "Computer Science 2002",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Emeritus Associate Professor S Berman"
+      ]
+    },
+    {
+      "code": "CSC2004Z",
+      "title": "Programming Assessment",
+      "credits": 0,
+      "nqf": 6,
+      "conveners": [
+        "Emeritus Associate Professor S Berman"
+      ]
+    },
+    {
+      "code": "CSC2041F",
+      "title": "Introduction to Ai 1: Knowledge Representation",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr Z Mahlaza"
+      ]
+    },
+    {
+      "code": "CSC2042S",
+      "title": "Introduction to Ai 2: Machine Learning",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr J Buys"
+      ]
+    },
+    {
+      "code": "CSC3002F",
+      "title": "Networks and Operating Systems",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor P Marais"
+      ]
+    },
+    {
+      "code": "CSC3041F",
+      "title": "Ai: Automated Planning and Control",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "CSC3042F",
+      "title": "Ai: Deep Learning",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "CSC3043S",
+      "title": "Ai: Reasoning in Ai",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "CSC3044S",
+      "title": "Ai: Ai Systems",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "CSC4002W",
+      "title": "Computer Science Honours Project",
+      "credits": 60,
+      "nqf": 8,
+      "conveners": []
+    },
+    {
+      "code": "CSC4007Z",
+      "title": "Selected Honours Module in Computer Science",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": []
+    },
+    {
+      "code": "CSC4010Z",
+      "title": "Advanced Topics in Computer Science Honours 2",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": []
+    },
+    {
+      "code": "CSC4013Z",
+      "title": "Visualisation",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Professor M M Kuttel"
+      ]
+    },
+    {
+      "code": "CSC4020Z",
+      "title": "Functional Programming",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor G Nitschke"
+      ]
+    },
+    {
+      "code": "CSC4021Z",
+      "title": "Compilers 1",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "G Stewart"
+      ]
+    },
+    {
+      "code": "CSC4022Z",
+      "title": "Compilers 2",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": []
+    },
+    {
+      "code": "CSC4024Z",
+      "title": "Human Computer Interaction",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor M Densmore"
+      ]
+    },
+    {
+      "code": "CSC4025Z",
+      "title": "Artificial Intelligence",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Dr J Buys"
+      ]
+    },
+    {
+      "code": "CSC4027Z",
+      "title": "Computer Game Design",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Professor J Gain"
+      ]
+    },
+    {
+      "code": "CSC4028Z",
+      "title": "High-Performance Computing",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Professor M M Kuttel"
+      ]
+    },
+    {
+      "code": "CSC4029Z",
+      "title": "Introduction to Computer Graphics",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor P Marais"
+      ]
+    },
+    {
+      "code": "CSC4040Z",
+      "title": "Logics for Artificial Intelligence",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Professor T A Meyer"
+      ]
+    },
+    {
+      "code": "CSC4041Z",
+      "title": "Non-Monotonic Reasoning",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Professor T A Meyer"
+      ]
+    },
+    {
+      "code": "CSC4042Z",
+      "title": "Answer Set Programming",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Professor T A Meyer"
+      ]
+    },
+    {
+      "code": "CSC4043Z",
+      "title": "Evolutionary Computation",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor G Nitschke"
+      ]
+    },
+    {
+      "code": "CSC4044Z",
+      "title": "Artificial Life",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor G Nitschke"
+      ]
+    },
+    {
+      "code": "CSC5007Z",
+      "title": "Database Systems",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Emeritus Associate Professor S Berman"
+      ]
+    },
+    {
+      "code": "CSC5008Z",
+      "title": "Data Visualisation",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Professor M M Kuttel"
+      ]
+    },
+    {
+      "code": "CSC5010Z",
+      "title": "Mit: Computer Networks",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Dr J Chavula"
+      ]
+    },
+    {
+      "code": "CSC5011Z",
+      "title": "Mit: Object-Oriented Programming in Python",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": []
+    },
+    {
+      "code": "CSC5012Z",
+      "title": "Mit: Human Computer Interaction",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": []
+    },
+    {
+      "code": "CSC5017Z",
+      "title": "Mit: Research Methods",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor G Nitschke"
+      ]
+    },
+    {
+      "code": "CSC5020Z",
+      "title": "Research Methods in Computer Science",
+      "credits": 18,
+      "nqf": 9,
+      "conveners": [
+        "Professor J Gain"
+      ]
+    },
+    {
+      "code": "CSC5021Z",
+      "title": "Computational Geometry for 3D Printing",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Professor J Gain"
+      ]
+    },
+    {
+      "code": "CSC5022Z",
+      "title": "Distributed Scientific Computing",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Professor R Simmonds"
+      ]
+    },
+    {
+      "code": "CSC5023Z",
+      "title": "Meta-Heuristics",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor G Nitschke"
+      ]
+    },
+    {
+      "code": "CSC5024Z",
+      "title": "Information Retrieval",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": []
+    },
+    {
+      "code": "CSC5025Z",
+      "title": "Intelligent Systems",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor D Moodley"
+      ]
+    },
+    {
+      "code": "CSC5026Z",
+      "title": "Introduction to Ict for Development",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor M Densmore"
+      ]
+    },
+    {
+      "code": "CSC5027Z",
+      "title": "Logics for Artificial Intelligence",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Professor T A Meyer"
+      ]
+    },
+    {
+      "code": "CSC5028Z",
+      "title": "Ontology Engineering",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": []
+    },
+    {
+      "code": "CSC5029Z",
+      "title": "Introduction to Image Processing and Computer Vision",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor P Marais"
+      ]
+    },
+    {
+      "code": "CSC5030Z",
+      "title": "Advanced Topics in Computer Science Master's 1",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Professor J Gain"
+      ]
+    },
+    {
+      "code": "CSC5031Z",
+      "title": "Advanced Topics in Computer Science Master's 2",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Professor J Gain"
+      ]
+    },
+    {
+      "code": "CSC5033Z",
+      "title": "Human Computer Interaction",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor M Densmore"
+      ]
+    },
+    {
+      "code": "CSC5034Z",
+      "title": "Machine Learning",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor G Nitschke"
+      ]
+    },
+    {
+      "code": "CSC5035Z",
+      "title": "Natural Language Processing",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Dr J Buys"
+      ]
+    },
+    {
+      "code": "CSC5036Z",
+      "title": "Virtual Reality",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Professor J Gain"
+      ]
+    },
+    {
+      "code": "CSC5038Z",
+      "title": "Artificial Life",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor G Nitschke"
+      ]
+    },
+    {
+      "code": "CSC5039Z",
+      "title": "Non-Monotonic Reasoning",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Professor T A Meyer"
+      ]
+    },
+    {
+      "code": "CSC5042Z",
+      "title": "Natural Language Generation",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Dr Z Mahlaza"
+      ]
+    },
+    {
+      "code": "EEE2042S",
+      "title": "Introduction to Analogue and Digital Electronics",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "EEE2050F",
+      "title": "Embedded Systems I for Science Students",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "R Verrinder"
+      ]
+    },
+    {
+      "code": "EEE3095S",
+      "title": "Embedded Systems II for Science Students",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor S Winberg"
+      ]
+    },
+    {
+      "code": "EGS2016F",
+      "title": "Geographies Across Space",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Battersby"
+      ]
+    },
+    {
+      "code": "EGS2017S",
+      "title": "Geographies Across Time",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "EGS3012S",
+      "title": "Atmospheric Science",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr P Matikinca"
+      ]
+    },
+    {
+      "code": "EGS3022S",
+      "title": "Geographic Thought",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "EGS3023F",
+      "title": "Anthropocene Environments in Perspective",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr D Kibirige"
+      ]
+    },
+    {
+      "code": "EGS4001W",
+      "title": "Atmospheric Science Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Conradie"
+      ]
+    },
+    {
+      "code": "EGS5012W",
+      "title": "Climate Change and Predictability Coursework",
+      "credits": 0,
+      "nqf": 9,
+      "conveners": [
+        "Dr M Norton"
+      ]
+    },
+    {
+      "code": "EGS5068F",
+      "title": "Disaster Risk Science",
+      "credits": 23,
+      "nqf": 9,
+      "conveners": [
+        "Dr P Sabela-Rikhotso"
+      ]
+    },
+    {
+      "code": "GEO2001F",
+      "title": "Mineralogy, Crystallography and Petrography",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor P E Janney"
+      ]
+    },
+    {
+      "code": "GEO2004S",
+      "title": "Physical Geology",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor A Sloan"
+      ]
+    },
+    {
+      "code": "GEO4000W",
+      "title": "Geology Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor J F Diener"
+      ]
+    },
+    {
+      "code": "GEO4001W",
+      "title": "Geochemistry Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": []
+    },
+    {
+      "code": "HUB2019F",
+      "title": "Integrated Anatomical and Physiological Sciences Part A",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr J Harbron",
+        "Associate Professor D Lang"
+      ]
+    },
+    {
+      "code": "HUB2021S",
+      "title": "Integrated Anatomical and Physiological Sciences Part B",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor A Gwanyanya"
+      ]
+    },
+    {
+      "code": "HUB3006F",
+      "title": "Applied Human Biology",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor DE Rae"
+      ]
+    },
+    {
+      "code": "HUB3007S",
+      "title": "Human Neurosciences",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr R Dangarembizi"
+      ]
+    },
+    {
+      "code": "IBS5004Z",
+      "title": "Bioinformatics for High-Throughput Biology",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": []
+    },
+    {
+      "code": "INF2006F",
+      "title": "Business Intelligence and Analytics",
+      "credits": 6,
+      "nqf": 6,
+      "conveners": [
+        "A. Budree"
+      ]
+    },
+    {
+      "code": "INF2009F",
+      "title": "Systems Analysis",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "A Pekane"
+      ]
+    },
+    {
+      "code": "INF3011F",
+      "title": "I.t. Project Management",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "G Mwalemba"
+      ]
+    },
+    {
+      "code": "INF3014F",
+      "title": "Electronic Commerce",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "G Mwalemba"
+      ]
+    },
+    {
+      "code": "INF5007Z",
+      "title": "Social Issues and Professional Practice",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "T Chimboza"
+      ]
+    },
+    {
+      "code": "INF5008Z",
+      "title": "Systems Security",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Z Ruhwanya"
+      ]
+    },
+    {
+      "code": "INF5009Z",
+      "title": "Software Engineering",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "D Snyman"
+      ]
+    },
+    {
+      "code": "MAM1004F",
+      "title": "Mathematics 1004",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "T C Van Heerden"
+      ]
+    },
+    {
+      "code": "MAM1004S",
+      "title": "Mathematics 1004",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "MAM1005H",
+      "title": "Mathematics 1005",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Geyer"
+      ]
+    },
+    {
+      "code": "MAM1006H",
+      "title": "Mathematics 1006",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor B Osano"
+      ]
+    },
+    {
+      "code": "MAM1008S",
+      "title": "Introduction to Discrete Mathematics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr I Allie"
+      ]
+    },
+    {
+      "code": "MAM1019H",
+      "title": "Fundamentals of Mathematics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor A Schauerte"
+      ]
+    },
+    {
+      "code": "MAM1031F",
+      "title": "Mathematics 1031",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr H Wiggins"
+      ]
+    },
+    {
+      "code": "MAM1032S",
+      "title": "Mathematics 1032",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr H Wiggins"
+      ]
+    },
+    {
+      "code": "MAM1033F",
+      "title": "Mathematics 1033",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr H Wiggins"
+      ]
+    },
+    {
+      "code": "MAM1034S",
+      "title": "Mathematics 1034",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr H Wiggins"
+      ]
+    },
+    {
+      "code": "MAM1044H",
+      "title": "Dynamics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Hillebrand"
+      ]
+    },
+    {
+      "code": "MAM3006Z",
+      "title": "Project in Mathematics",
+      "credits": 0,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Sanchez-Ortega"
+      ]
+    },
+    {
+      "code": "MAM3055Z",
+      "title": "Project/internship in Applied Mathematics",
+      "credits": 0,
+      "nqf": 7,
+      "conveners": [
+        "Dr Á de la Cruz-Dombriz"
+      ]
+    },
+    {
+      "code": "MAM4000W",
+      "title": "Mathematics Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Dr F Ebobisse-Bille"
+      ]
+    },
+    {
+      "code": "MCB2020F",
+      "title": "Biological Information Transfer",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor C O'Ryan"
+      ]
+    },
+    {
+      "code": "MCB2021F",
+      "title": "Molecular Bioscience",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr P Meyers"
+      ]
+    },
+    {
+      "code": "MCB2023S",
+      "title": "Functional Genetics",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor N Illing"
+      ]
+    },
+    {
+      "code": "MCB3026F",
+      "title": "Molecular Genetics and Genomics",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "C Ross"
+      ]
+    },
+    {
+      "code": "PHY1023H",
+      "title": "Principles of Physics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor D L Taylor"
+      ]
+    },
+    {
+      "code": "PHY1031F",
+      "title": "General Physics A",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr S M Wheaton"
+      ]
+    },
+    {
+      "code": "PHY1032S",
+      "title": "General Physics B",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor H W G Weigert"
+      ]
+    },
+    {
+      "code": "PHY2004W",
+      "title": "Intermediate Physics",
+      "credits": 48,
+      "nqf": 6,
+      "conveners": [
+        "Dr S M Wheaton"
+      ]
+    },
+    {
+      "code": "PHY3004W",
+      "title": "Advanced Physics",
+      "credits": 72,
+      "nqf": 7,
+      "conveners": [
+        "Dr T W Leadbeater"
+      ]
+    },
+    {
+      "code": "PHY4000W",
+      "title": "Physics Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Professor A Peshier"
+      ]
+    },
+    {
+      "code": "PHY5007Z",
+      "title": "Data Science for Particle Physics",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor J M Keaveney"
+      ]
+    },
+    {
+      "code": "SEA2004F",
+      "title": "Principles of Oceanography",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "SEA2005S",
+      "title": "Marine Systems",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor S E Fawcett"
+      ]
+    },
+    {
+      "code": "SEA5011Z",
+      "title": "Operational Oceanography",
+      "credits": 50,
+      "nqf": 9,
+      "conveners": [
+        "Professor M Vichi"
+      ]
+    },
+    {
+      "code": "STA3022F",
+      "title": "Applied Multivariate Data Analysis",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Er"
+      ]
+    },
+    {
+      "code": "STA3036S",
+      "title": "Operational Research Techniques",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr R G Rakotonirainy"
+      ]
+    },
+    {
+      "code": "STA4007W",
+      "title": "Statistics and Data Science Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor G Distiller",
+        "Dr E Pienaar"
+      ]
+    },
+    {
+      "code": "STA4026S",
+      "title": "Analytics",
+      "credits": 18,
+      "nqf": 8,
+      "conveners": [
+        "Dr E Pienaar"
+      ]
+    },
+    {
+      "code": "STA4027Z",
+      "title": "Bayesian Computational Methods",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor A Clark"
+      ]
+    },
+    {
+      "code": "STA4028Z",
+      "title": "Portfolio Theory",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor T Gebbie"
+      ]
+    },
+    {
+      "code": "STA4029Z",
+      "title": "Advanced Probability Theory",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "M Mavuso"
+      ]
+    },
+    {
+      "code": "STA5010W",
+      "title": "Operational Research in Development Coursework",
+      "credits": 90,
+      "nqf": 9,
+      "conveners": [
+        "Dr R G Rakotonirainy"
+      ]
+    },
+    {
+      "code": "STA5059Z",
+      "title": "Topics in Biostatistics A",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor F Gumedze"
+      ]
+    },
+    {
+      "code": "STA5060Z",
+      "title": "Topics in Biostatistics B",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor F Gumedze"
+      ]
+    },
+    {
+      "code": "STA5061Z",
+      "title": "Bayesian Decision Modelling",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor A Clark"
+      ]
+    },
+    {
+      "code": "STA5062Z",
+      "title": "Causal Modelling",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor F Gumedze"
+      ]
+    },
+    {
+      "code": "STA5063Z",
+      "title": "Design of Clinical Trials",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor F Gumedze"
+      ]
+    },
+    {
+      "code": "STA5064Z",
+      "title": "Ecological Statistics",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor R Altwegg"
+      ]
+    },
+    {
+      "code": "STA5065Z",
+      "title": "Financial Econometrics",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": []
+    },
+    {
+      "code": "STA5066Z",
+      "title": "Mathematical Modelling for Infectious Diseases",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor S Silal"
+      ]
+    },
+    {
+      "code": "STA5067Z",
+      "title": "Longitudinal Data Analysis",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor F Gumedze"
+      ]
+    },
+    {
+      "code": "STA5068Z",
+      "title": "Machine Learning",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Dr E Pienaar"
+      ]
+    },
+    {
+      "code": "STA5069Z",
+      "title": "Multivariate Statistics",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Dr S Er"
+      ]
+    },
+    {
+      "code": "STA5070Z",
+      "title": "Problem Structuring and System Dynamics",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Dr R G Rakotonirainy"
+      ]
+    },
+    {
+      "code": "STA5071Z",
+      "title": "Simulation and Optimisation",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor S Silal"
+      ]
+    },
+    {
+      "code": "STA5072Z",
+      "title": "Survival Analysis",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor F Gumedze"
+      ]
+    },
+    {
+      "code": "STA5073Z",
+      "title": "Data Science for Industry",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor I Durbach"
+      ]
+    },
+    {
+      "code": "STA5074Z",
+      "title": "Decision Modelling for Prescriptive Analytics",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Dr R G Rakotonirainy"
+      ]
+    },
+    {
+      "code": "STA5075Z",
+      "title": "Statistical and High Performance Computing",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "S Salau"
+      ]
+    },
+    {
+      "code": "STA5076Z",
+      "title": "Supervised Learning",
+      "credits": 18,
+      "nqf": 9,
+      "conveners": [
+        "Dr S Er"
+      ]
+    },
+    {
+      "code": "STA5077Z",
+      "title": "Unsupervised Learning",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "M Ngwenya"
+      ]
+    },
+    {
+      "code": "STA5078Z",
+      "title": "Stochastic Processes",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "M Mavuso"
+      ]
+    },
+    {
+      "code": "STA5086Z",
+      "title": "Advanced Portfolio Theory",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor T Gebbie"
+      ]
+    },
+    {
+      "code": "STA5089F",
+      "title": "Basics of Mathematical Statistics",
+      "credits": 0,
+      "nqf": 9,
+      "conveners": [
+        "Professor F Gumedze"
+      ]
+    },
+    {
+      "code": "STA5090Z",
+      "title": "Advanced Topics in Regression",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor A Clark"
+      ]
+    },
+    {
+      "code": "STA5091Z",
+      "title": "Data-Analysis for High-Frequency Trading",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor T Gebbie"
+      ]
+    },
+    {
+      "code": "STA5092Z",
+      "title": "Exploratory Data Analysis",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Dr S Er"
+      ]
+    }
+  ]
+}

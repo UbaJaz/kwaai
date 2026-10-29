@@ -52,6 +52,17 @@ test('handbook parsing', () => {
     ['MEC2047F', 'Engineering Dynamics', 16, ['Professor M Ngoepe']],
   ]);
   assert.equal(titleCase('CHEMICAL ENGINEERING IB'), 'Chemical Engineering IB');
+  assert.equal(titleCase('PHYSICS A FOR ENGINEERS'), 'Physics A for Engineers');
+  assert.equal(titleCase('TOWARDS A DECOLONISED SCIENCE'), 'Towards a Decolonised Science');
+
+  // other faculties: a note between title and credits, a "+", page headers glued to the convener
+  const other = parseHandbook('AST1000S INTRODUCTION TO ASTRONOMY Two practical sessions are required. 18 NQF credits at NQF level 5 Convener: Dr A Smith 166 SCHOOL OF PHYSICS Course outline: x\n'
+    + 'ASL1202S REPRESENTATIONS OF AFRICA + 10 NQF credits at NQF level 5 Convener: Ms B Jones Course entry requirements: none\n'
+    + 'PHY6000W PHYSICS THESIS 120 NQF credits at NQF level 8 Convener: Dr C Course outline: x');
+  assert.deepEqual(other.map((c) => [c.code, c.title, c.conveners]), [
+    ['ASL1202S', 'Representations of Africa', ['Ms B Jones']],
+    ['AST1000S', 'Introduction to Astronomy', ['Dr A Smith']],
+  ]);
 });
 
 // ---- end to end: sign in, review, report, moderate ----

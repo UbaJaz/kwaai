@@ -1,0 +1,1449 @@
+{
+  "source": "UCT 2026 Commerce undergraduate handbook (6A)",
+  "courses": [
+    {
+      "code": "ACC1006F",
+      "title": "Financial Accounting",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J Kew"
+      ]
+    },
+    {
+      "code": "ACC1011S",
+      "title": "Financial Reporting I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J Winfield"
+      ]
+    },
+    {
+      "code": "ACC1021F",
+      "title": "Accounting for Business I",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "M West"
+      ]
+    },
+    {
+      "code": "ACC1022Z",
+      "title": "Accounting for Business II",
+      "credits": 9,
+      "nqf": 5,
+      "conveners": [
+        "F Jacobs"
+      ]
+    },
+    {
+      "code": "ACC1106F",
+      "title": "Financial Accounting",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J Kew"
+      ]
+    },
+    {
+      "code": "ACC1111S",
+      "title": "Financial Reporting I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J Winfield"
+      ]
+    },
+    {
+      "code": "ACC2012W",
+      "title": "Financial Reporting II",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [
+        "JP Du Plessis",
+        "M Bardien"
+      ]
+    },
+    {
+      "code": "ACC2018H",
+      "title": "Governance, Audit and Assurance I",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "M Phaswana"
+      ]
+    },
+    {
+      "code": "ACC2022H",
+      "title": "Management Accounting I",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "J Dean"
+      ]
+    },
+    {
+      "code": "ACC2023H",
+      "title": "Taxation I",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "S Esack"
+      ]
+    },
+    {
+      "code": "ACC2042H",
+      "title": "Management and Cost Accounting for Nonspecialists",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "M Tshingilane"
+      ]
+    },
+    {
+      "code": "ACC3004W",
+      "title": "Taxation II",
+      "credits": 32,
+      "nqf": 7,
+      "conveners": [
+        "S Maqhubela"
+      ]
+    },
+    {
+      "code": "ACC3009W",
+      "title": "Financial Reporting III",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "M Gajewski",
+        "S Gwadiso"
+      ]
+    },
+    {
+      "code": "ACC3020W",
+      "title": "Financial Reporting and Analysis",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "S Fakier",
+        "N Daniels"
+      ]
+    },
+    {
+      "code": "ACC3022W",
+      "title": "Governance, Audit and Assurance II",
+      "credits": 26,
+      "nqf": 7,
+      "conveners": [
+        "K Williams"
+      ]
+    },
+    {
+      "code": "ACC3023W",
+      "title": "Management Accounting II",
+      "credits": 26,
+      "nqf": 7,
+      "conveners": [
+        "C de Jesus"
+      ]
+    },
+    {
+      "code": "BUS1003H",
+      "title": "Introduction to Actuarial Science",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "L Mulaudzi"
+      ]
+    },
+    {
+      "code": "BUS1004F",
+      "title": "Introduction to Strategy and Marketing",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "A Meadows"
+      ]
+    },
+    {
+      "code": "BUS1007S",
+      "title": "Introduction to Industrial and Organisational Psychology",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "B Arendse"
+      ]
+    },
+    {
+      "code": "BUS2016H",
+      "title": "Financial Mathematics",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "E Gouws"
+      ]
+    },
+    {
+      "code": "BUS2023S",
+      "title": "Organisational Behaviour",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Professor J Bagraim"
+      ]
+    },
+    {
+      "code": "BUS3003F",
+      "title": "Research Design in Industrial and Organisational Psychology",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "N Veldsman"
+      ]
+    },
+    {
+      "code": "BUS3008W",
+      "title": "Marketing Research I",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Professor N Madinga",
+        "L Mototo"
+      ]
+    },
+    {
+      "code": "BUS3018F",
+      "title": "Actuarial Science II Models",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "M Mdlekeza"
+      ]
+    },
+    {
+      "code": "BUS3024S",
+      "title": "Actuarial Science II Contingencies",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "P Botha"
+      ]
+    },
+    {
+      "code": "BUS3038S",
+      "title": "Introduction to Project Management",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr M Hoffman"
+      ]
+    },
+    {
+      "code": "BUS3041F",
+      "title": "Marketing IIA",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr N Bundwini"
+      ]
+    },
+    {
+      "code": "BUS3043S",
+      "title": "Marketing IIB",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor S Dlamini"
+      ]
+    },
+    {
+      "code": "BUS3095S",
+      "title": "Social Impact Enterprise",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "S Hendry"
+      ]
+    },
+    {
+      "code": "BUS4006W",
+      "title": "Industrial and Organisational Psychology Honours Coursework",
+      "credits": 60,
+      "nqf": 8,
+      "conveners": [
+        "F Farista"
+      ]
+    },
+    {
+      "code": "BUS4026W",
+      "title": "Marketing III",
+      "credits": 72,
+      "nqf": 8,
+      "conveners": [
+        "L Mototo"
+      ]
+    },
+    {
+      "code": "BUS4027W",
+      "title": "Actuarial Science Iii: Assets",
+      "credits": 54,
+      "nqf": 8,
+      "conveners": [
+        "P Botha"
+      ]
+    },
+    {
+      "code": "BUS4028F",
+      "title": "Actuarial Science Iii: Financial Economics",
+      "credits": 21,
+      "nqf": 8,
+      "conveners": [
+        "Dr E Maritz"
+      ]
+    },
+    {
+      "code": "BUS4050H",
+      "title": "Strategic Thinking",
+      "credits": 18,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Hoffman"
+      ]
+    },
+    {
+      "code": "BUS4058F",
+      "title": "Strategic Marketing Management",
+      "credits": 36,
+      "nqf": 8,
+      "conveners": [
+        "Dr P Pillay"
+      ]
+    },
+    {
+      "code": "BUS4087S",
+      "title": "Quantitative Finance Selected Topics",
+      "credits": 18,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor S Mataramvura"
+      ]
+    },
+    {
+      "code": "CML1001F",
+      "title": "Business Law I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "CML2001F",
+      "title": "Company Law",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Dr M Maphiri"
+      ]
+    },
+    {
+      "code": "CML2005F",
+      "title": "Labour Law",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "L Mkhwanazi"
+      ]
+    },
+    {
+      "code": "CML2010Z",
+      "title": "Business Law II",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "CSC1010H",
+      "title": "Computer Science 1010",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "G Stewart"
+      ]
+    },
+    {
+      "code": "CSC1011H",
+      "title": "Computer Science 1011",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "G Stewart"
+      ]
+    },
+    {
+      "code": "CSC1016S",
+      "title": "Computer Science 1016",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "A Safla"
+      ]
+    },
+    {
+      "code": "CSC1017S",
+      "title": "Introduction to Programming",
+      "credits": 16,
+      "nqf": 5,
+      "conveners": [
+        "A Safla"
+      ]
+    },
+    {
+      "code": "CSC2001F",
+      "title": "Computer Science 2001",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr F Meyer"
+      ]
+    },
+    {
+      "code": "CSC2002S",
+      "title": "Computer Science 2002",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Emeritus Associate Professor S Berman"
+      ]
+    },
+    {
+      "code": "CSC2004Z",
+      "title": "Programming Assessment",
+      "credits": 0,
+      "nqf": 6,
+      "conveners": [
+        "Emeritus Associate Professor S Berman"
+      ]
+    },
+    {
+      "code": "CSC2041F",
+      "title": "Introduction to Ai 1: Knowledge Representation",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr Z Mahlaza"
+      ]
+    },
+    {
+      "code": "CSC2042S",
+      "title": "Introduction to Ai 2: Machine Learning",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr J Buys"
+      ]
+    },
+    {
+      "code": "CSC3002F",
+      "title": "Networks and Operating Systems",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor P Marais"
+      ]
+    },
+    {
+      "code": "CSC3041F",
+      "title": "Ai: Automated Planning and Control",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "CSC3042F",
+      "title": "Ai: Deep Learning",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "CSC3043S",
+      "title": "Ai: Reasoning in Ai",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "CSC3044S",
+      "title": "Ai: Ai Systems",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "ECO2003F",
+      "title": "Microeconomics II",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "ECO2004S",
+      "title": "Macroeconomics II",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "ECO2007S",
+      "title": "Cooperation and Competition",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor M Keswell"
+      ]
+    },
+    {
+      "code": "ECO2008S",
+      "title": "Development Economics",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "S Khan"
+      ]
+    },
+    {
+      "code": "ECO3009F",
+      "title": "Natural Resource Economics",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Professor B Conradie"
+      ]
+    },
+    {
+      "code": "ECO3016F",
+      "title": "History of Economic Thought",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "M Smith"
+      ]
+    },
+    {
+      "code": "ECO3020F",
+      "title": "Advanced Macro and Microeconomics",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor A Kerr"
+      ]
+    },
+    {
+      "code": "ECO3021S",
+      "title": "Quantitative Methods in Economics 158 School of Economics",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Professor E Muchapondwa"
+      ]
+    },
+    {
+      "code": "ECO3022S",
+      "title": "Advanced Labour Economics",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor C Mlatsheni"
+      ]
+    },
+    {
+      "code": "ECO3023S",
+      "title": "Public Economics",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr L Njozela"
+      ]
+    },
+    {
+      "code": "ECO3024F",
+      "title": "International Trade and Finance",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Professor L Edwards"
+      ]
+    },
+    {
+      "code": "ECO3025S",
+      "title": "Applied International Trade Bargaining",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "J Chien"
+      ]
+    },
+    {
+      "code": "ECO4006F",
+      "title": "Macroeconomics",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4007F",
+      "title": "Microeconomics",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4013S",
+      "title": "International Finance",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4016F",
+      "title": "Econometrics",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4020S",
+      "title": "Economic Challenges in Africa",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4027S",
+      "title": "The Analysis of Survey Data",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4028S",
+      "title": "Policy Analysis",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4029S",
+      "title": "Experiments in Economics",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4032S",
+      "title": "Economics of Industry, Regulation and Firms",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4051S",
+      "title": "Development Economics",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4052S",
+      "title": "Environmental Economics",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4053S",
+      "title": "Financial Economics",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4112F",
+      "title": "Mathematics and Statistics for Economists",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4113S",
+      "title": "Labour Economics",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4114S",
+      "title": "The Economics of Conflict, War and Peace",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4131S",
+      "title": "Digital Economics",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4132S",
+      "title": "Economics of Inequality: Causes, Consequences and Policy",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "ECO4200S",
+      "title": "Time Series Econometrics",
+      "credits": 14,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Makanza"
+      ]
+    },
+    {
+      "code": "EGS1005F",
+      "title": "Creating Sustainable Impact",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Dr J von Holdt"
+      ]
+    },
+    {
+      "code": "EGS2016F",
+      "title": "Geographies Across Space",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Battersby"
+      ]
+    },
+    {
+      "code": "EGS2017S",
+      "title": "Geographies Across Time",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "EGS3012S",
+      "title": "Atmospheric Science",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr P Matikinca"
+      ]
+    },
+    {
+      "code": "EGS3022S",
+      "title": "Geographic Thought",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "EGS3023F",
+      "title": "Anthropocene Environments in Perspective",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr D Kibirige"
+      ]
+    },
+    {
+      "code": "FTX2000S",
+      "title": "Personal Financial Management",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Dr E Swanepoel"
+      ]
+    },
+    {
+      "code": "FTX2020F",
+      "title": "Business Finance",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "N Jwara"
+      ]
+    },
+    {
+      "code": "FTX3044F",
+      "title": "Investment Management A",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Professor A Charteris"
+      ]
+    },
+    {
+      "code": "FTX3045S",
+      "title": "Investment Management B",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr F Peerbhai"
+      ]
+    },
+    {
+      "code": "FTX4056S",
+      "title": "Applied Investments",
+      "credits": 18,
+      "nqf": 8,
+      "conveners": [
+        "Dr A Majoni"
+      ]
+    },
+    {
+      "code": "FTX4058Z",
+      "title": "Quantitative Methods for Finance",
+      "credits": 9,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor A Sayed"
+      ]
+    },
+    {
+      "code": "FTX4087S",
+      "title": "Topics in Banking and Treasury Management",
+      "credits": 18,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor R Kruger"
+      ]
+    },
+    {
+      "code": "INF2003F",
+      "title": "Commercial Programming",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Professor S Kabanda"
+      ]
+    },
+    {
+      "code": "INF2004F",
+      "title": "Information Technology in Business",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Dr T Chimboza"
+      ]
+    },
+    {
+      "code": "INF2006F",
+      "title": "Business Intelligence and Analytics",
+      "credits": 6,
+      "nqf": 6,
+      "conveners": [
+        "G Oosterwyk"
+      ]
+    },
+    {
+      "code": "INF2007F",
+      "title": "Applying Database Principles",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "Z Ruhwanya"
+      ]
+    },
+    {
+      "code": "INF2008F",
+      "title": "Database Systems",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Z Ruhwanya"
+      ]
+    },
+    {
+      "code": "INF2009F",
+      "title": "Systems Analysis",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Dr A Pekane"
+      ]
+    },
+    {
+      "code": "INF3003W",
+      "title": "Systems Development Project I",
+      "credits": 48,
+      "nqf": 7,
+      "conveners": [
+        "Dr W Uys"
+      ]
+    },
+    {
+      "code": "INF3011F",
+      "title": "It Project Management",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "G Mwalemba"
+      ]
+    },
+    {
+      "code": "INF3014F",
+      "title": "Electronic Commerce",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "G Mwalemba"
+      ]
+    },
+    {
+      "code": "INF4025S",
+      "title": "Information Systems Management",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Professor M Tanner"
+      ]
+    },
+    {
+      "code": "INF4027W",
+      "title": "System Development Project II",
+      "credits": 40,
+      "nqf": 8,
+      "conveners": [
+        "Professor S Kabanda",
+        "Professor M Tanner"
+      ]
+    },
+    {
+      "code": "MAM1005H",
+      "title": "Mathematics 1005",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Geyer"
+      ]
+    },
+    {
+      "code": "MAM1006H",
+      "title": "Mathematics 1006",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor B Osano"
+      ]
+    },
+    {
+      "code": "MAM1008S",
+      "title": "Introduction to Discrete Mathematics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr I Allie"
+      ]
+    },
+    {
+      "code": "MAM1010F",
+      "title": "Mathematics 1010",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr R Moolman"
+      ]
+    },
+    {
+      "code": "MAM1010S",
+      "title": "Mathematics 1010",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "M Vandeyar"
+      ]
+    },
+    {
+      "code": "MAM1012F",
+      "title": "Mathematics 1012",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "MAM1012S",
+      "title": "Mathematics 1012",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr R Moolman"
+      ]
+    },
+    {
+      "code": "MAM1019H",
+      "title": "Fundamentals of Mathematics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor A Schauerte"
+      ]
+    },
+    {
+      "code": "MAM1031F",
+      "title": "Mathematics 1031",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr H Wiggins"
+      ]
+    },
+    {
+      "code": "MAM1032S",
+      "title": "Mathematics 1032",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr H Wiggins"
+      ]
+    },
+    {
+      "code": "PBL2000W",
+      "title": "Constitutional Law",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Professor P de Vos"
+      ]
+    },
+    {
+      "code": "PHI1010S",
+      "title": "Ethics",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr O Mogomotsi"
+      ]
+    },
+    {
+      "code": "PHI1024F",
+      "title": "Introduction to Philosophy",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Professor R Nefdt"
+      ]
+    },
+    {
+      "code": "PHI1025F",
+      "title": "Critical Thinking",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "PHI2012F",
+      "title": "Philosophy of Psychology and Mind",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Ritchie"
+      ]
+    },
+    {
+      "code": "PHI2016S",
+      "title": "Philosophy of Art and Literature",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor E Galgut"
+      ]
+    },
+    {
+      "code": "PHI2037F",
+      "title": "Applied Ethics",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "PHI2040S",
+      "title": "Philosophy of Science",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Ritchie"
+      ]
+    },
+    {
+      "code": "PHI2041S",
+      "title": "Great Philosophers",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor T Angier"
+      ]
+    },
+    {
+      "code": "PHI2042F",
+      "title": "Political Philosophy",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor T Angier"
+      ]
+    },
+    {
+      "code": "PHI2044F",
+      "title": "Philosophy of Mathematics",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor B Weiss"
+      ]
+    },
+    {
+      "code": "PHI2045S",
+      "title": "Philosophy of Race",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "PHI3023F",
+      "title": "Logic and Language",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor B Weiss"
+      ]
+    },
+    {
+      "code": "PHI3024S",
+      "title": "Metaphysics and Epistemology",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor J Ritchie"
+      ]
+    },
+    {
+      "code": "POL1004F",
+      "title": "Introduction to Politics",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr G Maxaulane"
+      ]
+    },
+    {
+      "code": "POL1005S",
+      "title": "Introduction to Politics B",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor Z Jolobe"
+      ]
+    },
+    {
+      "code": "POL2002F",
+      "title": "Political Theory",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr G M Maxaulane"
+      ]
+    },
+    {
+      "code": "POL2038F",
+      "title": "Comparative Politics",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Z Lategan"
+      ]
+    },
+    {
+      "code": "POL2039F",
+      "title": "International Political Economy",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr A Ndlovu"
+      ]
+    },
+    {
+      "code": "POL2042S",
+      "title": "Comparative Public Administration",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor V Naidoo"
+      ]
+    },
+    {
+      "code": "POL2043S",
+      "title": "South African Politics",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr G Maluleke"
+      ]
+    },
+    {
+      "code": "POL3029F",
+      "title": "Politics of Africa and the Global South",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor L Paremoer"
+      ]
+    },
+    {
+      "code": "POL3030F",
+      "title": "Conflict in World Politics",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor H Scanlon"
+      ]
+    },
+    {
+      "code": "POL3037F",
+      "title": "South African Public Policy Analysis",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor A Butler"
+      ]
+    },
+    {
+      "code": "POL3038S",
+      "title": "Urban Politics and Administration",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr T Zondi"
+      ]
+    },
+    {
+      "code": "POL3045S",
+      "title": "Global Governance",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr T Makgetla"
+      ]
+    },
+    {
+      "code": "POL3046S",
+      "title": "South African Political Thought",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor T Reddy"
+      ]
+    },
+    {
+      "code": "PSY1009F",
+      "title": "Introduction to Psychology Part 1",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "H Matutu"
+      ]
+    },
+    {
+      "code": "PSY1010S",
+      "title": "Introduction to Psychology Part 2",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "H Matutu"
+      ]
+    },
+    {
+      "code": "PSY2013F",
+      "title": "Social and Developmental Psychology",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr M Malinga; Associate Professor L Wild"
+      ]
+    },
+    {
+      "code": "PSY2014S",
+      "title": "Cognitive Neuroscience and Abnormal Psychology",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr S Mkabile"
+      ]
+    },
+    {
+      "code": "PSY2015F",
+      "title": "Research in Psychology I",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor C Ward"
+      ]
+    },
+    {
+      "code": "PSY3005F",
+      "title": "Critical Psychology",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr R Makama"
+      ]
+    },
+    {
+      "code": "PSY3007S",
+      "title": "Research in Psychology II",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor C Tredoux"
+      ]
+    },
+    {
+      "code": "PSY3009F",
+      "title": "Applied Cognitive Science",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr P Njomboro"
+      ]
+    },
+    {
+      "code": "PSY3010S",
+      "title": "Introduction to Clinical Neuropsychology",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr G Spies"
+      ]
+    },
+    {
+      "code": "PSY3011S",
+      "title": "Clinical Psychology II",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor D Kaminer"
+      ]
+    },
+    {
+      "code": "PVL1003W",
+      "title": "Foundations of South African Law",
+      "credits": 36,
+      "nqf": 5,
+      "conveners": [
+        "M Baase"
+      ]
+    },
+    {
+      "code": "PVL1004F",
+      "title": "South African Private Law: System and Context",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "I Ahmed"
+      ]
+    },
+    {
+      "code": "PVL1008H",
+      "title": "Law of Persons and Family",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor A Barratt"
+      ]
+    },
+    {
+      "code": "PVL2002H",
+      "title": "Law of Property",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Dr G Mathiba"
+      ]
+    },
+    {
+      "code": "PVL2003H",
+      "title": "Law of Succession",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Professor F du Toit"
+      ]
+    },
+    {
+      "code": "STA1100S",
+      "title": "Introductory Statistics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "N Watson"
+      ]
+    },
+    {
+      "code": "STA3022F",
+      "title": "Applied Multivariate Data Analysis",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Er"
+      ]
+    },
+    {
+      "code": "STA3036S",
+      "title": "Operational Research Techniques",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr R G Rakotonirainy"
+      ]
+    }
+  ]
+}

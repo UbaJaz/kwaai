@@ -1,0 +1,4200 @@
+{
+  "source": "UCT 2026 Humanities undergraduate handbook (9A)",
+  "courses": [
+    {
+      "code": "ACC1021F",
+      "title": "Accounting for Business I",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Muhammad West"
+      ]
+    },
+    {
+      "code": "ACC1022Z",
+      "title": "Accounting for Business II",
+      "credits": 9,
+      "nqf": 5,
+      "conveners": [
+        "Muhammad West"
+      ]
+    },
+    {
+      "code": "AFS1100S",
+      "title": "Understanding Gender",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr N Titi"
+      ]
+    },
+    {
+      "code": "AFS2100F",
+      "title": "Gender, Sexuality, Politics",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr N Titi"
+      ]
+    },
+    {
+      "code": "AFS3100F",
+      "title": "Theories, Politics and Action",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr M Osman"
+      ]
+    },
+    {
+      "code": "AFS3101S",
+      "title": "The Politics of Gendered Knowledge",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor B Moolman"
+      ]
+    },
+    {
+      "code": "AGE1002S",
+      "title": "The Human Planet: Prehistory to Present",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr V J Hare"
+      ]
+    },
+    {
+      "code": "AGE2011S",
+      "title": "Human Evolution",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Ackermann"
+      ]
+    },
+    {
+      "code": "AGE2012F",
+      "title": "The First People",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr Y Sahle"
+      ]
+    },
+    {
+      "code": "AGE3011F",
+      "title": "The Roots of Recent African Identities",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor A Esterhuysen"
+      ]
+    },
+    {
+      "code": "AGE3012S",
+      "title": "Archaeologies of Dominance and Resistance in the Last-500 Years",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr V Lupuwana"
+      ]
+    },
+    {
+      "code": "AGE3013H",
+      "title": "Archaeology in Practice",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor D Stynder"
+      ]
+    },
+    {
+      "code": "ANS1401S",
+      "title": "Introduction to Anthropology",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr N Solomon"
+      ]
+    },
+    {
+      "code": "ANS1403S",
+      "title": "Introduction to Anthropology",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "Dr N Solomon"
+      ]
+    },
+    {
+      "code": "ANS2400Z",
+      "title": "Anthropological Fieldwork",
+      "credits": 0,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor H Macdonald"
+      ]
+    },
+    {
+      "code": "ANS2401F",
+      "title": "Introduction to Medical Anthropology",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor H Macdonald"
+      ]
+    },
+    {
+      "code": "ANS3400F",
+      "title": "The Challenge of Culture",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor F Nyamnjoh"
+      ]
+    },
+    {
+      "code": "ANS3401S",
+      "title": "Anthropology Through Ethnography",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr K Mohamed"
+      ]
+    },
+    {
+      "code": "ASL1201S",
+      "title": "Representations of Africa",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr W Mushwana"
+      ]
+    },
+    {
+      "code": "ASL1202S",
+      "title": "Representations of Africa",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "ASL1203S",
+      "title": "Writing Across Borders",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Arend",
+        "Dr A Hunma"
+      ]
+    },
+    {
+      "code": "ASL1300F",
+      "title": "Introduction to Language Studies",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "ASL1301S",
+      "title": "Introduction to Sociolinguistics",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "ASL1304F",
+      "title": "Introduction to Language Studies",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "ASL1305S",
+      "title": "Introduction to Sociolinguistics",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "ASL2202F",
+      "title": "African Political Thought",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr D Jethro"
+      ]
+    },
+    {
+      "code": "ASL2203F",
+      "title": "African Political Thought",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "ASL3200F",
+      "title": "Political Economy of Africa",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor H Chitonge"
+      ]
+    },
+    {
+      "code": "ASL3300F",
+      "title": "Language: Theoretical and Applied Perspectives A",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "ASL3301S",
+      "title": "Language: Theoretical and Applied Perspectives B",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "BUS1004F",
+      "title": "Introduction to Strategy and Marketing",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "A Meadows"
+      ]
+    },
+    {
+      "code": "BUS1007S",
+      "title": "Introduction to Industrial and Organisational Psychology",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "B Arendse"
+      ]
+    },
+    {
+      "code": "BUS2023S",
+      "title": "Organisational Behaviour",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Z Zungu"
+      ]
+    },
+    {
+      "code": "BUS2024F",
+      "title": "Psychology of Human Resource Management",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Z Zungu"
+      ]
+    },
+    {
+      "code": "BUS3003F",
+      "title": "Research Design in Industrial and Organisational Psychology",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "N Veldsman"
+      ]
+    },
+    {
+      "code": "BUS3004S",
+      "title": "Research Data Analysis in Industrial and Organisational Psychology",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "N Veldsman"
+      ]
+    },
+    {
+      "code": "CML1001F",
+      "title": "Business Law I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "S Mesthrie"
+      ]
+    },
+    {
+      "code": "CML2001F",
+      "title": "Company Law",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Dr T Thabane"
+      ]
+    },
+    {
+      "code": "CML2005F",
+      "title": "Labour Law",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "L Mkhwanazi"
+      ]
+    },
+    {
+      "code": "CML2010Z",
+      "title": "Business Law II",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "CSC1016S",
+      "title": "Computer Science 1016",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "A Safla"
+      ]
+    },
+    {
+      "code": "CSC2001F",
+      "title": "Computer Science 2001",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr F Meyer"
+      ]
+    },
+    {
+      "code": "CSC2002S",
+      "title": "Computer Science 2002",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Emeritus Associate Professor S Berman"
+      ]
+    },
+    {
+      "code": "CSC2004Z",
+      "title": "Programming Assessment",
+      "credits": 0,
+      "nqf": 6,
+      "conveners": [
+        "Emeritus Associate Professor S Berman"
+      ]
+    },
+    {
+      "code": "CSC2042S",
+      "title": "Introduction to Ai 2: Machine Learning",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr J Buys"
+      ]
+    },
+    {
+      "code": "CSC3002F",
+      "title": "Networks and Operating Systems",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor P Marais"
+      ]
+    },
+    {
+      "code": "DOH1002F",
+      "title": "Writing in the Humanities",
+      "credits": 28,
+      "nqf": 5,
+      "conveners": [
+        "Dr A Humna"
+      ]
+    },
+    {
+      "code": "DOH1005F",
+      "title": "Writing in the Performing Arts",
+      "credits": 28,
+      "nqf": 5,
+      "conveners": [
+        "Dr C Hutchings"
+      ]
+    },
+    {
+      "code": "DOH1009S",
+      "title": "Concepts in Social Science",
+      "credits": 28,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor S Morreira"
+      ]
+    },
+    {
+      "code": "DOH1010S",
+      "title": "Texts in the Humanities",
+      "credits": 28,
+      "nqf": 5,
+      "conveners": [
+        "Dr T Wilks"
+      ]
+    },
+    {
+      "code": "DOH1017S",
+      "title": "Introduction to Industrial and Organisational Psychology",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "DOH2024F",
+      "title": "Psychology of Human Resource Management",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "DOH2100S",
+      "title": "Habitability and the Sustainable Development Goals in Africa",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor L Green"
+      ]
+    },
+    {
+      "code": "DOH3003F",
+      "title": "Contemporary Workplace Topics in Industrial and Organisational Psychology",
+      "credits": 10,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "DOH3004S",
+      "title": "Research Data Analysis in Industrial and Organisational Psychology",
+      "credits": 10,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "ECO1006F",
+      "title": "Economics for Non-Specialists",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "L Njozela"
+      ]
+    },
+    {
+      "code": "ECO2003F",
+      "title": "Microeconomics II",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "L Edwards"
+      ]
+    },
+    {
+      "code": "ECO2004S",
+      "title": "Macroeconomics II",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "C Mlatsheni"
+      ]
+    },
+    {
+      "code": "ECO2007S",
+      "title": "Cooperation and Competition",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "R Chetty"
+      ]
+    },
+    {
+      "code": "ECO2008S",
+      "title": "Development Economics",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "M Smith"
+      ]
+    },
+    {
+      "code": "ECO3009F",
+      "title": "Natural Resource Economics",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "D Thiam"
+      ]
+    },
+    {
+      "code": "ECO3016F",
+      "title": "History of Economic Thought",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "N. Nattrass"
+      ]
+    },
+    {
+      "code": "ECO3020F",
+      "title": "Advanced Macro and Micro Economics",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "T Mpofu"
+      ]
+    },
+    {
+      "code": "ECO3021S",
+      "title": "Quantitative Methods in Economics",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "S Khan"
+      ]
+    },
+    {
+      "code": "ECO3022S",
+      "title": "Advanced Labour Economics",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "C Mlatsheni"
+      ]
+    },
+    {
+      "code": "ECO3023S",
+      "title": "Public Economics",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "N Pillay"
+      ]
+    },
+    {
+      "code": "ECO3024F",
+      "title": "International Trade and Finance",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "L Edwards"
+      ]
+    },
+    {
+      "code": "ECO3025S",
+      "title": "Applied International Trade Bargaining",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "J Chien"
+      ]
+    },
+    {
+      "code": "EDN1536W",
+      "title": "Introduction to Information Communication Technology for Teachers",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2500W",
+      "title": "English Communicative Competence Sp",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2501W",
+      "title": "Literacies Sp",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2503W",
+      "title": "English Fal Assessment Sp",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2504W",
+      "title": "Language and Grammar Sp",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2506W",
+      "title": "English Fal Practicum",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2507W",
+      "title": "Number Sp",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Y Johnson"
+      ]
+    },
+    {
+      "code": "EDN2508W",
+      "title": "Algebra Sp",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Y Johnson"
+      ]
+    },
+    {
+      "code": "EDN2511W",
+      "title": "Mathematics Assessment Sp",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "Y Johnson"
+      ]
+    },
+    {
+      "code": "EDN2512W",
+      "title": "Curriculum Research in Mathematics Ed Sp",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2513W",
+      "title": "Mathematics Practicum Sp",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "Y Johnson"
+      ]
+    },
+    {
+      "code": "EDN2514W",
+      "title": "Natural Sciences Instruct Sp",
+      "credits": 4,
+      "nqf": 6,
+      "conveners": [
+        "G Dolo"
+      ]
+    },
+    {
+      "code": "EDN2515W",
+      "title": "Matter and Materials Sp",
+      "credits": 26,
+      "nqf": 6,
+      "conveners": [
+        "G Dolo"
+      ]
+    },
+    {
+      "code": "EDN2516W",
+      "title": "Energy and Change Sp",
+      "credits": 26,
+      "nqf": 6,
+      "conveners": [
+        "G Dolo"
+      ]
+    },
+    {
+      "code": "EDN2518W",
+      "title": "Earth and Beyond Sp",
+      "credits": 26,
+      "nqf": 6,
+      "conveners": [
+        "G Dolo"
+      ]
+    },
+    {
+      "code": "EDN2519W",
+      "title": "Natural Sciences Prac Work Sp",
+      "credits": 4,
+      "nqf": 6,
+      "conveners": [
+        "G Dolo"
+      ]
+    },
+    {
+      "code": "EDN2520W",
+      "title": "Natural Sciences Practicum Sp",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "G Dolo"
+      ]
+    },
+    {
+      "code": "EDN2521W",
+      "title": "Beginning Knowledge in the Foundation Phase",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2522W",
+      "title": "English Classroom Proficiency",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "T Matheza"
+      ]
+    },
+    {
+      "code": "EDN2523W",
+      "title": "English 1st Additional Language in the Foundation Phase",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2525W",
+      "title": "Learning in the Foundation Phase",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2529W",
+      "title": "Teaching in the Foundation Phase",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2531W",
+      "title": "English 1st Additional Language in the Intermediate Phase",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ]
+    },
+    {
+      "code": "EDN2532W",
+      "title": "Teaching Language in the Intermediate Phase",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "T Matheza"
+      ]
+    },
+    {
+      "code": "EDN3700F",
+      "title": "Approaches to Adult Learning Theory and Practice",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "L Pottier"
+      ]
+    },
+    {
+      "code": "EDN3704W",
+      "title": "Professional Portfolio and Workplace Project",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr R B Terhoven"
+      ]
+    },
+    {
+      "code": "EDN3708W",
+      "title": "Working with and for the Community",
+      "credits": 9,
+      "nqf": 7,
+      "conveners": [
+        "Dr R B Terhoven"
+      ]
+    },
+    {
+      "code": "EDN3710W",
+      "title": "Working Within and for the School System",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr R B Terhoven"
+      ]
+    },
+    {
+      "code": "EDN3712W",
+      "title": "Leading and Managing People and Change Continued",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr R B Terhoven"
+      ]
+    },
+    {
+      "code": "EGS2016F",
+      "title": "Geographies Across Space",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Battersby"
+      ]
+    },
+    {
+      "code": "EGS2017S",
+      "title": "Geographies Across Time",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "EGS3012S",
+      "title": "Atmospheric Science",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr P Matikinca"
+      ]
+    },
+    {
+      "code": "EGS3022S",
+      "title": "Geographic Thought",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "EGS3023F",
+      "title": "Anthropocene Environments in Perspective",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr D Kibirige"
+      ]
+    },
+    {
+      "code": "ELL1010S",
+      "title": "Image, Voice, Word",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "Professor B Boswell"
+      ]
+    },
+    {
+      "code": "ELL1016S",
+      "title": "Image, Voice, Word",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Professor B Boswell"
+      ]
+    },
+    {
+      "code": "ELL2000F",
+      "title": "Cultures of Empire and Resistance",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "M Mohulatsi"
+      ]
+    },
+    {
+      "code": "ELL2001S",
+      "title": "Literature and the Work of Memory",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor S Young"
+      ]
+    },
+    {
+      "code": "ELL2016F",
+      "title": "Cultures of Empire and Resistance",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": [
+        "M Mohulatsi"
+      ]
+    },
+    {
+      "code": "ELL2017S",
+      "title": "Literature and the Work of Memory",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": [
+        "Professor S Young"
+      ]
+    },
+    {
+      "code": "ELL3000F",
+      "title": "Movements, Manifestos and Modernities",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor P Anderson"
+      ]
+    },
+    {
+      "code": "ELL3001S",
+      "title": "Contemporary Literary Studies",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "S Busuku"
+      ]
+    },
+    {
+      "code": "FAM1000S",
+      "title": "Screen Studies As Social Practice",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr I-M Rijsdijk",
+        "Dr A Smit"
+      ]
+    },
+    {
+      "code": "FAM1001F",
+      "title": "Media and Society",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor M Walton",
+        "Dr D Becker"
+      ]
+    },
+    {
+      "code": "FAM1010S",
+      "title": "Screen Studies As Social Practice",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "Dr I-M Rijsdijk",
+        "Dr A Smit"
+      ]
+    },
+    {
+      "code": "FAM2003S",
+      "title": "Media, Power and Culture",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr D Becker"
+      ]
+    },
+    {
+      "code": "FAM2004S",
+      "title": "Cinema: Histories and Movements",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor L J Modisane"
+      ]
+    },
+    {
+      "code": "FAM2013F",
+      "title": "Introduction to Screen Genres",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr D Marco"
+      ]
+    },
+    {
+      "code": "FAM2016S",
+      "title": "Media, Power and Culture",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "FAM3000F",
+      "title": "The Media in South Africa",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor W Chuma"
+      ]
+    },
+    {
+      "code": "FAM3001S",
+      "title": "Advanced Media Studies",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor M Ndlovu"
+      ]
+    },
+    {
+      "code": "FAM3003S",
+      "title": "Advanced Film Studies",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr V Suparsad"
+      ]
+    },
+    {
+      "code": "FAM3005F",
+      "title": "Film in Africa",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "D Valley"
+      ]
+    },
+    {
+      "code": "FAM3016F",
+      "title": "Screen Production II",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr L Maasdorp"
+      ]
+    },
+    {
+      "code": "FIN1001W",
+      "title": "Studiowork I",
+      "credits": 72,
+      "nqf": 5,
+      "conveners": [
+        "Dr S Huigen-Conradie"
+      ]
+    },
+    {
+      "code": "FIN1005W",
+      "title": "Fine Art Foundation Course",
+      "credits": 36,
+      "nqf": 5,
+      "conveners": [
+        "Dr S Mguni"
+      ]
+    },
+    {
+      "code": "FIN1006F",
+      "title": "Introduction to African Art",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Professor N Makhubu"
+      ]
+    },
+    {
+      "code": "FIN1009S",
+      "title": "Approaches to Art History",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr A Soudien"
+      ]
+    },
+    {
+      "code": "FIN2011W",
+      "title": "Painting 2",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "G van der Byl"
+      ]
+    },
+    {
+      "code": "FIN2012W",
+      "title": "Sculpture 2",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J van der Schijff"
+      ]
+    },
+    {
+      "code": "FIN2013W",
+      "title": "Photography 2",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Brundrit"
+      ]
+    },
+    {
+      "code": "FIN2024W",
+      "title": "Printmedia 2",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor F Langerman"
+      ]
+    },
+    {
+      "code": "FIN2026W",
+      "title": "Core Practice 2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [
+        "G van der Byl"
+      ]
+    },
+    {
+      "code": "FIN2028S",
+      "title": "Discursive Strategies",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr T Monoa"
+      ]
+    },
+    {
+      "code": "FIN2029F",
+      "title": "Envisioning the Body: Representation of the Human in Art and Visual Culture",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr A Soudien"
+      ]
+    },
+    {
+      "code": "FIN3011W",
+      "title": "Painting 3",
+      "credits": 60,
+      "nqf": 7,
+      "conveners": [
+        "F Saptouw"
+      ]
+    },
+    {
+      "code": "FIN3012W",
+      "title": "Sculpture 3",
+      "credits": 60,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor J van der Schijff"
+      ]
+    },
+    {
+      "code": "FIN3013W",
+      "title": "Photography 3",
+      "credits": 60,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor S Josephy"
+      ]
+    },
+    {
+      "code": "FIN3024W",
+      "title": "Printmedia 3",
+      "credits": 60,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Huigen-Conradie"
+      ]
+    },
+    {
+      "code": "FIN3026F",
+      "title": "New Art: New Perspectives",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr T Monoa"
+      ]
+    },
+    {
+      "code": "FIN3027S",
+      "title": "Critical Curatorial Praxes",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr P Malatjie"
+      ]
+    },
+    {
+      "code": "FIN3028F",
+      "title": "Race, Gender and Decolonial Praxis",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr P Malatjie"
+      ]
+    },
+    {
+      "code": "FIN3029S",
+      "title": "Borders and Social Justice in the Arts",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor N Makhubu"
+      ]
+    },
+    {
+      "code": "FIN3030W",
+      "title": "Studiowork 3 Electives",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Professor B Searle"
+      ]
+    },
+    {
+      "code": "FIN4012W",
+      "title": "Theory and Practice of Art",
+      "credits": 48,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor K Campbell"
+      ]
+    },
+    {
+      "code": "FIN4015W",
+      "title": "Fine Art 4",
+      "credits": 108,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor S Josephy"
+      ]
+    },
+    {
+      "code": "FTX2000S",
+      "title": "Personal Financial Management",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "E Swanepoel"
+      ]
+    },
+    {
+      "code": "HST1013F",
+      "title": "Connections and Interruptions, 1500-1800",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "HST1014S",
+      "title": "Empires and Modernities",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr A Sen"
+      ]
+    },
+    {
+      "code": "HST1015F",
+      "title": "Connections and Interruptions, 1500-1800",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "HST3037S",
+      "title": "Memory, Identity and History",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor S Field"
+      ]
+    },
+    {
+      "code": "HST3043F",
+      "title": "Debates in Modern African Intellectual History",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor B Kar"
+      ]
+    },
+    {
+      "code": "HST3045S",
+      "title": "African Economic History",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr N Shivji"
+      ]
+    },
+    {
+      "code": "INF2003F",
+      "title": "Commercial Programming",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "INF2004F",
+      "title": "Information Technology in Business",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "T Chimboza"
+      ]
+    },
+    {
+      "code": "INF2008F",
+      "title": "Database Systems",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "W Chigona"
+      ]
+    },
+    {
+      "code": "INF2009F",
+      "title": "Systems Analysis",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "A Pekane"
+      ]
+    },
+    {
+      "code": "INF2011S",
+      "title": "Information Systems",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "INF3003W",
+      "title": "Systems Development Project I",
+      "credits": 48,
+      "nqf": 7,
+      "conveners": [
+        "W Uys"
+      ]
+    },
+    {
+      "code": "INF3011F",
+      "title": "I.t. Project Management",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "G Mwalemba"
+      ]
+    },
+    {
+      "code": "INF3014F",
+      "title": "Electronic Commerce",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "G Mwalemba"
+      ]
+    },
+    {
+      "code": "LIS1000S",
+      "title": "Introduction to Social Informatics",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr A Mfengu"
+      ]
+    },
+    {
+      "code": "MAM1004F",
+      "title": "Mathematics 1004",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "T C Van Heerden"
+      ]
+    },
+    {
+      "code": "MAM1004S",
+      "title": "Mathematics 1004",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "MAM1005H",
+      "title": "Mathematics 1005",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Geyer"
+      ]
+    },
+    {
+      "code": "MAM1006H",
+      "title": "Mathematics 1006",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor B Osano"
+      ]
+    },
+    {
+      "code": "MAM1008S",
+      "title": "Introduction to Discrete Mathematics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr I Allie"
+      ]
+    },
+    {
+      "code": "MAM1010F",
+      "title": "Mathematics 1010",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr R Moolman"
+      ]
+    },
+    {
+      "code": "MAM1010S",
+      "title": "Mathematics 1010",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "M Vandeyar"
+      ]
+    },
+    {
+      "code": "MAM1014F",
+      "title": "Quantitative Literacy for Humanities",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "J Clarke"
+      ]
+    },
+    {
+      "code": "MAM1015S",
+      "title": "Introductory Mathematics for Quantitative Social Sciences II",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "R Rix"
+      ]
+    },
+    {
+      "code": "MAM1016S",
+      "title": "Quantitative Literacy for the Social Sciences",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Y Williams"
+      ]
+    },
+    {
+      "code": "MAM1019H",
+      "title": "Fundamentals of Mathematics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor A Schauerte"
+      ]
+    },
+    {
+      "code": "MAM1022F",
+      "title": "Numbers in the Humanities",
+      "credits": 28,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Sikhonde"
+      ]
+    },
+    {
+      "code": "MAM1031F",
+      "title": "Mathematics 1031",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr H Wiggins"
+      ]
+    },
+    {
+      "code": "MAM1032S",
+      "title": "Mathematics 1032",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr H Wiggins"
+      ]
+    },
+    {
+      "code": "MAM1044H",
+      "title": "Dynamics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Hillebrand"
+      ]
+    },
+    {
+      "code": "MUZ1320H",
+      "title": "Accompanying I",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Dr E Kruger"
+      ]
+    },
+    {
+      "code": "MUZ1322F",
+      "title": "African Music I",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor S Bruinders"
+      ]
+    },
+    {
+      "code": "MUZ1323H",
+      "title": "African Music Ensemble I",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Dr B Clacherty"
+      ]
+    },
+    {
+      "code": "MUZ1324H",
+      "title": "Aural I",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor A Herbst"
+      ]
+    },
+    {
+      "code": "MUZ1325H",
+      "title": "Aural Introductory",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor A Herbst"
+      ]
+    },
+    {
+      "code": "MUZ1333H",
+      "title": "Ensemble 1",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "B Phillips"
+      ]
+    },
+    {
+      "code": "MUZ1335H",
+      "title": "Figured Bass and Score Reading",
+      "credits": 9,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor F du Toit"
+      ]
+    },
+    {
+      "code": "MUZ1337H",
+      "title": "Foundation Music Theory",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "MUZ1338S",
+      "title": "Music in Society",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr R Deja"
+      ]
+    },
+    {
+      "code": "MUZ1339H",
+      "title": "Jazz in Context I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ1340H",
+      "title": "Music in History and Society I",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Professor R Sandmeier"
+      ]
+    },
+    {
+      "code": "MUZ1342H",
+      "title": "Jazz Ensemble I",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ1343H",
+      "title": "Jazz Improvisation I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "J Bellairs"
+      ]
+    },
+    {
+      "code": "MUZ1350H",
+      "title": "Music Theory I",
+      "credits": 22,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "MUZ1351H",
+      "title": "Music Theory and Analysis I",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "MUZ1363H",
+      "title": "Theory of Jazz I",
+      "credits": 21,
+      "nqf": 5,
+      "conveners": [
+        "Professor A Lilley"
+      ]
+    },
+    {
+      "code": "MUZ1366H",
+      "title": "World Music Ensemble I",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Dr R Deja"
+      ]
+    },
+    {
+      "code": "MUZ1367F",
+      "title": "Worlds of Music I",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr R Deja"
+      ]
+    },
+    {
+      "code": "MUZ1368H",
+      "title": "Ensemble Additional I",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "B Phillips"
+      ]
+    },
+    {
+      "code": "MUZ1369H",
+      "title": "Jazz Ensemble Additional I",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ1375H",
+      "title": "African Music Theory I",
+      "credits": 21,
+      "nqf": 5,
+      "conveners": [
+        "Dr B Clacherty"
+      ]
+    },
+    {
+      "code": "MUZ1377H",
+      "title": "Lyric Diction I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Professor J Silver"
+      ]
+    },
+    {
+      "code": "MUZ1379H",
+      "title": "Jazz Ear Training I",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ1380H",
+      "title": "African Aural I",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr B Clacherty"
+      ]
+    },
+    {
+      "code": "MUZ1381H",
+      "title": "Music Technology 1A",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "T Herbst"
+      ]
+    },
+    {
+      "code": "MUZ1385W",
+      "title": "Jazz Fundamentals",
+      "credits": 36,
+      "nqf": 5,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ1404H",
+      "title": "Opera Training I",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Professor J Silver"
+      ]
+    },
+    {
+      "code": "MUZ1405H",
+      "title": "Jazz Vocal Techniques",
+      "credits": 6,
+      "nqf": 5,
+      "conveners": [
+        "N Xaluva-Dyantyis"
+      ]
+    },
+    {
+      "code": "MUZ2320H",
+      "title": "Accompanying II",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "Dr E Kruger"
+      ]
+    },
+    {
+      "code": "MUZ2322S",
+      "title": "African Music II",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr R Deja"
+      ]
+    },
+    {
+      "code": "MUZ2323H",
+      "title": "African Music Ensemble II",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "Dr B Clacherty"
+      ]
+    },
+    {
+      "code": "MUZ2324H",
+      "title": "Aural II",
+      "credits": 15,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor A Herbst"
+      ]
+    },
+    {
+      "code": "MUZ2328H",
+      "title": "Chamber Music I",
+      "credits": 21,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor F du Toit"
+      ]
+    },
+    {
+      "code": "MUZ2330H",
+      "title": "Composition I",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "MUZ2333H",
+      "title": "Ensemble II",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "B Phillips"
+      ]
+    },
+    {
+      "code": "MUZ2339H",
+      "title": "Jazz in Context II",
+      "credits": 21,
+      "nqf": 6,
+      "conveners": [
+        "N Xaluva-Dyantyis"
+      ]
+    },
+    {
+      "code": "MUZ2340H",
+      "title": "Music in History and Society II",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Sandmeier"
+      ]
+    },
+    {
+      "code": "MUZ2342H",
+      "title": "Jazz Ensemble II",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ2343H",
+      "title": "Jazz Improvisation II",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor A Lilley"
+      ]
+    },
+    {
+      "code": "MUZ2346H",
+      "title": "Repertoire and Applied Repertoire Studies II",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor F du Toit"
+      ]
+    },
+    {
+      "code": "MUZ2349H",
+      "title": "Music Education I",
+      "credits": 21,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor A Herbst"
+      ]
+    },
+    {
+      "code": "MUZ2350H",
+      "title": "Music Theory II",
+      "credits": 22,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "MUZ2351H",
+      "title": "Music Theory and Analysis II",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "MUZ2356H",
+      "title": "Repertoire and Applied Repertoire Studies I",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor F du Toit"
+      ]
+    },
+    {
+      "code": "MUZ2363H",
+      "title": "Theory of Jazz II",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor A Lilley"
+      ]
+    },
+    {
+      "code": "MUZ2366H",
+      "title": "World Music Ensemble II",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "Dr R Deja"
+      ]
+    },
+    {
+      "code": "MUZ2367S",
+      "title": "Worlds of Music II",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr R Deja"
+      ]
+    },
+    {
+      "code": "MUZ2368H",
+      "title": "Ensemble Additional II",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "B Phillips"
+      ]
+    },
+    {
+      "code": "MUZ2369H",
+      "title": "Jazz Ensemble Additional II",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ2372H",
+      "title": "Music Technology IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "T Herbst"
+      ]
+    },
+    {
+      "code": "MUZ2373H",
+      "title": "Music Technology IIB",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "T Herbst"
+      ]
+    },
+    {
+      "code": "MUZ2375H",
+      "title": "African Music Theory II",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr B Clacherty"
+      ]
+    },
+    {
+      "code": "MUZ2377H",
+      "title": "Lyric Diction II",
+      "credits": 21,
+      "nqf": 6,
+      "conveners": [
+        "Professor J Silver"
+      ]
+    },
+    {
+      "code": "MUZ2379H",
+      "title": "Jazz Ear Training II",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Professor A Lilley"
+      ]
+    },
+    {
+      "code": "MUZ2380H",
+      "title": "African Aural II",
+      "credits": 15,
+      "nqf": 6,
+      "conveners": [
+        "Dr B Clacherty"
+      ]
+    },
+    {
+      "code": "MUZ2404H",
+      "title": "Opera Training II",
+      "credits": 21,
+      "nqf": 6,
+      "conveners": [
+        "Professor J Silver"
+      ]
+    },
+    {
+      "code": "MUZ3320H",
+      "title": "Accompanying III",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "Dr E Kruger"
+      ]
+    },
+    {
+      "code": "MUZ3323H",
+      "title": "African Music Ensemble III",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr B Clacherty"
+      ]
+    },
+    {
+      "code": "MUZ3324F",
+      "title": "Advanced Topics in African and World Musics 3",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "Dr R Deja"
+      ]
+    },
+    {
+      "code": "MUZ3328H",
+      "title": "Chamber Music II",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor F du Toit"
+      ]
+    },
+    {
+      "code": "MUZ3330H",
+      "title": "Composition II",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "MUZ3333H",
+      "title": "Ensemble III",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "B Phillips"
+      ]
+    },
+    {
+      "code": "MUZ3339H",
+      "title": "Jazz in Context III",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ3340H",
+      "title": "Music in History and Society III",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "Professor R Sandmeier"
+      ]
+    },
+    {
+      "code": "MUZ3342H",
+      "title": "Jazz Ensemble III",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ3343H",
+      "title": "Jazz Improvisation III",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "J Bellairs"
+      ]
+    },
+    {
+      "code": "MUZ3349H",
+      "title": "Music Education II",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor A Herbst"
+      ]
+    },
+    {
+      "code": "MUZ3351H",
+      "title": "Music Theory and Analysis III",
+      "credits": 27,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "MUZ3355H",
+      "title": "Orchestration I",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "MUZ3360H",
+      "title": "Teaching Method",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "B Phillips"
+      ]
+    },
+    {
+      "code": "MUZ3366H",
+      "title": "World Music Ensemble III",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "Dr R Deja"
+      ]
+    },
+    {
+      "code": "MUZ3368H",
+      "title": "Ensemble Additional III",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "B Phillips"
+      ]
+    },
+    {
+      "code": "MUZ3369H",
+      "title": "Jazz Ensemble Additional III",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ3371H",
+      "title": "Music Technology IIIA",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "T Herbst"
+      ]
+    },
+    {
+      "code": "MUZ3372H",
+      "title": "Music Technology IIIB",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "T Herbst"
+      ]
+    },
+    {
+      "code": "MUZ3375H",
+      "title": "African Music Theory III",
+      "credits": 27,
+      "nqf": 7,
+      "conveners": [
+        "Dr B Clacherty"
+      ]
+    },
+    {
+      "code": "MUZ3377H",
+      "title": "Lyric Diction III",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "Professor J Silver"
+      ]
+    },
+    {
+      "code": "MUZ3380H",
+      "title": "Jazz Pedagogy",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor A Tiffin"
+      ]
+    },
+    {
+      "code": "MUZ3381H",
+      "title": "Jazz Masterclass",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "N Xaluva-Dyantyis"
+      ]
+    },
+    {
+      "code": "MUZ3384H",
+      "title": "Jazz Arranging A",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ3404H",
+      "title": "Opera Training III",
+      "credits": 48,
+      "nqf": 7,
+      "conveners": [
+        "Professor J Silver"
+      ]
+    },
+    {
+      "code": "MUZ4323H",
+      "title": "African Music Ensemble IV",
+      "credits": 18,
+      "nqf": 8,
+      "conveners": [
+        "Dr B Clacherty"
+      ]
+    },
+    {
+      "code": "MUZ4324S",
+      "title": "Advanced Topics in African and World Musics 4",
+      "credits": 36,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor S Bruinders"
+      ]
+    },
+    {
+      "code": "MUZ4328H",
+      "title": "Chamber Music III",
+      "credits": 36,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor F du Toit"
+      ]
+    },
+    {
+      "code": "MUZ4330H",
+      "title": "Composition III",
+      "credits": 24,
+      "nqf": 8,
+      "conveners": []
+    },
+    {
+      "code": "MUZ4333H",
+      "title": "Ensemble IV",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "B Phillips"
+      ]
+    },
+    {
+      "code": "MUZ4340H",
+      "title": "Music in History and Society IV",
+      "credits": 36,
+      "nqf": 8,
+      "conveners": [
+        "Professor R Sandmeier"
+      ]
+    },
+    {
+      "code": "MUZ4342H",
+      "title": "Jazz Ensemble IV",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ4351H",
+      "title": "Music Theory and Analysis IV",
+      "credits": 36,
+      "nqf": 8,
+      "conveners": []
+    },
+    {
+      "code": "MUZ4355H",
+      "title": "Orchestration II",
+      "credits": 24,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor M Watt"
+      ]
+    },
+    {
+      "code": "MUZ4368H",
+      "title": "Ensemble Additional IV",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "B Phillips"
+      ]
+    },
+    {
+      "code": "MUZ4369H",
+      "title": "Jazz Ensemble Additional IV",
+      "credits": 24,
+      "nqf": 8,
+      "conveners": [
+        "M van Noie"
+      ]
+    },
+    {
+      "code": "MUZ4371H",
+      "title": "Music Technology IV",
+      "credits": 72,
+      "nqf": 8,
+      "conveners": [
+        "T Herbst"
+      ]
+    },
+    {
+      "code": "MUZ4372W",
+      "title": "Musicology",
+      "credits": 60,
+      "nqf": 8,
+      "conveners": [
+        "Professor R Sandmeier"
+      ]
+    },
+    {
+      "code": "MUZ4382W",
+      "title": "Jazz Improvisation IV",
+      "credits": 48,
+      "nqf": 8,
+      "conveners": [
+        "Professor A Lilley"
+      ]
+    },
+    {
+      "code": "MUZ4384H",
+      "title": "Jazz Arranging B",
+      "credits": 48,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor A Tiffin"
+      ]
+    },
+    {
+      "code": "MUZ4404H",
+      "title": "Opera Training IV",
+      "credits": 60,
+      "nqf": 8,
+      "conveners": [
+        "Professor J Silver"
+      ]
+    },
+    {
+      "code": "PBL2000W",
+      "title": "Constitutional Law",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr N Ramalekana"
+      ]
+    },
+    {
+      "code": "PBL2800F",
+      "title": "Crime and Deviance in South African Cities",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "PHI1010S",
+      "title": "Ethics",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr O Mogomotsi"
+      ]
+    },
+    {
+      "code": "PHI1011S",
+      "title": "Ethics",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "R van Litsenborgh"
+      ]
+    },
+    {
+      "code": "PHI1024F",
+      "title": "Introduction to Philosophy",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Professor R Nefdt"
+      ]
+    },
+    {
+      "code": "PHI1025F",
+      "title": "Critical Thinking",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "PHI2012F",
+      "title": "Philosophy of Psychology and Mind",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Ritchie"
+      ]
+    },
+    {
+      "code": "PHI2016S",
+      "title": "Philosophy of Art and Literature",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor E Galgut"
+      ]
+    },
+    {
+      "code": "PHI2037F",
+      "title": "Applied Ethics",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "PHI2040S",
+      "title": "Philosophy of Science",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Ritchie"
+      ]
+    },
+    {
+      "code": "PHI2041S",
+      "title": "Great Philosophers",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor T Angier"
+      ]
+    },
+    {
+      "code": "PHI2042F",
+      "title": "Political Philosophy",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor T Angier"
+      ]
+    },
+    {
+      "code": "PHI2044F",
+      "title": "Philosophy of Mathematics",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor B Weiss"
+      ]
+    },
+    {
+      "code": "PHI2045S",
+      "title": "Philosophy of Race",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "PHI3023F",
+      "title": "Logic and Language",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor B Weiss"
+      ]
+    },
+    {
+      "code": "PHI3024S",
+      "title": "Metaphysics and Epistemology",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor J Ritchie"
+      ]
+    },
+    {
+      "code": "POL1004F",
+      "title": "Introduction to Politics",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr G Maxaulane"
+      ]
+    },
+    {
+      "code": "POL1005S",
+      "title": "Introduction to Politics B",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor Z Jolobe"
+      ]
+    },
+    {
+      "code": "POL1010S",
+      "title": "Introduction to Politics B",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "S Seti"
+      ]
+    },
+    {
+      "code": "POL2002F",
+      "title": "Political Theory",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr G M Maxaulane"
+      ]
+    },
+    {
+      "code": "POL2038F",
+      "title": "Comparative Politics",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Z Lategan"
+      ]
+    },
+    {
+      "code": "POL2039F",
+      "title": "International Political Economy",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr A Ndlovu"
+      ]
+    },
+    {
+      "code": "POL2042S",
+      "title": "Comparative Public Administration",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor V Naidoo"
+      ]
+    },
+    {
+      "code": "POL2043S",
+      "title": "South African Politics",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr G Maluleke"
+      ]
+    },
+    {
+      "code": "POL3029F",
+      "title": "Politics of Africa and the Global South",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor L Paremoer"
+      ]
+    },
+    {
+      "code": "POL3030F",
+      "title": "Conflict in World Politics",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor H Scanlon"
+      ]
+    },
+    {
+      "code": "POL3037F",
+      "title": "South African Public Policy Analysis",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor A Butler"
+      ]
+    },
+    {
+      "code": "POL3038S",
+      "title": "Urban Politics and Administration",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr T Zondi"
+      ]
+    },
+    {
+      "code": "POL3045S",
+      "title": "Global Governance",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr T Makgetla"
+      ]
+    },
+    {
+      "code": "POL3046S",
+      "title": "South African Political Thought",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor T Reddy"
+      ]
+    },
+    {
+      "code": "PSY1006F",
+      "title": "Introduction to Psychology Part 1",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "H Matutu"
+      ]
+    },
+    {
+      "code": "PSY1007S",
+      "title": "Introduction to Psychology Part 2",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "H Matutu"
+      ]
+    },
+    {
+      "code": "PSY1009F",
+      "title": "Introduction to Psychology Part 1",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "H Matutu"
+      ]
+    },
+    {
+      "code": "PSY1010S",
+      "title": "Introduction to Psychology Part 2",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "H Matutu"
+      ]
+    },
+    {
+      "code": "PSY2013F",
+      "title": "Social and Developmental Psychology",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr M Malinga; Associate Professor L Wild"
+      ]
+    },
+    {
+      "code": "PSY2014S",
+      "title": "Cognitive Neuroscience and Abnormal Psychology",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr S Mkabile"
+      ]
+    },
+    {
+      "code": "PSY2015F",
+      "title": "Research in Psychology I",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor C Ward"
+      ]
+    },
+    {
+      "code": "PSY3005F",
+      "title": "Critical Psychology",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr R Makama"
+      ]
+    },
+    {
+      "code": "PSY3007S",
+      "title": "Research in Psychology II",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor C Tredoux"
+      ]
+    },
+    {
+      "code": "PSY3009F",
+      "title": "Applied Cognitive Science",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr P Njomboro"
+      ]
+    },
+    {
+      "code": "PSY3010S",
+      "title": "Introduction to Clinical Neuropsychology",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr G Spies"
+      ]
+    },
+    {
+      "code": "PSY3011S",
+      "title": "Clinical Psychology II",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor D Kaminer"
+      ]
+    },
+    {
+      "code": "PVL1003W",
+      "title": "Foundations of South African Law",
+      "credits": 36,
+      "nqf": 5,
+      "conveners": [
+        "M Baase"
+      ]
+    },
+    {
+      "code": "PVL1004F",
+      "title": "South African Private Law: System and Context",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "I Ahmed"
+      ]
+    },
+    {
+      "code": "PVL1008H",
+      "title": "Law of Persons and Family",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor A Barratt"
+      ]
+    },
+    {
+      "code": "PVL2002H",
+      "title": "Law of Property",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Dr G Mathiba"
+      ]
+    },
+    {
+      "code": "PVL2003H",
+      "title": "Law of Succession",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Professor F du Toit"
+      ]
+    },
+    {
+      "code": "REL1002F",
+      "title": "Religions Past and Present",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Professor E Porcu"
+      ]
+    },
+    {
+      "code": "REL1006S",
+      "title": "Judaism, Christianity and Islam",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr L P Blond"
+      ]
+    },
+    {
+      "code": "REL1015F",
+      "title": "Religions Past and Present",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "Professor E Porcu"
+      ]
+    },
+    {
+      "code": "REL1017S",
+      "title": "African Religious Traditions",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Professor A Ukah"
+      ]
+    },
+    {
+      "code": "REL2040F",
+      "title": "Religion and Society",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr A Alhourani"
+      ]
+    },
+    {
+      "code": "REL2047F",
+      "title": "Religion, Sexuality and Gender",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr L P Blond"
+      ]
+    },
+    {
+      "code": "REL2048S",
+      "title": "Psychology of Religion",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr L P Blond"
+      ]
+    },
+    {
+      "code": "REL2054F",
+      "title": "Religion, Sexuality and Gender",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": [
+        "Dr L P Blond"
+      ]
+    },
+    {
+      "code": "REL3037F",
+      "title": "Religion and Politics",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr L P Blond"
+      ]
+    },
+    {
+      "code": "REL3042S",
+      "title": "Religion and Media",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor A Ukah"
+      ]
+    },
+    {
+      "code": "SLL1016S",
+      "title": "Sotho Additional A",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor R Possa"
+      ]
+    },
+    {
+      "code": "SLL1018S",
+      "title": "Xhosa Additional A",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "S Ntshingana"
+      ]
+    },
+    {
+      "code": "SLL1022F",
+      "title": "Sesotho Communication IA",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor R Possa"
+      ]
+    },
+    {
+      "code": "SLL1023S",
+      "title": "Sesotho Communication IB",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor R Possa"
+      ]
+    },
+    {
+      "code": "SLL1050F",
+      "title": "Latin IA",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J A Murray"
+      ]
+    },
+    {
+      "code": "SLL1051S",
+      "title": "Latin IB",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J A Murray"
+      ]
+    },
+    {
+      "code": "SLL1052F",
+      "title": "Greek IA",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor C E Chandler"
+      ]
+    },
+    {
+      "code": "SLL1053S",
+      "title": "Greek IB",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Professor R Roth"
+      ]
+    },
+    {
+      "code": "SLL1054F",
+      "title": "The World of Odysseus",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor C E Chandler"
+      ]
+    },
+    {
+      "code": "SLL1057F",
+      "title": "Ancient Egypt",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J A Murray"
+      ]
+    },
+    {
+      "code": "SLL1058F",
+      "title": "Initial Arabic A",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "E Moos"
+      ]
+    },
+    {
+      "code": "SLL1059S",
+      "title": "Initial Arabic B",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "E Moos"
+      ]
+    },
+    {
+      "code": "SLL1060F",
+      "title": "French Intensive A",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "K Schmid"
+      ]
+    },
+    {
+      "code": "SLL1061S",
+      "title": "French Intensive B",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "K Schmid"
+      ]
+    },
+    {
+      "code": "SLL1062F",
+      "title": "German Studies IA",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr G Ortner"
+      ]
+    },
+    {
+      "code": "SLL1063S",
+      "title": "German Studies IB",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr G Ortner"
+      ]
+    },
+    {
+      "code": "SLL1064F",
+      "title": "Italian Intensive A",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Boccaccio"
+      ]
+    },
+    {
+      "code": "SLL1065S",
+      "title": "Italian Intensive B",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Boccaccio"
+      ]
+    },
+    {
+      "code": "SLL1069F",
+      "title": "French Communication",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "K Schmid"
+      ]
+    },
+    {
+      "code": "SLL1073F",
+      "title": "Initial Spanish A",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr K De La Cruz Garcia"
+      ]
+    },
+    {
+      "code": "SLL1074S",
+      "title": "Initial Spanish B",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr K De La Cruz Garcia"
+      ]
+    },
+    {
+      "code": "SLL1075F",
+      "title": "Initial Portuguese A",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr A De Melo"
+      ]
+    },
+    {
+      "code": "SLL1076S",
+      "title": "Initial Portuguese B",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr A De Melo"
+      ]
+    },
+    {
+      "code": "SLL1082F",
+      "title": "Hebrew Intensive A",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "A Laskov"
+      ]
+    },
+    {
+      "code": "SLL1083S",
+      "title": "Hebrew Intensive B",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "A Laskov"
+      ]
+    },
+    {
+      "code": "SLL1091H",
+      "title": "French for Musicians A",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL1092H",
+      "title": "German for Musicians A",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL1093H",
+      "title": "Italian for Musicians A",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL1094H",
+      "title": "French for Musicians B",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL1095H",
+      "title": "German for Musicians B",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL1096H",
+      "title": "Italian for Musicians B",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL1097S",
+      "title": "Introducing Ancient History",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Professor R Roth"
+      ]
+    },
+    {
+      "code": "SLL1101F",
+      "title": "Xhosa Communication IA",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "S Ntshingana"
+      ]
+    },
+    {
+      "code": "SLL1102S",
+      "title": "Xhosa Communication IB",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "S Ntshingana"
+      ]
+    },
+    {
+      "code": "SLL1117S",
+      "title": "Swahili Communication 1B",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr E Mahenge"
+      ]
+    },
+    {
+      "code": "SLL1121F",
+      "title": "Chinese Studies IA",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr S An"
+      ]
+    },
+    {
+      "code": "SLL1122S",
+      "title": "Chinese Studies IB",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr S An"
+      ]
+    },
+    {
+      "code": "SLL1136S",
+      "title": "Introduction to Roman Literature and Culture",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J A Murray"
+      ]
+    },
+    {
+      "code": "SLL2025F",
+      "title": "Sesotho Communication IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor R Possa"
+      ]
+    },
+    {
+      "code": "SLL2026S",
+      "title": "Sesotho Communication IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor R Possa"
+      ]
+    },
+    {
+      "code": "SLL2040F",
+      "title": "Afrikaans IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr B Burger"
+      ]
+    },
+    {
+      "code": "SLL2041S",
+      "title": "Afrikaans IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor S Loots"
+      ]
+    },
+    {
+      "code": "SLL2050F",
+      "title": "Latin IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Roth"
+      ]
+    },
+    {
+      "code": "SLL2051S",
+      "title": "Latin IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Roth"
+      ]
+    },
+    {
+      "code": "SLL2052F",
+      "title": "Greek IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor C E Chandler"
+      ]
+    },
+    {
+      "code": "SLL2053S",
+      "title": "Greek IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor C E Chandler"
+      ]
+    },
+    {
+      "code": "SLL2055S",
+      "title": "Athenian Life and Culture",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor C E Chandler"
+      ]
+    },
+    {
+      "code": "SLL2057F",
+      "title": "The City in the Ancient World",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Roth"
+      ]
+    },
+    {
+      "code": "SLL2058F",
+      "title": "Ancient Mythology",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor C E Chandler"
+      ]
+    },
+    {
+      "code": "SLL2062F",
+      "title": "German Studies IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL2063S",
+      "title": "German Studies IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL2064F",
+      "title": "Italian IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr M Boccaccio"
+      ]
+    },
+    {
+      "code": "SLL2065S",
+      "title": "Italian IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr M Boccaccio"
+      ]
+    },
+    {
+      "code": "SLL2073F",
+      "title": "Spanish IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr K De La Cruz Garcia"
+      ]
+    },
+    {
+      "code": "SLL2074S",
+      "title": "Spanish IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr K De La Cruz Garcia"
+      ]
+    },
+    {
+      "code": "SLL2075F",
+      "title": "Portuguese IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr A De Melo"
+      ]
+    },
+    {
+      "code": "SLL2076S",
+      "title": "Portuguese IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr A De Melo"
+      ]
+    },
+    {
+      "code": "SLL2080F",
+      "title": "Arabic IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "E Moos"
+      ]
+    },
+    {
+      "code": "SLL2081S",
+      "title": "Arabic IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "E Moos"
+      ]
+    },
+    {
+      "code": "SLL2101F",
+      "title": "Xhosa Communication IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "S Ntshingana"
+      ]
+    },
+    {
+      "code": "SLL2102S",
+      "title": "Xhosa Communication IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "S Ntshingana"
+      ]
+    },
+    {
+      "code": "SLL2121F",
+      "title": "Chinese Studies IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr S An"
+      ]
+    },
+    {
+      "code": "SLL2122S",
+      "title": "Chinese Studies IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr S An"
+      ]
+    },
+    {
+      "code": "SLL2132S",
+      "title": "Isixhosa Language and Literature Studies IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr H Kunju"
+      ]
+    },
+    {
+      "code": "SLL3040F",
+      "title": "Afrikaans IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr I van Rooyen"
+      ]
+    },
+    {
+      "code": "SLL3041S",
+      "title": "Afrikaans IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr I van Rooyen"
+      ]
+    },
+    {
+      "code": "SLL3050F",
+      "title": "Latin IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor R Roth"
+      ]
+    },
+    {
+      "code": "SLL3051S",
+      "title": "Latin IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor R Roth"
+      ]
+    },
+    {
+      "code": "SLL3052F",
+      "title": "Greek IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor C E Chandler"
+      ]
+    },
+    {
+      "code": "SLL3053S",
+      "title": "Greek IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor C E Chandler"
+      ]
+    },
+    {
+      "code": "SLL3055S",
+      "title": "Athenian Life and Culture",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor C E Chandler"
+      ]
+    },
+    {
+      "code": "SLL3057F",
+      "title": "The City in the Ancient World",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Professor R Roth"
+      ]
+    },
+    {
+      "code": "SLL3061S",
+      "title": "French Language and Literature IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr K Plaiche"
+      ]
+    },
+    {
+      "code": "SLL3062F",
+      "title": "German Studies IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL3063S",
+      "title": "German Studies IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL3064F",
+      "title": "Italian IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr M Boccaccio"
+      ]
+    },
+    {
+      "code": "SLL3065S",
+      "title": "Italian IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr M Boccaccio"
+      ]
+    },
+    {
+      "code": "SLL3070W",
+      "title": "French Additional",
+      "credits": 60,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor M Arnold"
+      ]
+    },
+    {
+      "code": "SLL3071F",
+      "title": "German Additional A",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL3072S",
+      "title": "German Additional B",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor G Singer"
+      ]
+    },
+    {
+      "code": "SLL3073F",
+      "title": "Spanish IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Corwin"
+      ]
+    },
+    {
+      "code": "SLL3074S",
+      "title": "Spanish IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Corwin"
+      ]
+    },
+    {
+      "code": "SLL3075F",
+      "title": "Portuguese IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr A De Melo"
+      ]
+    },
+    {
+      "code": "SLL3076S",
+      "title": "Portuguese IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr A De Melo"
+      ]
+    },
+    {
+      "code": "SLL3078W",
+      "title": "Italian Additional Languages and Literatures",
+      "credits": 60,
+      "nqf": 7,
+      "conveners": [
+        "Dr M Boccaccio"
+      ]
+    },
+    {
+      "code": "SLL3080F",
+      "title": "Arabic IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor P Macaluso"
+      ]
+    },
+    {
+      "code": "SLL3081S",
+      "title": "Arabic IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "E Moos"
+      ]
+    },
+    {
+      "code": "SLL3084F",
+      "title": "Business French IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "K Schmid"
+      ]
+    },
+    {
+      "code": "SLL3085S",
+      "title": "Business French IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "K Schmid"
+      ]
+    },
+    {
+      "code": "SLL3101F",
+      "title": "Xhosa Communication IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "S Ntshingana"
+      ]
+    },
+    {
+      "code": "SLL3102S",
+      "title": "Xhosa Communication IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "S Ntshingana"
+      ]
+    },
+    {
+      "code": "SLL3121F",
+      "title": "Chinese Studies IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr S An"
+      ]
+    },
+    {
+      "code": "SLL3122S",
+      "title": "Chinese Studies IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr S An"
+      ]
+    },
+    {
+      "code": "SOC1001F",
+      "title": "Introduction to Sociology",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Professor J Seekings"
+      ]
+    },
+    {
+      "code": "SOC1005S",
+      "title": "Individual and Society",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J de Wet"
+      ]
+    },
+    {
+      "code": "SOC1006F",
+      "title": "Introduction to Sociology",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "Professor J Seekings"
+      ]
+    },
+    {
+      "code": "SOC1007S",
+      "title": "Individual and Society",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J de Wet"
+      ]
+    },
+    {
+      "code": "SOC2019S",
+      "title": "Social Theory",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr N Vally"
+      ]
+    },
+    {
+      "code": "SOC2032F",
+      "title": "Culture and Social Life",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor E Moore"
+      ]
+    },
+    {
+      "code": "SOC3007F",
+      "title": "Social Research",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr T Meyer"
+      ]
+    },
+    {
+      "code": "SOC3031S",
+      "title": "Social Justice and Inequality",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "N Mabandla"
+      ]
+    },
+    {
+      "code": "STA3022F",
+      "title": "Applied Multivariate Data Analysis",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Er"
+      ]
+    },
+    {
+      "code": "STA3036S",
+      "title": "Operational Research Techniques",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr R G Rakotonirainy"
+      ]
+    },
+    {
+      "code": "SWK1005S",
+      "title": "Field Practice I",
+      "credits": 8,
+      "nqf": 5,
+      "conveners": [
+        "Dr F Williams"
+      ]
+    },
+    {
+      "code": "SWK1006S",
+      "title": "Basic Professional Interaction",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "L van Niekerk"
+      ]
+    },
+    {
+      "code": "SWK1013F",
+      "title": "Community Connections",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr S Hoosain"
+      ]
+    },
+    {
+      "code": "SWK1014F",
+      "title": "Community Connections",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "SWK2001F",
+      "title": "Introduction to Social Development",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "C Bruyns"
+      ]
+    },
+    {
+      "code": "SWK2002F",
+      "title": "Introduction to Social Development",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "SWK2013S",
+      "title": "Community and Youth Development",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr K Kubeka"
+      ]
+    },
+    {
+      "code": "SWK2014S",
+      "title": "Community and Youth Development",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "SWK2060F",
+      "title": "Social Work Assessment",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "R Addinall"
+      ]
+    },
+    {
+      "code": "SWK2065S",
+      "title": "Social Work Intervention",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "R Addinall"
+      ]
+    },
+    {
+      "code": "SWK3001F",
+      "title": "Principles and Application of Social Development",
+      "credits": 20,
+      "nqf": 7,
+      "conveners": [
+        "Dr K Kubeka"
+      ]
+    },
+    {
+      "code": "SWK3061F",
+      "title": "Social Work Research",
+      "credits": 15,
+      "nqf": 7,
+      "conveners": [
+        "Dr K Kubeka"
+      ]
+    },
+    {
+      "code": "SWK3066S",
+      "title": "Contemporary Social Work Issues",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "R Addinall"
+      ]
+    },
+    {
+      "code": "SWK4015F",
+      "title": "Social Work Research II",
+      "credits": 22,
+      "nqf": 8,
+      "conveners": [
+        "Dr E Campbell"
+      ]
+    },
+    {
+      "code": "SWK4016S",
+      "title": "Social Work Research Project Paper",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr E Campbell"
+      ]
+    },
+    {
+      "code": "SWK4030F",
+      "title": "Contemporary Families in a Changing Society",
+      "credits": 22,
+      "nqf": 8,
+      "conveners": []
+    },
+    {
+      "code": "TDP1018H",
+      "title": "Stagecraft B",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor S Matchett"
+      ]
+    },
+    {
+      "code": "TDP1027F",
+      "title": "Introduction to Theatre and Performance A",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "M Steyn"
+      ]
+    },
+    {
+      "code": "TDP1045S",
+      "title": "South African Performance Genealogies",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "M Rani"
+      ]
+    },
+    {
+      "code": "TDP1046W",
+      "title": "T&p Studiowork 1",
+      "credits": 54,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "TDP2010F",
+      "title": "Global Performances: Mutations and Migrations",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor S Matchett"
+      ]
+    },
+    {
+      "code": "TDP2011S",
+      "title": "Analysis and Criticism",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor L Wilson"
+      ]
+    },
+    {
+      "code": "TDP2013S",
+      "title": "Analysis and Criticism",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "TDP2014S",
+      "title": "An Introduction to Theatre in Education",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor V Baxter"
+      ]
+    },
+    {
+      "code": "TDP2040W",
+      "title": "T&p Studiowork 2",
+      "credits": 72,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor S Matchett"
+      ]
+    },
+    {
+      "code": "TDP3010F",
+      "title": "Contemporary Performance",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr M Mtshali"
+      ]
+    },
+    {
+      "code": "TDP3018S",
+      "title": "Production Processes",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "M Mbothwe"
+      ]
+    },
+    {
+      "code": "TDP3040W",
+      "title": "T&p Studiowork 3e: Performance Making",
+      "credits": 72,
+      "nqf": 7,
+      "conveners": [
+        "J-L Crewe"
+      ]
+    },
+    {
+      "code": "TDP3041W",
+      "title": "T&p Studiowork 3f: Performance Making Prac",
+      "credits": 96,
+      "nqf": 7,
+      "conveners": [
+        "J-L Crewe"
+      ]
+    },
+    {
+      "code": "TDP3042W",
+      "title": "T&p Studiowork 3a: Acting",
+      "credits": 72,
+      "nqf": 7,
+      "conveners": [
+        "M Mbothwe"
+      ]
+    },
+    {
+      "code": "TDP3043W",
+      "title": "T&p Studiowork 3b: Acting Prac",
+      "credits": 96,
+      "nqf": 7,
+      "conveners": [
+        "M Mbothwe"
+      ]
+    },
+    {
+      "code": "TDP3046W",
+      "title": "T&p Studiowork 3c: Dance Performance",
+      "credits": 72,
+      "nqf": 7,
+      "conveners": [
+        "M Rani"
+      ]
+    },
+    {
+      "code": "TDP3047W",
+      "title": "T&p Studiowork 3d: Dance Performance Prac",
+      "credits": 96,
+      "nqf": 7,
+      "conveners": [
+        "M Rani"
+      ]
+    },
+    {
+      "code": "TDP3048W",
+      "title": "T&p Studiowork 3g: Scenography",
+      "credits": 72,
+      "nqf": 7,
+      "conveners": [
+        "J-L Crewe"
+      ]
+    },
+    {
+      "code": "TDP3049W",
+      "title": "T&p Studiowork 3h: Applied/ Pedagogy",
+      "credits": 42,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor L Wilson"
+      ]
+    },
+    {
+      "code": "TDP3050W",
+      "title": "T&p Studiowork 3I Applied/pedagogy Prac",
+      "credits": 96,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor L Wilson"
+      ]
+    },
+    {
+      "code": "TDP3051W",
+      "title": "T&p Studiowork 3g: Scenography Prac",
+      "credits": 96,
+      "nqf": 7,
+      "conveners": [
+        "J-L Crewe"
+      ]
+    },
+    {
+      "code": "TDP4000H",
+      "title": "Theatre and Dance Research",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor V Baxter"
+      ]
+    },
+    {
+      "code": "TDP4040W",
+      "title": "T&p Studiowork 4a: Acting",
+      "credits": 96,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Kabwe"
+      ]
+    },
+    {
+      "code": "TDP4041W",
+      "title": "T&p Studiowork 4e: Performance Making",
+      "credits": 96,
+      "nqf": 8,
+      "conveners": [
+        "J-L Crewe"
+      ]
+    },
+    {
+      "code": "TDP4045W",
+      "title": "T&p Studiowork 4c: Dance Performance",
+      "credits": 96,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor L Wilson"
+      ]
+    },
+    {
+      "code": "TDP4046W",
+      "title": "T&p Studiowork 4g: Scenography",
+      "credits": 96,
+      "nqf": 8,
+      "conveners": [
+        "J-L Crewe"
+      ]
+    },
+    {
+      "code": "TDP4047W",
+      "title": "T&p Studiowork 4h: Applied/pedagogy",
+      "credits": 96,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor V Baxter"
+      ]
+    }
+  ]
+}
