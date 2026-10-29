@@ -20,7 +20,7 @@ Not affiliated with the University of Cape Town. The name deliberately avoids "R
 
 ## Data
 
-- `data/courses-ebe-2026.json` holds 219 courses parsed from the **UCT 2026 EBE undergraduate handbook (7A)**, including official course conveners. To add another faculty:
+- `data/courses-ebe-2026.json` holds 219 courses parsed from the **UCT 2026 EBE undergraduate handbook (7A)**, including official course conveners. The source PDF and its text are kept locally in `handbook-src/` (gitignored). To add another faculty:
   ```bash
   pdftotext -enc UTF-8 handbook.pdf handbook.txt
   node scripts/import-handbook.js handbook.txt sci-2026 "UCT 2026 Science handbook"
@@ -47,10 +47,10 @@ npm test
 
 ## Before launch (not done yet)
 
+- **Rate limits (most important).** Reporting and takedown requests need no account, so anyone can hide a review instantly. That's the right default for safety, but without per-IP limits a script could hide every review on the site. Add limits to `/reviews/:id/report`, `/takedown` and `/login`.
 - **Email sending.** The server refuses to start with `NODE_ENV=production` until sign-in emails are wired up (Resend, SES or SMTP) in `server.js`.
 - **Hosting and backups.** It's a single SQLite file, `lekker.db`. Back it up.
 - **CSRF tokens.** Right now this relies on `SameSite=Lax` cookies.
-- **Rate limits** on sign-in, reports and takedown requests.
 - **More handbooks** (Science, Commerce, Humanities…), and a way to suggest a missing lecturer that a moderator approves.
 - **Legal read-through** of `/rules` (POPIA notice, takedown policy). UCT's Law Clinic is a cheap place to start.
 - `SAMPLES=0` reseed.
