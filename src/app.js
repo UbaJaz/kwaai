@@ -72,13 +72,16 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     };
   }
   const MIN = 60_000;
+  // Campus Wi-Fi and mobile networks put many students behind one IP, so signed-in actions are limited per account
+  // and per-IP limits stay generous. Anonymous reports and takedowns can only be limited per IP.
+  const byUser = (req) => `user:${req.user.id}`;
   const limits = {
-    login: limit(10, 15 * MIN),
+    login: limit(100, 15 * MIN),
     loginEmail: limit(3, 15 * MIN, (req) => String(req.body.email || '').trim().toLowerCase()), // stops someone spamming a student's inbox
-    review: limit(10, 60 * MIN),
-    report: limit(10, 60 * MIN), // reports can hide reviews without an account, so keep these tight
-    takedown: limit(5, 60 * MIN),
-    suggest: limit(5, 60 * MIN),
+    review: limit(10, 60 * MIN, byUser),
+    suggest: limit(5, 60 * MIN, byUser),
+    report: limit(30, 60 * MIN),
+    takedown: limit(10, 60 * MIN),
   };
   const flashRedirect = (res, to, type, text) => {
     res.cookie('flash', JSON.stringify({ type, text }), { httpOnly: true, sameSite: 'lax', maxAge: 60_000 });

@@ -182,8 +182,22 @@ test('reports are rate limited per IP', async () => {
   const b = browser();
   const id = /id="review-(\d+)"/.exec(await b.text('/courses/EEE3099S'))[1];
   const statuses = [];
-  for (let i = 0; i < 12; i++) statuses.push((await b.post(`/reviews/${id}/report`, { reason: 'spam' })).status);
+  for (let i = 0; i < 32; i++) statuses.push((await b.post(`/reviews/${id}/report`, { reason: 'spam' })).status);
   assert.ok(statuses.includes(429), `expected a 429, got ${statuses}`);
+});
+
+test('review limits are per student, so classmates on the same Wi-Fi are not blocked', async () => {
+  const review = (course, year) => ({ lecturer_id: 'none', year: String(year), teaching: 3, engagement: 3, exams: 3, support: 3, difficulty: 3, workload: 3, agree: '1', _course: course });
+  const busy = browser();
+  await busy.signIn('stu001@myuct.ac.za');
+  const statuses = [];
+  for (const course of ['CHE1007S', 'CIV3042F']) {
+    for (let year = 2020; year <= 2025; year++) statuses.push((await busy.post(`/courses/${course}/review`, review(course, year))).status);
+  }
+  assert.equal(statuses.at(-1), 429, `11th+ review from one student is limited: ${statuses}`);
+  const classmate = browser(); // same IP
+  await classmate.signIn('stu002@myuct.ac.za');
+  assert.equal((await classmate.post('/courses/CHE1007S/review', review('CHE1007S', 2025))).status, 303);
 });
 
 test('production sign-in emails the link built from BASE_URL and never shows it', async () => {

@@ -76,7 +76,7 @@ The `Dockerfile` stores the database at `/data/lekker.db`, so mount a volume at 
 | `MODERATORS` | yes | Comma-separated @myuct.ac.za emails that can use `/mod`. |
 | `CONTACT_EMAIL` | yes | Shown in the privacy notice for POPIA requests. |
 | `OPERATOR` | no | Who runs the site, shown in the privacy notice. Defaults to "the LekkerOrNah team". |
-| `TRUST_PROXY` | behind a proxy | Usually `1`, so rate limits see the real client IP. |
+| `TRUST_PROXY` | set by Dockerfile | `1` = trust one proxy hop, so rate limits see the real client IP. Set it to `0` only if nothing sits in front of the app. |
 | `DB_FILE`, `BACKUP_DIR`, `PORT` | no | Paths and port. |
 
 The server refuses to start in production if a required variable is missing.
