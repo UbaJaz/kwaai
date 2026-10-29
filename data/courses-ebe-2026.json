@@ -1,0 +1,1948 @@
+{
+  "source": "UCT 2026 EBE undergraduate handbook (7A)",
+  "courses": [
+    {
+      "code": "ACC1021F",
+      "title": "Accounting for Business I",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Muhammad West"
+      ]
+    },
+    {
+      "code": "ACC2042H",
+      "title": "Management and Cost Accounting for Nonspecialists",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "M Tshingilane"
+      ]
+    },
+    {
+      "code": "APG1023S",
+      "title": "Surveying and Geographic Information Systems for Engineers",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Mr K Singh"
+      ]
+    },
+    {
+      "code": "APG1024F",
+      "title": "Introduction to Geospatial Sciences",
+      "credits": 8,
+      "nqf": 5,
+      "conveners": [
+        "Professor J Whittal"
+      ]
+    },
+    {
+      "code": "APG2019X",
+      "title": "Practical Training I",
+      "credits": 0,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor S Hull"
+      ]
+    },
+    {
+      "code": "APG2026F",
+      "title": "Construction Surveying",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Mr K Singh"
+      ]
+    },
+    {
+      "code": "APG2026S",
+      "title": "Construction Surveying",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Mr K Singh"
+      ]
+    },
+    {
+      "code": "APG2042Z",
+      "title": "Representation II",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "APG2043F",
+      "title": "Environment & Services I",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "APG3000Z",
+      "title": "History & Theory of Architecture V",
+      "credits": 10,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "APG3034Z",
+      "title": "Environment & Services II",
+      "credits": 10,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "APG3038F",
+      "title": "Professional Communication Studies",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "Mrs A Gwynne-Evans"
+      ]
+    },
+    {
+      "code": "APG3039B",
+      "title": "Spatial Data Infrastructures",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Mphuthi"
+      ]
+    },
+    {
+      "code": "APG3040C",
+      "title": "Advanced Spatial Data Analysis",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Mphuthi"
+      ]
+    },
+    {
+      "code": "APG3041Z",
+      "title": "Representation III",
+      "credits": 8,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "APG4001S",
+      "title": "Geodesy",
+      "credits": 24,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor P Odera"
+      ]
+    },
+    {
+      "code": "APG4002Z",
+      "title": "Land Use Planning & Township Design",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Professor J Whittal"
+      ]
+    },
+    {
+      "code": "APG4003Z",
+      "title": "Geomatics Project",
+      "credits": 40,
+      "nqf": 8,
+      "conveners": [
+        "Mr K Singh"
+      ]
+    },
+    {
+      "code": "APG4005F",
+      "title": "Engineering Surveying & Adjustment",
+      "credits": 18,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Shoko"
+      ]
+    },
+    {
+      "code": "APG4010X",
+      "title": "Geoinformatics Camp",
+      "credits": 4,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Mphuthi"
+      ]
+    },
+    {
+      "code": "APG4011F",
+      "title": "Geomatics IV",
+      "credits": 24,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Shoko"
+      ]
+    },
+    {
+      "code": "APG4012S",
+      "title": "Geomatics Management and Professionalism",
+      "credits": 24,
+      "nqf": 8,
+      "conveners": [
+        "Mr K Singh"
+      ]
+    },
+    {
+      "code": "BIO1000F",
+      "title": "Cell Biology",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor J M Bishop"
+      ]
+    },
+    {
+      "code": "BIO3022S",
+      "title": "People and the Sea",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Professor P W Froneman"
+      ]
+    },
+    {
+      "code": "CEM2005W",
+      "title": "Intermediate Chemistry",
+      "credits": 48,
+      "nqf": 6,
+      "conveners": [
+        "Dr G A Venter"
+      ]
+    },
+    {
+      "code": "CHE1001P",
+      "title": "Introduction to Chemical Engineering",
+      "credits": 22,
+      "nqf": 5,
+      "conveners": [
+        "Dr S Bremner"
+      ]
+    },
+    {
+      "code": "CHE1006F",
+      "title": "Chemical Engineering IA",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Ms N Abbas"
+      ]
+    },
+    {
+      "code": "CHE1007S",
+      "title": "Chemical Engineering IB",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr S Bremner"
+      ]
+    },
+    {
+      "code": "CHE2000X",
+      "title": "Field Trip",
+      "credits": 4,
+      "nqf": 6,
+      "conveners": [
+        "Dr T Nyathi"
+      ]
+    },
+    {
+      "code": "CHE2005W",
+      "title": "Chemical Engineering II",
+      "credits": 72,
+      "nqf": 6,
+      "conveners": [
+        "Dr TP Mokone"
+      ]
+    },
+    {
+      "code": "CHE2006S",
+      "title": "Introduction to Biotechnology",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Mr I Hajee"
+      ]
+    },
+    {
+      "code": "CHE3000X",
+      "title": "Workplace Experience",
+      "credits": 0,
+      "nqf": 7,
+      "conveners": [
+        "Ms A Mentoor"
+      ]
+    },
+    {
+      "code": "CHE3006F",
+      "title": "Fundamentals of Chemical Engineering III",
+      "credits": 54,
+      "nqf": 7,
+      "conveners": [
+        "Dr SC Mokwatlo"
+      ]
+    },
+    {
+      "code": "CHE3007S",
+      "title": "Data Science, System Dynamics and Process Control",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "Dr RK Abrahams"
+      ]
+    },
+    {
+      "code": "CHE3008S",
+      "title": "Chemical Engineering Project Management and Unit Operation Design",
+      "credits": 20,
+      "nqf": 7,
+      "conveners": [
+        "Dr TG Gambu"
+      ]
+    },
+    {
+      "code": "CHE3009P",
+      "title": "Chemical Engineering Unit Operation Design",
+      "credits": 20,
+      "nqf": 7,
+      "conveners": [
+        "Dr TG Gambu"
+      ]
+    },
+    {
+      "code": "CHE3067S",
+      "title": "Design and Operation of Catalytic Reactors",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Professor E van Steen"
+      ]
+    },
+    {
+      "code": "CHE3068S",
+      "title": "Bioprocess Engineering",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor MA Fagan-Endres"
+      ]
+    },
+    {
+      "code": "CHE3069S",
+      "title": "Mineral and Metallurgical Processing",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor MS Manono"
+      ]
+    },
+    {
+      "code": "CHE3070S",
+      "title": "Numerical Simulation for Chemical Engineers",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Professor K Möller"
+      ]
+    },
+    {
+      "code": "CHE4048F",
+      "title": "Business, Society and Environment",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Professor H von Blottnitz"
+      ]
+    },
+    {
+      "code": "CHE4049F",
+      "title": "Process Synthesis and Equipment Design",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Dr TA Franklin"
+      ]
+    },
+    {
+      "code": "CHE4057F",
+      "title": "Industrial Ecology for Chemical Engineers",
+      "credits": 8,
+      "nqf": 8,
+      "conveners": [
+        "Professor H von Blottnitz"
+      ]
+    },
+    {
+      "code": "CHE4058Z",
+      "title": "Life Cycle Assessment",
+      "credits": 8,
+      "nqf": 8,
+      "conveners": [
+        "Professor H von Blottnitz"
+      ]
+    },
+    {
+      "code": "CHE4068F",
+      "title": "Bioprocess Engineering Design",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr SC Mokwatlo"
+      ]
+    },
+    {
+      "code": "CHE4069F",
+      "title": "Mineral and Metallurgical Processing II",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Burness"
+      ]
+    },
+    {
+      "code": "CHE4070F",
+      "title": "Numerical Optimisation for Chemical Engineers",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr RK Abrahams"
+      ]
+    },
+    {
+      "code": "CHE4072F",
+      "title": "Renewable Energy in the Process Industry",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Professor E van Steen"
+      ]
+    },
+    {
+      "code": "CIV1006S",
+      "title": "Building Science I",
+      "credits": 16,
+      "nqf": 5,
+      "conveners": [
+        "Professor H Beushausen"
+      ]
+    },
+    {
+      "code": "CIV1008F",
+      "title": "Introduction to Civil Engineering",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Dr S Motala"
+      ]
+    },
+    {
+      "code": "CIV1009F",
+      "title": "Civil Engineering Drawing",
+      "credits": 8,
+      "nqf": 5,
+      "conveners": [
+        "Ms F Chebet"
+      ]
+    },
+    {
+      "code": "CIV1011S",
+      "title": "Introduction to Engineering Mechanics",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Professor P Moyo"
+      ]
+    },
+    {
+      "code": "CIV1012S",
+      "title": "Sustainable Urban Infrastructure",
+      "credits": 8,
+      "nqf": 5,
+      "conveners": [
+        "Dr N Wolmarans"
+      ]
+    },
+    {
+      "code": "CIV1013S",
+      "title": "Environmental Chemistry for Civil Engineering",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Professor D Randall"
+      ]
+    },
+    {
+      "code": "CIV1014Z",
+      "title": "Water Challenge Scenario Project",
+      "credits": 4,
+      "nqf": 6,
+      "conveners": [
+        "Professor D Randall"
+      ]
+    },
+    {
+      "code": "CIV2044F",
+      "title": "Mechanics of Materials",
+      "credits": 15,
+      "nqf": 6,
+      "conveners": [
+        "Professor S Skatulla"
+      ]
+    },
+    {
+      "code": "CIV2045F",
+      "title": "Geotechnical Engineering 1",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "Ms L Nolutshungu"
+      ]
+    },
+    {
+      "code": "CIV2046F",
+      "title": "Transportation Engineering",
+      "credits": 15,
+      "nqf": 6,
+      "conveners": [
+        "O Nnene"
+      ]
+    },
+    {
+      "code": "CIV2047Z",
+      "title": "Transportation Infrastructure Project",
+      "credits": 4,
+      "nqf": 6,
+      "conveners": [
+        "O Nnene"
+      ]
+    },
+    {
+      "code": "CIV2048S",
+      "title": "Hydraulics 1 - Pressurised Water Flow",
+      "credits": 15,
+      "nqf": 7,
+      "conveners": [
+        "T Mofokeng"
+      ]
+    },
+    {
+      "code": "CIV2049Z",
+      "title": "Water and Sanitation Infrastructure Project",
+      "credits": 4,
+      "nqf": 6,
+      "conveners": [
+        "T Mofokeng"
+      ]
+    },
+    {
+      "code": "CIV2050Z",
+      "title": "Structural Systems Project",
+      "credits": 4,
+      "nqf": 6,
+      "conveners": [
+        "Dr N Wolmarans"
+      ]
+    },
+    {
+      "code": "CIV2051S",
+      "title": "Analysis of Statically Determinate Structures",
+      "credits": 15,
+      "nqf": 7,
+      "conveners": [
+        "A Zingoni"
+      ]
+    },
+    {
+      "code": "CIV3042F",
+      "title": "Geotechnical Engineering II",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Professor D Kalumba"
+      ]
+    },
+    {
+      "code": "CIV3043F",
+      "title": "Hydraulic Engineering",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Professor N Armitage"
+      ]
+    },
+    {
+      "code": "CIV3044F",
+      "title": "Engineering Hydrology Departments in the Faculty and Courses Offered 111",
+      "credits": 8,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Okedi"
+      ]
+    },
+    {
+      "code": "CIV3045S",
+      "title": "Transportation Planning",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Professor R Behrens",
+        "Dr O Nnene"
+      ]
+    },
+    {
+      "code": "CIV3046S",
+      "title": "Water Treatment",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "Dr T Harding"
+      ]
+    },
+    {
+      "code": "CIV3047S",
+      "title": "Urban Water Services",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Okedi"
+      ]
+    },
+    {
+      "code": "CIV3048F",
+      "title": "Structural Analysis II",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Professor A Zingoni"
+      ]
+    },
+    {
+      "code": "CIV3049S",
+      "title": "Structural Design I",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Dr K Mudenda"
+      ]
+    },
+    {
+      "code": "CIV4041F",
+      "title": "Professional Practice",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Mr G Maswime",
+        "Professor P Moyo"
+      ]
+    },
+    {
+      "code": "CIV4042F",
+      "title": "Wastewater Treatment",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor D Ikumi"
+      ]
+    },
+    {
+      "code": "CIV4045F",
+      "title": "Structural Design II Departments in the Faculty and Courses Offered 114",
+      "credits": 18,
+      "nqf": 8,
+      "conveners": [
+        "Professor P Moyo"
+      ]
+    },
+    {
+      "code": "CIV4046F",
+      "title": "Transportation Engineering",
+      "credits": 18,
+      "nqf": 8,
+      "conveners": [
+        "Professor M Zuidgeest"
+      ]
+    },
+    {
+      "code": "CML1001F",
+      "title": "Business Law I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "K Lehmann"
+      ]
+    },
+    {
+      "code": "CML1001P",
+      "title": "Business Law I - Summer Term",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "CML1001S",
+      "title": "Business Law I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "B Zungu"
+      ]
+    },
+    {
+      "code": "CML4607F",
+      "title": "Law for Engineers",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "B Zungu"
+      ]
+    },
+    {
+      "code": "CON1004W",
+      "title": "Construction Technology I",
+      "credits": 26,
+      "nqf": 5,
+      "conveners": [
+        "Dr A Filtane"
+      ]
+    },
+    {
+      "code": "CON1007X",
+      "title": "Practical Training",
+      "credits": 0,
+      "nqf": 5,
+      "conveners": [
+        "Ms K Le Jeune"
+      ]
+    },
+    {
+      "code": "CON1010S",
+      "title": "Construction Information Systems",
+      "credits": 8,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "CON1021F",
+      "title": "Property and Planning I",
+      "credits": 14,
+      "nqf": 5,
+      "conveners": [
+        "Dr E Musvoto"
+      ]
+    },
+    {
+      "code": "CON1022F",
+      "title": "Building Construction I",
+      "credits": 14,
+      "nqf": 5,
+      "conveners": [
+        "Mr U Ordor"
+      ]
+    },
+    {
+      "code": "CON1023S",
+      "title": "Building Construction II",
+      "credits": 14,
+      "nqf": 5,
+      "conveners": [
+        "Mr U Ordor"
+      ]
+    },
+    {
+      "code": "CON1024S",
+      "title": "Property Economics I",
+      "credits": 14,
+      "nqf": 5,
+      "conveners": [
+        "Mr G Goliath"
+      ]
+    },
+    {
+      "code": "CON1025S",
+      "title": "Property and Technology",
+      "credits": 14,
+      "nqf": 5,
+      "conveners": []
+    },
+    {
+      "code": "CON2006W",
+      "title": "Construction Technology II",
+      "credits": 28,
+      "nqf": 6,
+      "conveners": [
+        "Mr U Ordor"
+      ]
+    },
+    {
+      "code": "CON2013X",
+      "title": "Practical Training",
+      "credits": 0,
+      "nqf": 6,
+      "conveners": [
+        "Ms K Le Jeune"
+      ]
+    },
+    {
+      "code": "CON2020S",
+      "title": "Construction Management I",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Professor A Windapo"
+      ]
+    },
+    {
+      "code": "CON2026S",
+      "title": "Project Management for Engineers",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "Dr A Filtane"
+      ]
+    },
+    {
+      "code": "CON2032S",
+      "title": "Property Investment and Finance I",
+      "credits": 14,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "CON2033F",
+      "title": "Real Property Law I",
+      "credits": 14,
+      "nqf": 6,
+      "conveners": [
+        "Dr L van Schalkwyk"
+      ]
+    },
+    {
+      "code": "CON2034S",
+      "title": "Professionalism in the Built Environment",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "T Moodley"
+      ]
+    },
+    {
+      "code": "CON2035S",
+      "title": "Property and Planning II",
+      "credits": 14,
+      "nqf": 6,
+      "conveners": [
+        "Dr E Musvoto"
+      ]
+    },
+    {
+      "code": "CON2036F",
+      "title": "Property Valuation I",
+      "credits": 14,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "CON2037W",
+      "title": "Measurement and Design Appraisal IA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Ms E Edwardes"
+      ]
+    },
+    {
+      "code": "CON3012W",
+      "title": "Construction Technology III",
+      "credits": 28,
+      "nqf": 7,
+      "conveners": [
+        "Mr M Lefoka"
+      ]
+    },
+    {
+      "code": "CON3023X",
+      "title": "Practical Training",
+      "credits": 0,
+      "nqf": 7,
+      "conveners": [
+        "Ms K Le Jeune"
+      ]
+    },
+    {
+      "code": "CON3030F",
+      "title": "Construction Costing",
+      "credits": 14,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "CON3031W",
+      "title": "Measurement & Design Appraisal II",
+      "credits": 26,
+      "nqf": 7,
+      "conveners": [
+        "Ms E Edwardes"
+      ]
+    },
+    {
+      "code": "CON3032W",
+      "title": "Applied Contract Law I",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "CON3033S",
+      "title": "Property Studies I",
+      "credits": 14,
+      "nqf": 7,
+      "conveners": [
+        "Dr R Terblanche"
+      ]
+    },
+    {
+      "code": "CON3038W",
+      "title": "Construction Management II",
+      "credits": 28,
+      "nqf": 7,
+      "conveners": [
+        "Dr A Filtane"
+      ]
+    },
+    {
+      "code": "CON3043W",
+      "title": "Cost Engineering Under Uncertainty",
+      "credits": 14,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "CON3046S",
+      "title": "Property and Facilities Management",
+      "credits": 14,
+      "nqf": 7,
+      "conveners": [
+        "Professor K Michell"
+      ]
+    },
+    {
+      "code": "CON3047F",
+      "title": "Property Investment & Finance II",
+      "credits": 14,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Nurick"
+      ]
+    },
+    {
+      "code": "CON3048F",
+      "title": "Property Development I",
+      "credits": 14,
+      "nqf": 7,
+      "conveners": [
+        "Dr R Terblanche"
+      ]
+    },
+    {
+      "code": "CON3050F",
+      "title": "Property and Contract Law",
+      "credits": 14,
+      "nqf": 7,
+      "conveners": [
+        "Dr L van Schalkwyk"
+      ]
+    },
+    {
+      "code": "CON3051F",
+      "title": "Property Valuation II",
+      "credits": 14,
+      "nqf": 7,
+      "conveners": [
+        "Professor M Mooya"
+      ]
+    },
+    {
+      "code": "CON3052S",
+      "title": "Property Economics II",
+      "credits": 14,
+      "nqf": 7,
+      "conveners": [
+        "Dr A Ametefe"
+      ]
+    },
+    {
+      "code": "CON3053S",
+      "title": "Property and Environment",
+      "credits": 14,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Nurick"
+      ]
+    },
+    {
+      "code": "CON3054S",
+      "title": "Property Development II",
+      "credits": 10,
+      "nqf": 7,
+      "conveners": [
+        "Dr R Terblanche"
+      ]
+    },
+    {
+      "code": "CSC1016S",
+      "title": "Computer Science 1016",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "A Safla"
+      ]
+    },
+    {
+      "code": "CSC1017S",
+      "title": "Introduction to Programming",
+      "credits": 16,
+      "nqf": 5,
+      "conveners": [
+        "A Safla"
+      ]
+    },
+    {
+      "code": "CSC1019F",
+      "title": "Foundations of Computer Programming for Engineers",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "A Safla"
+      ]
+    },
+    {
+      "code": "EEE1000X",
+      "title": "Practical Training",
+      "credits": 0,
+      "nqf": 5,
+      "conveners": [
+        "D de Maar"
+      ]
+    },
+    {
+      "code": "EEE1008F",
+      "title": "Introduction to Electrical Engineering A",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Dr D Ramotsoela"
+      ]
+    },
+    {
+      "code": "EEE1009S",
+      "title": "Introduction to Electrical Engineering B",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Dr D Ramotsoela"
+      ]
+    },
+    {
+      "code": "EEE2044S",
+      "title": "Introduction to Power Engineering",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor D Oyedokun"
+      ]
+    },
+    {
+      "code": "EEE2045F",
+      "title": "Analogue Electronics",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "J Son"
+      ]
+    },
+    {
+      "code": "EEE2046F",
+      "title": "Embedded Systems I",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "R Verrinder"
+      ]
+    },
+    {
+      "code": "EEE2046S",
+      "title": "Embedded Systems I",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Dr MY Abdul Gaffar"
+      ]
+    },
+    {
+      "code": "EEE2047S",
+      "title": "Signals and Systems I",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor Andrew Wilkinson"
+      ]
+    },
+    {
+      "code": "EEE2048S",
+      "title": "Professional Communication for Electrical Engineering",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "Ms T Moodley"
+      ]
+    },
+    {
+      "code": "EEE2050F",
+      "title": "Embedded Systems I for Science Students",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "R Verrinder"
+      ]
+    },
+    {
+      "code": "EEE3000X",
+      "title": "Practical Training",
+      "credits": 0,
+      "nqf": 7,
+      "conveners": [
+        "D de Maar"
+      ]
+    },
+    {
+      "code": "EEE3088F",
+      "title": "Electrical Engineering Design Principles",
+      "credits": 8,
+      "nqf": 7,
+      "conveners": [
+        "Professor F Nicolls"
+      ]
+    },
+    {
+      "code": "EEE3089F",
+      "title": "Electromagnetic Engineering",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Dr W F Schonken"
+      ]
+    },
+    {
+      "code": "EEE3090F",
+      "title": "Electronic Devices & Circuits",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Dr MY Abdul Gaffar"
+      ]
+    },
+    {
+      "code": "EEE3091F",
+      "title": "Energy Conversion I",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Professor P Barendse"
+      ]
+    },
+    {
+      "code": "EEE3092F",
+      "title": "Signals & Systems II",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor A Wilkinson"
+      ]
+    },
+    {
+      "code": "EEE3093S",
+      "title": "Communication and Network Engineering",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor J Mwangama"
+      ]
+    },
+    {
+      "code": "EEE3094S",
+      "title": "Control Systems Engineering",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Shield"
+      ]
+    },
+    {
+      "code": "EEE3095S",
+      "title": "Embedded Systems II for Science Students",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor S Winberg"
+      ]
+    },
+    {
+      "code": "EEE3096S",
+      "title": "Embedded Systems II",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor S Winberg"
+      ]
+    },
+    {
+      "code": "EEE3097S",
+      "title": "Engineering Design: Electrical and Computer Engineering",
+      "credits": 8,
+      "nqf": 7,
+      "conveners": [
+        "Professor F Nicolls"
+      ]
+    },
+    {
+      "code": "EEE3098S",
+      "title": "Engineering Design: Electrical Engineering",
+      "credits": 8,
+      "nqf": 7,
+      "conveners": [
+        "Professor F Nicolls"
+      ]
+    },
+    {
+      "code": "EEE3099S",
+      "title": "Engineering Design: Mechatronics",
+      "credits": 8,
+      "nqf": 7,
+      "conveners": [
+        "Professor F Nicolls"
+      ]
+    },
+    {
+      "code": "EEE3100S",
+      "title": "Energy Systems and Grids I",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor D Oyedokun"
+      ]
+    },
+    {
+      "code": "EEE4114F",
+      "title": "Digital Signal Processing",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr Y Martin"
+      ]
+    },
+    {
+      "code": "EEE4117F",
+      "title": "Energy Conversion II",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Jayalath"
+      ]
+    },
+    {
+      "code": "EEE4118F",
+      "title": "Process Control and Instrumentation",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Professor E Boje"
+      ]
+    },
+    {
+      "code": "EEE4119F",
+      "title": "Mechatronics",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Shield"
+      ]
+    },
+    {
+      "code": "EEE4120F",
+      "title": "High Performance Digital Embedded Systems",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor S Winberg"
+      ]
+    },
+    {
+      "code": "EEE4121F",
+      "title": "Mobile and Wireless Networks",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor O Falowo"
+      ]
+    },
+    {
+      "code": "EEE4124C",
+      "title": "Impact of Engineering on the Natural and Social Environment",
+      "credits": 8,
+      "nqf": 8,
+      "conveners": [
+        "M Moorlach"
+      ]
+    },
+    {
+      "code": "EEE4125C",
+      "title": "New Ventures: Planning, Practice and Professionalism",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": []
+    },
+    {
+      "code": "EEE4126F",
+      "title": "Energy Systems & Grids II",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Professor K Folly"
+      ]
+    },
+    {
+      "code": "EGS1005F",
+      "title": "Creating Sustainable Impact",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Dr J von Holdt"
+      ]
+    },
+    {
+      "code": "EGS1007S",
+      "title": "Human & Physical Systems",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Professor F Eckardt"
+      ]
+    },
+    {
+      "code": "EGS2016F",
+      "title": "Geographies Across Space",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Battersby"
+      ]
+    },
+    {
+      "code": "EGS2017S",
+      "title": "Geographies Across Time",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": []
+    },
+    {
+      "code": "EGS3012S",
+      "title": "Atmospheric Science",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr P Matikinca"
+      ]
+    },
+    {
+      "code": "EGS3022S",
+      "title": "Geographic Thought",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": []
+    },
+    {
+      "code": "EGS3023F",
+      "title": "Anthropocene Environments in Perspective",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr D Kibirige"
+      ]
+    },
+    {
+      "code": "END1019Z",
+      "title": "Social Infrastructures: Engaging with Community for Change",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "A Gwynne-Evans"
+      ]
+    },
+    {
+      "code": "GEO1008F",
+      "title": "Introduction to Geology for Civil Engineers",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Dr D A Quiros"
+      ]
+    },
+    {
+      "code": "GEO1010F",
+      "title": "Geosystems: An Introduction to Earth & Environmental Sciences",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor E M Bordy"
+      ]
+    },
+    {
+      "code": "GEO2006S",
+      "title": "Applied Mineralogy for Chemical Engineers",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr P J le Roux"
+      ]
+    },
+    {
+      "code": "MAM1010F",
+      "title": "Mathematics 1010",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr R Moolman"
+      ]
+    },
+    {
+      "code": "MAM1010S",
+      "title": "Mathematics 1010",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "M Vandeyar"
+      ]
+    },
+    {
+      "code": "MAM1020F",
+      "title": "Mathematics 1A for Engineers",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr B Mongwane"
+      ]
+    },
+    {
+      "code": "MAM1021F",
+      "title": "Mathematics 1B for Engineers",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr S Haque"
+      ]
+    },
+    {
+      "code": "MAM1021S",
+      "title": "Mathematics 1B for Engineers",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr Á de la Cruz-Dombriz"
+      ]
+    },
+    {
+      "code": "MAM1023F",
+      "title": "Mathematics 1A for Engineers Extended",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "K Ramesh-Kanjee"
+      ]
+    },
+    {
+      "code": "MAM1023S",
+      "title": "Mathematics 1A for Engineers Extended",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr A Campbell"
+      ]
+    },
+    {
+      "code": "MAM1024F",
+      "title": "Mathematics 1B for Engineers Extended",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr A Campbell"
+      ]
+    },
+    {
+      "code": "MAM1024S",
+      "title": "Mathematics 1B for Engineers Extended",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "K Ramesh-Kanjee"
+      ]
+    },
+    {
+      "code": "MAM1026F",
+      "title": "Foundational Mathematics for Quantitative Social Sciences",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "R Rix"
+      ]
+    },
+    {
+      "code": "MAM2085F",
+      "title": "Vector Calculus for Aspect",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor P Padayachee"
+      ]
+    },
+    {
+      "code": "MAM2085S",
+      "title": "Vector Calculus for Aspect",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor P Padayachee"
+      ]
+    },
+    {
+      "code": "MAM3010F",
+      "title": "Metric Spaces (3ms)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "S Chili"
+      ]
+    },
+    {
+      "code": "MAM3011F",
+      "title": "Modern Abstract Algebra (3al)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Sanchez-Ortega"
+      ]
+    },
+    {
+      "code": "MAM3012F",
+      "title": "Discrete Mathematics (3dm)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr B du Preez"
+      ]
+    },
+    {
+      "code": "MAM3013S",
+      "title": "Topics in Algebra (3ta)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Sanchez-Ortega"
+      ]
+    },
+    {
+      "code": "MAM3014S",
+      "title": "Topics in Analysis (3tn)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr F Ebobisse-Bille"
+      ]
+    },
+    {
+      "code": "MAM3015S",
+      "title": "Complex Analysis (3ca)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor E Berdysheva"
+      ]
+    },
+    {
+      "code": "MAM3046S",
+      "title": "Fluid Dynamics (3fd)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Professor A Malan"
+      ]
+    },
+    {
+      "code": "MEC1000X",
+      "title": "Practical Training I",
+      "credits": 0,
+      "nqf": 5,
+      "conveners": [
+        "Mr EB Ismail"
+      ]
+    },
+    {
+      "code": "MEC1007F",
+      "title": "Introduction to Engineering Drawing",
+      "credits": 8,
+      "nqf": 5,
+      "conveners": [
+        "Mr L Siboya"
+      ]
+    },
+    {
+      "code": "MEC1009F",
+      "title": "Introduction to Engineering Mechanics",
+      "credits": 16,
+      "nqf": 5,
+      "conveners": [
+        "Dr S Gabriel"
+      ]
+    },
+    {
+      "code": "MEC1009S",
+      "title": "Introduction to Engineering Mechanics",
+      "credits": 16,
+      "nqf": 5,
+      "conveners": [
+        "Dr TJ Cloete"
+      ]
+    },
+    {
+      "code": "MEC1010F",
+      "title": "Introduction to Engineering Drawing A",
+      "credits": 8,
+      "nqf": 5,
+      "conveners": [
+        "Mr L Siboya"
+      ]
+    },
+    {
+      "code": "MEC1018S",
+      "title": "Introduction to Computer-Aided Design",
+      "credits": 6,
+      "nqf": 5,
+      "conveners": [
+        "Mr L Siboya"
+      ]
+    },
+    {
+      "code": "MEC1019S",
+      "title": "Introduction to Material Science and Engineering",
+      "credits": 8,
+      "nqf": 5,
+      "conveners": [
+        "Dr SL George"
+      ]
+    },
+    {
+      "code": "MEC1020W",
+      "title": "Introduction to Mechanical Engineering",
+      "credits": 20,
+      "nqf": 5,
+      "conveners": [
+        "Professor M Ngoepe (Semester 1)",
+        "Associate Professor C Shaw (Semester 2)"
+      ]
+    },
+    {
+      "code": "MEC2000X",
+      "title": "Practical Training II",
+      "credits": 0,
+      "nqf": 7,
+      "conveners": [
+        "Dr TJ Cloete"
+      ]
+    },
+    {
+      "code": "MEC2045S",
+      "title": "Applied Engineering Mechanics",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Professor S Chung Kim Yuen"
+      ]
+    },
+    {
+      "code": "MEC2046F",
+      "title": "Materials Science in Mechanical Engineering",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "Dr SL George"
+      ]
+    },
+    {
+      "code": "MEC2047F",
+      "title": "Engineering Dynamics",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Professor M Ngoepe"
+      ]
+    },
+    {
+      "code": "MEC2047S",
+      "title": "Engineering Dynamics",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Mr S Mashau"
+      ]
+    },
+    {
+      "code": "MEC2048S",
+      "title": "Mechanical Engineering Design",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Dr RA Govender"
+      ]
+    },
+    {
+      "code": "MEC2049F",
+      "title": "Solid Mechanics 1",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Mr S Parker"
+      ]
+    },
+    {
+      "code": "MEC2050S",
+      "title": "Thermofluids 1",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Mr C du Sart"
+      ]
+    },
+    {
+      "code": "MEC3074F",
+      "title": "Measurements and Actuators",
+      "credits": 8,
+      "nqf": 7,
+      "conveners": [
+        "Mr J Hepworth"
+      ]
+    },
+    {
+      "code": "MEC3075F",
+      "title": "Computer Methods for Mechanical Engineering",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "Mr EB Ismail"
+      ]
+    },
+    {
+      "code": "MEC3076F",
+      "title": "Stress Analysis and Materials",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Professor S Chung Kim Yuen"
+      ]
+    },
+    {
+      "code": "MEC3077F",
+      "title": "Thermofluids II",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Professor T Bello-Ochende"
+      ]
+    },
+    {
+      "code": "MEC3078S",
+      "title": "Mechanics of Machines",
+      "credits": 8,
+      "nqf": 7,
+      "conveners": [
+        "Professor TH Becker"
+      ]
+    },
+    {
+      "code": "MEC3079S",
+      "title": "Control Systems",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Dr A Pretorius"
+      ]
+    },
+    {
+      "code": "MEC3080S",
+      "title": "Thermofluids III",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor WH Ho"
+      ]
+    },
+    {
+      "code": "MEC3081S",
+      "title": "Manufacturing Sciences",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Gabriel"
+      ]
+    },
+    {
+      "code": "MEC3082S",
+      "title": "Mechanical Engineering Machine Element Design",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor C von Klemperer"
+      ]
+    },
+    {
+      "code": "MEC3083W",
+      "title": "Engineer in Society",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor B Kloot"
+      ]
+    },
+    {
+      "code": "MEC4047F",
+      "title": "Mechanical Vibrations",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Mr EB Ismail"
+      ]
+    },
+    {
+      "code": "MEC4123F",
+      "title": "Engineer in Business",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor B Kloot"
+      ]
+    },
+    {
+      "code": "MEC4124W",
+      "title": "Engineering Product Design",
+      "credits": 22,
+      "nqf": 8,
+      "conveners": [
+        "Mr A de Villiers"
+      ]
+    },
+    {
+      "code": "MEC4125F",
+      "title": "Thermofluids IV",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor WH Ho"
+      ]
+    },
+    {
+      "code": "MEC4126F",
+      "title": "Integrating Embedded Systems",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Mr J Hepworth"
+      ]
+    },
+    {
+      "code": "MEC4127F",
+      "title": "Mechatronic Systems",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Dr A Pretorius"
+      ]
+    },
+    {
+      "code": "MEC4128Z",
+      "title": "Final-Year Engineering Project",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Mr E Ismail",
+        "Dr SL George"
+      ]
+    },
+    {
+      "code": "PHY1014F",
+      "title": "Physics a for Aspect",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "P le Roux"
+      ]
+    },
+    {
+      "code": "PHY1014S",
+      "title": "Physics a for Aspect",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "P le Roux"
+      ]
+    },
+    {
+      "code": "PHY1015F",
+      "title": "Physics B for Aspect",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Basitere"
+      ]
+    },
+    {
+      "code": "PHY1015S",
+      "title": "Physics B for Aspect",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Basitere"
+      ]
+    },
+    {
+      "code": "PHY1031F",
+      "title": "General Physics A",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr S M Wheaton"
+      ]
+    },
+    {
+      "code": "PHY1032S",
+      "title": "General Physics B",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor H W G Weigert"
+      ]
+    },
+    {
+      "code": "PHY2010S",
+      "title": "Electromagnetism for Engineers",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Dr D Bucher"
+      ]
+    }
+  ]
+}
