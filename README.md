@@ -65,6 +65,19 @@ It's one Node process with one SQLite file, so it needs a host with a **persiste
 
 The `Dockerfile` stores the database at `/data/lekker.db`, so mount a volume at `/data`.
 
+### Free private demo on Render
+
+For showing the site to people before launch. Render's free plan has no persistent disk, so the database resets whenever the app restarts or sleeps (after 15 minutes idle). It rebuilds with all courses and the sample reviews each time, which is what a demo needs.
+
+1. On render.com: **New → Web Service**, connect the GitHub repo. Render finds the `Dockerfile`. Pick the **Free** instance type.
+2. Add environment variables:
+   - `NODE_ENV` = `development`: dev mode, so sample data is seeded and sign-in links show on screen instead of being emailed. No Resend or domain needed.
+   - `DEMO_PASSWORD` = a password you give only to the people you're demoing to. Every page asks for it (any username works). **Always set this in dev mode**: without it anyone with the link could sign in as any student.
+   - `MODERATORS` = your @myuct.ac.za email, so you can show `/mod`.
+3. Deploy. The first visit after it sleeps takes about a minute.
+
+Don't use this for real reviews: they'd be lost on the next restart.
+
 ### Fly.io
 
 `fly.toml` is set up for one machine in Johannesburg (`jnb`) with a 1 GB volume. Keep it at one machine: SQLite and the rate limits can't be shared between two.

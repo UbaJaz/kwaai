@@ -373,6 +373,19 @@ test('semester planner: add by code or search, remove, and shared links do not o
   assert.match(await b.text('/plan?c='), /Your plan is empty/);
 });
 
+test('a demo password keeps every page private until it is given', async (t) => {
+  const db = openDb(':memory:');
+  seed(db, { samples: false });
+  const demo = createApp(db, { demoPassword: 'lekker-demo' }).listen(0);
+  t.after(() => demo.close());
+  await new Promise((r) => demo.once('listening', r));
+  const url = `http://localhost:${demo.address().port}/courses`;
+  const basic = (pw) => ({ authorization: `Basic ${Buffer.from(`anyone:${pw}`).toString('base64')}` });
+  assert.equal((await fetch(url)).status, 401);
+  assert.equal((await fetch(url, { headers: basic('wrong') })).status, 401);
+  assert.equal((await fetch(url, { headers: basic('lekker-demo') })).status, 200);
+});
+
 test('privacy and terms pages render', async () => {
   for (const p of ['/privacy', '/terms']) assert.equal((await fetch(base + p)).status, 200, p);
 });

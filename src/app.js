@@ -16,10 +16,19 @@ const STATS = `COUNT(*) AS n, AVG(overall) AS overall, AVG(teaching) AS teaching
 const REVIEW_COLS = `r.*, l.name AS lecturer_name`;
 const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; form-action 'self'; frame-ancestors 'none'; base-uri 'none'";
 
-function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'the LekkerOrNah team' } = {}) {
+function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'the LekkerOrNah team', demoPassword } = {}) {
   const app = express();
   app.disable('x-powered-by');
   if (trustProxy) app.set('trust proxy', trustProxy); // so req.ip is the student's IP behind a host's proxy
+  // Private demos: with DEMO_PASSWORD set, the browser asks for it before showing any page (any username works).
+  if (demoPassword) {
+    const want = sha(demoPassword);
+    app.use((req, res, next) => {
+      const sent = Buffer.from(/^Basic (.+)$/.exec(req.headers.authorization || '')?.[1] || '', 'base64').toString().split(':').slice(1).join(':');
+      if (crypto.timingSafeEqual(Buffer.from(sha(sent)), Buffer.from(want))) return next();
+      res.set('WWW-Authenticate', 'Basic realm="LekkerOrNah demo"').status(401).send('This LekkerOrNah demo is private. Ask the team for the password.');
+    });
+  }
   app.use((req, res, next) => {
     res.set({ 'Content-Security-Policy': CSP, 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'same-origin', 'X-Frame-Options': 'DENY' });
     if (!devMode) res.set('Strict-Transport-Security', 'max-age=31536000');
