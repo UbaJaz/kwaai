@@ -11,6 +11,9 @@ const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 const DEFAULT_DESCRIPTION = 'Course ratings, workload scores and tips from South African university students, starting at UCT. Unofficial and not affiliated with any university.';
 
+// Sign-in links remember the page you were on, so you land back there afterwards.
+const loginHref = (back) => (back && back !== '/' && !back.startsWith('/login') && !back.startsWith('/auth') ? `/login?next=${encodeURIComponent(back)}` : '/login');
+
 const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/rankings', 'Rankings']];
 
 // description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
@@ -55,7 +58,7 @@ ${path && site.origin ? html`<meta property="og:url" content="${site.origin}${pa
       ${uni ? html`<a class="uni-chip" href="/universities" aria-label="${uni.name}. Change university"><i aria-hidden="true"></i>${uni.short}</a>` : ''}
       ${user
         ? html`<form method="post" action="/logout" class="inline"><button class="link-btn" title="${user.email}">Sign out</button></form>`
-        : html`<a class="btn btn-small btn-outline" href="/login">Sign in</a>`}
+        : html`<a class="btn btn-small btn-outline" href="${loginHref(here)}">Sign in</a>`}
     </div>
   </div>
 </header>
@@ -192,8 +195,8 @@ function verdictBox(ctx, { c, votes, myVerdict, years }) {
         </form>
         ${mine ? html`<form method="post" action="/verdicts/${mine.id}/delete" class="inline" data-confirm="Delete your vote on ${c.code}?"><button class="link-btn fine">Delete my vote</button></form>` : ''}`
       : html`<div class="verdict-buttons">
-          <a class="btn btn-big btn-kwaai" href="/login">Kwaai</a>
-          <a class="btn btn-big btn-nah" href="/login">Nah</a>
+          <a class="btn btn-big btn-kwaai" href="${loginHref(`/courses/${c.code}#verdict`)}">Kwaai</a>
+          <a class="btn btn-big btn-nah" href="${loginHref(`/courses/${c.code}#verdict`)}">Nah</a>
         </div>
         <p class="fine">Sign in with your @myuct.ac.za email to vote. Votes are anonymous.</p>`}
   </section>`;
@@ -228,7 +231,7 @@ function gateNotice(ctx, hidden) {
   if (!hidden) return '';
   return html`<div class="card gate" id="gate">
     <p><strong>${plural(hidden, 'more comment')} on this page.</strong> Vote kwaai or nah on any course you've taken and you can read every comment on the site. It takes about ten seconds.</p>
-    ${ctx.user ? html`<a class="btn" href="/courses">Find a course you've taken</a>` : html`<a class="btn" href="/login">Sign in with your student email</a>`}
+    ${ctx.user ? html`<a class="btn" href="/courses">Find a course you've taken</a>` : html`<a class="btn" href="${loginHref(ctx.here)}">Sign in with your student email</a>`}
   </div>`;
 }
 
@@ -761,29 +764,50 @@ function account(ctx, { reviews, verdicts }) {
   </div>`);
 }
 
-function login(ctx, { error, email = '' } = {}) {
+function login(ctx, { error, email = '', next = '/' } = {}) {
   return layout({ ...ctx, title: 'Sign in' }, html`
   <section class="narrow">
     <h1 class="page-title">Sign in with your UCT email</h1>
-    <p class="lede small">We'll email a one-time sign-in link to your <strong>@myuct.ac.za</strong> address. There's no password to remember. Your reviews stay anonymous.</p>
+    <p class="lede small">We'll email a 6-digit code to your <strong>@myuct.ac.za</strong> address. No password, and nothing you post shows your name.</p>
     ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
     <form method="post" action="/login" class="card form">
+      <input type="hidden" name="next" value="${next}">
       <label>Student email
-        <input type="email" name="email" value="${email}" required autocomplete="email" placeholder="abcxyz001@myuct.ac.za" pattern="[A-Za-z0-9._%+-]+@myuct\\.ac\\.za">
+        <input type="email" name="email" value="${email}" required autocomplete="email" inputmode="email" placeholder="abcxyz001@myuct.ac.za" pattern="[A-Za-z0-9._%+\\-]+@myuct\\.ac\\.za">
       </label>
-      <button class="btn btn-big">Email me a sign-in link</button>
-      <p class="fine">By signing in you agree to the <a href="/terms">terms of use</a> and the <a href="/privacy">privacy notice</a>. Can't find the email? Check your junk folder.</p>
+      <button class="btn btn-big">Email me a code</button>
+      <p class="fine">By signing in you agree to the <a href="/terms">terms of use</a> and the <a href="/privacy">privacy notice</a>.</p>
     </form>
   </section>`);
 }
 
-function checkEmail(ctx, { email, devLink }) {
-  return layout({ ...ctx, title: 'Check your email' }, html`
-  <section class="narrow center">
-    <p class="big-emoji">📬</p>
+function checkEmail(ctx, { email, devLink, devCode, error }) {
+  return layout({ ...ctx, title: 'Enter your code' }, html`
+  <section class="narrow">
     <h1 class="page-title">Check your inbox</h1>
-    <p>We sent a sign-in link to <strong>${email}</strong>. It expires in 15 minutes.</p>
-    ${devLink ? html`<div class="card dev"><p><span class="badge">Dev mode</span> Email sending isn't set up yet, so here's the link:</p><a class="btn" href="${devLink}">Sign in now</a></div>` : ''}
+    <p class="lede small">We sent a 6-digit code to <strong>${email}</strong>. Type it below, or tap the button in the email. Both expire in 15 minutes.</p>
+    ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
+    <form method="post" action="/login/code" class="card form">
+      <input type="hidden" name="email" value="${email}">
+      <label>Sign-in code
+        <input class="code-input" name="code" required inputmode="numeric" autocomplete="one-time-code" pattern="[0-9 ]{6,7}" maxlength="7" placeholder="123456" autofocus>
+      </label>
+      <button class="btn btn-big">Sign in</button>
+      <p class="fine">Nothing after a minute or two? Check your junk or "Other" folder for an email from Kwaai. <a href="/login">Send a new code</a></p>
+    </form>
+    ${devLink ? html`<div class="card dev"><p><span class="badge">Demo</span> Email isn't set up on this site, so here's what the email would say. Code: <strong>${devCode}</strong></p><a class="btn" href="${devLink}">Open the sign-in link</a></div>` : ''}
+  </section>`);
+}
+
+function confirmSignIn(ctx, { email, token }) {
+  return layout({ ...ctx, title: 'Sign in' }, html`
+  <section class="narrow">
+    <h1 class="page-title">Sign in to Kwaai</h1>
+    <p class="lede small">You're signing in as <strong>${email}</strong>.</p>
+    <form method="post" action="/auth/${token}" class="card form">
+      <button class="btn btn-big">Sign in</button>
+      <p class="fine">Didn't ask to sign in? Close this page and nothing happens.</p>
+    </form>
   </section>`);
 }
 
@@ -895,4 +919,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log }) {
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, takedown, message, mod, suggestLecturer, privacy, terms, account };
+module.exports = { universities, plan, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, privacy, terms, account };

@@ -16,7 +16,7 @@ Not affiliated with any university. "Kwaai" is South African slang that means bo
 - **Courses first.** Each review is for one *(course, lecturer, year)*, because big courses rotate lecturers.
 - **Structured ratings.** Four sliders (teaching, fun & interactive, exam fairness, approachable) make up the star score. Exam difficulty and workload are shown separately, because hard isn't the same as bad. Reviewers add up to 3 tags and an optional comment of 280 characters or less.
 - **Rankings** per department and category: highest rated, funniest, hardest exams, fairest exams, heaviest workload, lowest rated. Anything needs at least 3 reviews to be ranked.
-- **UCT-only sign-in** by a one-time emailed link to an `@myuct.ac.za` address, with no passwords. Reviews never show who wrote them.
+- **UCT-only sign-in** with no passwords: we email a 6-digit code and a link to an `@myuct.ac.za` address, and either one works once within 15 minutes. Opening the link shows a **Sign in** button rather than signing in straight away, because Microsoft 365 (which runs myuct mail) opens links to scan them. Five wrong codes and the code stops working. Reviews never show who wrote them.
 - **Moderation built in:**
   - Comments are screened. Contact details and links are rejected. Possible allegations, insults, and remarks about appearance or identity are *held* for a moderator.
   - Every review has a **⚑ Report** button. Reports of defamation, private info or discrimination hide the review **immediately**. Other reasons hide it after 2 reports.
@@ -81,10 +81,21 @@ For showing the site to people before launch. Render's free plan has no persiste
 
 1. On render.com: **New → Web Service**, connect the GitHub repo. Render finds the `Dockerfile`. Pick the **Free** instance type.
 2. Add environment variables:
-   - `NODE_ENV` = `development`: dev mode, so sample data is seeded and sign-in links show on screen instead of being emailed. No Resend or domain needed.
-   - `DEMO_PASSWORD` = a password you give only to the people you're demoing to. Every page asks for it (any username works). **Always set this in dev mode**: without it anyone with the link could sign in as any student.
+   - `NODE_ENV` = `development`: dev mode, so sample data is seeded.
+   - `DEMO_PASSWORD` = a password you give only to the people you're demoing to. Every page asks for it (any username works).
    - `MODERATORS` = your @myuct.ac.za email, so you can show `/mod`.
-3. Deploy. The first visit after it sleeps takes about a minute.
+3. To send real sign-in emails (recommended, see below), also set `BREVO_API_KEY`, `EMAIL_FROM` and `BASE_URL` = `https://kwaai.onrender.com`. Without them the sign-in code and link show on screen, so **anyone could sign in as any student**: keep `DEMO_PASSWORD` set in that case.
+4. Deploy. The first visit after it sleeps takes about a minute.
+
+#### Sign-in emails with Brevo (free, no domain needed)
+
+Render's free plan blocks SMTP, so emails go through Brevo's HTTP API. The free plan sends 300 emails a day.
+
+1. Sign up at [brevo.com](https://www.brevo.com) (free plan).
+2. In Brevo's settings, find **Senders** and add one: an address you can open, e.g. a Gmail you make for Kwaai. Click the link Brevo emails you to verify it.
+3. In the settings, find **SMTP & API → API keys** and generate a key. Copy it straight away; Brevo only shows it once.
+4. On Render, set `BREVO_API_KEY` to that key, `EMAIL_FROM` to `Kwaai <the-sender-you-verified>` and `BASE_URL` to `https://kwaai.onrender.com`.
+5. Sign in with your own myuct address to test. The first emails may land in **Junk** or **Other**: mark them "Not junk". A sender on your own domain (later, with Resend or Brevo) lands in the inbox more reliably.
 
 Don't use this for real reviews: they'd be lost on the next restart.
 
@@ -95,7 +106,7 @@ Don't use this for real reviews: they'd be lost on the next restart.
 ```bash
 fly launch --no-deploy --copy-config      # pick a free app name if lekker-or-nah is taken
 fly volumes create lekker_data --region jnb --size 1
-fly secrets set BASE_URL=https://… RESEND_API_KEY=… EMAIL_FROM="Kwaai <signin@…>" MODERATORS=… CONTACT_EMAIL=…
+fly secrets set BASE_URL=https://… BREVO_API_KEY=… EMAIL_FROM="Kwaai <signin@…>" MODERATORS=… CONTACT_EMAIL=…
 fly deploy
 ```
 
@@ -106,9 +117,10 @@ Backups: `fly ssh console -C "npm run backup"`, then `fly ssh sftp get /data/bac
 | Variable | Required in production | What it is |
 |---|---|---|
 | `NODE_ENV` | yes | `production` (set by the Dockerfile) |
-| `BASE_URL` | yes | Public URL, e.g. `https://kwaai.co.za`. Sign-in links use it. |
-| `RESEND_API_KEY` | yes | From [resend.com](https://resend.com), which has a free tier. |
-| `EMAIL_FROM` | yes | e.g. `Kwaai <signin@kwaai.co.za>`. The domain must be verified in Resend. |
+| `BASE_URL` | yes, and whenever an email key is set | Public URL, e.g. `https://kwaai.onrender.com`. Sign-in links use it. |
+| `BREVO_API_KEY` | this or `RESEND_API_KEY` | From [brevo.com](https://www.brevo.com). Free, and works with one verified sender address, no domain. Used first if both are set. |
+| `RESEND_API_KEY` | this or `BREVO_API_KEY` | From [resend.com](https://resend.com). Needs a verified domain to email students. |
+| `EMAIL_FROM` | yes, and whenever an email key is set | e.g. `Kwaai <kwaai.signin@gmail.com>`. Must be the sender verified in Brevo, or on the domain verified in Resend. |
 | `MODERATORS` | yes | Comma-separated @myuct.ac.za emails that can use `/mod`. |
 | `CONTACT_EMAIL` | yes | Shown in the privacy notice for POPIA requests. |
 | `OPERATOR` | no | Who runs the site, shown in the privacy notice. Defaults to "the Kwaai team". |

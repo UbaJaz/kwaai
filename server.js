@@ -1,17 +1,25 @@
 const { openDb } = require('./src/db');
 const { createApp } = require('./src/app');
-const { resendSender } = require('./src/email');
+const { senderFromEnv } = require('./src/email');
 
 const env = process.env;
 const devMode = env.NODE_ENV !== 'production';
 const moderators = new Set((env.MODERATORS || '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean));
 
 if (!devMode) {
-  const missing = ['BASE_URL', 'RESEND_API_KEY', 'EMAIL_FROM', 'MODERATORS', 'CONTACT_EMAIL'].filter((k) => !env[k]);
+  const missing = ['BASE_URL', 'EMAIL_FROM', 'MODERATORS', 'CONTACT_EMAIL'].filter((k) => !env[k]);
+  if (!env.BREVO_API_KEY && !env.RESEND_API_KEY) missing.push('BREVO_API_KEY or RESEND_API_KEY');
   if (missing.length) {
     console.error(`Refusing to start in production. Missing env vars: ${missing.join(', ')} (see README).`);
     process.exit(1);
   }
+}
+
+// Real emails, even on a dev-mode demo, need the sender and a fixed site address. Without BASE_URL the sign-in link
+// would be built from the request's Host header, which anyone can fake to send a student a link to their own site.
+if ((env.BREVO_API_KEY || env.RESEND_API_KEY) && (!env.EMAIL_FROM || !env.BASE_URL)) {
+  console.error('An email API key is set, so EMAIL_FROM and BASE_URL are needed too (see README).');
+  process.exit(1);
 }
 
 const db = openDb();
@@ -38,7 +46,7 @@ createApp(db, {
   devMode,
   baseUrl: env.BASE_URL?.replace(/\/$/, ''),
   trustProxy: env.TRUST_PROXY,
-  sendLoginEmail: env.RESEND_API_KEY ? resendSender({ apiKey: env.RESEND_API_KEY, from: env.EMAIL_FROM }) : null,
+  sendLoginEmail: senderFromEnv(env),
   contactEmail: env.CONTACT_EMAIL,
   operator: env.OPERATOR || undefined,
   demoPassword: env.DEMO_PASSWORD || undefined,

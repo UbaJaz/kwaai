@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS login_tokens (
   hash TEXT PRIMARY KEY,
   email TEXT NOT NULL,
   expires INTEGER NOT NULL
+  -- plus the columns in LOGIN_DETAILS below
 );
 CREATE TABLE IF NOT EXISTS sessions (
   hash TEXT PRIMARY KEY,
@@ -127,12 +128,25 @@ const COURSE_DETAILS = {
   exam_weight: 'INTEGER',
 };
 
+// A sign-in email carries a link and a 6-digit code (for reading the email on your phone and signing in on a laptop).
+// code_hash is a hash of email + code; attempts counts wrong codes; next is the page to go back to afterwards.
+const LOGIN_DETAILS = {
+  code_hash: "TEXT NOT NULL DEFAULT ''",
+  attempts: 'INTEGER NOT NULL DEFAULT 0',
+  next: "TEXT NOT NULL DEFAULT '/'",
+};
+
+function addMissingColumns(db, table, columns) {
+  const have = new Set(db.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name));
+  for (const [name, type] of Object.entries(columns)) if (!have.has(name)) db.exec(`ALTER TABLE ${table} ADD COLUMN ${name} ${type}`);
+}
+
 function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker.db')) {
   const db = new DatabaseSync(file);
   db.exec('PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL;');
   db.exec(SCHEMA);
-  const have = new Set(db.prepare('PRAGMA table_info(courses)').all().map((c) => c.name));
-  for (const [name, type] of Object.entries(COURSE_DETAILS)) if (!have.has(name)) db.exec(`ALTER TABLE courses ADD COLUMN ${name} ${type}`);
+  addMissingColumns(db, 'courses', COURSE_DETAILS);
+  addMissingColumns(db, 'login_tokens', LOGIN_DETAILS);
   return db;
 }
 

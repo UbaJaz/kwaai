@@ -372,6 +372,7 @@ legend { font: 600 1.05rem var(--display); padding: 0 8px 0 0; }
 .prose h2 { font-size: 1.3rem; margin-top: 32px; }
 .prose li { margin: 6px 0; }
 .dev { padding: 18px; margin-top: 24px; border-style: dashed; }
+.code-input { display: block; font: 700 1.6rem/1 var(--mono); letter-spacing: .3em; max-width: 14ch; }
 .quote { padding: 16px 18px; margin-bottom: 16px; }
 .quote p { margin: 4px 0; }
 .danger-zone { border-color: color-mix(in srgb, var(--low) 40%, var(--line)); }

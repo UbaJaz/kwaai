@@ -416,41 +416,82 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     })));
   });
 
-  // ---- sign in with a one-time email link ----
-  app.get('/login', (req, res) => res.page((views.login(req.ctx))));
+  // ---- sign in: we email a 6-digit code and a link, both one-time ----
+  // Only same-site paths are allowed as the page to return to, so a sign-in link can't send anyone elsewhere.
+  const safeNext = (s) => (typeof s === 'string' && /^\/(?![/\\])/.test(s) && s.length <= 300 ? s : '/');
+  const codeHash = (email, code) => sha(`${email}:${code}`);
+  const MAX_CODE_TRIES = 5;
+
+  app.get('/login', (req, res) => res.page(views.login(req.ctx, { next: safeNext(req.query.next) })));
 
   app.post('/login', limits.login, limits.loginEmail, async (req, res) => {
     const email = String(req.body.email || '').trim().toLowerCase();
-    if (!STUDENT_EMAIL.test(email)) return res.status(400).page((views.login(req.ctx, { email, error: 'Use your @myuct.ac.za student email.' })));
-    if (q(`SELECT 1 FROM users WHERE email = ? AND banned = 1`).get(email)) return res.status(403).page((views.login(req.ctx, { email, error: 'This account has been suspended for breaking the house rules.' })));
+    const next = safeNext(req.body.next);
+    if (!STUDENT_EMAIL.test(email)) return res.status(400).page(views.login(req.ctx, { email, next, error: 'That isn\'t a student email. Use your @myuct.ac.za address.' }));
+    if (q(`SELECT 1 FROM users WHERE email = ? AND banned = 1`).get(email)) return res.status(403).page(views.login(req.ctx, { email, next, error: 'This account has been suspended for breaking the house rules.' }));
     const token = crypto.randomBytes(32).toString('hex');
+    const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
     q(`DELETE FROM login_tokens WHERE expires < ?`).run(Date.now());
-    q(`INSERT INTO login_tokens (hash, email, expires) VALUES (?, ?, ?)`).run(sha(token), email, Date.now() + TOKEN_TTL);
-    // in production the link must use the configured BASE_URL, never the request's Host header
+    q(`INSERT INTO login_tokens (hash, email, expires, code_hash, next) VALUES (?, ?, ?, ?, ?)`).run(sha(token), email, Date.now() + TOKEN_TTL, codeHash(email, code), next);
+    // the link must use the configured BASE_URL whenever real emails go out, never the request's Host header
     const link = `${baseUrl || `${req.protocol}://${req.get('host')}`}/auth/${token}`;
     if (sendLoginEmail) {
       try {
-        await sendLoginEmail(email, link);
+        await sendLoginEmail(email, { link, code });
       } catch (e) {
         console.error('login email failed:', e.message);
         q(`DELETE FROM login_tokens WHERE hash = ?`).run(sha(token));
-        return res.status(502).page(views.login(req.ctx, { email, error: "We couldn't send the email just now. Please try again in a minute." }));
+        return res.status(502).page(views.login(req.ctx, { email, next, error: "We couldn't send the email just now. Please try again in a minute." }));
       }
     }
-    res.page((views.checkEmail(req.ctx, { email, devLink: devMode ? link : null })));
+    // without an email service (local dev, or a demo with no key) the code and link are shown on screen instead
+    const shown = !sendLoginEmail && devMode;
+    res.page(views.checkEmail(req.ctx, { email, devLink: shown ? link : null, devCode: shown ? code : null }));
   });
 
-  app.get('/auth/:token', (req, res) => {
-    const row = q(`SELECT * FROM login_tokens WHERE hash = ? AND expires > ?`).get(sha(String(req.params.token)), Date.now());
-    if (!row) return res.status(400).page((views.message(req.ctx, { title: 'Link expired', emoji: '⌛', text: 'That sign-in link is invalid or has expired.', link: { href: '/login', label: 'Get a new link' } })));
-    q(`DELETE FROM login_tokens WHERE hash = ?`).run(row.hash);
-    q(`INSERT INTO users (email) VALUES (?) ON CONFLICT(email) DO NOTHING`).run(row.email);
-    const user = q(`SELECT * FROM users WHERE email = ?`).get(row.email);
-    if (user.banned) return res.status(403).page((views.message(req.ctx, { title: 'Account suspended', emoji: '🚫', text: 'This account has been suspended for breaking the house rules.' })));
+  function startSession(req, res, email, next) {
+    q(`INSERT INTO users (email) VALUES (?) ON CONFLICT(email) DO NOTHING`).run(email);
+    const user = q(`SELECT * FROM users WHERE email = ?`).get(email);
+    if (user.banned) return res.status(403).page(views.message(req.ctx, { title: 'Account suspended', emoji: '🚫', text: 'This account has been suspended for breaking the house rules.' }));
     const sid = crypto.randomBytes(32).toString('hex');
     q(`INSERT INTO sessions (hash, user_id, expires) VALUES (?, ?, ?)`).run(sha(sid), user.id, Date.now() + SESSION_TTL);
     res.cookie('sid', sid, { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: SESSION_TTL });
-    flashRedirect(res, '/', 'ok', "You're signed in. Your reviews are shown anonymously.");
+    flashRedirect(res, safeNext(next), 'ok', "You're signed in. Anything you post shows without your name.");
+  }
+
+  app.post('/login/code', limits.login, (req, res) => {
+    const email = String(req.body.email || '').trim().toLowerCase();
+    const code = String(req.body.code || '').replace(/\D/g, '');
+    const rows = q(`SELECT * FROM login_tokens WHERE email = ? AND expires > ?`).all(email, Date.now());
+    const row = code.length === 6 && rows.find((r) => r.code_hash && crypto.timingSafeEqual(Buffer.from(r.code_hash), Buffer.from(codeHash(email, code))));
+    if (!row) {
+      // every wrong guess counts against all of this email's codes, and a code dies after a few wrong guesses
+      q(`UPDATE login_tokens SET attempts = attempts + 1 WHERE email = ?`).run(email);
+      q(`DELETE FROM login_tokens WHERE email = ? AND attempts >= ?`).run(email, MAX_CODE_TRIES);
+      const left = rows.length && q(`SELECT 1 FROM login_tokens WHERE email = ?`).get(email);
+      return res.status(400).page(views.checkEmail(req.ctx, {
+        email,
+        error: left ? "That code doesn't match. Check the latest email from Kwaai and try again." : 'That code has expired or had too many wrong tries. Ask for a new one.',
+      }));
+    }
+    q(`DELETE FROM login_tokens WHERE hash = ?`).run(row.hash);
+    startSession(req, res, row.email, row.next);
+  });
+
+  // Opening the link only shows a button. Signing in happens on the POST, because email scanners (Microsoft 365,
+  // which runs myuct mail, is one) open links to check them and would use up a one-time link before the student does.
+  const linkRow = (token) => q(`SELECT * FROM login_tokens WHERE hash = ? AND expires > ?`).get(sha(String(token)), Date.now());
+  const expired = (req, res) => res.status(400).page(views.message(req.ctx, { title: 'Link expired', emoji: '⌛', text: 'That sign-in link has expired or was already used.', link: { href: '/login', label: 'Get a new link' } }));
+  app.get('/auth/:token', (req, res) => {
+    const row = linkRow(req.params.token);
+    if (!row) return expired(req, res);
+    res.page(views.confirmSignIn(req.ctx, { email: row.email, token: req.params.token }));
+  });
+  app.post('/auth/:token', limits.login, (req, res) => {
+    const row = linkRow(req.params.token);
+    if (!row) return expired(req, res);
+    q(`DELETE FROM login_tokens WHERE hash = ?`).run(row.hash);
+    startSession(req, res, row.email, row.next);
   });
 
   app.post('/logout', (req, res) => {

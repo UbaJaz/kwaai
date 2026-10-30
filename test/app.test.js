@@ -154,9 +154,12 @@ function browser(root = () => base) {
     return remember(await fetch(root() + p, { method: 'POST', body: data, headers: { cookie: cookie() }, redirect: 'manual' }));
   };
   const text = async (p) => (await get(p)).text();
+  // dev mode shows the emailed link on screen; opening it shows a button, and pressing it signs you in
   const signIn = async (email) => {
     const page = await (await post('/login', { email })).text();
-    await get(new URL(/href="(http[^"]+\/auth\/[a-f0-9]+)"/.exec(page)[1]).pathname);
+    const path = new URL(/href="(http[^"]+\/auth\/[a-f0-9]+)"/.exec(page)[1]).pathname;
+    await get(path);
+    return post(path, {});
   };
   return { get, post, text, signIn, jar };
 }
@@ -268,14 +271,65 @@ test('production sign-in emails the link built from BASE_URL and never shows it'
   const sent = [];
   const db = openDb(':memory:');
   seed(db, { samples: false });
-  const prod = createApp(db, { devMode: false, baseUrl: 'https://lekker.example', sendLoginEmail: async (to, link) => sent.push({ to, link }) }).listen(0);
+  const prod = createApp(db, { devMode: false, baseUrl: 'https://lekker.example', sendLoginEmail: async (to, { link, code }) => sent.push({ to, link, code }) }).listen(0);
   await new Promise((r) => prod.once('listening', r));
   const b = browser(() => `http://localhost:${prod.address().port}`);
   const page = await (await b.post('/login', { email: 'ghi001@myuct.ac.za' })).text();
   assert.equal(sent.length, 1);
   assert.match(sent[0].link, /^https:\/\/lekker\.example\/auth\/[a-f0-9]{64}$/);
+  assert.match(sent[0].code, /^\d{6}$/);
   assert.doesNotMatch(page, /\/auth\//, 'link is not shown on the page');
+  assert.ok(!page.includes(sent[0].code), 'code is not shown on the page');
   prod.close();
+});
+
+test('demo with an email service set up sends real emails and shows nothing on screen', async (t) => {
+  const sent = [];
+  const db = openDb(':memory:');
+  seed(db, { samples: false });
+  const demo = createApp(db, { devMode: true, baseUrl: 'https://demo.example', sendLoginEmail: async (to, d) => sent.push(d) }).listen(0);
+  t.after(() => demo.close());
+  await new Promise((r) => demo.once('listening', r));
+  const b = browser(() => `http://localhost:${demo.address().port}`);
+  const page = await (await b.post('/login', { email: 'dem001@myuct.ac.za' })).text();
+  assert.equal(sent.length, 1);
+  assert.doesNotMatch(page, /\/auth\/|class="card dev"/);
+});
+
+test('sign in with the emailed code, back to the page you came from', async () => {
+  const b = browser();
+  const page = await (await b.post('/login', { email: 'cod001@myuct.ac.za', next: '/courses/CSC1015F#verdict' })).text();
+  const code = /Code: <strong>(\d{6})<\/strong>/.exec(page)[1];
+  const wrong = code === '000000' ? '111111' : '000000';
+  assert.equal((await b.post('/login/code', { email: 'cod001@myuct.ac.za', code: wrong })).status, 400);
+  const res = await b.post('/login/code', { email: 'cod001@myuct.ac.za', code: code.slice(0, 3) + ' ' + code.slice(3) });
+  assert.equal(res.headers.get('location'), '/courses/CSC1015F#verdict');
+  assert.match(await b.text('/account'), /cod001@myuct\.ac\.za|My reviews/);
+  assert.equal((await b.post('/login/code', { email: 'cod001@myuct.ac.za', code })).status, 400, 'a code works once');
+
+  // somewhere off-site is never a place to go back to
+  const other = browser();
+  const p2 = await (await other.post('/login', { email: 'cod002@myuct.ac.za', next: '//evil.example' })).text();
+  const c2 = /Code: <strong>(\d{6})<\/strong>/.exec(p2)[1];
+  assert.equal((await other.post('/login/code', { email: 'cod002@myuct.ac.za', code: c2 })).headers.get('location'), '/');
+});
+
+test('wrong codes run out, and opening the link alone does not sign you in', async () => {
+  const b = browser();
+  const page = await (await b.post('/login', { email: 'cod003@myuct.ac.za' })).text();
+  const code = /Code: <strong>(\d{6})<\/strong>/.exec(page)[1];
+  const wrong = code === '000000' ? '111111' : '000000';
+  for (let i = 0; i < 5; i++) await b.post('/login/code', { email: 'cod003@myuct.ac.za', code: wrong });
+  assert.equal((await b.post('/login/code', { email: 'cod003@myuct.ac.za', code })).status, 400, 'after 5 wrong tries even the right code fails');
+
+  const scanner = browser();
+  const p2 = await (await scanner.post('/login', { email: 'cod004@myuct.ac.za' })).text();
+  const path = new URL(/href="(http[^"]+\/auth\/[a-f0-9]+)"/.exec(p2)[1]).pathname;
+  const first = await scanner.get(path); // what a mail scanner does
+  assert.equal(first.status, 200);
+  assert.ok(!(first.headers.get('set-cookie') || '').includes('sid='), 'opening the link sets no session');
+  assert.match(await (await scanner.get(path)).text(), /signing in as <strong>cod004@myuct\.ac\.za/, 'the link still works after being opened');
+  assert.equal((await scanner.post(path, {})).status, 303);
 });
 
 test('suggested lecturers only appear after a moderator approves them', async () => {
