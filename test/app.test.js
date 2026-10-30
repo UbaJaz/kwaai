@@ -10,6 +10,7 @@ const { html } = require('../src/html');
 const { titleCase, parseHandbook, expandCode, codesIn, lecturePeriods, examWeight } = require('../scripts/import-handbook');
 const { UNIVERSITIES } = require('../src/universities');
 const { scan: scanTables } = require('../scripts/import-tables');
+const { parseProgrammes, tidyName } = require('../scripts/import-programmes');
 
 // ---- unit ----
 
@@ -156,6 +157,34 @@ test('curriculum tables: courses with no description, and replaced codes', () =>
   ], described);
   assert.deepEqual(replaced, { MAM1000W: ['MAM1031F', 'MAM1032S'], PSY1004F: ['PSY1009F'], PSY1005S: ['PSY1010S'] });
   assert.deepEqual(tableOnly.map((c) => [c.code, c.title, c.credits, c.nqf]), [['PHI2043S', 'Business Ethics', 18, 6]], 'no dissertations, broken rows or postgrad');
+});
+
+test('majors: required courses per year, with the handbook\'s choices', () => {
+  const credits = { STA3047S: 6, STA3048S: 30, STA3022F: 36, STA3036S: 36, MAM2012S: 12, MAM2013S: 12, MAM2014S: 12, MAM2040F: 12 };
+  const text = [
+    'Major in Statistics & Data Science', '[STA13]', 'First Year Core Courses', 'Code', 'Either', '...........',
+    'MAM1000W Mathematics 1000 ............ 36', 'Or both', '..........', 'MAM1031F Mathematics 1031 ........ 18', 'and',
+    'MAM1032S Mathematics 1032 ........ 18', 'CSC1015F/S Computer Science 1015 ......... 18',
+    'Second Year Core Courses', 'STA2004F Statistical Theory ...... 24', 'or', 'STA2030S Statistical Theory ...... 24',
+    'And two of', 'MAM2012S Differential Equations ... 12', 'MAM2013S Introductory Algebra ... 12', 'MAM2014S Real Analysis ... 12',
+    'and', 'MAM2040F Ordinary Differential Equations ... 12', 'Recommended:', 'MAM2041F Numerical Analysis ... 12',
+    'Third Year Core Courses', 'One of:', 'STA3022F Applied Multivariate ...... 36', 'STA3036S Operational Research ...... 36',
+    'STA3047S Introduction to Machine Learning ...... 6', 'and', 'STA3048S Statistical Modelling ...... 30',
+    'Note: STA3047S and STA3048S must be taken together',
+    'STA3022F APPLIED MULTIVARIATE DATA ANALYSIS 36 NQF credits at NQF level 7 Convener: X',
+  ].join('\n');
+  const [p] = parseProgrammes(text, 'sci', (c) => credits[c] || 18);
+  const show = (y) => p.years[y - 1].groups.map((g) => `${g.pick}:${g.options.map((o) => o.join('+')).join('|')}`);
+  assert.equal(p.name, 'Statistics & Data Science');
+  assert.equal(p.kind, 'major');
+  assert.deepEqual(show(1), ['1:MAM1000W|MAM1031F+MAM1032S', '1:CSC1015F|CSC1015S']);
+  // "and" after "two of" ends the choice when the weights don't match (12 + 12 isn't 12)
+  assert.deepEqual(show(2), ['1:STA2004F|STA2030S', '2:MAM2012S|MAM2013S|MAM2014S', '1:MAM2040F']);
+  assert.deepEqual(p.years[1].recommended, ['MAM2041F']);
+  // inside "One of:", "STA3047S and STA3048S" is one option because 6 + 30 = 36 like the others
+  assert.deepEqual(show(3), ['1:STA3022F|STA3036S|STA3047S+STA3048S']);
+  assert.equal(tidyName('BCom Economics with LAW*'), 'BCom Economics with Law');
+  assert.equal(tidyName('BCom Financial ACCOUNTING: General Accounting'), 'BCom Financial Accounting: General Accounting');
 });
 
 // ---- end to end: sign in, review, report, moderate ----
