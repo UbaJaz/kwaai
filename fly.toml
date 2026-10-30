@@ -1,25 +1,29 @@
-# Fly.io config. One machine only: the database is a single SQLite file on the volume,
-# and rate limits live in memory, so running two machines would split both.
-app = "lekker-or-nah"
-primary_region = "jnb"
+# fly.toml app configuration file generated for lekker-or-nah on 2026-10-30T10:27:10Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'lekker-or-nah'
+primary_region = 'jnb'
 
 [build]
 
 [env]
-  PORT = "3000"
+  PORT = '3000'
 
 [[mounts]]
-  source = "lekker_data"
-  destination = "/data"
+  source = 'lekker_data'
+  destination = '/data'
 
 [http_service]
-  internal_port = 3000
+  internal_port = 8080
   force_https = true
-  auto_stop_machines = "stop"
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 1
 
 [[vm]]
-  memory = "256mb"
-  cpu_kind = "shared"
+  memory = '256mb'
+  cpu_kind = 'shared'
   cpus = 1
+  memory_mb = 256
