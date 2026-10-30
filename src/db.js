@@ -75,6 +75,12 @@ CREATE TABLE IF NOT EXISTS verdicts (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (user_id, course)
 );
+-- who reported which tip, so one student's reports count once and tips are hidden by different readers, not one
+CREATE TABLE IF NOT EXISTS verdict_reports (
+  verdict_id INTEGER NOT NULL REFERENCES verdicts(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL,
+  PRIMARY KEY (verdict_id, user_id)
+);
 CREATE TABLE IF NOT EXISTS reports (
   id INTEGER PRIMARY KEY,
   review_id INTEGER NOT NULL REFERENCES reviews(id),
@@ -138,6 +144,9 @@ const LOGIN_DETAILS = {
   next: "TEXT NOT NULL DEFAULT '/'",
 };
 
+// Who sent a review report, so one student's reports count once. Reports from before this column existed stay anonymous.
+const REPORT_DETAILS = { user_id: 'INTEGER' };
+
 function addMissingColumns(db, table, columns) {
   const have = new Set(db.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name));
   for (const [name, type] of Object.entries(columns)) if (!have.has(name)) db.exec(`ALTER TABLE ${table} ADD COLUMN ${name} ${type}`);
@@ -149,6 +158,8 @@ function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker
   db.exec(SCHEMA);
   addMissingColumns(db, 'courses', COURSE_DETAILS);
   addMissingColumns(db, 'login_tokens', LOGIN_DETAILS);
+  addMissingColumns(db, 'reports', REPORT_DETAILS);
+  db.exec('CREATE UNIQUE INDEX IF NOT EXISTS one_report_each ON reports (review_id, user_id)');
   return db;
 }
 
