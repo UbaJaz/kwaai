@@ -33,7 +33,7 @@ const DEPARTMENTS = {
 
 function seed(db, { samples = true } = {}) {
   // Never wipe real students' work. Once real reviews exist, only add or update courses and swap the demo data.
-  const live = db.prepare('SELECT 1 FROM reviews WHERE is_sample = 0 LIMIT 1').get();
+  const live = db.prepare('SELECT 1 FROM reviews WHERE is_sample = 0 UNION ALL SELECT 1 FROM verdicts LIMIT 1').get();
   if (live) {
     db.exec(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE is_sample = 1);
       UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE is_sample = 1);
