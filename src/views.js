@@ -1,7 +1,7 @@
 const { html } = require('./html');
 const { QUALITY, SCALES, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FREE_COMMENTS, RANKINGS } = require('./ratings');
 const { REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
-const { ordinal } = require('./planner');
+const { ordinal, entryStatus } = require('./planner');
 
 const fmt = (n) => (n == null ? '–' : Number(n).toFixed(1));
 const month = (iso) => new Date(iso.replace(' ', 'T') + 'Z').toLocaleDateString('en-ZA', { month: 'short', year: 'numeric' });
@@ -539,6 +539,8 @@ function planWarnings(plan) {
   for (const [code, e] of Object.entries(plan.entry)) for (const r of e.tooLate) items.push(html`<li><strong>Order:</strong> ${code} lists ${r} in its entry requirements, but ${r} isn't finished before ${code} starts in your plan.</li>`);
   for (const [a, b] of plan.twice) items.push(html`<li><strong>Same course twice:</strong> ${a} and ${b} are the same course in different semesters. You only need one.</li>`);
   for (const c of plan.notOffered) items.push(html`<li><strong>Not running:</strong> the handbook says ${c.code} is not offered in ${c.not_offered}.</li>`);
+  for (const code of plan.alreadyPassed) items.push(html`<li><strong>Already passed:</strong> you said you've passed ${code} (or the same course in another semester).</li>`);
+  for (const [code, e] of Object.entries(plan.entry)) if (e.noneMet) items.push(html`<li><strong>Entry:</strong> ${code}'s entry requirements mention ${e.refs.slice(0, 5).join(', ')}${e.refs.length > 5 ? '…' : ''}. None of them is in your passed courses or earlier in your plan.</li>`);
   return items;
 }
 
@@ -563,6 +565,7 @@ function planCourse(c, entry, picks, link) {
     </p>
     ${pick ? html`<p class="plan-note ok">Pick the ${periodList(pick.periods)} lecture group so it doesn't clash with the rest of your semester.</p>` : ''}
     ${entry.inPlan.length ? html`<p class="plan-note ok">Entry requirement in your plan: ${entry.inPlan.join(', ')}.</p>` : ''}
+    ${entry.met.length ? html`<p class="plan-note ok">Entry requirement passed: ${entry.met.join(', ')}.</p>` : ''}
     ${c.entry || c.dp || c.assessment ? html`<details class="plan-details">
       <summary>Entry requirements, DP and assessment</summary>
       <dl>
@@ -599,8 +602,124 @@ function planTerm(t, plan, link) {
   </section>`;
 }
 
-function plan(ctx, { courses: list, plan: p, matches, add, codes, suggestions }) {
-  const link = (o) => `/plan?${new URLSearchParams({ c: codes.join(','), ...o })}`;
+const YEARS = ['1st', '2nd', '3rd', '4th', '5th'];
+const termName = (code) => ({ F: 'Semester 1', S: 'Semester 2', W: 'whole year', H: 'whole year' })[code.slice(-1)] || 'other term';
+
+// "About you": faculty, majors, year and passed courses. Everything is optional; the answers live in the plan's link.
+function profileCard(profile, { programmeOptions, facultyOptions, needs, state, known }) {
+  const set = profile.faculty || profile.majors.length || profile.year || profile.done.length;
+  const majorName = (key) => programmeOptions.flatMap((f) => f.items).find((i) => i.key === key)?.name;
+  // courses from the chosen majors' earlier years, to tick off instead of typing
+  const earlier = profile.year ? [...new Set(needs.flatMap((n) => n.years.filter((y) => y.year < profile.year).flatMap((y) => y.groups.flatMap((g) => g.options.flatMap((o) => o.codes)))))].filter((c) => !c.includes('x') && known.has(c)) : [];
+  const typed = profile.done.filter((c) => !earlier.includes(c));
+  const select = (name, value, label, optional) => html`<label>${label}
+    <select name="${name}">
+      <option value="">${optional ? 'None' : 'Pick one'}</option>
+      ${programmeOptions.map((f) => html`<optgroup label="${f.name}">${f.items.map((i) => html`<option value="${i.key}" ${value === i.key ? 'selected' : ''}>${i.name}</option>`)}</optgroup>`)}
+    </select></label>`;
+  return html`<details class="card panel plan-about" ${set ? '' : 'open'}>
+    <summary>
+      <strong>About you</strong>
+      <span class="meta">${set
+        ? [profile.year ? `${YEARS[profile.year - 1]} year` : null, profile.faculty && facultyOptions.find((f) => f.key === profile.faculty)?.name, ...profile.majors.map(majorName), profile.done.length ? `${plural(profile.done.length, 'course')} passed` : null].filter(Boolean).join(' · ')
+        : 'Tell us your faculty, major and year to see credit checks and what your major still needs.'}</span>
+    </summary>
+    <form action="/plan" class="form plan-about-form">
+      <input type="hidden" name="about" value="1">
+      <input type="hidden" name="c" value="${state.c || ''}">
+      <div class="form-row two">
+        <label>Faculty
+          <select name="f">
+            <option value="">Pick one</option>
+            ${facultyOptions.map((f) => html`<option value="${f.key}" ${profile.faculty === f.key ? 'selected' : ''}>${f.name}</option>`)}
+          </select></label>
+        <label>Year you're planning
+          <select name="y">
+            <option value="">Pick one</option>
+            ${YEARS.map((y, i) => html`<option value="${i + 1}" ${profile.year === i + 1 ? 'selected' : ''}>${y} year</option>`)}
+          </select></label>
+      </div>
+      <div class="form-row two">
+        ${select('m1', profile.majors[0], 'Major or programme')}
+        ${select('m2', profile.majors[1], 'Second major (optional)', true)}
+      </div>
+      ${earlier.length ? html`<fieldset class="plan-passed">
+        <legend>Which of these have you passed?</legend>
+        ${earlier.map((c) => html`<label class="check"><input type="checkbox" name="done" value="${c}" ${profile.done.includes(c) ? 'checked' : ''}> <span class="code">${c}</span> ${known.get(c).title}</label>`)}
+      </fieldset>` : ''}
+      <label>${earlier.length ? 'Other courses you\'ve passed' : 'Courses you\'ve passed'}
+        <input type="text" name="more" value="${typed.join(', ')}" placeholder="e.g. CSC1015F, MAM1031F" autocomplete="off">
+        <span class="meta">Course codes, separated by commas. They count towards entry requirements and credits.</span>
+      </label>
+      <div class="form-actions">
+        <button class="btn btn-ink">Save</button>
+        ${set ? html`<a class="btn btn-quiet" href="/plan?${new URLSearchParams({ c: state.c || '', about: 'clear' })}">Clear my answers</a>` : ''}
+      </div>
+      <p class="fine">Saved on this device and in the plan's link. Nothing is linked to your account.</p>
+    </form>
+  </details>`;
+}
+
+// One course the student could add for their major: semester, credits, entry status and an Add link.
+function neededCourse(c, { known, passed, codes, link }) {
+  const row = known.get(c);
+  if (!row) return html`<li><span class="code">${c}</span> <span class="muted">not in the 2026 handbooks</span></li>`;
+  const e = entryStatus(row.entry, passed);
+  const inPlan = codes.includes(c);
+  return html`<li class="need-course">
+    <a href="/courses/${c}"><span class="code">${c}</span> ${row.title}</a>
+    <span class="meta">${termName(c)}${row.credits ? ` · ${row.credits} credits` : ''}${row.not_offered ? ` · not offered in ${row.not_offered}` : ''}</span>
+    ${e.met.length ? html`<span class="meta ok-text">Entry: you've passed ${e.met.join(', ')}</span>` : e.refs.length ? html`<span class="meta">Entry mentions ${e.refs.slice(0, 4).join(', ')}${e.refs.length > 4 ? '…' : ''}</span>` : ''}
+    ${inPlan ? html`<span class="badge">In your plan</span>` : html`<a class="btn btn-small" href="${link({ add: c })}" aria-label="Add ${c} to the plan">Add</a>`}
+  </li>`;
+}
+
+const PICK = ['', 'one', 'two', 'three', 'four', 'five'];
+function majorCard(n, ctx) {
+  const { profile, expanded } = ctx;
+  const upTo = profile.year || 1;
+  const optionText = (o) => o.codes.map((c) => (c.includes('x') ? `any ${c.slice(0, 7)} course` : c)).join(' and ');
+  return html`<section class="card plan-major" aria-labelledby="major-${n.key}">
+    <h3 id="major-${n.key}">${n.name}</h3>
+    ${!n.open.length
+      ? html`<p class="plan-note ok">Everything ${n.name} lists up to ${YEARS[Math.min(upTo, 4) - 1]} year is passed or in your plan.</p>`
+      : html`<p class="meta">Still needed up to ${YEARS[Math.min(upTo, 4) - 1]} year, from the 2026 handbook's table:</p>
+      <ul class="plain need-groups">${n.open.map((g) => html`<li>
+        <p class="need-label"><strong>Year ${g.year}${g.options.length > 1 ? `: ${PICK[g.pick] || g.pick} of` : ''}</strong>
+          ${g.options.length > 1 ? html` <span class="meta">${[...new Set(g.options.map(optionText))].join(' / ')}</span>` : ''}</p>
+        <ul class="plain">${g.options.filter((o) => o.state === 'todo').flatMap((o) => o.codes.filter((c) => !profile.done.includes(c)))
+          .flatMap((c) => (c.includes('x') ? (expanded[c] || []).slice(0, 6).map((x) => x.code) : [c]))
+          .map((c) => neededCourse(c, ctx))}</ul>
+      </li>`)}</ul>`}
+    ${n.years.flatMap((y) => y.electives.map((e) => html`<p class="meta">Year ${y.year} also has ${plural(e.count, 'approved elective')}${e.credits ? ` (${e.credits} credits)` : ''}.</p>`))}
+    ${n.years.flatMap((y) => (y.recommended.length ? [html`<p class="meta">Recommended in year ${y.year}: ${y.recommended.join(', ')}.</p>`] : []))}
+  </section>`;
+}
+
+// Credits for the year against the programme or faculty rules, re-registration minimums and progress to the degree.
+function creditCard(a) {
+  if (!a) return '';
+  const items = [];
+  if (a.target) {
+    const range = a.target.min === a.target.max ? `${a.target.min}` : `${a.target.min} to ${a.target.max}`;
+    if (!a.plannedCredits) items.push(html`<li>Add courses to see how your ${YEARS[a.year - 1]} year compares with the ${range} credits from ${a.target.from}.</li>`);
+    else items.push(html`<li class="${a.load === 'ok' ? 'ok-text' : 'bad'}"><strong>${a.load === 'under' ? 'Under-loaded' : a.load === 'over' ? 'Overloaded' : 'Full load'}:</strong> ${a.plannedCredits} credits planned for ${YEARS[a.year - 1]} year. The expected load is ${range} credits (${a.target.from}).${a.load === 'under' ? ' Add a course or an elective.' : a.load === 'over' ? ' Check that you can carry this, and whether the faculty needs to approve it.' : ''}</li>`);
+  }
+  for (const s of a.semesters.filter((x) => x.over)) items.push(html`<li class="bad"><strong>${s.label}:</strong> ${s.credits} credits. ${a.faculty.name} allows at most ${a.faculty.semesterMax} credits a semester unless the faculty agrees to more.</li>`);
+  if (a.readmit) {
+    const short = a.readmit.have < a.readmit.need;
+    items.push(html`<li class="${short ? 'bad' : 'ok-text'}"><strong>Re-registration:</strong> you need ${a.readmit.need} ${a.readmit.unit} by the end of year ${a.year} to carry on. Passed plus planned: ${a.readmit.have}.${short ? ' You\'re short even if you pass everything planned.' : ''}</li>`);
+  }
+  if (a.total) items.push(html`<li><strong>Degree:</strong> ${a.passedCredits} of ${a.total} credits passed${a.plannedCredits ? `, ${a.plannedCredits} more planned` : ''}.${a.senior != null && a.faculty.seniorCredits ? ` At level ${a.faculty.seniorLevel} or higher: ${a.senior} of the ${a.faculty.seniorCredits} you need, counting this plan.` : ''}</li>`);
+  return html`<section class="card plan-credits" aria-labelledby="credits-head">
+    <h2 id="credits-head">Credits</h2>
+    <ul class="plain">${items}</ul>
+    <p class="fine">From the 2026 <a href="${a.faculty.handbook}">${a.faculty.name} handbook</a>: ${a.faculty.rules}. Passed credits only count the courses you listed.</p>
+  </section>`;
+}
+
+function plan(ctx, { courses: list, plan: p, matches, add, codes, suggestions, profile, needs, advice, known, expanded, passed, programmeOptions, facultyOptions, state }) {
+  const link = (o) => `/plan?${new URLSearchParams({ ...state, ...o })}`;
   const url = `${ctx.site.origin}/plan?c=${codes.join(',')}`;
   const summary = planSummary(p);
   const warnings = planWarnings(p);
@@ -611,8 +730,10 @@ function plan(ctx, { courses: list, plan: p, matches, add, codes, suggestions })
   <h1 class="page-title">Plan your semesters</h1>
   <p class="lede small">Add the courses you're thinking of taking. Kwaai checks them against the 2026 handbook and what students say, and splits them into Semester 1 and Semester 2.</p>
 
+  ${profileCard(profile, { programmeOptions, facultyOptions, needs, state, known })}
+
   <form class="search search-inline plan-add" action="/plan" role="search">
-    <input type="hidden" name="c" value="${codes.join(',')}">
+    ${Object.entries({ c: '', ...state }).map(([k, v]) => html`<input type="hidden" name="${k}" value="${v}">`)}
     <input type="search" name="add" value="${add}" list="course-codes" placeholder="Code or name, e.g. CSC1015F" aria-label="Add a course by code or name" autocomplete="off" required>
     <button class="btn btn-ink">Add</button>
   </form>
@@ -620,6 +741,11 @@ function plan(ctx, { courses: list, plan: p, matches, add, codes, suggestions })
   ${matches ? matches.length
     ? html`<div class="card panel plan-matches"><p class="meta">Pick the course you mean:</p><ul class="plain">${matches.map((m) => html`<li><a href="${link({ add: m.code })}"><span class="code">${m.code}</span> ${m.title}</a></li>`)}</ul></div>`
     : html`<p class="flash flash-error" role="alert">No course matches “${add}”. Try the course code from your handbook, like MAM1031F.</p>` : ''}
+
+  ${advice || needs.length ? html`<div class="plan-degree">
+    ${creditCard(advice)}
+    ${needs.map((n) => majorCard(n, { profile, expanded, known, passed: profile.done, codes, link }))}
+  </div>` : ''}
 
   ${list.length ? html`
   ${warnings.length ? html`<section class="card plan-warnings" role="status"><h2>Check these before you register</h2><ul>${warnings}</ul></section>` : ''}
@@ -641,6 +767,7 @@ function plan(ctx, { courses: list, plan: p, matches, add, codes, suggestions })
         <li>how much of each semester's marks ride on final exams</li>
         <li>what it takes to get DP for each course</li>
         <li>how heavy students say each semester is</li>
+        <li>with your faculty, major and year filled in above: whether your credits are under or over the load, what you need to re-register, and which courses your major still needs</li>
       </ul>
       <p class="meta">Try it with <a href="/plan?c=CSC1015F,MAM1031F,STA1000F,CSC1016S,MAM1032S">a first-year computer science plan</a>.</p>
     </div>`}`);

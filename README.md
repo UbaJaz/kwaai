@@ -44,6 +44,7 @@ About 3,160 courses, undergraduate and postgraduate, from UCT's ten 2026 handboo
 | `data/courses-sci-2026.json` | Science (11) |
 | `data/courses-tables-2026.json` | Undergraduate courses that only appear in curriculum tables, with no description (e.g. PHI2043S) |
 | `data/replaced-2026.json` | Old codes the handbooks say were replaced (MAM1000W by MAM1031F and MAM1032S) |
+| `data/programmes-2026.json` | 156 majors and programmes with the courses required each year, read from the curriculum tables, plus each faculty's credit rules (typed in by hand, with the rule number) |
 
 For each course the importer keeps the official conveners plus what the handbook says about entry requirements, lecture times (and the lecture period, when one is given), DP requirements, assessment, roughly how much of the mark is the final exam, and whether it's "not offered in 2026". A course written `CSC1015F/S` becomes two courses, CSC1015F and CSC1015S. Dissertations and theses are left out: they aren't taught courses.
 
@@ -53,6 +54,7 @@ The PDFs and their text aren't committed. To add or update a handbook:
 pdftotext -enc UTF-8 handbook.pdf handbooks/handbook.txt
 node scripts/import-handbook.js handbooks/handbook.txt law-2026 "UCT 2026 Law handbook (10)"
 node scripts/import-tables.js handbooks/   # after all handbooks: table-only courses and replaced codes
+node scripts/import-programmes.js handbooks/   # majors and programmes per year, into data/programmes-2026.json
 npm run seed
 ```
 

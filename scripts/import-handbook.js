@@ -123,7 +123,8 @@ function lecturePeriods(lectures) {
   let days;
   if (/daily|every day/i.test(lect)) days = DAYS;
   else if (range) days = DAYS.slice(day(range[1]), day(range[2]) + 1);
-  else days = DAYS.filter((d) => new RegExp(`\\b${d.slice(0, 3)}`, 'i').test(lect));
+  // "Tuesdays, Fridays and some Wednesdays": the occasional day doesn't make a weekly clash
+  else days = DAYS.filter((d) => new RegExp(`(?<!some )\\b${d.slice(0, 3)}`, 'i').test(lect));
   return { periods, periodChoice: choice, days: days.length ? days : DAYS };
 }
 

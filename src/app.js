@@ -3,7 +3,7 @@ const path = require('node:path');
 const express = require('express');
 const views = require('./views');
 const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
-const { analysePlan, REPLACED } = require('./planner');
+const { analysePlan, REPLACED, parseProfile, hasProfile, profileParams, majorNeeds, creditAdvice, programmeOptions, facultyOptions } = require('./planner');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { UNIVERSITIES, CURRENT } = require('./universities');
 
@@ -190,23 +190,43 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   // ---- semester planner ----
-  // The plan lives in the URL so it can be shared, and in a cookie so it's still there next visit.
-  // Opening someone else's link only shows their plan; it changes yours only once you add or remove a course.
+  // The plan and the "about you" answers (faculty, majors, year, courses passed) live in the URL so they can be
+  // shared, and in a cookie so they're still there next visit. Opening someone else's link only shows their plan;
+  // it changes yours only once you add or remove a course or save your answers.
   const COURSE_CODE = /^[A-Z]{3}\d{4}[A-Z]$/;
   const planCodes = (s) => [...new Set(String(s || '').toUpperCase().split(/[\s,]+/).filter((x) => COURSE_CODE.test(x)))].slice(0, PLAN_MAX);
-  const planUrl = (codes) => (codes.length ? `/plan?c=${codes.join(',')}` : '/plan');
-  const savePlan = (res, codes) => res.cookie('plan', codes.join(','), { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: 180 * 24 * 60 * 60 * 1000 });
+  const keepCommas = (s) => encodeURIComponent(s).replace(/%2C/g, ',').replace(/%3A/g, ':');
+  const planQuery = (codes, profile = parseProfile()) => Object.entries({ ...(codes.length && { c: codes.join(',') }), ...profileParams(profile) })
+    .map(([k, v]) => `${k}=${keepCommas(String(v))}`).join('&');
+  const planUrl = (codes, profile) => {
+    const qs = planQuery(codes, profile);
+    return qs ? `/plan?${qs}` : '/plan';
+  };
+  const savePlan = (res, codes, profile) => res.cookie('plan', planQuery(codes, profile), { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: 180 * 24 * 60 * 60 * 1000 });
+  const PLAN_KEYS = ['c', 'f', 'm', 'y', 'done'];
 
   app.get('/plan', (req, res) => {
-    const saved = /(?:^|;\s*)plan=([A-Za-z0-9,%]*)/.exec(req.headers.cookie || '')?.[1];
-    const fromUrl = req.query.c != null;
-    let codes = planCodes(fromUrl ? req.query.c : decodeURIComponent(saved || ''));
+    // the cookie holds the query string; older ones hold only the course codes
+    const savedRaw = decodeURIComponent(/(?:^|;\s*)plan=([^;]*)/.exec(req.headers.cookie || '')?.[1] || '');
+    const saved = savedRaw.includes('=') ? Object.fromEntries(new URLSearchParams(savedRaw)) : { c: savedRaw };
+    const fromUrl = PLAN_KEYS.some((k) => req.query[k] != null);
+    const state = fromUrl ? req.query : saved;
+    let codes = planCodes(state.c);
+    let profile = parseProfile(state);
+    // the "about you" form: majors come from two selects, passed courses from ticked boxes plus a free text box
+    if (req.query.about != null) {
+      profile = req.query.about === 'clear' ? parseProfile() : parseProfile({
+        f: req.query.f, y: req.query.y, m: [req.query.m1, req.query.m2].filter(Boolean).join(','), done: [req.query.done ?? [], req.query.more ?? ''].flat().join(','),
+      });
+      savePlan(res, codes, profile);
+      return res.redirect(303, planUrl(codes, profile));
+    }
     const remove = String(req.query.remove || '').toUpperCase();
     const add = String(req.query.add || '').trim().slice(0, 80);
     if (remove) {
       codes = codes.filter((x) => x !== remove);
-      savePlan(res, codes);
-      return res.redirect(303, planUrl(codes));
+      savePlan(res, codes, profile);
+      return res.redirect(303, planUrl(codes, profile));
     }
     let matches = null;
     if (add) {
@@ -215,32 +235,48 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       // an old code like MAM1000W adds the courses that replaced it
       const newer = REPLACED[squashed]?.filter((x) => !codes.includes(x));
       if (newer) {
-        if (codes.length + newer.length > PLAN_MAX) return flashRedirect(res, planUrl(codes), 'error', `A plan can hold ${PLAN_MAX} courses. Remove one first.`);
+        if (codes.length + newer.length > PLAN_MAX) return flashRedirect(res, planUrl(codes, profile), 'error', `A plan can hold ${PLAN_MAX} courses. Remove one first.`);
         codes.push(...newer);
-        savePlan(res, codes);
-        return flashRedirect(res, planUrl(codes), 'ok', `${squashed} has been replaced by ${REPLACED[squashed].join(' and ')}, so ${newer.length ? 'those are in your plan now' : 'your plan already has it covered'}.`);
+        savePlan(res, codes, profile);
+        return flashRedirect(res, planUrl(codes, profile), 'ok', `${squashed} has been replaced by ${REPLACED[squashed].join(' and ')}, so ${newer.length ? 'those are in your plan now' : 'your plan already has it covered'}.`);
       }
       const byCode = /^[A-Z]{3}\d{1,4}[A-Z]?$/.test(squashed) ? q(`SELECT code FROM courses WHERE code LIKE ? ORDER BY code LIMIT 13`).all(`${squashed}%`) : [];
       const exact = getCourse(squashed) || (byCode.length === 1 ? getCourse(byCode[0].code) : null);
       if (exact) {
-        if (!codes.includes(exact.code) && codes.length >= PLAN_MAX) return flashRedirect(res, planUrl(codes), 'error', `A plan can hold ${PLAN_MAX} courses. Remove one first.`);
+        if (!codes.includes(exact.code) && codes.length >= PLAN_MAX) return flashRedirect(res, planUrl(codes, profile), 'error', `A plan can hold ${PLAN_MAX} courses. Remove one first.`);
         if (!codes.includes(exact.code)) codes.push(exact.code);
-        savePlan(res, codes);
-        return res.redirect(303, planUrl(codes));
+        savePlan(res, codes, profile);
+        return res.redirect(303, planUrl(codes, profile));
       }
       matches = q(`SELECT code, title FROM courses WHERE code LIKE ? OR title LIKE ? ORDER BY (code LIKE ?) DESC, (nqf IS NULL OR nqf <= 7) DESC, code LIMIT 12`)
         .all(`%${squashed}%`, `%${add}%`, `${squashed}%`);
     }
-    if (!fromUrl && codes.length && !matches) return res.redirect(303, planUrl(codes));
-    const rows = codes.length ? q(`SELECT c.code, c.title, c.credits, c.entry, c.corequisites, c.lectures, c.periods, c.period_choice, c.days, c.dp, c.assessment, c.exam_weight, c.not_offered,
+    if (!fromUrl && (codes.length || hasProfile(profile)) && !matches) return res.redirect(303, planUrl(codes, profile));
+    const rows = codes.length ? q(`SELECT c.code, c.title, c.credits, c.nqf, c.entry, c.corequisites, c.lectures, c.periods, c.period_choice, c.days, c.dp, c.assessment, c.exam_weight, c.not_offered,
       s.n, s.difficulty, s.workload, s.has_sample, v.votes, v.lekker, v.tips FROM courses c
       LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(difficulty) AS difficulty, AVG(workload) AS workload, MAX(is_sample) AS has_sample FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
       LEFT JOIN (SELECT course, COUNT(*) AS votes, SUM(lekker) AS lekker, SUM(tip != '') AS tips FROM verdicts WHERE status = 'published' GROUP BY course) v ON v.course = c.code
       WHERE c.code IN (${codes.map(() => '?').join(',')})`).all(...codes) : [];
     const courses = codes.map((code) => rows.find((r) => r.code === code)).filter(Boolean);
+    const plan = analysePlan(courses, new Set(profile.done));
+    // about you: what the majors still need, and the credit advice
+    const needs = majorNeeds(profile, courses.map((c) => c.code));
+    const lookup = (list) => (list.length ? q(`SELECT code, title, credits, nqf, entry, not_offered FROM courses WHERE code IN (${list.map(() => '?').join(',')})`).all(...list) : []);
+    const passed = lookup(profile.done);
+    // course details for everything the majors mention; "STA100xF" stands for any matching course
+    const mentioned = [...new Set(needs.flatMap((n) => n.years.flatMap((y) => y.groups.flatMap((g) => g.options.flatMap((o) => o.codes)))))];
+    const wildcards = mentioned.filter((c) => c.includes('x'));
+    const known = new Map(lookup(mentioned.filter((c) => !c.includes('x'))).map((c) => [c.code, c]));
+    const expanded = Object.fromEntries(wildcards.map((w) => [w, q(`SELECT code, title, credits, nqf, entry, not_offered FROM courses WHERE code LIKE ? ORDER BY code`).all(w.replace(/x/g, '_'))]));
+    for (const list of Object.values(expanded)) for (const c of list) known.set(c.code, c);
+    const advice = creditAdvice(profile, plan, courses, passed, needs);
     // every undergraduate course, for the browser's own suggestions as you type in the add box
     const suggestions = q(`SELECT code, title FROM courses WHERE nqf IS NULL OR nqf <= 7 ORDER BY code`).all();
-    res.page(views.plan(req.ctx, { courses, plan: analysePlan(courses), matches, add, codes: courses.map((c) => c.code), suggestions }));
+    res.page(views.plan(req.ctx, {
+      courses, plan, matches, add, codes: courses.map((c) => c.code), suggestions,
+      profile, needs, advice, known, expanded, passed, programmeOptions: programmeOptions(), facultyOptions: facultyOptions(),
+      state: Object.fromEntries(new URLSearchParams(planQuery(courses.map((c) => c.code), profile))),
+    }));
   });
 
   app.get('/universities', (req, res) => {

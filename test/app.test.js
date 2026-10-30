@@ -5,7 +5,7 @@ const { createApp } = require('../src/app');
 const { seed } = require('../scripts/seed');
 const { screenComment } = require('../src/moderation');
 const { parseReviewForm, parseVerdictForm, overallOf, semesterLoad } = require('../src/ratings');
-const { analysePlan, termsOf } = require('../src/planner');
+const { analysePlan, termsOf, parseProfile, majorNeeds, creditAdvice } = require('../src/planner');
 const { html } = require('../src/html');
 const { titleCase, parseHandbook, expandCode, codesIn, lecturePeriods, examWeight } = require('../scripts/import-handbook');
 const { UNIVERSITIES } = require('../src/universities');
@@ -574,6 +574,57 @@ test('planner checks: semesters, lecture clashes, which group to pick, exam shar
   assert.deepEqual(p.entry.PHY1004W.tooLate, []);
   p = analysePlan([course('MAM1032S', '', { entry: 'MAM1031F' }), course('MAM1031S', '')]);
   assert.deepEqual(p.entry.MAM1032S.tooLate, ['MAM1031S']);
+});
+
+test('about you: what the major still needs, credit checks, passed courses count', async () => {
+  // a 1st-year Science student planning year 2 of Statistics & Data Science
+  const p = parseProfile({ f: 'sci', m: 'sci:STA13,nope:XXX99', y: '2', done: 'csc1015f, CSC1016S,MAM1031F,junk' });
+  assert.deepEqual(p, { faculty: 'sci', majors: ['sci:STA13'], year: 2, done: ['CSC1015F', 'CSC1016S', 'MAM1031F'] });
+  const [needs] = majorNeeds(p, ['MAM1032S', 'STA2004F']);
+  const open = needs.open.map((g) => `${g.year}:${g.pick}:${g.options.map((o) => o.codes.join('+')).join('|')}`);
+  assert.ok(!open.some((g) => g.startsWith('1:1:CSC1015F')), 'CSC1015F passed');
+  assert.ok(open.includes('1:1:STA100xF|STA100xS'), 'any first-year STA course still needed');
+  assert.ok(!open.some((g) => g.includes('STA2004F|STA2030S')), 'STA2004F planned covers the choice');
+  assert.ok(open.includes('2:1:MAM2010F'));
+
+  // Science: at most 72 credits a semester, 144 credits by the end of year 2 to re-register
+  const row = (code, credits, nqf = 6) => ({ code, credits, nqf, entry: '', periods: '', days: '' });
+  const planned = ['STA2004F', 'MAM2010F', 'MAM2011F', 'CSC2001F', 'XXX2001F'].map((c) => row(c, 24)).concat(row('STA2005S', 24));
+  const plan = analysePlan(planned);
+  const passed = [row('CSC1015F', 18, 5), row('CSC1016S', 18, 5)];
+  const a = creditAdvice(p, plan, planned, passed, [needs]);
+  assert.equal(a.semesters[0].over, true, '120 credits in semester 1 is over 72');
+  assert.deepEqual(a.readmit, { need: 144, have: 36 + 144, unit: 'credits' });
+  assert.equal(a.load, 'ok', '144 for the year is within 72 to 144; the semester split is the problem');
+
+  // BBusSci counts semester courses and needs 528 credits
+  const b = creditAdvice(parseProfile({ m: 'com:CB004STA13', y: '1' }), analysePlan([]), [], [], majorNeeds(parseProfile({ m: 'com:CB004STA13', y: '1' }), []));
+  assert.equal(b.total, 528);
+  assert.equal(b.readmit.unit, 'semester courses');
+
+  // passed courses meet entry requirements; none of the mentioned courses passed or planned is flagged
+  const e = analysePlan([row('CSC2001F', 24), { ...row('PHY2004W', 48), entry: 'PHY1004W and MAM1031F' }], new Set(['CSC1015F', 'CSC1016S']));
+  assert.equal(e.entry.PHY2004W.noneMet, true);
+  const f = analysePlan([{ ...row('CSC2001F', 24), entry: 'CSC1015F and CSC1016S' }, row('CSC1015S', 18)], new Set(['CSC1015F', 'CSC1016S']));
+  assert.deepEqual(f.entry.CSC2001F.met, ['CSC1015F', 'CSC1016S']);
+  assert.deepEqual(f.alreadyPassed, ['CSC1015S']);
+  // "may register for MAM2010F" isn't a requirement for MAM2011F
+  assert.deepEqual(analysePlan([{ ...row('MAM2011F', 12), entry: 'MAM1031F. Students with 70% for MAM1010F may register for MAM2010F.' }, row('MAM2010F', 12)]).entry.MAM2011F.tooLate, []);
+  assert.deepEqual(lecturePeriods('Mondays, Thursdays and some Wednesdays in 5th period.').days, ['Monday', 'Thursday']);
+
+  // end to end: the form saves the answers into the plan's link and the cookie
+  const br = browser();
+  const res = await br.get('/plan?about=1&c=STA2004F&f=sci&y=2&m1=sci:STA13&m2=&done=CSC1015F&more=csc1016s, MAM1031F');
+  assert.equal(res.headers.get('location'), '/plan?c=STA2004F&f=sci&m=sci:STA13&y=2&done=CSC1015F,CSC1016S,MAM1031F');
+  assert.equal((await br.get('/plan')).headers.get('location'), '/plan?c=STA2004F&f=sci&m=sci:STA13&y=2&done=CSC1015F,CSC1016S,MAM1031F', 'remembered');
+  assert.equal((await br.get('/plan?c=STA2004F&f=sci&m=sci:STA13&y=2&done=CSC1015F&add=MAM2010F')).headers.get('location'), '/plan?c=STA2004F,MAM2010F&f=sci&m=sci:STA13&y=2&done=CSC1015F', 'adding keeps the answers');
+  const page = await br.text('/plan?c=STA2004F&f=sci&m=sci:STA13&y=2&done=CSC1015F,CSC1016S,MAM1031F');
+  assert.match(page, /2nd year · Science · Statistics &amp; Data Science · 3 courses passed/);
+  assert.match(page, /you need 144 credits by the end of year 2/);
+  assert.match(page, /Still needed up to 2nd year/);
+  assert.match(page, /aria-label="Add MAM1032S to the plan"/);
+  assert.match(page, /name="done" value="CSC1015F" checked/, 'first-year courses of the major can be ticked off');
+  assert.equal((await br.get('/plan?c=STA2004F&about=clear')).headers.get('location'), '/plan?c=STA2004F');
 });
 
 test('a demo password keeps every page private until it is given', async (t) => {

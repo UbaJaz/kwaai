@@ -10,25 +10,32 @@ const path = require('node:path');
 const DATA = path.join(__dirname, '..', 'data');
 
 // From the 2026 faculty rules. Readmission minimums are by the end of year 1, 2, 3 of registration.
+// byPrefix: programmes whose degree has its own rules (the BBusSci, and the BCom in Actuarial Science, which follows them).
+const HANDBOOK = (name) => `https://uct.ac.za/sites/default/files/media/documents/2026-${name}-final-web.pdf`;
+const BBUSSCI = {
+  degree: 'BBusSci', totalCredits: 528, seniorCredits: 120, seniorLevel: 8, readmitCourses: [4, 10, 18],
+  rules: 'Commerce rules FBB2 (528 credits, 120 at level 8) and FBB3 (re-registration)',
+};
 const FACULTIES = {
   sci: {
-    name: 'Science', degrees: ['BSc'], years: 3, totalCredits: 360, seniorCredits: 120, seniorLevel: 7,
+    name: 'Science', degree: 'BSc', handbook: HANDBOOK('sci-handbook-11'), totalCredits: 360, seniorCredits: 120, seniorLevel: 7,
     semesterMax: 72, yearMin: 72, readmitCredits: [72, 144, 228],
-    rules: 'BSc rules FB3 (at most 72 credits a semester), FB5.1 (re-registration) and FB7 (curriculum)',
+    rules: 'BSc rules FB3 (at most 72 credits a semester), FB5.1 (re-registration) and FB7.1 to FB7.2 (360 credits, 120 at level 7)',
   },
   hum: {
-    name: 'Humanities', degrees: ['BA', 'BSocSc'], years: 3, totalCredits: 360, seniorCredits: 120, seniorLevel: 7,
+    name: 'Humanities', degree: 'BA or BSocSc', handbook: HANDBOOK('hum-handbook-9a'), totalCredits: 360, seniorCredits: 120, seniorLevel: 7,
     yearRange: [[120, 144], [120, 160], [120, 180]],
-    rules: 'the recommended curriculum structure for the general BA and BSocSc',
+    rules: 'the recommended curriculum structure for the general BA and BSocSc (360 credits, 120 at level 7)',
   },
   com: {
-    name: 'Commerce', degrees: ['BCom', 'BBusSci'], years: 3, totalCredits: 440, seniorCredits: 120, seniorLevel: 7,
+    name: 'Commerce', degree: 'BCom', handbook: HANDBOOK('commerce-handbook-6a'), totalCredits: 440, seniorCredits: 120, seniorLevel: 7,
     readmitCourses: [4, 8, 15],
-    rules: 'BCom rules FBE2 (440 credits, 120 at level 7) and FBE3 (re-registration). The four-year BBusSci needs 528 credits (FBB2).',
+    rules: 'BCom rules FBE2 (440 credits, 120 at level 7) and FBE3 (re-registration)',
+    byPrefix: Object.fromEntries(['CB003', 'CB004', 'CB015', 'CB018', 'CB024', 'CB025', 'CB019', 'CB020', 'CB026'].map((p) => [p, BBUSSCI])),
   },
-  ebe: { name: 'Engineering & the Built Environment', degrees: ['BSc(Eng)', 'BAS', 'BSc'], years: 4, rules: 'each programme’s own curriculum' },
-  fhs: { name: 'Health Sciences', degrees: ['MBChB', 'BSc(Med)', 'and others'], years: 4, rules: 'each programme’s own curriculum' },
-  law: { name: 'Law', degrees: ['LLB'], years: 4, rules: 'the LLB curriculum' },
+  ebe: { name: 'Engineering & the Built Environment', handbook: HANDBOOK('ebe-handbook-7a'), rules: 'each programme’s own curriculum' },
+  fhs: { name: 'Health Sciences', handbook: HANDBOOK('fhs-handbook-8a'), rules: 'each programme’s own curriculum' },
+  law: { name: 'Law', handbook: HANDBOOK('law-handbook-10'), rules: 'the LLB curriculum' },
 };
 
 // Names the layout gets wrong, checked by hand against the handbooks. SKIP: general rules pages, not one programme.

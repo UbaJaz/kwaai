@@ -3,10 +3,8 @@
  "faculties": {
   "sci": {
    "name": "Science",
-   "degrees": [
-    "BSc"
-   ],
-   "years": 3,
+   "degree": "BSc",
+   "handbook": "https://uct.ac.za/sites/default/files/media/documents/2026-sci-handbook-11-final-web.pdf",
    "totalCredits": 360,
    "seniorCredits": 120,
    "seniorLevel": 7,
@@ -17,15 +15,12 @@
     144,
     228
    ],
-   "rules": "BSc rules FB3 (at most 72 credits a semester), FB5.1 (re-registration) and FB7 (curriculum)"
+   "rules": "BSc rules FB3 (at most 72 credits a semester), FB5.1 (re-registration) and FB7.1 to FB7.2 (360 credits, 120 at level 7)"
   },
   "hum": {
    "name": "Humanities",
-   "degrees": [
-    "BA",
-    "BSocSc"
-   ],
-   "years": 3,
+   "degree": "BA or BSocSc",
+   "handbook": "https://uct.ac.za/sites/default/files/media/documents/2026-hum-handbook-9a-final-web.pdf",
    "totalCredits": 360,
    "seniorCredits": 120,
    "seniorLevel": 7,
@@ -43,15 +38,12 @@
      180
     ]
    ],
-   "rules": "the recommended curriculum structure for the general BA and BSocSc"
+   "rules": "the recommended curriculum structure for the general BA and BSocSc (360 credits, 120 at level 7)"
   },
   "com": {
    "name": "Commerce",
-   "degrees": [
-    "BCom",
-    "BBusSci"
-   ],
-   "years": 3,
+   "degree": "BCom",
+   "handbook": "https://uct.ac.za/sites/default/files/media/documents/2026-commerce-handbook-6a-final-web.pdf",
    "totalCredits": 440,
    "seniorCredits": 120,
    "seniorLevel": 7,
@@ -60,34 +52,131 @@
     8,
     15
    ],
-   "rules": "BCom rules FBE2 (440 credits, 120 at level 7) and FBE3 (re-registration). The four-year BBusSci needs 528 credits (FBB2)."
+   "rules": "BCom rules FBE2 (440 credits, 120 at level 7) and FBE3 (re-registration)",
+   "byPrefix": {
+    "CB003": {
+     "degree": "BBusSci",
+     "totalCredits": 528,
+     "seniorCredits": 120,
+     "seniorLevel": 8,
+     "readmitCourses": [
+      4,
+      10,
+      18
+     ],
+     "rules": "Commerce rules FBB2 (528 credits, 120 at level 8) and FBB3 (re-registration)"
+    },
+    "CB004": {
+     "degree": "BBusSci",
+     "totalCredits": 528,
+     "seniorCredits": 120,
+     "seniorLevel": 8,
+     "readmitCourses": [
+      4,
+      10,
+      18
+     ],
+     "rules": "Commerce rules FBB2 (528 credits, 120 at level 8) and FBB3 (re-registration)"
+    },
+    "CB015": {
+     "degree": "BBusSci",
+     "totalCredits": 528,
+     "seniorCredits": 120,
+     "seniorLevel": 8,
+     "readmitCourses": [
+      4,
+      10,
+      18
+     ],
+     "rules": "Commerce rules FBB2 (528 credits, 120 at level 8) and FBB3 (re-registration)"
+    },
+    "CB018": {
+     "degree": "BBusSci",
+     "totalCredits": 528,
+     "seniorCredits": 120,
+     "seniorLevel": 8,
+     "readmitCourses": [
+      4,
+      10,
+      18
+     ],
+     "rules": "Commerce rules FBB2 (528 credits, 120 at level 8) and FBB3 (re-registration)"
+    },
+    "CB024": {
+     "degree": "BBusSci",
+     "totalCredits": 528,
+     "seniorCredits": 120,
+     "seniorLevel": 8,
+     "readmitCourses": [
+      4,
+      10,
+      18
+     ],
+     "rules": "Commerce rules FBB2 (528 credits, 120 at level 8) and FBB3 (re-registration)"
+    },
+    "CB025": {
+     "degree": "BBusSci",
+     "totalCredits": 528,
+     "seniorCredits": 120,
+     "seniorLevel": 8,
+     "readmitCourses": [
+      4,
+      10,
+      18
+     ],
+     "rules": "Commerce rules FBB2 (528 credits, 120 at level 8) and FBB3 (re-registration)"
+    },
+    "CB019": {
+     "degree": "BBusSci",
+     "totalCredits": 528,
+     "seniorCredits": 120,
+     "seniorLevel": 8,
+     "readmitCourses": [
+      4,
+      10,
+      18
+     ],
+     "rules": "Commerce rules FBB2 (528 credits, 120 at level 8) and FBB3 (re-registration)"
+    },
+    "CB020": {
+     "degree": "BBusSci",
+     "totalCredits": 528,
+     "seniorCredits": 120,
+     "seniorLevel": 8,
+     "readmitCourses": [
+      4,
+      10,
+      18
+     ],
+     "rules": "Commerce rules FBB2 (528 credits, 120 at level 8) and FBB3 (re-registration)"
+    },
+    "CB026": {
+     "degree": "BBusSci",
+     "totalCredits": 528,
+     "seniorCredits": 120,
+     "seniorLevel": 8,
+     "readmitCourses": [
+      4,
+      10,
+      18
+     ],
+     "rules": "Commerce rules FBB2 (528 credits, 120 at level 8) and FBB3 (re-registration)"
+    }
+   }
   },
   "ebe": {
    "name": "Engineering & the Built Environment",
-   "degrees": [
-    "BSc(Eng)",
-    "BAS",
-    "BSc"
-   ],
-   "years": 4,
+   "handbook": "https://uct.ac.za/sites/default/files/media/documents/2026-ebe-handbook-7a-final-web.pdf",
    "rules": "each programme’s own curriculum"
   },
   "fhs": {
    "name": "Health Sciences",
-   "degrees": [
-    "MBChB",
-    "BSc(Med)",
-    "and others"
-   ],
-   "years": 4,
+   "handbook": "https://uct.ac.za/sites/default/files/media/documents/2026-fhs-handbook-8a-final-web.pdf",
    "rules": "each programme’s own curriculum"
   },
   "law": {
    "name": "Law",
-   "degrees": [
-    "LLB"
-   ],
-   "years": 4,
+   "handbook": "https://uct.ac.za/sites/default/files/media/documents/2026-law-handbook-10-final-web.pdf",
    "rules": "the LLB curriculum"
   }
  },
