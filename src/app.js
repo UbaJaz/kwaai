@@ -8,6 +8,9 @@ const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderat
 const { UNIVERSITIES, CURRENT } = require('./universities');
 
 const STUDENT_EMAIL = /^[a-z0-9._%+-]+@myuct\.ac\.za$/;
+// "a+1@myuct.ac.za" and "a+2@myuct.ac.za" reach the same inbox, so they must be the same account:
+// otherwise one student gets many votes and a banned one comes back.
+const normEmail = (s) => String(s || '').trim().toLowerCase().replace(/\+[^@]*(?=@)/, '');
 const TOKEN_TTL = 15 * 60 * 1000;
 const SESSION_TTL = 30 * 24 * 60 * 60 * 1000;
 const parseFlash = (v) => { try { return v ? JSON.parse(decodeURIComponent(v)) : null; } catch { return null; } };
@@ -20,6 +23,7 @@ const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-
 
 function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'the Kwaai team', demoPassword } = {}) {
   const app = express();
+  const mods = new Set([...moderators].map(normEmail));
   app.disable('x-powered-by');
   // so req.ip is the student's IP behind a host's proxy. Env vars are strings, and Express reads the string "1" as an
   // IP list rather than a hop count, so a plain number must be turned into a Number.
@@ -53,7 +57,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     const flash = /(?:^|;\s*)flash=([^;]+)/.exec(req.headers.cookie || '')?.[1];
     if (flash) res.clearCookie('flash');
-    req.ctx = { user: req.user, isMod: !!req.user && moderators.has(req.user.email), flash: parseFlash(flash), uni: CURRENT, here: req.path,
+    req.ctx = { user: req.user, isMod: !!req.user && mods.has(req.user.email), flash: parseFlash(flash), uni: CURRENT, here: req.path,
       // origin for share links and link previews; production always has BASE_URL
       site: { contactEmail, operator, origin: baseUrl || `${req.protocol}://${req.get('host')}` } };
     // CSRF: double-submit token, added to every POST form on its way out
@@ -92,7 +96,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   const byUser = (req) => `user:${req.user.id}`;
   const limits = {
     login: limit(100, 15 * MIN),
-    loginEmail: limit(3, 15 * MIN, (req) => String(req.body.email || '').trim().toLowerCase()), // stops someone spamming a student's inbox
+    // keyed by IP too, so a stranger using up an address's quota can't stop that student signing in
+    loginEmail: limit(3, 15 * MIN, (req) => `${req.ip}|${normEmail(req.body.email)}`), // stops someone spamming a student's inbox
+    loginCode: limit(8, 15 * MIN, (req) => `${req.ip}|${normEmail(req.body.email)}`), // caps guesses at the 6-digit code
     review: limit(10, 60 * MIN, byUser),
     verdict: limit(30, 60 * MIN, byUser),
     suggest: limit(5, 60 * MIN, byUser),
@@ -439,12 +445,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // Only same-site paths are allowed as the page to return to, so a sign-in link can't send anyone elsewhere.
   const safeNext = (s) => (typeof s === 'string' && /^\/(?![/\\])/.test(s) && s.length <= 300 ? s : '/');
   const codeHash = (email, code) => sha(`${email}:${code}`);
-  const MAX_CODE_TRIES = 5;
 
   app.get('/login', (req, res) => res.page(views.login(req.ctx, { next: safeNext(req.query.next) })));
 
   app.post('/login', limits.login, limits.loginEmail, async (req, res) => {
-    const email = String(req.body.email || '').trim().toLowerCase();
+    const email = normEmail(req.body.email);
     const next = safeNext(req.body.next);
     if (!STUDENT_EMAIL.test(email)) return res.status(400).page(views.login(req.ctx, { email, next, error: 'That isn\'t a student email. Use your @myuct.ac.za address.' }));
     if (q(`SELECT 1 FROM users WHERE email = ? AND banned = 1`).get(email)) return res.status(403).page(views.login(req.ctx, { email, next, error: 'This account has been suspended for breaking the house rules.' }));
@@ -478,19 +483,17 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, safeNext(next), 'ok', "You're signed in. Anything you post shows without your name.");
   }
 
-  app.post('/login/code', limits.login, (req, res) => {
-    const email = String(req.body.email || '').trim().toLowerCase();
+  app.post('/login/code', limits.login, limits.loginCode, (req, res) => {
+    const email = normEmail(req.body.email);
     const code = String(req.body.code || '').replace(/\D/g, '');
     const rows = q(`SELECT * FROM login_tokens WHERE email = ? AND expires > ?`).all(email, Date.now());
     const row = code.length === 6 && rows.find((r) => r.code_hash && crypto.timingSafeEqual(Buffer.from(r.code_hash), Buffer.from(codeHash(email, code))));
     if (!row) {
-      // every wrong guess counts against all of this email's codes, and a code dies after a few wrong guesses
-      q(`UPDATE login_tokens SET attempts = attempts + 1 WHERE email = ?`).run(email);
-      q(`DELETE FROM login_tokens WHERE email = ? AND attempts >= ?`).run(email, MAX_CODE_TRIES);
-      const left = rows.length && q(`SELECT 1 FROM login_tokens WHERE email = ?`).get(email);
+      // Guesses are capped per IP and address (limits.loginCode) instead of deleting the address's codes, which
+      // would let a stranger's wrong guesses lock the real student out.
       return res.status(400).page(views.checkEmail(req.ctx, {
         email,
-        error: left ? "That code doesn't match. Check the latest email from Kwaai and try again." : 'That code has expired or had too many wrong tries. Ask for a new one.',
+        error: "That code doesn't match or has expired. Check the latest email from Kwaai, or go back and ask for a new one.",
       }));
     }
     q(`DELETE FROM login_tokens WHERE hash = ?`).run(row.hash);

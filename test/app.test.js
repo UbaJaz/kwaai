@@ -327,13 +327,19 @@ test('sign in with the emailed code, back to the page you came from', async () =
   assert.equal((await other.post('/login/code', { email: 'cod002@myuct.ac.za', code: c2 })).headers.get('location'), '/');
 });
 
-test('wrong codes run out, and opening the link alone does not sign you in', async () => {
+test('wrong guesses are capped per IP and never burn the real code, and opening the link alone does not sign you in', async () => {
   const b = browser();
   const page = await (await b.post('/login', { email: 'cod003@myuct.ac.za' })).text();
   const code = /Code: <strong>(\d{6})<\/strong>/.exec(page)[1];
   const wrong = code === '000000' ? '111111' : '000000';
-  for (let i = 0; i < 5; i++) await b.post('/login/code', { email: 'cod003@myuct.ac.za', code: wrong });
-  assert.equal((await b.post('/login/code', { email: 'cod003@myuct.ac.za', code })).status, 400, 'after 5 wrong tries even the right code fails');
+  for (let i = 0; i < 6; i++) assert.equal((await b.post('/login/code', { email: 'cod003@myuct.ac.za', code: wrong })).status, 400);
+  assert.equal((await b.post('/login/code', { email: 'cod003@myuct.ac.za', code })).status, 303, "someone else's wrong guesses don't kill the right code");
+
+  const guesser = browser();
+  await guesser.post('/login', { email: 'cod005@myuct.ac.za' });
+  const statuses = [];
+  for (let i = 0; i < 10; i++) statuses.push((await guesser.post('/login/code', { email: 'cod005@myuct.ac.za', code: '000000' })).status);
+  assert.equal(statuses.at(-1), 429, `guessing is capped: ${statuses}`);
 
   const scanner = browser();
   const p2 = await (await scanner.post('/login', { email: 'cod004@myuct.ac.za' })).text();
@@ -343,6 +349,27 @@ test('wrong codes run out, and opening the link alone does not sign you in', asy
   assert.ok(!(first.headers.get('set-cookie') || '').includes('sid='), 'opening the link sets no session');
   assert.match(await (await scanner.get(path)).text(), /signing in as <strong>cod004@myuct\.ac\.za/, 'the link still works after being opened');
   assert.equal((await scanner.post(path, {})).status, 303);
+});
+
+test('plus-addresses are the same student, so they get one vote', async (t) => {
+  const db = openDb(':memory:');
+  seed(db, { samples: false });
+  const own = createApp(db, { devMode: true, moderators: new Set(['Mod+x@myuct.ac.za']) }).listen(0);
+  t.after(() => own.close());
+  await new Promise((r) => own.once('listening', r));
+  const fresh = () => browser(() => `http://localhost:${own.address().port}`);
+  const year = String(new Date().getFullYear());
+  const one = fresh();
+  await one.signIn('plu001+one@myuct.ac.za');
+  const two = fresh();
+  await two.signIn('plu001+two@myuct.ac.za');
+  await one.post('/courses/CSC2001F/verdict', { lekker: '1', year });
+  await two.post('/courses/CSC2001F/verdict', { lekker: '0', year });
+  assert.match(await fresh().text('/courses/CSC2001F'), /1 vote so far/);
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM users').get().n, 1);
+  const mod = fresh();
+  await mod.signIn('mod@myuct.ac.za');
+  assert.equal((await mod.get('/mod')).status, 200, 'a moderator listed with a +tag still counts');
 });
 
 test('suggested lecturers only appear after a moderator approves them', async () => {
