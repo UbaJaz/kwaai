@@ -296,8 +296,9 @@ legend { font-family: var(--display); font-weight: 600; font-size: 1.1rem; paddi
 .verdict-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
 .verdict-form .verdict-buttons { margin-top: 0; }
 .verdict-buttons .btn { flex: 1 1 160px; }
-.btn-lekker { background: var(--good); }
-.btn-nah { background: var(--low); }
+/* fixed colours: the dark theme's --good and --low are light text colours, too pale behind white text */
+.btn-lekker { background: #16803c; }
+.btn-nah { background: #c0262d; }
 .tips { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 10px; }
 .tip { display: flex; gap: 12px; padding: 14px 16px; }
 .tip > div { flex: 1; }
@@ -322,6 +323,7 @@ legend { font-family: var(--display); font-weight: 600; font-size: 1.1rem; paddi
 .plan-meter { display: block; height: 12px; margin: 10px 0; }
 .plan-table { width: 100%; margin-bottom: 8px; }
 .plan-table th, .plan-table td { padding-right: 14px; vertical-align: top; }
+.plan-remove { display: inline-block; font-size: .8rem; color: var(--muted); margin-left: 4px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (max-width: 600px) {
   .plan-table { display: block; overflow-x: auto; }

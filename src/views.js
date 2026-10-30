@@ -493,13 +493,12 @@ function plan(ctx, { courses: list, load, matches, add, codes }) {
   </section>
 
   <table class="offerings plan-table">
-    <thead><tr><th>Course</th><th>Credits</th><th>Exam difficulty</th><th>Workload</th><th>Lekker</th><th><span class="sr-only">Remove</span></th></tr></thead>
+    <thead><tr><th>Course</th><th>Credits</th><th>Exam difficulty</th><th>Workload</th><th>Lekker</th></tr></thead>
     <tbody>${list.map((c) => html`<tr>
-      <td><a href="/courses/${c.code}"><span class="code">${c.code}</span></a> ${c.title} ${sampleBadge(c.has_sample)}</td>
+      <td><a href="/courses/${c.code}"><span class="code">${c.code}</span></a> ${c.title} ${sampleBadge(c.has_sample)} <a class="plan-remove" href="${link({ remove: c.code })}" aria-label="Remove ${c.code} from the plan">Remove</a></td>
       <td>${c.credits ?? '–'}</td>
       ${c.n ? html`<td>${fmt(c.difficulty)}/5</td><td>${fmt(c.workload)}/5</td>` : html`<td colspan="2" class="muted">No reviews yet</td>`}
       <td>${lekkerPct({ n: c.votes || 0, lekker: c.lekker || 0 }) != null ? `${lekkerPct({ n: c.votes, lekker: c.lekker })}%` : html`<span class="muted">–</span>`}</td>
-      <td><a href="${link({ remove: c.code })}" aria-label="Remove ${c.code}">Remove</a></td>
     </tr>`)}</tbody>
   </table>
   <p class="fine">Scores average every student who reviewed the course, across lecturers and years. Your semester could feel different.</p>`
