@@ -200,7 +200,12 @@ test('student reviews, report hides it, moderator restores it', async () => {
   assert.doesNotMatch(page, /abcxyz001/, 'author email never shown');
   const id = /id="review-(\d+)"[\s\S]*?Demos in lectures/.exec(page)[1];
 
-  assert.equal((await anon.post(`/reviews/${id}/report`, { reason: 'defamation' })).status, 303);
+  const loggedOut = await anon.post(`/reviews/${id}/report`, { reason: 'defamation' });
+  assert.match(loggedOut.headers.get('location'), /^\/login\?next=%2Fcourses%2FPHY1012F/, 'reporting needs a sign-in');
+  assert.match(await anon.text('/courses/PHY1012F'), /Demos in lectures/, 'an anonymous report hides nothing');
+  const reader = browser();
+  await reader.signIn('rep001@myuct.ac.za');
+  assert.equal((await reader.post(`/reviews/${id}/report`, { reason: 'defamation' })).status, 303);
   assert.doesNotMatch(await anon.text('/courses/PHY1012F'), /Demos in lectures/, 'serious report hides the review immediately');
 
   assert.equal((await student.get('/mod')).status, 404, 'students cannot moderate');
@@ -245,8 +250,9 @@ test('scores built from sample reviews are badged wherever they appear', async (
   assert.doesNotMatch(await (await fetch(`${base}/courses?q=APG4001S`)).text(), /<main[\s\S]*class="badge sample"/);
 });
 
-test('reports are rate limited per IP', async () => {
+test('reports are rate limited per student', async () => {
   const b = browser();
+  await b.signIn('rep002@myuct.ac.za');
   const id = /id="review-(\d+)"/.exec(await b.text('/courses/EEE3099S'))[1];
   const statuses = [];
   for (let i = 0; i < 32; i++) statuses.push((await b.post(`/reviews/${id}/report`, { reason: 'spam' })).status);
@@ -392,8 +398,14 @@ test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can b
   assert.match(page, /Tutorials are where it clicks/);
 
   const id = /\/verdicts\/(\d+)\/report/.exec(page)[1];
-  assert.equal((await anon.post(`/verdicts/${id}/report`, {})).status, 303);
-  assert.doesNotMatch(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/, 'reported tip is hidden');
+  assert.match((await anon.post(`/verdicts/${id}/report`, {})).headers.get('location'), /^\/login/, 'reporting needs a sign-in');
+  await voters[0].post(`/verdicts/${id}/report`, {});
+  assert.match(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/, "a student can't report their own tip");
+  await voters[1].post(`/verdicts/${id}/report`, {});
+  await voters[1].post(`/verdicts/${id}/report`, {});
+  assert.match(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/, 'one student reporting twice counts once');
+  await voters[2].post(`/verdicts/${id}/report`, {});
+  assert.doesNotMatch(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/, 'two different students hide the tip');
   const mod = fresh();
   await mod.signIn('mod001@myuct.ac.za');
   assert.match(await mod.text('/mod'), /Tutorials are where it clicks/);

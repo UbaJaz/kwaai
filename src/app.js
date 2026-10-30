@@ -96,7 +96,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     review: limit(10, 60 * MIN, byUser),
     verdict: limit(30, 60 * MIN, byUser),
     suggest: limit(5, 60 * MIN, byUser),
-    report: limit(30, 60 * MIN),
+    report: limit(30, 60 * MIN, byUser),
     takedown: limit(10, 60 * MIN),
   };
   const flashRedirect = (res, to, type, text) => {
@@ -260,6 +260,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE user_id = ?)`).run(id);
       q(`DELETE FROM reviews WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdicts WHERE user_id = ?`).run(id);
+      q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
+      q(`UPDATE reports SET user_id = NULL WHERE user_id = ?`).run(id);
       q(`UPDATE lecturer_suggestions SET user_id = NULL WHERE user_id = ?`).run(id);
       q(`DELETE FROM sessions WHERE user_id = ?`).run(id);
       q(`DELETE FROM users WHERE id = ?`).run(id);
@@ -340,12 +342,24 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, req.body.back === 'account' ? '/account' : `/courses/${v.course}`, 'ok', 'Your vote was deleted.');
   });
 
-  // Tips are one line about the course, so any report hides one until a moderator looks.
-  app.post('/verdicts/:id/report', limits.report, (req, res) => {
+  // Reports come from signed-in students (still anonymous to readers) so one person can't hide everything with a loop.
+  // Table names are constants, never user input.
+  const signInToReport = (table) => (req, res, next) => {
+    if (req.user) return next();
+    const course = q(`SELECT course FROM ${table} WHERE id = ?`).get(Number(req.params.id) || 0)?.course;
+    flashRedirect(res, `/login?next=${encodeURIComponent(course ? `/courses/${course}` : '/')}`, 'info', 'Sign in to report. Your report stays anonymous.');
+  };
+
+  // A tip is one line about the course: it's hidden once ${HIDE_AFTER_REPORTS} different students report it.
+  app.post('/verdicts/:id/report', signInToReport('verdicts'), limits.report, (req, res) => {
     const v = q(`SELECT * FROM verdicts WHERE id = ? AND status = 'published' AND tip != ''`).get(Number(req.params.id) || 0);
     if (!v) return flashRedirect(res, '/', 'error', 'That tip was already hidden or removed.');
-    q(`UPDATE verdicts SET status = 'held', flags = 'Reported by a reader' WHERE id = ?`).run(v.id);
-    flashRedirect(res, `/courses/${v.course}#tips`, 'ok', 'Thanks. That tip is hidden until a moderator checks it.');
+    const back = `/courses/${v.course}#tips`;
+    if (v.user_id === req.user.id) return flashRedirect(res, back, 'error', "That's your own tip. You can delete it from your account.");
+    q(`INSERT OR IGNORE INTO verdict_reports (verdict_id, user_id) VALUES (?, ?)`).run(v.id, req.user.id);
+    const n = q(`SELECT COUNT(*) AS n FROM verdict_reports WHERE verdict_id = ?`).get(v.id).n;
+    if (n >= HIDE_AFTER_REPORTS) q(`UPDATE verdicts SET status = 'held', flags = 'Reported by readers' WHERE id = ?`).run(v.id);
+    flashRedirect(res, back, 'ok', n >= HIDE_AFTER_REPORTS ? 'Thanks. That tip is hidden until a moderator checks it.' : 'Thanks. A moderator will take a look.');
   });
 
   app.get('/courses/:code/suggest-lecturer', requireUser, (req, res) => {
@@ -382,11 +396,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // Hides a review pending moderation and records why.
   const hold = (id, why) => q(`UPDATE reviews SET status = 'held', flags = CASE WHEN flags = '' THEN ? ELSE flags || '|' || ? END WHERE id = ? AND status = 'published'`).run(why, why, id);
 
-  app.post('/reviews/:id/report', limits.report, (req, res) => {
+  app.post('/reviews/:id/report', signInToReport('reviews'), limits.report, (req, res) => {
     const r = q(`SELECT * FROM reviews WHERE id = ? AND status != 'removed'`).get(Number(req.params.id) || 0);
     const reason = REPORT_REASONS.find((x) => x.key === req.body.reason);
     if (!r || !reason) return flashRedirect(res, r ? `/courses/${r.course}` : '/', 'error', 'Please pick a reason for the report.');
-    q(`INSERT INTO reports (review_id, reason, details) VALUES (?, ?, ?)`).run(r.id, reason.key, String(req.body.details || '').slice(0, 500));
+    if (r.user_id === req.user.id) return flashRedirect(res, `/courses/${r.course}`, 'error', "That's your own review. You can delete it from your account.");
+    if (q(`SELECT 1 FROM reports WHERE review_id = ? AND user_id = ?`).get(r.id, req.user.id)) return flashRedirect(res, `/courses/${r.course}`, 'info', 'You already reported this review. A moderator will take a look.');
+    q(`INSERT INTO reports (review_id, reason, details, user_id) VALUES (?, ?, ?, ?)`).run(r.id, reason.key, String(req.body.details || '').slice(0, 500), req.user.id);
     const open = q(`SELECT COUNT(*) AS n FROM reports WHERE review_id = ? AND resolved = 0`).get(r.id).n;
     if (reason.hideNow || open >= HIDE_AFTER_REPORTS) hold(r.id, `Reported: ${reason.label}`);
     flashRedirect(res, `/courses/${r.course}`, 'ok', reason.hideNow || open >= HIDE_AFTER_REPORTS
