@@ -40,7 +40,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     const flash = /(?:^|;\s*)flash=([^;]+)/.exec(req.headers.cookie || '')?.[1];
     if (flash) res.clearCookie('flash');
-    req.ctx = { user: req.user, isMod: !!req.user && moderators.has(req.user.email), flash: parseFlash(flash), site: { contactEmail, operator } };
+    req.ctx = { user: req.user, isMod: !!req.user && moderators.has(req.user.email), flash: parseFlash(flash),
+      // origin for share links and link previews; production always has BASE_URL
+      site: { contactEmail, operator, origin: baseUrl || `${req.protocol}://${req.get('host')}` } };
     // CSRF: double-submit token, added to every POST form on its way out
     let csrf = /(?:^|;\s*)csrf=([a-f0-9]{32})/.exec(req.headers.cookie || '')?.[1];
     if (!csrf) {

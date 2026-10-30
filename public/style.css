@@ -310,3 +310,5 @@ legend { font-family: var(--display); font-weight: 600; font-size: 1.1rem; paddi
 .gate { padding: 18px 20px; margin: 0 0 20px; border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); background: var(--accent-soft); }
 .gate p { margin: 0 0 12px; }
 .locked { color: var(--muted); font-style: italic; }
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }

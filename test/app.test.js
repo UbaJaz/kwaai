@@ -326,6 +326,15 @@ test('readers see the first 2 comments until they vote once, then all of them', 
   assert.doesNotMatch(page, /more comments? on this page/);
 });
 
+test('course pages carry a link preview and a WhatsApp share link', async () => {
+  const page = await (await fetch(`${base}/courses/EEE3099S`)).text();
+  assert.match(page, /<meta property="og:title" content="EEE3099S [^"]+ · LekkerOrNah">/);
+  assert.match(page, /<meta property="og:description" content="EEE3099S [^"]*Workload \d\.\d\/5[^"]*">/);
+  assert.match(page, new RegExp(`<meta property="og:url" content="${base}/courses/EEE3099S">`));
+  assert.match(page, /href="https:\/\/wa\.me\/\?text=Is%20EEE3099S%20lekker%20or%20nah%3F/);
+  assert.match(await (await fetch(`${base}/rules`)).text(), /<meta property="og:description" content="Unofficial course/);
+});
+
 test('privacy and terms pages render', async () => {
   for (const p of ['/privacy', '/terms']) assert.equal((await fetch(base + p)).status, 200, p);
 });

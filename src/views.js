@@ -9,14 +9,25 @@ const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 // ---------- layout ----------
 
-function layout({ title, user, isMod, flash }, body) {
+const DEFAULT_DESCRIPTION = 'Unofficial course and lecturer reviews by UCT students. Not affiliated with the University of Cape Town.';
+
+// description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
+function layout({ title, user, isMod, flash, site = {}, description = DEFAULT_DESCRIPTION, path }, body) {
+  const fullTitle = title ? `${title} · LekkerOrNah` : 'LekkerOrNah: is your course lekker or nah?';
   return html`<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${title ? `${title} · LekkerOrNah` : 'LekkerOrNah: is your course lekker or nah?'}</title>
-<meta name="description" content="Unofficial course and lecturer reviews by UCT students. Not affiliated with the University of Cape Town.">
+<title>${fullTitle}</title>
+<meta name="description" content="${description}">
+<meta property="og:site_name" content="LekkerOrNah">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_ZA">
+<meta property="og:title" content="${fullTitle}">
+<meta property="og:description" content="${description}">
+${path && site.origin ? html`<meta property="og:url" content="${site.origin}${path}"><link rel="canonical" href="${site.origin}${path}">` : ''}
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
@@ -121,6 +132,24 @@ function reviewCard(r, { user, lecturerLink = true, courseLink = false, hideBody
 
 // Percent of students who voted lekker, once there are enough votes to mean something.
 const lekkerPct = (votes) => (votes.n >= MIN_FOR_RANKING ? Math.round((votes.lekker / votes.n) * 100) : null);
+
+// One line with the numbers, used for the link preview.
+function courseSummary(c, stats, votes) {
+  const pct = lekkerPct(votes);
+  const parts = [];
+  if (pct != null) parts.push(`${pct}% of ${votes.n} students say lekker`);
+  if (stats.n) parts.push(`Exam difficulty ${fmt(stats.difficulty)}/5`, `Workload ${fmt(stats.workload)}/5`, plural(stats.n, 'review'));
+  if (!parts.length) parts.push("No votes yet. Took it? Say if it's lekker or nah");
+  return `${c.code} ${c.title}. ${parts.join(' · ')}.`;
+}
+
+function whatsappLink(c, votes, origin) {
+  const pct = lekkerPct(votes);
+  const text = pct != null
+    ? `Is ${c.code} lekker or nah? ${pct}% of students say lekker. ${origin}/courses/${c.code}`
+    : `Is ${c.code} lekker or nah? Took it? Vote here: ${origin}/courses/${c.code}`;
+  return `https://wa.me/?text=${encodeURIComponent(text)}`;
+}
 
 function verdictBox(ctx, { c, votes, myVerdict, years }) {
   const pct = lekkerPct(votes);
@@ -271,7 +300,7 @@ function courses(ctx, { list, total, depts, q, dept }) {
 function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked }) {
   const cards = hideAfterFree(reviews, locked);
   const hidden = cards.filter((x) => x.hideBody).length + (locked ? Math.max(0, tips.length - FREE_COMMENTS) : 0);
-  return layout({ ...ctx, title: `${c.code} ${c.title}` }, html`
+  return layout({ ...ctx, title: `${c.code} ${c.title}`, description: courseSummary(c, stats, votes), path: `/courses/${c.code}` }, html`
   <nav class="crumbs"><a href="/courses">Courses</a> / <a href="/courses?dept=${c.dept}">${c.dept_name}</a> / ${c.code}</nav>
   <section class="course-hero">
     <div>
@@ -280,7 +309,10 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
       <p class="meta">${c.dept_name}${c.credits ? ` · ${c.credits} NQF credits` : ''}${c.nqf ? ` · NQF level ${c.nqf}` : ''}</p>
       ${c.conveners ? html`<p class="meta">Convener: ${c.conveners.split('|').join(', ')} <span class="src">(source: ${c.source})</span></p>` : ''}
     </div>
-    <a class="btn btn-big btn-quiet" href="/courses/${c.code}/review">Write a full review</a>
+    <div class="hero-actions">
+      <a class="btn btn-quiet" href="${whatsappLink(c, votes, ctx.site.origin)}" target="_blank" rel="noopener">Share on WhatsApp</a>
+      <a class="btn btn-quiet" href="/courses/${c.code}/review">Write a full review</a>
+    </div>
   </section>
 
   ${verdictBox(ctx, { c, votes, myVerdict, years })}
