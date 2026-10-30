@@ -22,6 +22,9 @@ const MAX_TIP = 140;
 // A lecturer or course needs this many reviews before it can appear in a ranking,
 // so one angry review can't put someone at the bottom of a list.
 const MIN_FOR_RANKING = 3;
+// Anyone can read this many written comments and tips per page. The rest open up once
+// you've voted on or reviewed one course yourself, so readers become contributors.
+const FREE_COMMENTS = 2;
 
 const RANKINGS = [
   { key: 'best', label: 'Highest rated', column: 'overall', order: 'DESC' },
@@ -66,4 +69,4 @@ function parseVerdictForm(form, { currentYear = new Date().getFullYear() } = {})
   return { verdict: { lekker: Number(form.lekker), year, tip } };
 }
 
-module.exports = { QUALITY, SCALES, ALL_KEYS, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, RANKINGS, overallOf, parseReviewForm, parseVerdictForm };
+module.exports = { QUALITY, SCALES, ALL_KEYS, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FREE_COMMENTS, RANKINGS, overallOf, parseReviewForm, parseVerdictForm };

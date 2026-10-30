@@ -132,6 +132,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.page(views.courses(req.ctx, { list, total, depts: depts(), q: text, dept }));
   });
 
+  // Has this reader voted on or reviewed anything? If not, most comments stay hidden (see FREE_COMMENTS).
+  const canReadAll = (req) => req.ctx.isMod || (!!req.user && !!q(`SELECT 1 FROM verdicts WHERE user_id = ? AND status != 'removed'
+    UNION ALL SELECT 1 FROM reviews WHERE user_id = ? AND status != 'removed' LIMIT 1`).get(req.user.id, req.user.id));
   const verdictStats = (code) => q(`SELECT COUNT(*) AS n, COALESCE(SUM(lekker), 0) AS lekker FROM verdicts WHERE course = ? AND status = 'published'`).get(code);
   const getCourse = (code) => q(`SELECT c.*, d.name AS dept_name FROM courses c JOIN departments d ON d.code = c.dept WHERE c.code = ?`).get(String(code).toUpperCase());
 
@@ -149,7 +152,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const votes = verdictStats(c.code);
     const tips = q(`SELECT id, year, lekker, tip, created_at FROM verdicts WHERE course = ? AND status = 'published' AND tip != '' ORDER BY created_at DESC, id DESC LIMIT 30`).all(c.code);
     const myVerdict = req.user && q(`SELECT * FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
-    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years() })));
+    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req) })));
   });
 
   app.get('/lecturers/:id', (req, res) => {
@@ -160,7 +163,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall FROM reviews WHERE lecturer_id = ? AND status = 'published' GROUP BY course) s ON s.course = c.code
       WHERE s.n > 0 OR ('|' || c.conveners || '|') LIKE ? ORDER BY c.code`).all(l.id, `%|${l.name}|%`);
     const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.lecturer_id = ? AND r.status = 'published' ORDER BY r.created_at DESC, r.id DESC`).all(l.id);
-    res.page((views.lecturer(req.ctx, { l, stats, courses: taught, reviews })));
+    res.page((views.lecturer(req.ctx, { l, stats, courses: taught, reviews, locked: !canReadAll(req) })));
   });
 
   app.get('/rankings', (req, res) => {

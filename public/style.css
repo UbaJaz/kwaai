@@ -305,3 +305,8 @@ legend { font-family: var(--display); font-weight: 600; font-size: 1.1rem; paddi
 .tip-text { margin: 0; font-weight: 500; }
 .tip-foot { margin-top: 8px; padding-top: 8px; }
 .tip-foot .link-btn { padding: 0; font-size: .85rem; color: var(--muted); }
+
+/* comments hidden until the reader has voted once */
+.gate { padding: 18px 20px; margin: 0 0 20px; border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); background: var(--accent-soft); }
+.gate p { margin: 0 0 12px; }
+.locked { color: var(--muted); font-style: italic; }

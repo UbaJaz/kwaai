@@ -247,11 +247,12 @@ test('students can delete their account and all their reviews', async () => {
   assert.equal((await student.get('/account')).status, 303, 'signed out afterwards');
 });
 
-test('lekker-or-nah votes: one per student, result shows from 3 votes, tips can be reported', async () => {
+test('lekker-or-nah votes: one per student, result shows from 3 votes, tips can be reported', async (t) => {
   // its own server, so earlier tests haven't used up this IP's report limit
   const db = openDb(':memory:');
   seed(db, { samples: false });
   const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true }).listen(0);
+  t.after(() => own.close());
   await new Promise((r) => own.once('listening', r));
   const fresh = () => browser(() => `http://localhost:${own.address().port}`);
   const year = String(new Date().getFullYear());
@@ -282,7 +283,6 @@ test('lekker-or-nah votes: one per student, result shows from 3 votes, tips can 
   assert.match(await mod.text('/mod'), /Tutorials are where it clicks/);
   assert.equal((await mod.post(`/mod/verdicts/${id}/approve`, {})).status, 303);
   assert.match(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/);
-  own.close();
 });
 
 test('rule-breaking tips are held, contact details rejected, votes deleted with the account', async () => {
@@ -298,6 +298,32 @@ test('rule-breaking tips are held, contact details rejected, votes deleted with 
   const mod = browser();
   await mod.signIn('mod001@myuct.ac.za');
   assert.doesNotMatch(await mod.text('/mod'), /lecturer is an idiot/, 'held tip went with the account');
+});
+
+test('readers see the first 2 comments until they vote once, then all of them', async (t) => {
+  const db = openDb(':memory:');
+  seed(db, { samples: false });
+  const add = db.prepare(`INSERT INTO reviews (course, year, teaching, engagement, exams, support, difficulty, workload, overall, body, created_at)
+    VALUES ('CSC2001F', 2025, 4, 4, 4, 4, 3, 3, 4, ?, ?)`);
+  for (const n of [1, 2, 3, 4]) add.run(`Gate comment number ${n}`, `2025-06-0${n} 10:00:00`);
+  const own = createApp(db, { devMode: true }).listen(0);
+  t.after(() => own.close());
+  await new Promise((r) => own.once('listening', r));
+  const b = browser(() => `http://localhost:${own.address().port}`);
+
+  let page = await b.text('/courses/CSC2001F');
+  assert.match(page, /Gate comment number 4/); // newest first
+  assert.match(page, /Gate comment number 3/);
+  assert.doesNotMatch(page, /Gate comment number [12]/, 'hidden comments are not sent to the browser at all');
+  assert.match(page, /2 more comments on this page/);
+  assert.match(page, /\d+(\.\d)?<\/span>/, 'scores stay public');
+
+  await b.signIn('gat001@myuct.ac.za');
+  assert.doesNotMatch(await b.text('/courses/CSC2001F'), /Gate comment number 1/, 'signing in alone is not enough');
+  await b.post('/courses/MAM1020F/verdict', { lekker: '1', year: '2025' });
+  page = await b.text('/courses/CSC2001F');
+  for (const n of [1, 2, 3, 4]) assert.match(page, new RegExp(`Gate comment number ${n}`));
+  assert.doesNotMatch(page, /more comments? on this page/);
 });
 
 test('privacy and terms pages render', async () => {

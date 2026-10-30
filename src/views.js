@@ -1,5 +1,5 @@
 const { html } = require('./html');
-const { QUALITY, SCALES, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, RANKINGS } = require('./ratings');
+const { QUALITY, SCALES, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FREE_COMMENTS, RANKINGS } = require('./ratings');
 const { REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 
 const fmt = (n) => (n == null ? '–' : Number(n).toFixed(1));
@@ -76,7 +76,7 @@ function courseCard(c) {
   </a>`;
 }
 
-function reviewCard(r, { user, lecturerLink = true, courseLink = false } = {}) {
+function reviewCard(r, { user, lecturerLink = true, courseLink = false, hideBody = false } = {}) {
   const tags = r.tags ? r.tags.split('|') : [];
   const mine = user && r.user_id === user.id;
   return html`<article class="card review" id="review-${r.id}">
@@ -99,7 +99,7 @@ function reviewCard(r, { user, lecturerLink = true, courseLink = false } = {}) {
       ${SCALES.map((c) => html`<div class="scale"><dt>${c.label}</dt><dd>${r[c.key]}/5</dd></div>`)}
     </dl>
     ${tags.length ? html`<div class="tags">${tags.map((t) => html`<span class="tag">${t}</span>`)}</div>` : ''}
-    ${r.body ? html`<p class="review-body">${r.body}</p>` : ''}
+    ${r.body ? hideBody ? html`<p class="review-body locked">🔒 Comment hidden. <a href="#gate">How to read it</a></p>` : html`<p class="review-body">${r.body}</p>` : ''}
     <div class="review-foot">
       <span class="muted">Anonymous UCT student · ${month(r.created_at)}</span>
       <span class="review-actions">
@@ -158,8 +158,10 @@ function verdictBox(ctx, { c, votes, myVerdict, years }) {
   </section>`;
 }
 
-function tipList(tips) {
-  return html`<ul class="tips">${tips.map((t) => html`<li class="card tip" id="tip-${t.id}">
+function tipList(tips, locked) {
+  return html`<ul class="tips">${tips.map((t, i) => locked && i >= FREE_COMMENTS
+    ? html`<li class="card tip"><span class="tip-verdict" role="img" aria-label="${t.lekker ? 'Voted lekker' : 'Voted nah'}">${t.lekker ? '🤙' : '👎'}</span><p class="tip-text locked">🔒 Tip hidden. <a href="#gate">How to read it</a></p></li>`
+    : html`<li class="card tip" id="tip-${t.id}">
     <span class="tip-verdict" role="img" aria-label="${t.lekker ? 'Voted lekker' : 'Voted nah'}">${t.lekker ? '🤙' : '👎'}</span>
     <div>
       <p class="tip-text">${t.tip}</p>
@@ -169,6 +171,24 @@ function tipList(tips) {
       </div>
     </div>
   </li>`)}</ul>`;
+}
+
+// Marks which review comments a reader who hasn't contributed can't see: everything after the first few.
+function hideAfterFree(reviews, locked) {
+  let shown = 0;
+  return reviews.map((r) => {
+    if (!r.body || !locked) return { r, hideBody: false };
+    shown += 1;
+    return { r, hideBody: shown > FREE_COMMENTS };
+  });
+}
+
+function gateNotice(ctx, hidden) {
+  if (!hidden) return '';
+  return html`<div class="card gate" id="gate">
+    <p><strong>${plural(hidden, 'more comment')} on this page.</strong> Vote lekker or nah on any course you've taken and you can read every comment on the site. It takes about ten seconds.</p>
+    ${ctx.user ? html`<a class="btn" href="/courses">Find a course you've taken</a>` : html`<a class="btn" href="/login">Sign in with your UCT email</a>`}
+  </div>`;
 }
 
 function rankList(rows, kind, rank) {
@@ -248,7 +268,9 @@ function courses(ctx, { list, total, depts, q, dept }) {
   ${list.length ? html`<div class="course-grid">${list.map(courseCard)}</div>` : html`<p class="empty">No courses found. We've imported the 2026 EBE, Science, Commerce, Humanities and Health Sciences handbooks. Law isn't in yet.</p>`}`);
 }
 
-function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years }) {
+function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked }) {
+  const cards = hideAfterFree(reviews, locked);
+  const hidden = cards.filter((x) => x.hideBody).length + (locked ? Math.max(0, tips.length - FREE_COMMENTS) : 0);
   return layout({ ...ctx, title: `${c.code} ${c.title}` }, html`
   <nav class="crumbs"><a href="/courses">Courses</a> / <a href="/courses?dept=${c.dept}">${c.dept_name}</a> / ${c.code}</nav>
   <section class="course-hero">
@@ -278,9 +300,10 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
         </tbody></table>` : ''}
     </aside>
     <div class="reviews">
-      ${tips.length ? html`<h2 class="section-title" id="tips">Tips from students who took it</h2>${tipList(tips)}` : ''}
+      ${gateNotice(ctx, hidden)}
+      ${tips.length ? html`<h2 class="section-title" id="tips">Tips from students who took it</h2>${tipList(tips, locked)}` : ''}
       <h2 class="section-title">Reviews</h2>
-      ${reviews.length ? reviews.map((r) => reviewCard(r, ctx)) : html`<p class="empty">Nothing here yet. Took ${c.code}? Tell the next class what it's really like.</p>`}
+      ${reviews.length ? cards.map(({ r, hideBody }) => reviewCard(r, { ...ctx, hideBody })) : html`<p class="empty">Nothing here yet. Took ${c.code}? Tell the next class what it's really like.</p>`}
     </div>
   </section>`);
 }
@@ -346,7 +369,8 @@ function slider(key, label, hint, low, high, value) {
   </div>`;
 }
 
-function lecturer(ctx, { l, stats, courses: taught, reviews }) {
+function lecturer(ctx, { l, stats, courses: taught, reviews, locked }) {
+  const cards = hideAfterFree(reviews, locked);
   return layout({ ...ctx, title: l.name }, html`
   <nav class="crumbs"><a href="/rankings?kind=lecturer">Lecturers</a> / ${l.name}</nav>
   <section class="course-hero">
@@ -365,8 +389,9 @@ function lecturer(ctx, { l, stats, courses: taught, reviews }) {
       ${taught.length ? html`<h3>Courses</h3><ul class="plain">${taught.map((c) => html`<li><a href="/courses/${c.code}"><span class="code">${c.code}</span> ${c.title}</a> ${c.n ? html`<span class="meta">${chip(c.overall)} (${c.n})</span>` : ''}</li>`)}</ul>` : ''}
     </aside>
     <div class="reviews">
+      ${gateNotice(ctx, cards.filter((x) => x.hideBody).length)}
       <h2 class="section-title">Reviews</h2>
-      ${reviews.length ? reviews.map((r) => reviewCard(r, { ...ctx, lecturerLink: false, courseLink: true })) : html`<p class="empty">No reviews yet.</p>`}
+      ${reviews.length ? cards.map(({ r, hideBody }) => reviewCard(r, { ...ctx, lecturerLink: false, courseLink: true, hideBody })) : html`<p class="empty">No reviews yet.</p>`}
     </div>
   </section>`);
 }
