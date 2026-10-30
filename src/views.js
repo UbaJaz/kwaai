@@ -42,6 +42,7 @@ ${path && site.origin ? html`<meta property="og:url" content="${site.origin}${pa
     <a class="logo" href="/"><span class="logo-mark">🤙</span><span>lekker<em>or nah?</em></span></a>
     <nav class="nav">
       <a href="/courses">Courses</a>
+      <a href="/plan">Planner</a>
       <a href="/rankings">Rankings</a>
       <a href="/rules">Rules</a>
       ${user ? html`<a href="/account">My reviews</a>` : ''}
@@ -247,6 +248,7 @@ function home(ctx, { counts, topCourses, funniest, hardest, depts }) {
       <input type="search" name="q" placeholder="Try MEC2047F or “dynamics”" aria-label="Search courses">
       <button class="btn">Search</button>
     </form>
+    <p><a href="/plan">Picking courses for next semester? See how heavy your mix is →</a></p>
     <p class="stats">${plural(counts.courses, 'course')} · ${plural(counts.lecturers, 'lecturer')} · ${plural(counts.reviews, 'review')}</p>
   </section>
 
@@ -310,6 +312,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
       ${c.conveners ? html`<p class="meta">Convener: ${c.conveners.split('|').join(', ')} <span class="src">(source: ${c.source})</span></p>` : ''}
     </div>
     <div class="hero-actions">
+      <a class="btn btn-quiet" href="/plan?add=${c.code}">Add to my semester plan</a>
       <a class="btn btn-quiet" href="${whatsappLink(c, votes, ctx.site.origin)}" target="_blank" rel="noopener">Share on WhatsApp</a>
       <a class="btn btn-quiet" href="/courses/${c.code}/review">Write a full review</a>
     </div>
@@ -457,6 +460,52 @@ function rankings(ctx, { rows, depts, dept, rank, kind }) {
   </div>`);
 }
 
+function plan(ctx, { courses: list, load, matches, add, codes }) {
+  const link = (o) => `/plan?${new URLSearchParams({ c: codes.join(','), ...o })}`;
+  const shareText = load.load != null
+    ? `My semester: ${codes.join(', ')}. LekkerOrNah says ${load.label.toLowerCase()} (${fmt(load.load)}/5). How cooked is yours? ${ctx.site.origin}/plan?c=${codes.join(',')}`
+    : `My semester: ${codes.join(', ')}. How cooked is yours? ${ctx.site.origin}/plan?c=${codes.join(',')}`;
+  const description = list.length
+    ? `${codes.join(', ')}: ${load.load != null ? `${load.label} (${fmt(load.load)}/5 for difficulty and workload)` : 'not enough reviews to score yet'}. Check how heavy your own semester is.`
+    : 'Add the courses you plan to take and see how heavy the mix is, from UCT students\' ratings of exam difficulty and workload.';
+  return layout({ ...ctx, title: 'How cooked is your semester?', description, path: codes.length ? `/plan?c=${codes.join(',')}` : '/plan' }, html`
+  <h1 class="page-title">How cooked is your semester?</h1>
+  <p class="lede small">Add the courses you plan to take. We combine what students said about each one's exam difficulty and workload into one score out of 5.</p>
+
+  <form class="search search-inline plan-add" action="/plan" role="search">
+    <input type="hidden" name="c" value="${codes.join(',')}">
+    <input type="search" name="add" value="${add}" placeholder="Course code or name, e.g. CSC1015F" aria-label="Add a course by code or name" required>
+    <button class="btn">Add</button>
+  </form>
+  ${matches ? matches.length
+    ? html`<div class="card panel plan-matches"><p class="meta">Courses matching “${add}”:</p><ul class="plain">${matches.map((m) => html`<li><a href="${link({ add: m.code })}"><span class="code">${m.code}</span> ${m.title}</a></li>`)}</ul></div>`
+    : html`<p class="flash flash-error" role="alert">No course matches “${add}”. Try the course code, like MAM1000W.</p>` : ''}
+
+  ${list.length ? html`
+  <section class="card plan-result" aria-live="polite">
+    ${load.load != null
+      ? html`<p class="plan-label">${load.label}</p>
+        <div class="bar plan-meter" role="img" aria-label="Load ${fmt(load.load)} out of 5"><span style="width:${load.load * 20}%"></span></div>
+        <p><strong>${fmt(load.load)}/5</strong> for difficulty and workload. ${load.advice}</p>
+        <p class="meta">Based on ${load.rated} of ${plural(list.length, 'course')} with reviews · ${load.credits} NQF credits in total</p>`
+      : html`<p class="plan-label">Not enough reviews yet</p><p class="meta">None of these courses has a full review yet, so there's nothing to score. ${load.credits} NQF credits in total.</p>`}
+    <a class="btn btn-quiet" href="https://wa.me/?text=${encodeURIComponent(shareText)}" target="_blank" rel="noopener">Share on WhatsApp</a>
+  </section>
+
+  <table class="offerings plan-table">
+    <thead><tr><th>Course</th><th>Credits</th><th>Exam difficulty</th><th>Workload</th><th>Lekker</th><th><span class="sr-only">Remove</span></th></tr></thead>
+    <tbody>${list.map((c) => html`<tr>
+      <td><a href="/courses/${c.code}"><span class="code">${c.code}</span></a> ${c.title} ${sampleBadge(c.has_sample)}</td>
+      <td>${c.credits ?? '–'}</td>
+      ${c.n ? html`<td>${fmt(c.difficulty)}/5</td><td>${fmt(c.workload)}/5</td>` : html`<td colspan="2" class="muted">No reviews yet</td>`}
+      <td>${lekkerPct({ n: c.votes || 0, lekker: c.lekker || 0 }) != null ? `${lekkerPct({ n: c.votes, lekker: c.lekker })}%` : html`<span class="muted">–</span>`}</td>
+      <td><a href="${link({ remove: c.code })}" aria-label="Remove ${c.code}">Remove</a></td>
+    </tr>`)}</tbody>
+  </table>
+  <p class="fine">Scores average every student who reviewed the course, across lecturers and years. Your semester could feel different.</p>`
+  : html`<p class="empty">Your plan is empty. Add a course above to start.</p>`}`);
+}
+
 function rules(ctx) {
   return layout({ ...ctx, title: 'House rules' }, html`
   <article class="prose">
@@ -510,7 +559,7 @@ function privacy(ctx) {
   <ul>
     <li><strong>Your @myuct.ac.za email</strong>, to check you're a UCT student, send sign-in links, and enforce bans. It is never shown publicly.</li>
     <li><strong>Your reviews and votes</strong> (ratings, tags, comment, lekker-or-nah vote, tip, course, lecturer, year). They are published without your name or email.</li>
-    <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), and a short-lived one for on-screen messages. No advertising or tracking cookies.</li>
+    <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), a short-lived one for on-screen messages, and one that remembers the course codes in your semester plan for 180 days. No advertising or tracking cookies.</li>
     <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many reports). It isn't written to our database.</li>
     <li><strong>Removal requests:</strong> the name, email and details you give us, used only to deal with that request.</li>
     <li><strong>Lecturers' names</strong> come from UCT's public handbooks and course pages, and are shown only in connection with the courses they teach.</li>
@@ -722,4 +771,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log }) {
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, takedown, message, mod, suggestLecturer, privacy, terms, account };
+module.exports = { plan, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, takedown, message, mod, suggestLecturer, privacy, terms, account };

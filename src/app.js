@@ -2,7 +2,7 @@ const crypto = require('node:crypto');
 const path = require('node:path');
 const express = require('express');
 const views = require('./views');
-const { RANKINGS, MIN_FOR_RANKING, parseReviewForm, parseVerdictForm } = require('./ratings');
+const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm, semesterLoad } = require('./ratings');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 
 const STUDENT_EMAIL = /^[a-z0-9._%+-]+@myuct\.ac\.za$/;
@@ -174,6 +174,45 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const all = depts();
     const dept = all.some((d) => d.code === req.query.dept) ? req.query.dept : '';
     res.page((views.rankings(req.ctx, { rows: ranking(kind, rank, dept, 25), depts: all, dept, rank, kind })));
+  });
+
+  // ---- semester planner ----
+  // The plan lives in the URL so it can be shared, and in a cookie so it's still there next visit.
+  // Opening someone else's link only shows their plan; it changes yours only once you add or remove a course.
+  const COURSE_CODE = /^[A-Z]{3}\d{4}[A-Z]$/;
+  const planCodes = (s) => [...new Set(String(s || '').toUpperCase().split(/[\s,]+/).filter((x) => COURSE_CODE.test(x)))].slice(0, PLAN_MAX);
+  const planUrl = (codes) => (codes.length ? `/plan?c=${codes.join(',')}` : '/plan');
+  const savePlan = (res, codes) => res.cookie('plan', codes.join(','), { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: 180 * 24 * 60 * 60 * 1000 });
+
+  app.get('/plan', (req, res) => {
+    const saved = /(?:^|;\s*)plan=([A-Za-z0-9,%]*)/.exec(req.headers.cookie || '')?.[1];
+    const fromUrl = req.query.c != null;
+    let codes = planCodes(fromUrl ? req.query.c : decodeURIComponent(saved || ''));
+    const remove = String(req.query.remove || '').toUpperCase();
+    const add = String(req.query.add || '').trim().slice(0, 80);
+    if (remove) {
+      codes = codes.filter((x) => x !== remove);
+      savePlan(res, codes);
+      return res.redirect(303, planUrl(codes));
+    }
+    let matches = null;
+    if (add) {
+      const exact = getCourse(add.replace(/\s+/g, ''));
+      if (exact) {
+        if (!codes.includes(exact.code) && codes.length >= PLAN_MAX) return flashRedirect(res, planUrl(codes), 'error', `A plan can hold ${PLAN_MAX} courses. Remove one first.`);
+        if (!codes.includes(exact.code)) codes.push(exact.code);
+        savePlan(res, codes);
+        return res.redirect(303, planUrl(codes));
+      }
+      matches = q(`SELECT code, title FROM courses WHERE code LIKE ? OR title LIKE ? ORDER BY code LIMIT 12`).all(`%${add}%`, `%${add}%`);
+    }
+    if (!fromUrl && codes.length && !matches) return res.redirect(303, planUrl(codes));
+    const rows = codes.length ? q(`SELECT c.code, c.title, c.credits, s.n, s.difficulty, s.workload, s.has_sample, v.votes, v.lekker FROM courses c
+      LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(difficulty) AS difficulty, AVG(workload) AS workload, MAX(is_sample) AS has_sample FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
+      LEFT JOIN (SELECT course, COUNT(*) AS votes, SUM(lekker) AS lekker FROM verdicts WHERE status = 'published' GROUP BY course) v ON v.course = c.code
+      WHERE c.code IN (${codes.map(() => '?').join(',')})`).all(...codes) : [];
+    const courses = codes.map((code) => rows.find((r) => r.code === code)).filter(Boolean);
+    res.page(views.plan(req.ctx, { courses, load: semesterLoad(courses), matches, add, codes: courses.map((c) => c.code) }));
   });
 
   app.get('/privacy', (req, res) => res.page(views.privacy(req.ctx)));

@@ -312,3 +312,17 @@ legend { font-family: var(--display); font-weight: 600; font-size: 1.1rem; paddi
 .locked { color: var(--muted); font-style: italic; }
 
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* semester planner */
+.plan-add { max-width: 640px; margin: 8px 0 16px; }
+.plan-matches { margin-bottom: 16px; }
+.plan-result { padding: 20px 22px; margin: 8px 0 20px; }
+.plan-result p { margin: 6px 0; }
+.plan-label { font-family: var(--display); font-weight: 800; font-size: 2rem; color: var(--accent); }
+.plan-meter { display: block; height: 12px; margin: 10px 0; }
+.plan-table { width: 100%; margin-bottom: 8px; }
+.plan-table th, .plan-table td { padding-right: 14px; vertical-align: top; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 600px) {
+  .plan-table { display: block; overflow-x: auto; }
+}

@@ -69,4 +69,25 @@ function parseVerdictForm(form, { currentYear = new Date().getFullYear() } = {})
   return { verdict: { lekker: Number(form.lekker), year, tip } };
 }
 
-module.exports = { QUALITY, SCALES, ALL_KEYS, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FREE_COMMENTS, RANKINGS, overallOf, parseReviewForm, parseVerdictForm };
+// Semester planner: how heavy a set of courses is, from reviewers' difficulty and workload scores.
+const PLAN_MAX = 8;
+const LOAD_LABELS = [
+  { below: 2.5, label: 'Lekker', advice: 'Very doable. You should have time for a life.' },
+  { below: 3.2, label: 'Survivable', advice: 'Busy, but fine if you keep up from week one.' },
+  { below: 3.8, label: 'Cooked', advice: 'Heavy. Plan your weeks before the semester starts.' },
+  { below: Infinity, label: 'Fully cooked', advice: 'Brutal. Think about swapping one course for a lighter one.' },
+];
+
+// courses: [{ credits, n, difficulty, workload }]. Courses with no reviews are left out of the score,
+// and the score is weighted by credits so a 36-credit course counts more than an 18-credit one.
+function semesterLoad(courses) {
+  const credits = courses.reduce((s, c) => s + (c.credits || 0), 0);
+  const rated = courses.filter((c) => c.n > 0);
+  if (!rated.length) return { credits, rated: 0, load: null };
+  const weight = (c) => c.credits || 1;
+  const load = rated.reduce((s, c) => s + (weight(c) * (c.difficulty + c.workload)) / 2, 0) / rated.reduce((s, c) => s + weight(c), 0);
+  const { label, advice } = LOAD_LABELS.find((l) => load < l.below);
+  return { credits, rated: rated.length, load: Math.round(load * 10) / 10, label, advice };
+}
+
+module.exports = { PLAN_MAX, semesterLoad, QUALITY, SCALES, ALL_KEYS, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FREE_COMMENTS, RANKINGS, overallOf, parseReviewForm, parseVerdictForm };

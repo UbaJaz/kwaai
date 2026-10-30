@@ -4,7 +4,7 @@ const { openDb } = require('../src/db');
 const { createApp } = require('../src/app');
 const { seed } = require('../scripts/seed');
 const { screenComment } = require('../src/moderation');
-const { parseReviewForm, parseVerdictForm, overallOf } = require('../src/ratings');
+const { parseReviewForm, parseVerdictForm, overallOf, semesterLoad } = require('../src/ratings');
 const { html } = require('../src/html');
 const { titleCase, parseHandbook } = require('../scripts/import-handbook');
 
@@ -50,6 +50,20 @@ test('verdict form validation', () => {
   assert.ok(parseVerdictForm({ ...ok, lekker: 'yes' }, { currentYear: 2026 }).error);
   assert.ok(parseVerdictForm({ ...ok, year: '2010' }, { currentYear: 2026 }).error);
   assert.ok(parseVerdictForm({ ...ok, tip: 'x'.repeat(141) }, { currentYear: 2026 }).error);
+});
+
+test('semester load is credit-weighted and skips courses with no reviews', () => {
+  const load = semesterLoad([
+    { credits: 36, n: 5, difficulty: 4, workload: 4 },
+    { credits: 18, n: 3, difficulty: 1, workload: 1 },
+    { credits: 18, n: 0, difficulty: null, workload: null },
+  ]);
+  assert.equal(load.credits, 72);
+  assert.equal(load.rated, 2);
+  assert.equal(load.load, 3); // (36*4 + 18*1) / 54
+  assert.equal(load.label, 'Survivable');
+  assert.equal(semesterLoad([{ credits: 18, n: 4, difficulty: 5, workload: 5 }]).label, 'Fully cooked');
+  assert.equal(semesterLoad([{ credits: 18, n: 0 }]).load, null);
 });
 
 test('handbook parsing', () => {
@@ -333,6 +347,30 @@ test('course pages carry a link preview and a WhatsApp share link', async () => 
   assert.match(page, new RegExp(`<meta property="og:url" content="${base}/courses/EEE3099S">`));
   assert.match(page, /href="https:\/\/wa\.me\/\?text=Is%20EEE3099S%20lekker%20or%20nah%3F/);
   assert.match(await (await fetch(`${base}/rules`)).text(), /<meta property="og:description" content="Unofficial course/);
+});
+
+test('semester planner: add by code or search, remove, and shared links do not overwrite your plan', async () => {
+  const b = browser();
+  let res = await b.get('/plan?add=eee3099s');
+  assert.equal(res.headers.get('location'), '/plan?c=EEE3099S');
+  res = await b.get('/plan?c=EEE3099S&add=CSC1016S');
+  assert.equal(res.headers.get('location'), '/plan?c=EEE3099S,CSC1016S');
+  let page = await b.text('/plan?c=EEE3099S,CSC1016S');
+  assert.match(page, /class="plan-label">(Lekker|Survivable|Cooked|Fully cooked)</);
+  assert.match(page, /Based on 2 of 2 courses with reviews/);
+  assert.match(page, /href="https:\/\/wa\.me\/\?text=My%20semester%3A%20EEE3099S%2C%20CSC1016S/);
+
+  assert.match(await b.text('/plan?c=EEE3099S&add=dynamics'), /MEC2047F/, 'a name search lists matches to pick from');
+  assert.match(await b.text('/plan?add=zzzznotacourse'), /No course matches/);
+  assert.equal((await b.get('/plan')).headers.get('location'), '/plan?c=EEE3099S,CSC1016S', 'the plan is remembered');
+
+  await b.get('/plan?c=MAM1020F'); // a friend's link
+  assert.equal((await b.get('/plan')).headers.get('location'), '/plan?c=EEE3099S,CSC1016S', 'viewing a shared plan keeps yours');
+
+  assert.equal((await b.get('/plan?c=EEE3099S,CSC1016S&remove=EEE3099S')).headers.get('location'), '/plan?c=CSC1016S');
+  page = await b.text('/plan?c=APG4001S');
+  assert.match(page, /Not enough reviews yet/, 'no made-up score for courses nobody reviewed');
+  assert.match(await b.text('/plan?c='), /Your plan is empty/);
 });
 
 test('privacy and terms pages render', async () => {
