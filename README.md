@@ -1,8 +1,15 @@
-# LekkerOrNah 🤙
+# Kwaai
 
-**Is your course lekker… or nah?** Unofficial, anonymous course and lecturer reviews by UCT students.
+**Find out if a course is kwaai before you register.** Unofficial course ratings, workload scores and tips from South African university students, starting at UCT.
 
-Not affiliated with the University of Cape Town. The name deliberately avoids "RateMyProfessor" (a US trademark) and doesn't put "UCT" or the UCT crest in the brand. "Lekker" is a South African word, so it's local, memorable and fun without making a specific lecturer the joke.
+Not affiliated with any university. "Kwaai" is South African slang that means both "cool" and "strict", which covers a great course and a brutal exam. The brand avoids "RateMyProfessor" (a US trademark) and never uses a university's name, crest or logo as part of it.
+
+## Brand
+
+- **Colours:** ink `#151d2b`, lime `#c8f169` (only ever a fill behind ink text), paper `#f7f7f2`. Defined at the top of `public/style.css`.
+- **Type:** Bricolage Grotesque for headings, Inter for everything else.
+- **Logo:** `public/kwaai-icon.svg`; the wordmark is live text, lowercase `kwaai`.
+- **Universities:** each one gets an accent colour in `src/universities.js`, used only for the band under the header, the university picker, labels and course codes. The Kwaai colours never change. Accents are our own picks, not official brand values, and a test checks they're dark enough to read.
 
 ## What it does
 
@@ -63,7 +70,7 @@ npm test
 
 It's one Node process with one SQLite file, so it needs a host with a **persistent disk**: Fly.io (volume), Railway (volume), Render (paid disk) or any small VPS. Serverless hosts like Vercel won't keep the database.
 
-The `Dockerfile` stores the database at `/data/lekker.db`, so mount a volume at `/data`.
+The `Dockerfile` stores the database at `/data/lekker.db` (the old name is kept so existing volumes keep working), so mount a volume at `/data`.
 
 ### Free private demo on Render
 
@@ -85,7 +92,7 @@ Don't use this for real reviews: they'd be lost on the next restart.
 ```bash
 fly launch --no-deploy --copy-config      # pick a free app name if lekker-or-nah is taken
 fly volumes create lekker_data --region jnb --size 1
-fly secrets set BASE_URL=https://… RESEND_API_KEY=… EMAIL_FROM="LekkerOrNah <signin@…>" MODERATORS=… CONTACT_EMAIL=…
+fly secrets set BASE_URL=https://… RESEND_API_KEY=… EMAIL_FROM="Kwaai <signin@…>" MODERATORS=… CONTACT_EMAIL=…
 fly deploy
 ```
 
@@ -96,12 +103,12 @@ Backups: `fly ssh console -C "npm run backup"`, then `fly ssh sftp get /data/bac
 | Variable | Required in production | What it is |
 |---|---|---|
 | `NODE_ENV` | yes | `production` (set by the Dockerfile) |
-| `BASE_URL` | yes | Public URL, e.g. `https://lekkerornah.co.za`. Sign-in links use it. |
+| `BASE_URL` | yes | Public URL, e.g. `https://kwaai.co.za`. Sign-in links use it. |
 | `RESEND_API_KEY` | yes | From [resend.com](https://resend.com), which has a free tier. |
-| `EMAIL_FROM` | yes | e.g. `LekkerOrNah <signin@lekkerornah.co.za>`. The domain must be verified in Resend. |
+| `EMAIL_FROM` | yes | e.g. `Kwaai <signin@kwaai.co.za>`. The domain must be verified in Resend. |
 | `MODERATORS` | yes | Comma-separated @myuct.ac.za emails that can use `/mod`. |
 | `CONTACT_EMAIL` | yes | Shown in the privacy notice for POPIA requests. |
-| `OPERATOR` | no | Who runs the site, shown in the privacy notice. Defaults to "the LekkerOrNah team". |
+| `OPERATOR` | no | Who runs the site, shown in the privacy notice. Defaults to "the Kwaai team". |
 | `TRUST_PROXY` | set by Dockerfile | `1` = trust one proxy hop, so rate limits see the real client IP. Set it to `0` only if nothing sits in front of the app. |
 | `DB_FILE`, `BACKUP_DIR`, `PORT` | no | Paths and port. |
 

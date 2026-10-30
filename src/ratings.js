@@ -59,7 +59,7 @@ function parseReviewForm(form, { currentYear = new Date().getFullYear() } = {}) 
   return { review };
 }
 
-// Validates the quick lekker-or-nah vote. Returns { verdict } or { error }.
+// Validates the quick kwaai-or-nah vote. Returns { verdict } or { error }.
 function parseVerdictForm(form, { currentYear = new Date().getFullYear() } = {}) {
   if (form.lekker !== '1' && form.lekker !== '0') return { error: 'Pick lekker or nah.' };
   const year = Number(form.year);
@@ -72,7 +72,7 @@ function parseVerdictForm(form, { currentYear = new Date().getFullYear() } = {})
 // Semester planner: how heavy a set of courses is, from reviewers' difficulty and workload scores.
 const PLAN_MAX = 8;
 const LOAD_LABELS = [
-  { below: 2.5, label: 'Lekker', advice: 'Very doable. You should have time for a life.' },
+  { below: 2.5, label: 'Chilled', advice: 'Very doable. You should have time for a life.' },
   { below: 3.2, label: 'Survivable', advice: 'Busy, but fine if you keep up from week one.' },
   { below: 3.8, label: 'Cooked', advice: 'Heavy. Plan your weeks before the semester starts.' },
   { below: Infinity, label: 'Fully cooked', advice: 'Brutal. Think about swapping one course for a lighter one.' },

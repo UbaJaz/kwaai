@@ -3,17 +3,20 @@ const { QUALITY, SCALES, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FRE
 const { REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 
 const fmt = (n) => (n == null ? '–' : Number(n).toFixed(1));
-const tone = (n) => (n == null ? 'none' : n >= 4 ? 'good' : n >= 3 ? 'mid' : 'low');
 const month = (iso) => new Date(iso.replace(' ', 'T') + 'Z').toLocaleDateString('en-ZA', { month: 'short', year: 'numeric' });
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 // ---------- layout ----------
 
-const DEFAULT_DESCRIPTION = 'Unofficial course and lecturer reviews by UCT students. Not affiliated with the University of Cape Town.';
+const DEFAULT_DESCRIPTION = 'Course ratings, workload scores and tips from South African university students, starting at UCT. Unofficial and not affiliated with any university.';
+
+const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/rankings', 'Rankings']];
 
 // description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
-function layout({ title, user, isMod, flash, site = {}, description = DEFAULT_DESCRIPTION, path }, body) {
-  const fullTitle = title ? `${title} · LekkerOrNah` : 'LekkerOrNah: is your course lekker or nah?';
+// uni sets the accent colour for the university being browsed; the Kwaai brand colours never change.
+function layout({ title, user, isMod, flash, site = {}, uni, here = '', description = DEFAULT_DESCRIPTION, path }, body) {
+  const fullTitle = title ? `${title} · Kwaai` : 'Kwaai: find out if a course is kwaai before you register';
+  const on = (href) => (here === href || here.startsWith(`${href}/`) ? 'page' : null);
   return html`<!doctype html>
 <html lang="en">
 <head>
@@ -21,46 +24,50 @@ function layout({ title, user, isMod, flash, site = {}, description = DEFAULT_DE
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${fullTitle}</title>
 <meta name="description" content="${description}">
-<meta property="og:site_name" content="LekkerOrNah">
+<meta property="og:site_name" content="Kwaai">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_ZA">
 <meta property="og:title" content="${fullTitle}">
 <meta property="og:description" content="${description}">
 ${path && site.origin ? html`<meta property="og:url" content="${site.origin}${path}"><link rel="canonical" href="${site.origin}${path}">` : ''}
 <meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#151d2b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/style.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤙</text></svg>">
+<link rel="icon" href="/kwaai-icon.svg" type="image/svg+xml">
 <script src="/app.js" defer></script>
 </head>
-<body>
-<div class="notice">Unofficial student project · not affiliated with UCT · reviews marked <span class="badge sample">Sample</span> are demo data</div>
+<body${uni ? html` style="--uni:${uni.accent};--uni-soft:${uni.soft}"` : ''}>
+<a class="skip" href="#main">Skip to content</a>
+<div class="notice">Unofficial student project, not affiliated with any university. Reviews marked <span class="badge sample">Sample</span> are demo data.</div>
 <header class="site-header">
   <div class="wrap header-row">
-    <a class="logo" href="/"><span class="logo-mark">🤙</span><span>lekker<em>or nah?</em></span></a>
-    <nav class="nav">
-      <a href="/courses">Courses</a>
-      <a href="/plan">Planner</a>
-      <a href="/rankings">Rankings</a>
-      <a href="/rules">Rules</a>
-      ${user ? html`<a href="/account">My reviews</a>` : ''}
+    <a class="logo" href="/"><img src="/kwaai-icon.svg" alt="" width="30" height="30"><span>kwaai</span></a>
+    <nav class="nav" aria-label="Main">
+      ${NAV.map(([href, label]) => html`<a href="${href}" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}
+      ${user ? html`<a href="/account" ${on('/account') ? html`aria-current="page"` : ''}>My reviews</a>` : ''}
       ${isMod ? html`<a href="/mod" class="nav-mod">Moderation</a>` : ''}
+    </nav>
+    <div class="header-end">
+      ${uni ? html`<a class="uni-chip" href="/universities" aria-label="${uni.name}. Change university"><i aria-hidden="true"></i>${uni.short}</a>` : ''}
       ${user
         ? html`<form method="post" action="/logout" class="inline"><button class="link-btn" title="${user.email}">Sign out</button></form>`
-        : html`<a class="btn btn-small" href="/login">Sign in</a>`}
-    </nav>
+        : html`<a class="btn btn-small btn-outline" href="/login">Sign in</a>`}
+    </div>
   </div>
 </header>
-<main class="wrap">
+<div class="uni-band"></div>
+<main class="wrap" id="main">
 ${flash ? html`<div class="flash flash-${flash.type}" role="status">${flash.text}</div>` : ''}
 ${body}
 </main>
 <footer class="site-footer">
   <div class="wrap footer-row">
-    <p><strong>LekkerOrNah</strong> is an independent, student-run site. It is not affiliated with, endorsed by or run by the University of Cape Town. Reviews are students' personal opinions.</p>
-    <p><a href="/rules">House rules</a> · <a href="/takedown">Report or request removal</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
+    <p class="footer-brand"><img src="/kwaai-icon.svg" alt="" width="22" height="22"> kwaai</p>
+    <p>Kwaai is an independent, student-run site. It isn't affiliated with, endorsed by or run by any university. Reviews are students' personal opinions.</p>
+    <p><a href="/universities">Universities</a> · <a href="/rules">House rules</a> · <a href="/takedown">Report or request removal</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
   </div>
 </footer>
 </body>
@@ -69,8 +76,12 @@ ${body}
 
 // ---------- small components ----------
 
-const stars = (n) => html`<span class="stars" style="--v:${n == null ? 0 : n}" role="img" aria-label="${n == null ? 'No rating yet' : `${fmt(n)} out of 5`}"></span>`;
-const chip = (n, big) => html`<span class="score ${big ? 'score-big' : ''} tone-${tone(n)}">${fmt(n)}</span>`;
+// A score is always a number with five small bars filled to the nearest half point.
+const segs = (n) => {
+  const v = Math.round(n * 2) / 2;
+  return html`<span class="seg" aria-hidden="true">${[1, 2, 3, 4, 5].map((i) => html`<i class="${v >= i ? 'f' : v >= i - 0.5 ? 'h' : ''}"></i>`)}</span>`;
+};
+const chip = (n, big) => html`<span class="score ${big ? 'score-big' : ''}" role="img" aria-label="${n == null ? 'No rating yet' : `${fmt(n)} out of 5`}"><b>${fmt(n)}</b>${n == null ? '' : segs(n)}</span>`;
 const sampleBadge = (on) => (on ? html`<span class="badge sample" title="Demo data, not a real student's review">Sample</span>` : '');
 
 function bars(stats) {
@@ -88,14 +99,13 @@ function courseCard(c) {
   </a>`;
 }
 
-function reviewCard(r, { user, lecturerLink = true, courseLink = false, hideBody = false } = {}) {
+function reviewCard(r, { user, uni, lecturerLink = true, courseLink = false, hideBody = false } = {}) {
   const tags = r.tags ? r.tags.split('|') : [];
   const mine = user && r.user_id === user.id;
   return html`<article class="card review" id="review-${r.id}">
     <div class="review-head">
       ${chip(r.overall, true)}
       <div>
-        ${stars(r.overall)}
         <div class="review-who">
           ${courseLink ? html`<a href="/courses/${r.course}">${r.course}</a> · ` : ''}
           ${r.lecturer_id
@@ -113,7 +123,7 @@ function reviewCard(r, { user, lecturerLink = true, courseLink = false, hideBody
     ${tags.length ? html`<div class="tags">${tags.map((t) => html`<span class="tag">${t}</span>`)}</div>` : ''}
     ${r.body ? hideBody ? html`<p class="review-body locked">🔒 Comment hidden. <a href="#gate">How to read it</a></p>` : html`<p class="review-body">${r.body}</p>` : ''}
     <div class="review-foot">
-      <span class="muted">Anonymous UCT student · ${month(r.created_at)}</span>
+      <span class="muted">Anonymous ${uni?.short ?? 'UCT'} student · ${month(r.created_at)}</span>
       <span class="review-actions">
         ${mine ? html`<form method="post" action="/reviews/${r.id}/delete" class="inline" data-confirm="Delete your review? This can't be undone."><button class="link-btn">Delete mine</button></form>` : ''}
         <details class="report">
@@ -131,39 +141,39 @@ function reviewCard(r, { user, lecturerLink = true, courseLink = false, hideBody
   </article>`;
 }
 
-// Percent of students who voted lekker, once there are enough votes to mean something.
-const lekkerPct = (votes) => (votes.n >= MIN_FOR_RANKING ? Math.round((votes.lekker / votes.n) * 100) : null);
+// Percent of students who voted kwaai, once there are enough votes to mean something.
+const kwaaiPct = (votes) => (votes.n >= MIN_FOR_RANKING ? Math.round((votes.lekker / votes.n) * 100) : null);
 
 // One line with the numbers, used for the link preview.
 function courseSummary(c, stats, votes) {
-  const pct = lekkerPct(votes);
+  const pct = kwaaiPct(votes);
   const parts = [];
-  if (pct != null) parts.push(`${pct}% of ${votes.n} students say lekker`);
+  if (pct != null) parts.push(`${pct}% of ${votes.n} students say kwaai`);
   if (stats.n) parts.push(`Exam difficulty ${fmt(stats.difficulty)}/5`, `Workload ${fmt(stats.workload)}/5`, plural(stats.n, 'review'));
-  if (!parts.length) parts.push("No votes yet. Took it? Say if it's lekker or nah");
+  if (!parts.length) parts.push("No votes yet. Took it? Say if it's kwaai or nah");
   return `${c.code} ${c.title}. ${parts.join(' · ')}.`;
 }
 
 function whatsappLink(c, votes, origin) {
-  const pct = lekkerPct(votes);
+  const pct = kwaaiPct(votes);
   const text = pct != null
-    ? `Is ${c.code} lekker or nah? ${pct}% of students say lekker. ${origin}/courses/${c.code}`
-    : `Is ${c.code} lekker or nah? Took it? Vote here: ${origin}/courses/${c.code}`;
+    ? `Is ${c.code} kwaai or nah? ${pct}% of students say kwaai. ${origin}/courses/${c.code}`
+    : `Is ${c.code} kwaai or nah? Took it? Vote here: ${origin}/courses/${c.code}`;
   return `https://wa.me/?text=${encodeURIComponent(text)}`;
 }
 
 function verdictBox(ctx, { c, votes, myVerdict, years }) {
-  const pct = lekkerPct(votes);
+  const pct = kwaaiPct(votes);
   const mine = myVerdict && myVerdict.status !== 'removed' ? myVerdict : null;
   return html`<section class="card verdict-box" id="verdict">
     <div class="verdict-head">
-      <h2>Took ${c.code}? Lekker or nah?</h2>
+      <h2>Took ${c.code}? Kwaai or nah?</h2>
       ${pct != null
-        ? html`<p class="verdict-result"><strong>${pct}%</strong> say lekker <span class="meta">from ${plural(votes.n, 'vote')}</span></p>`
+        ? html`<p class="verdict-result"><strong>${pct}%</strong> say kwaai <span class="meta">from ${plural(votes.n, 'vote')}</span></p>`
         : html`<p class="meta">${votes.n ? `${plural(votes.n, 'vote')} so far. The result shows from ${MIN_FOR_RANKING} votes.` : 'No votes yet.'}</p>`}
     </div>
     ${ctx.user
-      ? html`${mine ? html`<p class="meta">You voted <strong>${mine.lekker ? 'lekker 🤙' : 'nah 👎'}</strong> (${mine.year}).${mine.status === 'held' ? ' It counts once a moderator has checked your tip.' : ''} Vote again to change it.</p>` : ''}
+      ? html`${mine ? html`<p class="meta">You voted <strong>${mine.lekker ? 'kwaai' : 'nah'}</strong> (${mine.year}).${mine.status === 'held' ? ' It counts once a moderator has checked your tip.' : ''} Vote again to change it.</p>` : ''}
         <form method="post" action="/courses/${c.code}/verdict" class="verdict-form">
           <div class="form-row two">
             <label>Tip for next year's class <span class="hint">Optional, max ${MAX_TIP} characters</span>
@@ -174,15 +184,15 @@ function verdictBox(ctx, { c, votes, myVerdict, years }) {
             </label>
           </div>
           <div class="verdict-buttons">
-            <button class="btn btn-big btn-lekker" name="lekker" value="1">🤙 Lekker</button>
-            <button class="btn btn-big btn-nah" name="lekker" value="0">👎 Nah</button>
+            <button class="btn btn-big btn-kwaai" name="lekker" value="1">Kwaai</button>
+            <button class="btn btn-big btn-nah" name="lekker" value="0">Nah</button>
           </div>
           <p class="fine">Votes are anonymous. Tips follow the <a href="/rules">house rules</a>, and any that might break them wait for a moderator. Want to say more? <a href="/courses/${c.code}/review">Write a full review</a>.</p>
         </form>
         ${mine ? html`<form method="post" action="/verdicts/${mine.id}/delete" class="inline" data-confirm="Delete your vote on ${c.code}?"><button class="link-btn fine">Delete my vote</button></form>` : ''}`
       : html`<div class="verdict-buttons">
-          <a class="btn btn-big btn-lekker" href="/login">🤙 Lekker</a>
-          <a class="btn btn-big btn-nah" href="/login">👎 Nah</a>
+          <a class="btn btn-big btn-kwaai" href="/login">Kwaai</a>
+          <a class="btn btn-big btn-nah" href="/login">Nah</a>
         </div>
         <p class="fine">Sign in with your @myuct.ac.za email to vote. Votes are anonymous.</p>`}
   </section>`;
@@ -190,9 +200,9 @@ function verdictBox(ctx, { c, votes, myVerdict, years }) {
 
 function tipList(tips, locked) {
   return html`<ul class="tips">${tips.map((t, i) => locked && i >= FREE_COMMENTS
-    ? html`<li class="card tip"><span class="tip-verdict" role="img" aria-label="${t.lekker ? 'Voted lekker' : 'Voted nah'}">${t.lekker ? '🤙' : '👎'}</span><p class="tip-text locked">🔒 Tip hidden. <a href="#gate">How to read it</a></p></li>`
+    ? html`<li class="card tip"><span class="tip-verdict ${t.lekker ? 'yes' : 'no'}">${t.lekker ? 'Kwaai' : 'Nah'}</span><p class="tip-text locked">🔒 Tip hidden. <a href="#gate">How to read it</a></p></li>`
     : html`<li class="card tip" id="tip-${t.id}">
-    <span class="tip-verdict" role="img" aria-label="${t.lekker ? 'Voted lekker' : 'Voted nah'}">${t.lekker ? '🤙' : '👎'}</span>
+    <span class="tip-verdict ${t.lekker ? 'yes' : 'no'}">${t.lekker ? 'Kwaai' : 'Nah'}</span>
     <div>
       <p class="tip-text">${t.tip}</p>
       <div class="review-foot tip-foot">
@@ -216,12 +226,12 @@ function hideAfterFree(reviews, locked) {
 function gateNotice(ctx, hidden) {
   if (!hidden) return '';
   return html`<div class="card gate" id="gate">
-    <p><strong>${plural(hidden, 'more comment')} on this page.</strong> Vote lekker or nah on any course you've taken and you can read every comment on the site. It takes about ten seconds.</p>
-    ${ctx.user ? html`<a class="btn" href="/courses">Find a course you've taken</a>` : html`<a class="btn" href="/login">Sign in with your UCT email</a>`}
+    <p><strong>${plural(hidden, 'more comment')} on this page.</strong> Vote kwaai or nah on any course you've taken and you can read every comment on the site. It takes about ten seconds.</p>
+    ${ctx.user ? html`<a class="btn" href="/courses">Find a course you've taken</a>` : html`<a class="btn" href="/login">Sign in with your student email</a>`}
   </div>`;
 }
 
-function rankList(rows, kind, rank) {
+function rankList(rows, kind) {
   if (!rows.length) return html`<p class="empty">Not enough reviews yet. Things need at least ${MIN_FOR_RANKING} reviews to be ranked.</p>`;
   return html`<ol class="rank-list">
     ${rows.map((r, i) => html`<li>
@@ -231,56 +241,63 @@ function rankList(rows, kind, rank) {
         ${sampleBadge(r.is_sample)}
         <span class="meta">${r.dept_name} · ${plural(r.n, 'review')}</span>
       </a>
-      <span class="rank-score">${rank.column === 'overall' || QUALITY.some((q) => q.key === rank.column) ? chip(r.score) : html`<span class="score tone-none">${fmt(r.score)}/5</span>`}</span>
+      <span class="rank-score">${chip(r.score)}</span>
     </li>`)}
   </ol>`;
 }
 
 // ---------- pages ----------
 
-function home(ctx, { counts, topCourses, funniest, hardest, depts }) {
-  return layout(ctx, html`
+function home(ctx, { counts, topCourses, heaviest, depts }) {
+  const { uni } = ctx;
+  const n = (v) => v.toLocaleString('en-ZA');
+  return layout({ ...ctx, path: '/' }, html`
   <section class="hero">
-    <p class="eyebrow">For UCT students, by UCT students</p>
-    <h1>Is your course <span class="hl">lekker</span>… or nah?</h1>
-    <p class="lede">Honest, anonymous ratings of UCT courses and the lecturers who teach them. Pick electives with your eyes open, and find out who sets the brutal exams before you're writing one.</p>
-    <form class="search" action="/courses" role="search">
-      <input type="search" name="q" placeholder="Try MEC2047F or “dynamics”" aria-label="Search courses">
-      <button class="btn">Search</button>
-    </form>
-    <p><a href="/plan">Picking courses for next semester? See how heavy your mix is →</a></p>
-    <p class="stats">${plural(counts.courses, 'course')} · ${plural(counts.lecturers, 'lecturer')} · ${plural(counts.reviews, 'review')}</p>
+    <div class="hero-main">
+      <p class="eyebrow"><b>${uni.name}</b> · ${plural(counts.courses, 'course')}</p>
+      <h1>Find out if a course is <em class="hl">kwaai</em> before you register.</h1>
+      <p class="lede">Ratings, workload scores and one-line tips from students who already took it.</p>
+      <form class="search" action="/courses" role="search">
+        <input type="search" name="q" placeholder="Course code or name, e.g. CSC1015F" aria-label="Search courses">
+        <button class="btn btn-ink">Search</button>
+      </form>
+      <p class="hero-hint">Picking next semester's courses? <a href="/plan">See how cooked your mix is →</a></p>
+    </div>
+    <aside class="pulse" aria-labelledby="pulse-title">
+      <h2 class="label" id="pulse-title">So far at ${uni.short}</h2>
+      <dl>
+        <div><dt>Courses listed</dt><dd>${n(counts.courses)}</dd></div>
+        <div><dt>Full reviews</dt><dd>${n(counts.reviews)}</dd></div>
+        <div><dt>Kwaai-or-nah votes</dt><dd>${n(counts.votes)}</dd></div>
+        <div><dt>Tips shared</dt><dd>${n(counts.tips)}</dd></div>
+      </dl>
+    </aside>
   </section>
 
-  <section class="grid-3">
-    <div class="card panel">
-      <h2>🏆 Top rated courses</h2>
-      ${rankList(topCourses, 'course', RANKINGS[0])}
+  <section class="lists">
+    <div>
+      <h2 class="label">Highest rated</h2>
+      ${rankList(topCourses, 'course')}
       <a class="more" href="/rankings?cat=best&kind=course">All rankings →</a>
     </div>
-    <div class="card panel">
-      <h2>😂 Funniest lecturers</h2>
-      ${rankList(funniest, 'lecturer', RANKINGS[1])}
-      <a class="more" href="/rankings?cat=funniest&kind=lecturer">All rankings →</a>
-    </div>
-    <div class="card panel">
-      <h2>💀 Hardest exams</h2>
-      ${rankList(hardest, 'course', RANKINGS[2])}
-      <a class="more" href="/rankings?cat=hardest&kind=course">All rankings →</a>
+    <div>
+      <h2 class="label">Heaviest workload</h2>
+      ${rankList(heaviest, 'course')}
+      <a class="more" href="/rankings?cat=workload&kind=course">All rankings →</a>
     </div>
   </section>
 
   <section>
-    <h2 class="section-title">Browse by department</h2>
+    <h2 class="label">Browse by department</h2>
     <div class="dept-grid">
-      ${depts.map((d) => html`<a class="card dept" href="/courses?dept=${d.code}"><span class="dept-code">${d.code}</span><span>${d.name}</span><span class="meta">${plural(d.courses, 'course')}</span></a>`)}
+      ${depts.map((d) => html`<a class="dept" href="/courses?dept=${d.code}"><span class="dept-code">${d.code}</span><span class="dept-name">${d.name}</span><span class="meta">${plural(d.courses, 'course')}</span></a>`)}
     </div>
   </section>
 
-  <section class="card how">
-    <div><h3>⭐ Rate what matters</h3><p>Teaching, how fun the lectures are, how fair the exams are and how approachable the lecturer is. Difficulty and workload are rated separately, because hard isn't the same as bad.</p></div>
-    <div><h3>🕶️ Anonymous, but real</h3><p>You sign in with your <strong>@myuct.ac.za</strong> email so every review comes from a real student. Your name and email are never shown.</p></div>
-    <div><h3>🛡️ Keep it about the teaching</h3><p>No personal attacks and no allegations. Anyone can report a review and serious reports hide it immediately. <a href="/rules">Read the rules</a>.</p></div>
+  <section class="how">
+    <div><h3>Rate what matters</h3><p>Four scores make up a rating: teaching, how engaging the lectures are, exam fairness and how approachable the lecturer is. Difficulty and workload are scored separately, because a hard course isn't a bad course.</p></div>
+    <div><h3>Real students, no names</h3><p>You sign in with your student email, so every review comes from a real student. Your name and email never appear next to anything you post.</p></div>
+    <div><h3>About the course, not the person</h3><p>No personal attacks and no allegations. Anyone can report a review, and serious reports hide it straight away. <a href="/rules">Read the house rules</a>.</p></div>
   </section>`);
 }
 
@@ -325,7 +342,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
   <section class="course-layout">
     <aside class="card score-panel">
       ${stats.n
-        ? html`<div class="overall">${chip(stats.overall, true)}<div>${stars(stats.overall)}<div class="meta">${plural(stats.n, 'review')} ${sampleBadge(stats.has_sample)}</div></div></div>
+        ? html`<div class="overall">${chip(stats.overall, true)}<div class="meta">${plural(stats.n, 'review')} ${sampleBadge(stats.has_sample)}</div></div>
           ${bars(stats)}
           ${topTags.length ? html`<div class="tags">${topTags.map(([t, n]) => html`<span class="tag">${t} <b>${n}</b></span>`)}</div>` : ''}`
         : html`<div class="empty-score"><p class="big-emoji">🫥</p><p>No full reviews yet.</p><a class="btn" href="/courses/${c.code}/review">Write the first one</a></div>`}
@@ -419,7 +436,7 @@ function lecturer(ctx, { l, stats, courses: taught, reviews, locked }) {
   <section class="course-layout">
     <aside class="card score-panel">
       ${stats.n
-        ? html`<div class="overall">${chip(stats.overall, true)}<div>${stars(stats.overall)}<div class="meta">${plural(stats.n, 'review')}</div></div></div>${bars(stats)}`
+        ? html`<div class="overall">${chip(stats.overall, true)}<div class="meta">${plural(stats.n, 'review')}</div></div>${bars(stats)}`
         : html`<div class="empty-score"><p class="big-emoji">🫥</p><p>No reviews yet.</p></div>`}
       ${taught.length ? html`<h3>Courses</h3><ul class="plain">${taught.map((c) => html`<li><a href="/courses/${c.code}"><span class="code">${c.code}</span> ${c.title}</a> ${c.n ? html`<span class="meta">${chip(c.overall)} (${c.n})</span>` : ''}</li>`)}</ul>` : ''}
     </aside>
@@ -456,14 +473,14 @@ function rankings(ctx, { rows, depts, dept, rank, kind }) {
   </form>
   <div class="card panel">
     <h2>${rank.label} · ${kind === 'course' ? 'Courses' : 'Lecturers'}${dept ? ` · ${depts.find((d) => d.code === dept)?.name || dept}` : ''}</h2>
-    ${rankList(rows, kind, rank)}
+    ${rankList(rows, kind)}
   </div>`);
 }
 
 function plan(ctx, { courses: list, load, matches, add, codes }) {
   const link = (o) => `/plan?${new URLSearchParams({ c: codes.join(','), ...o })}`;
   const shareText = load.load != null
-    ? `My semester: ${codes.join(', ')}. LekkerOrNah says ${load.label.toLowerCase()} (${fmt(load.load)}/5). How cooked is yours? ${ctx.site.origin}/plan?c=${codes.join(',')}`
+    ? `My semester: ${codes.join(', ')}. Kwaai says ${load.label.toLowerCase()} (${fmt(load.load)}/5). How cooked is yours? ${ctx.site.origin}/plan?c=${codes.join(',')}`
     : `My semester: ${codes.join(', ')}. How cooked is yours? ${ctx.site.origin}/plan?c=${codes.join(',')}`;
   const description = list.length
     ? `${codes.join(', ')}: ${load.load != null ? `${load.label} (${fmt(load.load)}/5 for difficulty and workload)` : 'not enough reviews to score yet'}. Check how heavy your own semester is.`
@@ -493,23 +510,37 @@ function plan(ctx, { courses: list, load, matches, add, codes }) {
   </section>
 
   <table class="offerings plan-table">
-    <thead><tr><th>Course</th><th>Credits</th><th>Exam difficulty</th><th>Workload</th><th>Lekker</th></tr></thead>
+    <thead><tr><th>Course</th><th>Credits</th><th>Exam difficulty</th><th>Workload</th><th>Kwaai</th></tr></thead>
     <tbody>${list.map((c) => html`<tr>
       <td><a href="/courses/${c.code}"><span class="code">${c.code}</span></a> ${c.title} ${sampleBadge(c.has_sample)} <a class="plan-remove" href="${link({ remove: c.code })}" aria-label="Remove ${c.code} from the plan">Remove</a></td>
       <td>${c.credits ?? '–'}</td>
       ${c.n ? html`<td>${fmt(c.difficulty)}/5</td><td>${fmt(c.workload)}/5</td>` : html`<td colspan="2" class="muted">No reviews yet</td>`}
-      <td>${lekkerPct({ n: c.votes || 0, lekker: c.lekker || 0 }) != null ? `${lekkerPct({ n: c.votes, lekker: c.lekker })}%` : html`<span class="muted">–</span>`}</td>
+      <td>${kwaaiPct({ n: c.votes || 0, lekker: c.lekker || 0 }) != null ? `${kwaaiPct({ n: c.votes, lekker: c.lekker })}%` : html`<span class="muted">–</span>`}</td>
     </tr>`)}</tbody>
   </table>
   <p class="fine">Scores average every student who reviewed the course, across lecturers and years. Your semester could feel different.</p>`
   : html`<p class="empty">Your plan is empty. Add a course above to start.</p>`}`);
 }
 
+function universities(ctx, { universities: list, liveCourses }) {
+  return layout({ ...ctx, title: 'Universities', here: '/universities', path: '/universities' }, html`
+  <h1 class="page-title">Universities</h1>
+  <p class="lede small">Kwaai started at UCT. More South African universities are next.</p>
+  <ul class="uni-list">
+    ${list.map((u) => html`<li style="--uni:${u.accent};--uni-soft:${u.soft}">
+      <span class="uni-dot" aria-hidden="true"></span>
+      <div><strong>${u.name}</strong><span class="meta">${u.city}</span></div>
+      ${u.live ? html`<a class="btn btn-small" href="/courses">Browse ${plural(liveCourses, 'course')}</a>` : html`<span class="status">Coming soon</span>`}
+    </li>`)}
+  </ul>
+  <p class="fine">The colour next to each university is our own pick, chosen to echo the campus. Kwaai isn't affiliated with any of these universities.</p>`);
+}
+
 function rules(ctx) {
   return layout({ ...ctx, title: 'House rules' }, html`
   <article class="prose">
   <h1 class="page-title">House rules</h1>
-  <p class="lede small">LekkerOrNah exists to help students choose courses and prepare for them. Roasting a course is fine. Attacking a person isn't.</p>
+  <p class="lede small">Kwaai exists to help students choose courses and prepare for them. Roasting a course is fine. Attacking a person isn't.</p>
 
   <h2>✅ Do</h2>
   <ul>
@@ -549,15 +580,15 @@ function privacy(ctx) {
   return layout({ ...ctx, title: 'Privacy notice' }, html`
   <article class="prose">
   <h1 class="page-title">Privacy notice</h1>
-  <p class="lede small">How LekkerOrNah handles personal information under South Africa's Protection of Personal Information Act (POPIA).</p>
+  <p class="lede small">How Kwaai handles personal information under South Africa's Protection of Personal Information Act (POPIA).</p>
 
   <h2>Who is responsible</h2>
-  <p>LekkerOrNah is run by ${operator}, an independent student project. It is not run by or affiliated with the University of Cape Town. The responsible party and information officer is ${operator}, reachable at ${contact}.</p>
+  <p>Kwaai is run by ${operator}, an independent student project. It is not run by or affiliated with any university, including the University of Cape Town. The responsible party and information officer is ${operator}, reachable at ${contact}.</p>
 
   <h2>What we collect, and why</h2>
   <ul>
     <li><strong>Your @myuct.ac.za email</strong>, to check you're a UCT student, send sign-in links, and enforce bans. It is never shown publicly.</li>
-    <li><strong>Your reviews and votes</strong> (ratings, tags, comment, lekker-or-nah vote, tip, course, lecturer, year). They are published without your name or email.</li>
+    <li><strong>Your reviews and votes</strong> (ratings, tags, comment, kwaai-or-nah vote, tip, course, lecturer, year). They are published without your name or email.</li>
     <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), a short-lived one for on-screen messages, and one that remembers the course codes in your semester plan for 180 days. No advertising or tracking cookies.</li>
     <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many reports). It isn't written to our database.</li>
     <li><strong>Removal requests:</strong> the name, email and details you give us, used only to deal with that request.</li>
@@ -596,12 +627,12 @@ function terms(ctx) {
   <h1 class="page-title">Terms of use</h1>
   <p class="lede small">The short version: be honest, be fair, and remember these are students' opinions.</p>
   <ol>
-    <li><strong>Unofficial.</strong> LekkerOrNah is an independent student project. It is not affiliated with, endorsed by or run by the University of Cape Town. Course information comes from UCT's public handbooks and may be out of date.</li>
+    <li><strong>Unofficial.</strong> Kwaai is an independent student project. It is not affiliated with, endorsed by or run by any university, including the University of Cape Town. Course information comes from UCT's public handbooks and may be out of date.</li>
     <li><strong>Who can post.</strong> You need a current @myuct.ac.za email. One account per person. Don't share your sign-in link.</li>
     <li><strong>Your reviews.</strong> You're responsible for what you post. It must be your honest opinion of a course you took, and it must follow the <a href="/rules">house rules</a>. Don't post allegations, private information, or anything defamatory, discriminatory or harassing.</li>
-    <li><strong>Permission to show your review.</strong> By posting, you let LekkerOrNah display your review on this site. You can delete it at any time.</li>
+    <li><strong>Permission to show your review.</strong> By posting, you let Kwaai display your review on this site. You can delete it at any time.</li>
     <li><strong>Moderation.</strong> We may hide or remove any review, and suspend any account, that breaks these terms or the house rules, or that we reasonably think could harm someone. Reviews may be hidden while a report or removal request is looked at.</li>
-    <li><strong>Opinions, not facts.</strong> Reviews are the personal opinions of individual students, not statements by LekkerOrNah. Ratings are averages of those opinions.</li>
+    <li><strong>Opinions, not facts.</strong> Reviews are the personal opinions of individual students, not statements by Kwaai. Ratings are averages of those opinions.</li>
     <li><strong>No guarantees.</strong> The site is provided as is, for free. We don't guarantee it will always be available or accurate, and to the extent the law allows we're not liable for decisions you make using it.</li>
     <li><strong>Changes.</strong> We may update these terms. Material changes will be announced on the site.</li>
     <li><strong>Law.</strong> These terms are governed by South African law.</li>
@@ -617,14 +648,14 @@ function account(ctx, { reviews, verdicts }) {
   <p class="lede small">Signed in as <strong>${ctx.user.email}</strong>. Only you can see this page. Your email is never shown next to your reviews.</p>
   <h2 class="section-title">My votes</h2>
   ${verdicts.length ? html`<div class="my-reviews">${verdicts.map((v) => html`<div class="card mod-item">
-    <div class="mod-meta"><a href="/courses/${v.course}"><span class="code">${v.course}</span></a> · ${v.year} · <strong>${v.lekker ? 'Lekker 🤙' : 'Nah 👎'}</strong> · <span class="score ${label[v.status][1]}">${label[v.status][0]}</span></div>
+    <div class="mod-meta"><a href="/courses/${v.course}"><span class="code">${v.course}</span></a> · ${v.year} · <strong>${v.lekker ? 'Kwaai' : 'Nah'}</strong> · <span class="status ${label[v.status][1]}">${label[v.status][0]}</span></div>
     ${v.tip ? html`<p>“${v.tip}”</p>` : ''}
     <form method="post" action="/verdicts/${v.id}/delete" class="inline" data-confirm="Delete this vote? This can't be undone."><input type="hidden" name="back" value="account"><button class="btn btn-small btn-quiet">Delete</button></form>
   </div>`)}</div>` : html`<p class="empty">No votes yet.</p>`}
 
   <h2 class="section-title">My full reviews</h2>
   ${reviews.length ? html`<div class="my-reviews">${reviews.map((r) => html`<div class="card mod-item">
-    <div class="mod-meta"><a href="/courses/${r.course}"><span class="code">${r.course}</span></a> · ${r.lecturer_name || 'Lecturer not listed'} · ${r.year} · <span class="score ${label[r.status][1]}">${label[r.status][0]}</span></div>
+    <div class="mod-meta"><a href="/courses/${r.course}"><span class="code">${r.course}</span></a> · ${r.lecturer_name || 'Lecturer not listed'} · ${r.year} · <span class="status ${label[r.status][1]}">${label[r.status][0]}</span></div>
     <p>${chip(r.overall)} ${r.body ? html`“${r.body}”` : html`<span class="muted">(rating only)</span>`}</p>
     <form method="post" action="/reviews/${r.id}/delete" class="inline" data-confirm="Delete this review? This can't be undone."><button class="btn btn-small btn-quiet">Delete</button></form>
   </div>`)}</div>` : html`<p class="empty">You haven't reviewed anything yet. <a href="/courses">Find a course</a>.</p>`}
@@ -754,7 +785,7 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log }) {
 
   <h2 class="section-title">Hidden tips <span class="count">${heldTips.length}</span></h2>
   ${heldTips.length ? heldTips.map((v) => html`<div class="card mod-item">
-    <div class="mod-meta"><a href="/courses/${v.course}">${v.course}</a> · ${v.year} · voted ${v.lekker ? 'lekker' : 'nah'} · tip #${v.id}</div>
+    <div class="mod-meta"><a href="/courses/${v.course}">${v.course}</a> · ${v.year} · voted ${v.lekker ? 'kwaai' : 'nah'} · tip #${v.id}</div>
     <div class="flags">${v.flags.split('|').filter(Boolean).map((f) => html`<span class="flag">${f}</span>`)}</div>
     <p class="review-body">“${v.tip}”</p>
     <div class="mod-actions">
@@ -770,4 +801,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log }) {
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { plan, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, takedown, message, mod, suggestLecturer, privacy, terms, account };
+module.exports = { universities, plan, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, takedown, message, mod, suggestLecturer, privacy, terms, account };

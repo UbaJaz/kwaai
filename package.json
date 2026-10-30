@@ -1,8 +1,8 @@
 {
-  "name": "lekker-or-nah",
+  "name": "kwaai",
   "version": "0.1.0",
   "private": true,
-  "description": "Unofficial course and lecturer reviews by UCT students",
+  "description": "Kwaai: unofficial course reviews by South African university students",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

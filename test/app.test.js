@@ -7,6 +7,7 @@ const { screenComment } = require('../src/moderation');
 const { parseReviewForm, parseVerdictForm, overallOf, semesterLoad } = require('../src/ratings');
 const { html } = require('../src/html');
 const { titleCase, parseHandbook } = require('../scripts/import-handbook');
+const { UNIVERSITIES } = require('../src/universities');
 
 // ---- unit ----
 
@@ -64,6 +65,17 @@ test('semester load is credit-weighted and skips courses with no reviews', () =>
   assert.equal(load.label, 'Survivable');
   assert.equal(semesterLoad([{ credits: 18, n: 4, difficulty: 5, workload: 5 }]).label, 'Fully cooked');
   assert.equal(semesterLoad([{ credits: 18, n: 0 }]).load, null);
+});
+
+test('every university accent is dark enough for text on white (WCAG AA, 4.5:1)', () => {
+  const lum = (hex) => {
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  for (const u of UNIVERSITIES) {
+    assert.ok(1.05 / (lum(u.accent) + 0.05) >= 4.5, `${u.slug} accent ${u.accent}`);
+    assert.ok((lum(u.soft) + 0.05) / (lum(u.accent) + 0.05) >= 4.5, `${u.slug} accent on its soft background`);
+  }
 });
 
 test('handbook parsing', () => {
@@ -261,7 +273,7 @@ test('students can delete their account and all their reviews', async () => {
   assert.equal((await student.get('/account')).status, 303, 'signed out afterwards');
 });
 
-test('lekker-or-nah votes: one per student, result shows from 3 votes, tips can be reported', async (t) => {
+test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can be reported', async (t) => {
   // its own server, so earlier tests haven't used up this IP's report limit
   const db = openDb(':memory:');
   seed(db, { samples: false });
@@ -281,12 +293,12 @@ test('lekker-or-nah votes: one per student, result shows from 3 votes, tips can 
   assert.equal((await voters[0].post('/courses/CSC2001F/verdict', { lekker: '0', year, tip: 'Tutorials are where it clicks' })).status, 303, 'voting again changes the vote');
   let page = await anon.text('/courses/CSC2001F');
   assert.match(page, /1 vote so far/, 'one student, one vote');
-  assert.doesNotMatch(page, /say lekker/, 'no percentage from a single vote');
+  assert.doesNotMatch(page, /say kwaai/, 'no percentage from a single vote');
 
   await voters[1].post('/courses/CSC2001F/verdict', { lekker: '1', year });
   await voters[2].post('/courses/CSC2001F/verdict', { lekker: '1', year });
   page = await anon.text('/courses/CSC2001F');
-  assert.match(page, /67%<\/strong> say lekker/);
+  assert.match(page, /67%<\/strong> say kwaai/);
   assert.match(page, /Tutorials are where it clicks/);
 
   const id = /\/verdicts\/(\d+)\/report/.exec(page)[1];
@@ -330,7 +342,7 @@ test('readers see the first 2 comments until they vote once, then all of them', 
   assert.match(page, /Gate comment number 3/);
   assert.doesNotMatch(page, /Gate comment number [12]/, 'hidden comments are not sent to the browser at all');
   assert.match(page, /2 more comments on this page/);
-  assert.match(page, /\d+(\.\d)?<\/span>/, 'scores stay public');
+  assert.match(page, /<b>\d\.\d<\/b>/, 'scores stay public');
 
   await b.signIn('gat001@myuct.ac.za');
   assert.doesNotMatch(await b.text('/courses/CSC2001F'), /Gate comment number 1/, 'signing in alone is not enough');
@@ -342,11 +354,11 @@ test('readers see the first 2 comments until they vote once, then all of them', 
 
 test('course pages carry a link preview and a WhatsApp share link', async () => {
   const page = await (await fetch(`${base}/courses/EEE3099S`)).text();
-  assert.match(page, /<meta property="og:title" content="EEE3099S [^"]+ · LekkerOrNah">/);
+  assert.match(page, /<meta property="og:title" content="EEE3099S [^"]+ · Kwaai">/);
   assert.match(page, /<meta property="og:description" content="EEE3099S [^"]*Workload \d\.\d\/5[^"]*">/);
   assert.match(page, new RegExp(`<meta property="og:url" content="${base}/courses/EEE3099S">`));
-  assert.match(page, /href="https:\/\/wa\.me\/\?text=Is%20EEE3099S%20lekker%20or%20nah%3F/);
-  assert.match(await (await fetch(`${base}/rules`)).text(), /<meta property="og:description" content="Unofficial course/);
+  assert.match(page, /href="https:\/\/wa\.me\/\?text=Is%20EEE3099S%20kwaai%20or%20nah%3F/);
+  assert.match(await (await fetch(`${base}/rules`)).text(), /<meta property="og:description" content="Course ratings, workload scores/);
 });
 
 test('semester planner: add by code or search, remove, and shared links do not overwrite your plan', async () => {
@@ -356,7 +368,7 @@ test('semester planner: add by code or search, remove, and shared links do not o
   res = await b.get('/plan?c=EEE3099S&add=CSC1016S');
   assert.equal(res.headers.get('location'), '/plan?c=EEE3099S,CSC1016S');
   let page = await b.text('/plan?c=EEE3099S,CSC1016S');
-  assert.match(page, /class="plan-label">(Lekker|Survivable|Cooked|Fully cooked)</);
+  assert.match(page, /class="plan-label">(Chilled|Survivable|Cooked|Fully cooked)</);
   assert.match(page, /Based on 2 of 2 courses with reviews/);
   assert.match(page, /href="https:\/\/wa\.me\/\?text=My%20semester%3A%20EEE3099S%2C%20CSC1016S/);
 
@@ -384,6 +396,16 @@ test('a demo password keeps every page private until it is given', async (t) => 
   assert.equal((await fetch(url)).status, 401);
   assert.equal((await fetch(url, { headers: basic('wrong') })).status, 401);
   assert.equal((await fetch(url, { headers: basic('lekker-demo') })).status, 200);
+});
+
+test('pages carry the university accent, and /universities lists who is live', async () => {
+  const home = await (await fetch(`${base}/`)).text();
+  assert.match(home, /<body style="--uni:#0b3c5d;--uni-soft:#e3ecf2">/);
+  assert.match(home, /class="uni-chip"[^>]*>.*UCT<\/a>/s);
+  const page = await (await fetch(`${base}/universities`)).text();
+  assert.match(page, /University of Cape Town[\s\S]*Browse \d+ courses/);
+  assert.match(page, /University of the Witwatersrand[\s\S]*Coming soon/);
+  assert.doesNotMatch(home + page, /LekkerOrNah/);
 });
 
 test('privacy and terms pages render', async () => {

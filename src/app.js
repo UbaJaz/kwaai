@@ -4,6 +4,7 @@ const express = require('express');
 const views = require('./views');
 const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm, semesterLoad } = require('./ratings');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
+const { UNIVERSITIES, CURRENT } = require('./universities');
 
 const STUDENT_EMAIL = /^[a-z0-9._%+-]+@myuct\.ac\.za$/;
 const TOKEN_TTL = 15 * 60 * 1000;
@@ -16,7 +17,7 @@ const STATS = `COUNT(*) AS n, AVG(overall) AS overall, AVG(teaching) AS teaching
 const REVIEW_COLS = `r.*, l.name AS lecturer_name`;
 const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; form-action 'self'; frame-ancestors 'none'; base-uri 'none'";
 
-function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'the LekkerOrNah team', demoPassword } = {}) {
+function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'the Kwaai team', demoPassword } = {}) {
   const app = express();
   app.disable('x-powered-by');
   if (trustProxy) app.set('trust proxy', trustProxy); // so req.ip is the student's IP behind a host's proxy
@@ -26,7 +27,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     app.use((req, res, next) => {
       const sent = Buffer.from(/^Basic (.+)$/.exec(req.headers.authorization || '')?.[1] || '', 'base64').toString().split(':').slice(1).join(':');
       if (crypto.timingSafeEqual(Buffer.from(sha(sent)), Buffer.from(want))) return next();
-      res.set('WWW-Authenticate', 'Basic realm="LekkerOrNah demo"').status(401).send('This LekkerOrNah demo is private. Ask the team for the password.');
+      res.set('WWW-Authenticate', 'Basic realm="Kwaai demo"').status(401).send('This Kwaai demo is private. Ask the team for the password.');
     });
   }
   app.use((req, res, next) => {
@@ -49,7 +50,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     const flash = /(?:^|;\s*)flash=([^;]+)/.exec(req.headers.cookie || '')?.[1];
     if (flash) res.clearCookie('flash');
-    req.ctx = { user: req.user, isMod: !!req.user && moderators.has(req.user.email), flash: parseFlash(flash),
+    req.ctx = { user: req.user, isMod: !!req.user && moderators.has(req.user.email), flash: parseFlash(flash), uni: CURRENT, here: req.path,
       // origin for share links and link previews; production always has BASE_URL
       site: { contactEmail, operator, origin: baseUrl || `${req.protocol}://${req.get('host')}` } };
     // CSRF: double-submit token, added to every POST form on its way out
@@ -120,12 +121,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   }
 
   app.get('/', (req, res) => {
-    const counts = q(`SELECT (SELECT COUNT(*) FROM courses) AS courses, (SELECT COUNT(*) FROM lecturers) AS lecturers, (SELECT COUNT(*) FROM reviews WHERE status = 'published') AS reviews`).get();
+    const counts = q(`SELECT (SELECT COUNT(*) FROM courses) AS courses, (SELECT COUNT(*) FROM reviews WHERE status = 'published') AS reviews,
+      (SELECT COUNT(*) FROM verdicts WHERE status = 'published') AS votes, (SELECT COUNT(*) FROM verdicts WHERE status = 'published' AND tip != '') AS tips`).get();
+    const byKey = (key) => RANKINGS.find((r) => r.key === key);
     res.page((views.home(req.ctx, {
       counts,
-      topCourses: ranking('course', RANKINGS[0], null, 5),
-      funniest: ranking('lecturer', RANKINGS[1], null, 5),
-      hardest: ranking('course', RANKINGS[2], null, 5),
+      topCourses: ranking('course', byKey('best'), null, 5),
+      heaviest: ranking('course', byKey('workload'), null, 5),
       depts: depts(),
     })));
   });
@@ -222,6 +224,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       WHERE c.code IN (${codes.map(() => '?').join(',')})`).all(...codes) : [];
     const courses = codes.map((code) => rows.find((r) => r.code === code)).filter(Boolean);
     res.page(views.plan(req.ctx, { courses, load: semesterLoad(courses), matches, add, codes: courses.map((c) => c.code) }));
+  });
+
+  app.get('/universities', (req, res) => {
+    const courses = q(`SELECT COUNT(*) AS n FROM courses`).get().n;
+    res.page(views.universities(req.ctx, { universities: UNIVERSITIES, liveCourses: courses }));
   });
 
   app.get('/privacy', (req, res) => res.page(views.privacy(req.ctx)));
@@ -397,7 +404,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.page((views.message(req.ctx, {
       title: 'Request received', emoji: '📮',
       text: review ? 'The review is now hidden while a moderator looks at it. We aim to reply within 48 hours.' : 'A moderator will look at your request and reply by email, usually within 48 hours.',
-      link: { href: '/', label: 'Back to LekkerOrNah' },
+      link: { href: '/', label: 'Back to Kwaai' },
     })));
   });
 

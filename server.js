@@ -43,6 +43,6 @@ createApp(db, {
   operator: env.OPERATOR || undefined,
   demoPassword: env.DEMO_PASSWORD || undefined,
 }).listen(port, () => {
-  console.log(`LekkerOrNah running on http://localhost:${port}${devMode ? ' (dev mode)' : ''}`);
+  console.log(`Kwaai running on http://localhost:${port}${devMode ? ' (dev mode)' : ''}`);
   if (!moderators.size) console.log('Tip: set MODERATORS=you@myuct.ac.za to get access to /mod');
 });
