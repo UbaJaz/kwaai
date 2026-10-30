@@ -65,6 +65,19 @@ It's one Node process with one SQLite file, so it needs a host with a **persiste
 
 The `Dockerfile` stores the database at `/data/lekker.db`, so mount a volume at `/data`.
 
+### Fly.io
+
+`fly.toml` is set up for one machine in Johannesburg (`jnb`) with a 1 GB volume. Keep it at one machine: SQLite and the rate limits can't be shared between two.
+
+```bash
+fly launch --no-deploy --copy-config      # pick a free app name if lekker-or-nah is taken
+fly volumes create lekker_data --region jnb --size 1
+fly secrets set BASE_URL=https://… RESEND_API_KEY=… EMAIL_FROM="LekkerOrNah <signin@…>" MODERATORS=… CONTACT_EMAIL=…
+fly deploy
+```
+
+Backups: `fly ssh console -C "npm run backup"`, then `fly ssh sftp get /data/backups/<file>` to copy one off the server.
+
 ### Environment variables
 
 | Variable | Required in production | What it is |
