@@ -21,7 +21,9 @@ const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-
 function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'the Kwaai team', demoPassword } = {}) {
   const app = express();
   app.disable('x-powered-by');
-  if (trustProxy) app.set('trust proxy', trustProxy); // so req.ip is the student's IP behind a host's proxy
+  // so req.ip is the student's IP behind a host's proxy. Env vars are strings, and Express reads the string "1" as an
+  // IP list rather than a hop count, so a plain number must be turned into a Number.
+  if (trustProxy) app.set('trust proxy', /^\d+$/.test(String(trustProxy)) ? Number(trustProxy) : trustProxy);
   // Private demos: with DEMO_PASSWORD set, the browser asks for it before showing any page (any username works).
   if (demoPassword) {
     const want = sha(demoPassword);

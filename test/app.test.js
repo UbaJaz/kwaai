@@ -253,6 +253,13 @@ test('reports are rate limited per IP', async () => {
   assert.ok(statuses.includes(429), `expected a 429, got ${statuses}`);
 });
 
+test('TRUST_PROXY from the environment is a hop count, not an address list', () => {
+  const trust = (v) => createApp(openDb(':memory:'), { trustProxy: v }).get('trust proxy');
+  assert.equal(trust('1'), 1);
+  assert.equal(trust('0'), 0);
+  assert.equal(trust('loopback'), 'loopback');
+});
+
 test('review limits are per student, so classmates on the same Wi-Fi are not blocked', async () => {
   const review = (course, year) => ({ lecturer_id: 'none', year: String(year), teaching: 3, engagement: 3, exams: 3, support: 3, difficulty: 3, workload: 3, agree: '1', _course: course });
   const busy = browser();
