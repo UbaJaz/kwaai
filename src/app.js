@@ -129,7 +129,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       counts,
       topCourses: ranking('course', byKey('best'), null, 5),
       heaviest: ranking('course', byKey('workload'), null, 5),
-      depts: depts(),
+      // November to January: exams are done and registration hasn't opened, the best time to ask for ratings
+      ratingSeason: [10, 11, 0].includes(new Date().getMonth()),
     })));
   });
 

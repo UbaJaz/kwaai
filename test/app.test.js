@@ -533,6 +533,13 @@ test('pages carry the university accent, and /universities lists who is live', a
   assert.doesNotMatch(home + page, /LekkerOrNah/);
 });
 
+test('home page offers the two paths: rate a course and plan a semester', async () => {
+  const home = await (await fetch(`${base}/`)).text();
+  assert.match(home, /Rate it kwaai or nah/);
+  assert.match(home, /href="\/plan"[^>]*>[\s\S]*?Plan your semesters/);
+  assert.match(home, /href="\/login\?next=%2Fcourses"/, 'signed out, rating starts with sign-in and comes back to courses');
+});
+
 test('privacy and terms pages render', async () => {
   for (const p of ['/privacy', '/terms']) assert.equal((await fetch(base + p)).status, 200, p);
 });

@@ -252,7 +252,27 @@ function rankList(rows, kind) {
 
 // ---------- pages ----------
 
-function home(ctx, { counts, topCourses, heaviest, depts }) {
+// The two things to do on Kwaai. Rating comes first from the end of exams until registration opens in January
+// (that's when 2026 courses are fresh in students' minds); planning comes first the rest of the year.
+function homePaths(ctx, ratingSeason) {
+  const rate = {
+    href: ctx.user ? '/courses' : '/login?next=%2Fcourses',
+    when: 'Took a course this year?',
+    title: 'Rate it kwaai or nah',
+    text: "One tap and an optional tip for next year's class. It takes ten seconds, and you can then read every comment and tip on the site.",
+    action: ctx.user ? 'Find a course you took' : 'Sign in with your student email',
+  };
+  const planner = {
+    href: '/plan',
+    when: 'Choosing courses for next year?',
+    title: 'Plan your semesters',
+    text: 'Add the courses you are considering. Kwaai flags lecture clashes, checks entry requirements and shows how much of your mark rides on exams.',
+    action: 'Open the planner',
+  };
+  return ratingSeason ? [rate, planner] : [planner, rate];
+}
+
+function home(ctx, { counts, topCourses, heaviest, ratingSeason = false }) {
   const { uni } = ctx;
   const n = (v) => v.toLocaleString('en-ZA');
   return layout({ ...ctx, path: '/' }, html`
@@ -260,22 +280,30 @@ function home(ctx, { counts, topCourses, heaviest, depts }) {
     <div class="hero-main">
       <p class="eyebrow"><b>${uni.name}</b> · ${plural(counts.courses, 'course')}</p>
       <h1>Find out if a course is <em class="hl">kwaai</em> before you register.</h1>
-      <p class="lede">Ratings, workload scores and one-line tips from students who already took it.</p>
+      <p class="lede">Ratings, workload scores and one-line tips from students who already took it, plus a planner that checks your semester against the handbook.</p>
       <form class="search" action="/courses" role="search">
-        <input type="search" name="q" placeholder="Course code or name, e.g. CSC1015F" aria-label="Search courses">
+        <input type="search" name="q" placeholder="Code or name, e.g. CSC1015F" aria-label="Search courses">
         <button class="btn btn-ink">Search</button>
       </form>
-      <p class="hero-hint">Picking next semester's courses? <a href="/plan">See how cooked your mix is →</a></p>
     </div>
     <aside class="pulse" aria-labelledby="pulse-title">
       <h2 class="label" id="pulse-title">So far at ${uni.short}</h2>
       <dl>
         <div><dt>Courses listed</dt><dd>${n(counts.courses)}</dd></div>
-        <div><dt>Full reviews</dt><dd>${n(counts.reviews)}</dd></div>
-        <div><dt>Kwaai-or-nah votes</dt><dd>${n(counts.votes)}</dd></div>
-        <div><dt>Tips shared</dt><dd>${n(counts.tips)}</dd></div>
+        ${counts.reviews ? html`<div><dt>Full reviews</dt><dd>${n(counts.reviews)}</dd></div>` : ''}
+        ${counts.votes ? html`<div><dt>Kwaai-or-nah votes</dt><dd>${n(counts.votes)}</dd></div>` : ''}
+        ${counts.tips ? html`<div><dt>Tips shared</dt><dd>${n(counts.tips)}</dd></div>` : ''}
       </dl>
     </aside>
+  </section>
+
+  <section class="paths" aria-label="What you can do">
+    ${homePaths(ctx, ratingSeason).map((p) => html`<a class="card path" href="${p.href}">
+      <span class="label">${p.when}</span>
+      <h2>${p.title}</h2>
+      <p>${p.text}</p>
+      <span class="path-go">${p.action} →</span>
+    </a>`)}
   </section>
 
   <section class="lists">
@@ -291,12 +319,7 @@ function home(ctx, { counts, topCourses, heaviest, depts }) {
     </div>
   </section>
 
-  <section>
-    <h2 class="label">Browse by department</h2>
-    <div class="dept-grid">
-      ${depts.map((d) => html`<a class="dept" href="/courses?dept=${d.code}"><span class="dept-code">${d.code}</span><span class="dept-name">${d.name}</span><span class="meta">${plural(d.courses, 'course')}</span></a>`)}
-    </div>
-  </section>
+  <p class="browse-all"><a class="btn btn-quiet" href="/courses">Browse all ${n(counts.courses)} courses by department</a></p>
 
   <section class="how">
     <div><h3>Rate what matters</h3><p>Four scores make up a rating: teaching, how engaging the lectures are, exam fairness and how approachable the lecturer is. Difficulty and workload are scored separately, because a hard course isn't a bad course.</p></div>
@@ -317,7 +340,7 @@ function courses(ctx, { list, total, depts, q, dept }) {
     <button class="btn">Search</button>
   </form>
   <p class="meta">${total > list.length ? `Showing ${list.length} of ${total} courses. Search or pick a department to see the rest.` : plural(total, 'course')}${dept ? ` in ${depts.find((d) => d.code === dept)?.name || dept}` : ''}${q ? ` matching “${q}”` : ''}</p>
-  ${list.length ? html`<div class="course-grid">${list.map(courseCard)}</div>` : html`<p class="empty">No courses found. We've imported the 2026 EBE, Science, Commerce, Humanities and Health Sciences handbooks. Law isn't in yet.</p>`}`);
+  ${list.length ? html`<div class="course-grid">${list.map(courseCard)}</div>` : html`<p class="empty">No courses found. Try the course code from your handbook, like CSC1015F, or part of the name.</p>`}`);
 }
 
 function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked }) {
