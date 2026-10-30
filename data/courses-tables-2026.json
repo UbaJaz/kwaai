@@ -1,0 +1,1261 @@
+{
+  "source": "UCT 2026 handbooks, curriculum tables (no course description)",
+  "courses": [
+    {
+      "code": "CSC1017F",
+      "title": "Introduction to Programming",
+      "credits": 16,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "ECO2004F",
+      "title": "Macroeconomics II",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "EDN2527W",
+      "title": "Space, Measurement & Data Handling FP",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "EDN2535W",
+      "title": "Space, Measurement & Data Handling IP",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "EDN3215W",
+      "title": "LoLT – Xhosa",
+      "credits": 0,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true,
+      "notOffered": 2026
+    },
+    {
+      "code": "EDN3222W",
+      "title": "Accounting SP & FET",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true,
+      "notOffered": 2026
+    },
+    {
+      "code": "EDN3230W",
+      "title": "Expressive Arts SP",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true,
+      "notOffered": 2026
+    },
+    {
+      "code": "EDN3233W",
+      "title": "German SP & FET",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true,
+      "notOffered": 2026
+    },
+    {
+      "code": "EDN3234W",
+      "title": "Hebrew SP & FET",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true,
+      "notOffered": 2026
+    },
+    {
+      "code": "EDN3236W",
+      "title": "Information Technology FET",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true,
+      "notOffered": 2026
+    },
+    {
+      "code": "EDN3237W",
+      "title": "Jewish Studies FET",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true,
+      "notOffered": 2026
+    },
+    {
+      "code": "END1019L",
+      "title": "Social Infrastructure",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "END1019P",
+      "title": "Social Infrastructure",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "FAM2014S",
+      "title": "Screen Production I",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "FTX2020S",
+      "title": "Business Finance",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "HUB2025H",
+      "title": "Physiology for Biomedical Engineers",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MAM1110S",
+      "title": "Mathematics 1110 for CADP",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1207H",
+      "title": "Bassoon B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1211H",
+      "title": "Cello B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1215H",
+      "title": "Clarinet B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1219H",
+      "title": "Conducting B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1223H",
+      "title": "Double Bass B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1229H",
+      "title": "Euphonium B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1233H",
+      "title": "Flute B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1237H",
+      "title": "Guitar B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1241H",
+      "title": "Harp B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1245H",
+      "title": "Harpsichord B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1249H",
+      "title": "Horn B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1252H",
+      "title": "Jazz Guitar B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1254H",
+      "title": "Jazz Piano B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1255H",
+      "title": "Jazz Piano D12",
+      "credits": 6,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1257H",
+      "title": "Oboe B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1261H",
+      "title": "Organ B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1265H",
+      "title": "Percussion B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1269H",
+      "title": "Piano B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1274H",
+      "title": "Recorder B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1278H",
+      "title": "Saxophone B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1281H",
+      "title": "Secondary Piano I",
+      "credits": 6,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1283H",
+      "title": "Singing B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1287H",
+      "title": "Trombone B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1291H",
+      "title": "Trumpet B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1294H",
+      "title": "Tuba B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1298H",
+      "title": "Viola B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1302H",
+      "title": "Violin B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1306H",
+      "title": "Jazz Singing B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1309H",
+      "title": "Accordion B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1374H",
+      "title": "Secondary Marimba I",
+      "credits": 6,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1385H",
+      "title": "Introduction to Jazz Theory and Aural",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1386H",
+      "title": "Classical Saxophone B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1389H",
+      "title": "Jazz Bass B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1391H",
+      "title": "Jazz Clarinet B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1393H",
+      "title": "Jazz Flute B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1395H",
+      "title": "Jazz Trombone B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ1397H",
+      "title": "Jazz Trumpet B1",
+      "credits": 30,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2201H",
+      "title": "African Instrument B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2204H",
+      "title": "Bass Guitar B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2207H",
+      "title": "Bassoon B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2211H",
+      "title": "Cello B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2215H",
+      "title": "Clarinet B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2223H",
+      "title": "Double Bass B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2226H",
+      "title": "Drum Set B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2229H",
+      "title": "Euphonium B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2233H",
+      "title": "Flute B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2237H",
+      "title": "Guitar B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2241H",
+      "title": "Harp B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2244H",
+      "title": "Harpsichord A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2245H",
+      "title": "Harpsichord B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2248H",
+      "title": "Horn A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2249H",
+      "title": "Horn B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2252H",
+      "title": "Jazz Guitar B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2254H",
+      "title": "Jazz Piano B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2255H",
+      "title": "Jazz Piano D29",
+      "credits": 6,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2256H",
+      "title": "Oboe A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2257H",
+      "title": "Oboe B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2260H",
+      "title": "Organ A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2261H",
+      "title": "Organ B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2264H",
+      "title": "Percussion A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2265H",
+      "title": "Percussion B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2268H",
+      "title": "Piano A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2269H",
+      "title": "Piano B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2273H",
+      "title": "Recorder A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2274H",
+      "title": "Recorder B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2278H",
+      "title": "Saxophone B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2281H",
+      "title": "Secondary Piano II1",
+      "credits": 6,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2282H",
+      "title": "Singing A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2283H",
+      "title": "Singing B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2286H",
+      "title": "Trombone A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2287H",
+      "title": "Trombone B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2290H",
+      "title": "Trumpet A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2291H",
+      "title": "Trumpet B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2294H",
+      "title": "Tuba B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2297H",
+      "title": "Viola A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2298H",
+      "title": "Viola B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2301H",
+      "title": "Violin A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2302H",
+      "title": "Violin B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2306H",
+      "title": "Jazz Singing B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2308H",
+      "title": "Accordion B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2374H",
+      "title": "Secondary Marimba II",
+      "credits": 6,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2386H",
+      "title": "Classical Saxophone B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2389H",
+      "title": "Jazz Bass",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2391H",
+      "title": "Jazz Clarinet B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2393H",
+      "title": "Jazz Flute B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2395H",
+      "title": "Jazz Trombone B2",
+      "credits": 30,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2402H",
+      "title": "Tuba A2",
+      "credits": 36,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ2405H",
+      "title": "Jazz Vocal Techniques II",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true,
+      "notOffered": 2026
+    },
+    {
+      "code": "MUZ3201H",
+      "title": "African Instrument B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3204H",
+      "title": "Bass Guitar B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3207H",
+      "title": "Bassoon B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3211H",
+      "title": "Cello B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3215H",
+      "title": "Clarinet B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3223H",
+      "title": "Double Bass B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3226H",
+      "title": "Drum Set B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3229H",
+      "title": "Euphonium B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3233H",
+      "title": "Flute B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3237H",
+      "title": "Guitar B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3241H",
+      "title": "Harp B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3245H",
+      "title": "Harpsichord B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3249H",
+      "title": "Horn B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3254H",
+      "title": "Jazz Piano B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3257H",
+      "title": "Oboe B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3261H",
+      "title": "Organ B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3265H",
+      "title": "Percussion B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3269H",
+      "title": "Piano B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3273H",
+      "title": "Recorder A3",
+      "credits": 48,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3274H",
+      "title": "Recorder B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3278H",
+      "title": "Saxophone B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3282H",
+      "title": "Singing A3",
+      "credits": 48,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3283H",
+      "title": "Singing B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3286H",
+      "title": "Trombone A3",
+      "credits": 48,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3287H",
+      "title": "Trombone B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3290H",
+      "title": "Trumpet A3",
+      "credits": 48,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3291H",
+      "title": "Trumpet B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3294H",
+      "title": "Tuba B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3297H",
+      "title": "Viola A3",
+      "credits": 48,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3298H",
+      "title": "Viola B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3301H",
+      "title": "Violin A3",
+      "credits": 48,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3302H",
+      "title": "Violin B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3306H",
+      "title": "Jazz Singing B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3308H",
+      "title": "Accordion B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3352H",
+      "title": "Jazz Guitar B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3386H",
+      "title": "Classical Saxophone B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3389H",
+      "title": "Jazz Bass",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3391H",
+      "title": "Jazz Clarinet B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3392H",
+      "title": "Jazz Flute B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3395H",
+      "title": "Jazz Trombone B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3402H",
+      "title": "Tuba A3",
+      "credits": 48,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "MUZ3403H",
+      "title": "World Music Instrument B3",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "PHI2043F",
+      "title": "Business Ethics",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "PHI2043S",
+      "title": "Business Ethics",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "SLL1002S",
+      "title": "Word Power",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "STA1100F",
+      "title": "Introductory Statistics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "SWK2070F",
+      "title": "Field Practice II",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "SWK2075S",
+      "title": "Field Practice III",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "SWK3070F",
+      "title": "Field Practice IV",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "SWK3075S",
+      "title": "Field Practice V",
+      "credits": 12,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    },
+    {
+      "code": "TDP3902W",
+      "title": "T&P Studiowork 3D: Advanced Practice",
+      "credits": 60,
+      "nqf": 7,
+      "conveners": [],
+      "tableOnly": true
+    }
+  ]
+}

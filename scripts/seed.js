@@ -29,6 +29,7 @@ const DEPARTMENTS = {
   PRY: 'Psychiatry & Mental Health', PTY: 'Pathology', RAY: 'Radiation Medicine', AAE: 'Anaesthesia & Perioperative Medicine',
   CHM: 'Paediatrics & Child Health', OBS: 'Obstetrics & Gynaecology', PBL: 'Public Law', PVL: 'Private Law',
   DOL: 'Law Faculty (cross-department)', DOC: 'Commerce Faculty (cross-department)', GSB: 'Graduate School of Business',
+  GPP: 'Nelson Mandela School of Public Governance', PED: 'Paediatrics & Child Health',
 };
 
 function seed(db, { samples = true } = {}) {
@@ -47,7 +48,7 @@ function seed(db, { samples = true } = {}) {
   const addDept = db.prepare('INSERT INTO departments (code, name) VALUES (?, ?) ON CONFLICT(code) DO UPDATE SET name = excluded.name');
   // first handbook to list a course wins within a run; a later run with a newer handbook updates it
   const seen = new Set();
-  const DETAILS = ['outline', 'entry', 'corequisites', 'lectures', 'periods', 'period_choice', 'days', 'dp', 'assessment', 'exam_weight'];
+  const DETAILS = ['outline', 'entry', 'corequisites', 'lectures', 'periods', 'period_choice', 'days', 'dp', 'assessment', 'exam_weight', 'not_offered', 'table_only'];
   const addCourse = db.prepare(`INSERT INTO courses (code, title, dept, credits, nqf, conveners, source, ${DETAILS.join(', ')})
     VALUES (?, ?, ?, ?, ?, ?, ?, ${DETAILS.map(() => '?').join(', ')})
     ON CONFLICT(code) DO UPDATE SET title = excluded.title, credits = excluded.credits, nqf = excluded.nqf, conveners = excluded.conveners, source = excluded.source,
@@ -62,7 +63,7 @@ function seed(db, { samples = true } = {}) {
       addDept.run(dept, DEPARTMENTS[dept] || dept);
       addCourse.run(c.code, c.title, dept, c.credits, c.nqf, c.conveners.join('|'), source,
         c.outline || '', c.entry || '', c.corequisites || '', c.lectures || '', (c.periods || []).join('|'), c.periodChoice ? 1 : 0,
-        (c.days || []).join('|'), c.dp || '', c.assessment || '', c.examWeight ?? null);
+        (c.days || []).join('|'), c.dp || '', c.assessment || '', c.examWeight ?? null, c.notOffered ?? null, c.tableOnly ? 1 : 0);
       for (const name of c.conveners) addLecturer.run(name, dept, 0);
     }
   }

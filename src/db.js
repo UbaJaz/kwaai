@@ -126,6 +126,8 @@ const COURSE_DETAILS = {
   dp: "TEXT NOT NULL DEFAULT ''",
   assessment: "TEXT NOT NULL DEFAULT ''",
   exam_weight: 'INTEGER',
+  not_offered: 'INTEGER', // the year the handbook says it isn't offered, e.g. 2026
+  table_only: 'INTEGER NOT NULL DEFAULT 0', // listed in a curriculum table, but no course description in any handbook
 };
 
 // A sign-in email carries a link and a 6-digit code (for reading the email on your phone and signing in on a laptop).

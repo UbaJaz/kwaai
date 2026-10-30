@@ -389,8 +389,11 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
 }
 
 function handbookFacts(c) {
-  if (!c.outline && !c.entry && !c.dp && !c.assessment && !c.lectures) return '';
+  const status = html`${c.not_offered ? html`<p class="plan-note">The handbook says ${c.code} is not offered in ${c.not_offered}.</p>` : ''}
+    ${c.table_only ? html`<p class="meta">The 2026 handbooks list ${c.code} in degree tables but don't describe it. Check with the department.</p>` : ''}`;
+  if (!c.outline && !c.entry && !c.dp && !c.assessment && !c.lectures) return c.not_offered || c.table_only ? html`<h3>From the 2026 handbook</h3>${status}` : '';
   return html`<h3>From the 2026 handbook</h3>
+    ${status}
     <dl class="handbook">
       ${c.outline ? html`<dt>What it covers</dt><dd>${c.outline}</dd>` : ''}
       ${c.entry ? html`<dt>Entry requirements</dt><dd>${c.entry}</dd>` : ''}
@@ -535,6 +538,7 @@ function planWarnings(plan) {
   }
   for (const [code, e] of Object.entries(plan.entry)) for (const r of e.tooLate) items.push(html`<li><strong>Order:</strong> ${code} lists ${r} in its entry requirements, but ${r} isn't finished before ${code} starts in your plan.</li>`);
   for (const [a, b] of plan.twice) items.push(html`<li><strong>Same course twice:</strong> ${a} and ${b} are the same course in different semesters. You only need one.</li>`);
+  for (const c of plan.notOffered) items.push(html`<li><strong>Not running:</strong> the handbook says ${c.code} is not offered in ${c.not_offered}.</li>`);
   return items;
 }
 

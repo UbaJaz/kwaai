@@ -459,7 +459,7 @@
       "periodChoice": false,
       "days": [],
       "dp": "Submission of all coursework assignments. Participation in small group case study discussions as required. Achieving a weighted average of at least 40%.",
-      "assessment": "Coursework 75%; Capstone assessment 25%. A sub-minimum of 45% must be achieved in the capstone assessment. BUS2010F/S MARKETING I 0 credits if taken as part of a Postgraduate Diploma in Management offered by the School of Management Studies 18 NQF credits at NQF level 6 Convener: Associate Professor J Lappeman",
+      "assessment": "Coursework 75%; Capstone assessment 25%. A sub-minimum of 45% must be achieved in the capstone assessment.",
       "examWeight": null
     },
     {
@@ -478,8 +478,46 @@
       "periodChoice": false,
       "days": [],
       "dp": "Submission of all coursework assignments. Participation in small group case study discussions as required. Achieving a weighted average of at least 40%.",
-      "assessment": "Coursework 75%; Capstone assessment 25%. A sub-minimum of 45% must be achieved in the capstone assessment. BUS2010F/S MARKETING I 0 credits if taken as part of a Postgraduate Diploma in Management offered by the School of Management Studies 18 NQF credits at NQF level 6 Convener: Associate Professor J Lappeman",
+      "assessment": "Coursework 75%; Capstone assessment 25%. A sub-minimum of 45% must be achieved in the capstone assessment.",
       "examWeight": null
+    },
+    {
+      "code": "BUS2010F",
+      "title": "Marketing I",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Lappeman"
+      ],
+      "outline": "The marketing concept, the marketing environment, consumer markets and industrial markets, buyer behaviour, marketing research, the use and importance of differentiation, market segmentation and target marketing, the marketing mix, product policy, pricing policy, distribution policy, promotion policy, marketing strategy, marketing organisation and implementation, measurement and control of marketing effectiveness including the marketing audit.",
+      "entry": "Students should be in their second AYOS or above.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "40% class mark and the completion of all required assignments.",
+      "assessment": "Essays, case studies, project and test 50%; June / October examinations (2 hours) 50%.",
+      "examWeight": 50
+    },
+    {
+      "code": "BUS2010S",
+      "title": "Marketing I",
+      "credits": 18,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J Lappeman"
+      ],
+      "outline": "The marketing concept, the marketing environment, consumer markets and industrial markets, buyer behaviour, marketing research, the use and importance of differentiation, market segmentation and target marketing, the marketing mix, product policy, pricing policy, distribution policy, promotion policy, marketing strategy, marketing organisation and implementation, measurement and control of marketing effectiveness including the marketing audit.",
+      "entry": "Students should be in their second AYOS or above.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "40% class mark and the completion of all required assignments.",
+      "assessment": "Essays, case studies, project and test 50%; June / October examinations (2 hours) 50%.",
+      "examWeight": 50
     },
     {
       "code": "BUS2016H",
@@ -680,16 +718,16 @@
       "conveners": [
         "P Botha"
       ],
-      "outline": "",
-      "entry": "BUS2016H, STA2004F,",
+      "outline": "The course aims to provide a grounding in the mathematical techniques used to model and value cash flows dependent on death, survival, or other uncertain risks. The topics covered include: simple assurance and annuity contracts; more complex contracts with increasing benefits; derivation of formulae for means and variances of benefit payments; definition of standard actuarial symbols and the relationships, including standard life table functions (ultimate and select); calculation of net premiums and net premium provisions (both prospective and retrospective); calculation of death strain at…",
+      "entry": "BUS2016H, STA2004F, MAM2010F & MAM2011F",
       "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "",
-      "assessment": "",
-      "examWeight": null
+      "dp": "Completion and timeous submission of tutorial exercises. Writing of all class tests. An overall average of 40% for classwork.",
+      "assessment": "Tutorials and tests 40%. Examination 60%.",
+      "examWeight": 60
     },
     {
       "code": "BUS3038S",
@@ -882,6 +920,25 @@
       "examWeight": 42
     },
     {
+      "code": "BUS4034S",
+      "title": "Professional Communication (actuarial Science)",
+      "credits": 27,
+      "nqf": 8,
+      "conveners": [
+        "C Kalil"
+      ],
+      "outline": "The course develops theory and practice related to professional and business communication. It aims to enhance students’ ability to: plan and write business and professional document types with a focus on communicating actuarial science topics to various non-specialist audiences (e.g. traditional and electronic correspondence, reports and proposals); structure and deliver business presentations; design visual support for oral and written message; and work in teams to develop collaborative management and communication skills.",
+      "entry": "BUS2016H, BUS3018F and STA3041F. BUS3024S, STA3043S, STA3045F, BUS4028F.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Submission of all assignments and participation in oral presentations; attendance at all compulsory lectures and workshops.",
+      "assessment": "PCU component: semester course work and presentations (60%); 3-hour written examination [Paper 1] (40%). Students must achieve a sub-minimum of 40% for each component with an average of 50%. In addition there is a 3-hour written examination (Paper 2) for professional exemption (N211). The final BUS4034S mark will be weighted as follows: PCU final mark: 70%; N211 Paper 2: 30%.",
+      "examWeight": 40
+    },
+    {
       "code": "BUS4050H",
       "title": "Strategic Thinking",
       "credits": 18,
@@ -956,6 +1013,23 @@
       "examWeight": 60
     },
     {
+      "code": "CML1001P",
+      "title": "Business Law I - Summer Term",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [],
+      "outline": "Refer to course outline for CML1001F/CML1001S.",
+      "entry": "None",
+      "corequisites": "",
+      "lectures": "Lectures are offered on a daily basis for three hours over a four-week period.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Writing the test is compulsory. If a student does not write the test and does not get an exemption then the student will be marked absent and awarded 0 for the test. But the student will be able to write the exam.",
+      "assessment": "Test 40%; final examination 60%.",
+      "examWeight": 60
+    },
+    {
       "code": "CML2001F",
       "title": "Company Law",
       "credits": 18,
@@ -992,6 +1066,23 @@
       "dp": "Coursework is compulsory. If the student does not submit hand-ins or write a test the student will receive a mark of 0 for that assessment (unless granted an exemption). But the student will be able to write the exam.",
       "assessment": "Coursework 40%; final examination 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "CML2010P",
+      "title": "Business Law II - Summer Term",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [],
+      "outline": "Refer to course outline for CML 2010Z.",
+      "entry": "Business Law I. No undergraduate student in the first year of study may register for Business Law II.",
+      "corequisites": "",
+      "lectures": "Lectures are offered on a daily basis for three hours over a four-week period.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Writing the test is compulsory. If a student does not write the test and does not get an exemption then the student will be marked absent and awarded 0 for the test. But the student will be able to write the exam.",
+      "assessment": "Test 30% and final examination 70%.",
+      "examWeight": 70
     },
     {
       "code": "CML2010Z",
@@ -1382,7 +1473,34 @@
         "Friday"
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
-      "assessment": "Tests 20%; practical work and practical tests 30%; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examination; 35% for the advanced computing module (comprising Theory of Algorithms and Functional Programming) in the final examination. CSC3024S INTRODUCTION TO C++ PROGRAMMING 18 NQF credits at NQF level 7 Convener: Associate Professor P Marais",
+      "assessment": "Tests 20%; practical work and practical tests 30%; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examination; 35% for the advanced computing module (comprising Theory of Algorithms and Functional Programming) in the final examination.",
+      "examWeight": 50
+    },
+    {
+      "code": "CSC3024S",
+      "title": "Introduction to C++ Programming",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor P Marais"
+      ],
+      "outline": "This course introduces the C++ programming language. Students are exposed to different aspects of modern C++, including pointers, stream operations, RAII, operator overloading, templates and effective use of the standard template library (STL). The course also examines the C++ memory model and shows how this works with move semantics to produce efficient code.",
+      "entry": "CSC2001F, CSC2002S, CSC2004Z and ((MAM1004F+MAM1008S) or (MAM1000W) or (MAM1031F or equivalent)).",
+      "corequisites": "",
+      "lectures": "Monday – Friday, 3rd period, Practicals: Two 4-hour practicals per week, by arrangement",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Minimum of 45% aggregate in practical work.",
+      "assessment": "20% tests; 30% practicals and practical tests; 50% final examination. Sub-minima: 45% practical work; 45% on weighted average of tests and final examination.",
       "examWeight": 50
     },
     {
@@ -1800,7 +1918,7 @@
     },
     {
       "code": "ECO3021S",
-      "title": "Quantitative Methods in Economics 158 School of Economics",
+      "title": "Quantitative Methods in Economics",
       "credits": 18,
       "nqf": 7,
       "conveners": [
@@ -2205,16 +2323,16 @@
       "conveners": [
         "Dr C Makanza"
       ],
-      "outline": "Peace, war and international security is an area in which economists are often conspicuous by their absence, to a degree that rivals the importance of economic issues to the problems at hand. This course considers the contribution that economics has and does make to the understanding of conflict war and peace, with a focus on Africa. It covers topics such as: the causes and economic effects of military spending; the economic causes and effects of conflict and terrorism; the economics of post conflict reconstruction; the international arms industry; and the international arms trade.",
-      "entry": "ECO4006F, ECO4007F and ECO4016F PPE (and other) students who do not have to complete the core as part of their degree requirements may be granted permission to register for this elective at the discretion of the Head of Department.",
+      "outline": "",
+      "entry": "ECO4006F, ECO4007F and",
       "corequisites": "",
-      "lectures": "To be announced.",
+      "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "None.",
-      "assessment": "Coursework consisting of one project 50%; examination 50%. Note: No supplementary exam is offered for this course.",
-      "examWeight": 50
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
     },
     {
       "code": "ECO4131S",
@@ -3482,7 +3600,7 @@
     },
     {
       "code": "INF2010S",
-      "title": "Information & Communication Technologies 180 Department of Information Systems",
+      "title": "Information & Communication Technologies",
       "credits": 18,
       "nqf": 7,
       "conveners": [
@@ -3971,8 +4089,367 @@
         "Friday"
       ],
       "dp": "Minimum of 30% for class tests, minimum 30% for weekly online tests, and 80% attendance at tutorial sessions.",
-      "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%. MAM1110F MATHEMATICS 1110 FOR CADP (for EDU Commerce Academic Development students) 18 NQF credits at NQF level 5 Convener: S Torr",
+      "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%.",
       "examWeight": 67
+    },
+    {
+      "code": "MAM1110F",
+      "title": "Mathematics 1110 for Cadp",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "S Torr"
+      ],
+      "outline": "The aim of this course is to introduce topics in mathematics that are of interest to Commerce students, with applications to economics. Introductory financial mathematics including compound interest and annuities, functions, limits, differential calculus and applications of the derivative including graph sketching and Newton’s Method, introduction to integral calculus and techniques of integration.",
+      "entry": "NSC level 5 in Mathematics, or 60% on Higher Grade Mathematics (SC).",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 1st period.",
+      "periods": [
+        1
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Minimum of 30% in class tests and satisfactory attendance at lectures and tutorials.",
+      "assessment": "Year mark up to 40% Final examination 1 x 2 hour paper",
+      "examWeight": 40
+    },
+    {
+      "code": "MAM1110H",
+      "title": "Mathematics 1010",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "T Low"
+      ],
+      "outline": "The aim of this course is to introduce topics in mathematics that are of interest to Commerce students, with applications to economics. Introductory financial mathematics including compound interest and annuities, functions, limits, differential calculus and applications of the derivative including graph sketching and Newton’s Method, introduction to integral calculus and techniques of integration.",
+      "entry": "NSC level 5 in Mathematics, or 50% on Higher Grade Mathematics (SC) or a pass in STA1101F/H or STA1001F/H/S; registered as an Academic Development Student (Commerce).",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 1st period.",
+      "periods": [
+        1
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Attendance at and submission of a minimum of 80% of lectures AND tutorials AND a weighted average of at least 40% for class tests.",
+      "assessment": "Year mark up to 40% Final examination 1 x 2 hour paper",
+      "examWeight": 40
+    },
+    {
+      "code": "MAM1112S",
+      "title": "Mathematics 1112 for Cadp",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "S Torr"
+      ],
+      "outline": "The aim of this course is to continue the study of topics in mathematics that are of interest to Commerce students begun in MAM1010. Integral calculus, including numerical integration, introduction to ordinary differential equations, matrices and elementary linear algebra, Markov Systems, Taylor Maclaurin, and Binomial series, functions of several variables, three-dimensional space, partial derivatives and applications to optimization problems, the Simplex Method.",
+      "entry": "Pass in MAM1110F or MAM1010F/S/J or equivalent.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 1st period.",
+      "periods": [
+        1
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "30% in class tests and satisfactory attendance at lectures and tutorials.",
+      "assessment": "Year mark up to 40% Final examination 1 x 2 hour paper",
+      "examWeight": 40
+    },
+    {
+      "code": "MAM2010F",
+      "title": "Advanced Calculus (2AC)",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "Dr F Ebobisse-Bille"
+      ],
+      "outline": "Students will study the fundamentals of multivariable calculus, including: Curves and surfaces in three dimensions, change of coordinates; Line integrals, surface integrals; Stoke's, Green's and divergence theorems. Please note that lectures alternate during the week so that students can take MAM2010F and MAM2011F concurrently.",
+      "entry": "MAM1031F and MAM1032S or equivalent. With permission from the convener, students with 70% for both MAM1010F and MAM1012S may register for MAM2010F.",
+      "corequisites": "",
+      "lectures": "Tuesdays, Fridays and some Wednesdays in 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM2011F",
+      "title": "Linear Algebra (2LA)",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "Dr H Spakowski"
+      ],
+      "outline": "Students will study the fundamentals of linear algebra, including: Vector spaces, linear independence, spans, bases, row space, column space, null space; Linear maps; Eigenvectors and eigenvalues; Inner product spaces, orthogonality. Please note that lectures alternate during the week so that students can take MAM2010F and MAM2011F concurrently.",
+      "entry": "MAM1031F and MAM1032S or equivalent. With permission from the convener, students with 70% for both MAM1010F and MAM1012S may register for MAM2010F.",
+      "corequisites": "",
+      "lectures": "Mondays, Thursdays and some Wednesdays in 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM2012S",
+      "title": "Differential Equations (2DE)",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "T C Van Heerden"
+      ],
+      "outline": "Students will study the fundamentals of differential equations, including topics from: First and secondorder difference equations; Linear differential equations, constant coefficients; Laplace transforms; Nonlinear equations, phase plane analysis; Parabolic partial differential equations, separation of variables, boundary value problems; Black-Scholes equation; Stochastic differential equations. Please note that lectures alternate during the week so that students can take any of MAM2012S, MAM2013S and MAM2014S concurrently.",
+      "entry": "MAM1031F and MAM1032S or equivalent, MAM2010F and MAM2011F.",
+      "corequisites": "",
+      "lectures": "Tuesdays, Fridays and some Wednesdays in 4th period. DEPARTMENT OF MATHEMATICS AND APPLIED MATHEMATICS 223",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM2013S",
+      "title": "Introductory Algebra (2IA)",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "Dr T Janelidze-Gray"
+      ],
+      "outline": "Students will study the fundamentals of abstract algebra and number theory, including: induction, strong induction and Well-Ordering axiom; Divisibility and prime factorization; Modular arithmetic; Permutations; Groups, Subgroups, Cyclic groups; Isomorphisms; Simple groups, Factor groups, Lagrange's Theorem; The First Isomorphism Theorem. Please note that lectures alternate during the week so that students can take any of MAM2012S, MAM2013S and MAM2014S concurrently.",
+      "entry": "MAM1031F and MAM1032S or equivalent.",
+      "corequisites": "",
+      "lectures": "Tuesdays, Fridays and some Wednesdays in 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM2014S",
+      "title": "Real Analysis (2RA)",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "M Vandeyar"
+      ],
+      "outline": "Students will study the fundamentals of real analysis, including: Axioms of the real numbers, supremum and infimum; Countable sets; Sequences and series; Open and closed sets, compactness; Limits, continuity, differentiability; Sequences and series of functions, uniform convergence, power series; Integration. Please note that lectures alternate during the week so that students can take any of MAM2012S, MAM2013S and MAM2014S concurrently.",
+      "entry": "MAM1031F and MAM1032S or equivalent.",
+      "corequisites": "",
+      "lectures": "Mondays, Thursdays and some Wednesdays in 4th and 5th period.",
+      "periods": [
+        4,
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3010F",
+      "title": "Metric Spaces (3MS)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "S Chili"
+      ],
+      "outline": "The aim of this course is to introduce fundamental concepts in metric spaces and topology. Basic tools - Metrics, ultrametrics, pseudometrics, quasi-metrics. Convergence in metric spaces. Closed sets and closures. Open sets and interiors. Definition of topology in metric space and in general. Functions: continuous, uniformly continuous, Lipschitz continuous, contractions, isometries. Isomorphisms: topological, uniform, metric. Fundamental concepts - Completeness, via Cauchy sequences. Cantor’s intersection theorem. Construction of completion and proof of uniqueness.",
+      "entry": "MAM2010F, MAM2011F, MAM2014S and at least one of MAM2012S or MAM2013S.",
+      "corequisites": "",
+      "lectures": "Tuesdays, Fridays and some Wednesdays in 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3011F",
+      "title": "Modern Abstract Algebra (3AL)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Sanchez-Ortega"
+      ],
+      "outline": "This course focusses on Group Theory. Topics include: Lagrange’s Theorem. Isomorphism Theorems, Correspondence Theorem. p-Groups. Cauchy’s Theorem. Sylow Theorems. Direct Product of groups. Finitely generated Abelian Groups. Jordan-Holder Theorem.",
+      "entry": "MAM2010F, MAM2011F, MAM2013S and at least one of MAM2012S or MAM2014S.",
+      "corequisites": "",
+      "lectures": "Mondays, Thursdays and some Wednesdays in 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3012F",
+      "title": "Discrete Mathematics (3DM)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr B du Preez"
+      ],
+      "outline": "Graph theory, combinatorial counting, discrete probability theory, recurrences, algorithms, applications.",
+      "entry": "MAM2010F, MAM2011F, and two of MAM2012S, MAM2013S and MAM2014S.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 4th period.",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3013S",
+      "title": "Topics in Algebra (3TA)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Sanchez-Ortega"
+      ],
+      "outline": "This courses provides an Introduction to Ring Theory. A selection of the topics covered: Definition of a ring, examples, main properties. The field of fraction of an integral domain. Polynomial rings.",
+      "entry": "MAM2010F, MAM2011F, and two of MAM2012S, MAM2013S and MAM2014S.",
+      "corequisites": "",
+      "lectures": "Tuesdays, Fridays and some Wednesdays in 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3014S",
+      "title": "Topics in Analysis (3TN)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr F Ebobisse-Bille"
+      ],
+      "outline": "1. Study of sequences: basic definitions on sequences of numbers; study of the behaviour of sequences of real numbers. 2. Revision on metric spaces: distance, balls, open and closed sets, limit of a function, convergence of sequences, compactness, completeness; spaces of continuous functions between metric spaces (continuity, uniform continuity, Lipschitz continuity, H?lderian continuity; ointwise convergence and uniform convergence for sequences of functions; normed spaces and linear continuous mappings between normed spaces; equivalence of norms; Banach spaces; linear continuous mappings…",
+      "entry": "MAM3010F",
+      "corequisites": "",
+      "lectures": "Mondays, Thursdays and some Wednesdays in 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3015S",
+      "title": "Complex Analysis (3CA)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor E Berdysheva"
+      ],
+      "outline": "Fields of complex numbers, Holomorphic functions, Power series, Elementary functions, Complex integration, Cauchy's Integral Theorem, Cauchy's Integral Formula, Liouville’s Theorem, Fundamental Theorem of Algebra, Coincidence Principle, Maximum Modulus Principle, Singularities, Residues, Laurent Series, Arguments, Rouche's Theorem, Open Mapping Theorems.",
+      "entry": "MAM2010F, MAM2011F, MAM2014S and at least one of MAM2012S or MAM2013S.",
+      "corequisites": "",
+      "lectures": "Tuesdays, Fridays and some Wednesdays in 4th period. DEPARTMENT OF PHILOSOPHY",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
     },
     {
       "code": "PBL2000W",
@@ -5029,6 +5506,44 @@
       "examWeight": 60
     },
     {
+      "code": "STA1000L",
+      "title": "Introductory Statistics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "N Watson"
+      ],
+      "outline": "This is an introductory statistics course aimed at exposing students to principles and tools to support appropriate quantitative analysis. The aim is to produce students with a functional sense of statistics. We introduce students to statistical modelling and also cover exploratory data analysis. Appropriate tools for display, analysis and interpretation of data are discussed. This course is offered predominantly, but not exclusively, to Commerce students. The aim is to give a foundation to students who will encounter and apply statistics in their other courses and professions.",
+      "entry": "Students should have obtained a DP for either STA1000F/S.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA1000P",
+      "title": "Introductory Statistics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "N Watson"
+      ],
+      "outline": "This is an introductory statistics course aimed at exposing students to principles and tools to support appropriate quantitative analysis. The aim is to produce students with a functional sense of statistics. We introduce students to statistical modelling and also cover exploratory data analysis. Appropriate tools for display, analysis and interpretation of data are discussed. This course is offered predominantly, but not exclusively, to Commerce students. The aim is to give a foundation to students who will encounter and apply statistics in their other courses and professions.",
+      "entry": "Students should have obtained a DP for either STA1000F/S.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
       "code": "STA1000S",
       "title": "Introductory Statistics",
       "credits": 18,
@@ -5038,6 +5553,25 @@
       ],
       "outline": "This is an introductory statistics course aimed at exposing students to principles and tools to support appropriate quantitative analysis. The aim is to produce students with a functional sense of statistics. We introduce students to statistical modelling and also cover exploratory data analysis. Appropriate tools for display, analysis and interpretation of data are discussed. This course is offered predominantly, but not exclusively, to Commerce students. The aim is to give a foundation to students who will encounter and apply statistics in their other courses and professions.",
       "entry": "A pass in any of MAM1004F/S or MAM1005H or MAM1031F or MAM1033F or MAM1020F/S or MAM1010F/S or MAM1110F/H.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA1006S",
+      "title": "Mathematical Statistics I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "S Salau"
+      ],
+      "outline": "248 DEPARTMENT OF STATISTICAL SCIENCES This is an introduction to statistics: the study of collecting, analysing, and interpreting data. It is the key entry-point into a Mathematical Statistics major and hence it is compulsory for students intending to major in Mathematical Statistics. This course provides foundation knowledge in statistical theory, and is useful for any student who wishes for an introduction to the fundamentals of statistics, from a mathematical perspective. Topics covered include: Types of data variables. Exploratory data analysis. Grouping and graphing of data.",
+      "entry": "At least 60% in MAM1031F or MAM1033F or MAM1005H or MAM1020F/S or at least 70% in MAM1010F/S or MAM1004F and concurrent registration for MAM1032S or MAM1034S, or MAM1006H or MAM1012F/S or MAM1021S.",
       "corequisites": "",
       "lectures": "Five lectures per week, Monday - Friday, 4th period",
       "periods": [
@@ -5051,9 +5585,9 @@
         "Thursday",
         "Friday"
       ],
-      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
-      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. STA1000P/L INTRODUCTORY STATISTICS (offered during summer and winter terms) 18 NQF credits at NQF level 5 Convener: N Watson",
-      "examWeight": 60
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 70
     },
     {
       "code": "STA1100S",
@@ -5065,6 +5599,25 @@
       ],
       "outline": "This is an introductory statistics course aimed at exposing student to principles and tools to support appropriate quantitative analysis. The aim is to produce students with a functional sense of statistics. We introduce students to statistical modelling and also cover exploratory data analysis. Appropriate tools for display, analysis and interpretation of data are discussed. This is a service course offered predominantly, but not exclusively, to Commerce students. The aim is to give a foundation to students who will encounter and apply statistics in their other courses and professions.",
       "entry": "A pass in any of MAM1110F or MAM1110H or MAM1005H or MAM1031F or MAM1033F or MAM1010F/S and registered as an Education Development Unit student (Commerce).",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA1106H",
+      "title": "Mathematical Statistics I",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "T Low"
+      ],
+      "outline": "This course is an introduction to statistics: the study of collecting, analysing, and interpreting data. It is the key entry-point into a mathematical statistics major and hence it is compulsory for students intending to major in mathematical statistics. This course provides you with foundation knowledge in statistical theory, and is useful for any student who wishes for an introduction to the fundamentals or statistics, from a mathematical perspective. Topics covered include: Types of data variables. Exploratory data analysis. Grouping and graphing of data. Set theory and Counting rules.",
+      "entry": "At least 60% in MAM1005H or MAM1020F/S or at least 70% in MAM1010F/S and concurrent registration for MAM1006H or MAM1012F/S or MAM1021S. Concurrent registration for (MAM1031F and MAM1032S) or (MAM1033F and MAM1034S). Note: At least 60% pass for MAM1031F or MAM1033F is required for a student to continue with STA1106H in the second semester.",
       "corequisites": "",
       "lectures": "Monday - Friday, 2nd period and a two-hour compulsory tutorial on Monday afternoons.",
       "periods": [
@@ -5079,27 +5632,134 @@
         "Friday"
       ],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
-      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. STA1106H MATHEMATICAL STATISTICS I A student cannot obtain credits for more than one of STA1000F/S/P/L, STA1007S, STA1106H, STA1008F/S. 18 NQF credits at NQF level 5 Convener: T Low DEPARTMENT OF STATISTICAL SCIENCES 249",
-      "examWeight": 60
+      "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. Students write the same class tests and examination as students registered for STA1006S.",
+      "examWeight": 70
     },
     {
       "code": "STA2004F",
-      "title": "&",
-      "credits": 30,
-      "nqf": 7,
+      "title": "Statistical Theory & Inference",
+      "credits": 24,
+      "nqf": 6,
       "conveners": [
-        "Dr E Pienaar"
+        "M Mavuso"
       ],
-      "outline": "Machine learning: Topics covered include: A basic introduction to statistical learning paradigms, applications of regression and classification trees, and a primer on feedforward neural networks and backpropagation.",
-      "entry": "",
-      "corequisites": "STA3048S",
+      "outline": "STA2004F is a rigorous introduction to the foundation of the mathematical statistics and aims to provide students with a deeper understanding of the statistical concepts covered in STA1006S. The course is intended for students studying Mathematical Statistics or Actuarial Science. STA2004F is divided into two broad sections: (1) Distribution theory and (2) Statistical Inference. During the first part of the course, students will learn to derive the distributions of random variables and their transformations, and explore the limiting behaviour of sequences of random variables.",
+      "entry": "A pass in (MAM1000W or MAM1032S or MAM1034S or MAM1012S or MAM1006H) and STA1006S or STA1106H.",
+      "corequisites": "",
+      "lectures": "Five lectures per week, Monday to Friday, 1st period.",
+      "periods": [
+        1
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 70
+    },
+    {
+      "code": "STA2005S",
+      "title": "Linear Models",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr B Erni"
+      ],
+      "outline": "",
+      "entry": "A pass in STA2004F.",
+      "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline.",
-      "assessment": "A computer based exam. STA3048S STATISTICAL MODELLING & BAYESIAN ANALYSIS A student cannot obtain credits for both STA3043S and (STA3047S+STA3048S) 30 NQF credits at NQF level 7 Convener: Dr E Pienaar",
+      "dp": "",
+      "assessment": "",
       "examWeight": null
+    },
+    {
+      "code": "STA2020F",
+      "title": "Applied Statistics",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "N Watson"
+      ],
+      "outline": "This course is designed to extend the student’s basic knowledge acquired in STA1000F/S/P/L. The emphasis of the course is on applying statistical methods and modelling techniques to data rather than focusing on the mathematical rigour underpinning these methods. Topics covered include: Analysis of variance and experimental design; revision and extension of simple linear regression; multiple regression; logistic regression; model building; time series analysis; and non-parametric statistics. Students will analyse data using R.",
+      "entry": "A pass in STA1000F/S/P/L or STA1006S or STA1106H or STA1100S or STA1007S or STA1008F/S and MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1010F/S or MAM1020F/S or MAM1110F/H or MAM1005H.",
+      "corequisites": "",
+      "lectures": "Monday - Thursday, 1st or 5th period",
+      "periods": [
+        1,
+        5
+      ],
+      "periodChoice": true,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Satisfactory attendance of lectures and lab practicals and the completion of class tests, mini practical lab tests, and practical tests as set out in course outline. Class record of at least 35% and at least 35% for Practical test.",
+      "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA2020S",
+      "title": "Applied Statistics",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "N Watson"
+      ],
+      "outline": "This course is designed to extend the student’s basic knowledge acquired in STA1000F/S/P/L. The emphasis of the course is on applying statistical methods and modelling techniques to data rather than focusing on the mathematical rigour underpinning these methods. Topics covered include: Analysis of variance and experimental design; revision and extension of simple linear regression; multiple regression; logistic regression; model building; time series analysis; and non-parametric statistics. Students will analyse data using R.",
+      "entry": "A pass in STA1000F/S/P/L or STA1006S or STA1106H or STA1100S or STA1007S or STA1008F/S and MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1010F/S or MAM1020F/S or MAM1110F/H or MAM1005H.",
+      "corequisites": "",
+      "lectures": "Monday - Thursday, 1st or 5th period",
+      "periods": [
+        1,
+        5
+      ],
+      "periodChoice": true,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Satisfactory attendance of lectures and lab practicals and the completion of class tests, mini practical lab tests, and practical tests as set out in course outline. Class record of at least 35% and at least 35% for Practical test.",
+      "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA2030S",
+      "title": "Statistical Theory",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "S Britz"
+      ],
+      "outline": "DEPARTMENT OF STATISTICAL SCIENCES 251 This course introduces students to Statistical Theory and Inference. It explores aspects of probability theory that are particularly relevant to statistics, including the notions of random variables, joint probability distributions, expected values and moment generating functions. The course content includes univariate distributions and moments of univariate distributions, moments of bivariate distributions, distributions of sample statistics and parameter estimation and inference.",
+      "entry": "At least 45% for STA2020F/S or STA2007F/S/H or STA2005S or (DP mark for STA2004F with concurrent registration for STA2020S/STA2007S).",
+      "corequisites": "Concurrent registration for MAM1032S or MAM1034S or MAM1012S or MAM1021F/S. Note: A student may not register concurrently for STA2030S and MAM1006H.",
+      "lectures": "Monday - Thursday, 1st period",
+      "periods": [
+        1
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
     },
     {
       "code": "STA3022F",
@@ -5124,7 +5784,33 @@
         "Thursday"
       ],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
-      "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. STA3030F STATISTICAL INFERENCE & MODELLING A student cannot obtain credits for both STA3030F and STA3041F. 36 NQF credits at NQF level 7 Convener: Associate Professor G Distiller",
+      "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 70
+    },
+    {
+      "code": "STA3030F",
+      "title": "Statistical Inference & Modelling",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor G Distiller"
+      ],
+      "outline": "This course forms part of the third-year major in Applied Statistics. The aim of the course is to provide students with the main intellectual and practical skills required in the use of inferential statistics and statistical modelling. The course consists of 4 modules: The simulation module introduces students to the use of computer simulation and data re-sampling techniques (bootstrap) to investigate the following problems: one and two sample tests of means and variances; one way analysis of variance; moments and other properties of distributions.",
+      "entry": "(STA2030S or STA2004F) AND (STA2020F/S / STA2007F/S or 45% STA2005S) AND (MAM1032 or MAM1034S or MAM1006S or MAM1012F/S or MAM1021F/S or MAM1112S)",
+      "corequisites": "",
+      "lectures": "Monday - Thursday, 1st period",
+      "periods": [
+        1
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Class record of at least 35%.",
+      "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 70
     },
     {
@@ -5150,8 +5836,27 @@
         "Thursday"
       ],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
-      "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. STA3041F STOCHASTIC PROCESSES & TIME SERIES A student cannot obtain credits for both STA3030F and STA3041F. 36 NQF credits at NQF level 7 Convener: D Katshunga",
+      "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 70
+    },
+    {
+      "code": "STA3041F",
+      "title": "Stochastic Processes & Time Series",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "D Katshunga"
+      ],
+      "outline": "",
+      "entry": "STA2004F and STA2005S; MAM2000W or MAM2004H is strongly recommended. Recommended MAM2000W modules:",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
     },
     {
       "code": "STA3045F",
@@ -5161,24 +5866,54 @@
       "conveners": [
         "Associate Professor T Gebbie"
       ],
-      "outline": "This course is a third-year module for students studying Actuarial Science or Mathematical Statistics, though not a requirement for a major in Mathematical Statistics. The course begins by giving a brief introduction to copulas and extreme value theory, together with some applications to risk management. The rest of the course gives a theoretical overview of stochastic processes, with the models covered spanning both discrete and continuous time as well as discrete and continuous statespace.",
-      "entry": "STA2004F, STA2005S, MAM2000W and concurrent registration for STA3041F. Recommended MAM2000W modules: MAM2011F - Linear Algebra (2LA), MAM 2010F - Advanced Calculus (2AC), MAM2012S - Differential Equations (2DE) and MAM2014S Real Analysis (2RA). Note: A student may not register concurrently for STA3045F and CSC2001F.",
+      "outline": "",
+      "entry": "STA2004F, STA2005S, MAM2000W and concurrent registration for STA3041F. Recommended MAM2000W modules:",
       "corequisites": "",
-      "lectures": "Five lectures per week, Monday - Friday, 2nd period.",
-      "periods": [
-        2
-      ],
+      "lectures": "",
+      "periods": [],
       "periodChoice": false,
-      "days": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday"
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "STA3047S",
+      "title": "Introduction to Machine Learning",
+      "credits": 6,
+      "nqf": 7,
+      "conveners": [
+        "Dr E Pienaar"
       ],
-      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
-      "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. STA3047S INTRODUCTION TO MACHINE LEARNING A student cannot obtain credits for both STA3043S and (STA3047S+STA3048S) 6 NQF credits at NQF level 7 Convener: Dr E Pienaar",
-      "examWeight": 70
+      "outline": "",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "STA3048S",
+      "title": "Statistical Modelling & Bayesian Analysis",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr E Pienaar"
+      ],
+      "outline": "",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
     },
     {
       "code": "STA4010W",

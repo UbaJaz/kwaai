@@ -345,7 +345,24 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory completion determined from the following submissions: a daily diary of work signed by student and employer, copies of observations and calculations as specified in the course materials and a signed letter from the employer on a company letterhead.",
-      "assessment": "Pass/Fail determined according to whether the tasks have been duly performed. APG2021W TECHNOLOGY II APG2021F/S versions are available for Semester Abroad students only. 20 NQF credits at NQF level 6; Site visits, tutorials. Second year undergraduate. Convener: TBA",
+      "assessment": "Pass/Fail determined according to whether the tasks have been duly performed.",
+      "examWeight": null
+    },
+    {
+      "code": "APG2021W",
+      "title": "Technology II",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [],
+      "outline": "Understanding materials, components, assembly systems, and generic details applicable to composite construction systems and small framed structures in reinforced concrete and steel. Development of an awareness of materials and construction as an informant of design at the scale of 2 - 4 storey buildings with basements, and of the link between design development and detail resolution both in precedent of architectural merit and in the students own design development work based on Studiowork projects. Understanding of 2d and 3d graphic representation of building assembly.",
+      "entry": "APG1003W",
+      "corequisites": "APG2038W, APG2039W",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
     },
     {
@@ -414,7 +431,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. APG2039W DESIGN & THEORY STUDIO II APG2039F/S versions are available for Semester Abroad students only. 60 NQF credits at NQF level 6; 240 hours studio. Second year undergraduate. Convener: Ms M Ho-Tong",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
+      "code": "APG2039W",
+      "title": "Design & Theory Studio II",
+      "credits": 60,
+      "nqf": 6,
+      "conveners": [
+        "Ms M Ho-Tong"
+      ],
+      "outline": "The course reiterates in more sophisticated form the issues explored in first year studio in order to gain familiarity with them. They are addressed within the exploration of the architecture of place making, conceived as having four cornerstones: it is ordered by experience, has tectonic quality, is eminently habitable and contributes to its urban context. An undercurrent is the study of design method and digital design techniques are introduced.",
+      "entry": "APG1020W",
+      "corequisites": "APG2021W, APG2043F",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
     },
     {
@@ -1663,15 +1699,15 @@
       "conveners": [
         "Professor P Moyo"
       ],
-      "outline": "The course aims to introduce students to concepts of engineering mechanics which are the foundations of structural engineering, hydraulic engineering and geotechnical engineering. This course develops the concept of force and moment equilibrium, which is foundational for solving engineering problems in many civil engineering disciplines. The course introduces external and internal force and moment vectors acting on structural systems comprising ropes, rods and beams. External loading considered includes point loads; uniformly and non- uniformly distributed loads; and pressure.",
-      "entry": "PHY1012F/S (DP), MAM1020F/S (DP)",
+      "outline": "",
+      "entry": "PHY1012F/S (DP),",
       "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 107",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -1816,14 +1852,33 @@
         "O Nnene"
       ],
       "outline": "This project aims to prepare students for transport infrastructure design. Students will be introduced to crucial aspects of the design of transport infrastructure including corridor selection, geometric design, intersection design, pavement design, earthworks estimation and drainage design. The design will be done in the context of land-based modes of transport such as road and rail. The students will complete their design with the Civil 3D software.",
-      "entry": "PHY1012F (DP) and MAM1020F (DP) and CIV1011S (DP)",
+      "entry": "",
       "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. CIV2048S HYDRAULICS 1 - PRESSURISED WATER FLOW 15 NQF credits at NQF level 7 Convener: T Mofokeng",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
+      "code": "CIV2048S",
+      "title": "Hydraulics 1 - Pressurised Water Flow",
+      "credits": 15,
+      "nqf": 7,
+      "conveners": [
+        "T Mofokeng"
+      ],
+      "outline": "",
+      "entry": "PHY1012F (DP) and MAM1020F (DP) and",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -1910,15 +1965,34 @@
       "conveners": [
         "Professor N Armitage"
       ],
-      "outline": "This course aims to develop an understanding of flow in pipelines: laminar and turbulent flow – Reynolds; head losses in pipelines and fittings; the design of pipe systems. Pump selection. Open channel flow: the steady flow equations; Froude; uniform, gradually and rapidly varied flow; hydraulic structures, e.g. flumes, weirs, spillways and control gates.",
-      "entry": "CIV2040S (DP)",
+      "outline": "",
+      "entry": "",
       "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "CIV3044F",
+      "title": "Engineering Hydrology",
+      "credits": 8,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Okedi"
+      ],
+      "outline": "",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -1968,15 +2042,15 @@
       "conveners": [
         "Dr J Okedi"
       ],
-      "outline": "This course aims to develop an understanding of the design and operation of water services in urban areas (formal and informal), including: water supply and distribution; sanitation and urban drainage. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 112",
-      "entry": "APG2026S; CIV3043F (DP) and CIV3044F (DP).",
+      "outline": "",
+      "entry": "APG2026S; CIV3043F (DP) and",
       "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -2077,6 +2151,25 @@
       "examWeight": null
     },
     {
+      "code": "CIV4045F",
+      "title": "Structural Design II",
+      "credits": 18,
+      "nqf": 8,
+      "conveners": [
+        "Professor P Moyo"
+      ],
+      "outline": "",
+      "entry": "CIV3048F and",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
       "code": "CIV4046F",
       "title": "Transportation Engineering",
       "credits": 18,
@@ -2112,6 +2205,23 @@
       "days": [],
       "dp": "Coursework is compulsory. If the student does not submit hand-ins or write a test the student will receive a mark of 0 for that assessment (unless granted an exemption). But the student will be able to write the exam.",
       "assessment": "Coursework 40%; final examination 60%",
+      "examWeight": 60
+    },
+    {
+      "code": "CML1001P",
+      "title": "Business Law I - Summer Term",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [],
+      "outline": "Refer to course outline for CML1001F/CML1001S.",
+      "entry": "None",
+      "corequisites": "",
+      "lectures": "Lectures are offered on a daily basis for three hours over a four-week period.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Writing the test is compulsory. If a student does not write the test and does not get an exemption then the student will be marked absent and awarded 0 for the test. But the student will be able to write the exam.",
+      "assessment": "Test 40%; final examination 60%. Departments and Units Established in the Faculty of Science BIOLOGICAL SCIENCES Associate Professor and Head of Department: A M Muasya, MPhil Moi PhD Reading",
       "examWeight": 60
     },
     {
@@ -3030,7 +3140,34 @@
         "Friday"
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
-      "assessment": "Tests 20%; practical work and practical tests 30%; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examination; 35% for the advanced computing module (comprising Theory of Algorithms and Functional Programming) in the final examination. CSC3024S INTRODUCTION TO C++ PROGRAMMING 18 NQF credits at NQF level 7 Convener: Associate Professor P Marais",
+      "assessment": "Tests 20%; practical work and practical tests 30%; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examination; 35% for the advanced computing module (comprising Theory of Algorithms and Functional Programming) in the final examination.",
+      "examWeight": 50
+    },
+    {
+      "code": "CSC3024S",
+      "title": "Introduction to C++ Programming",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor P Marais"
+      ],
+      "outline": "This course introduces the C++ programming language. Students are exposed to different aspects of modern C++, including pointers, stream operations, RAII, operator overloading, templates and effective use of the standard template library (STL). The course also examines the C++ memory model and shows how this works with move semantics to produce efficient code.",
+      "entry": "CSC2001F, CSC2002S, CSC2004Z and ((MAM1004F+MAM1008S) or (MAM1000W) or (MAM1031F or equivalent)).",
+      "corequisites": "",
+      "lectures": "Monday – Friday, 3rd period, Practicals: Two 4-hour practicals per week, by arrangement DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 172",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Minimum of 45% aggregate in practical work.",
+      "assessment": "20% tests; 30% practicals and practical tests; 50% final examination. Sub-minima: 45% practical work; 45% on weighted average of tests and final examination. ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE Associate Professor and Head of Department: M R Sowman, MSc PhD Cape Town",
       "examWeight": 50
     },
     {
@@ -3193,15 +3330,15 @@
       "conveners": [
         "Dr S Jayalath"
       ],
-      "outline": "This course aims to develop an understanding of (a) DC circuits and networks including series and parallel circuits, Kirchhoff’s laws, Mesh Analysis, Superposition Theorem, Star-to-delta and Deltato-star Transformation, Thevenin’s theorem, Maximum Power Transfer theorem, DC transients in RL and R-C circuits; (b) Fundamentals of AC including generation, concepts of waveform, period, frequency, angular velocity, phase etc., average, peak and RMS values; (c) Single-phase AC circuit including AC through resistance (R), inductance (L) and capacitance (C), concept of reactance and impedance,…",
-      "entry": "PHY1013F/S (MEC), MAM1021S (MEC), PHY1004W or PHY1032S (CSC), MAM1004F (>60%) and MAM1008S (>60%) or MAM1000W (CSC)",
+      "outline": "",
+      "entry": "PHY1013F/S (MEC),",
       "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -3212,15 +3349,15 @@
       "conveners": [
         "Dr S Paine"
       ],
-      "outline": "The course aims to help students understand the following concepts: (a) Introduction to Semiconductor Physics and Diode basics. (b) Diode circuit model, applications and LEDs (c) Introduction to BJTs and basic models (d) BJT amplifier circuit (only focus on common-emitter) (e) Introduction to Op Amps, op-amp ideal and practical models (f) Opamp inverting and non-inverting applications (g) Introduction to FETs, FET analogue applications (h) Simple H-bridge circuits (i) Difference between analogue and digital applications, intro into digital electronics (j) Digital electronic continued (Boolean…",
-      "entry": "MAM1021F/S (MEC), PHY1013F/S (MEC), PHY1004W or PHY1032S (CSC), MAM1004F (>60%) and MAM1008S (>60%) or MAM1000W (CSC), DP for EEE2041F.",
+      "outline": "",
+      "entry": "MAM1021F/S (MEC),",
       "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -4663,6 +4800,265 @@
       "examWeight": null
     },
     {
+      "code": "MAM3010F",
+      "title": "Metric Spaces (3MS)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "S Chili"
+      ],
+      "outline": "The aim of this course is to introduce fundamental concepts in metric spaces and topology. Basic tools - Metrics, ultrametrics, pseudometrics, quasi-metrics. Convergence in metric spaces. Closed sets and closures. Open sets and interiors. Definition of topology in metric space and in general. Functions: continuous, uniformly continuous, Lipschitz continuous, contractions, isometries. Isomorphisms: topological, uniform, metric. Fundamental concepts - Completeness, via Cauchy sequences. Cantor’s intersection theorem. Construction of completion and proof of uniqueness.",
+      "entry": "MAM2010F, MAM2011F, MAM2014S and at least one of MAM2012S or MAM2013S.",
+      "corequisites": "",
+      "lectures": "Tuesdays, Fridays and some Wednesdays in 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3011F",
+      "title": "Modern Abstract Algebra (3AL)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Sanchez-Ortega"
+      ],
+      "outline": "DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 185 This course focusses on Group Theory. Topics include: Lagrange’s Theorem. Isomorphism Theorems, Correspondence Theorem. p-Groups. Cauchy’s Theorem. Sylow Theorems. Direct Product of groups. Finitely generated Abelian Groups. Jordan-Holder Theorem.",
+      "entry": "MAM2010F, MAM2011F, MAM2013S and at least one of MAM2012S or MAM2014S.",
+      "corequisites": "",
+      "lectures": "Mondays, Thursdays and some Wednesdays in 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3012F",
+      "title": "Discrete Mathematics (3DM)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr B du Preez"
+      ],
+      "outline": "Graph theory, combinatorial counting, discrete probability theory, recurrences, algorithms, applications.",
+      "entry": "MAM2010F, MAM2011F, and two of MAM2012S, MAM2013S and MAM2014S.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 4th period.",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3013S",
+      "title": "Topics in Algebra (3TA)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Sanchez-Ortega"
+      ],
+      "outline": "This courses provides an Introduction to Ring Theory. A selection of the topics covered: Definition of a ring, examples, main properties. The field of fraction of an integral domain. Polynomial rings.",
+      "entry": "MAM2010F, MAM2011F, and two of MAM2012S, MAM2013S and MAM2014S.",
+      "corequisites": "",
+      "lectures": "Tuesdays, Fridays and some Wednesdays in 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3014S",
+      "title": "Topics in Analysis (3TN)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr F Ebobisse-Bille"
+      ],
+      "outline": "1. Study of sequences: basic definitions on sequences of numbers; study of the behaviour of sequences of real numbers. 2. Revision on metric spaces: distance, balls, open and closed sets, limit of a function, convergence of sequences, compactness, completeness; spaces of continuous functions between metric spaces (continuity, uniform continuity, Lipschitz continuity, H?lderian continuity; ointwise convergence and uniform convergence for sequences of functions; normed spaces and linear continuous mappings between normed spaces; equivalence of norms; Banach spaces; linear continuous mappings…",
+      "entry": "MAM3010F",
+      "corequisites": "",
+      "lectures": "Mondays, Thursdays and some Wednesdays in 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3015S",
+      "title": "Complex Analysis (3CA)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor E Berdysheva"
+      ],
+      "outline": "Fields of complex numbers, Holomorphic functions, Power series, Elementary functions, Complex integration, Cauchy's Integral Theorem, Cauchy's Integral Formula, Liouville’s Theorem, DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 186 Fundamental Theorem of Algebra, Coincidence Principle, Maximum Modulus Principle, Singularities, Residues, Laurent Series, Arguments, Rouche's Theorem, Open Mapping Theorems.",
+      "entry": "MAM2010F, MAM2011F, MAM2014S and at least one of MAM2012S or MAM2013S.",
+      "corequisites": "",
+      "lectures": "Tuesdays, Fridays and some Wednesdays in 4th period.",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3042F",
+      "title": "Advanced Numerical Methods (3AN)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr N Alexeeva"
+      ],
+      "outline": "Advanced methods for ODEs, boundary value problems, differential eigenvalue problems. Numerical solution of PDEs by methods of finite differences, finite elements and spectral methods. Please note that lectures alternate during the week so that students can take MAM3042F and MAM3044F concurrently.",
+      "entry": "MAM2040F, MAM2041F, MAM2042S and MAM2043S.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 3rd period.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "A class record of 30% or more.",
+      "assessment": "Class record counts up to 20%, while the balance is made up by the final examination.",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3044F",
+      "title": "Functions of a Complex Variable (3CV)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr P W Adams"
+      ],
+      "outline": "Calculus of complex functions of one variable, conformal maps, complex contour integration and the Cauchy-Goursat theorem, Taylor and Laurent series of complex functions, calculus of residues, applications of complex contour integration to real-valued integrals, the principal value of an integral, multi-valued complex functions, analytic continuation and special functions.",
+      "entry": "MAM2040F, MAM2041F, MAM2042S and MAM2043S.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 3rd period.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "A class record of 30% or more, satisfactory attendance at lectures and tutorials, and submission of all assigned work.",
+      "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3045S",
+      "title": "Introduction to General Relativity (3GR)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr B Mongwane"
+      ],
+      "outline": "This course introduces special relativity and general relativity including tensors, the metric tensor, symmetries, curvature, Einstein's field equations and solutions of Minkowski space and Black Holes. Please note that lectures alternate during the week so that students can take MAM3043S and MAM3045S concurrently.",
+      "entry": "MAM2040F, MAM2041F, MAM2042S and MAM2043S.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 3rd period.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "A class record of 30% or more.",
+      "assessment": "Class record counts up to 50%, while the balance is given by the final examination. DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 187",
+      "examWeight": null
+    },
+    {
+      "code": "MAM3046S",
+      "title": "Fluid Dynamics (3FD)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Professor A Malan"
+      ],
+      "outline": "Applications, description of fluids, equations of fluid flow for simple fluids, analytical techniques.",
+      "entry": "MAM2040F, MAM2041F, MAM2042S and MAM2043S.",
+      "corequisites": "",
+      "lectures": "Monday and Tuesday, meridian. Thursday, 5th period.",
+      "periods": [
+        5,
+        0
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Thursday"
+      ],
+      "dp": "A class record 30% or more, and attendance of both 75% of all lectures and 75% of all tutorials.",
+      "assessment": "Class record counts up to 50%, while the balance is made up by the final examination. PHYSICS Professor and Head of Department: A Buffler, MSc PhD HDE Cape Town Refer also to the Science Faculty Handbook.",
+      "examWeight": null
+    },
+    {
       "code": "MEC1000X",
       "title": "Practical Training I",
       "credits": 0,
@@ -4699,33 +5095,6 @@
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
-    },
-    {
-      "code": "MEC1005W",
-      "title": "Departments in Other Faculties and Courses Offered",
-      "credits": 12,
-      "nqf": 5,
-      "conveners": [
-        "A Paskaramoorthy"
-      ],
-      "outline": "This course aims to introduce engineering students to foundational statistical concepts and methods for analysing data and making informed decisions under uncertainty. Topics include probability, statistical inference, and modelling techniques relevant to engineering applications. Students will develop practical skills in data analysis using Excel, to interpret experimental results and solve simple problems relevant to an engineering context. The course emphasises statistical thinking and its role in modelling uncertainty, assessing variability, and drawing reliable conclusions from data.",
-      "entry": "MAM1020F (or equivalent)",
-      "corequisites": "CHE1005W or CIV1005W or EEE1007S or MEC1005W",
-      "lectures": "Monday - Thursday, 1st or 5th period",
-      "periods": [
-        1,
-        5
-      ],
-      "periodChoice": true,
-      "days": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday"
-      ],
-      "dp": "Satisfactory attendance of workshops and tests and completion of online quizzes as set out in the course outline. Class record of at least 35%.",
-      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. STA1008S STATISTICS FOR ENGINEERS A student cannot obtain credits for more than one of STA1000F/S/P/L, STA1007S, STA1006S, STA1008F/S. 12 NQF credits at NQF level 5 Convener: A Paskaramoorthy",
-      "examWeight": 60
     },
     {
       "code": "MEC1007F",
@@ -5058,15 +5427,15 @@
       "conveners": [
         "Professor S Chung Kim Yuen"
       ],
-      "outline": "In this course the students will be exposed to failure analysis, gaining understanding of how components are abstracted and simplified to be solved using simplified principles. Students will learn about basic material properties and material selection coupled with stress analysis. The students will develop an understanding of the different stresses a body experiences under various loading conditions with a view to assess and prevent failures in structures. Topics will demonstrate how forces, stresses and strains are used to size components for different applications and different materials.",
-      "entry": "MEC2046F or MEC2042F, MEC2025F or MEC2049F, MAM2083F/S (DP), MAM2084F/S (DP)",
-      "corequisites": "None",
-      "lectures": "4 lectures per week.",
+      "outline": "",
+      "entry": "MEC2046F or MEC2042F, MEC2025F or MEC2049F, MAM2083F/S (DP),",
+      "corequisites": "",
+      "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -5134,15 +5503,15 @@
       "conveners": [
         "Associate Professor WH Ho"
       ],
-      "outline": "The aim of this course is to introduce students to differential analysis of fluid control volumes, similitude and dimensional analysis, and the analysis of steady state incompressible and compressible internal flows and its application to pipe and duct flows as well as flow measuring devices. It covers: The differential forms of the fundamental conservation laws of mass, energy and momentum and its application to laminar flows and vortices; Similitude and dimensional analysis and its application to the velocity and thermal boundary layers, as well as pump and fan, scaling laws; Analysis of…",
-      "entry": "MEC3077F (DP)",
+      "outline": "",
+      "entry": "",
       "corequisites": "",
-      "lectures": "4 lectures and 2 tutorials per week.",
+      "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -5286,15 +5655,15 @@
       "conveners": [
         "Associate Professor WH Ho"
       ],
-      "outline": "The aim of this course is to introduce students to the analysis of steady-state incompressible external flows, the analysis of turbomachines with deviations from ideal theory, the properties and behaviour of gas mixtures, the fundamental principles of combustion and reacting flows, the fundamentals of psychrometrics and air-conditioning processes, and to provide an understanding of the various energy systems and its role in the national energy landscape.",
-      "entry": "MEC3080S (DP)",
-      "corequisites": "None",
-      "lectures": "5 lectures and 2 tutorials per week",
+      "outline": "",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -5600,6 +5969,44 @@
       "examWeight": 60
     },
     {
+      "code": "STA1000L",
+      "title": "Introductory Statistics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "N Watson"
+      ],
+      "outline": "This is an introductory statistics course aimed at exposing students to principles and tools to support appropriate quantitative analysis. The aim is to produce students with a functional sense of statistics. We introduce students to statistical modelling and also cover exploratory data analysis. Appropriate tools for display, analysis and interpretation of data are discussed. This course is offered predominantly, but not exclusively, to Commerce students. The aim is to give a foundation to students who will encounter and apply statistics in their other courses and professions.",
+      "entry": "Students should have obtained a DP for either STA1000F/S.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA1000P",
+      "title": "Introductory Statistics",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "N Watson"
+      ],
+      "outline": "This is an introductory statistics course aimed at exposing students to principles and tools to support appropriate quantitative analysis. The aim is to produce students with a functional sense of statistics. We introduce students to statistical modelling and also cover exploratory data analysis. Appropriate tools for display, analysis and interpretation of data are discussed. This course is offered predominantly, but not exclusively, to Commerce students. The aim is to give a foundation to students who will encounter and apply statistics in their other courses and professions.",
+      "entry": "Students should have obtained a DP for either STA1000F/S.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
       "code": "STA1000S",
       "title": "Introductory Statistics",
       "credits": 18,
@@ -5609,13 +6016,104 @@
       ],
       "outline": "This is an introductory statistics course aimed at exposing students to principles and tools to support appropriate quantitative analysis. The aim is to produce students with a functional sense of statistics. We introduce students to statistical modelling and also cover exploratory data analysis. Appropriate tools for display, analysis and interpretation of data are discussed. This course is offered predominantly, but not exclusively, to Commerce students. The aim is to give a foundation to students who will encounter and apply statistics in their other courses and professions.",
       "entry": "A pass in any of MAM1004F/S or MAM1005H or MAM1031F or MAM1033F or MAM1020F/S or MAM1010F/S or MAM1110F/H.",
-      "corequisites": "CHE1005W or CIV1005W or EEE1006F or",
+      "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
-      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. STA1000P/L INTRODUCTORY STATISTICS (offered during summer and winter terms) 18 NQF credits at NQF level 5 Convener: N Watson",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA1008F",
+      "title": "Statistics for Engineers",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "A Paskaramoorthy"
+      ],
+      "outline": "",
+      "entry": "MAM1020F (or equivalent)",
+      "corequisites": "CHE1005W or CIV1005W or EEE1006F or",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "STA1008S",
+      "title": "Statistics for Engineers",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "A Paskaramoorthy"
+      ],
+      "outline": "This course aims to introduce engineering students to foundational statistical concepts and methods for analysing data and making informed decisions under uncertainty. Topics include probability, statistical inference, and modelling techniques relevant to engineering applications. Students will develop practical skills in data analysis using Excel, to interpret experimental results and solve simple problems relevant to an engineering context. The course emphasises statistical thinking and its role in modelling uncertainty, assessing variability, and drawing reliable conclusions from data.",
+      "entry": "MAM1020F (or equivalent)",
+      "corequisites": "CHE1005W or CIV1005W or EEE1007S or MEC1005W",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of workshops and tests and completion of online quizzes as set out in the course outline. Class record of at least 35%.",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA2020F",
+      "title": "Applied Statistics",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "N Watson"
+      ],
+      "outline": "This course is designed to extend the student’s basic knowledge acquired in STA1000F/S/P/L. The emphasis of the course is on applying statistical methods and modelling techniques to data rather than focusing on the mathematical rigour underpinning these methods. Topics covered include Analysis of variance and experimental design; revision and extension of simple linear regression; multiple regression; logistic regression; model building; time series analysis; and non-parametric statistics. Students will analyse data using R.",
+      "entry": "A pass in STA1000F/S/P/L or STA1006S or STA1106H or STA1100S or STA1007S or STA1008F/S and MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1010F/S or MAM1020F/S or MAM1110F/H or MAM1005H.",
+      "corequisites": "",
+      "lectures": "Monday - Thursday, 1st or 5th period",
+      "periods": [
+        1,
+        5
+      ],
+      "periodChoice": true,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Satisfactory attendance of lectures and lab practicals and the completion of class tests, mini practical lab tests, and practical tests as set out in course outline. Class record of at least 35% and at least 35% for Practical test.",
+      "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 195",
+      "examWeight": 60
+    },
+    {
+      "code": "STA2020S",
+      "title": "Applied Statistics",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "N Watson"
+      ],
+      "outline": "This course is designed to extend the student’s basic knowledge, acquired in STA1000F/S/P/L. The emphasis of the course is on applying statistical methods and modelling techniques to data rather than focusing on the mathematical rigour underpinning these methods. Topics covered include: Analysis of variance and experimental design; revision and extension of simple linear regression; multiple regression; logistic regression; time series analysis; and non-parametric statistics. Students will analyse data using R.",
+      "entry": "A pass in STA1000F/S/P/L or STA1006S or STA1106H or STA1100S or STA1007S or STA1008F/S and MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1010F/S or MAM1020F/S or MAM1110F/H or MAM1005H.",
+      "corequisites": "",
+      "lectures": "Monday - Thursday, 7th period",
+      "periods": [
+        7
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Satisfactory attendance of lectures and lab practicals and the completion of class tests, mini practical lab tests, and practical tests as set out in course outline. Class record of at least 35% and at least 35% for Practical test.",
+      "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
     }
   ]

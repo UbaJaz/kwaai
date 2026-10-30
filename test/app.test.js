@@ -9,6 +9,7 @@ const { analysePlan, termsOf } = require('../src/planner');
 const { html } = require('../src/html');
 const { titleCase, parseHandbook, expandCode, codesIn, lecturePeriods, examWeight } = require('../scripts/import-handbook');
 const { UNIVERSITIES } = require('../src/universities');
+const { scan: scanTables } = require('../scripts/import-tables');
 
 // ---- unit ----
 
@@ -127,6 +128,34 @@ test('handbook parsing: courses in both semesters and the details the planner us
   assert.equal(examWeight('Coursework 50% (75% assessments, 15% assignments). Exam 50% (67% written examination; 33% computer examination)'), 50);
   assert.equal(examWeight('Invigilated tests (40%) and one final exam (60%), no projects.'), 60);
   assert.equal(examWeight('Portfolio 100%'), null);
+});
+
+test('handbook parsing: headings the first importer missed', () => {
+  const one = (s) => parseHandbook(s)[0];
+  // a note starting "A student cannot..." straight after the title (STA1006S was missing because of this)
+  assert.equal(one('STA1006S MATHEMATICAL STATISTICS I A student cannot obtain credits for more than one of STA1000F/S. 18 NQF credits at NQF level 5 Convener: S Salau Course outline: x')?.title, 'Mathematical Statistics I');
+  assert.equal(one('MAM2010F ADVANCED CALCULUS (2AC) 12 NQF credits at NQF level 6 Convener: Dr F Ebobisse-Bille Course outline: x')?.title, 'Advanced Calculus (2AC)');
+  assert.equal(one('CSC3024S INTRODUCTION TO C++ PROGRAMMING 18 NQF credits at NQF level 7 Convener: P Marais Course outline: x')?.title, 'Introduction to C++ Programming');
+  assert.equal(one('ASL2300F UNDERSTANDING LANGUAGE – MEANING AND STRUCTURE A 20 NQF credits at NQF level 6 Convener: TBA Course outline: x')?.code, 'ASL2300F');
+  // a bare code in front of the heading, and a page header caught in the title
+  assert.equal(one('MAM4000W MAM4001W APPLIED MATHEMATICS HONOURS Since the code will not carry credits. 160 NQF credits at NQF level 8; Convener: Dr F E Course outline: x')?.code, 'MAM4001W');
+  assert.equal(one('CIV4045F STRUCTURAL DESIGN II DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 114 18 NQF credits at NQF level 8 Convener: Professor P Moyo Course outline: x')?.title, 'Structural Design II');
+  const off = one('CML4503F COPYRIGHT & PATENTS (not offered in 2026) Final Level, half course. 9 NQF credits at NQF level 8 Convener: A B Course outline: x');
+  assert.equal(off.title, 'Copyright & Patents');
+  assert.equal(off.notOffered, 2026);
+  // a programme table is not a course
+  assert.deepEqual(parseHandbook('CSC1016S CB004/ CB024 Economics By end of year 1 ECO1010 at least 120 credits at NQF level 7'), []);
+});
+
+test('curriculum tables: courses with no description, and replaced codes', () => {
+  const described = new Map(['MAM1031F', 'MAM1032S', 'PSY1009F', 'PSY1010S'].map((code) => [code, { code, title: 'x' }]));
+  const { tableOnly, replaced } = scanTables([
+    'Either MAM1000W or both MAM1031F and MAM1032S',
+    'PHI2043S Business Ethics ............................ 18 6 PSY1010S Introduction to Psychology Part 2 (or PSY1005S if taken before 2026).......... 15',
+    'Entry: PSY1009F (previously PSY1004F). ECO5066W Minor Dissertation ......... 120 9 (a) MUZ1322F (b) MUZ1201H Course NQF Credits African Music I ....... 15',
+  ], described);
+  assert.deepEqual(replaced, { MAM1000W: ['MAM1031F', 'MAM1032S'], PSY1004F: ['PSY1009F'], PSY1005S: ['PSY1010S'] });
+  assert.deepEqual(tableOnly.map((c) => [c.code, c.title, c.credits, c.nqf]), [['PHI2043S', 'Business Ethics', 18, 6]], 'no dissertations, broken rows or postgrad');
 });
 
 // ---- end to end: sign in, review, report, moderate ----
@@ -480,6 +509,14 @@ test('semester planner: add by code or search, remove, and shared links do not o
   assert.match(page, /Entry requirement in your plan: CSC1015F/);
   assert.match(page, /Minimum of 45% aggregate in practical work/, 'DP rules from the handbook');
   assert.match(await b.text('/plan?c='), /Your plan is empty/);
+
+  // old codes add what replaced them; courses not running in 2026 are flagged
+  res = await b.get('/plan?c=CSC1015F&add=mam1000w');
+  assert.equal(res.headers.get('location'), '/plan?c=CSC1015F,MAM1031F,MAM1032S');
+  assert.match(await b.text('/plan?c=CSC1015F,MAM1031F,MAM1032S'), /MAM1000W has been replaced by MAM1031F and MAM1032S/);
+  assert.match(await b.text('/plan?c=CML4503F'), /the handbook says CML4503F is not offered in 2026/);
+  assert.match(await b.text('/courses/PHI2043S'), /list PHI2043S in degree tables but don&#39;t describe it|list PHI2043S in degree tables but don't describe it/);
+  assert.match(await b.text('/courses/STA1006S'), /Mathematical Statistics I/);
 });
 
 test('planner checks: semesters, lecture clashes, which group to pick, exam share', () => {

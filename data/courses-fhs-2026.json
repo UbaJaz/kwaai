@@ -9,15 +9,15 @@
       "conveners": [
         "Dr M Visser"
       ],
-      "outline": "Anaesthesia is formally taught in the fourth year of study with an additional clinical component in sixth year. The fourth- and sixth-years’ learning in anaesthesia are complementary. The four-week, foundational fourth year course is integrated with Ambulatory and Acute Care Medicine in an eightweek rotation. Learning is based on understanding the essential physiology, pharmacology, clinical medicine, and techniques required to provide safe perioperative care and appropriate pain management.",
+      "outline": "",
       "entry": "Successfully completed all second year MBChB courses.",
-      "corequisites": "None",
+      "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Appropriately completed logbook (including airway simulation training), satisfactory attendance of seminars (4 out of 6), attendance of a Pain Workshop.",
-      "assessment": "One computer-based exam comprising multiple choice questions (single best answer) and matching items format. AAE4003W ANAESTHESIA PART I FOR EXTERNAL CREDIT A student will be registered for one of the following equivalent courses, to be determined by the group that the student is allocated to: AAE4103X, AAE4203X, AAE4303X, AAE4403X, AAE4503X 8 NQF credits at NQF level 8 Convener: Doctor A Ernst",
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -28,16 +28,73 @@
       "conveners": [
         "Dr M Visser"
       ],
-      "outline": "Anaesthesia is formally taught in the fourth year of study with an additional clinical component in sixth year. The fourth- and sixth-years’ learning in anaesthesia are complementary. The four-week, foundational fourth year course is integrated with Ambulatory and Acute Care Medicine in an eightweek rotation. Learning is based on understanding the essential physiology, pharmacology, clinical medicine, and techniques required to provide safe perioperative care and appropriate pain management.",
+      "outline": "",
       "entry": "Successfully completed all second year MBChB courses.",
-      "corequisites": "None",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "AAE4002W",
+      "title": "Anaesthesia Part I",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Dr A Ernst"
+      ],
+      "outline": "Anaesthesia is formally taught in the fourth year of study with an additional clinical component in sixth year. The fourth- and sixth-years’ learning in anaesthesia are complementary. The four-week, foundational fourth year course is integrated with Ambulatory and Acute Care Medicine in an eightweek rotation. Learning is based on understanding the essential physiology, pharmacology, clinical medicine, and techniques required to provide safe perioperative care and appropriate pain management.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "Appropriately completed logbook (including airway simulation training), satisfactory attendance of seminars (4 out of 6), attendance of a Pain Workshop.",
-      "assessment": "One computer-based exam comprising multiple choice questions (single best answer) and matching items format. AAE4003W ANAESTHESIA PART I FOR EXTERNAL CREDIT A student will be registered for one of the following equivalent courses, to be determined by the group that the student is allocated to: AAE4103X, AAE4203X, AAE4303X, AAE4403X, AAE4503X 8 NQF credits at NQF level 8 Convener: Doctor A Ernst",
+      "assessment": "One computer-based exam comprising multiple choice questions (single best answer) and matching items format.",
       "examWeight": null
+    },
+    {
+      "code": "AAE4003W",
+      "title": "Anaesthesia Part I for External Credit",
+      "credits": 8,
+      "nqf": 8,
+      "conveners": [
+        "Dr A Ernst"
+      ],
+      "outline": "This is a three-week block in which students will rotate in theatre to acquire the basic skills necessary for the conduct of safe anaesthesia. Formal teaching consists of seminars with a mixture of case-based, interactive, and didactic learning, as well as attendance of workshops in airway management and anaesthesia simulation in the skills laboratory. There is an emphasis on safe anaesthesia practice and professional behaviour appropriate to the role of the anaesthetist as a perioperative physician.",
+      "entry": "None",
+      "corequisites": "None",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Full completion of all anaesthesia skills listed in the logbook (including airway and simulation workshops) and attendance of at least 5 of the 6 seminars.",
+      "assessment": "One computer-based exam comprising multiple choice questions (single best answer)and matching items format.",
+      "examWeight": null
+    },
+    {
+      "code": "AAE6000W",
+      "title": "Anaesthesia Part II",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Dr J Purcell-Jones"
+      ],
+      "outline": "Anaesthesia is formally taught during the fourth and sixth years of study. In the sixth year, a two-week course of practical clinical instruction is presented during the combined 4 week Anaesthesia and Forensic medicine rotation. Under direct supervision, students will be taught how to perform an anaesthetic preassessment, plan and administer anaesthesia and manage a patient postoperatively. Towards the end of the block, the student will be assessed on their ability to plan, perform and manage an anaesthetic.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion and submission of two supervised and assessed clinical cases (practical skills assessment). Completion of 13 online learning activities with a mark of greater than",
+      "assessment": "An end-of-block (EOB) exam including single best answer (SBA) and extended matching questions (EMQ). The EOB SBA and EMQ exam contributes 60% to the final anaesthesia mark. This must be passed with a minimum of 50% in order to pass the course. A mark of 48% or 49% for the EOB SBA and EMQ exam may qualify the student to be considered for a supplementary exam without needing to repeat the course.",
+      "examWeight": 60
     },
     {
       "code": "AHS1003F",
@@ -121,16 +178,16 @@
       "credits": 22,
       "nqf": 5,
       "conveners": [],
-      "outline": "",
+      "outline": "This course builds on the foundational concepts covered in Movement Science 1 and will consolidate the principles of application to health promotion and well-being. The course is taught through lectures, practical demonstrations and workshops, self-study sessions and tutorials. Where possible, exposure to the clinical platform is provided.",
       "entry": "All first semester courses in the BSc Physiotherapy programme.",
-      "corequisites": "",
+      "corequisites": "HUB1020S & HUB1023S",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "",
-      "assessment": "",
-      "examWeight": null
+      "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
+      "assessment": "The coursework mark is weighted 60% and comprises post-module tasks (weighted 24%) towards the final mark); a theory test (20%); a structured practical test (16%) The final exam is weighted 40% and comprises of a written examination (25%) and a structured practical exam (15%).",
+      "examWeight": 40
     },
     {
       "code": "AHS1035F",
@@ -651,15 +708,15 @@
       "conveners": [
         "Mrs I Du Plessis"
       ],
-      "outline": "",
+      "outline": "This course is comprised of two parts; a theoretical component and a clinical component: The theoretical component includes introductory modules on International Classification of Functioning and how to relate these concepts to assessment, Ethics of patient care as well as a module on Communication and Counselling. The clinical component integrates these modules and addresses the theory and practical application of development and wellness across the lifespan paediatric neurology, respiratory, orthopaedic, and musculoskeletal therapy.",
       "entry": "All 1st year courses. AHS1033F, AHS1034S, PPH1001F, PPH1002S, HUB1019F, HUB1020S, PSY1004F, HUB1022F, HUB1023S",
-      "corequisites": "All 2nd year courses. AHS2052H, AHS2053H, AHS2002W, HUB2015W, HUB2023W,",
+      "corequisites": "All 2nd year courses. AHS2052H, AHS2053H, AHS2002W, HUB2015W, HUB2023W, AHS1028H OR AHS1048H",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "",
-      "assessment": "",
+      "dp": "Full attendance and participation in all coursework. Student attendance at clinical sessions is monitored in accordance with HPCSA regulations.",
+      "assessment": "The course is assessed via continuous in course assessment. The theoretical modules are assessed through integrated written or clinical assessment and an online component. Clinical modules are assessed through end of block clinical submissions (including but not limited to block performance, case study presentation) and skill testing. The pass mark for the course is 50%. Should a student obtain between 45-49% an opportunity for re- assessment will be provided.",
       "examWeight": null
     },
     {
@@ -1459,16 +1516,16 @@
       "conveners": [
         "MLM Krenzer"
       ],
-      "outline": "",
-      "entry": "AHS3113W, AHS3107W,",
+      "outline": "The application of OT for the promotion of well-being and full participation of people with disabilities and people at risk of health and social marginalisation is explored. Disability and diversity politics, legislation and policies lay the foundation for understanding the contribution of occupational therapy to social change. Content also includes OT principles of promotive, preventive, therapeutic and rehabilitative practice, as these relate to the primary healthcare philosophy.",
+      "entry": "AHS3113W, AHS3107W, AHS3108W AHS3078H, SLL1028H and SLL1048H",
       "corequisites": "",
-      "lectures": "",
+      "lectures": "Variable DEPARTMENTS IN THE FACULTY 121",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "",
-      "assessment": "",
-      "examWeight": null
+      "dp": "The Division of Occupational Therapy considers all academic activities important and full attendance is encouraged to ensure rich learning, engagement and competence in theory and practice. This course, however, involves a number of academic activities that are designated as ‘compulsory’ in order to ensure that each student has obtained a minimum level of competence through their in-class…",
+      "assessment": "Coursework assessments contributes 50% to the final mark and comprise a work practice strategies assignment, a child learning development and play assignment, a community development practice assignment and a June test paper. Final assessment contributes 50% to the course mark and comprises a written examination paper.",
+      "examWeight": 50
     },
     {
       "code": "AHS4121W",
@@ -1660,14 +1717,14 @@
       "conveners": [
         "Dr M Visser"
       ],
-      "outline": "242 DEPARTMENTS IN THE FACULTY The 5th-year General Surgery course emphasizes a problem-based and experiential learning approach, integrating theory with clinical exposure at Groote Schuur Hospital through supported self-directed learning and formal teaching. Key components include: (a) Introduction to Surgical Practice: Interdisciplinary week of lectures and workshops preparing students for self-directed clinical learning, (b) Clinical exposure: three 2-week rotations in various surgical sub-speciality units provides the basis for experiential learning (breast and endocrine, hepatobiliary…",
-      "entry": "Successfully completed all second year MBChB courses. CHM5003W SURGERY A student will be registered for one of the following equivalent courses, to be determined by the group that the student is allocated to: CHM5103X, CHM5203X, CHM5303X, CHM5403X, CHM5503X 40 NQF credits at NQF level 8 Convener: Doctor M Visser",
+      "outline": "",
+      "entry": "Successfully completed all second year MBChB courses.",
       "corequisites": "",
-      "lectures": "Course Orientation: First Monday at 09h00, GSH Old Main Building, J-Floor Seminar room.",
+      "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "All scheduled activities are considered compulsory. DP for the General Surgery course is granted for: (a) Full attendance at Introduction to Surgical Practice: Interdisciplinary Week. Students will sign the register for each session. DP withheld if the student misses any session without CMC, (b) Attendance at scheduled clinical activities.",
+      "dp": "",
       "assessment": "",
       "examWeight": null
     },
@@ -1679,16 +1736,227 @@
       "conveners": [
         "Dr M Visser"
       ],
+      "outline": "",
+      "entry": "Successfully completed all second year MBChB courses.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "CHM5003W",
+      "title": "Surgery",
+      "credits": 40,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Visser"
+      ],
       "outline": "242 DEPARTMENTS IN THE FACULTY The 5th-year General Surgery course emphasizes a problem-based and experiential learning approach, integrating theory with clinical exposure at Groote Schuur Hospital through supported self-directed learning and formal teaching. Key components include: (a) Introduction to Surgical Practice: Interdisciplinary week of lectures and workshops preparing students for self-directed clinical learning, (b) Clinical exposure: three 2-week rotations in various surgical sub-speciality units provides the basis for experiential learning (breast and endocrine, hepatobiliary…",
-      "entry": "Successfully completed all second year MBChB courses. CHM5003W SURGERY A student will be registered for one of the following equivalent courses, to be determined by the group that the student is allocated to: CHM5103X, CHM5203X, CHM5303X, CHM5403X, CHM5503X 40 NQF credits at NQF level 8 Convener: Doctor M Visser",
+      "entry": "Successful completion of all courses within the preceding academic year.",
       "corequisites": "",
       "lectures": "Course Orientation: First Monday at 09h00, GSH Old Main Building, J-Floor Seminar room.",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "All scheduled activities are considered compulsory. DP for the General Surgery course is granted for: (a) Full attendance at Introduction to Surgical Practice: Interdisciplinary Week. Students will sign the register for each session. DP withheld if the student misses any session without CMC, (b) Attendance at scheduled clinical activities.",
-      "assessment": "",
+      "assessment": "The General Surgery mark comprises three assessments. Students must obtain 50% for each component (sub-minimum) and a weighted overall average of 50% to pass. Students obtaining an average of between 48% and 50% will be recommended to complete a supplementary assessment. Students obtaining less than 48% will be required to repeat the surgical block. (a) In-Course Assessment – weighted 10",
       "examWeight": null
+    },
+    {
+      "code": "CHM5005H",
+      "title": "Orthopaedic Surgery",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Dr A Horn"
+      ],
+      "outline": "This course aims to cover the common entities in adult and paediatric orthopaedic surgery. Core learning outcomes include knowledge of common musculoskeletal trauma and pathological conditions; skills in examination of the musculoskeletal trauma and pathological conditions, application of treatments and carrying out procedures specific to the specialty; x-ray assessment; and professional behaviour appropriate to clinical practice.",
+      "entry": "Successful completion of all courses within the preceding academic years.",
+      "corequisites": "None",
+      "lectures": "Three in person tutorials, online lectures, clinical sessions, one course assignment",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Full and punctual attendance of all ward rounds, clinics, and tutorials as per timetable. Completion of 2-week firm attachment, signed off by registrar or consultant. Attendance of ASCI tutorial, hands tutorial and Red Cross fracture clinic. The student needs to have a minimum of 4 out of the suggested 10 clinical skills signed off as competent.",
+      "assessment": "End-of-course examination consists of an invigilated",
+      "examWeight": null
+    },
+    {
+      "code": "CHM5005W",
+      "title": "Orthopaedic Surgery for External Credit",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Dr A Horn"
+      ],
+      "outline": "This course aims to cover the common entities in adult and paediatric orthopaedic surgery. Core learning outcomes include knowledge of common musculoskeletal trauma and pathological conditions; skills in examination of the musculoskeletal trauma and pathological conditions, application of treatments and carrying out procedures specific to the specialty; x-ray assessment, and professional behaviour appropriate to clinical practice.",
+      "entry": "Completion of semester 1 of NMFC program.",
+      "corequisites": "None",
+      "lectures": "Three in person tutorials, online lectures, clinical sessions, one course assignment.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Full and punctual attendance of all ward rounds, clinics, and tutorials as per timetable. Completion of 2-week firm attachment, signed off by registrar or consultant. Attendance of ASCI tutorial, hands tutorial and Red Cross fracture clinic. The student needs to have a minimum of 4 out of the suggested 8 clinical skills signed off as competent.",
+      "assessment": "End-of-course examination consists of an invigilated",
+      "examWeight": null
+    },
+    {
+      "code": "CHM5006W",
+      "title": "Surgery External Credit",
+      "credits": 41,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Burmeister"
+      ],
+      "outline": "The general surgery component is taught over eight weeks at Groote Schuur Hospital within units dealing with acute care and hepatobiliary, upper gastro-intestinal vascular, colorectal, breast and endocrine medicine. Daily seminars present common important clinical presentations and their initial management. Students attend regular interactive, patient-based tutorials to develop and enhance clinical proficiency and diagnostic skills. They are exposed to theatre and procedural cases to introduce interventional management and encouraged empathy and communication competence.",
+      "entry": "Fourth year MBChB courses.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Students are expected to attend a minimum of 33 out of the 41 seminars. This and the six portfolio cases represent the DP requirements. Tutorials are however considered compulsory. Both tutorials and witnessed procedures are signed off in a logbook, which may be reviewed during the end-of-block assessment.",
+      "assessment": "Students are provided with continuous feedback from their tutors informally during their block. This is not recorded, and does not form part in the final promotion mark. The final mark is made up of an end-of-block written paper (33,3%), end-of-block clinically-based MCQ (33,3%), endof-block oral and portfolio assessment (33,3%). The general surgery component of the course must be passed with 50%.",
+      "examWeight": null
+    },
+    {
+      "code": "CHM5007W",
+      "title": "Neurology and Neurosurgery",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Rothemeyer",
+        "Associate Professor S Marais"
+      ],
+      "outline": "This course aims to cover common entities in adult neurosurgery in a mixed rotation where teaching takes place in both disciplines. In this way, the student develops an understanding of how patients with neurological disorders present. Core learning outcomes include knowledge of common neurological diseases and conditions, skill in examining the nervous system, in applying treatments and carrying out procedures specific to the speciality and in radiologic assessment, as well as professional behaviour appropriate to clinical practice.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "Blended teaching format. Tutorials and bedside teaching are offered, some sessions are optional others are required as stipulated in the teaching program. Time is also allocated for selfdirected learning",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Minimum 75% attendance of scheduled teaching sessions. If a student fails to meet 75% attendance, they must complete a concession to miss academic activities form and meet with the convenor to discuss reasons for not attending else risk DPR.",
+      "assessment": "Formative assessment occurs throughout the course/block. The summative assessment consists of: (a) a Participation Cards (15%): Each student will receive a card at the start of the course/block. During tutorials, clinical teaching or other interactive sessions, the lecturer will ask a series of questions (clinical or theory related) of a student, or of the group where any student can volunteer to answer.",
+      "examWeight": null
+    },
+    {
+      "code": "CHM5008W",
+      "title": "Ophthalmology",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Dr T Van der Lecq",
+        "Associate Professor C Tinley"
+      ],
+      "outline": "This course covers common entities in adult and paediatric ophthalmology. Students undergo experiential learning in the outpatient clinics at Groote Schuur Hospital over a 10-day period. Core learning outcomes are categorised into core knowledge; skills, including clinical, clinical reasoning and procedural skills; and professional behaviour and personal attributes. The core curriculum comprises core clinical problems which students are expected to be able to evaluate clinically and core clinical topics students are expected to be knowledgeable about.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "In order to qualify to write the end of course assessment, students must have completed the clinical component of the course to achieve a ‘Duly Performed’ certificate. The requirements include full attendance and a completed portfolio of cases as is stipulated in the course document.",
+      "assessment": "The final ophthalmology mark will be made up of the following components: a) An invigilated online MCQ exam (contributing 40%); b) An invigilated online OSCE exam (contributing 40%; c) A Portfolio exam (contributing 20%). Any students obtaining less than 50% as a final ophthalmology mark will fail the course.",
+      "examWeight": 40
+    },
+    {
+      "code": "CHM5009W",
+      "title": "Otorhinolaryngology Ent",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Dr K Wright"
+      ],
+      "outline": "This is a shared rotation with Dermatology and Pharmacology, during which students are placed at Red Cross War Memorial Children’s Hospital, Groote Schuur Hospital or New Somerset Hospital, where they join the outpatient clinical area to observe and participate in the evaluation, assessment and management of commonly presenting ENT conditions. Included in these activities will be two formal tutorials hosted by two of our sessional specialists (or available staff members in their absence).",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Students will be required to: 1) complete an otoscopy clinical examination(10% of final mark); 2) complete the Otosim simulation assessment (10% of final mark); 3) do a case presentation according to a rubric provided on Vula as an example of a typical referral case from a general practitioner to as specialist (10% of final mark).",
+      "assessment": "Assessment consists of: 1. End-of-block multiple choice question exam (70% of final mark); 2. In-course assessments(30% of final mark) – otoscopy exam (10%), Otosim exam (10%), case presentation (10%) The pass mark of the course is 50%. The following will be recommended to the Faculty Examinations Committee, that students who: (a) achieve 48–49% in end-of-block final mark, are required to undertake a supplementary examination in the failed component/s; (b) fail the course overall with a mark of…",
+      "examWeight": 70
+    },
+    {
+      "code": "CHM5010W",
+      "title": "Urology",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor JM Lazarus"
+      ],
+      "outline": "The Urology apprenticeship lasts two weeks and includes video tutorials and attendance and work at urology wards, clinics and in theatre. The curriculum has been organised into core clinical problems students are expected to be able to evaluate clinically and core clinical topics students are expected to be knowledgeable about. The course work is made up of the video tutorials and the textbook, “A handbook of Urology” which is available at Ward E26.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "Activities start daily at 07h15.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Full attendance and completion of all requisite coursework/clinical work. A student who for any reason is or has been unable to meet the above requirements by the due date must supply a reason to the convener, who has the discretion to decide whether the reason is adequate to",
+      "assessment": "The final mark is made up of a case report. This comprises a case report (20%) a logbook/ward performance (30%) and an end-of-block MCQ examination (50%).",
+      "examWeight": 50
+    },
+    {
+      "code": "CHM5011W",
+      "title": "Surgery for External Credit",
+      "credits": 19,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Burmeister"
+      ],
+      "outline": "The course incorporates a hands-on, practical, four-week rotation during which students implement the clinical and management components of their previous training. The course consolidates and refines clinical examination, diagnosis and management of the major symptom complexes in surgery. Students are placed within a secondary level unit based at one of Victoria, Mitchell’s Plain, Somerset or Groote Schuur Hospitals where it is felt they will have greater exposure to common general surgical conditions.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion of the six portfolio cases and a completed logbook of eight presented cases comprise the DP for the course. However, full attendance and participation in unit is considered compulsory.",
+      "assessment": "The end-of-block assessment comprises a clinical, scenario-based and portfolio oral assessment (50%); a patient-based oral examination (50%);",
+      "examWeight": 50
+    },
+    {
+      "code": "CHM6000W",
+      "title": "Surgery (including Allied Disciplines)",
+      "credits": 41,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Visser"
+      ],
+      "outline": "The 6th-year General Surgery course follows a workplace-based, apprenticeship-style learning approach, focusing on self-directed learning and clinical immersion. Students receive a practical handbook on managing common surgical resentations and are allocated to either Victoria, Mitchell’s Plain, New Somerset or Groote Schuur Hospital where they have exposure to common surgical conditions and procedures. They are integrated into the General Surgery team and are involved in all aspects of the unit’s activities.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "Course Orientation: First Monday at 08h30, GSH Old Main Building, J-Floor Skills Lab.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "All scheduled activities are considered compulsory. DP for the General Surgery course is granted for: (a) Attendance at Suturing and Wound Care workshop. Students will sign the register. Attendance at Pathways to Surgical Care workshop. Students will sign the register, (b) Attendance at scheduled clinical activities. Clinical supervisor will sign the students’ rotation logbook daily.",
+      "assessment": "The General Surgery mark comprises three assessments. Students must obtain 50% for each component (sub-minimum) and a weighted overall average of 50% to pass. Students obtaining an average of between 48% and 50% will be recommended to complete a supplementary examination. Students obtaining less than 48% will be required to repeat the surgical block.",
+      "examWeight": null
+    },
+    {
+      "code": "CHM6020W",
+      "title": "Surgery External Credit",
+      "credits": 19,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Burmeister"
+      ],
+      "outline": "Final year Surgery incorporates a hands-on, practical, two-week rotation during which student interns implement the clinical and management components of their previous training. The course consolidates and refines clinical examination, diagnosis and management of the major symptom complexes in surgery. Student interns are placed within a secondary level unit based at Victoria, Mitchell’s Plain, Somerset and Groote Schuur Hospitals where it is felt they will have greater exposure to common general surgical conditions.",
+      "entry": "Fifth year MBChB courses.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion of the six portfolio cases and a completed logbook of eight presented cases comprise the DP for the course. However, full attendance and participation in unit is considered compulsory.",
+      "assessment": "The end-of-block assessment comprises a clinical, scenario-based and portfolio oral assessment (25%); a patient-based oral examination (25%); a computerised, clinically-based MCQ (25%); and a computerised theoretical knowledge-based MCQ (25%). FACULTIES AND DEPARTMENTS OFFERING COURSES TO THE FACULTY",
+      "examWeight": 25
     },
     {
       "code": "FCE2000W",
@@ -1768,6 +2036,63 @@
       "days": [],
       "dp": "Attending all clinical skills sessions, language and communication activities, tutorials, and practicals and all family medicine tutorials. Completing the portfolios of learning and undergoing assessment activities.",
       "assessment": "An integrated, Objective Structured Clinical Examination (OSCE) covers the three Courses within the BaDr theme, that is, Family Medicine (FCE3000F), Clinical Skills (HSE3000F) and Languages (SLL3002F). An OSCE tests practical skills, the ability to conduct an appropriate consultation, to communicate with patients and peers, and to communicate (in English, Afrikaans and isiXhosa) at a level sufficient for a basic sharing of health-related information.",
+      "examWeight": null
+    },
+    {
+      "code": "FCE6000W",
+      "title": "Family Medicine & Palliative Care",
+      "credits": 21,
+      "nqf": 8,
+      "conveners": [
+        "Dr N Beckett (Year"
+      ],
+      "outline": "The clerkship aims to provide students with the necessary confidence and competence to enter the sixmonth family medicine internship, as well as a basis for postgraduate training in the practice of family medicine and palliative care. During the 4-week rotation, all students based in Cape Town will spend two weeks at community health centres (CHCs) within the district health system in the Cape Town metropolitan area, followed by a two-week rural rotation in Vredenburg, within the rural district health services in the Western Cape.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "2 week Metro rotation: Supervised family medicine clinical teaching every morning from 8h30 to 12 noon. Weekly afternoon tutorials from 2 to 4pm. Self-directed afternoon sessions from 2-4pm at CHC.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "(a) Completion of all required coursework and attendance of compulsory academic activities on campus (including orientation day session and tutorials/seminars conducted virtually or DEPARTMENTS IN THE FACULTY 83 face to face). A completed Portfolio and a completed Logbook must be submitted on Amathuba as a DP requirement.",
+      "assessment": "The final mark is made up of: (A) an in-course mark comprising a patient study (25%) and a Facility Clinical mark (CHC and Vredenburg/Garden Route):15%. The facility clinical mark is weighted according to time spent at CHCs (50%) and VB (50%). The breakdown for the CHC facility mark and the VB rural facility mark is as",
+      "examWeight": null
+    },
+    {
+      "code": "FCE6001W",
+      "title": "Long Elective",
+      "credits": 19,
+      "nqf": 8,
+      "conveners": [
+        "Mr J Irlam"
+      ],
+      "outline": "Students are eligible to take this course once in the fifth academic year of study (upon application to and with written permission from the Electives Convener and year 5 or MBChB years 4-6 Convener and limited to the vacation period) or in the sixth academic year.",
+      "entry": "Students are eligible to take this course once in the fifth academic year of study (upon application to and with written permission from the Elective Convener and year or MBChB years 4-6 Convener and limited to the vacation period) or in the sixth year of study.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "An evaluation form and activity form (if applicable) signed by the elective supervisor.",
+      "assessment": "A written report on the elective for 100 marks within four weeks of the elective. A penalty of one mark per day applies for late submission. The marking rubrics are available on the VULA Electives site. Students who fail (i.e. obtain less than 50% for the elective report) will be given",
+      "examWeight": null
+    },
+    {
+      "code": "FCE6005W",
+      "title": "Short Elective",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Mr J Irlam"
+      ],
+      "outline": "Students are required to undertake a self-funded clinical elective anywhere they choose. Students formulate and submit their learning objectives as motivation for their elective at least two weeks prior to the elective. Students identify a supervisor on site at their elective to direct and supervise their elective activities and to evaluate their performance on completion.",
+      "entry": "Student are eligible to take this course once in the fifth academic year of study (upon application to and with written permission from the Electives Convener and year 5 or MBChB years 4-6 Convener and limited to the vacation period) or in the sixth year of study.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "A completed student evaluation of the elective using the standard template provided, as well as an evaluation form and activity form signed by the elective supervisor.",
+      "assessment": "A Pass/Not Pass assessment is made by the electives convener. No mark is awarded for the report. Students who do not pass (i.e. who do not submit a report) will be given one opportunity to re-submit, otherwise they may be required to repeat the elective in the following year.",
       "examWeight": null
     },
     {
@@ -1857,15 +2182,15 @@
       "conveners": [
         "Dr M Visser"
       ],
-      "outline": "The three Courses of the BaDr theme aims to integrate Clinical Skills Family Medicine, and Languages. The aim of the course is to develop students' clinical reasoning skills towards constructing a differential diagnosis, to expand their history-taking and examination skills to the neurological system and to develop professional bedside skills through clerking ward patients. The course draws on classroom tutorials, bedside learning, encounters with patients and the theoretical knowledge. Students develop a portfolio of patient cases to demonstrate clinical reasoning.",
-      "entry": "Successfully completed all second year MBChB. HSE3000F BECOMING A DOCTOR PART IIC (CLINICAL SKILLS) The BaDr (Becoming A Doctor) theme is comprised of three Courses, each of which have their own Course Codes.",
-      "corequisites": "The three courses of the BaDr theme (Clinical Skills, Family Medicine, and Languages) are integrated and must be completed concurrently but be passed independently.",
+      "outline": "",
+      "entry": "Successfully completed all second year MBChB.",
+      "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "All DP requirements must be met, including compulsory attendance of all ward tutorials, patient-linked activities, and assessments. DP requirements are stipulated on the Clinical Skills Vula site.",
-      "assessment": "An integrated, Objective Structured Clinical Examination (OSCE) covers the three Courses within the BaDr theme, that is, Family Medicine (PPH3000F), Clinical Skills (HSE3000F) and the Languages (SLL3002F). Coursework: 30% in-course assessment, 70% end of semester assessments. Assessments comprises of OSCE, MCQ and written reflective portfolio (marked). Each of the Courses must be passed independently.",
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -1876,8 +2201,27 @@
       "conveners": [
         "Dr M Visser"
       ],
+      "outline": "",
+      "entry": "Successfully completed all second year MBChB.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "HSE3000F",
+      "title": "Becoming a Doctor Part Iic (clinical Skills)",
+      "credits": 15,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Buthelezi"
+      ],
       "outline": "The three Courses of the BaDr theme aims to integrate Clinical Skills Family Medicine, and Languages. The aim of the course is to develop students' clinical reasoning skills towards constructing a differential diagnosis, to expand their history-taking and examination skills to the neurological system and to develop professional bedside skills through clerking ward patients. The course draws on classroom tutorials, bedside learning, encounters with patients and the theoretical knowledge. Students develop a portfolio of patient cases to demonstrate clinical reasoning.",
-      "entry": "Successfully completed all second year MBChB. HSE3000F BECOMING A DOCTOR PART IIC (CLINICAL SKILLS) The BaDr (Becoming A Doctor) theme is comprised of three Courses, each of which have their own Course Codes.",
+      "entry": "Must have successfully completed all MBChB second year courses including HSE2000W Becoming a Doctor: Part 1C (Clinical Skills: Blended and Contact Learning).",
       "corequisites": "The three courses of the BaDr theme (Clinical Skills, Family Medicine, and Languages) are integrated and must be completed concurrently but be passed independently.",
       "lectures": "",
       "periods": [],
@@ -2555,6 +2899,177 @@
       "examWeight": 25
     },
     {
+      "code": "MDN4015W",
+      "title": "Pharmacology and Applied Therapeutics",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Dr S Allie"
+      ],
+      "outline": "During the course, students develop a foundation in clinical pharmacology, which provides them with an understanding of basic pharmacology (pharmacokinetics and pharmacodynamics) and the principles of prescribing rationally in the management of common conditions. Students are expected to apply these skills when considering the management of all patients, regardless of which rotation they are in.",
+      "entry": "Completion of 3rd year MBChB.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion of all in-course assignments submitted by the deadline/s as stipulated in the course manual and on the timetable; participation and equal contribution to group-work; attendance at the group presentations. A minimum of 80% of all lectures are to be attended, of which the orientation and workshops are compulsory.",
+      "assessment": "Pass mark of ≥50% overall. The final mark is made up of in-course assessments (30% weighting) and an end-of-block examination (70% weighting). Subminimum requirement: must pass the end of block exam (≥50%). Students who achieve 48-49% for the exam may be recommended to the FEC for a supplementary examination. Students who achieve <48% for the exam will be required to repeat the course.",
+      "examWeight": 70
+    },
+    {
+      "code": "MDN4017W",
+      "title": "Medicine for External Credit",
+      "credits": 15,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor S Wasserman",
+        "Dr N Vorajee"
+      ],
+      "outline": "The course aims to provide a period of clinical training for the Nelson Mandela-Fidel Castro students to gain practical experience with a range of illnesses that are commonly managed in South Africa. The curriculum is mainly clinical presentation-based and aims to: 1) Ensure clinical and technical competence in a real-life clinical setting; 2) Ensure Guideline-based management using the Essential Drug List for district hospitals, SA Medical Formulary and Adult Primary Care or PACK; 3) Empower students to learn on their own.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "(a) Attendance of 8 Bedside Tutorials, (b) Attendance of three Pack Tutorials, (c) Complete and submit 8 Medicine portfolio cases with assessment templates by due dates, (d) Complete and submit eight MiniCEX cases by due dates, (e) Attendance of 10 Masterclasses, (f) Attendance of three ECG tutorials, (g) Attendance of 3 Clinical Intakes, (h) Attendance of 3 Post Intake Ward Rounds and (j)…",
+      "assessment": "(a) Clinical examination (3 clinical cases to be examined): 40%, (b) Portfolio of Medicine (online examination – 3 cases): 50% Workplace,",
+      "examWeight": 50
+    },
+    {
+      "code": "MDN5000W",
+      "title": "Medicine for External Credit",
+      "credits": 24,
+      "nqf": 8,
+      "conveners": [
+        "Dr E Govender",
+        "Dr S Ebrahim"
+      ],
+      "outline": "The 6-week Final year Internal Medicine Course is based on a series of patient encounters that cover the broad scope of common conditions (such as TB & HIV, chronic cardiopulmonary disease), and patients presenting for evaluation of undifferentiated clinical complaints (e.g., headache/ loss of weight), or acute emergencies (e.g., myocardial infarction, stroke). The 4-week Ward Care will take place at Mitchell’s Plain District Hospital (MPDH) and the 2-week Acute Care in the Emergency Unit at Groote Schuur Hospital.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "WARD CARE: (a) Attend a minimum of 9 Bedside Tutorials, (b) Attend a minimum of 3 Ward Intakes, (c) Attend a minimum of 3 Post Intake Ward Rounds (PIWRs), (d) Complete 8 Medicine portfolio cases with assessment templates, (e) Complete 8 Mini-CEX cases, (f) Complete a discharge letter, (g) Complete a VULA referral.",
+      "assessment": "Assessment in the Internal Medicine for external credit course includes Workplacebased assessment (20%), Ward care (10%) and Acute Care (10%): (a) Ward Care: Ward Mark (5%) and Mini-CEX (5%), (b) Acute Care: Ward Mark (5%) and Mini-CEX (5%), End of Block Assessment (80%); (a) Clinical examination: 30%, (b) Portfolio of Medicine (Oral): 50%. In order to participate in and pass the assessment the student must: i. Complete all the DP requirements, ii.",
+      "examWeight": 30
+    },
+    {
+      "code": "MDN5003H",
+      "title": "Pharmacology and Applied Therapeutics",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Dr HM Gunter"
+      ],
+      "outline": "The 5th year course is integrated through rotations in mixed specialities (dermatology, ENT, neurology and neurosurgery) and builds on the foundation of Clinical Pharmacology and Applied Therapeutics learnt in the 4th year. The course focuses on applying an understanding of pharmacokinetics and pharmacodynamics to the management of common conditions. It aims to equip students with the skills for critically appraising evidence and judging the risk-benefit profiles of available treatment options, and promotes rational drug prescribing to ensure optimal patient care.",
+      "entry": "MDN4015W",
+      "corequisites": "",
+      "lectures": "Lectures, workshops, and clinical case presentations take place as stipulated in the course outline.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion of all in-course assignments submitted by the deadline/s as stipulated in the course manual and on the timetable; participation and equal contribution to group work; attendance at the group presentations. A minimum of 80% of all lectures are to be attended, of which the orientation and workshops are compulsory.",
+      "assessment": "Pass mark of ≥50% overall. The final mark is made up of in-course assessments (30% weighting) and an end-of-block examination (70% weighting). Subminimum requirement: must pass the end-of-block exam to pass the block (≥50%). Students who achieve 48-49% for the exam may be recommended to the FEC for a supplementary examination. Students who achieve <48% for the exam will be required to repeat the 8-week Therapeutics course.",
+      "examWeight": 70
+    },
+    {
+      "code": "MDN5004W",
+      "title": "Pharmacology and Therapeutics External Credit",
+      "credits": 19,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor P Sinxadi"
+      ],
+      "outline": "",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "MDN5005W",
+      "title": "Dermatology",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Dr T Isaacs"
+      ],
+      "outline": "This course provides students with the knowledge and clinical skills to treat skin problems commonly encountered in primary care, based on a list of core topics. Students learn about life-threatening conditions they may encounter in clinical practice. Clinical topics have been stratified into “Must know”: the student is expected to have a detailed knowledge of the clinical presentation, laboratory investigation and management, including procedural hands on skills; “must recognize”: the student is expected to have a basic understanding of the clinical features suggestive of diagnosis; a few…",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "A full timetable is provided at orientation.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "At least 75% attendance at tutorials and teaching exercises, and completion of compulsory on-line Vula tasks. A student who for any reason is or has been unable to attend an activity or submit a requirement by the due date must supply a reason to the convener, who has the discretion to decide whether the reason is adequate to avoid being given a DPR.",
+      "assessment": "The final mark is made up of an in-course assessment (information pamphlet for patient), to be presented to and marked by peer assessment and facilitator (20%). Total mark will be calculated as 50% from peer assessment and 50% from facilitator and an end-of-block MCQ (based on core clinical topics) (80%). DEPARTMENTS IN THE FACULTY 171",
+      "examWeight": null
+    },
+    {
+      "code": "MDN5006W",
+      "title": "Rheumatology",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Dr A Gcelu"
+      ],
+      "outline": "Rheumatology is a two-week rotation and students are placed at Groote Schuur Hospital for the entire block. During the two weeks they are exposed to a series of patient encounters that cover the broad scope of common conditions such as gout, fibromyalgia and osteoarthritis. The patient encounters take place mostly in the outpatient department and other times in the hospital wards. This course covers the common entities in adult and paediatric rheumatology.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Attendance of all activities and completion of the following coursework requirements: Eight Rheumatology clinics; four seminars; two portfolio cases; all academic departmental activities; and nine tutorials.",
+      "assessment": "In-course-assessment (10%); end-of-block clinical examination (30%); and an end-ofblock OSCE (60%). If a student fails the course with 48% or 49% a recommendation will be made to the Faculty Examinations Committee that the student spend two weeks in rheumatology before undergoing a supplementary examination.",
+      "examWeight": 30
+    },
+    {
+      "code": "MDN6000W",
+      "title": "Medicine (including Allied Disciplines)",
+      "credits": 41,
+      "nqf": 8,
+      "conveners": [],
+      "outline": "The eight-week course includes 6 weeks in a Ward Care rotation in Internal Medicine (Ward Care) at Mitchell’s Plain District (MPDH), New Somerset (NSH), Victoria (VHW), or Groote Schuur Hospital (GSH), an Ambulatory Care rotation integrated within the Ward Care rotation at the same site, and two weeks in Acute Care at either GSH, MPDH, VHW or NSH. In the Garden Route District students follow an integrated rotation consisting of ward care, ambulatory care [outpatients and primary health care clinics] and emergency unit hours.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "Ten bedside tutorials in-ward care; three Pharmacology tutorials; three skills lab sessions in Acute Care.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Attendance of all activities and completion of all coursework stipulated below: Ward Care rotation: A minimum of four admission intakes as scheduled. A minimum of four postintake ward rounds (PIWRs), A minimum of ten bedside tutorials, 12 mini-CEX cases, Write-up of at least 12 patient encounters during the module, to be included in portfolio of learning, Completion of portfolio compiled in 5th…",
+      "assessment": "The final course mark is made up of the following: 1. Workplace-based assessment (WPBA) (30%) a. Ward Care Assessment (10%): which consists of an in-course assessment (5%) and ward care Mini-Cexes (5%), b. Ambucare Assessment (10%), c. Acute Care Assessment (10%). 2. Evidence-Based Medicine assignment (5%). 3. End of block (EOB) assessment (65%), a. a clinical examination (30%), b. an oral portfolio examination (20%), c. and a theory (MCQ) examination (15%).",
+      "examWeight": 30
+    },
+    {
+      "code": "MDN6003W",
+      "title": "Medicine External Credit",
+      "credits": 16,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor B Hodkinson"
+      ],
+      "outline": "Students complete a four-week rotation in general medicine attached to an acute general medicine firm at one of the UCT-affiliated teaching hospitals. They are expected to become an integrated DEPARTMENTS IN THE FACULTY 173 member of the clinical team participating in all the weekly clinical activities including intakes, ward rounds, x-ray meetings, clinical meetings and bedside tutorials. As part of their clinical training they are expected to clerk and manage at least three patients per week during their four-week clinical attachment.",
+      "entry": "All 5th year MBChB courses.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Attendance at all intakes and post-intake ward rounds as well as all bedside tutorials and departmental academic meetings, including x-ray meetings. These activities are monitored by completion of a logbook.",
+      "assessment": "The final mark is made up of an end-of-block clinical examination based on three patient encounters (40%), an end-of-block oral examination (40%) based on the portfolio of cases managed during the clerkship and an in-course assessment (20%) of clinical competence, theoretical knowledge and professional behaviour.",
+      "examWeight": 40
+    },
+    {
       "code": "OBS2001F",
       "title": "Special Study Modules",
       "credits": 16,
@@ -2562,8 +3077,46 @@
       "conveners": [
         "Dr M Visser"
       ],
+      "outline": "",
+      "entry": "Successfully complete all second year MBChB courses.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "OBS2001S",
+      "title": "Special Study Modules",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Dr M Visser"
+      ],
+      "outline": "",
+      "entry": "Successfully complete all second year MBChB courses.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "OBS4003W",
+      "title": "Obstetrics",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Floweday"
+      ],
       "outline": "Obstetrics runs within an eight-week block using a blended learning approach. It builds on the introduction provided in the third year programme and forms part of a progressive spiral curriculum that runs through to the final year. During this time, students acquire the knowledge, skills and professional conduct required for medical practice. Teaching takes place within the Maternal and Neonatal Service: Metro West, which exposes students to primary (or community-based) and secondary (hospital-based) levels of care.",
-      "entry": "Successfully complete all second year MBChB courses. OBS4003W OBSTETRICS A student will be registered for one of the following equivalent courses, to be determined by the group that the student is allocated to: OBS4103X, OBS4203X, OBS4303X, OBS4403X, OBS4503X 30 NQF credits at NQF level 8; 32 lectures comprising of 30 obstetrics lectures and two languages (IsiXhosa) lectures.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
       "corequisites": "PED4016W. The obstetrics and neonatal components of the course must be passed individually.",
       "lectures": "All lectures will be delivered online for access by students at recommended times and days. Skills training will be provided in a simulated setting.",
       "periods": [],
@@ -2574,23 +3127,260 @@
       "examWeight": 50
     },
     {
-      "code": "OBS2001S",
-      "title": "Special Study Modules",
-      "credits": 16,
-      "nqf": 6,
+      "code": "OBS4006W",
+      "title": "Obstetrics for External Credit",
+      "credits": 15,
+      "nqf": 8,
       "conveners": [
-        "Dr M Visser"
+        "JK Marcus"
       ],
-      "outline": "Obstetrics runs within an eight-week block using a blended learning approach. It builds on the introduction provided in the third year programme and forms part of a progressive spiral curriculum that runs through to the final year. During this time, students acquire the knowledge, skills and professional conduct required for medical practice. Teaching takes place within the Maternal and Neonatal Service: Metro West, which exposes students to primary (or community-based) and secondary (hospital-based) levels of care.",
-      "entry": "Successfully complete all second year MBChB courses. OBS4003W OBSTETRICS A student will be registered for one of the following equivalent courses, to be determined by the group that the student is allocated to: OBS4103X, OBS4203X, OBS4303X, OBS4403X, OBS4503X 30 NQF credits at NQF level 8; 32 lectures comprising of 30 obstetrics lectures and two languages (IsiXhosa) lectures.",
-      "corequisites": "PED4016W. The obstetrics and neonatal components of the course must be passed individually.",
-      "lectures": "All lectures will be delivered online for access by students at recommended times and days. Skills training will be provided in a simulated setting.",
+      "outline": "Obstetrics runs within an eight-week block using a blended learning approach. During this time, students acquire the knowledge, skills and professional conduct required for medical practice. Teaching takes place within the Maternal and Neonatal Service: Metro West, which exposes students to primary (or community-based) and secondary (hospital-based) levels of care. Practical experience for Obstetrics (and Neonatology - see PED4016W) is recorded in a logbook and includes at least 10 deliveries under supervision and caring for at least eight women in the first stage of labour.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "All lectures will be delivered online for access by students at recommended times and days. Skills training will be provided in a simulated setting. DEPARTMENTS IN THE FACULTY 177",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Deliver at least 10 patients; perform at least 10 vaginal examinations in labour; monitor and care for at least eight patients during the first stage of labour; do at least seven-night calls during the block; perform 5 abdominal examinations under supervision; access at least 80% of the online learning activities.",
-      "assessment": "The assessment for Obstetrics will comprise of an OSCE which will both take place during the last week of the block. OBS4003W Obstetrics and PED4016W Neonatology (informally called a joint perinatal medicine rotation) will be jointly examined during these examinations. Each student must achieve an OSCE mark of > 50% in order to pass the Obstetrics and Neonatology components of the two examinations.",
-      "examWeight": 50
+      "dp": "(a) Do at least 5 calls at a secondary hospital; (b) Deliver at least 6 patients under supervision; (c) Perform at least 5 vaginal examinations in labour; (d) Perform at least 5 abdominal examinations; (e) Care for at least 5 patients in the first stage of labour; (f) 3 case reports submitted via Vula portal.",
+      "assessment": "Objective Structured Clinical Examination (OSCE) when all clinical rotations have been completed. Each student must achieve a minimum mark of 50% in order to pass the course. Any student who obtains 47% or less for Obstetrics will need to repeat the full rotation. Should a student obtain a mark between 48% to 49%, a recommendation will be made to the Faculty Examinations Committee that the student be offered a supplementary assessment on a subsequent opportunity.",
+      "examWeight": null
+    },
+    {
+      "code": "OBS5005W",
+      "title": "Obstetrics & Gynaecology",
+      "credits": 20,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Gordon",
+        "Dr K Kadwa"
+      ],
+      "outline": "The course consists of six weeks of Gynaecology. The Gynaecology course builds on the prior three weeks of learning in Women’s Health during Semester Six. Students have already learnt to take histories from patients and to examine women using models and have been exposed to the broader issues about women’s health; and have been introduced to the role of gender in health promotion. In this course they learn about common gynaecological problems, contraception, issues of sexuality, and abuse of women, at the same time gaining clinical experience in gynaecology and women’s health.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Students are required to attend and participate in all wards, clinic and theatre activities, as per the programmes of the individual firms. They are expected to be in attendance for the full working day and may not leave without permission from a registrar or consultant. Skills training sessions are compulsory.",
+      "assessment": "Pass marks for all examination modalities is 50%. There are three components to the summative assessment. 1) Portfolio exam (20%). This must be passed to pass the block. This takes place during the course. Students must write up and submit by the due date the stipulated minimum number of patient cases as stated in the course manual for a written mark. Should the student fail a case, they will be reassessed during the block. Only one reassessment attempt is allowed.",
+      "examWeight": 20
+    },
+    {
+      "code": "OBS5006W",
+      "title": "Gynaecology for External Credit",
+      "credits": 27,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Gordon",
+        "Dr K Kadwa"
+      ],
+      "outline": "In this four-week Gynaecology course students learn about common gynaecological problems, contraception, issues of sexuality, and abuse of women, while at the same time gaining clinical experience in gynaecology and women’s health. Teaching takes place in a variety of clinical venues where students learn how to perform a gynaecological examination on patients, mostly in an outpatient setting, which is most appropriate for their future practice.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "Lecture times are stipulated in the course manual. (synchronous/ asynchronous/blended). Note: though students are in Gynaecology for 4 weeks, they spend the other 4 weeks in Obstetrics, and are released at stipulated times to attend…",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "All DP requirements must be fulfilled in order to write the exams. Students are expected to attend and participate in all wards, clinic and theatre activities, as per the programmes of the individual firms. They are expected to be in attendance for the full working day and may not leave without permission from a registrar or consultant. Skills training sessions are compulsory.",
+      "assessment": "Pass marks for all examination modalities is 50%. There are two components to the summative assessment. 1) Portfolio exam (30%). This takes place during the course. Students must write up and submit by the due date the stipulated minimum number of patient cases as stated in the course manual for a written mark. Hand-in dates are to be found in the course manual. Each case must be passed to pass the course. Should a student obtain <50% for a case, they will be reassessed during the block.",
+      "examWeight": 30
+    },
+    {
+      "code": "OBS5007W",
+      "title": "Obstetrics for External Credit",
+      "credits": 41,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Floweday",
+        "Dr C Gordon"
+      ],
+      "outline": "This is a four-week Obstetrics Course. Teaching is practical and involves patient assessment and management under supervision in clinics, antenatal and postnatal wards, labour wards, and theatre. Students are expected to monitor and follow up their patients throughout labour or ward admission. All clinical and teaching activities are compulsory. There are whole group tutorials (synchronous/asynchronous/blended), according to the schedule stipulated in the course handbook – also compulsory.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "All DP requirements must be fulfilled in order to write the exams. Students are required to attend and participate in all wards, clinic, and labour ward duties, as per the programmes of the individual hospitals to which they have been allocated. They are expected to be in attendance for the full working day and may not leave without permission from a registrar or consultant.",
+      "assessment": "Pass marks for all examination modalities is 50%. End-of-block assessment will depend on whether Physically distanced Learning (PDL) or Standard Leaning (SL). For PDL, there are two components to the summative assessment. 1) 2 formal bedside case presentation (10% each); and 2) an MCQ examination (80%). In order to qualify for the end-of-course exam, all time must be completed, and all DP requirements met. For SL: One bedside case counting 15%; portfolio cases (35%); MCQ (50%).",
+      "examWeight": 80
+    },
+    {
+      "code": "OBS6000W",
+      "title": "Obstetrics",
+      "credits": 41,
+      "nqf": 8,
+      "conveners": [
+        "Dr C Floweday",
+        "Dr C Gordon"
+      ],
+      "outline": "This is a four-week Obstetrics Course. Teaching is practical and involves patient assessment and management under supervision in clinics, antenatal and postnatal wards, labour wards, and theatre. Students are expected to monitor and follow up their patients throughout labour or ward admission. All clinical and teaching activities are compulsory. There are whole group tutorials (synchronous/asynchronous/ blended) according to the schedule stipulated in the course handbook – also compulsory.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "All DP requirements must be fulfilled in order to write the exams. Students are required to attend and participate in all wards, clinic, and labour ward duties, as per the programmes of the individual hospitals to which they have been allocated. They are expected to be in attendance for the full working day and may not leave without permission from a registrar or consultant.",
+      "assessment": "Pass marks for all examination modalities is 50%. End-of-block assessment will depend on whether Physically distanced Learning (PDL) or Standard Leaning (SL). For PDL, there are two components to the summative assessment. 1) 2 formal bedside case presentation (10% each); and 2) an MCQ examination (80%). In order to qualify for the end-of-course exam, all time must be completed, and all DP requirements met. For SL: One bedside case counting 15%; portfolio cases (35%); MCQ (50%).",
+      "examWeight": 80
+    },
+    {
+      "code": "PED4016W",
+      "title": "Neonatology",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Dr A Daniels",
+        "Doctor M Groenewald"
+      ],
+      "outline": "Obstetrics (OBS4003W) and Neonatology (PED4016W) are taught jointly in an eight-week perinatal medicine block rotation. The joint rotation builds on the introduction provided in third year MBChB, and forms part of a progressive spiral curriculum that runs through to the final year. During this time, students acquire the knowledge, skills and professional conduct required for medical practice. Teaching takes place within the Maternal and Neonatal Service: Metro West, which exposes students to primary (or community-based) and secondary (hospital- based) levels of care.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "The obstetrics and neonatal components of the course must be passed individually.",
+      "lectures": "Lectures are all online and scheduled for completion in the first week.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Students must: (a) complete all the online lecture materials; (b) examine the newborns of the mothers delivered by their clinical partners on at least five-night calls during the block; (c) have all four neonatal case reports completed before the end of the 3-week hospital rotation; (d) attend all six of the neonatal clinical bedside tutorials; (e) Complete the two online quizzes; (f)",
+      "assessment": "The Obstetrics (OBS4003W) and Neonatology (PED4016W) courses are assessed concurrently at the end of the 8-week block. The PED4016W assessment comprises an MCQ [40% of the total mark for PED4016W], OSCE [20% of the total mark for PED4016W], case reports [20% of the total mark for PED4016W], and in-course assessment [20% of the total mark for PED4016W]. For PED4016W, each student must achieve an overall mark of 50% or more.",
+      "examWeight": null
+    },
+    {
+      "code": "PED4017W",
+      "title": "Neonatology for External Credit",
+      "credits": 7,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Groenewald"
+      ],
+      "outline": "Obstetrics (OBS4006W) and Neonatology (PED4017W) are taught as an eight-week perinatal medicine block rotation. This forms part of a progressive spiral curriculum that runs through to the final year. Students acquire the skills and professional conduct required for neonatal medical practice. Teaching takes place within the Maternal and Neonatal Service: Metro West, which exposes students to community-based and hospital-based levels of care. Practical experience for Neonatology is recorded on a log sheet.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "Lectures are all online and scheduled for completion in the first week.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Students must: (a) attend the neonatal resuscitation training in the Introductory and Orientation week period; (b) Complete all of the online lecture materials; (c) examine a minimum of four new-born of the mothers delivered by their clinical partners during the block (will be included in obstetric logbook); (d) Complete four neonatal case reports and provide a discussion (1 page) on only one of…",
+      "assessment": "The Obstetrics (OBS4006W) and Neonatology (PED4017W) courses are assessed concurrently at the end of the year. The PED4017W assessment comprises an OSCE [60% of the total mark], case reports [20% of the total mark], and in-course assessment [20% of the total mark]. For PED4017W, each student must achieve an overall mark of 50% or more. Any student who obtains 47% or less will need to repeat the 2-week neonatology course and repeat end of course assessment in full.",
+      "examWeight": null
+    },
+    {
+      "code": "PED4049W",
+      "title": "Introduction to Child and Adolescent Health",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Assoc Professor J Nuttall",
+        "Doctor K Reichmuth"
+      ],
+      "outline": "The discipline of child and adolescent health seeks to promote the health of children and adolescents, prevent illness, and minimize the consequences of illness when it does occur. This course focuses on the health issues of children and adolescents, including services for well individuals and an approach to the management of child and adolescent health problems commonly seen at a primary care level.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Students must fulfil all of the following: (a) Attendance at all face-to-face teaching and learning activities and (b) Completion of all online quizzes by the deadline stipulated on the course site.",
+      "assessment": "The summative assessment comprises the following: (a) in-course assessment comprising (1) case-based written assignments [35% of overall course mark]; and (2), assessment of an oral presentation and contributing to the discussion at the cross-cutting seminar [25% of the overall course mark]; and (b) an end-of-block multiple choice format examination [40% of the overall course mark]. The overall course pass mark is 50%.",
+      "examWeight": 40
+    },
+    {
+      "code": "PED5004W",
+      "title": "General Care of the Child for External Credit",
+      "credits": 40,
+      "nqf": 8,
+      "conveners": [
+        "Dr K Reichmuth"
+      ],
+      "outline": "This eight-week course comprises neonatology and general paediatrics. The two-week neonatology rotation will take place at either Mowbray Maternity, New Somerset, or Groote Schuur Hospital. Students will sit an end-of-rotation neonatology examination. The six-week general paediatric rotation will take place at New Somerset Hospital or Red Cross War Memorial Children's Hospital.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "To qualify for the end-of-block assessment, students must fulfil all of the following: (1) Achieve at least 50% for both the paediatric and neonatal in-course assessments; (2) successfully complete the paediatric procedure and resuscitation training; (3) successfully complete the neonatal procedure and resuscitation training; (4) submit their Due Performance (DP) requirement logbook (completed,…",
+      "assessment": "The general paediatric summative assessment comprises an in-course assessment [30% of the overall course mark]; an end-of-block short-case clinical assessment [20% of the overall course mark]; an oral portfolio assessment [10% of the overall course mark]; and an online assessment [20% of the overall course mark]. The neonatal summative assessment comprises an in-course assessment [10% of the overall course mark] and a neonatal medicine clinical case assessment [10% of the overall course mark].",
+      "examWeight": null
+    },
+    {
+      "code": "PED5005W",
+      "title": "Caring for Children: Paediatric Surgery",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Professor S Cox",
+        "Doctor T Siyotula"
+      ],
+      "outline": "Caring for Children comprises two courses (Caring for Children: Paediatric Medicine [PED5006W] and Caring for Children: Paediatric Surgery [PED5005W]) that are fully integrated and must thus be taken during the same eight-week modular block. As this course forms the theoretical basis for final year, it incorporates considerable, structured online and face-to-face teaching and learning activities. Caring for Children: Paediatric Medicine comprises two weeks of ambulatory paediatrics and four weeks of inpatient care.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "If taking this course for the first time, it must be taken together with Caring for Children: Paediatric Medicine during the same eight- week modular block.",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Students who do not meet DP requirements (a) or (c) above fail the course and must repeat it in full in the next academic year. Students who do not meet DP requirement (b) above must complete all quizzes by the deadline set by the course convener, failing which, the student’s mark will be DPR.",
+      "assessment": "The courses PED5005W and PED5006W will be examined together in the last week of the eight-week modular block. The overall pass mark for PED5005W is 50%. The assessment comprises an MCQ/EMI-type online examination. The following will be recommended to the Faculty Examinations Committee, that students who: (a) achieve 48– 49% may be offered a supplementary examination* or (b) achieve 47% or less fail the course and must repeat it in full.",
+      "examWeight": null
+    },
+    {
+      "code": "PED5006W",
+      "title": "Caring for Children: Paediatric Medicine",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Assoc Professor H Buys",
+        "Doctor A Ramcharan"
+      ],
+      "outline": "Caring for Children comprises two courses (Caring for Children: Paediatric Medicine [PED5006W] and Caring for Children: Paediatric Surgery [PED5005W]) that are fully integrated and must thus be taken during the same eight- week modular block. As these courses form the theoretical basis for final",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "If taking this course for the first time, it must be taken together with Caring for Children: Paediatric Surgery during the same eight-week modular block.",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "To qualify for the end-of-block examination, students must fulfil ALL of the following: (a) Achieve a minimum of 80% attendance* at ward, ambulatory, and scheduled activities, monitored by signed attendance; (b) complete the online quizzes within the time stipulated in the Vula site; (c) produce and submit an original and honest portfolio of the required minimum number of original case writeups…",
+      "assessment": "The courses PED5005W and PED5006W will be examined together in the last week of the eight-week modular block. The end-of-block summative assessment comprises a portfolio assessment [25% of the overall mark], a clinical assessment [25% of the overall mark], and an online MCQ and Extended Matching items (EMI) assessment [50% of the overall mark]. The overall pass mark for PED5006W is 50%.",
+      "examWeight": null
+    },
+    {
+      "code": "PED6000W",
+      "title": "Paediatrics and Child Health",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Dr J Ahrens",
+        "Doctor K Reichmuth"
+      ],
+      "outline": "This is a four-week course during which students are placed at George Provincial, Red Cross War Memorial Children’s, Victoria, Groote Schuur or New Somerset Hospital. where they are integral members of the clinical team. They participate fully in the academic and clinical activities of the firm including after-hours cover.",
+      "entry": "Successful completion of all courses within the preceding academic year. DEPARTMENTS IN THE FACULTY 197",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "To qualify for the end-of-block examination, students must fulfil all of the following: (a) Achieve at least 50% for the paediatric in-course assessment; (b) successfully complete the procedure and resuscitation [Paediatric Life Support] training; (c) complete a written portfolio of the required minimum number of original case write-ups of patients seen during the time in PED6000W - this…",
+      "assessment": "Formative assessment covering all aspects of the student’s performance is given during the block. The end-of-block summative assessment is made up as follows: (a) An in-course assessment [40% of the overall mark]; (b) short-cases clinical examination [30% of the overall mark]; (c) an oral portfolio exam [15% of the overall mark] and (d) a computer-based MCQ/EMI assessment [15% of the overall mark].",
+      "examWeight": 30
+    },
+    {
+      "code": "PED6004W",
+      "title": "Neonatal Medicine",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Assoc Professor L Tooke"
+      ],
+      "outline": "This is a two-week course in neonatal medicine which, together with the two-week short elective course (PPH6005W), constitutes a four-week modular block. Students are placed in neonatal units at Groote Schuur, New Somerset, Mowbray Maternity or George Provincial Hospital where they function as integral members of the clinical team. They participate fully in the academic and clinical activities of the firm including after-hours cover.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "If taking this course for the first time, it must be taken together with Paediatrics and Child Health (PED6000W) and the Short Elective (PPH6005W) during the same eight-week modular block",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "To qualify for the end-of-block examination, students must fulfil all of the following: (a) Achieve at least 50% for the neonatal in-course assessment; (b) successfully complete the neonatal procedure and resuscitation training; (c) submit the hard copy of the completed, signed, and dated course logbook by the deadline stipulated in the course handbook, and (d) achieve a minimum of 80%…",
+      "assessment": "Formative assessment covering all aspects of the student’s performance is given during the block. The end-of-block summative assessment comprises a neonatal in-course assessment [40% of the overall mark], a neonatal clinical case assessment [30% of the overall mark] and an oral examination [30% of the overall mark]. In addition, students must obtain an exempt pass in the exit examination on procedural competence.",
+      "examWeight": 30
     },
     {
       "code": "PHY1025F",
@@ -2603,20 +3393,12 @@
       "outline": "The course aims to provide a foundation in physics for later courses in the biological and physical sciences in the medical curriculum. Topics covered include mathematical skills for physics; Newton's laws of translational motion, force, friction, work and energy; bodies in static equilibrium; density and pressure in fluids; fluid flow, viscosity, temperature, gas laws, heat and heat transfer; first law of thermodynamics, human metabolism and first law; wave motion, transverse and longitudinal waves, interference of waves; sound, ear's response to sound, Doppler effect, ultrasound and medical…",
       "entry": "None",
       "corequisites": "",
-      "lectures": "Lectures: Monday to Friday, 2nd period; Practical’s: Fridays (14h00-17h00)",
-      "periods": [
-        2
-      ],
+      "lectures": "",
+      "periods": [],
       "periodChoice": false,
-      "days": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday"
-      ],
+      "days": [],
       "dp": "Attendance of all scheduled tutorials and practical sessions; completion of all set written course activities (i.e. tutorial assignments, practical reports and course tests); and a minimum class record of 35%.",
-      "assessment": "Coursework counts 40% and comprises three class tests (10% each) and a laboratory record (10%); and the final examination counts 60%. PTY2001S INFECTIOUS DISEASE AND VACCINES (FACULTY OF SCIENCE) Entrance is limited to 30 students. 24 NQF credits at NQF level 6 Convener: Professor W Burgers and Associate Professor S Hadebe",
+      "assessment": "Coursework counts 40% and comprises three class tests (10% each) and a laboratory record (10%); and the final examination counts 60%.",
       "examWeight": 60
     },
     {
@@ -2665,16 +3447,16 @@
       "conveners": [
         "Dr M Visser"
       ],
-      "outline": "This integrated course comprises public health, family medicine, palliative care and health promotion. The six-week course introduces students to community- oriented primary care, where the care and determinants of health of individuals and communities are studied. Clinical experience in family medicine and palliative care at a primary care level is integrated with a public health research project, followed by a health promotion intervention.",
-      "entry": "Successfully completed all second year MBChB courses. PPH4056W HEALTH IN CONTEXT A student will be registered for one of the following equivalent courses, to be determined by the group that the student is allocated to: PPH4156X, PPH4256X, PPH4356X, PPH4456X, PPH4556X 40 NQF credits at NQF level 8; 20 Lectures; 25 Tutorials and 11 Community visits. Convener: Assoc Prof N Jacob",
-      "corequisites": "All third-year MBChB courses.",
+      "outline": "",
+      "entry": "Successfully completed all second year MBChB courses.",
+      "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "(a) Completion of all assignments submitted by the deadline/s as stipulated in the course manual; (b) Completion of summative and formative assessments by the stipulated deadlines, with a sub- minimum of 46% for in-course assignments/assessments; (c) Participation in and equal contribution to group- work; and (d) Attendance at all clinical and community teaching and group presentations; and 90%…",
-      "assessment": "The following components contribute to the overall mark: (a) An epidemiology research protocol (group mark) (14.5%); (b) A health promotion project (group mark) (12.5%); (c) A combined epidemiology and health promotion oral presentation (group mark) (6%); (d) A motivational interview assessment (4%); (e) A family medicine patient case study (8%); (f) A biostatistics assessment (5%); (g) The end-of-course written examination is weighted at 50%.",
-      "examWeight": 50
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
     },
     {
       "code": "PPH2002S",
@@ -2684,8 +3466,27 @@
       "conveners": [
         "Dr M Visser"
       ],
+      "outline": "",
+      "entry": "Successfully completed all second year MBChB courses.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
+      "code": "PPH4056W",
+      "title": "Health in Context",
+      "credits": 40,
+      "nqf": 8,
+      "conveners": [
+        "Assoc Prof N Jacob"
+      ],
       "outline": "This integrated course comprises public health, family medicine, palliative care and health promotion. The six-week course introduces students to community- oriented primary care, where the care and determinants of health of individuals and communities are studied. Clinical experience in family medicine and palliative care at a primary care level is integrated with a public health research project, followed by a health promotion intervention.",
-      "entry": "Successfully completed all second year MBChB courses. PPH4056W HEALTH IN CONTEXT A student will be registered for one of the following equivalent courses, to be determined by the group that the student is allocated to: PPH4156X, PPH4256X, PPH4356X, PPH4456X, PPH4556X 40 NQF credits at NQF level 8; 20 Lectures; 25 Tutorials and 11 Community visits. Convener: Assoc Prof N Jacob",
+      "entry": "Successful completion of all courses within the preceding academic year.",
       "corequisites": "All third-year MBChB courses.",
       "lectures": "",
       "periods": [],
@@ -2754,6 +3555,26 @@
       "examWeight": 30
     },
     {
+      "code": "PRY4000W",
+      "title": "Clinical Psychiatry",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Karjiker",
+        "Dr K Moloto"
+      ],
+      "outline": "The course is structured on a blended learning model. The students on the course are assigned to four clinical sites, Valkenberg, Groote Schuur, Lentegeur and New Somerset hospitals. Students are assigned clinical placements at these sites with their clinical partners. They must be in their clinical placement units from 08h30 – 13h00 on Mondays, Wednesdays, Thursdays, and Fridays. On those days there are online lectures from 14h00-16h00. The whole of Tuesday is devoted to online learning and the students do not go to the wards.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Students must attend 90% of all the ward clinical days and online sessions. There is an electronic record of the attendance of online sessions, and the ward staff will be aware of the attendance of the students in the clinical units.",
+      "assessment": "There are four components to the course assessment: 1) Portfolio – this contributes 25% to the final mark. 2) Ward assessment – this is the combined impression that the clinical team in the ward has about a student’s performance and contributes 15% to the final mark. 3) SAQ exam – this takes place on the last Friday of the block and contributes 40% to the final mark. 4) MCQ exam – this takes place on the last Thursday of the block and contributes 20% to the final mark.",
+      "examWeight": 40
+    },
+    {
       "code": "PRY4001W",
       "title": "Psychiatry for External Credit",
       "credits": 15,
@@ -2772,6 +3593,46 @@
       "dp": "90% attendance of all ward rounds and clinical learning session as well as online tutorials which will be monitored by an attendance register. Completion and timeous submission of two portfolio cases. Should a student need to make up clinical time, and they cannot make up the time for whatever reason, then they will need to repeat the course.",
       "assessment": "The assessment is made up of three components. 1) SAQ written paper which counts 50% of the final mark and in which the student must attain 50% to pass. 2) Portfolio which counts 30% of the final mark and for which the student must score 50% to pass. 3) Ward assessment which counts 20% of the final mark. This is assessed by the clinical team based on the student’s engagement in clinical teaching, ward rounds and tutorials. The assessment takes place in the last week of the block.",
       "examWeight": null
+    },
+    {
+      "code": "PRY5001W",
+      "title": "Psychiatry and Mental Health for External Credit",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Karjiker",
+        "Dr E Reid"
+      ],
+      "outline": "The course is designed on a blended learning model. Students on the course are assigned to three clinical sites, Valkenberg, Groote Schuur and Lentegeur hospitals. They are assigned clinical placements at these sites with their clinical partners. It is a student internship block where students are expected to integrate fully into the clinical team and take clinical direction and supervision from the clinical team. They must behave and dress in a professional manner, engage empathically with patients and their families and show respect to all levels of staff.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Students must attend 90% of the ward clinical days and engage fully with clinical work from Mondays to Thursdays. They must attend all three Friday teaching sessions. The Friday sessions has an electronic record of attendance, and the clinical team will supervise the attendance of students in the wards. Students must participate academically in their group academic presentation.",
+      "assessment": "There are four components to the course assessment: 1) Portfolio – this contributes 20% to the final mark. 2) Academic Presentation – This contributes 10% to the final mark. 3) Ward Assessment – this contributes20% to the final mark. 4) SAQ written exam – this contributes 50% to the final mark. This exam is written on the last Friday of the block. A student must achieve a total of 50% to pass the course. There is no supplementary exam for this course.",
+      "examWeight": 50
+    },
+    {
+      "code": "PRY6000W",
+      "title": "Psychiatry and Mental Health",
+      "credits": 21,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Karjiker",
+        "Dr E Reid"
+      ],
+      "outline": "The course is designed on a blended learning model. Students on the course are assigned to three clinical sites, Valkenberg, Groote Schuur and Lentegeur hospitals. They are assigned clinical placements at these sites with their clinical partners. It is a student internship block where students are expected to integrate fully into the clinical team and take clinical direction and supervision from the clinical team. They must behave and dress in a professional manner, engage empathically with patients and their families and show respect to all levels of staff.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Students must attend 90% of the ward clinical days and engage fully with clinical work from Mondays to Thursdays. They must attend all three Friday teaching sessions. The Friday sessions has an electronic record of attendance, and the clinical team will supervise the attendance of students in the wards. Students must participate academically in their group academic presentation.",
+      "assessment": "There are four components to the course assessment: 1) Portfolio – this contributes 20% to the final mark. 2) Academic Presentation – This contributes 10% to the final mark. 3) Ward Assessment – this contributes20% to the final mark. 4) SAQ written exam – this contributes 50% to the final mark. This exam is written on the last Friday of the block. A student must achieve a total of DEPARTMENTS IN THE FACULTY 219 50% to pass the course. There is no supplementary exam for this course.",
+      "examWeight": 50
     },
     {
       "code": "PSY1006F",
@@ -2945,6 +3806,26 @@
       "outline": "The integrated courses HUB2017H, PTY2000S and PTY3009F extend across years 2 and 3 and provide a detailed understanding of normal structure and function of the human body and consequences of disease. Students learn core material in the basic health sciences (gross anatomy, embryology, histology, cell biology, medical biochemistry, molecular biology and physiology) and infectious diseases (medical microbiology, virology and immunology); they study changes in normal structure and function due to disease (anatomical pathology, chemical pathology and haematology) and learn principles of…",
       "entry": "Successful completion of all courses within the preceding academic year.",
       "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Attendance at and/or participation in all problem-based learning sessions, tutorials, and practicals and completion and submission of all set assignments, quizzes, tasks and assessment activities by the due dates. Public Health specifically requires all exercises on Vula to be completed as part of HUB2017H and PTY2000S DP requirements.",
+      "assessment": "HUB2017H and PTY2000S are assessed together in a final examination at the end of second year. Students must achieve an overall pass in semesters 3 and 4 (year 2) in order to progress to year 3. Students are required to complete a series of in-course assessments and portfolio tasks during semesters 3 and 4 that contribute 60% of the total mark for the year. Learning exercises, and quizzes contribute to the portfolio mark.",
+      "examWeight": null
+    },
+    {
+      "code": "PTY2001S",
+      "title": "Infectious Disease and Vaccines (faculty of Science)",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor W Burgers",
+        "Associate Professor S Hadebe"
+      ],
+      "outline": "The course aims to introduce students to the burden of infectious disease in South Africa and Africa, foundational epidemiological concepts (including epidemics and outbreaks) and public health, the micro-organisms (including bacteria, viruses, fungi and parasites) of importance to human health and disease, and their classification, as well as the prevention, control and treatment of infectious disease, with a focus on vaccines, integrated with an introduction to the human immune system.",
+      "entry": "BIO1000F, CEM1000W, MAM1004F and STA1007S or MAM1000W (or equivalent)",
+      "corequisites": "",
       "lectures": "Lectures: Monday to Friday, 2nd period; Practical’s: Fridays (14h00-17h00)",
       "periods": [
         2
@@ -2957,9 +3838,9 @@
         "Thursday",
         "Friday"
       ],
-      "dp": "Attendance at and/or participation in all problem-based learning sessions, tutorials, and practicals and completion and submission of all set assignments, quizzes, tasks and assessment activities by the due dates. Public Health specifically requires all exercises on Vula to be completed as part of HUB2017H and PTY2000S DP requirements.",
-      "assessment": "HUB2017H and PTY2000S are assessed together in a final examination at the end of second year. Students must achieve an overall pass in semesters 3 and 4 (year 2) in order to progress to year 3. Students are required to complete a series of in-course assessments and portfolio tasks during semesters 3 and 4 that contribute 60% of the total mark for the year. Learning exercises, and quizzes contribute to the portfolio mark.",
-      "examWeight": null
+      "dp": "Attendance of 75% practical and tutorial sessions, 40% average in weekly quizzes and an average of 50% for all assignments.",
+      "assessment": "The breakdown of course marks is as follows: the class record counts 60% (consisting of practicals, quizzes and assignments), and one 3-hour final examination written in November (40%). The class record consists of weekly quizzes (20%), practical write-ups (20%) and assignments (20%). Supplementary examinations, in the form of a written assessment, may be offered to students whose overall score is 45-49%.",
+      "examWeight": 40
     },
     {
       "code": "PTY2002F",
@@ -3020,6 +3901,26 @@
       "examWeight": 40
     },
     {
+      "code": "PTY3010F",
+      "title": "Pathogenesis and Treatment of Infectious Diseases (faculty of Science)",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr MR Abrahams",
+        "Doctor C Moodley"
+      ],
+      "outline": "The course aims to provide the conceptual basis for understanding pathogenic bacteria, fungi, viruses and parasites, and particularly address the fundamental mechanisms of how they cause disease in humans. A successful pathogen is able to invade the host and escape it’s immune defences. Building on PTY2001S, the parts of the immune system that are important in resisting infection will be covered. Examples of the wide range of ways in which pathogens evade immune responses will be discussed.",
+      "entry": "PTY2001S (or equivalent). This course is offered only in the 1st semester; therefore students who fail the course will need to repeat the following year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "40% average in class tests or quizzes, and an average of 50% for assignments. Attendance at all practicals, field trips and tutorials. Submission of at least 80% of assignments.",
+      "assessment": "The breakdown of course marks is as follows: the class record counts 60%; and one 3hour final examination written in June counts 40%. The class record consists of class tests and/or quizzes (20%), practical reports and tutorials (20%) and assignments (20%). Supplementary examinations, in the form of written assessment, may be offered to students whose overall score is 4549%.",
+      "examWeight": 40
+    },
+    {
       "code": "PTY4008S",
       "title": "Medicina Forensis",
       "credits": 9,
@@ -3029,14 +3930,52 @@
       ],
       "outline": "This course covers the South African legal system and statutory obligations of doctors and healthcare workers; introduction to human anatomy and physiology; introduction to medico- legal concepts of life and death; the changes which occur in the body after death; the mechanisms of injury and death causation; identity and disputed parenthood; sexual offences and violence against women; choice on termination of pregnancy; child abuse and other forensic aspects of paediatric forensic medicine; iatrogenic disorders; alcohol intoxication and drunken driving; drug addiction and poisoning as cause…",
       "entry": "None",
-      "corequisites": "None DEPARTMENTS IN THE FACULTY 211",
+      "corequisites": "",
       "lectures": "Monday double lecture from 10h00 to 11h45.",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "None.",
-      "assessment": "A two-hour written examination in October/November (100%). A supplementary written examination is offered in January the following year to students who have obtained 45-49%. PTY5012W FORENSIC MEDICINE FOR EXTERNAL CREDIT A student will be registered for one of the following equivalent courses, to be determined by the group that the student is allocated to: PTY5112X, PTY5212X, PTY5312X, PTY5412X, PTY5512X 10 NQF credits at NQF level 8 Convener: Doctor I Molefe",
+      "assessment": "A two-hour written examination in October/November (100%). A supplementary written examination is offered in January the following year to students who have obtained 45-49%.",
       "examWeight": 100
+    },
+    {
+      "code": "PTY5012W",
+      "title": "Forensic Medicine for External Credit",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Dr I Molefe"
+      ],
+      "outline": "This course is four weeks in duration starting with only Wednesday afternoon lectures during the two weeks of the Anaesthesia/Forensic Medicine block, followed by 2-week full rotation in the Division of Forensic Medicine and Toxicology. The course comprises eight (8) large group face to face lecture seminars, (2) online lecture seminars and four (4) practical tutorials at the Salt River Forensic Pathology Laboratory of at least four hours’ duration each.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "As a DP requirement students are expected to attend of all 4 practical sessions at the Salt River Forensic Pathology Laboratory as stipulated in the course guide, attendance of and/or participation in 60% of plenary sessions and completion of 4 tasks which comprise the in-course assessment.",
+      "assessment": "The final mark is made up of in-course task assignments (40%), practical skill task/procedure (10%) and the final written short answer question (SAQ) examination (50%). Competency in Forensic Medicine requires achievement of a subminimum of the 50% in the in-course, 50% in the written exam and 50% in the practical skill task/procedure.",
+      "examWeight": 50
+    },
+    {
+      "code": "PTY6012W",
+      "title": "Forensic Medicine",
+      "credits": 10,
+      "nqf": 8,
+      "conveners": [
+        "Dr C De Vaal"
+      ],
+      "outline": "This course is two weeks in duration during a four-week block with Anaesthesia. It comprises a blended learning approach. The synchronous activities include group tutorials, practical skills lab session on the examination of sexual assault victim and practical autopsy demonstrations at the Forensic Pathology Laboratory of at least four hours’ duration each. There are also task related feedback sessions.",
+      "entry": "Successful completion of all courses within the preceding academic year.",
+      "corequisites": "None DEPARTMENTS IN THE FACULTY 211",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "As a DP requirement, students are expected to attend all practical sessions at the Forensic Pathology Laboratory as stipulated in the course guide, attendance of and/or participation in 80% of plenary sessions, completion of five tasks and deliver a presentation during the attachment. The tasks and presentation comprise the in-course assessment, as stipulated in the course guide.",
+      "assessment": "The final mark is made up of in-course assessments (40%) and the final examination (60%). The exit OSCE component forms part of the overall final MBChB clinical assessment. PSYCHIATRY AND MENTAL HEALTH Psychiatry and Mental Health Neuroscience Institute, E-Floor, Groote Schuur Hospital Professor and Head: DJ Stein, BSc (Medicine) MBChB Cape Town FRCPC PhD DPhil Stell Sue Struengmann Professor of Child & Adolescent Psychiatry: PJ de Vries, MBChB Stell FRCPsych London PhD Cantab Vera Grover…",
+      "examWeight": 60
     },
     {
       "code": "RAY2001W",

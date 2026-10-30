@@ -3,7 +3,7 @@ const path = require('node:path');
 const express = require('express');
 const views = require('./views');
 const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
-const { analysePlan } = require('./planner');
+const { analysePlan, REPLACED } = require('./planner');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { UNIVERSITIES, CURRENT } = require('./universities');
 
@@ -212,6 +212,14 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (add) {
       // "csc1015f", "CSC 1015F" and "csc1015" all work; a code that matches one course adds it straight away
       const squashed = add.replace(/\s+/g, '').toUpperCase();
+      // an old code like MAM1000W adds the courses that replaced it
+      const newer = REPLACED[squashed]?.filter((x) => !codes.includes(x));
+      if (newer) {
+        if (codes.length + newer.length > PLAN_MAX) return flashRedirect(res, planUrl(codes), 'error', `A plan can hold ${PLAN_MAX} courses. Remove one first.`);
+        codes.push(...newer);
+        savePlan(res, codes);
+        return flashRedirect(res, planUrl(codes), 'ok', `${squashed} has been replaced by ${REPLACED[squashed].join(' and ')}, so ${newer.length ? 'those are in your plan now' : 'your plan already has it covered'}.`);
+      }
       const byCode = /^[A-Z]{3}\d{1,4}[A-Z]?$/.test(squashed) ? q(`SELECT code FROM courses WHERE code LIKE ? ORDER BY code LIMIT 13`).all(`${squashed}%`) : [];
       const exact = getCourse(squashed) || (byCode.length === 1 ? getCourse(byCode[0].code) : null);
       if (exact) {
@@ -224,7 +232,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
         .all(`%${squashed}%`, `%${add}%`, `${squashed}%`);
     }
     if (!fromUrl && codes.length && !matches) return res.redirect(303, planUrl(codes));
-    const rows = codes.length ? q(`SELECT c.code, c.title, c.credits, c.entry, c.corequisites, c.lectures, c.periods, c.period_choice, c.days, c.dp, c.assessment, c.exam_weight,
+    const rows = codes.length ? q(`SELECT c.code, c.title, c.credits, c.entry, c.corequisites, c.lectures, c.periods, c.period_choice, c.days, c.dp, c.assessment, c.exam_weight, c.not_offered,
       s.n, s.difficulty, s.workload, s.has_sample, v.votes, v.lekker, v.tips FROM courses c
       LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(difficulty) AS difficulty, AVG(workload) AS workload, MAX(is_sample) AS has_sample FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
       LEFT JOIN (SELECT course, COUNT(*) AS votes, SUM(lekker) AS lekker, SUM(tip != '') AS tips FROM verdicts WHERE status = 'published' GROUP BY course) v ON v.course = c.code

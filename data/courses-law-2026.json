@@ -19,6 +19,23 @@
       "examWeight": 60
     },
     {
+      "code": "CML1001P",
+      "title": "Business Law I - Summer Term",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [],
+      "outline": "Refer to course outline for CML1001F/CML1001S.",
+      "entry": "None",
+      "corequisites": "",
+      "lectures": "Lectures are offered on a daily basis for three hours over a four-week period.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Writing the test is compulsory. If a student does not write the test and does not get an exemption then the student will be marked absent and awarded 0 for the test. But the student will be able to write the exam.",
+      "assessment": "Test 40%; final examination 60%.",
+      "examWeight": 60
+    },
+    {
       "code": "CML1001S",
       "title": "Business Law I",
       "credits": 18,
@@ -74,6 +91,23 @@
       "dp": "Coursework is compulsory. If the student does not submit hand-ins or write a test the student will receive a mark of 0 for that assessment (unless granted an exemption). But the student will be able to write the exam.",
       "assessment": "Coursework 40%; final examination 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "CML2010P",
+      "title": "Business Law II - Summer Term",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [],
+      "outline": "Refer to course outline for CML 2010Z.",
+      "entry": "Business Law I. No undergraduate student in the first year of study may register for Business Law II.",
+      "corequisites": "",
+      "lectures": "Lectures are offered on a daily basis for three hours over a four-week period.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Writing the test is compulsory. If a student does not write the test and does not get an exemption then the student will be marked absent and awarded 0 for the test. But the student will be able to write the exam.",
+      "assessment": "Test 30% and final examination 70%.",
+      "examWeight": 70
     },
     {
       "code": "CML2010Z",
@@ -182,8 +216,29 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at and participation in lectures.",
-      "assessment": "Coursework 3000 word assignment (compulsory) 30%; Presentation on a topic of choice (voluntary) 20%; June examination 50% (if presentation) 70% (if no presentation). CML4503F COPYRIGHT & PATENTS (not offered in 2026) Final Level, half course, first semester, two lectures per week. 9 NQF credits at NQF level 8 Convener: Associate Professor L-A Tong",
-      "examWeight": 50
+      "assessment": "Coursework 3000 word assignment (compulsory) 30%; Presentation on a topic of choice (voluntary) 20%; June examination 50% (if presentation) 70% (if no presentation).",
+      "examWeight": 50,
+      "notOffered": 2026
+    },
+    {
+      "code": "CML4503F",
+      "title": "Copyright & Patents",
+      "credits": 9,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor L-A Tong"
+      ],
+      "outline": "This course provides an introduction to two of the main intellectual property rights, namely copyright and patents. This is done primarily from a South African perspective. In addition to covering the principles of copyright and patent law, the course provides an opportunity for students to explore topical issues related to these intellectual property rights. The effect of intellectual property rights on access to medicines and educational materials, and the protection of traditional knowledge, are examples of such issues.",
+      "entry": "All Preliminary and Intermediate Level courses to have been completed.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "Coursework: 40%, 60% capstone assignment/examination",
+      "examWeight": 60,
+      "notOffered": 2026
     },
     {
       "code": "CML4505F",
@@ -200,7 +255,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework 40%, June examination 60%",
-      "examWeight": 60
+      "examWeight": 60,
+      "notOffered": 2026
     },
     {
       "code": "CML4506F",
@@ -255,7 +311,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework 20% (optional), Examination 80%/100%",
-      "examWeight": 80
+      "examWeight": 80,
+      "notOffered": 2026
     },
     {
       "code": "CML4509S",
@@ -272,7 +329,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework 20%, November examination 80%",
-      "examWeight": 80
+      "examWeight": 80,
+      "notOffered": 2026
     },
     {
       "code": "CML4510F",
@@ -308,7 +366,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Participation in class 20%, Research paper (5000 words) 80%",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "CML4602S",
@@ -366,7 +425,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Research paper (5000 words) 100%",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "CML4605F",
@@ -383,7 +443,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Participation in class 20%, Research paper (5000 words) 80%",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "CML4607F",
@@ -421,7 +482,8 @@
       "days": [],
       "dp": "Satisfactory attendance, presentation and successful completion of written assignments.",
       "assessment": "Coursework 50%; Examination 50%.",
-      "examWeight": 50
+      "examWeight": 50,
+      "notOffered": 2026
     },
     {
       "code": "CML4624F",
@@ -438,7 +500,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework 25%, Examination 75%",
-      "examWeight": 75
+      "examWeight": 75,
+      "notOffered": 2026
     },
     {
       "code": "CML4625F",
@@ -455,7 +518,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework 25%, Examination 75%",
-      "examWeight": 75
+      "examWeight": 75,
+      "notOffered": 2026
     },
     {
       "code": "CML4626S",
@@ -472,7 +536,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework 25%, Examination 75%",
-      "examWeight": 75
+      "examWeight": 75,
+      "notOffered": 2026
     },
     {
       "code": "CML4629S",
@@ -510,7 +575,8 @@
       "days": [],
       "dp": "Satisfactory attendance of lectures, presentations, practicals, and completion of written assignments.",
       "assessment": "Coursework: 50%, Examination: 50%.",
-      "examWeight": 50
+      "examWeight": 50,
+      "notOffered": 2026
     },
     {
       "code": "CML4641S",
@@ -529,7 +595,8 @@
       "days": [],
       "dp": "Satisfactory attendance at lectures and tutorials, completion of written assignments.",
       "assessment": "Coursework (40%), November examination (60%).",
-      "examWeight": 60
+      "examWeight": 60,
+      "notOffered": 2026
     },
     {
       "code": "CML4651F",
@@ -548,7 +615,8 @@
       "days": [],
       "dp": "Satisfactory attendance, presentation and successful completion of written assignments. Students may be required to attend a weekend workshop.",
       "assessment": "Coursework 50%, and Examination 50%",
-      "examWeight": 50
+      "examWeight": 50,
+      "notOffered": 2026
     },
     {
       "code": "CML4661F",
@@ -567,7 +635,8 @@
       "days": [],
       "dp": "Further tests may be scheduled at the discretion of the convener. Satisfactory attendance at lectures.",
       "assessment": "Coursework 30% Examination 70%.",
-      "examWeight": 70
+      "examWeight": 70,
+      "notOffered": 2026
     },
     {
       "code": "CML4661S",
@@ -586,7 +655,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework 20% (optional), Examination 80% or 100%.",
-      "examWeight": 80
+      "examWeight": 80,
+      "notOffered": 2026
     },
     {
       "code": "CML4662F",
@@ -605,7 +675,8 @@
       "days": [],
       "dp": "Further assessments may be scheduled at the discretion of the course convener.",
       "assessment": "Coursework 50%, Examination 50%",
-      "examWeight": 50
+      "examWeight": 50,
+      "notOffered": 2026
     },
     {
       "code": "CML4662S",
@@ -624,7 +695,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Examination 100%.",
-      "examWeight": 100
+      "examWeight": 100,
+      "notOffered": 2026
     },
     {
       "code": "CML4671F",
@@ -641,7 +713,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework: 50%, Examination 50%.",
-      "examWeight": 50
+      "examWeight": 50,
+      "notOffered": 2026
     },
     {
       "code": "CML4673S",
@@ -660,7 +733,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework 25%, Examination 75%",
-      "examWeight": 75
+      "examWeight": 75,
+      "notOffered": 2026
     },
     {
       "code": "CML4676S",
@@ -679,7 +753,8 @@
       "days": [],
       "dp": "Satisfactory attendance, presentation, and successful completion of written assignments.",
       "assessment": "Coursework 50%, Examination 50%",
-      "examWeight": 50
+      "examWeight": 50,
+      "notOffered": 2026
     },
     {
       "code": "CML4693S",
@@ -695,8 +770,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 25%, Examination 75% CML5000X COMMERCIAL LAW - RESEARCH TASK Higher postgraduate course 15 NQF credits at NQF level 9",
-      "examWeight": 75
+      "assessment": "Coursework 25%, Examination 75%",
+      "examWeight": 75,
+      "notOffered": 2026
+    },
+    {
+      "code": "CML5000X",
+      "title": "Commercial Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5601F",
@@ -714,8 +807,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at and participation in lectures.",
-      "assessment": "Coursework 40%, Examination 60% CML5601X ADVANCED COMPANY LAW - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Dr S Phungula",
+      "assessment": "Coursework 40%, Examination 60%",
       "examWeight": 60
+    },
+    {
+      "code": "CML5601X",
+      "title": "Advanced Company Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Dr S Phungula"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5613S",
@@ -731,8 +843,25 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at seminars and completion of written assignments.",
-      "assessment": "Coursework 50%, Examination 50% CML5613X COLLECTIVE LABOUR LAW - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: TBA",
+      "assessment": "Coursework 50%, Examination 50%",
       "examWeight": 50
+    },
+    {
+      "code": "CML5613X",
+      "title": "Collective Labour Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5619F",
@@ -750,8 +879,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 30%, Examination 70% CML5619X LAW OF INTERNATIONAL TRADE - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Associate Professor R Simo",
+      "assessment": "Coursework 30%, Examination 70%",
       "examWeight": 70
+    },
+    {
+      "code": "CML5619X",
+      "title": "Law of International Trade - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor R Simo"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5624F",
@@ -767,8 +915,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 25%, Examination 75% CML5624X ADMIRALTY JURISDICTION & PRACTICE - RESEARCH TASK (Not offered in 2026) Higher postgraduate course, first semester 15 NQF credits at NQF level 9 Convener: TBA",
-      "examWeight": 75
+      "assessment": "Coursework 25%, Examination 75%",
+      "examWeight": 75,
+      "notOffered": 2026
+    },
+    {
+      "code": "CML5624X",
+      "title": "Admiralty Jurisdiction & Practice - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "CML5625F",
@@ -784,8 +951,25 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 25%, Examination 75% CML5625X MARITIME LAW - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: TBA",
+      "assessment": "Coursework 25%, Examination 75%",
       "examWeight": 75
+    },
+    {
+      "code": "CML5625X",
+      "title": "Maritime Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature COURSE OUTLINES (POSTGRADUATE) 137",
+      "examWeight": null
     },
     {
       "code": "CML5626S",
@@ -803,8 +987,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 25%, Examination 75% CML5626X CARRIAGE OF GOODS BY SEA - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Dr T Metuge",
+      "assessment": "Coursework 25%, Examination 75%",
       "examWeight": 75
+    },
+    {
+      "code": "CML5626X",
+      "title": "Carriage of Goods By Sea - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Dr T Metuge"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise",
+      "entry": "See Rules for LLM Professional Masters",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5631S",
@@ -822,8 +1025,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance of lectures, presentations and practicals, and completion of written assignments.",
-      "assessment": "Coursework: 50%, Examination: 50%. CML5631X MEDIATION - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: M Carels",
+      "assessment": "Coursework: 50%, Examination: 50%.",
       "examWeight": 50
+    },
+    {
+      "code": "CML5631X",
+      "title": "Mediation - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "M Carels"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise",
+      "entry": "See Rules for LLM Professional Masters",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5641S",
@@ -841,8 +1063,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at lectures and tutorials, completion of written assignments.",
-      "assessment": "Coursework 40%, November examination 60% CML5641X COMMERCIAL ARBITRATION - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Dr F Adams",
+      "assessment": "Coursework 40%, November examination 60%",
       "examWeight": 60
+    },
+    {
+      "code": "CML5641X",
+      "title": "Commercial Arbitration - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Dr F Adams"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature COURSE OUTLINES (POSTGRADUATE) 139",
+      "examWeight": null
     },
     {
       "code": "CML5651F",
@@ -860,8 +1101,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance, presentation and successful completion of written assignments. Students may be required to attend a weekend workshop.",
-      "assessment": "Coursework counts 50% and Examination counts 50% CML5651X INDIVIDUAL EMPLOYMENT LAW - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Professor R le Roux",
+      "assessment": "Coursework counts 50% and Examination counts 50%",
       "examWeight": 50
+    },
+    {
+      "code": "CML5651X",
+      "title": "Individual Employment Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor R le Roux"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "CML5654S",
@@ -880,8 +1140,28 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at lectures, completion of introduction course if required, and completion of projects.",
-      "assessment": "Assessment is continuous. Complete a written exam (50%) and submit a seminar paper on a relevant topic of their choice (50%). CML5654X COMPETITION LAW - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Associate Professor B Mupangavanhu and Judge D M Davis",
+      "assessment": "Assessment is continuous. Complete a written exam (50%) and submit a seminar paper on a relevant topic of their choice (50%).",
       "examWeight": 50
+    },
+    {
+      "code": "CML5654X",
+      "title": "Competition Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor B Mupangavanhu",
+        "Judge D M Davis"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5657F",
@@ -899,8 +1179,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 40% Examination 60% CML5657X ELECTRONIC INTELLECTUAL PROPERTY LAW - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Professor C Ncube",
+      "assessment": "Coursework 40% Examination 60%",
       "examWeight": 60
+    },
+    {
+      "code": "CML5657X",
+      "title": "Electronic Intellectual Property Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor C Ncube"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5658S",
@@ -918,8 +1217,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 40% Examination 60% CML5658X ELECTRONIC TRANSACTIONS LAW - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Professor C Ncube",
+      "assessment": "Coursework 40% Examination 60%",
       "examWeight": 60
+    },
+    {
+      "code": "CML5658X",
+      "title": "Electronic Transactions Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor C Ncube"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5661S",
@@ -975,8 +1293,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 50%, Examination 50% CML5664X LAW, REGIONAL INTEGRATION AND DEVELOPMENT IN AFRICA - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Professor A Ordor",
+      "assessment": "Coursework 50%, Examination 50%",
       "examWeight": 50
+    },
+    {
+      "code": "CML5664X",
+      "title": "Law, Regional Integration and Development in Africa - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor A Ordor"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5665S",
@@ -994,7 +1331,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "100% coursework CML5665X TAX POLICY - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: B Cronin",
+      "assessment": "100% coursework",
+      "examWeight": null
+    },
+    {
+      "code": "CML5665X",
+      "title": "Tax Policy - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "B Cronin"
+      ],
+      "outline": "The objective is to provide students with the opportunity to apply their tax knowledge to practical problem-type assignments, and in so doing, deepening their understanding of the factors which influence the choice of tax laws. The research task is designed to engage students by bringing theoretical discussions of tax policy into the real world. Specifically, the research task is intended to expose students to the political and legal aspects of taxation, to introduce research skills, and to provide opportunities for students to develop professional and technical communication skills.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
       "examWeight": null
     },
     {
@@ -1008,13 +1364,32 @@
       "outline": "The aim of the course is to provide a platform for learning the plural and multiple legal frameworks for the conduct of business in different parts of the African continent - within and between countries and regions. These legal frameworks are shaped by various legal traditions such as common law, civil law, international law, but also religious and customary principles.",
       "entry": "See Rules for LLM and MPhil degrees.",
       "corequisites": "",
-      "lectures": "See Rules for LLM Professional Masters.",
+      "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "None",
       "assessment": "Coursework 50%, Examination 50%",
       "examWeight": 50
+    },
+    {
+      "code": "CML5666X",
+      "title": "Comparative Law and Business in Africa - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor A Ordor"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "See Rules for LLM Professional Masters.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5667S",
@@ -1032,8 +1407,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 40%, Examination 60%. CML5667X CORPORATE LAW AND GOVERNANCE - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Professor T Tong-Mongalo",
+      "assessment": "Coursework 40%, Examination 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "CML5667X",
+      "title": "Corporate Law and Governance - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor T Tong-Mongalo"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "CML5668F",
@@ -1044,15 +1438,34 @@
         "B Cronin"
       ],
       "outline": "The objective of this semester course is to nurture tax lawyers and to provide non-lawyers with an insight into tax law and the rights of taxpayers in regard to liability for taxation. The focus of the course is on the general framework for imposing income tax in South Africa, as pronounced upon by the courts. The outline of the course comprises a selection of fundamental features of the South African income tax, mainly through critical evaluation of case law. Key jurisdictional concepts comprising the source and residence basis of income taxation will be considered in detail.",
-      "entry": "See Rules for LLM Professional Masters.",
+      "entry": "",
       "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "Further tests may be scheduled at the discretion of the convener. Satisfactory attendance at lectures.",
-      "assessment": "Optional test/coursework (15%) and the final exam (85% or 100%). CML5668X FUNDAMENTAL PRINCIPLES OF TAX LAW - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: B Cronin",
+      "assessment": "Optional test/coursework (15%) and the final exam (85% or 100%).",
       "examWeight": 85
+    },
+    {
+      "code": "CML5668X",
+      "title": "Fundamental Principles of Tax Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "B Cronin"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5669F",
@@ -1070,8 +1483,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 50%, Examination 50%. CML5669X TAX TREATY LAW - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Professor J Hattingh",
+      "assessment": "Coursework 50%, Examination 50%.",
       "examWeight": 50
+    },
+    {
+      "code": "CML5669X",
+      "title": "Tax Treaty Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor J Hattingh"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5671F",
@@ -1091,6 +1523,23 @@
       "examWeight": null
     },
     {
+      "code": "CML5671X",
+      "title": "Negotiation - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
+    },
+    {
       "code": "CML5672S",
       "title": "The Legal Aspects of Corporate Financing Structures",
       "credits": 30,
@@ -1106,8 +1555,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 50%, Examination 50% CML5672X THE LEGAL ASPECTS OF CORPORATE FINANCING STRUCTURES - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Professor T Tong-Mongalo",
+      "assessment": "Coursework 50%, Examination 50%",
       "examWeight": 50
+    },
+    {
+      "code": "CML5672X",
+      "title": "The Legal Aspects of Corporate Financing Structures - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor T Tong-Mongalo"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters COURSE OUTLINES (POSTGRADUATE) 147",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5673S",
@@ -1199,8 +1667,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Class presentation 10%, Assignment/research paper 30%, Examination 60%. The presentation will be on the chosen or given assignment/research paper. CML5677X ISLAMIC LAW AND FINANCE - RESEARCH TASK (Not on offer in 2026) Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: TBA COURSE OUTLINES (POSTGRADUATE) 149",
-      "examWeight": 60
+      "assessment": "Class presentation 10%, Assignment/research paper 30%, Examination 60%. The presentation will be on the chosen or given assignment/research paper.",
+      "examWeight": 60,
+      "notOffered": 2026
+    },
+    {
+      "code": "CML5677X",
+      "title": "Islamic Law and Finance - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "CML5678F",
@@ -1218,8 +1704,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework (opinions and assignments) 40%, Examination 60% CML5678X PRINCIPLES OF INTELLECTUAL PROPERTY LAW - RESEARCH TASK Higher postgraduate course, first semester 15 NQF credits at NQF level 9 Convener: Associate Professor T T Schönwetter",
+      "assessment": "Coursework (opinions and assignments) 40%, Examination 60%",
       "examWeight": 60
+    },
+    {
+      "code": "CML5678X",
+      "title": "Principles of Intellectual Property Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor T T Schönwetter"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5680S",
@@ -1237,8 +1742,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework (opinions and assignments) 40%, Examination 60% CML5680X ADVANCED INTELLECTUAL PROPERTY LAW - RESEARCH TASK Higher postgraduate course, second semester 15 NQF credits at NQF level 9 Convener: Associate Professor L-A Tong",
+      "assessment": "Coursework (opinions and assignments) 40%, Examination 60%",
       "examWeight": 60
+    },
+    {
+      "code": "CML5680X",
+      "title": "Advanced Intellectual Property Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor L-A Tong"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "CML5687S",
@@ -1256,8 +1780,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 60%, Examination 40% CML5687X CHINESE LAW AND INVESTMENTS IN AFRICA - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Professor A Ordor",
+      "assessment": "Coursework 60%, Examination 40%",
       "examWeight": 40
+    },
+    {
+      "code": "CML5687X",
+      "title": "Chinese Law and Investments in Africa - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor A Ordor"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters. COURSE OUTLINES (POSTGRADUATE) 151",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5691S",
@@ -1275,8 +1818,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Attendance at and participation in lectures and completion of assignment(s).",
-      "assessment": "Coursework 40%, Examination 60% CML5691X INTELLECTUAL PROPERTY LAW, DEVELOPMENT & INNOVATION - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Associate Professor T Schönwetter",
+      "assessment": "Coursework 40%, Examination 60%",
       "examWeight": 60
+    },
+    {
+      "code": "CML5691X",
+      "title": "Intellectual Property Law, Development & Innovation - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor T Schönwetter"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5692F",
@@ -1294,8 +1856,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at and participation in lectures.",
-      "assessment": "Coursework 40%, Examination 60% CML5692X COMPANY LAW, CORPORATE GOVERNANCE AND STAKEHOLDER RELATIONS - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Dr S Phungula",
+      "assessment": "Coursework 40%, Examination 60%",
       "examWeight": 60
+    },
+    {
+      "code": "CML5692X",
+      "title": "Company Law, Corporate Governance and Stakeholder Relations - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Dr S Phungula"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5693S",
@@ -1311,8 +1892,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 25%, Examination 75% CML5693X MARINE INSURANCE LAW - RESEARCH TASK (Not offered in 2026) Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: TBA",
-      "examWeight": 75
+      "assessment": "Coursework 25%, Examination 75%",
+      "examWeight": 75,
+      "notOffered": 2026
+    },
+    {
+      "code": "CML5693X",
+      "title": "Marine Insurance Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "CML5695F",
@@ -1330,8 +1930,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 40%, Examination 60%. CML5695X BANKING & FINANCE LAW AND REGULATIONS - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Dr K Motlogeloa",
+      "assessment": "Coursework 40%, Examination 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "CML5695X",
+      "title": "Banking & Finance Law and Regulations - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Dr K Motlogeloa"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "CML5696S",
@@ -1349,8 +1968,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 40%, Examination 60%. CML5696X LAW OF BANKING, FINANCE AND PAYMENTS - RESEARCH TASK (Not on offer in 2026) Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Professor M Louw COURSE OUTLINES (POSTGRADUATE) 155",
+      "assessment": "Coursework 40%, Examination 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "CML5696X",
+      "title": "Law of Banking, Finance and Payments - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor M Louw"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "CML5697X",
@@ -1499,6 +2137,31 @@
       "examWeight": null
     },
     {
+      "code": "ELL1013F",
+      "title": "Literature: How and Why?",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr H Moosa"
+      ],
+      "outline": "What is ‘literature’ and how does it work? How and why can we read and think critically? What does close attention to plays, novels and poems tell us as we grapple with the meanings of being human within a 21st century world? How can we trace the shift from ‘English literature’ to ‘literature in English’, from our specific and simultaneously myriad locations? This introduction to literary studies offers a range of critical tools and methods for reading and writing about texts in the most interesting and thought-provoking ways possible.",
+      "entry": "None",
+      "corequisites": "",
+      "lectures": "2nd period, Monday, Tuesday and Thursday.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Thursday"
+      ],
+      "dp": "All written work to be handed in and at least 75% attendance at tutorials.",
+      "assessment": "Continuous assessment (coursework essays, projects, tasks etc.) counts 60%; end-ofsemester examination counts 40%.",
+      "examWeight": 40
+    },
+    {
       "code": "ELL1016S",
       "title": "Image, Voice, Word",
       "credits": 15,
@@ -1623,6 +2286,25 @@
       "examWeight": 50
     },
     {
+      "code": "PBL2000F",
+      "title": "Constitutional Law (part A)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr N Ramalekana"
+      ],
+      "outline": "This course provides an introduction to the history of South African constitutional law and basic concepts such as democracy, legitimacy, constitutionalism, federalism, separation of powers and the rule of law. It then considers the South African Constitution in detail, examining the functions and powers of the three branches of government and the different spheres of government (national, provincial and local).",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "Two assignments 20%; One written examination (2 hours) 80%.",
+      "examWeight": 80
+    },
+    {
       "code": "PBL2000W",
       "title": "Constitutional Law",
       "credits": 36,
@@ -1659,6 +2341,25 @@
       "dp": "Please refer to the course handout and/or the intermediate year schedule.",
       "assessment": "Optional essay/opinion: 20%; Mid-course assessment: 30%; Final exam: 50% (if essay/opinion) or 70% (if no essay/opinion)",
       "examWeight": 50
+    },
+    {
+      "code": "PBL3801F",
+      "title": "Criminal Law (part A)",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "C Willis-Smith"
+      ],
+      "outline": "Introduction: This course covers the general principles of criminal law. Students are introduced to these principles by a brief examination of the nature of criminal law, the principle of legality and the operation of the Bill of Rights on the rules of criminal law. Analysis of principles: The course focuses on an analysis of the case law and legal principles governing the elements of voluntariness of conduct (including the defence of automatism); causation; defences excluding unlawfulness (private defence, necessity, impossibility, obedience to orders, public authority and consent); capacity…",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "Essay 20%; Compulsory test 80%. EXCHANGE COURSES 199",
+      "examWeight": null
     },
     {
       "code": "PBL3801W",
@@ -1753,7 +2454,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework: 20%, Exam 80%",
-      "examWeight": 80
+      "examWeight": 80,
+      "notOffered": 2026
     },
     {
       "code": "PBL4504F",
@@ -1827,7 +2529,8 @@
       "days": [],
       "dp": "Satisfactory attendance at weekly seminars",
       "assessment": "Class participation 20%; Compulsory assignment 30%; Exam 50 %.",
-      "examWeight": 50
+      "examWeight": 50,
+      "notOffered": 2026
     },
     {
       "code": "PBL4601S",
@@ -2135,7 +2838,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework 30%; Research Paper 70%",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PBL4661F",
@@ -2233,7 +2937,8 @@
       "days": [],
       "dp": "Satisfactory attendance and participation in lectures and seminars",
       "assessment": "Course work 50%, Examination 50%.",
-      "examWeight": 50
+      "examWeight": 50,
+      "notOffered": 2026
     },
     {
       "code": "PBL4666S",
@@ -2245,14 +2950,34 @@
       ],
       "outline": "Members of the African judiciary play a critical role in promoting the rule of law in Africa. An advanced understanding of a particular topic within any branch of the law is likely to assist a judicial officer or aspirant judicial officer themselves to pronounce more authoritatively in any future litigation that comes before them in that field. In addition, this course seeks to provide students with the opportunity to work independently and flexibly, to produce written work of the highest quality.",
       "entry": "LLB degree or equivalent; experience in legal practice broadly which qualifies at least as an aspirant judicial officer; a holder of judicial office.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance and participation in lectures and seminars",
+      "assessment": "Research Paper 100%",
+      "examWeight": null
+    },
+    {
+      "code": "PBL4667S",
+      "title": "Law and Technology for Judicial Officers",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor T Schonwetter"
+      ],
+      "outline": "This course equips judicial officers and aspirant judicial officers with the practical skills to management their cases and courtrooms in light of international best practice while enhancing fair trials and access to justice for the litigants before their court. The course will address processes for civil motions and trials, as well as criminal trials and special court procedures in order to equip judicial officers with the practical skills to ensure the timeous and fair resolution of court cases.",
+      "entry": "LLB degree or equivalent; experience in legal practice broadly which qualifies at least as an aspirant judicial officer; a holder of judicial office.",
       "corequisites": "Compulsory core courses must have been completed",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance and participation in lectures and seminars",
-      "assessment": "Research Paper 100% PBL4667S LAW AND TECHNOLOGY FOR JUDICIAL OFFICERS (not offered in 2026) Higher postgraduate course, second semester. 30 NQF credits at NQF level 8 Convener: Associate Professor T Schonwetter",
-      "examWeight": null
+      "assessment": "Course work 100%.",
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PBL4668S",
@@ -2272,7 +2997,8 @@
       "days": [],
       "dp": "Satisfactory attendance at and participation in lectures and seminars. Timeous submission of assignments",
       "assessment": "Course work 50%, Examination 50%",
-      "examWeight": 50
+      "examWeight": 50,
+      "notOffered": 2026
     },
     {
       "code": "PBL4801F",
@@ -2329,7 +3055,8 @@
       "days": [],
       "dp": "80% attendance at, and satisfactory participation in, seminars and the completion of the research papers and oral presentation",
       "assessment": "The presentation of at least one seminar and one research paper. Marks given for the seminars and research paper comprise the entire mark for the course.",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PBL4820F",
@@ -2348,7 +3075,8 @@
       "days": [],
       "dp": "Satisfactory attendance at seminars and completion of written assignments.",
       "assessment": "Three reaction papers of 2000 words each 45%. A final paper of 5000 words 55%.",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PBL4822S",
@@ -2367,7 +3095,8 @@
       "days": [],
       "dp": "Satisfactory attendance and participation at seminars and completion of written assignments",
       "assessment": "Coursework 60% (Written assignments), Examination 40% (Take-home).",
-      "examWeight": 40
+      "examWeight": 40,
+      "notOffered": 2026
     },
     {
       "code": "PBL4844S",
@@ -2386,7 +3115,8 @@
       "days": [],
       "dp": "Satisfactory attendance at seminars and completion of assignments. COURSE OUTLINES (POSTGRADUATE) 167",
       "assessment": "Two review papers of 2000 words each (40%) and a final paper of 4000 words (60%). This will comprise the entire mark for the course.",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PBL4847S",
@@ -2404,8 +3134,46 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at seminars and completion of written assignments.",
-      "assessment": "Term assignments - 20%; Term paper - 30%; Examination - 50%. PBL4849F LAW IN ACTION - RESEARCH METHODS (Not offered in 2026) Higher postgraduate course, first semester. 30 NQF credits at NQF level 8 Convener: Associate Professor K Moult",
-      "examWeight": 50
+      "assessment": "Term assignments - 20%; Term paper - 30%; Examination - 50%.",
+      "examWeight": 50,
+      "notOffered": 2026
+    },
+    {
+      "code": "PBL4849F",
+      "title": "Law in Action - Research Methods",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor K Moult"
+      ],
+      "outline": "This course aims to prepare students both to properly understand empirical research and methods, and to engage in empirical research projects of their own. Lawyers and legal scholars increasingly use empirical evidence to understand the legal system and its role in society, to unpack complex legal and policy questions, and to support their positions in the courtroom and in the business environment. Students who aim to undertake careers in academia (in the social sciences and in law) are increasingly required to undertake primary research.",
+      "entry": "See rules for Postgraduate Diplomas.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance at seminars and completion of written assignments.",
+      "assessment": "Coursework 50%. A substantial research proposal of 6000-8000 words 50%.",
+      "examWeight": null,
+      "notOffered": 2026
+    },
+    {
+      "code": "PBL5000X",
+      "title": "Public Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters degrees.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "PBL5045S",
@@ -2424,7 +3192,8 @@
       "days": [],
       "dp": "Satisfactory attendance of lectures and completion of essay.",
       "assessment": "Coursework 50% (Short assignment 10%, Long assignment 40%), Examination 50%.",
-      "examWeight": 50
+      "examWeight": 50,
+      "notOffered": 2026
     },
     {
       "code": "PBL5602F",
@@ -2442,8 +3211,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 25% (Two voluntary assignments of 12.5% each), Examination 75% (or 87.5% or 100%). PBL5602X INTERNATIONAL LAW OF THE SEA - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Dr D Metuge",
+      "assessment": "Coursework 25% (Two voluntary assignments of 12.5% each), Examination 75% (or 87.5% or 100%).",
       "examWeight": 75
+    },
+    {
+      "code": "PBL5602X",
+      "title": "International Law of the Sea - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Dr D Metuge"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "PBL5615F",
@@ -2502,8 +3290,29 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at and participation in seminars and completion of written assignments.",
-      "assessment": "Coursework 50%, Examination 50%. PBL5619X INTERNATIONAL ENVIRONMENTAL LAW - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Professor A R Paterson, Associate Professor J Hall and Dr D Metuge",
+      "assessment": "Coursework 50%, Examination 50%.",
       "examWeight": 50
+    },
+    {
+      "code": "PBL5619X",
+      "title": "International Environmental Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor A R Paterson",
+        "Associate Professor J Hall",
+        "Dr D Metuge"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "PBL5623F",
@@ -2578,8 +3387,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at all lectures, participation on class seminars and submission of course assignment.",
-      "assessment": "Coursework 50%, Examination 50% PBL5640X PRINCIPLES OF ENVIRONMENTAL LAW - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Professor A R Paterson",
+      "assessment": "Coursework 50%, Examination 50%",
       "examWeight": 50
+    },
+    {
+      "code": "PBL5640X",
+      "title": "Principles of Environmental Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor A R Paterson"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "PBL5641F",
@@ -2597,8 +3425,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at all lectures, participation on class seminars and submission of course assignment.",
-      "assessment": "Coursework 50%, Examination 50%. PBL5641X LAND USE PLANNING LAW - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Professor A R Paterson",
+      "assessment": "Coursework 50%, Examination 50%.",
       "examWeight": 50
+    },
+    {
+      "code": "PBL5641X",
+      "title": "Land Use Planning Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor A R Paterson"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "PBL5642S",
@@ -2616,8 +3463,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at all lectures, participation on class seminars and submission of course assignments.",
-      "assessment": "Coursework 50%, Examination 50% PBL5642X NATURAL RESOURCES LAW - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Associate Professor J Hall",
+      "assessment": "Coursework 50%, Examination 50%",
       "examWeight": 50
+    },
+    {
+      "code": "PBL5642X",
+      "title": "Natural Resources Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor J Hall"
+      ],
+      "outline": "176 COURSE OUTLINES (POSTGRADUATE) A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "PBL5643S",
@@ -2635,8 +3501,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at all lectures, participation on class seminars and submission of course assignments.",
-      "assessment": "Coursework 50%, Examination (50%). PBL5643X POLLUTION LAW - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Associate Professor J Hall",
+      "assessment": "Coursework 50%, Examination (50%).",
       "examWeight": 50
+    },
+    {
+      "code": "PBL5643X",
+      "title": "Pollution Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor J Hall"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature",
+      "examWeight": null
     },
     {
       "code": "PBL5644S",
@@ -2731,7 +3616,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Coursework 30%; Research Paper 70%",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PBL5661S",
@@ -2767,7 +3653,8 @@
       "days": [],
       "dp": "None",
       "assessment": "50% Practical Assignment (comparative usage of ATI Law), 50% Examination.",
-      "examWeight": 50
+      "examWeight": 50,
+      "notOffered": 2026
     },
     {
       "code": "PBL5664S",
@@ -2937,7 +3824,8 @@
       "days": [],
       "dp": "Satisfactory attendance and participation at seminars.",
       "assessment": "Coursework 40% made up of 2 oral presentations in class (10% each) and 1 written assignment. Final research paper 60%.",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PTY4008S",
@@ -2957,6 +3845,44 @@
       "dp": "None.",
       "assessment": "A two-hour written examination in October/November (100%). A supplementary written examination is offered in January the following year to students who have obtained 45-49%.",
       "examWeight": 100
+    },
+    {
+      "code": "PVL1003F",
+      "title": "Foundations of South African Law (part A and B)",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "M Baase"
+      ],
+      "outline": "PVL1003F: The objectives of this course are that firstly students should develop foundational knowledge about the legal system in South Africa, including a knowledge of the history, sources of law, hierarchy of the courts, legal reasoning, with special attention to the doctrine of precedent, classifications of the law and fundamental legal concepts, as well as areas of the law relating to HIV and AIDS.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Attendance at 80% of tutorials.",
+      "assessment": "One three hour written examination in the first/second semester.",
+      "examWeight": null
+    },
+    {
+      "code": "PVL1003S",
+      "title": "Foundations of South African Law (part A and B)",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "M Baase"
+      ],
+      "outline": "PVL1003F: The objectives of this course are that firstly students should develop foundational knowledge about the legal system in South Africa, including a knowledge of the history, sources of law, hierarchy of the courts, legal reasoning, with special attention to the doctrine of precedent, classifications of the law and fundamental legal concepts, as well as areas of the law relating to HIV and AIDS.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Attendance at 80% of tutorials.",
+      "assessment": "One three hour written examination in the first/second semester.",
+      "examWeight": null
     },
     {
       "code": "PVL1003W",
@@ -3317,7 +4243,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Presentation of paper in a seminar 10%, Research paper of 5000 words 90%",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PVL4604S",
@@ -3334,7 +4261,8 @@
       "days": [],
       "dp": "None",
       "assessment": "Seminar presentation 30%, Research paper of 5000 words 70%",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PVL4606F",
@@ -3369,8 +4297,9 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Class participation 10%, Research paper (5000 words) 90% Moot options",
-      "examWeight": null
+      "assessment": "Class participation 10%, Research paper (5000 words) 90% Moot options CML4606H PBL4606H PVL4609H Moot Caput Moot Caput Moot Caput Department of Commercial Law Department of Public Law Department of Private Law",
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PVL4624F",
@@ -3387,7 +4316,8 @@
       "days": [],
       "dp": "Satisfactory class attendance (see course outline).",
       "assessment": "Coursework 100%",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PVL4625S",
@@ -3501,8 +4431,25 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance of block lectures, full participation in groupwork and submission of all written assignments.",
-      "assessment": "Coursework 40%, Examination: 60%. PVL5000X PRIVATE LAW - RESEARCH TASK Higher postgraduate course 15 NQF credits at NQF level 9",
+      "assessment": "Coursework 40%, Examination: 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "PVL5000X",
+      "title": "Private Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "PVL5620S",
@@ -3513,14 +4460,33 @@
         "Professor T Naudé"
       ],
       "outline": "This course focuses on aspects of Contract Law. Topics to be covered will be prescribed from year to year. Some of the topics will focus on how the Constitution is influencing the development of the law of contract. Examples of the topics that have been covered in previous years include the following: mistake and the basis of contract in South African law: the expansion of the concept of iustus error; good faith, public policy and fairness in Contract Law (including control mechanisms of unfair contract terms under the common law, the Constitution and the Consumer Protection Act); aspects of…",
-      "entry": "See Rules for LLM Professional Masters. COURSE OUTLINES (POSTGRADUATE) 189",
+      "entry": "",
       "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance of seminars.",
-      "assessment": "Class participation: 10%. Research paper of 7 000 words: 90%. PVL5620X ADVANCED CONTRACT LAW - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Professor T Naudé",
+      "assessment": "Class participation: 10%. Research paper of 7 000 words: 90%.",
+      "examWeight": null
+    },
+    {
+      "code": "PVL5620X",
+      "title": "Advanced Contract Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor T Naudé"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters. COURSE OUTLINES (POSTGRADUATE) 189",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
       "examWeight": null
     },
     {
@@ -3537,8 +4503,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory class attendance (see course outline).",
-      "assessment": "Assessment will take place in two stages: a seminar presentation (which will count 30% of the final mark for the course) and a research paper on a topic to be approved by the course conveners (which will count the remaining 70% of the final mark for the course). PVL5624X HUMAN RIGHTS AND PRIVATE LAW - RESEARCH TASK (Not offered in 2026) Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: TBA",
-      "examWeight": null
+      "assessment": "Assessment will take place in two stages: a seminar presentation (which will count 30% of the final mark for the course) and a research paper on a topic to be approved by the course conveners (which will count the remaining 70% of the final mark for the course).",
+      "examWeight": null,
+      "notOffered": 2026
+    },
+    {
+      "code": "PVL5624X",
+      "title": "Human Rights and Private Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PVL5625S",
@@ -3560,6 +4545,25 @@
       "examWeight": 50
     },
     {
+      "code": "PVL5625X",
+      "title": "Property Law in a Constitutional Order - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Dr G Mathiba"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
+    },
+    {
       "code": "PVL5626S",
       "title": "Human Rights, Gender and Family",
       "credits": 30,
@@ -3575,8 +4579,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Written assignment and seminar presentation 30%, Examination 70% PVL5626X HUMAN RIGHTS, GENDER, AND FAMILY - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Associate Professor A Barratt",
+      "assessment": "Written assignment and seminar presentation 30%, Examination 70%",
       "examWeight": 70
+    },
+    {
+      "code": "PVL5626X",
+      "title": "Human Rights, Gender, and Family - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Associate Professor A Barratt"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "PVL5627S",
@@ -3593,7 +4616,8 @@
       "days": [],
       "dp": "Attendance at all lectures and submission of course assignment.",
       "assessment": "Essay 30%, Examination 70%.",
-      "examWeight": 70
+      "examWeight": 70,
+      "notOffered": 2026
     },
     {
       "code": "PVL5627X",
@@ -3610,7 +4634,8 @@
       "days": [],
       "dp": "None",
       "assessment": "A research task of a professional nature.",
-      "examWeight": null
+      "examWeight": null,
+      "notOffered": 2026
     },
     {
       "code": "PVL5630F",
@@ -3628,8 +4653,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance of block lectures, full participation in groupwork and submission of all written assignments.",
-      "assessment": "Coursework 40%, Examination: 60%. PVL5630X COMPARATIVE MINERAL LAW IN AFRICA - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Professor H Mostert",
+      "assessment": "Coursework 40%, Examination: 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "PVL5630X",
+      "title": "Comparative Mineral Law in Africa - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor H Mostert"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "PVL5631S",
@@ -3647,8 +4691,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance of block lectures, full participation in groupwork and in-class simulations, and submission of all written assignments.",
-      "assessment": "Coursework 40%, Examination 60%. PVL5631X NEGOTIATING EXTRACTIVE AGREEMENTS AND MINING CONTRACTS - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Professor H Mostert",
+      "assessment": "Coursework 40%, Examination 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "PVL5631X",
+      "title": "Negotiating Extractive Agreements and Mining Contracts - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor H Mostert"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "PVL5632F",
@@ -3666,8 +4729,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance of block lectures, full participation in groupwork and submission of all written assignments.",
-      "assessment": "Coursework 40%, Examination: 60%. PVL5632X OIL AND GAS LAW IN SOUTH AFRICA - RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9 Convener: Professor H Mostert",
+      "assessment": "Coursework 40%, Examination: 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "PVL5632X",
+      "title": "Oil and Gas Law in South Africa - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor H Mostert"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "PVL5633S",
@@ -3686,8 +4768,28 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance of block lectures, full participation in groupwork and submission of all written assignments.",
-      "assessment": "Coursework 40%, Examination: 60%. PVL5633X RESOURCE REVENUE LAW - RESEARCH TASK Higher postgraduate course, second semester. 15 NQF credits at NQF level 9 Convener: Professor H Mostert and Professor J Hattingh",
+      "assessment": "Coursework 40%, Examination: 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "PVL5633X",
+      "title": "Resource Revenue Law - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor H Mostert",
+        "Professor J Hattingh"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM Professional Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "PVL5635F",
@@ -3705,8 +4807,25 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Coursework 50%, Examination 50%. PVL5635X LAW OF TRUSTS – RESEARCH TASK Higher postgraduate course, first semester. 15 NQF credits at NQF level 9",
+      "assessment": "Coursework 50%, Examination 50%.",
       "examWeight": 50
+    },
+    {
+      "code": "PVL5635X",
+      "title": "Law of Trusts – Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "See Rules for LLM and MPhil degrees.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "A research task of a professional nature.",
+      "examWeight": null
     },
     {
       "code": "PVL5636F",
@@ -3724,8 +4843,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance of block lectures, full participation in groupwork and submission of all written assignments.",
-      "assessment": "Coursework 40%, Examination: 60%. NB. For students enrolled in the professional master's stream, an additional research task of 5000 words is required (marked out of 100). PVL5636X EXTRACTIVES LAW & THE ENERGY TRANSITION - RESEARCH TASK 15 NQF credits at NQF level 9 Convener: Professor H Mostert",
+      "assessment": "Coursework 40%, Examination: 60%. NB. For students enrolled in the professional master's stream, an additional research task of 5000 words is required (marked out of 100).",
       "examWeight": 60
+    },
+    {
+      "code": "PVL5636X",
+      "title": "Extractives Law & the Energy Transition - Research Task",
+      "credits": 15,
+      "nqf": 9,
+      "conveners": [
+        "Professor H Mostert"
+      ],
+      "outline": "A student must complete a research task that is related to the course taken for the degree. The student must demonstrate innovation and professional expertise.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "The Research Task should have a maximum of 5,000 words and is weighted as per the requirements of the Law Faculty, and linked with the taught modules of the Course: Extractives Law & the Energy Transition.",
+      "examWeight": null
     }
   ]
 }

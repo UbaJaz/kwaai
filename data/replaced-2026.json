@@ -1,0 +1,18 @@
+{
+  "source": "UCT 2026 handbooks",
+  "replaced": {
+    "MAM1000W": [
+      "MAM1031F",
+      "MAM1032S"
+    ],
+    "PSY1004F": [
+      "PSY1009F"
+    ],
+    "PSY1005S": [
+      "PSY1010S"
+    ],
+    "SLL3003W": [
+      "SLL3103X"
+    ]
+  }
+}

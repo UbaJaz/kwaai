@@ -9,9 +9,17 @@ const path = require('node:path');
 // Some faculties put a note between the title and the credits, so find the UPPERCASE heading first,
 // then look for credits and convener in the text before the next heading.
 // Courses that run in more than one semester are written "CSC1015F/S": that's two courses, CSC1015F and CSC1015S.
-const WORD = "(?:[A-Z0-9][A-Z0-9,&:()'’\\-\\/–.]*|&)"; // "&" on its own too: "MATTER & INTERACTIONS"
-const HEADING = new RegExp(`\\b([A-Z]{3}\\d{4}[A-Z](?:\\/[A-Z])*) ((?:${WORD} )*?${WORD})(?= (?:\\+ )?\\d+ NQF credits| [A-Z][a-z]| \\([A-Z][a-z]| [A-Z]{3}\\d{4}[A-Z] [a-z])`, 'g');
-const NOT_A_COURSE = /thesis|dissertation|departments in the faculty|research (paper|report|project)$/i;
+// Title words are UPPERCASE and may hold brackets, "C++", "A+:", "CITIZENS?:" or accents ("NÉGRITUDE"). "&", "-" and "–"
+// can stand on their own: "MATTER & INTERACTIONS", "LANGUAGE – MEANING". The title ends where ordinary text starts:
+// "Five lectures", "A student cannot...", "X courses:", "(offered during winter term)", "[Note:", "APG2021F/S versions".
+// A course code is never a title word, so "MAM4000W MAM4001W APPLIED MATHEMATICS HONOURS" finds the MAM4001W heading.
+const WORD = "(?:(?![A-Z]{3}\\d{4}[A-Z]\\b)\\(?[A-Z0-9À-Þ][A-Z0-9À-Þ,&:()'’+?\\-\\/–.]*|&|-|–)";
+const HEADING = new RegExp(`\\b([A-Z]{3}\\d{4}[A-Z](?:\\/[A-Z])*) ((?:${WORD} )*?${WORD})(?= (?:\\+ )?\\d+ (?:NQF )?credits| [A-Z][a-z]| [A-Z] [a-z]| \\([A-Za-z][a-z]| \\[| (?:NB|NOTE): [a-z]| [A-Z]{3}\\d{4}[A-Z](?:\\/[A-Z])* [a-z])`, 'g');
+const NOT_A_COURSE = /thesis|dissertation|research (paper|report|project)$/i;
+// a running page header caught inside a heading: "STRUCTURAL DESIGN II DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 114"
+// or "INFORMATION & COMMUNICATION TECHNOLOGIES 180 DEPARTMENT OF INFORMATION SYSTEMS"
+const HEADER_IN_TITLE = /\s*(?:DEPARTMENTS IN (?:THE|OTHER) FACULT(?:Y|IES)(?: AND COURSES OFFERED)?(?: \d+)?|\d{2,3} (?:DEPARTMENT|SCHOOL|GRADUATE SCHOOL|FACULTY)\b.*)$/;
+const NOT_OFFERED = /\bnot (?:on )?offered in (\d{4})/i;
 const CODES = /\b([A-Z]{3}\d{4})([A-Z](?:\/[A-Z])*)/g;
 
 // The labelled parts of a course description, roughly in the order the handbooks use them.
@@ -31,9 +39,13 @@ function parseHandbook(text) {
     while (heads[end] && heads[end][1].slice(0, 7) === m[1].slice(0, 7)) end++;
     const own = flat.slice(m.index + m[0].length, Math.min(heads[i + 1]?.index ?? flat.length, m.index + 6000));
     const shared = end > i + 1 && !/NQF credits/.test(own) ? flat.slice(m.index + m[0].length, Math.min(heads[end]?.index ?? flat.length, m.index + 8000)) : own;
-    const after = shared.replace(/^.*?(?=\b\d+ NQF credits)/, (lead) => (lead.length > 600 ? lead.slice(-600) : lead));
-    const credits = /^.{0,600}?(\d+) NQF credits at NQF level (\d+)/.exec(after);
-    if (!credits || NOT_A_COURSE.test(m[2]) || /[A-Z]{3}\d{4}/.test(m[2])) return; // a title with a code in it is a table row
+    const after = shared.replace(/^.*?(?=\b\d+ (?:NQF )?credits at)/, (lead) => (lead.length > 600 ? lead.slice(-600) : lead));
+    const credits = /^.{0,600}?(\d+) (?:NQF )?credits at NQF level (\d+)/.exec(after);
+    const rawTitle = m[2].replace(HEADER_IN_TITLE, '');
+    // a title with a code in it, or with no real word ("CB004/ CB024", "IT"), is a table row
+    if (!credits || !/[A-ZÀ-Þ]{3}/.test(rawTitle) || NOT_A_COURSE.test(rawTitle) || /[A-Z]{3}\d{4}/.test(rawTitle)) return;
+    // "(Not offered in 2026)" sits in the title or in the note before the credits
+    const notOffered = NOT_OFFERED.exec(rawTitle + ' ' + after.slice(0, credits.index + credits[0].length));
     const convener = /Conveners?:\s*(.+?)(?=\s*(?:Course outline|Course entry|Entry requirements|Co-requisites|Prerequisites|Objective|Lecture times|DP requirements|Assessment))/.exec(after);
     const parts = sections(after);
     const lectures = clip(parts['Lecture times'], 240);
@@ -53,11 +65,12 @@ function parseHandbook(text) {
       courses.set(code, {
         code,
         // drop a page number/header or a "NOTE:" glued on the end
-        title: titleCase(m[2].replace(/ (NOTES?|NB):( \d\))?$/, '').replace(/(,? SCHOOL OF)? \d{2,3}$/, '').trim()),
+        title: titleCase(rawTitle.replace(/ \(NOT (?:ON )?OFFERED IN \d{4}\)/, '').replace(/ (NOTES?|NB):( \d\))?$/, '').replace(/(,? SCHOOL OF)? \d{2,3}$/, '').trim()),
         credits: Number(credits[1]),
         nqf: Number(credits[2]),
         conveners: splitConveners(convener?.[1] || ''),
         ...details,
+        ...(notOffered && { notOffered: Number(notOffered[1]) }),
       });
     }
   });
@@ -153,7 +166,7 @@ function titleCase(s) {
     .split(' ')
     .map((w, i, all) => {
       // roman numerals and part letters: "II", "1A", "IB", and "A"/"B" at the end or before a small word ("Physics A for Engineers")
-      if (/^(i|ii|iii|iv|v|vi|\d+[a-z]|i{1,3}[ab])$/.test(w) || (/^[ab]$/.test(w) && (i === all.length - 1 || SMALL.has(all[i + 1])))) return w.toUpperCase();
+      if (/^(i|ii|iii|iv|v|vi|\d+[a-z]|i{1,3}[ab]|\(\d[a-z]{1,3}\))$/.test(w) || (/^[ab]$/.test(w) && (i === all.length - 1 || SMALL.has(all[i + 1])))) return w.toUpperCase();
       if (i > 0 && SMALL.has(w)) return w;
       return w.replace(/^[a-z(]/, (c) => c.toUpperCase()).replace(/-([a-z])/g, (_, c) => '-' + c.toUpperCase());
     })
@@ -174,4 +187,4 @@ if (require.main === module) {
   console.log(`wrote ${courses.length} courses to ${out}`);
 }
 
-module.exports = { parseHandbook, splitConveners, titleCase, expandCode, codesIn, lecturePeriods, examWeight };
+module.exports = { HEADING, parseHandbook, splitConveners, titleCase, expandCode, codesIn, lecturePeriods, examWeight };

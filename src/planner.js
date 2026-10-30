@@ -3,6 +3,9 @@
 const { codesIn } = require('../scripts/import-handbook');
 const { semesterLoad } = require('./ratings');
 
+// Old codes the 2026 handbooks say were replaced, e.g. MAM1000W -> MAM1031F + MAM1032S (scripts/import-tables.js)
+const REPLACED = require('../data/replaced-2026.json').replaced;
+
 const TERMS = [
   { key: 's1', label: 'Semester 1', when: 'February to June' },
   { key: 's2', label: 'Semester 2', when: 'July to November' },
@@ -118,7 +121,7 @@ function analysePlan(courses) {
   });
   const entry = entryChecks(list);
   const twice = list.filter((c, i) => list.findIndex((x) => base(x.code) === base(c.code)) !== i).map((c) => [list.find((x) => base(x.code) === base(c.code)).code, c.code]);
-  return { terms, other: list.filter((c) => !c.terms.length), entry, twice };
+  return { terms, other: list.filter((c) => !c.terms.length), entry, twice, notOffered: list.filter((c) => c.not_offered) };
 }
 
-module.exports = { analysePlan, termsOf, fitTimetable, ordinal, TERMS };
+module.exports = { analysePlan, termsOf, fitTimetable, ordinal, TERMS, REPLACED };
