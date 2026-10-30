@@ -6,7 +6,7 @@ const { seed } = require('../scripts/seed');
 const { screenComment } = require('../src/moderation');
 const { parseReviewForm, parseVerdictForm, overallOf, semesterLoad } = require('../src/ratings');
 const { html } = require('../src/html');
-const { titleCase, parseHandbook } = require('../scripts/import-handbook');
+const { titleCase, parseHandbook, expandCode, codesIn, lecturePeriods, examWeight } = require('../scripts/import-handbook');
 const { UNIVERSITIES } = require('../src/universities');
 
 // ---- unit ----
@@ -98,6 +98,29 @@ test('handbook parsing', () => {
     ['ASL1202S', 'Representations of Africa', ['Ms B Jones']],
     ['AST1000S', 'Introduction to Astronomy', ['Dr A Smith']],
   ]);
+});
+
+test('handbook parsing: courses in both semesters and the details the planner uses', () => {
+  const [f, s] = parseHandbook('CSC1015F/S COMPUTER SCIENCE 1015 18 NQF credits at NQF level 5 Convener: K Prag Course entry requirements: At least 70% for NSC Mathematics. '
+    + 'Course outline: Python. Lecture times: 4th or 5th period daily, Tutorials: One per week, 2nd period. DP requirements: Minimum of 45% aggregate in practical work. '
+    + 'Assessment: Theory tests 15%; practical tests 25%; June examination 2 hours 60%. Subminima: 45% for practicals. Second-Year Courses');
+  assert.deepEqual([f.code, s.code], ['CSC1015F', 'CSC1015S']);
+  assert.deepEqual(f.periods, [4, 5]);
+  assert.equal(f.periodChoice, true);
+  assert.equal(f.examWeight, 60);
+  assert.equal(f.dp, 'Minimum of 45% aggregate in practical work.');
+  assert.equal(f.entry, 'At least 70% for NSC Mathematics.');
+  assert.ok(!f.assessment.includes('Second-Year'));
+
+  assert.deepEqual(expandCode('STA1000F/S/H'), ['STA1000F', 'STA1000S', 'STA1000H']);
+  assert.deepEqual(codesIn('PHY1004W, MAM1031F & MAM1032S (or equivalent), CSC1015F/S.'), ['PHY1004W', 'MAM1031F', 'MAM1032S', 'CSC1015F', 'CSC1015S']);
+  assert.deepEqual(lecturePeriods('Tuesday and Thursday, 3rd period'), { periods: [3], periodChoice: false, days: ['Tuesday', 'Thursday'] });
+  assert.deepEqual(lecturePeriods('Monday - Wednesday, 1st period').days, ['Monday', 'Tuesday', 'Wednesday']);
+  assert.deepEqual(lecturePeriods('By arrangement').periods, []);
+  assert.equal(examWeight('Semester mark counts 33.3% and end-of-semester exam counts 66.6%.'), 67);
+  assert.equal(examWeight('Class record counts 50%; one 2-hour examination counts 50%. Although a supplementary examination is 100%'), 50);
+  assert.equal(examWeight('Coursework: 35% Exam: 65%'), 65);
+  assert.equal(examWeight('Portfolio 100%'), null);
 });
 
 // ---- end to end: sign in, review, report, moderate ----

@@ -28,7 +28,7 @@ Not affiliated with any university. "Kwaai" is South African slang that means bo
 
 ## Data
 
-999 courses from UCT's 2026 undergraduate handbooks, with official course conveners:
+About 1,360 courses from UCT's 2026 handbooks, downloaded from [uct.ac.za/students/study-uct-handbooks/handbooks](https://uct.ac.za/students/study-uct-handbooks/handbooks) on 30 Oct 2026:
 
 | File | Handbook |
 |---|---|
@@ -37,8 +37,11 @@ Not affiliated with any university. "Kwaai" is South African slang that means bo
 | `data/courses-com-2026.json` | Commerce (6A) |
 | `data/courses-hum-2026.json` | Humanities (9A) |
 | `data/courses-fhs-2026.json` | Health Sciences (8A) |
+| `data/courses-law-2026.json` | Law (10) |
 
-Law isn't imported yet. The source PDFs and text are kept locally in `handbook-src/` (gitignored). To add or update a handbook:
+For each course the importer keeps the official conveners plus what the handbook says about entry requirements, lecture times (and the lecture period, when one is given), DP requirements, assessment, and roughly how much of the mark is the final exam. A course written `CSC1015F/S` becomes two courses, CSC1015F and CSC1015S.
+
+The PDFs and their text aren't committed. To add or update a handbook:
 
 ```bash
 pdftotext -enc UTF-8 handbook.pdf handbook.txt

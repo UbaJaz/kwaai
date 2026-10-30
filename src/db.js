@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS courses (
   nqf INTEGER,
   conveners TEXT NOT NULL DEFAULT '',
   source TEXT NOT NULL
+  -- plus the handbook details in COURSE_DETAILS below
 );
 CREATE TABLE IF NOT EXISTS lecturers (
   id INTEGER PRIMARY KEY,
@@ -110,10 +111,28 @@ CREATE TABLE IF NOT EXISTS mod_log (
 );
 `;
 
+// What the handbook says about each course, used by the course page and the planner.
+// Added as columns after launch, so openDb adds any that an older database is missing.
+// periods and days are '|'-separated ("4|5", "Monday|Tuesday"); period_choice = 1 means "4th or 5th", one group each.
+const COURSE_DETAILS = {
+  outline: "TEXT NOT NULL DEFAULT ''",
+  entry: "TEXT NOT NULL DEFAULT ''",
+  corequisites: "TEXT NOT NULL DEFAULT ''",
+  lectures: "TEXT NOT NULL DEFAULT ''",
+  periods: "TEXT NOT NULL DEFAULT ''",
+  period_choice: 'INTEGER NOT NULL DEFAULT 0',
+  days: "TEXT NOT NULL DEFAULT ''",
+  dp: "TEXT NOT NULL DEFAULT ''",
+  assessment: "TEXT NOT NULL DEFAULT ''",
+  exam_weight: 'INTEGER',
+};
+
 function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker.db')) {
   const db = new DatabaseSync(file);
   db.exec('PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL;');
   db.exec(SCHEMA);
+  const have = new Set(db.prepare('PRAGMA table_info(courses)').all().map((c) => c.name));
+  for (const [name, type] of Object.entries(COURSE_DETAILS)) if (!have.has(name)) db.exec(`ALTER TABLE courses ADD COLUMN ${name} ${type}`);
   return db;
 }
 
