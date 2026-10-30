@@ -8,6 +8,9 @@ const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderat
 const { UNIVERSITIES, CURRENT } = require('./universities');
 
 const STUDENT_EMAIL = /^[a-z0-9._%+-]+@myuct\.ac\.za$/;
+// "a+1@myuct.ac.za" and "a+2@myuct.ac.za" reach the same inbox, so they must be the same account:
+// otherwise one student gets many votes and a banned one comes back.
+const normEmail = (s) => String(s || '').trim().toLowerCase().replace(/\+[^@]*(?=@)/, '');
 const TOKEN_TTL = 15 * 60 * 1000;
 const SESSION_TTL = 30 * 24 * 60 * 60 * 1000;
 const parseFlash = (v) => { try { return v ? JSON.parse(decodeURIComponent(v)) : null; } catch { return null; } };
@@ -20,8 +23,11 @@ const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-
 
 function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'the Kwaai team', demoPassword } = {}) {
   const app = express();
+  const mods = new Set([...moderators].map(normEmail));
   app.disable('x-powered-by');
-  if (trustProxy) app.set('trust proxy', trustProxy); // so req.ip is the student's IP behind a host's proxy
+  // so req.ip is the student's IP behind a host's proxy. Env vars are strings, and Express reads the string "1" as an
+  // IP list rather than a hop count, so a plain number must be turned into a Number.
+  if (trustProxy) app.set('trust proxy', /^\d+$/.test(String(trustProxy)) ? Number(trustProxy) : trustProxy);
   // Private demos: with DEMO_PASSWORD set, the browser asks for it before showing any page (any username works).
   if (demoPassword) {
     const want = sha(demoPassword);
@@ -51,7 +57,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     const flash = /(?:^|;\s*)flash=([^;]+)/.exec(req.headers.cookie || '')?.[1];
     if (flash) res.clearCookie('flash');
-    req.ctx = { user: req.user, isMod: !!req.user && moderators.has(req.user.email), flash: parseFlash(flash), uni: CURRENT, here: req.path,
+    req.ctx = { user: req.user, isMod: !!req.user && mods.has(req.user.email), flash: parseFlash(flash), uni: CURRENT, here: req.path,
       // origin for share links and link previews; production always has BASE_URL
       site: { contactEmail, operator, origin: baseUrl || `${req.protocol}://${req.get('host')}` } };
     // CSRF: double-submit token, added to every POST form on its way out
@@ -66,8 +72,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
   app.use((req, res, next) => {
     if (req.method !== 'POST') return next();
-    const sent = String(req.body._csrf || '');
-    if (sent.length === 32 && crypto.timingSafeEqual(Buffer.from(sent), Buffer.from(req.ctx.csrf))) return next();
+    // compare bytes, not characters: a multi-byte value of the right length would make timingSafeEqual throw
+    const sent = Buffer.from(String(req.body._csrf || ''));
+    const want = Buffer.from(req.ctx.csrf);
+    if (sent.length === want.length && crypto.timingSafeEqual(sent, want)) return next();
     res.status(403).page(views.message(req.ctx, { title: 'Form expired', emoji: '🔄', text: 'Please go back, refresh the page and try again.' }));
   });
 
@@ -90,11 +98,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   const byUser = (req) => `user:${req.user.id}`;
   const limits = {
     login: limit(100, 15 * MIN),
-    loginEmail: limit(3, 15 * MIN, (req) => String(req.body.email || '').trim().toLowerCase()), // stops someone spamming a student's inbox
+    // keyed by IP too, so a stranger using up an address's quota can't stop that student signing in
+    loginEmail: limit(3, 15 * MIN, (req) => `${req.ip}|${normEmail(req.body.email)}`), // stops someone spamming a student's inbox
+    loginCode: limit(8, 15 * MIN, (req) => `${req.ip}|${normEmail(req.body.email)}`), // caps guesses at the 6-digit code
     review: limit(10, 60 * MIN, byUser),
     verdict: limit(30, 60 * MIN, byUser),
     suggest: limit(5, 60 * MIN, byUser),
-    report: limit(30, 60 * MIN),
+    report: limit(30, 60 * MIN, byUser),
     takedown: limit(10, 60 * MIN),
   };
   const flashRedirect = (res, to, type, text) => {
@@ -200,7 +210,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.get('/plan', (req, res) => {
     const saved = /(?:^|;\s*)plan=([A-Za-z0-9,%]*)/.exec(req.headers.cookie || '')?.[1];
     const fromUrl = req.query.c != null;
-    let codes = planCodes(fromUrl ? req.query.c : decodeURIComponent(saved || ''));
+    let savedPlan = '';
+    try { savedPlan = decodeURIComponent(saved || ''); } catch { /* a mangled cookie is just an empty plan */ }
+    let codes = planCodes(fromUrl ? req.query.c : savedPlan);
     const remove = String(req.query.remove || '').toUpperCase();
     const add = String(req.query.add || '').trim().slice(0, 80);
     if (remove) {
@@ -266,6 +278,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE user_id = ?)`).run(id);
       q(`DELETE FROM reviews WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdicts WHERE user_id = ?`).run(id);
+      q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
+      q(`UPDATE reports SET user_id = NULL WHERE user_id = ?`).run(id);
       q(`UPDATE lecturer_suggestions SET user_id = NULL WHERE user_id = ?`).run(id);
       q(`DELETE FROM sessions WHERE user_id = ?`).run(id);
       q(`DELETE FROM users WHERE id = ?`).run(id);
@@ -327,14 +341,18 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const back = `/courses/${c.code}#verdict`;
     const { verdict, error } = parseVerdictForm(req.body);
     if (error) return flashRedirect(res, back, 'error', error);
-    const old = q(`SELECT status FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
+    const old = q(`SELECT status, tip, flags FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
     if (old?.status === 'removed') return flashRedirect(res, back, 'error', "A moderator removed your vote on this course, so you can't vote on it again.");
     const screen = screenComment(verdict.tip);
     if (screen.action === 'reject') return flashRedirect(res, back, 'error', `Your tip can't be posted as written: ${screen.reasons.join(', ').toLowerCase()}. Please remove it and try again.`);
-    const status = screen.action === 'hold' ? 'held' : 'published';
+    // A held tip stays held until a moderator looks at it: resubmitting the same words must not put it back up.
+    // Changing the words sends it through screening again.
+    const stuck = old?.status === 'held' && old.tip === verdict.tip;
+    const status = stuck || screen.action === 'hold' ? 'held' : 'published';
     q(`INSERT INTO verdicts (course, user_id, year, lekker, tip, status, flags) VALUES (?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT (user_id, course) DO UPDATE SET year = excluded.year, lekker = excluded.lekker, tip = excluded.tip, status = excluded.status, flags = excluded.flags`)
-      .run(c.code, req.user.id, verdict.year, verdict.lekker, verdict.tip, status, screen.reasons.join('|'));
+      .run(c.code, req.user.id, verdict.year, verdict.lekker, verdict.tip, status, stuck ? old.flags : screen.reasons.join('|'));
+    if (!stuck) q(`DELETE FROM verdict_reports WHERE verdict_id = (SELECT id FROM verdicts WHERE course = ? AND user_id = ?)`).run(c.code, req.user.id);
     flashRedirect(res, back, status === 'held' ? 'info' : 'ok',
       status === 'held' ? 'Thanks! Your vote counts once a moderator has checked your tip.' : `Thanks! You voted ${verdict.lekker ? 'lekker 🤙' : 'nah 👎'}.`);
   });
@@ -342,16 +360,30 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.post('/verdicts/:id/delete', requireUser, (req, res) => {
     const v = q(`SELECT * FROM verdicts WHERE id = ? AND user_id = ?`).get(Number(req.params.id) || 0, req.user.id);
     if (!v) return res.status(404).page(notFound(req));
+    // otherwise a removed vote could be deleted and cast again, dodging the block. Deleting the whole account still erases it.
+    if (v.status === 'removed') return flashRedirect(res, req.body.back === 'account' ? '/account' : `/courses/${v.course}`, 'error', "A moderator removed this vote, so it can't be deleted or cast again. Deleting your account erases it.");
     q(`DELETE FROM verdicts WHERE id = ?`).run(v.id);
     flashRedirect(res, req.body.back === 'account' ? '/account' : `/courses/${v.course}`, 'ok', 'Your vote was deleted.');
   });
 
-  // Tips are one line about the course, so any report hides one until a moderator looks.
-  app.post('/verdicts/:id/report', limits.report, (req, res) => {
+  // Reports come from signed-in students (still anonymous to readers) so one person can't hide everything with a loop.
+  // Table names are constants, never user input.
+  const signInToReport = (table) => (req, res, next) => {
+    if (req.user) return next();
+    const course = q(`SELECT course FROM ${table} WHERE id = ?`).get(Number(req.params.id) || 0)?.course;
+    flashRedirect(res, `/login?next=${encodeURIComponent(course ? `/courses/${course}` : '/')}`, 'info', 'Sign in to report. Your report stays anonymous.');
+  };
+
+  // A tip is one line about the course: it's hidden once ${HIDE_AFTER_REPORTS} different students report it.
+  app.post('/verdicts/:id/report', signInToReport('verdicts'), limits.report, (req, res) => {
     const v = q(`SELECT * FROM verdicts WHERE id = ? AND status = 'published' AND tip != ''`).get(Number(req.params.id) || 0);
     if (!v) return flashRedirect(res, '/', 'error', 'That tip was already hidden or removed.');
-    q(`UPDATE verdicts SET status = 'held', flags = 'Reported by a reader' WHERE id = ?`).run(v.id);
-    flashRedirect(res, `/courses/${v.course}#tips`, 'ok', 'Thanks. That tip is hidden until a moderator checks it.');
+    const back = `/courses/${v.course}#tips`;
+    if (v.user_id === req.user.id) return flashRedirect(res, back, 'error', "That's your own tip. You can delete it from your account.");
+    q(`INSERT OR IGNORE INTO verdict_reports (verdict_id, user_id) VALUES (?, ?)`).run(v.id, req.user.id);
+    const n = q(`SELECT COUNT(*) AS n FROM verdict_reports WHERE verdict_id = ?`).get(v.id).n;
+    if (n >= HIDE_AFTER_REPORTS) q(`UPDATE verdicts SET status = 'held', flags = 'Reported by readers' WHERE id = ?`).run(v.id);
+    flashRedirect(res, back, 'ok', n >= HIDE_AFTER_REPORTS ? 'Thanks. That tip is hidden until a moderator checks it.' : 'Thanks. A moderator will take a look.');
   });
 
   app.get('/courses/:code/suggest-lecturer', requireUser, (req, res) => {
@@ -388,11 +420,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // Hides a review pending moderation and records why.
   const hold = (id, why) => q(`UPDATE reviews SET status = 'held', flags = CASE WHEN flags = '' THEN ? ELSE flags || '|' || ? END WHERE id = ? AND status = 'published'`).run(why, why, id);
 
-  app.post('/reviews/:id/report', limits.report, (req, res) => {
+  app.post('/reviews/:id/report', signInToReport('reviews'), limits.report, (req, res) => {
     const r = q(`SELECT * FROM reviews WHERE id = ? AND status != 'removed'`).get(Number(req.params.id) || 0);
     const reason = REPORT_REASONS.find((x) => x.key === req.body.reason);
     if (!r || !reason) return flashRedirect(res, r ? `/courses/${r.course}` : '/', 'error', 'Please pick a reason for the report.');
-    q(`INSERT INTO reports (review_id, reason, details) VALUES (?, ?, ?)`).run(r.id, reason.key, String(req.body.details || '').slice(0, 500));
+    if (r.user_id === req.user.id) return flashRedirect(res, `/courses/${r.course}`, 'error', "That's your own review. You can delete it from your account.");
+    if (q(`SELECT 1 FROM reports WHERE review_id = ? AND user_id = ?`).get(r.id, req.user.id)) return flashRedirect(res, `/courses/${r.course}`, 'info', 'You already reported this review. A moderator will take a look.');
+    q(`INSERT INTO reports (review_id, reason, details, user_id) VALUES (?, ?, ?, ?)`).run(r.id, reason.key, String(req.body.details || '').slice(0, 500), req.user.id);
     const open = q(`SELECT COUNT(*) AS n FROM reports WHERE review_id = ? AND resolved = 0`).get(r.id).n;
     if (reason.hideNow || open >= HIDE_AFTER_REPORTS) hold(r.id, `Reported: ${reason.label}`);
     flashRedirect(res, `/courses/${r.course}`, 'ok', reason.hideNow || open >= HIDE_AFTER_REPORTS
@@ -429,12 +463,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // Only same-site paths are allowed as the page to return to, so a sign-in link can't send anyone elsewhere.
   const safeNext = (s) => (typeof s === 'string' && /^\/(?![/\\])/.test(s) && s.length <= 300 ? s : '/');
   const codeHash = (email, code) => sha(`${email}:${code}`);
-  const MAX_CODE_TRIES = 5;
 
   app.get('/login', (req, res) => res.page(views.login(req.ctx, { next: safeNext(req.query.next) })));
 
   app.post('/login', limits.login, limits.loginEmail, async (req, res) => {
-    const email = String(req.body.email || '').trim().toLowerCase();
+    const email = normEmail(req.body.email);
     const next = safeNext(req.body.next);
     if (!STUDENT_EMAIL.test(email)) return res.status(400).page(views.login(req.ctx, { email, next, error: 'That isn\'t a student email. Use your @myuct.ac.za address.' }));
     if (q(`SELECT 1 FROM users WHERE email = ? AND banned = 1`).get(email)) return res.status(403).page(views.login(req.ctx, { email, next, error: 'This account has been suspended for breaking the house rules.' }));
@@ -468,19 +501,17 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, safeNext(next), 'ok', "You're signed in. Anything you post shows without your name.");
   }
 
-  app.post('/login/code', limits.login, (req, res) => {
-    const email = String(req.body.email || '').trim().toLowerCase();
+  app.post('/login/code', limits.login, limits.loginCode, (req, res) => {
+    const email = normEmail(req.body.email);
     const code = String(req.body.code || '').replace(/\D/g, '');
     const rows = q(`SELECT * FROM login_tokens WHERE email = ? AND expires > ?`).all(email, Date.now());
     const row = code.length === 6 && rows.find((r) => r.code_hash && crypto.timingSafeEqual(Buffer.from(r.code_hash), Buffer.from(codeHash(email, code))));
     if (!row) {
-      // every wrong guess counts against all of this email's codes, and a code dies after a few wrong guesses
-      q(`UPDATE login_tokens SET attempts = attempts + 1 WHERE email = ?`).run(email);
-      q(`DELETE FROM login_tokens WHERE email = ? AND attempts >= ?`).run(email, MAX_CODE_TRIES);
-      const left = rows.length && q(`SELECT 1 FROM login_tokens WHERE email = ?`).get(email);
+      // Guesses are capped per IP and address (limits.loginCode) instead of deleting the address's codes, which
+      // would let a stranger's wrong guesses lock the real student out.
       return res.status(400).page(views.checkEmail(req.ctx, {
         email,
-        error: left ? "That code doesn't match. Check the latest email from Kwaai and try again." : 'That code has expired or had too many wrong tries. Ask for a new one.',
+        error: "That code doesn't match or has expired. Check the latest email from Kwaai, or go back and ask for a new one.",
       }));
     }
     q(`DELETE FROM login_tokens WHERE hash = ?`).run(row.hash);

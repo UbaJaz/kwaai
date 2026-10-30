@@ -229,7 +229,12 @@ test('student reviews, report hides it, moderator restores it', async () => {
   assert.doesNotMatch(page, /abcxyz001/, 'author email never shown');
   const id = /id="review-(\d+)"[\s\S]*?Demos in lectures/.exec(page)[1];
 
-  assert.equal((await anon.post(`/reviews/${id}/report`, { reason: 'defamation' })).status, 303);
+  const loggedOut = await anon.post(`/reviews/${id}/report`, { reason: 'defamation' });
+  assert.match(loggedOut.headers.get('location'), /^\/login\?next=%2Fcourses%2FPHY1012F/, 'reporting needs a sign-in');
+  assert.match(await anon.text('/courses/PHY1012F'), /Demos in lectures/, 'an anonymous report hides nothing');
+  const reader = browser();
+  await reader.signIn('rep001@myuct.ac.za');
+  assert.equal((await reader.post(`/reviews/${id}/report`, { reason: 'defamation' })).status, 303);
   assert.doesNotMatch(await anon.text('/courses/PHY1012F'), /Demos in lectures/, 'serious report hides the review immediately');
 
   assert.equal((await student.get('/mod')).status, 404, 'students cannot moderate');
@@ -274,12 +279,20 @@ test('scores built from sample reviews are badged wherever they appear', async (
   assert.doesNotMatch(await (await fetch(`${base}/courses?q=APG4001S`)).text(), /<main[\s\S]*class="badge sample"/);
 });
 
-test('reports are rate limited per IP', async () => {
+test('reports are rate limited per student', async () => {
   const b = browser();
+  await b.signIn('rep002@myuct.ac.za');
   const id = /id="review-(\d+)"/.exec(await b.text('/courses/EEE3099S'))[1];
   const statuses = [];
   for (let i = 0; i < 32; i++) statuses.push((await b.post(`/reviews/${id}/report`, { reason: 'spam' })).status);
   assert.ok(statuses.includes(429), `expected a 429, got ${statuses}`);
+});
+
+test('TRUST_PROXY from the environment is a hop count, not an address list', () => {
+  const trust = (v) => createApp(openDb(':memory:'), { trustProxy: v }).get('trust proxy');
+  assert.equal(trust('1'), 1);
+  assert.equal(trust('0'), 0);
+  assert.equal(trust('loopback'), 'loopback');
 });
 
 test('review limits are per student, so classmates on the same Wi-Fi are not blocked', async () => {
@@ -343,13 +356,19 @@ test('sign in with the emailed code, back to the page you came from', async () =
   assert.equal((await other.post('/login/code', { email: 'cod002@myuct.ac.za', code: c2 })).headers.get('location'), '/');
 });
 
-test('wrong codes run out, and opening the link alone does not sign you in', async () => {
+test('wrong guesses are capped per IP and never burn the real code, and opening the link alone does not sign you in', async () => {
   const b = browser();
   const page = await (await b.post('/login', { email: 'cod003@myuct.ac.za' })).text();
   const code = /Code: <strong>(\d{6})<\/strong>/.exec(page)[1];
   const wrong = code === '000000' ? '111111' : '000000';
-  for (let i = 0; i < 5; i++) await b.post('/login/code', { email: 'cod003@myuct.ac.za', code: wrong });
-  assert.equal((await b.post('/login/code', { email: 'cod003@myuct.ac.za', code })).status, 400, 'after 5 wrong tries even the right code fails');
+  for (let i = 0; i < 6; i++) assert.equal((await b.post('/login/code', { email: 'cod003@myuct.ac.za', code: wrong })).status, 400);
+  assert.equal((await b.post('/login/code', { email: 'cod003@myuct.ac.za', code })).status, 303, "someone else's wrong guesses don't kill the right code");
+
+  const guesser = browser();
+  await guesser.post('/login', { email: 'cod005@myuct.ac.za' });
+  const statuses = [];
+  for (let i = 0; i < 10; i++) statuses.push((await guesser.post('/login/code', { email: 'cod005@myuct.ac.za', code: '000000' })).status);
+  assert.equal(statuses.at(-1), 429, `guessing is capped: ${statuses}`);
 
   const scanner = browser();
   const p2 = await (await scanner.post('/login', { email: 'cod004@myuct.ac.za' })).text();
@@ -359,6 +378,37 @@ test('wrong codes run out, and opening the link alone does not sign you in', asy
   assert.ok(!(first.headers.get('set-cookie') || '').includes('sid='), 'opening the link sets no session');
   assert.match(await (await scanner.get(path)).text(), /signing in as <strong>cod004@myuct\.ac\.za/, 'the link still works after being opened');
   assert.equal((await scanner.post(path, {})).status, 303);
+});
+
+test('mangled plan and csrf values give a normal page, not a crash', async () => {
+  const b = browser();
+  await b.get('/');
+  const plan = await fetch(`${base}/plan`, { headers: { cookie: 'plan=%E0%A4%A' }, redirect: 'manual' });
+  assert.equal(plan.status, 200);
+  // 16 two-byte characters: 32 characters long, 48 bytes
+  const res = await fetch(`${base}/takedown`, { method: 'POST', redirect: 'manual', headers: { cookie: `csrf=${b.jar.csrf}`, 'content-type': 'application/x-www-form-urlencoded' }, body: `_csrf=${encodeURIComponent('é'.repeat(32))}` });
+  assert.equal(res.status, 403);
+});
+
+test('plus-addresses are the same student, so they get one vote', async (t) => {
+  const db = openDb(':memory:');
+  seed(db, { samples: false });
+  const own = createApp(db, { devMode: true, moderators: new Set(['Mod+x@myuct.ac.za']) }).listen(0);
+  t.after(() => own.close());
+  await new Promise((r) => own.once('listening', r));
+  const fresh = () => browser(() => `http://localhost:${own.address().port}`);
+  const year = String(new Date().getFullYear());
+  const one = fresh();
+  await one.signIn('plu001+one@myuct.ac.za');
+  const two = fresh();
+  await two.signIn('plu001+two@myuct.ac.za');
+  await one.post('/courses/CSC2001F/verdict', { lekker: '1', year });
+  await two.post('/courses/CSC2001F/verdict', { lekker: '0', year });
+  assert.match(await fresh().text('/courses/CSC2001F'), /1 vote so far/);
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM users').get().n, 1);
+  const mod = fresh();
+  await mod.signIn('mod@myuct.ac.za');
+  assert.equal((await mod.get('/mod')).status, 200, 'a moderator listed with a +tag still counts');
 });
 
 test('suggested lecturers only appear after a moderator approves them', async () => {
@@ -414,8 +464,14 @@ test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can b
   assert.match(page, /Tutorials are where it clicks/);
 
   const id = /\/verdicts\/(\d+)\/report/.exec(page)[1];
-  assert.equal((await anon.post(`/verdicts/${id}/report`, {})).status, 303);
-  assert.doesNotMatch(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/, 'reported tip is hidden');
+  assert.match((await anon.post(`/verdicts/${id}/report`, {})).headers.get('location'), /^\/login/, 'reporting needs a sign-in');
+  await voters[0].post(`/verdicts/${id}/report`, {});
+  assert.match(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/, "a student can't report their own tip");
+  await voters[1].post(`/verdicts/${id}/report`, {});
+  await voters[1].post(`/verdicts/${id}/report`, {});
+  assert.match(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/, 'one student reporting twice counts once');
+  await voters[2].post(`/verdicts/${id}/report`, {});
+  assert.doesNotMatch(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/, 'two different students hide the tip');
   const mod = fresh();
   await mod.signIn('mod001@myuct.ac.za');
   assert.match(await mod.text('/mod'), /Tutorials are where it clicks/);
@@ -436,6 +492,38 @@ test('rule-breaking tips are held, contact details rejected, votes deleted with 
   const mod = browser();
   await mod.signIn('mod001@myuct.ac.za');
   assert.doesNotMatch(await mod.text('/mod'), /lecturer is an idiot/, 'held tip went with the account');
+});
+
+test('a held tip stays held when resubmitted, and a removed vote cannot be deleted and recast', async (t) => {
+  const db = openDb(':memory:');
+  seed(db, { samples: false });
+  const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true }).listen(0);
+  t.after(() => own.close());
+  await new Promise((r) => own.once('listening', r));
+  const fresh = () => browser(() => `http://localhost:${own.address().port}`);
+  const year = String(new Date().getFullYear());
+  const author = fresh();
+  await author.signIn('stk001@myuct.ac.za');
+  const vote = { lekker: '1', year, tip: 'Sticky tip text' };
+  await author.post('/courses/CSC2002S/verdict', vote);
+  const anon = fresh();
+  const id = /\/verdicts\/(\d+)\/report/.exec(await anon.text('/courses/CSC2002S'))[1];
+  for (const n of [1, 2]) {
+    const reader = fresh();
+    await reader.signIn(`stk00${n + 1}@myuct.ac.za`);
+    await reader.post(`/verdicts/${id}/report`, {});
+  }
+  assert.doesNotMatch(await anon.text('/courses/CSC2002S'), /Sticky tip text/, 'two reports hide it');
+  await author.post('/courses/CSC2002S/verdict', vote);
+  assert.doesNotMatch(await anon.text('/courses/CSC2002S'), /Sticky tip text/, 'resubmitting the same words does not bring it back');
+
+  const mod = fresh();
+  await mod.signIn('mod001@myuct.ac.za');
+  await mod.post(`/mod/verdicts/${id}/remove`, {});
+  await author.post(`/verdicts/${id}/delete`, {});
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM verdicts WHERE id = ?').get(id).n, 1, 'a removed vote cannot be deleted');
+  await author.post('/courses/CSC2002S/verdict', { lekker: '0', year });
+  assert.match(await author.text('/courses/CSC2002S'), /removed your vote|can&#39;t vote on it again/, 'and cannot be cast again');
 });
 
 test('readers see the first 2 comments until they vote once, then all of them', async (t) => {
