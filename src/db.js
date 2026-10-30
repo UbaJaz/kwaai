@@ -60,6 +60,19 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 -- one review per student per (course, lecturer, year); NULL lecturer means "not listed"
 CREATE UNIQUE INDEX IF NOT EXISTS one_review_each ON reviews (user_id, course, year, IFNULL(lecturer_id, 0));
+-- the quick "lekker or nah?" vote: one per student per course, with an optional one-line tip
+CREATE TABLE IF NOT EXISTS verdicts (
+  id INTEGER PRIMARY KEY,
+  course TEXT NOT NULL REFERENCES courses(code),
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  year INTEGER NOT NULL,
+  lekker INTEGER NOT NULL CHECK (lekker IN (0, 1)),
+  tip TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('published', 'held', 'removed')),
+  flags TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (user_id, course)
+);
 CREATE TABLE IF NOT EXISTS reports (
   id INTEGER PRIMARY KEY,
   review_id INTEGER NOT NULL REFERENCES reviews(id),

@@ -2,7 +2,7 @@ const crypto = require('node:crypto');
 const path = require('node:path');
 const express = require('express');
 const views = require('./views');
-const { RANKINGS, MIN_FOR_RANKING, parseReviewForm } = require('./ratings');
+const { RANKINGS, MIN_FOR_RANKING, parseReviewForm, parseVerdictForm } = require('./ratings');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 
 const STUDENT_EMAIL = /^[a-z0-9._%+-]+@myuct\.ac\.za$/;
@@ -79,6 +79,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     login: limit(100, 15 * MIN),
     loginEmail: limit(3, 15 * MIN, (req) => String(req.body.email || '').trim().toLowerCase()), // stops someone spamming a student's inbox
     review: limit(10, 60 * MIN, byUser),
+    verdict: limit(30, 60 * MIN, byUser),
     suggest: limit(5, 60 * MIN, byUser),
     report: limit(30, 60 * MIN),
     takedown: limit(10, 60 * MIN),
@@ -131,6 +132,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.page(views.courses(req.ctx, { list, total, depts: depts(), q: text, dept }));
   });
 
+  const verdictStats = (code) => q(`SELECT COUNT(*) AS n, COALESCE(SUM(lekker), 0) AS lekker FROM verdicts WHERE course = ? AND status = 'published'`).get(code);
   const getCourse = (code) => q(`SELECT c.*, d.name AS dept_name FROM courses c JOIN departments d ON d.code = c.dept WHERE c.code = ?`).get(String(code).toUpperCase());
 
   app.get('/courses/:code', (req, res) => {
@@ -144,7 +146,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     for (const r of reviews) for (const t of r.tags.split('|').filter(Boolean)) tagCounts[t] = (tagCounts[t] || 0) + 1;
     const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
     const myHeld = req.user && q(`SELECT 1 FROM reviews WHERE course = ? AND user_id = ? AND status = 'held'`).get(c.code, req.user.id);
-    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld })));
+    const votes = verdictStats(c.code);
+    const tips = q(`SELECT id, year, lekker, tip, created_at FROM verdicts WHERE course = ? AND status = 'published' AND tip != '' ORDER BY created_at DESC, id DESC LIMIT 30`).all(c.code);
+    const myVerdict = req.user && q(`SELECT * FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
+    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years() })));
   });
 
   app.get('/lecturers/:id', (req, res) => {
@@ -172,7 +177,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // ---- your account (POPIA: see and delete what we hold about you) ----
   app.get('/account', requireUser, (req, res) => {
     const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.user_id = ? ORDER BY r.created_at DESC`).all(req.user.id);
-    res.page(views.account(req.ctx, { reviews }));
+    const verdicts = q(`SELECT * FROM verdicts WHERE user_id = ? ORDER BY created_at DESC`).all(req.user.id);
+    res.page(views.account(req.ctx, { reviews, verdicts }));
   });
 
   app.post('/account/delete', requireUser, (req, res) => {
@@ -182,6 +188,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE user_id = ?)`).run(id);
       q(`UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE user_id = ?)`).run(id);
       q(`DELETE FROM reviews WHERE user_id = ?`).run(id);
+      q(`DELETE FROM verdicts WHERE user_id = ?`).run(id);
       q(`UPDATE lecturer_suggestions SET user_id = NULL WHERE user_id = ?`).run(id);
       q(`DELETE FROM sessions WHERE user_id = ?`).run(id);
       q(`DELETE FROM users WHERE id = ?`).run(id);
@@ -235,6 +242,39 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     flashRedirect(res, `/courses/${c.code}`, status === 'held' ? 'info' : 'ok',
       status === 'held' ? 'Thanks! A moderator will check your comment before it goes live.' : 'Thanks! Your review is live. 🤙');
+  });
+
+  app.post('/courses/:code/verdict', requireUser, limits.verdict, (req, res) => {
+    const c = getCourse(req.params.code);
+    if (!c) return res.status(404).page(notFound(req));
+    const back = `/courses/${c.code}#verdict`;
+    const { verdict, error } = parseVerdictForm(req.body);
+    if (error) return flashRedirect(res, back, 'error', error);
+    const old = q(`SELECT status FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
+    if (old?.status === 'removed') return flashRedirect(res, back, 'error', "A moderator removed your vote on this course, so you can't vote on it again.");
+    const screen = screenComment(verdict.tip);
+    if (screen.action === 'reject') return flashRedirect(res, back, 'error', `Your tip can't be posted as written: ${screen.reasons.join(', ').toLowerCase()}. Please remove it and try again.`);
+    const status = screen.action === 'hold' ? 'held' : 'published';
+    q(`INSERT INTO verdicts (course, user_id, year, lekker, tip, status, flags) VALUES (?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT (user_id, course) DO UPDATE SET year = excluded.year, lekker = excluded.lekker, tip = excluded.tip, status = excluded.status, flags = excluded.flags`)
+      .run(c.code, req.user.id, verdict.year, verdict.lekker, verdict.tip, status, screen.reasons.join('|'));
+    flashRedirect(res, back, status === 'held' ? 'info' : 'ok',
+      status === 'held' ? 'Thanks! Your vote counts once a moderator has checked your tip.' : `Thanks! You voted ${verdict.lekker ? 'lekker 🤙' : 'nah 👎'}.`);
+  });
+
+  app.post('/verdicts/:id/delete', requireUser, (req, res) => {
+    const v = q(`SELECT * FROM verdicts WHERE id = ? AND user_id = ?`).get(Number(req.params.id) || 0, req.user.id);
+    if (!v) return res.status(404).page(notFound(req));
+    q(`DELETE FROM verdicts WHERE id = ?`).run(v.id);
+    flashRedirect(res, req.body.back === 'account' ? '/account' : `/courses/${v.course}`, 'ok', 'Your vote was deleted.');
+  });
+
+  // Tips are one line about the course, so any report hides one until a moderator looks.
+  app.post('/verdicts/:id/report', limits.report, (req, res) => {
+    const v = q(`SELECT * FROM verdicts WHERE id = ? AND status = 'published' AND tip != ''`).get(Number(req.params.id) || 0);
+    if (!v) return flashRedirect(res, '/', 'error', 'That tip was already hidden or removed.');
+    q(`UPDATE verdicts SET status = 'held', flags = 'Reported by a reader' WHERE id = ?`).run(v.id);
+    flashRedirect(res, `/courses/${v.course}#tips`, 'ok', 'Thanks. That tip is hidden until a moderator checks it.');
   });
 
   app.get('/courses/:code/suggest-lecturer', requireUser, (req, res) => {
@@ -358,8 +398,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.status = 'held' ORDER BY r.created_at`).all();
     const takedowns = q(`SELECT * FROM takedowns WHERE status = 'open' ORDER BY created_at`).all();
     const suggestions = q(`SELECT s.*, d.name AS dept_name FROM lecturer_suggestions s JOIN departments d ON d.code = s.dept WHERE s.status = 'open' ORDER BY s.created_at`).all();
+    const heldTips = q(`SELECT * FROM verdicts WHERE status = 'held' ORDER BY created_at`).all();
     const log = q(`SELECT * FROM mod_log ORDER BY id DESC LIMIT 30`).all();
-    res.page(views.mod(req.ctx, { held, takedowns, suggestions, log }));
+    res.page(views.mod(req.ctx, { held, heldTips, takedowns, suggestions, log }));
   });
 
   app.post('/mod/reviews/:id/:action', requireUser, requireMod, (req, res) => {
@@ -371,6 +412,16 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (action === 'ban' && r.user_id) q(`UPDATE users SET banned = 1 WHERE id = ?`).run(r.user_id);
     q(`INSERT INTO mod_log (review_id, action, note, moderator) VALUES (?, ?, ?, ?)`).run(r.id, action, String(req.body.note || '').slice(0, 200), req.user.email);
     flashRedirect(res, '/mod', 'ok', `Review #${r.id}: ${action === 'approve' ? 'approved and back up' : action === 'ban' ? 'removed, author banned' : 'removed'}.`);
+  });
+
+  app.post('/mod/verdicts/:id/:action', requireUser, requireMod, (req, res) => {
+    const v = q(`SELECT * FROM verdicts WHERE id = ?`).get(Number(req.params.id) || 0);
+    const action = req.params.action;
+    if (!v || !['approve', 'remove', 'ban'].includes(action)) return res.status(404).page(notFound(req));
+    q(`UPDATE verdicts SET status = ?, flags = CASE WHEN ? = 'approve' THEN '' ELSE flags END WHERE id = ?`).run(action === 'approve' ? 'published' : 'removed', action, v.id);
+    if (action === 'ban') q(`UPDATE users SET banned = 1 WHERE id = ?`).run(v.user_id);
+    q(`INSERT INTO mod_log (action, note, moderator) VALUES (?, ?, ?)`).run(`${action} tip`, `tip #${v.id} on ${v.course}: ${v.tip}`.slice(0, 200), req.user.email);
+    flashRedirect(res, '/mod', 'ok', `Tip #${v.id}: ${action === 'approve' ? 'approved and back up' : action === 'ban' ? 'removed, author banned' : 'removed'}.`);
   });
 
   app.post('/mod/suggestions/:id/:action', requireUser, requireMod, (req, res) => {

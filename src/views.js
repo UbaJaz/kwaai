@@ -1,5 +1,5 @@
 const { html } = require('./html');
-const { QUALITY, SCALES, TAGS, MAX_TAGS, MAX_BODY, MIN_FOR_RANKING, RANKINGS } = require('./ratings');
+const { QUALITY, SCALES, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, RANKINGS } = require('./ratings');
 const { REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 
 const fmt = (n) => (n == null ? '–' : Number(n).toFixed(1));
@@ -119,6 +119,58 @@ function reviewCard(r, { user, lecturerLink = true, courseLink = false } = {}) {
   </article>`;
 }
 
+// Percent of students who voted lekker, once there are enough votes to mean something.
+const lekkerPct = (votes) => (votes.n >= MIN_FOR_RANKING ? Math.round((votes.lekker / votes.n) * 100) : null);
+
+function verdictBox(ctx, { c, votes, myVerdict, years }) {
+  const pct = lekkerPct(votes);
+  const mine = myVerdict && myVerdict.status !== 'removed' ? myVerdict : null;
+  return html`<section class="card verdict-box" id="verdict">
+    <div class="verdict-head">
+      <h2>Took ${c.code}? Lekker or nah?</h2>
+      ${pct != null
+        ? html`<p class="verdict-result"><strong>${pct}%</strong> say lekker <span class="meta">from ${plural(votes.n, 'vote')}</span></p>`
+        : html`<p class="meta">${votes.n ? `${plural(votes.n, 'vote')} so far. The result shows from ${MIN_FOR_RANKING} votes.` : 'No votes yet.'}</p>`}
+    </div>
+    ${ctx.user
+      ? html`${mine ? html`<p class="meta">You voted <strong>${mine.lekker ? 'lekker 🤙' : 'nah 👎'}</strong> (${mine.year}).${mine.status === 'held' ? ' It counts once a moderator has checked your tip.' : ''} Vote again to change it.</p>` : ''}
+        <form method="post" action="/courses/${c.code}/verdict" class="verdict-form">
+          <div class="form-row two">
+            <label>Tip for next year's class <span class="hint">Optional, max ${MAX_TIP} characters</span>
+              <input name="tip" maxlength="${MAX_TIP}" value="${mine?.tip ?? ''}" placeholder="e.g. Start the assignments the day they come out">
+            </label>
+            <label>Year you took it
+              <select name="year">${years.map((y) => html`<option ${String(mine?.year ?? years[0]) === String(y) ? 'selected' : ''}>${y}</option>`)}</select>
+            </label>
+          </div>
+          <div class="verdict-buttons">
+            <button class="btn btn-big btn-lekker" name="lekker" value="1">🤙 Lekker</button>
+            <button class="btn btn-big btn-nah" name="lekker" value="0">👎 Nah</button>
+          </div>
+          <p class="fine">Votes are anonymous. Tips follow the <a href="/rules">house rules</a>, and any that might break them wait for a moderator. Want to say more? <a href="/courses/${c.code}/review">Write a full review</a>.</p>
+        </form>
+        ${mine ? html`<form method="post" action="/verdicts/${mine.id}/delete" class="inline" data-confirm="Delete your vote on ${c.code}?"><button class="link-btn fine">Delete my vote</button></form>` : ''}`
+      : html`<div class="verdict-buttons">
+          <a class="btn btn-big btn-lekker" href="/login">🤙 Lekker</a>
+          <a class="btn btn-big btn-nah" href="/login">👎 Nah</a>
+        </div>
+        <p class="fine">Sign in with your @myuct.ac.za email to vote. Votes are anonymous.</p>`}
+  </section>`;
+}
+
+function tipList(tips) {
+  return html`<ul class="tips">${tips.map((t) => html`<li class="card tip" id="tip-${t.id}">
+    <span class="tip-verdict" role="img" aria-label="${t.lekker ? 'Voted lekker' : 'Voted nah'}">${t.lekker ? '🤙' : '👎'}</span>
+    <div>
+      <p class="tip-text">${t.tip}</p>
+      <div class="review-foot tip-foot">
+        <span class="muted">Took it in ${t.year}</span>
+        <form method="post" action="/verdicts/${t.id}/report" class="inline" data-confirm="Report this tip? It will be hidden until a moderator checks it."><button class="link-btn">⚑ Report</button></form>
+      </div>
+    </div>
+  </li>`)}</ul>`;
+}
+
 function rankList(rows, kind, rank) {
   if (!rows.length) return html`<p class="empty">Not enough reviews yet. Things need at least ${MIN_FOR_RANKING} reviews to be ranked.</p>`;
   return html`<ol class="rank-list">
@@ -196,7 +248,7 @@ function courses(ctx, { list, total, depts, q, dept }) {
   ${list.length ? html`<div class="course-grid">${list.map(courseCard)}</div>` : html`<p class="empty">No courses found. We've imported the 2026 EBE, Science, Commerce, Humanities and Health Sciences handbooks. Law isn't in yet.</p>`}`);
 }
 
-function course(ctx, { c, stats, offerings, reviews, topTags, myHeld }) {
+function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years }) {
   return layout({ ...ctx, title: `${c.code} ${c.title}` }, html`
   <nav class="crumbs"><a href="/courses">Courses</a> / <a href="/courses?dept=${c.dept}">${c.dept_name}</a> / ${c.code}</nav>
   <section class="course-hero">
@@ -206,8 +258,10 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld }) {
       <p class="meta">${c.dept_name}${c.credits ? ` · ${c.credits} NQF credits` : ''}${c.nqf ? ` · NQF level ${c.nqf}` : ''}</p>
       ${c.conveners ? html`<p class="meta">Convener: ${c.conveners.split('|').join(', ')} <span class="src">(source: ${c.source})</span></p>` : ''}
     </div>
-    <a class="btn btn-big" href="/courses/${c.code}/review">Rate this course</a>
+    <a class="btn btn-big btn-quiet" href="/courses/${c.code}/review">Write a full review</a>
   </section>
+
+  ${verdictBox(ctx, { c, votes, myVerdict, years })}
 
   ${myHeld ? html`<div class="flash flash-info">Your review for this course is waiting for a moderator. We check comments that might break the rules before they go live.</div>` : ''}
 
@@ -217,13 +271,14 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld }) {
         ? html`<div class="overall">${chip(stats.overall, true)}<div>${stars(stats.overall)}<div class="meta">${plural(stats.n, 'review')} ${sampleBadge(stats.has_sample)}</div></div></div>
           ${bars(stats)}
           ${topTags.length ? html`<div class="tags">${topTags.map(([t, n]) => html`<span class="tag">${t} <b>${n}</b></span>`)}</div>` : ''}`
-        : html`<div class="empty-score"><p class="big-emoji">🫥</p><p>No reviews yet.</p><a class="btn" href="/courses/${c.code}/review">Be the first</a></div>`}
+        : html`<div class="empty-score"><p class="big-emoji">🫥</p><p>No full reviews yet.</p><a class="btn" href="/courses/${c.code}/review">Write the first one</a></div>`}
       ${offerings.length ? html`<h3>Who taught it</h3>
         <table class="offerings"><thead><tr><th>Lecturer</th><th>Year</th><th>Rating</th></tr></thead><tbody>
         ${offerings.map((o) => html`<tr><td>${o.lecturer_id ? html`<a href="/lecturers/${o.lecturer_id}">${o.lecturer_name}</a>` : html`<span class="muted">Not listed</span>`}</td><td>${o.year}</td><td>${chip(o.overall)} <span class="meta">(${o.n})</span></td></tr>`)}
         </tbody></table>` : ''}
     </aside>
     <div class="reviews">
+      ${tips.length ? html`<h2 class="section-title" id="tips">Tips from students who took it</h2>${tipList(tips)}` : ''}
       <h2 class="section-title">Reviews</h2>
       ${reviews.length ? reviews.map((r) => reviewCard(r, ctx)) : html`<p class="empty">Nothing here yet. Took ${c.code}? Tell the next class what it's really like.</p>`}
     </div>
@@ -397,7 +452,7 @@ function privacy(ctx) {
   <h2>What we collect, and why</h2>
   <ul>
     <li><strong>Your @myuct.ac.za email</strong>, to check you're a UCT student, send sign-in links, and enforce bans. It is never shown publicly.</li>
-    <li><strong>Your reviews</strong> (ratings, tags, comment, course, lecturer, year). They are published without your name or email.</li>
+    <li><strong>Your reviews and votes</strong> (ratings, tags, comment, lekker-or-nah vote, tip, course, lecturer, year). They are published without your name or email.</li>
     <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), and a short-lived one for on-screen messages. No advertising or tracking cookies.</li>
     <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many reports). It isn't written to our database.</li>
     <li><strong>Removal requests:</strong> the name, email and details you give us, used only to deal with that request.</li>
@@ -415,9 +470,9 @@ function privacy(ctx) {
 
   <h2>How long we keep it</h2>
   <ul>
-    <li>Your account and reviews stay until you delete them.</li>
+    <li>Your account, reviews and votes stay until you delete them.</li>
     <li>Sign-in links expire after 15 minutes and sessions after 30 days. Both are then deleted.</li>
-    <li>Reviews removed by moderators, and handled removal requests, are deleted after 12 months.</li>
+    <li>Reviews and tips removed by moderators, and handled removal requests, are deleted after 12 months.</li>
   </ul>
 
   <h2>Your rights</h2>
@@ -450,11 +505,19 @@ function terms(ctx) {
   </article>`);
 }
 
-function account(ctx, { reviews }) {
+function account(ctx, { reviews, verdicts }) {
   const label = { published: ['Live', 'tone-good'], held: ['Waiting for a moderator', 'tone-mid'], removed: ['Removed by a moderator', 'tone-low'] };
   return layout({ ...ctx, title: 'My reviews' }, html`
   <h1 class="page-title">My reviews</h1>
   <p class="lede small">Signed in as <strong>${ctx.user.email}</strong>. Only you can see this page. Your email is never shown next to your reviews.</p>
+  <h2 class="section-title">My votes</h2>
+  ${verdicts.length ? html`<div class="my-reviews">${verdicts.map((v) => html`<div class="card mod-item">
+    <div class="mod-meta"><a href="/courses/${v.course}"><span class="code">${v.course}</span></a> · ${v.year} · <strong>${v.lekker ? 'Lekker 🤙' : 'Nah 👎'}</strong> · <span class="score ${label[v.status][1]}">${label[v.status][0]}</span></div>
+    ${v.tip ? html`<p>“${v.tip}”</p>` : ''}
+    <form method="post" action="/verdicts/${v.id}/delete" class="inline" data-confirm="Delete this vote? This can't be undone."><input type="hidden" name="back" value="account"><button class="btn btn-small btn-quiet">Delete</button></form>
+  </div>`)}</div>` : html`<p class="empty">No votes yet.</p>`}
+
+  <h2 class="section-title">My full reviews</h2>
   ${reviews.length ? html`<div class="my-reviews">${reviews.map((r) => html`<div class="card mod-item">
     <div class="mod-meta"><a href="/courses/${r.course}"><span class="code">${r.course}</span></a> · ${r.lecturer_name || 'Lecturer not listed'} · ${r.year} · <span class="score ${label[r.status][1]}">${label[r.status][0]}</span></div>
     <p>${chip(r.overall)} ${r.body ? html`“${r.body}”` : html`<span class="muted">(rating only)</span>`}</p>
@@ -463,8 +526,8 @@ function account(ctx, { reviews }) {
 
   <h2 class="section-title">Delete my account</h2>
   <div class="card panel danger-zone">
-    <p>This permanently deletes your account, your email address and <strong>all your reviews</strong>.</p>
-    <form method="post" action="/account/delete" data-confirm="Delete your account and all your reviews? This can't be undone."><button class="btn btn-danger">Delete my account</button></form>
+    <p>This permanently deletes your account, your email address and <strong>all your votes, tips and reviews</strong>.</p>
+    <form method="post" action="/account/delete" data-confirm="Delete your account with all your votes and reviews? This can't be undone."><button class="btn btn-danger">Delete my account</button></form>
   </div>`);
 }
 
@@ -549,7 +612,7 @@ function suggestLecturer(ctx, { c, error, values = {} }) {
   </section>`);
 }
 
-function mod(ctx, { held, takedowns, suggestions, log }) {
+function mod(ctx, { held, heldTips, takedowns, suggestions, log }) {
   return layout({ ...ctx, title: 'Moderation' }, html`
   <h1 class="page-title">Moderation</h1>
   <p class="lede small">Hidden reviews wait here. <strong>Approve</strong> puts a review back up and clears its reports. <strong>Remove</strong> takes it down for good.</p>
@@ -581,6 +644,18 @@ function mod(ctx, { held, takedowns, suggestions, log }) {
       <form method="post" action="/mod/reviews/${r.id}/approve" class="inline"><button class="btn btn-small btn-ok">Approve</button></form>
       <form method="post" action="/mod/reviews/${r.id}/remove" class="inline"><input name="note" placeholder="Reason (logged)" maxlength="200"><button class="btn btn-small btn-danger">Remove</button></form>
       ${r.user_id ? html`<form method="post" action="/mod/reviews/${r.id}/ban" class="inline" data-confirm="Remove this review and ban its author?"><button class="btn btn-small btn-quiet">Remove + ban author</button></form>` : ''}
+    </div>
+  </div>`) : html`<p class="empty">Nothing waiting. 🎉</p>`}
+
+  <h2 class="section-title">Hidden tips <span class="count">${heldTips.length}</span></h2>
+  ${heldTips.length ? heldTips.map((v) => html`<div class="card mod-item">
+    <div class="mod-meta"><a href="/courses/${v.course}">${v.course}</a> · ${v.year} · voted ${v.lekker ? 'lekker' : 'nah'} · tip #${v.id}</div>
+    <div class="flags">${v.flags.split('|').filter(Boolean).map((f) => html`<span class="flag">${f}</span>`)}</div>
+    <p class="review-body">“${v.tip}”</p>
+    <div class="mod-actions">
+      <form method="post" action="/mod/verdicts/${v.id}/approve" class="inline"><button class="btn btn-small btn-ok">Approve</button></form>
+      <form method="post" action="/mod/verdicts/${v.id}/remove" class="inline"><button class="btn btn-small btn-danger">Remove</button></form>
+      <form method="post" action="/mod/verdicts/${v.id}/ban" class="inline" data-confirm="Remove this tip and ban its author?"><button class="btn btn-small btn-quiet">Remove + ban author</button></form>
     </div>
   </div>`) : html`<p class="empty">Nothing waiting. 🎉</p>`}
 

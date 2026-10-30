@@ -285,3 +285,23 @@ legend { font-family: var(--display); font-weight: 600; font-size: 1.1rem; paddi
 .danger-zone { border-color: color-mix(in srgb, var(--low) 40%, var(--line)); }
 .danger-zone p { margin-top: 0; }
 .my-reviews .mod-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
+/* lekker-or-nah vote */
+.verdict-box { padding: 20px 22px; margin: 0 0 24px; }
+.verdict-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.verdict-head h2 { font-size: 1.35rem; margin: 0; }
+.verdict-result { margin: 0; font-size: 1.05rem; }
+.verdict-result strong { font-family: var(--display); font-size: 1.6rem; color: var(--good); }
+.verdict-form { display: grid; gap: 14px; margin-top: 14px; }
+.verdict-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+.verdict-form .verdict-buttons { margin-top: 0; }
+.verdict-buttons .btn { flex: 1 1 160px; }
+.btn-lekker { background: var(--good); }
+.btn-nah { background: var(--low); }
+.tips { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 10px; }
+.tip { display: flex; gap: 12px; padding: 14px 16px; }
+.tip > div { flex: 1; }
+.tip-verdict { font-size: 1.4rem; line-height: 1.2; }
+.tip-text { margin: 0; font-weight: 500; }
+.tip-foot { margin-top: 8px; padding-top: 8px; }
+.tip-foot .link-btn { padding: 0; font-size: .85rem; color: var(--muted); }

@@ -18,6 +18,7 @@ const TAGS = [
 ];
 const MAX_TAGS = 3;
 const MAX_BODY = 280;
+const MAX_TIP = 140;
 // A lecturer or course needs this many reviews before it can appear in a ranking,
 // so one angry review can't put someone at the bottom of a list.
 const MIN_FOR_RANKING = 3;
@@ -55,4 +56,14 @@ function parseReviewForm(form, { currentYear = new Date().getFullYear() } = {}) 
   return { review };
 }
 
-module.exports = { QUALITY, SCALES, ALL_KEYS, TAGS, MAX_TAGS, MAX_BODY, MIN_FOR_RANKING, RANKINGS, overallOf, parseReviewForm };
+// Validates the quick lekker-or-nah vote. Returns { verdict } or { error }.
+function parseVerdictForm(form, { currentYear = new Date().getFullYear() } = {}) {
+  if (form.lekker !== '1' && form.lekker !== '0') return { error: 'Pick lekker or nah.' };
+  const year = Number(form.year);
+  if (!Number.isInteger(year) || year < currentYear - 6 || year > currentYear) return { error: 'Pick the year you took the course.' };
+  const tip = String(form.tip ?? '').trim().replace(/\s+/g, ' ');
+  if (tip.length > MAX_TIP) return { error: `Keep the tip under ${MAX_TIP} characters.` };
+  return { verdict: { lekker: Number(form.lekker), year, tip } };
+}
+
+module.exports = { QUALITY, SCALES, ALL_KEYS, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, RANKINGS, overallOf, parseReviewForm, parseVerdictForm };

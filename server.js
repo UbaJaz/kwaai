@@ -25,6 +25,7 @@ const sweep = () => {
   db.exec(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
     UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
     DELETE FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
+    DELETE FROM verdicts WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
     DELETE FROM takedowns WHERE status = 'closed' AND created_at < datetime('now', '-12 months');
     DELETE FROM lecturer_suggestions WHERE status != 'open' AND created_at < datetime('now', '-12 months');`);
 };

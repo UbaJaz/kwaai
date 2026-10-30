@@ -4,7 +4,7 @@ const { openDb } = require('../src/db');
 const { createApp } = require('../src/app');
 const { seed } = require('../scripts/seed');
 const { screenComment } = require('../src/moderation');
-const { parseReviewForm, overallOf } = require('../src/ratings');
+const { parseReviewForm, parseVerdictForm, overallOf } = require('../src/ratings');
 const { html } = require('../src/html');
 const { titleCase, parseHandbook } = require('../scripts/import-handbook');
 
@@ -41,6 +41,15 @@ test('review form validation', () => {
   assert.ok(parseReviewForm({ ...ok, tags: ['Funny', 'Great notes', 'Clear marking', 'Tough tests'] }).error);
   assert.ok(parseReviewForm({ ...ok, body: 'x'.repeat(281) }).error);
   assert.equal(parseReviewForm({ ...ok, tags: 'Not a real tag' }).review.tags, '');
+});
+
+test('verdict form validation', () => {
+  const ok = { lekker: '1', year: '2026', tip: '  do the   past papers ' };
+  assert.deepEqual(parseVerdictForm(ok, { currentYear: 2026 }).verdict, { lekker: 1, year: 2026, tip: 'do the past papers' });
+  assert.equal(parseVerdictForm({ ...ok, lekker: '0' }, { currentYear: 2026 }).verdict.lekker, 0);
+  assert.ok(parseVerdictForm({ ...ok, lekker: 'yes' }, { currentYear: 2026 }).error);
+  assert.ok(parseVerdictForm({ ...ok, year: '2010' }, { currentYear: 2026 }).error);
+  assert.ok(parseVerdictForm({ ...ok, tip: 'x'.repeat(141) }, { currentYear: 2026 }).error);
 });
 
 test('handbook parsing', () => {
@@ -236,6 +245,59 @@ test('students can delete their account and all their reviews', async () => {
   assert.equal((await student.post('/account/delete', {})).status, 303);
   assert.doesNotMatch(await student.text('/courses/CSC1016S'), /Delete-me marker/);
   assert.equal((await student.get('/account')).status, 303, 'signed out afterwards');
+});
+
+test('lekker-or-nah votes: one per student, result shows from 3 votes, tips can be reported', async () => {
+  // its own server, so earlier tests haven't used up this IP's report limit
+  const db = openDb(':memory:');
+  seed(db, { samples: false });
+  const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true }).listen(0);
+  await new Promise((r) => own.once('listening', r));
+  const fresh = () => browser(() => `http://localhost:${own.address().port}`);
+  const year = String(new Date().getFullYear());
+  const voters = [];
+  for (const n of [1, 2, 3]) {
+    const b = fresh();
+    await b.signIn(`vot00${n}@myuct.ac.za`);
+    voters.push(b);
+  }
+  const anon = fresh();
+  assert.equal((await voters[0].post('/courses/CSC2001F/verdict', { lekker: '1', year, tip: 'Tutorials are where it clicks' })).status, 303);
+  assert.equal((await voters[0].post('/courses/CSC2001F/verdict', { lekker: '0', year, tip: 'Tutorials are where it clicks' })).status, 303, 'voting again changes the vote');
+  let page = await anon.text('/courses/CSC2001F');
+  assert.match(page, /1 vote so far/, 'one student, one vote');
+  assert.doesNotMatch(page, /say lekker/, 'no percentage from a single vote');
+
+  await voters[1].post('/courses/CSC2001F/verdict', { lekker: '1', year });
+  await voters[2].post('/courses/CSC2001F/verdict', { lekker: '1', year });
+  page = await anon.text('/courses/CSC2001F');
+  assert.match(page, /67%<\/strong> say lekker/);
+  assert.match(page, /Tutorials are where it clicks/);
+
+  const id = /\/verdicts\/(\d+)\/report/.exec(page)[1];
+  assert.equal((await anon.post(`/verdicts/${id}/report`, {})).status, 303);
+  assert.doesNotMatch(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/, 'reported tip is hidden');
+  const mod = fresh();
+  await mod.signIn('mod001@myuct.ac.za');
+  assert.match(await mod.text('/mod'), /Tutorials are where it clicks/);
+  assert.equal((await mod.post(`/mod/verdicts/${id}/approve`, {})).status, 303);
+  assert.match(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/);
+  own.close();
+});
+
+test('rule-breaking tips are held, contact details rejected, votes deleted with the account', async () => {
+  const b = browser();
+  await b.signIn('vot009@myuct.ac.za');
+  const year = String(new Date().getFullYear());
+  await b.post('/courses/CSC2002S/verdict', { lekker: '1', year, tip: 'email me at x@gmail.com' });
+  assert.match(await b.text('/courses/CSC2002S'), /can&#39;t be posted/);
+  await b.post('/courses/CSC2002S/verdict', { lekker: '0', year, tip: 'lecturer is an idiot' });
+  assert.doesNotMatch(await browser().text('/courses/CSC2002S'), /lecturer is an idiot/);
+  assert.match(await b.text('/account'), /Waiting for a moderator/);
+  await b.post('/account/delete', {});
+  const mod = browser();
+  await mod.signIn('mod001@myuct.ac.za');
+  assert.doesNotMatch(await mod.text('/mod'), /lecturer is an idiot/, 'held tip went with the account');
 });
 
 test('privacy and terms pages render', async () => {
