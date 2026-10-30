@@ -455,6 +455,38 @@ test('rule-breaking tips are held, contact details rejected, votes deleted with 
   assert.doesNotMatch(await mod.text('/mod'), /lecturer is an idiot/, 'held tip went with the account');
 });
 
+test('a held tip stays held when resubmitted, and a removed vote cannot be deleted and recast', async (t) => {
+  const db = openDb(':memory:');
+  seed(db, { samples: false });
+  const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true }).listen(0);
+  t.after(() => own.close());
+  await new Promise((r) => own.once('listening', r));
+  const fresh = () => browser(() => `http://localhost:${own.address().port}`);
+  const year = String(new Date().getFullYear());
+  const author = fresh();
+  await author.signIn('stk001@myuct.ac.za');
+  const vote = { lekker: '1', year, tip: 'Sticky tip text' };
+  await author.post('/courses/CSC2002S/verdict', vote);
+  const anon = fresh();
+  const id = /\/verdicts\/(\d+)\/report/.exec(await anon.text('/courses/CSC2002S'))[1];
+  for (const n of [1, 2]) {
+    const reader = fresh();
+    await reader.signIn(`stk00${n + 1}@myuct.ac.za`);
+    await reader.post(`/verdicts/${id}/report`, {});
+  }
+  assert.doesNotMatch(await anon.text('/courses/CSC2002S'), /Sticky tip text/, 'two reports hide it');
+  await author.post('/courses/CSC2002S/verdict', vote);
+  assert.doesNotMatch(await anon.text('/courses/CSC2002S'), /Sticky tip text/, 'resubmitting the same words does not bring it back');
+
+  const mod = fresh();
+  await mod.signIn('mod001@myuct.ac.za');
+  await mod.post(`/mod/verdicts/${id}/remove`, {});
+  await author.post(`/verdicts/${id}/delete`, {});
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM verdicts WHERE id = ?').get(id).n, 1, 'a removed vote cannot be deleted');
+  await author.post('/courses/CSC2002S/verdict', { lekker: '0', year });
+  assert.match(await author.text('/courses/CSC2002S'), /removed your vote|can&#39;t vote on it again/, 'and cannot be cast again');
+});
+
 test('readers see the first 2 comments until they vote once, then all of them', async (t) => {
   const db = openDb(':memory:');
   seed(db, { samples: false });

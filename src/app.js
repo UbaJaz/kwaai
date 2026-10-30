@@ -329,14 +329,18 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const back = `/courses/${c.code}#verdict`;
     const { verdict, error } = parseVerdictForm(req.body);
     if (error) return flashRedirect(res, back, 'error', error);
-    const old = q(`SELECT status FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
+    const old = q(`SELECT status, tip, flags FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
     if (old?.status === 'removed') return flashRedirect(res, back, 'error', "A moderator removed your vote on this course, so you can't vote on it again.");
     const screen = screenComment(verdict.tip);
     if (screen.action === 'reject') return flashRedirect(res, back, 'error', `Your tip can't be posted as written: ${screen.reasons.join(', ').toLowerCase()}. Please remove it and try again.`);
-    const status = screen.action === 'hold' ? 'held' : 'published';
+    // A held tip stays held until a moderator looks at it: resubmitting the same words must not put it back up.
+    // Changing the words sends it through screening again.
+    const stuck = old?.status === 'held' && old.tip === verdict.tip;
+    const status = stuck || screen.action === 'hold' ? 'held' : 'published';
     q(`INSERT INTO verdicts (course, user_id, year, lekker, tip, status, flags) VALUES (?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT (user_id, course) DO UPDATE SET year = excluded.year, lekker = excluded.lekker, tip = excluded.tip, status = excluded.status, flags = excluded.flags`)
-      .run(c.code, req.user.id, verdict.year, verdict.lekker, verdict.tip, status, screen.reasons.join('|'));
+      .run(c.code, req.user.id, verdict.year, verdict.lekker, verdict.tip, status, stuck ? old.flags : screen.reasons.join('|'));
+    if (!stuck) q(`DELETE FROM verdict_reports WHERE verdict_id = (SELECT id FROM verdicts WHERE course = ? AND user_id = ?)`).run(c.code, req.user.id);
     flashRedirect(res, back, status === 'held' ? 'info' : 'ok',
       status === 'held' ? 'Thanks! Your vote counts once a moderator has checked your tip.' : `Thanks! You voted ${verdict.lekker ? 'lekker 🤙' : 'nah 👎'}.`);
   });
@@ -344,6 +348,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.post('/verdicts/:id/delete', requireUser, (req, res) => {
     const v = q(`SELECT * FROM verdicts WHERE id = ? AND user_id = ?`).get(Number(req.params.id) || 0, req.user.id);
     if (!v) return res.status(404).page(notFound(req));
+    // otherwise a removed vote could be deleted and cast again, dodging the block. Deleting the whole account still erases it.
+    if (v.status === 'removed') return flashRedirect(res, req.body.back === 'account' ? '/account' : `/courses/${v.course}`, 'error', "A moderator removed this vote, so it can't be deleted or cast again. Deleting your account erases it.");
     q(`DELETE FROM verdicts WHERE id = ?`).run(v.id);
     flashRedirect(res, req.body.back === 'account' ? '/account' : `/courses/${v.course}`, 'ok', 'Your vote was deleted.');
   });
