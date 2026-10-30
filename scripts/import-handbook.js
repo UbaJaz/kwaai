@@ -9,7 +9,7 @@ const path = require('node:path');
 // Some faculties put a note between the title and the credits, so find the UPPERCASE heading first,
 // then look for credits and convener in the text before the next heading.
 // Courses that run in more than one semester are written "CSC1015F/S": that's two courses, CSC1015F and CSC1015S.
-const WORD = "[A-Z0-9][A-Z0-9,&:()'’\\-\\/–.]*";
+const WORD = "(?:[A-Z0-9][A-Z0-9,&:()'’\\-\\/–.]*|&)"; // "&" on its own too: "MATTER & INTERACTIONS"
 const HEADING = new RegExp(`\\b([A-Z]{3}\\d{4}[A-Z](?:\\/[A-Z])*) ((?:${WORD} )*?${WORD})(?= (?:\\+ )?\\d+ NQF credits| [A-Z][a-z]| \\([A-Z][a-z]| [A-Z]{3}\\d{4}[A-Z] [a-z])`, 'g');
 const NOT_A_COURSE = /thesis|dissertation|departments in the faculty|research (paper|report|project)$/i;
 const CODES = /\b([A-Z]{3}\d{4})([A-Z](?:\/[A-Z])*)/g;
@@ -101,31 +101,39 @@ const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 function lecturePeriods(lectures) {
   const lect = String(lectures || '').split(/Tutorials?|Practicals?|Workshops?|Seminars?|Labs?\b/i)[0];
   const group = /((?:\d(?:st|nd|rd|th)\s*(?:,|or|and|&|\/)?\s*)+)periods?\b/i.exec(lect);
-  if (!group) return { periods: [], periodChoice: false, days: [] };
-  const periods = [...new Set([...group[1].matchAll(/(\d)(?:st|nd|rd|th)/g)].map((x) => Number(x[1])))];
+  const meridian = /\bmeridian\b/i.test(lect); // the lunch slot, 13:00 to 14:00, stored as period 0
+  if (!group && !meridian) return { periods: [], periodChoice: false, days: [] };
+  const periods = [...new Set([...(group?.[1] ?? '').matchAll(/(\d)(?:st|nd|rd|th)/g)].map((x) => Number(x[1])).concat(meridian ? [0] : []))];
+  const choice = periods.length > 1 && /\bor\b/i.test(group && !meridian ? group[1] : lect);
   const day = (d) => DAYS.findIndex((x) => x.slice(0, 3).toLowerCase() === d.slice(0, 3).toLowerCase());
   const range = /\b(Mon|Tue|Wed|Thu|Fri)\w*\s*(?:-|–|to)\s*(Mon|Tue|Wed|Thu|Fri)\w*/i.exec(lect);
   let days;
   if (/daily|every day/i.test(lect)) days = DAYS;
   else if (range) days = DAYS.slice(day(range[1]), day(range[2]) + 1);
   else days = DAYS.filter((d) => new RegExp(`\\b${d.slice(0, 3)}`, 'i').test(lect));
-  return { periods, periodChoice: periods.length > 1 && /\bor\b/i.test(group[1]), days: days.length ? days : DAYS };
+  return { periods, periodChoice: choice, days: days.length ? days : DAYS };
 }
 
 // The share of the final mark that comes from exams, e.g. "Class mark 40%, June examination 2 hours 60%" -> 60.
-// Each part of the list is read on its own, using the % that follows the word "exam". Subminima and supplementary
-// exams don't count. It's a rough guide (a year course with two exams shows the bigger one), so pages show the
-// handbook's own wording next to it.
+// Each part of the list is read on its own, using the % that follows the word "exam". Subminima, supplementary
+// exams and breakdowns in brackets like "Exam 50% (67% written examination; 33% computer examination)" don't count.
+// It's a rough guide, so pages show the handbook's own wording next to it.
+const SITTING = /\b(June|July|October|November)\b/i;
 function examWeight(assessment) {
-  let best = null;
-  for (const part of String(assessment || '').split(/[;,]|\.(?!\d)/)) {
+  const picks = [];
+  const text = String(assessment || '').replace(/\bSub-?minim.*$/is, '').replace(/\(([^()]*)\)/g, (all, inner) => (/exam/i.test(inner) && /%/.test(inner) ? ' ' : all));
+  for (const part of text.split(/[;,]|\.(?!\d)/)) {
     const at = part.search(/exam/i);
     if (at < 0 || /sub-?minim|at least|minimum|must obtain|pass mark|coursework exam|supplementary/i.test(part)) continue;
     const pcts = [...part.matchAll(/(\d{1,3}(?:\.\d+)?)\s*%/g)].filter((x) => Number(x[1]) > 0 && Number(x[1]) <= 100);
     const pick = pcts.find((x) => x.index > at) || pcts[pcts.length - 1];
-    if (pick) best = Math.max(best ?? 0, Math.round(Number(pick[1])));
+    if (pick) picks.push({ pct: Math.round(Number(pick[1])), sitting: SITTING.exec(part)?.[1].toLowerCase().slice(0, 3) });
   }
-  return best;
+  if (!picks.length) return null;
+  // add up exams in different sittings (June and November); otherwise a total is often followed by its breakdown
+  const sittings = new Map(picks.filter((p) => p.sitting).map((p) => [p.sitting === 'jul' ? 'jun' : p.sitting === 'oct' ? 'nov' : p.sitting, p.pct]));
+  const best = Math.max(...picks.map((p) => p.pct));
+  return sittings.size > 1 ? Math.min(100, Math.max(best, [...sittings.values()].reduce((s, x) => s + x, 0))) : best;
 }
 
 function splitConveners(s) {

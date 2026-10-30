@@ -99,6 +99,23 @@
       "examWeight": 50
     },
     {
+      "code": "AGE3006H",
+      "title": "Directed Reading & Research",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "outline": "A flexible intensive study course in a specific area customised to the needs of individual students.",
+      "entry": "Only for students specialising in Archaeology, with permission of the Head of Department.",
+      "corequisites": "",
+      "lectures": "By arrangement",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion of assignments.",
+      "assessment": "Assignments count 20%; a long paper counts 40%; one 3-hour examination in November counts 40%.",
+      "examWeight": 40
+    },
+    {
       "code": "AGE3011F",
       "title": "The Roots of Recent African Identities",
       "credits": 36,
@@ -185,7 +202,26 @@
       "days": [],
       "dp": "",
       "assessment": "On average the course work component counts 70% (this includes 50% from final examinations) and the research project counts 30%. A sub-minimum of 50% is required for the research project. These component parts of the course will be combined in a final overall mark which will be reflected against the course code AGE4000W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
-      "examWeight": 30
+      "examWeight": null
+    },
+    {
+      "code": "AGE4001W",
+      "title": "Archaeology & Environmental Science Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Dr Y Sahle"
+      ],
+      "outline": "Using the resources of both the Departments of Archaeology and Environmental & Geographical Science, this Honours programme focuses on the palaeoenvironmental context in which humans lived during the long course of the Quaternary. Course requirements include modules from both Archaeology and from Environmental & Geographical Science and a research project (48 credits).",
+      "entry": "A BSc degree with majors in both Archaeology and Environmental & Geographical Science. Acceptance will be at the discretion of the Head of Department.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "On average the course work component counts 70% (this includes 50% from final examinations) and the research project counts 30%. A sub-minimum of 50% is required for the research project. These component parts of the course will be combined in a final overall mark which will be reflected against the course code AGE4001W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
+      "examWeight": null
     },
     {
       "code": "AST1000S",
@@ -292,8 +328,69 @@
         "Friday"
       ],
       "dp": "Satisfactory attendance at lectures and tutorials; class record of at least 35%.",
-      "assessment": "Class record 50% (this includes two class tests, tutorials, weekly quizzes and practicals); one 2-hour final examination 50%; subminimum requirement of 40% for final examination. DEPARTMENTS IN THE FACULTY 67 AST3003S GALACTIC & EXTRAGALACTIC ASTROPHYSICS 36 NQF credits at NQF level 7 Convener: Dr J Delhaize",
+      "assessment": "Class record 50% (this includes two class tests, tutorials, weekly quizzes and practicals); one 2-hour final examination 50%; subminimum requirement of 40% for final examination. DEPARTMENTS IN THE FACULTY 67",
       "examWeight": 50
+    },
+    {
+      "code": "AST3003S",
+      "title": "Galactic & Extragalactic Astrophysics",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr J Delhaize"
+      ],
+      "outline": "The aim of this course is to provide a broad introduction to galactic & extragalactic astrophysics and cosmology. The first part of the course (term 3) will focus on Galactic astronomy, and the second part (term 4) will focus on extragalactic astronomy. Topics will include the composition and kinematics of the Milky Way, observations and characterisation of galaxies, active galaxies, galaxy interactions and environments and galaxy evolution. Current research and hot topics in the area are also discussed and students are encouraged to keep abreast of the latest developments.",
+      "entry": "AST2002H and AST2003H, PHY2004W, MAM2010F and MAM2011F.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period, Tutorials/Practicals: One practical or tutorial per week, Wednesday, 14h00 - 17h00; one observing practical in Term 4.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Class record of at least 35%. Calculated from all assessments completed within 4 weeks of deadline and lecture/tutorial attendance up until the date by which DP must be achieved. Attendance at practical observing session.",
+      "assessment": "Class record 50% (this includes two class tests, assignment sheets, online quizzes, observing practical, Hot Topics assignment, attendance at lectures and tutorials); one 2-hour final examination 50%; subminimum requirement of 40% for final examination.",
+      "examWeight": 50
+    },
+    {
+      "code": "AST4007W",
+      "title": "Astrophysics & Space Science Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [],
+      "outline": "The Honours course in Astrophysics & Space Science consists of courses presented by distinguished South African researchers from research institutions participating in NASSP. There is a theory component which includes courses in spectroscopy, electrodynamics, general relativity, general astrophysics, galaxies, computational physics, astrophysical fluid dynamics and computational methods, as well as an observational techniques component which includes optical and infrared astronomy and radio astronomy.",
+      "entry": "AST3002F and AST3003S or PHY3004W or MAM3040W or equivalent. Candidates with an Engineering background will also be considered. Enrolments are limited to 20 students. Candidates must satisfy the Steering Committee that they have sufficient background in Mathematics and Physics.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory lecture attendance (minimum 50%); class record of at least 40%.",
+      "assessment": "The assessment of the coursework is based on the class records and examinations for each of the modules. In general they are made up from tests, oral presentations, projects and a final examination. Examinations count 40%, class record 40% and research project 20% of the final result. The project component must be passed at 50%.",
+      "examWeight": 40
+    },
+    {
+      "code": "AST5003F",
+      "title": "Astrophysics & Space Science Coursework",
+      "credits": 90,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "This course consists of a selection of advanced topics presented by distinguished South African researchers from research institutions participating in NASSP. The courses vary from year to year but usually include cataclysmic variables, extragalactic astronomy, space technology, hot topics in cosmology, advanced general relativity, high energy astrophysics, observational cosmology, geomagnetism and aeronomy, plasma physics and magnetohydrodynamics.",
+      "entry": "This course is open to Honours graduates in Astronomy and Space Science (AST4007W), Physics (PHY4000W, PHY4001W, PHY4002W) or equivalent, and Engineering. Entrance is subject to a minimum pass mark of 60% in the Honours degree. Admission is subject to the approval of the Steering Committee and an application must be made before 30 June of the preceding year.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "On average, examinations of individual modules count 60% of the final result, and marked practical work counts 40%. DEPARTMENTS IN THE FACULTY 69",
+      "examWeight": 60
     },
     {
       "code": "AST5004Z",
@@ -394,6 +491,87 @@
       "examWeight": 60
     },
     {
+      "code": "BIO2014F",
+      "title": "Principles of Ecology & Evolution",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor T van der Niet"
+      ],
+      "outline": "This course begins with an exploration of the mechanisms by which populations evolve and ultimately give rise to the entities that we term species. Building on this, it then explores the nature of the genealogical relationships between species (phylogeny), and the manner in which these are estimated in practice. The focus then shifts to abiotic and biotic controls on the distribution of species and higher taxa in nature, as viewed through the lens of niche theory, as well as constraints on the adaptability of",
+      "entry": "BIO1000F/H, BIO1004F/S, DP in STA1007S",
+      "corequisites": "",
+      "lectures": "Monday-Friday, 2nd period, Practicals: One per week, Monday, 14h0017h00. Attendance is compulsory for all lectures and practicals.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Completion of at least 70% of deliverables (tests, practicals, field trip report), including at least one class test and the field trip report; attendance of practicals and field trip; minimum of 40% for the class record.",
+      "assessment": "A 3-hour examination, written in June, with a subminimum of 40%, counts 50% of the course mark. The class record, which counts for the balance, is made up as follows: practicals count 15%, the field camp report counts 15% and two class tests count 20%.",
+      "examWeight": null
+    },
+    {
+      "code": "BIO2015F",
+      "title": "Vertebrate Diversity & Functional Biology",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr C A Ngcamphalala"
+      ],
+      "outline": "This course begins with an overview of the evolution, characteristics, diversity, morphology, and life histories of the different craniate classes, paying particular attention to adaptations underlying the success of the vertebrates. Distinctive or advanced biological features of each group are highlighted, and their ecological/economic importance briefly considered. The rest of the course comprises integrative, cross-taxonomic modules on the functional biology of vertebrates, notably locomotion, sensory systems, metabolism, homeostasis and behaviour.",
+      "entry": "BIO1000F/H, BIO1004S",
+      "corequisites": "",
+      "lectures": "Monday – Friday, 3rd period, Practicals: One per week, Wednesday, 14h0017h00. Attendance is compulsory for all lectures and practicals.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Completion of at least 70% of deliverables (tests, practicals, project report), including at least one class test and the project report; attendance of practicals; minimum of 40% for the class record",
+      "assessment": "A 3-hour theory examination written in June, with subminimum of 40%, will count 50% of the course mark. Coursework marks will be allocated as follows: practical tests (three deliverables) count 15%, project report based on projects counts 15%, two class tests together count 20%.",
+      "examWeight": null
+    },
+    {
+      "code": "BIO2016S",
+      "title": "Invertebrate Diversity & Functional Biology",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr L D Vorsatz"
+      ],
+      "outline": "The course exposes students to the diversity of invertebrates and their functional biologies. Topics will be presented within an evolutionary framework to emphasise past and contemporary selective pressures driving diversification. Students will be exposed to key topics in functional biology across the major invertebrate groups and will include cellular to organism level processes. The course begins with an introduction to the evolution of the invertebrates and the major phyla.",
+      "entry": "BIO1000F/H, BIO1004S",
+      "corequisites": "",
+      "lectures": "Monday – Friday, 3rd period, Practicals: One per week, Wednesday, 14h0017h00. Attendance is compulsory for all lectures and practicals.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Completion of at least 70% of deliverables (tests, practicals, field trip report), including at least one class test and the field trip report; attendance of practicals and field trip; minimum of 40% for the class record.",
+      "assessment": "A 3-hour examination, written in November, with a subminimum of 40%, counts for 50% of the course mark. Coursework marks will be allocated as follows: practicals count 15%, the field camp report counts 15% and two class tests count 20%.",
+      "examWeight": null
+    },
+    {
       "code": "BIO2017S",
       "title": "Plant Diversity and Functional Biology",
       "credits": 24,
@@ -471,7 +649,53 @@
         "Friday"
       ],
       "dp": "Completion of at least 70% of deliverables (tests, practicals, project report), including at least one class test and the project report; attendance of practicals; minimum of 40% for the class record.",
-      "assessment": "A 3-hour examination written in June, with a sub-minimum of 40%, will count for 50% of the course. Coursework marks will be allocated as follows: Practical classes (assessed weekly) count 15%; research project counts 20%; class tests count 15%. BIO3014S CONSERVATION: GENES, POPULATION & BIODIVERSITY 36 NQF credits at NQF level 7 Convener: Professor M J O’Riain",
+      "assessment": "A 3-hour examination written in June, with a sub-minimum of 40%, will count for 50% of the course. Coursework marks will be allocated as follows: Practical classes (assessed weekly) count 15%; research project counts 20%; class tests count 15%.",
+      "examWeight": null
+    },
+    {
+      "code": "BIO3014S",
+      "title": "Conservation: Genes, Population & Biodiversity",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Professor M J O’Riain"
+      ],
+      "outline": "This course introduces students to the science and practice of conservation biology, beginning with an overview of conservation issues, the value of biodiversity, extinction risks and the history and philosophy of conservation. The conservation of biodiversity is explored at multiple levels, including the diversity of genes, species, populations and ecosystems. At the species and population levels, we consider the role of life history and behaviour in the management of populations in the real world.",
+      "entry": "A pass or permission to write a SUPP exam in BIO2014F.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period, Tutorials, by arrangement, Practicals: One per week, Monday, 14h00 - 17h00. Attendance is compulsory for all lectures and practicals.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Completion of at least 70% of deliverables (tests, practicals, project report), including at least one class test and the project report; attendance of practicals; minimum of 40% for the class record. DEPARTMENTS IN THE FACULTY 81",
+      "assessment": "A 3-hour examination written in November, with a sub-minimum of 40%, will count for 50% of the course. Coursework marks will be allocated as follows: Practical classes (assessed weekly) count 20%; project work counts 15%; two class tests count 15%.",
+      "examWeight": null
+    },
+    {
+      "code": "BIO3018F",
+      "title": "Ecology & Evolution in the Field",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor J A Slingsby"
+      ],
+      "outline": "Ecological and evolutionary processes together determine patterns of biodiversity. This Africancentric ecology and evolution course utilises regional examples within the global context to illustrate plant and animal ecology and evolution. The course starts with community assembly and the mechanisms (e.g., functional traits) that contribute to species coexistence (e.g., niche construction) and turnover (competition/facilitation for resources) between communities and the results of this (e.g., succession and alternate states).",
+      "entry": "A pass or permission to write a SUPP exam in BIO2014F.",
+      "corequisites": "",
+      "lectures": "All lectures and practicals occur during a residential two-week field course occurring before the start of the first semester. Tutorials: By arrangement in 5th period – typically one per practical.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion of at least 70% of deliverables (tests, practicals, field trip seminar), including the class test and the field trip seminar; attendance of two-week field trip and subsequent practicals; minimum of 40% for the class record.",
+      "assessment": "An examination, written in June, with a subminimum of 40%, counts for 50% of the course mark. The class record, which counts for the balance, is made up as follows: practicals 35%, seminar 5%, class test 10%.",
       "examWeight": null
     },
     {
@@ -772,7 +996,7 @@
       ],
       "dp": "Attendance and completion of practicals, tests and tutorial exercises, and at least 50% for the class record and practical component, respectively.",
       "assessment": "Class record (comprising class tests [20%], tutorials [5%] and practicals [25%]) counts 50%; a 3-hour June examination counts 25%; and a 3-hour November examination counts 25% towards the final mark. A subminimum aggregate of 40% across the June and November examination paper, together with at least 50% overall is required to pass the course.",
-      "examWeight": 25
+      "examWeight": 50
     },
     {
       "code": "CEM4000W",
@@ -791,7 +1015,7 @@
       "days": [],
       "dp": "",
       "assessment": "Examinations count 33%, coursework 26% and the Honours research project 41%. To pass the Honours course candidates must obtain an overall average of 50%, an average of 45% for the Core Course written examinations with a subminimum of 33% on each individual paper of the Core Course examinations.",
-      "examWeight": 33
+      "examWeight": 45
     },
     {
       "code": "CSC1010H",
@@ -1119,7 +1343,34 @@
         "Friday"
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
-      "assessment": "Tests 20%; 15% for practicals, 15% for practical tests; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examinations. CSC3003S ADVANCED PROGRAMMING & ALGORITHMS Each student registered for this course is required to have a laptop for use during class sessions as well as after hours. The minimum specifications of the laptop are available at https://internal.cs.uct.ac.za/teaching/laptop_requirement.html (a tablet will not be suitable).",
+      "assessment": "Tests 20%; 15% for practicals, 15% for practical tests; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examinations.",
+      "examWeight": 50
+    },
+    {
+      "code": "CSC3003S",
+      "title": "Advanced Programming & Algorithms",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor P Marais"
+      ],
+      "outline": "This course covers three topics in advanced programming: software development, functional programming and the theory of algorithms (how algorithms are categorised, interesting algorithms in each category and how to analyse their complexity).",
+      "entry": "CSC2001F, CSC2002S, CSC2004Z and ((MAM1004F+MAM1008S) or (MAM1000W) or (MAM1031F or equivalent)).",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period, Practicals: Two 4-hour practicals per week, Monday Friday, 14h00 - 18h00",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Minimum of 45% aggregate in practical work.",
+      "assessment": "Tests 20%; practical work and practical tests 30%; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examination; 35% for the advanced computing module (comprising Theory of Algorithms and Functional Programming) in the final examination. CSC3024S INTRODUCTION TO C++ PROGRAMMING 18 NQF credits at NQF level 7 Convener: Associate Professor P Marais",
       "examWeight": 50
     },
     {
@@ -1289,8 +1540,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "40% for assignment component. DEPARTMENTS IN THE FACULTY 109",
-      "assessment": "Students will be assessed with assignments (50%) and an exam (50%). A sub-minimum of 40% will be required for each of the assignment and exam components of the course. CSC4019Z RESEARCH & INNOVATION 16 NQF credits at NQF level 8 Convener: F Meyer",
+      "assessment": "Students will be assessed with assignments (50%) and an exam (50%). A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
       "examWeight": 50
+    },
+    {
+      "code": "CSC4019Z",
+      "title": "Research & Innovation",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "F Meyer"
+      ],
+      "outline": "This course introduces students to knowledge essential for computer professionals and researchers. The course develops communication and writing skills and introduces basic research methodology. The first module of the course focusses on Professional Communications in general, including written and visual communication. A second component teaches entrepreneurship as New Venture Planning: a critical element of economic development.",
+      "entry": "Admission to BSc Hons specialising in Computer Science.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "The practical aspects of the work will be evaluated through: a series of 4 NVP assignments (10%/15%/35%/40%), culminating in a business plan; a literature review for the project (35%) and the project proposal (40%). NVP and RM are equally weighted.",
+      "examWeight": null
     },
     {
       "code": "CSC4020Z",
@@ -1344,7 +1614,24 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Final examination: 60%; Practical assignments: 40% CSC4023Z BIG DATA MANAGEMENT & ANALYSIS This course will not be offered in 2026. 12 NQF credits at NQF level 8 Convener: To be advised",
+      "assessment": "Final examination: 60%; Practical assignments: 40%",
+      "examWeight": 60
+    },
+    {
+      "code": "CSC4023Z",
+      "title": "Big Data Management & Analysis",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [],
+      "outline": "This course will enable students to understand the challenges of designing and implementing database applications at very large scale. They will know the approaches taken by big data technologies such as relational databases, NoSQL, Hadoop and data mining tools, and have practice in applying this knowledge. The focus of this course is on systems designed for big data storage and analysis. Topics covered include NoSQL, Hadoop, HBase, HIVE, YARN and Apache Spark, as well as an introduction to data mining techniques and tools.",
+      "entry": "Admission to BSc Hons specialising in Computer Science or Information Technology. A basic understanding of databases, similar to the CSC2001F database material, is expected.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "Final examination: 60%; Practical assignments: 40%",
       "examWeight": 60
     },
     {
@@ -1382,7 +1669,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Final examination: 60%; Practical assignments: 40% CSC4026Z NETWORK & INTERNETWORK SECURITY This course will not be offered every year. 12 NQF credits at NQF level 8 Convener: Dr J Chavula",
+      "assessment": "Final examination: 60%; Practical assignments: 40%",
+      "examWeight": 60
+    },
+    {
+      "code": "CSC4026Z",
+      "title": "Network & Internetwork Security",
+      "credits": 12,
+      "nqf": 8,
+      "conveners": [
+        "Dr J Chavula"
+      ],
+      "outline": "The objective of this course is to introduce cryptographic techniques and protocols for secure exchange of information on networks and internetworks, and to examine the deployment of these in emerging technologies. The course will cover risk issues (ISO27000; PoPI act); security services; conventional encryption (classical encryption techniques, DES/AES, key distribution, key generation); public-key encryption (RSA algorithm, key management, certification hierarchies); authentication & digital signatures; authentication and key exchange (Kerberos, Diffie-Hellman); electronic messaging…",
+      "entry": "Admission to BSc Hons specialising in Computer Science or Information Technology. Computer Networking at third year level.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "Final examination: 60%; Practical assignments: 40%",
       "examWeight": 60
     },
     {
@@ -1868,8 +2174,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "None",
-      "assessment": "Exam: 50% and Coursework: 50% CSC5032Z NETWORKS & INTERNET SYSTEMS This course will not be offered every year. 12 NQF credits at NQF level 9 Convener: Dr J Chavula",
+      "assessment": "Exam: 50% and Coursework: 50%",
       "examWeight": 50
+    },
+    {
+      "code": "CSC5032Z",
+      "title": "Networks & Internet Systems",
+      "credits": 12,
+      "nqf": 9,
+      "conveners": [
+        "Dr J Chavula"
+      ],
+      "outline": "The objective is to gain advanced understanding of techniques for traffic engineering and quality of service in the Internet architecture. The course focuses on advanced topics in internetworking, traffic engineering, and mechanisms for measuring performance and Quality of Service (QoS) for network services and the Internet.",
+      "entry": "Admission into the Master's degree specialising in Computer Science, or permission from the course convener. Working knowledge of computer networks.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "Assignments: 40%. Discussion sessions: 15%. Active Participation in Class: 5%. Final Exam: 40%",
+      "examWeight": 40
     },
     {
       "code": "CSC5033Z",
@@ -2005,6 +2330,25 @@
       "examWeight": null
     },
     {
+      "code": "EEE2041F",
+      "title": "Introduction to Electrical Engineering & Power Utilisation",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Dr S Jayalath"
+      ],
+      "outline": "This course aims to develop an understanding of (a) DC circuits and networks including series and parallel circuits, Kirchhoff’s laws, Mesh Analysis, Superposition Theorem, Star-to-delta and Deltato-star Transformation, Thevenin’s theorem, Maximum Power Transfer theorem, DC transients in RL and R-C circuits; (b) Fundamentals of AC including generation, concepts of waveform, period, frequency, angular velocity, phase etc., average, peak and RMS values; (c) Single-phase AC circuit including AC through resistance (R), inductance (L) and capacitance (C), concept of reactance and impedance,…",
+      "entry": "PHY1013F/S (MEC), MAM1021S (MEC), PHY1004W or PHY1032S (CSC), MAM1004F (>60%) and MAM1008S (>60%) or MAM1000W (CSC)",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
       "code": "EEE2042S",
       "title": "Introduction to Analogue and Digital Electronics",
       "credits": 8,
@@ -2058,6 +2402,33 @@
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. Departments in the Faculty of Health Sciences HUMAN BIOLOGY Associate Professor and Head: D Shamley, BSc (Medicine) BScHons(Physiotherapy) PhD Wits EMBA Cape Town",
       "examWeight": null
+    },
+    {
+      "code": "EGS1007S",
+      "title": "Human & Physical Systems",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Professor F Eckardt"
+      ],
+      "outline": "The course presents fundamental environmental and geographical concepts from the fields of human and physical geography and explores the interconnections, flows and boundaries across these systems. How these systems have played out in the past, how they are changing, and what the future may hold, is critical to a full appreciation of current and future environmental challenges.",
+      "entry": "At least 50% for NSC Geography or GEO1009F. For Humanities students: At least 50% for NSC Geography",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period, Tutorials/Practical: One per every two weeks on Monday, Tuesday or Thursdays, 14h00 - 17h00.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Attendance of all, and satisfactory completion of all tutorial and practical assignments; students must attain an average mark of not less than 40% for the coursework component.",
+      "assessment": "Essays, assignments and tutorial work count 60%; one 2-hour theory examination written in November counts 40% (subminimum of 40% required).",
+      "examWeight": 40
     },
     {
       "code": "EGS2016F",
@@ -2135,8 +2506,35 @@
         "Friday"
       ],
       "dp": "Satisfactory completion of practicals and all written assignments, including essays, project reports and class tests.",
-      "assessment": "Essays and tests count 20%; project reports and practicals count 20%; one 3-hour examination in November counts 60% (subminimum of 40% required). EGS3021F SUSTAINABILITY & ENVIRONMENT There is a compulsory fieldwork component involving a half-day field excursion. 36 NQF credits at NQF level 7 Convener: Dr P Sabela-Rikhotso",
-      "examWeight": null
+      "assessment": "Essays and tests count 20%; project reports and practicals count 20%; one 3-hour examination in November counts 60% (subminimum of 40% required).",
+      "examWeight": 60
+    },
+    {
+      "code": "EGS3021F",
+      "title": "Sustainability & Environment",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr P Sabela-Rikhotso"
+      ],
+      "outline": "The course critically engages with current debates and discourses in the fields of sustainability, vulnerability and environmental management, including examination of key concepts such as integration, systems-thinking, complexity, equity, vulnerability, risk, resilience, adaptation and mitigation. Approaches and methods for analysing environmental problems and integrating risk reduction as well as sustainability principles and practices into policy, programme, plan and project cycle processes are investigated and applied in different contexts.",
+      "entry": "EGS2016F (or EGS2013F), EGS2017S (or EGS2015S)",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 3rd period, Practicals: One afternoon per week, Wednesday, 14h00 - 17h00.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Attendance and satisfactory completion of practicals (including fieldwork), other assignments and tests; students must attain an average mark of not less than 40% for the coursework.",
+      "assessment": "Practical reports (including fieldwork), class tests and other assignments count 60%; one 3-hour June examination counts 40% (subminimum of 40% required).",
+      "examWeight": 40
     },
     {
       "code": "EGS3022S",
@@ -2161,7 +2559,7 @@
       ],
       "dp": "Satisfactory completion of essay and practical assignments and participation in tutorials; students must attain an average mark of not less than 40% for the coursework",
       "assessment": "Essay and other assignments count 70%; one 3-hour written examination in November count 30% (subminimum of 40% required).",
-      "examWeight": null
+      "examWeight": 30
     },
     {
       "code": "EGS3023F",
@@ -2188,7 +2586,7 @@
       ],
       "dp": "Satisfactory completion of practicals and all written assignments, including fieldwork report, essays and class tests. Students must attain an average mark of not less than 40% for the coursework.",
       "assessment": "Field report, essays, class tests and practical assignments count 50%; one 3-hour examination written in June count 50% (sub-minimum of 40% required).",
-      "examWeight": null
+      "examWeight": 50
     },
     {
       "code": "EGS4001W",
@@ -2207,6 +2605,25 @@
       "days": [],
       "dp": "Students must pass at least three of their coursework electives and achieve a composite pass on the coursework. Students must achieve a pass on their research project to proceed to graduation in the degree.",
       "assessment": "The examinations will follow the same structure as EGS4004W. Not all course options have formal examinations, and a significant portion of the total coursework mark may be based on set project tasks. Students must pass the project component in order to qualify.",
+      "examWeight": null
+    },
+    {
+      "code": "EGS4004W",
+      "title": "Environmental & Geographical Science Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Dr P Sabela-Rikhotso"
+      ],
+      "outline": "Students complete four advanced semester modules. One of these four modules must be a research methods module. Students complete a research methods course and then select a further three modules from a range of advanced courses in Environmental and Geographical Science that have foundations in one or more of the following areas of study: Human Geography, Environmental Management, Physical Geography. Curricula must be approved by the course convener in consultation with the Head of Department. In addition, each student completes a research project.",
+      "entry": "A BSc degree with a major in Environmental & Geographical Science or related field. Acceptance will be at the discretion of the Head of Department who will consider quality of final year results, material covered in the undergraduate curriculum, and referee reports. Preference may be given to UCT graduates who meet the course entry requirements.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Students must pass at least three of their coursework electives and achieve a composite pass on the coursework. Students must achieve a pass on their research project to proceed to graduation in the degree.",
+      "assessment": "Courses will be examined at the end of each semester, and the marks combined with project, essay, fieldwork and seminar presentation marks. The combined module results count 75% and the research project counts 25% of the degree as a whole. Students must pass the project component in order to qualify.",
       "examWeight": null
     },
     {
@@ -2263,7 +2680,7 @@
       "periodChoice": false,
       "days": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
-      "assessment": "100% Coursework. EGS4031F/S INTRODUCTION TO CLIMATE CHANGE & SUSTAINABLE DEVELOPMENT 30 NQF credits at NQF level 8 Convener: Dr M Norton",
+      "assessment": "100% Coursework.",
       "examWeight": null
     },
     {
@@ -2282,8 +2699,86 @@
       "periodChoice": false,
       "days": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
-      "assessment": "100% Coursework. EGS4031F/S INTRODUCTION TO CLIMATE CHANGE & SUSTAINABLE DEVELOPMENT 30 NQF credits at NQF level 8 Convener: Dr M Norton",
+      "assessment": "100% Coursework.",
       "examWeight": null
+    },
+    {
+      "code": "EGS4031F",
+      "title": "Introduction to Climate Change & Sustainable Development",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Norton"
+      ],
+      "outline": "This course provides a broad, integrated, knowledge on key issues in climate change and sustainable development, making students conversant across the spectrum of climate change issues and history. Topics covered include: sustainable development; the climate system, anthropogenic forcing and climate system response; African climate variability and change; international climate change legal frameworks, negotiations, and politics; the economics of climate change and climate change financing; the concept of climate compatible development. The course is lecture, seminar and groupwork based.",
+      "entry": "Acceptance for EGS Honours and by agreement of the course convenor.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% of classes, and all assignments.",
+      "assessment": "Coursework 75%; examination 25%",
+      "examWeight": 25
+    },
+    {
+      "code": "EGS4031S",
+      "title": "Introduction to Climate Change & Sustainable Development",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Norton"
+      ],
+      "outline": "This course provides a broad, integrated, knowledge on key issues in climate change and sustainable development, making students conversant across the spectrum of climate change issues and history. Topics covered include: sustainable development; the climate system, anthropogenic forcing and climate system response; African climate variability and change; international climate change legal frameworks, negotiations, and politics; the economics of climate change and climate change financing; the concept of climate compatible development. The course is lecture, seminar and groupwork based.",
+      "entry": "Acceptance for EGS Honours and by agreement of the course convenor.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% of classes, and all assignments.",
+      "assessment": "Coursework 75%; examination 25%",
+      "examWeight": 25
+    },
+    {
+      "code": "EGS4032F",
+      "title": "Climate Change Adaptation & Mitigation",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Drs M Norton",
+        "D Sparks"
+      ],
+      "outline": "This course provides in depth coverage of (i) adaptation and (ii) mitigation from both a theoretical and practical/applied point of view. Adaptation and mitigation are the two key domains of academic and applied learning required for students to be qualified to undertake research and be employable in the climate change arena in the South African and developing country context. The issues are explored from a developing country, climate compatible perspective.",
+      "entry": "Acceptance for EGS Honours and by agreement of the course convenor.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% of classes and all assignments",
+      "assessment": "Coursework 80%; examination 20% EGS4034F/S INTERROGATING SOUTHERN AFRICAN LANDSCAPES NB: enrolment to this course is by invitation only 30 NQF credits at NQF level 8 Convener: Associate Professor S Daya",
+      "examWeight": 20
+    },
+    {
+      "code": "EGS4032S",
+      "title": "Climate Change Adaptation & Mitigation",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Drs M Norton",
+        "D Sparks"
+      ],
+      "outline": "This course provides in depth coverage of (i) adaptation and (ii) mitigation from both a theoretical and practical/applied point of view. Adaptation and mitigation are the two key domains of academic and applied learning required for students to be qualified to undertake research and be employable in the climate change arena in the South African and developing country context. The issues are explored from a developing country, climate compatible perspective.",
+      "entry": "Acceptance for EGS Honours and by agreement of the course convenor.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% of classes and all assignments",
+      "assessment": "Coursework 80%; examination 20% EGS4034F/S INTERROGATING SOUTHERN AFRICAN LANDSCAPES NB: enrolment to this course is by invitation only 30 NQF credits at NQF level 8 Convener: Associate Professor S Daya",
+      "examWeight": 20
     },
     {
       "code": "EGS4038F",
@@ -2795,7 +3290,7 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces. DEPARTMENTS IN THE FACULTY 141",
-      "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%) EGS4071F/S CLIMATE CHANGE & MARINE ECOSYSTEMS 30 NQF credits at NQF level 8 Convener: Dr P Matikinca",
+      "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
       "examWeight": 40
     },
     {
@@ -2814,8 +3309,65 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces. DEPARTMENTS IN THE FACULTY 141",
-      "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%) EGS4071F/S CLIMATE CHANGE & MARINE ECOSYSTEMS 30 NQF credits at NQF level 8 Convener: Dr P Matikinca",
+      "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
       "examWeight": 40
+    },
+    {
+      "code": "EGS4071F",
+      "title": "Climate Change & Marine Ecosystems",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Dr P Matikinca"
+      ],
+      "outline": "In the face of increasing concentration of carbon dioxide in the atmosphere, climate change is causing unprecedented changes in sea surface temperatures and seawater carbonate chemistry (ocean acidification). The aim of this course is to introduce students to the effects of climate change on marine and coastal ecosystems, and the implications this has for marine ecosystem services.",
+      "entry": "Acceptance for Honours or Master’s specialising in EGS.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "At least 80% attendance and submission of all assignments.",
+      "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
+      "examWeight": 40
+    },
+    {
+      "code": "EGS4071S",
+      "title": "Climate Change & Marine Ecosystems",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Dr P Matikinca"
+      ],
+      "outline": "In the face of increasing concentration of carbon dioxide in the atmosphere, climate change is causing unprecedented changes in sea surface temperatures and seawater carbonate chemistry (ocean acidification). The aim of this course is to introduce students to the effects of climate change on marine and coastal ecosystems, and the implications this has for marine ecosystem services.",
+      "entry": "Acceptance for Honours or Master’s specialising in EGS.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "At least 80% attendance and submission of all assignments.",
+      "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
+      "examWeight": 40
+    },
+    {
+      "code": "EGS5008H",
+      "title": "Environment, Society & Sustainability Coursework",
+      "credits": 90,
+      "nqf": 9,
+      "conveners": [
+        "Dr M Norton"
+      ],
+      "outline": "This interdisciplinary course is designed for students with diverse backgrounds who have an interest in the issues pertaining to the environment, society and sustainability. This course contributes half of the total credits for a Master’s qualification which can be awarded as an MSc or MPhil, depending on the academic background of the student. The coursework component starts with registration in February.",
+      "entry": "An Honours degree (or equivalent). In special circumstances graduates who have shown by examination, or publication, or a record of appropriate training, that they have reached a level equivalent to an Honours degree may be considered. Since there is a limit of 12 places in this course, admission is competitive.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "Assessment for the coursework modules includes both written examinations and coursework assignments such as essays, projects, practical assignments, etc. Examinations on average count 50% and coursework 50% for each module. The combined module results will be reflected as a final coursework result.",
+      "examWeight": 50
     },
     {
       "code": "EGS5012W",
@@ -2890,7 +3442,7 @@
       "periodChoice": false,
       "days": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
-      "assessment": "100% Coursework. EGS5031F INTRODUCTION TO CLIMATE CHANGE & SUSTAINABLE DEVELOPMENT 23 NQF credits at NQF level 9 Convener: Dr M Norton",
+      "assessment": "100% Coursework.",
       "examWeight": null
     },
     {
@@ -2909,7 +3461,102 @@
       "periodChoice": false,
       "days": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
-      "assessment": "100% Coursework. EGS5031F INTRODUCTION TO CLIMATE CHANGE & SUSTAINABLE DEVELOPMENT 23 NQF credits at NQF level 9 Convener: Dr M Norton",
+      "assessment": "100% Coursework.",
+      "examWeight": null
+    },
+    {
+      "code": "EGS5031F",
+      "title": "Introduction to Climate Change & Sustainable Development",
+      "credits": 23,
+      "nqf": 9,
+      "conveners": [
+        "Dr M Norton"
+      ],
+      "outline": "This course provides a broad, integrated, knowledge on key issues in climate change and sustainable development, making students conversant across the spectrum of climate change issues and history. Topics covered include: sustainable development; the climate system, anthropogenic forcing and climate system response; African climate variability and change; international climate change legal frameworks, negotiations, and politics; the economics of climate change and climate change financing; the concept of climate compatible development. The course is lecture, seminar and groupwork based.",
+      "entry": "Acceptance for EGS5012W and by agreement of the course convenor.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "Coursework 75%; Examination 25%",
+      "examWeight": 25
+    },
+    {
+      "code": "EGS5032F",
+      "title": "Climate Change Adaptation & Mitigation",
+      "credits": 23,
+      "nqf": 9,
+      "conveners": [
+        "Dr M Norton"
+      ],
+      "outline": "This course provides in depth coverage of (i) adaptation and (ii) mitigation from both a theoretical and practical/applied point of view. Adaptation and mitigation are the two key domains of academic and applied learning required for students to be qualified to undertake research and be employable in the climate change arena in the South African and developing country context. The issues are explored from a developing country, climate compatible perspective.",
+      "entry": "Acceptance for EGS5012W and by agreement of the course convenor.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "Coursework 80%; Examination 20%.",
+      "examWeight": 20
+    },
+    {
+      "code": "EGS5032S",
+      "title": "Climate Change Adaptation & Mitigation",
+      "credits": 23,
+      "nqf": 9,
+      "conveners": [
+        "Dr M Norton"
+      ],
+      "outline": "This course provides in depth coverage of (i) adaptation and (ii) mitigation from both a theoretical and practical/applied point of view. Adaptation and mitigation are the two key domains of academic and applied learning required for students to be qualified to undertake research and be employable in the climate change arena in the South African and developing country context. The issues are explored from a developing country, climate compatible perspective.",
+      "entry": "Acceptance for EGS5012W and by agreement of the course convenor.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "Coursework 80%; Examination 20%.",
+      "examWeight": 20
+    },
+    {
+      "code": "EGS5038F",
+      "title": "Climate Change & Predictability",
+      "credits": 23,
+      "nqf": 9,
+      "conveners": [
+        "Dr C Jack"
+      ],
+      "outline": "The course explores the theory of climate change, and then goes into the question of predictability, cross scale relationships and feedbacks in the climate system, the tools and techniques of prediction, and translation of predictions into the user community including impacts and vulnerability analyses and touching on the social dimension. At the NQF 9 level students will be expected to compose reports with a higher word count, at a higher intellectual level and with an expectation of a more comprehensive understanding of the pertinent literature.",
+      "entry": "Acceptance for Honours or Master’s specialising in EGS. DEPARTMENTS IN THE FACULTY 145",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "At least 80% attendance record and submission of all assignments.",
+      "assessment": "100% Coursework.",
+      "examWeight": null
+    },
+    {
+      "code": "EGS5038S",
+      "title": "Climate Change & Predictability",
+      "credits": 23,
+      "nqf": 9,
+      "conveners": [
+        "Dr C Jack"
+      ],
+      "outline": "The course explores the theory of climate change, and then goes into the question of predictability, cross scale relationships and feedbacks in the climate system, the tools and techniques of prediction, and translation of predictions into the user community including impacts and vulnerability analyses and touching on the social dimension. At the NQF 9 level students will be expected to compose reports with a higher word count, at a higher intellectual level and with an expectation of a more comprehensive understanding of the pertinent literature.",
+      "entry": "Acceptance for Honours or Master’s specialising in EGS. DEPARTMENTS IN THE FACULTY 145",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "At least 80% attendance record and submission of all assignments.",
+      "assessment": "100% Coursework.",
       "examWeight": null
     },
     {
@@ -3365,7 +4012,7 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces.",
-      "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%) EGS5071F/S CLIMATE CHANGE & MARINE ECOSYSTEMS 23 NQF credits at NQF level 9 Convener: Dr P Matikinca",
+      "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
       "examWeight": 40
     },
     {
@@ -3384,7 +4031,45 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces.",
-      "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%) EGS5071F/S CLIMATE CHANGE & MARINE ECOSYSTEMS 23 NQF credits at NQF level 9 Convener: Dr P Matikinca",
+      "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
+      "examWeight": 40
+    },
+    {
+      "code": "EGS5071F",
+      "title": "Climate Change & Marine Ecosystems",
+      "credits": 23,
+      "nqf": 9,
+      "conveners": [
+        "Dr P Matikinca"
+      ],
+      "outline": "In the face of increasing concentration of carbon dioxide in the atmosphere, climate change is causing unprecedented changes in sea surface temperatures and seawater carbonate chemistry (ocean acidification). The aim of this course is to introduce students to the effects of climate change on marine and coastal ecosystems, and the implications this has for marine ecosystem services.",
+      "entry": "Acceptance for EGS Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "At least 80% attendance and submission of all assignments.",
+      "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
+      "examWeight": 40
+    },
+    {
+      "code": "EGS5071S",
+      "title": "Climate Change & Marine Ecosystems",
+      "credits": 23,
+      "nqf": 9,
+      "conveners": [
+        "Dr P Matikinca"
+      ],
+      "outline": "In the face of increasing concentration of carbon dioxide in the atmosphere, climate change is causing unprecedented changes in sea surface temperatures and seawater carbonate chemistry (ocean acidification). The aim of this course is to introduce students to the effects of climate change on marine and coastal ecosystems, and the implications this has for marine ecosystem services.",
+      "entry": "Acceptance for EGS Masters.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "At least 80% attendance and submission of all assignments.",
+      "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
       "examWeight": 40
     },
     {
@@ -3420,6 +4105,60 @@
       "dp": "",
       "assessment": "",
       "examWeight": null
+    },
+    {
+      "code": "GEO1006S",
+      "title": "Introduction to Minerals, Rocks & Structure",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor R Pickering"
+      ],
+      "outline": "This course introduces students to the Geology major and covers the essentials of the discipline as follows: crystals and minerals; igneous and metamorphic rocks; structural geology; mineral deposits and economic geology; palaeontology; the interpretation of geological maps. A three-day field trip to the Western Cape serves as an introduction to field geology.",
+      "entry": "A minimum of 45% in GEO1009F",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 5th period",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "An average of 30% in all marked classwork and tests. DEPARTMENTS IN THE FACULTY 153",
+      "assessment": "Class tests count 35%; field reports count 15%; one 2-hour theory examination written in November counts 50%. A subminimum of 40% is required in the theory examination paper.",
+      "examWeight": 50
+    },
+    {
+      "code": "GEO1009F",
+      "title": "Geosystems: An Introduction to Earth & Environmental Sciences",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor E M Bordy"
+      ],
+      "outline": "This course aims to develop a broad understanding of how the Earth works. Over its >4.5 billion-yearlong history, the Earth has been shaped by chemical, physical and biological processes. The course demonstrates why decoding the rock record of deep-time events is critical for explaining past, present and future environmental changes and the distribution of natural resources. It examines the interplay of terrestrial, marine, atmospheric, and cryospheric processes within the Earth system, with an emphasis on monitoring essential variables for understanding climate variability and change.",
+      "entry": "At least 50% for NSC Geography or at least 60% for NSC Physical Science or Life Sciences. NOTE: Preference will be given to students majoring in Archaeology, Environmental and Geographical Science, Geology or Oceanography.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "An average of 40% on all marked classwork and tests. Submission of 80% of weekly assignments in each of the four sections (i.e., GEO, AGE, SEA, EGS). Attendance of the field trip is compulsory for students majoring in Archaeology, EGS, Geology, or Oceanography.",
+      "assessment": "Marked classwork, including class test/s, counts 50%, and a 3-hour written examination counts 50%. A subminimum of 40% in the class mark is required to write the theory examination paper. Supplementary examinations for GEO1009F will be offered in July.",
+      "examWeight": 50
     },
     {
       "code": "GEO2001F",
@@ -3472,8 +4211,81 @@
         "Friday"
       ],
       "dp": "An average of 30% in marked class work, and attendance at 80% of practicals.",
-      "assessment": "Class tests and practicals count 25%; one 2-hour practical examination in November counts 30%; one 2-hour theory examination in November counts 45%. Subminima of 40% are required in practical and theory examination papers. GEO2005X FIELD GEOLOGY & GEOLOGICAL MAPPING 24 NQF credits at NQF level 6 Convener: Associate Professor J F Diener",
+      "assessment": "Class tests and practicals count 25%; one 2-hour practical examination in November counts 30%; one 2-hour theory examination in November counts 45%. Subminima of 40% are required in practical and theory examination papers.",
       "examWeight": 45
+    },
+    {
+      "code": "GEO2005X",
+      "title": "Field Geology & Geological Mapping",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor J F Diener"
+      ],
+      "outline": "This is a field-based course that introduces techniques used to identify, describe and document rocks in the field and for interpreting their inter-relationships, with the view to producing geological maps, stratigraphic logs and structural sections. Techniques covered include: mineralogical and textural descriptions of rocks using a hand-lens; measurement of attitude of bedding using compass and clinometer; measurement, description and interpretation of depositional and deformational structures; stereo plots, interpretation and use of aerial photographs; identifying contact relationships;…",
+      "entry": "GEO1006S, GEO2004S (co-requisite)",
+      "corequisites": "",
+      "lectures": "None",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Attendance at all field camps",
+      "assessment": "Maps and reports count 70%; three 2-hour practical examinations in June and November count for 30%.",
+      "examWeight": 30
+    },
+    {
+      "code": "GEO3001S",
+      "title": "Stratigraphy & Economic Geology",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor G Howarth"
+      ],
+      "outline": "This course covers the development of the oceanic and continental rock record and associated ore deposits as follows: the principles of stratigraphy with examples drawn from the South African rock record; the methods and procedures involved in dating rocks; the genesis of economic mineral deposits, their microscopic textures, and their valuation and exploitation; geophysical techniques.",
+      "entry": "GEO2004S and DP in GEO3005F",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "An average of 30% in all marked class work and class tests. DEPARTMENTS IN THE FACULTY 155",
+      "assessment": "Practicals and tests count 25%; one 3-hour theory examination written in November counts 45%; two 2-hour practical examinations written in November count 30%. Subminima of 40% required in practical and theory examination papers.",
+      "examWeight": 45
+    },
+    {
+      "code": "GEO3005F",
+      "title": "Petrology & Structural Geology",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Professor P E Janney"
+      ],
+      "outline": "This course covers key concepts in igneous, metamorphic and sedimentary petrology in combination with structural geology as follows: interpreting major and trace element and isotope variations in igneous rocks; origin and evolution of the major magma series; thermodynamics, kinetics and chemography of metamorphic reactions; tectonic setting of metamorphic terrains; principles of interpretations and classification of continental and marine sedimentary environments; kinematic principles, deformation mechanisms, microstructure, faulting and tectonic geomorphology.",
+      "entry": "GEO2001F, GEO2004S",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Attendance at 80% of practicals and an average of 30% in all marked class work and tests.",
+      "assessment": "Class work counts 20%; one 4-hour practical examination written in June counts 30%; one 3-hour theory examination written in June counts 50%. Subminima of 40% required in practical and theory examination papers.",
+      "examWeight": 50
     },
     {
       "code": "GEO4000W",
@@ -3664,6 +4476,32 @@
       "examWeight": null
     },
     {
+      "code": "INF2011S",
+      "title": "Systems Design & Development",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "D Snyman"
+      ],
+      "outline": "This course is intended to provide students with an in-depth knowledge of the systems development process with particular emphasis on the design and implementation stages of the life cycle. There is a strong practical component to the course, where students will use object - oriented tools to design and construct a working system. This course is designed to build on the skills acquired in INF2009F Systems Analysis.",
+      "entry": "Minimum 45% final mark for [INF2007 or INF2008 or CSC2001 or equivalent] and INF2009 and [INF1003 or CSC1016 or equivalent]",
+      "corequisites": "",
+      "lectures": "Monday, Tuesday and Wednesday, 4th period, Thursday: Weekly workshop sessions 3rd to 4th OR 4th to 5th periods. Friday: Practical workshops 5th – 7th",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Submit 80% of workshops and quizzes. Year-mark of 45%. Submitted all project work.",
+      "assessment": "The final grade is derived from the following deliverables: Coursework: 60%; Exam 40%. Subminimum 45% for the final exam.",
+      "examWeight": 40
+    },
+    {
       "code": "INF3011F",
       "title": "I.t. Project Management",
       "credits": 18,
@@ -3679,8 +4517,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Submission of required project work and a sub-minimum of 45% for the year mark prior to writing the final examination. In addition, students must have satisfactory attendance at tutorials and lectures.",
-      "assessment": "Coursework counts 70%. Final examination counts 30%. Sub-minimum of 40% for the final examination. INF3012S BPM & ENTERPRISE SYSTEMS 18 NQF credits at NQF level 7 Convener: P Tsibolane",
+      "assessment": "Coursework counts 70%. Final examination counts 30%. Sub-minimum of 40% for the final examination.",
       "examWeight": 30
+    },
+    {
+      "code": "INF3012S",
+      "title": "Bpm & Enterprise Systems",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "P Tsibolane"
+      ],
+      "outline": "",
+      "entry": "A pass in INF2003F, INF2009F and",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
     },
     {
       "code": "INF3014F",
@@ -3698,7 +4555,7 @@
       "periodChoice": false,
       "days": [],
       "dp": "Submission of tutorials, seminar, and project work as well as a subminimum of 45% for the year mark prior to writing the final examination.",
-      "assessment": "Coursework 70%. Exam 30%. Subminimum of 40% for the final examination. Departments in the Faculty of Engineering and the Built Environment ELECTRICAL ENGINEERING Professor and Head of Department MA Khan, MSc(Eng) PhD Cape Town SMIEEE EEE2041F INTRODUCTION TO ELECTRICAL ENGINEERING & POWER UTILISATION For students in the Mechanical Engineering and Mechanical & Mechatronic Engineering programmes and Computer Science. 16 NQF credits at NQF level 6 Convener: Dr S Jayalath",
+      "assessment": "Coursework 70%. Exam 30%. Subminimum of 40% for the final examination. Departments in the Faculty of Engineering and the Built Environment ELECTRICAL ENGINEERING Professor and Head of Department MA Khan, MSc(Eng) PhD Cape Town SMIEEE",
       "examWeight": 30
     },
     {
@@ -3795,9 +4652,17 @@
       "entry": "At least 70% in NSC Mathematics. Students registered in other faculties who do not meet the 70% NSC requirement may instead complete MAM1014F/MAM1022F followed by MAM1015S with a mark of 70% or higher. From 2027 the 70% NSC requirement may be replaced by MAM1025F/MAM1026F followed by MAM1015S with a mark of 70% or higher.",
       "corequisites": "",
       "lectures": "Monday - Friday, Meridian",
-      "periods": [],
+      "periods": [
+        0
+      ],
       "periodChoice": false,
-      "days": [],
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
       "dp": "Minimum of 30% in class tests, and at least 80% attendance at tutorials.",
       "assessment": "Year mark counts up to 40%; one 3-hour examination makes up the balance.",
       "examWeight": null
@@ -3865,7 +4730,7 @@
       "periodChoice": false,
       "days": [],
       "dp": "Class Record of at least 30% and attendance at 10 or more (out of 12) tutorials.",
-      "assessment": "Class Record counts 50% and Exam counts 50%. MAM1043H MODELLING & APPLIED COMPUTING This course can be taken in conjunction with MAM1044H as lectures are arranged so that this is possible. Each student registered for this course is required to have a laptop for use during class sessions as well as after hours. A tablet or “netbook” will not be suitable. The course convener will provide details of additional software required. 18 NQF credits at NQF level 5 Convener: Dr P W Adams",
+      "assessment": "Class Record counts 50% and Exam counts 50%.",
       "examWeight": 50
     },
     {
@@ -3880,9 +4745,17 @@
       "entry": "At least 70% in NSC Mathematics",
       "corequisites": "MAM1031F and MAM1032S or equivalent.",
       "lectures": "Five lectures every two weeks in meridian.",
-      "periods": [],
+      "periods": [
+        0
+      ],
       "periodChoice": false,
-      "days": [],
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
       "dp": "Minimum of 30% in year mark and satisfactory tutorial attendance.",
       "assessment": "Year mark counts 30 - 40%; one 2-hour examination paper written in June/July and one in October/November equally make up the balance.",
       "examWeight": null
@@ -4000,6 +4873,33 @@
       "examWeight": 67
     },
     {
+      "code": "MAM1043H",
+      "title": "Modelling & Applied Computing",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr P W Adams"
+      ],
+      "outline": "The aim of this course is to introduce Applied Mathematics and Mathematical Modelling through approximations and estimation theory, dimensional analysis, numerical methods, rudimentary modelling using first- and second-order ordinary differential equations, discrete- and continuous-time dynamical systems, and modelling and simulation of discrete- and continuous-time processes with MATLAB.",
+      "entry": "",
+      "corequisites": "MAM1031F and MAM1032S or equivalent.",
+      "lectures": "First Semester: 2nd period Monday, Wednesday, Friday. Second Semester: 2nd period Tuesday, Thursday.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "A class record of 30% or more, satsifactory attendance at lectures and tutorials, and submission of all assigned work.",
+      "assessment": "Class record counts 20 - 40%; one 3-hour examination written in October/November makes up the balance.",
+      "examWeight": null
+    },
+    {
       "code": "MAM1044H",
       "title": "Dynamics",
       "credits": 18,
@@ -4084,6 +4984,23 @@
       "examWeight": null
     },
     {
+      "code": "MAM5020F",
+      "title": "Generative Ai for Research: Applications & Implications",
+      "credits": 0,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "This course introduces graduate science students to generative artificial intelligence and its applications in research processes. Students will gain a comprehensive understanding of how AI systems work, their capabilities, limitations, and ethical implications. The course covers practical applications of AI across the research lifecycle, including ideation, literature review, data exploration, and scientific writing.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
+    },
+    {
       "code": "MCB2020F",
       "title": "Biological Information Transfer",
       "credits": 24,
@@ -4134,7 +5051,34 @@
         "Friday"
       ],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
-      "assessment": "Tests and assignments count 40%; practicals count 10%; one three-hour paper written in June counts 50%. A subminimum of 40% in the examination is required. MCB2022S METABOLISM & BIOENGINEERING Entrance is limited to 140 students. 24 NQF credits at NQF level 6 Convener: Dr M Williams",
+      "assessment": "Tests and assignments count 40%; practicals count 10%; one three-hour paper written in June counts 50%. A subminimum of 40% in the examination is required.",
+      "examWeight": null
+    },
+    {
+      "code": "MCB2022S",
+      "title": "Metabolism & Bioengineering",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Dr M Williams"
+      ],
+      "outline": "This course will introduce students to some key aspects of metabolic energy production in eukaryotic and prokaryotic systems. It aims to raise awareness of issues at the forefront of the discipline and give students the ability to dissect problems in order to identify solutions. Topics covered may include carbohydrate and lipid metabolism, metabolic integration, the metabolic diversity in Bacteria and Archaea, and bioengineering in bacteria and plants.",
+      "entry": "MCB2020F and MCB2021F",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 5th period",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
+      "assessment": "Tests and assignments count 40%; practicals count 10%; one three-hour paper written in November counts 50%. A subminimum of 40% in the examination is required.",
       "examWeight": null
     },
     {
@@ -4165,6 +5109,106 @@
       "examWeight": null
     },
     {
+      "code": "MCB3012Z",
+      "title": "Research Project in Molecular & Cell Biology",
+      "credits": 0,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor R Ingle"
+      ],
+      "outline": "Groups of students will select and perform a research project two afternoons per week by arrangement. The work will be written up in the form of a research paper. This course replaces practical classes for all the third year second semester MCB courses.",
+      "entry": "MCB3025F or MCB3026F (or concurrent registration in MCB3023S or MCB3024S). DEPARTMENTS IN THE FACULTY 181",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "Project counts 100%",
+      "examWeight": null
+    },
+    {
+      "code": "MCB3023S",
+      "title": "Molecular Evolutionary Genetics & Development",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr S F Dube"
+      ],
+      "outline": "This course provides advanced level studies in the area of molecular evolutionary genetics and development. Focus is placed on understanding key experiments in these fields and on interpreting data. Topics covered include: The origins and molecular genetics of viruses, principles of mouse molecular genetics applied to limb and neural development; evo-devo or how genetic change leads to morphological diversity; interactions between genetics, the environment and development.",
+      "entry": "MCB2020F, MCB2021F and MCB2022S or MCB2023S",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 4th period",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "None",
+      "assessment": "Tests count 40%; one 3-hour examination written in November counts 60%. A subminimum of 40% in the examination is required.",
+      "examWeight": 60
+    },
+    {
+      "code": "MCB3024S",
+      "title": "Defence & Disease",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Mbewana"
+      ],
+      "outline": "This course will initially examine the innate immune systems of plants. The focus will switch to the adaptive immune system, with emphasis on three major disease challenges in South Africa; namely, HIV, TB and malaria. Host-pathogen interactions will also be discussed, with a focus on viruses and how they infect mammals. Finally, the course will examine strategies to produce vaccines that enable immunity to viral infection.",
+      "entry": "MCB2020F, MCB2021F and MCB2022S or MCB2023S",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 5th period",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "None",
+      "assessment": "Tests count 40%; one 3-hour examination written in November counts 60%. A subminimum of 40% in the examination is required.",
+      "examWeight": 60
+    },
+    {
+      "code": "MCB3025F",
+      "title": "Structural & Chemical Biology",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr R Hurdayal"
+      ],
+      "outline": "This course addresses how modern techniques of structural and chemical biology are being used to solve biological problems. It draws on multiple aspects of macromolecular biochemistry including nucleic acid structure and interactions, signalling proteins and membrane proteins, and demonstrates how this knowledge can be used in drug discovery and protein design in biotechnology. Topics include: mechanisms of reversible and irreversible enzyme inhibitors, ligand binding, protein folding, molecular basis for protein function, regulation of protein activity, cell signalling and proteomics.",
+      "entry": "MCB2020F, MCB2021F and MCB2022S or MCB2023S",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 5th period",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
+      "assessment": "Tests count 40%; practicals, tutorials essays and assignments count 10%; one 3-hour examination written in June counts 50%. A subminimum of 40% in the examination is required.",
+      "examWeight": 50
+    },
+    {
       "code": "MCB3026F",
       "title": "Molecular Genetics and Genomics",
       "credits": 36,
@@ -4189,6 +5233,52 @@
       ],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests count 40%; practicals, tutorials, essays and assignments count 10%; one 3-hour examination written in June counts 50%. A subminimum of 40% in the examination is required.",
+      "examWeight": 50
+    },
+    {
+      "code": "MCB4002W",
+      "title": "Molecular & Cell Biology Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Dr T Oelgeschläger"
+      ],
+      "outline": "The first part of this course consists of a ten-week techniques course including gel electrophoresis, recombinant DNA technology, PCR, sequencing, bioinformatics, gene expression, protein isolation and analysis, confocal and electron microscopy, and large data set analysis. After successful completion of the techniques course, a six-month research project on a specific topic will be undertaken.",
+      "entry": "BSc degree with a major in Biochemistry, Biotechnology, Genetics or Microbiology. Molecular-based courses are highly recommended. Preference may be given to UCT graduates. Entrance is limited to 16 students, dependent on availability of supervisors and funding.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Techniques examination must be passed at 50% to continue course.",
+      "assessment": "Two 3-hour techniques examinations written in May, and the techniques course assignments, count 20%; essays count 15%; oral presentations count 20%; statistics module 1%, one 4-hour examination written in November counts 10%; project counts 34%. The research project must be passed at 50%.",
+      "examWeight": 10
+    },
+    {
+      "code": "PHY1004W",
+      "title": "Matter & Interactions",
+      "credits": 36,
+      "nqf": 5,
+      "conveners": [
+        "Professor A Buffler"
+      ],
+      "outline": "PHY1004W is an advanced calculus-based introductory course for Science students intending to continue with second-year Physics. It features the modelling of physical systems from fundamental principles, and computational problem solving using Python. The course includes the following topics: Modern mechanics: Conservation laws, the momentum principle, atomic nature of matter, conservation of energy, energy in macroscopic systems, energy quantization, multi-particle systems, exploring the nucleus, angular momentum, entropy.",
+      "entry": "At least 60% for NSC Physical Science. MAM1000W or both MAM1031F & MAM1032S (or equivalent) and CSC1015F & CSC1015S (or equivalent) must have been passed or be taken concurrently. Students registered for this course will be assessed in week 5; if it is judged that they are not coping with the level and pace of the course, and would benefit from an opportunity to strengthen foundational concepts…",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 3rd period",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Minimum of 40% in class record, including 50% in laboratory assessment.",
+      "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2-hour examination in June counts 25%; one 2-hour examination in November counts 25%.",
       "examWeight": 50
     },
     {
@@ -4297,7 +5387,7 @@
       ],
       "dp": "Minimum of 40% for the class record; completion of all laboratory reports and 75% of tutorial work and problem sets; attendance at all tests.",
       "assessment": "Class record (tests, weekly problem sets and laboratory work) counts 50%; one 3-hour examination in June counts 25%; one 3-hour examination in November counts 25%. A subminimum of 40% is required in each of the two examinations.",
-      "examWeight": 25
+      "examWeight": 50
     },
     {
       "code": "PHY3004W",
@@ -4307,24 +5397,16 @@
       "conveners": [
         "Dr T W Leadbeater"
       ],
-      "outline": "This course completes the major in Physics. The theory component aims to develop advanced skills in problem solving within physics, and includes the following topics: Electromagnetism: Maxwell's equations in vacuum and matter, momentum and angular momentum in electromagnetic fields, electromagnetic waves, wave guides, gauge transformations, retarded potentials, electric and magnetic dipole radiation, special relativity, relativistic kinematics and electrodynamics, electromagnetic field tensor.",
-      "entry": "PHY2004W, and 40% in MAM2000W or (MAM2010F & MAM2011F).",
+      "outline": "",
+      "entry": "PHY2004W, and 40% in MAM2000W or (",
       "corequisites": "",
-      "lectures": "Monday - Friday, 4th period",
-      "periods": [
-        4
-      ],
+      "lectures": "",
+      "periods": [],
       "periodChoice": false,
-      "days": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday"
-      ],
-      "dp": "Minimum of 40% for the class record; attendance at all tests; completion of all laboratory reports; completion of the project and completion of 75% of tutorials and problem sets.",
-      "assessment": "Class record (tests, weekly problem sets, laboratory work and project) counts 50%; two 2-hour examinations in June count 25%; two 2-hour examinations in November count 25%. A subminimum of 40% exists in the weighted average of the four examinations.",
-      "examWeight": 25
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
     },
     {
       "code": "PHY4000W",
@@ -4417,6 +5499,52 @@
       "examWeight": 40
     },
     {
+      "code": "SEA3004F",
+      "title": "Ocean & Atmosphere Dynamics",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr M Ragoasha"
+      ],
+      "outline": "The Ocean & Atmosphere dynamics course will begin to specialise in advanced material related to physical oceanography, atmospheric science and climate. These topics will include a quantitative approach to ocean/atmosphere dynamics, theories of circulation and the development of ocean and atmospheric weather systems, coupled ocean/atmosphere processes, interactions and feedbacks with the carbon cycle in the earth system and climate change. Methods of analysis of both observations and model data will be covered in the tutorials and practicals.",
+      "entry": "MAM1031F+MAM1032S (recommended) or equivalent, PHY1031F or equivalent, or permission of the convener.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 3rd period",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Attendance at tutorials and practicals, and a class mark of at least 40%.",
+      "assessment": "Tutorials/practicals and tests count 50%; one 3-hour examination written in June/July counts 50%. A subminimum of 40% in the examination is required.",
+      "examWeight": 50
+    },
+    {
+      "code": "SEA4001W",
+      "title": "Ocean & Atmosphere Science Honours",
+      "credits": 160,
+      "nqf": 8,
+      "conveners": [
+        "Professor I Ansorge"
+      ],
+      "outline": "Honours students intending careers in ocean and atmosphere science will complete a full set of modules and a research project. Honours students from Environmental & Geographical Science, Applied Mathematics, and other physical science and engineering departments, are encouraged to attend selected modules. The curriculum includes lecture-tutorials, seminars and practical work in advanced oceanography, meteorology and climate, an introduction to modelling and data analysis.",
+      "entry": "A BSc degree with a major/specialisation in Ocean & Atmosphere Science or in a related discipline. CEM1000W or equivalent is a prerequisite. Acceptance will be at the discretion of the Head of Department who will consider quality of final year results, material covered in the undergraduate curriculum, and possibly referee reports.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "Module assessment by submission of a research portfolio, which includes compulsory fieldtrip reports, skills examination and formal test results. A weighted average of the continuous assessment of reports and tests counts 65% of the final mark; the research project counts 35% of the final mark. The research project must be passed at 50%.",
+      "examWeight": null
+    },
+    {
       "code": "SEA5011Z",
       "title": "Operational Oceanography",
       "credits": 50,
@@ -4482,6 +5610,90 @@
       "examWeight": 60
     },
     {
+      "code": "STA2007F",
+      "title": "Study Design & Data Analysis for Scientists",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Altwegg"
+      ],
+      "outline": "The course aims to equip students with practical experience and skills in analysing data, using statistical techniques frequently used in the sciences. The skills include designing experiments, choosing appropriate statistical methods for visual display and statistical modelling of data, model checking, interpretation and reporting of statistical results, and understanding of limitations of statistical methods and data. By the end of the course the student should have gained enough confidence to transfer these skills to new problems or data sets in their own profession.",
+      "entry": "A pass in STA1000F/S or STA1006S or STA1007S or STA1106H or STA1100S or STA1008F/S) and (MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1005H or MAM1010F/S or MAM1020F/S or MAM1110F/H)",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA2007H",
+      "title": "Study Design & Data Analysis for Scientists",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Altwegg"
+      ],
+      "outline": "The course aims to equip students with practical experience and skills in analysing data, using statistical techniques frequently used in the sciences. The skills include designing experiments, choosing appropriate statistical methods for visual display and statistical modelling of data, model checking, interpretation and reporting of statistical results, and understanding of limitations of statistical methods and data. By the end of the course the student should have gained enough confidence to transfer these skills to new problems or data sets in their own profession.",
+      "entry": "A pass in STA1000F/S or STA1006S or STA1007S or STA1106H or STA1100S or STA1008F/S) and (MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1005H or MAM1010F/S or MAM1020F/S or MAM1110F/H)",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA2007P",
+      "title": "Study Design & Data Analysis for Scientists",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Altwegg"
+      ],
+      "outline": "The course aims to equip students with practical experience and skills in analysing data and applying statistical techniques relevant to the natural sciences. Skills include designing experiments, choosing appropriate statistical methods for analysing data, visual display and statistical modelling of data, model checking, interpretation and reporting of statistical results, and understanding limitations of statistical methods and data. Topics include: introduction to statistical notation, linear regression, design and analysis of experiments, generalised linear models.",
+      "entry": "A pass in STA1007S (preferably) or STA1000F/S or STA1006S or STA1106H or STA1100S or STA1008F/S) and (MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1005H or MAM1010F/S or MAM1020F/S, MAM1110F/H).",
+      "corequisites": "Concurrent registration for MAM1032S or MAM1034S or MAM1012S or MAM1021F/S. Note: A student may not register concurrently for STA2030S and MAM1006H.",
+      "lectures": "Monday - Thursday, 1st or 5th period",
+      "periods": [
+        1,
+        5
+      ],
+      "periodChoice": true,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA2007S",
+      "title": "Study Design & Data Analysis for Scientists",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Altwegg"
+      ],
+      "outline": "The course aims to equip students with practical experience and skills in analysing data, using statistical techniques frequently used in the sciences. The skills include designing experiments, choosing appropriate statistical methods for visual display and statistical modelling of data, model checking, interpretation and reporting of statistical results, and understanding of limitations of statistical methods and data. By the end of the course the student should have gained enough confidence to transfer these skills to new problems or data sets in their own profession.",
+      "entry": "A pass in STA1000F/S or STA1006S or STA1007S or STA1106H or STA1100S or STA1008F/S) and (MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1005H or MAM1010F/S or MAM1020F/S or MAM1110F/H)",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
       "code": "STA3022F",
       "title": "Applied Multivariate Data Analysis",
       "credits": 36,
@@ -4517,7 +5729,7 @@
       ],
       "outline": "This course forms part of the third-year major in Applied Statistics. It is an introduction to the study of Operational Research (OR) and explores fundamental quantitative techniques in the OR armamentarium with a strong focus on computer-based application. The course is intended for students in the applied statistics stream but may be taken as an elective by students in the mathematical statistics stream.",
       "entry": "STA2020F/S or STA2005S or STA2007F/S and (MAM1031F and MAM1032S (or equivalent)). Note that students must be in their third academic year to take the course. All pre-requisite courses must be passed prior to taking the STA3036S course (and not done concurrently).",
-      "corequisites": "STA3048S",
+      "corequisites": "",
       "lectures": "Monday - Thursday, 3rd period",
       "periods": [
         3
@@ -4531,6 +5743,33 @@
       ],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. STA3041F STOCHASTIC PROCESSES & TIME SERIES A student cannot obtain credits for both STA3030F and STA3041F. 36 NQF credits at NQF level 7 Convener: D Katshunga",
+      "examWeight": 70
+    },
+    {
+      "code": "STA3045F",
+      "title": "Advanced Stochastic Processes & Distribution Theory",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor T Gebbie"
+      ],
+      "outline": "This course is a third-year module for students studying Actuarial Science or Mathematical Statistics, though not a requirement for a major in Mathematical Statistics. The course begins by giving a brief introduction to copulas and extreme value theory, together with some applications to risk management. The rest of the course gives a theoretical overview of stochastic processes, with the models covered spanning both discrete and continuous time as well as discrete and continuous statespace.",
+      "entry": "STA2004F, STA2005S and MAM2010F, MAM2011F, MAM2012S and MAM2014S. Concurrent registration for STA3041F. Note: A student may not register concurrently for STA3045F and CSC2001F.",
+      "corequisites": "STA3048S",
+      "lectures": "Five lectures per week, Monday - Friday, 2nd period.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. STA3047S INTRODUCTION TO MACHINE LEARNING A student cannot obtain credits for both STA3043S and (STA3047S+STA3048S) 6 NQF credits at NQF level 7 Convener: Dr E Pienaar",
       "examWeight": 70
     },
     {
@@ -4647,6 +5886,44 @@
       "dp": "",
       "assessment": "This component will be assessed through class assessments and examinations. A pass for this coursework requires an average of 50% over all modules, as well as a minimum of 50% for certain modules designated as core material.",
       "examWeight": null
+    },
+    {
+      "code": "STA5014X",
+      "title": "Study Design & Data Analysis for Scientists Doing Postgraduate Studies",
+      "credits": 0,
+      "nqf": 9,
+      "conveners": [
+        "Professor R Altwegg"
+      ],
+      "outline": "The course aims to equip students with practical experience and skills in analysing data, using statistical techniques frequently used in the sciences. The skills include designing experiments, choosing appropriate statistical methods for visual display and statistical modelling of data, model checking, interpretation and reporting of statistical results, and understanding of limitations of statistical methods and data. By the end of the course the student should have gained enough confidence to transfer these skills to new problems or data sets in their own profession.",
+      "entry": "Co-registration for an honours, Master's or PhD degree in a relevant discipline such as Biology, Ocean Science, Medicine, and Engineering that involves a substantial component of quantitative training, as assessed by Head of Statistical Sciences Department. Students must have done a basic (first-year level) course in statistics.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "Assignments and quizzes count 20%; one 2-hour examination in June or November counts 80%. A sub-minimum of 40% is required for the examination.",
+      "examWeight": 80
+    },
+    {
+      "code": "STA5014Z",
+      "title": "Study Design & Data Analysis for Scientists Doing Postgraduate Studies",
+      "credits": 0,
+      "nqf": 9,
+      "conveners": [
+        "Professor R Altwegg"
+      ],
+      "outline": "The course aims to equip students with practical experience and skills in analysing data, using statistical techniques frequently used in the sciences. The skills include designing experiments, choosing appropriate statistical methods for visual display and statistical modelling of data, model checking, interpretation and reporting of statistical results, and understanding of limitations of statistical methods and data. By the end of the course the student should have gained enough confidence to transfer these skills to new problems or data sets in their own profession.",
+      "entry": "Co-registration for an honours, Master's or PhD degree in a relevant discipline such as Biology, Ocean Science, Medicine, and Engineering that involves a substantial component of quantitative training, as assessed by Head of Statistical Sciences Department. Students must have done a basic (first-year level) course in statistics.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "Assignments and quizzes count 20%; one 2-hour examination in June or November counts 80%. A sub-minimum of 40% is required for the examination.",
+      "examWeight": 80
     },
     {
       "code": "STA5059Z",

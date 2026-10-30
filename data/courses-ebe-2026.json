@@ -59,7 +59,45 @@
         "Tuesday"
       ],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. APG1004F HISTORY & THEORY OF ARCHITECTURE I 10 NQF credits at NQF level 5; First year undergraduate. Convener: Mr P Mabe",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
+      "code": "APG1004F",
+      "title": "History & Theory of Architecture I",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "Mr P Mabe"
+      ],
+      "outline": "This course introduces students to architectural history and theory as understood through cultural studies. The course follows a chronology of World Architecture until the beginning of the 19th Century. This chronology is occasionally interrupted and reframed by thematic content based on contemporary theoretical issues and architecture.",
+      "entry": "None",
+      "corequisites": "None",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
+      "code": "APG1005S",
+      "title": "History & Theory of Architecture II",
+      "credits": 10,
+      "nqf": 5,
+      "conveners": [
+        "Ms S Spamer"
+      ],
+      "outline": "The course follows the chronology of major administrative and stylistic architectural shifts at the Cape until the early 20th Century and introduces theoretical readings pertinent to particular buildings, precincts and epochs. Students visit, analyse and then present their findings of their assigned local case studies to the class. These case studies form the basis of research for the final essay.",
+      "entry": "None",
+      "corequisites": "None",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 74",
       "examWeight": null
     },
     {
@@ -84,8 +122,27 @@
         "Friday"
       ],
       "dp": "Attendance at and completion of all practicals and tutorials; all class tests must be written.",
-      "assessment": "Tests count 20%, practicals and tutorials count 30%, mid-year examination of 1 ½ hours counts 25%, end of year examination of 1 ½ hours counts 25% (subminimum 40% on the average of mid-year and end of year examinations). APG1020W DESIGN & THEORY STUDIO I 60 NQF credits at NQF level 5; First year undergraduate. Convener: Ms B Mathole",
+      "assessment": "Tests count 20%, practicals and tutorials count 30%, mid-year examination of 1 ½ hours counts 25%, end of year examination of 1 ½ hours counts 25% (subminimum 40% on the average of mid-year and end of year examinations).",
       "examWeight": 25
+    },
+    {
+      "code": "APG1020W",
+      "title": "Design & Theory Studio I",
+      "credits": 60,
+      "nqf": 5,
+      "conveners": [
+        "Ms B Mathole"
+      ],
+      "outline": "As a basic course for architecture, urban design and landscape architecture, its focus is on initiating the development of transferable design ability through the medium of architecture. Its primary objective is to introduce students to essential concepts, three dimensional spatialisation and inhabitation and to develop skills and techniques. Particular emphasis is paid to the development of productive working methods in design. The format of the course consists of short experimental exercises, longer projects and en loge tests.",
+      "entry": "None",
+      "corequisites": "APG1003W",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
     },
     {
       "code": "APG1021W",
@@ -142,7 +199,7 @@
       "days": [],
       "dp": "Attendance at and completion of all assignments with a minimum average of 40%, a minimum class test average of 40%.",
       "assessment": "Tests count 25%, practical assignments count 25%, examination of 3 hours counts 50% (sub-minimum 40%).",
-      "examWeight": null
+      "examWeight": 50
     },
     {
       "code": "APG1024F",
@@ -153,15 +210,53 @@
         "Professor J Whittal"
       ],
       "outline": "In this first year course, students are exposed to the breadth of topics they will encounter as they progress through the degree. Students will learn about the different branches of geospatial sciences, from the traditional to the modern, including the historical development of the discipline. The course DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 76 also covers the interrelationship between geospatial sciences and allied disciplines and professions, including an introduction to relevant professional bodies.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Attendance at and completion of all tests",
+      "assessment": "Class tests will count 52% each and exam will count 50%",
+      "examWeight": 50
+    },
+    {
+      "code": "APG2000F",
+      "title": "History & Theory of Architecture III",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": [
+        "Ms S Papanicolaou"
+      ],
+      "outline": "This course focuses on architectural modernism and urbanism. The intention is to give students an insight into the culture, tradition, programmes and movements of early modern architecture, as a global as well as local practice. The aim is to develop a critical understanding of the historical period.",
       "entry": "None",
       "corequisites": "None",
       "lectures": "Refer to departmental timetable",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Attendance at and completion of all tests",
-      "assessment": "Class tests will count 52% each and exam will count 50% APG2000F HISTORY & THEORY OF ARCHITECTURE III 10 NQF credits at NQF level 6; Second year undergraduate. Convener: Ms S Papanicolaou",
-      "examWeight": 50
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
+      "code": "APG2003S",
+      "title": "History & Theory of Architecture IV",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": [
+        "Ms B Mathole"
+      ],
+      "outline": "This course focuses on the period of Late Modernism, and the late 20th Century architectural and urban design movements incorporating critical regionalism, urban design and critical modern architecture that began to move away from the original tenets of early modernism. The geographic sites of focus with be both in global north and south. Critical engagement will be encouraged..",
+      "entry": "None",
+      "corequisites": "None",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
     },
     {
       "code": "APG2009F",
@@ -232,7 +327,7 @@
       ],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%; all class tests must be written.",
       "assessment": "Tests count 15%, practical assignments count 30%, examination of 3 hours counts 55% (sub-minimum 40%).",
-      "examWeight": null
+      "examWeight": 55
     },
     {
       "code": "APG2019X",
@@ -277,7 +372,7 @@
       ],
       "dp": "Attendance at and completion of all assignments with a minimum average of 40%, a minimum class test average of 40%.",
       "assessment": "Tests count 25%, practical assignments count 25%, examination of 3 hours counts 50% (sub-minimum 40%). DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 79",
-      "examWeight": null
+      "examWeight": 50
     },
     {
       "code": "APG2026S",
@@ -303,7 +398,7 @@
       ],
       "dp": "Attendance at and completion of all assignments with a minimum average of 40%, a minimum class test average of 40%.",
       "assessment": "Tests count 25%, practical assignments count 25%, examination of 3 hours counts 50% (sub-minimum 40%).",
-      "examWeight": null
+      "examWeight": 50
     },
     {
       "code": "APG2027X",
@@ -339,7 +434,7 @@
       "days": [],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%; all class tests must be written.",
       "assessment": "Tests count 15%, practical assignments count 30%, examination of 3 hours counts 55% (sub-minimum 40%).",
-      "examWeight": null
+      "examWeight": 55
     },
     {
       "code": "APG2041S",
@@ -374,7 +469,41 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance and 100% submission of all assignments",
-      "assessment": "100% on the portfolio exam APG2043F ENVIRONMENT & SERVICES I 10 NQF credits at NQF level 6 Convener: TBC",
+      "assessment": "100% on the portfolio exam",
+      "examWeight": 100
+    },
+    {
+      "code": "APG2043F",
+      "title": "Environment & Services I",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": [],
+      "outline": "Understand materials, components, assembly systems and generic details applicable to composite construction systems and small framed structures in reinforced concrete and steel. Development of an awareness of materials and construction as an informant of design at the scale of 2 to 4 storey buildings with basements, and of the link between design development and detail resolution both in precedent of architectural merit and in the students own design development work based on Studiowork projects. Understanding of 2D and 3D graphic representation of building assembly.",
+      "entry": "",
+      "corequisites": "APG2039W; APG2021W",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% attendance and 100% submission of all assignments",
+      "assessment": "100% on the portfolio exam",
+      "examWeight": 100
+    },
+    {
+      "code": "APG3000Z",
+      "title": "History & Theory of Architecture V",
+      "credits": 10,
+      "nqf": 7,
+      "conveners": [],
+      "outline": "The main educational objective in this course is to locate aspects of architectural design in relation to major theoretical and philosophical movements. Its broad intentions are to foster a knowledge and critical perspective of current practice and theory in architecture and urbanism. The course aims to give students the means by which to locate themselves within the contradictory conditions of contemporary cultural production and thereby to articulate their own design positions.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% attendance and100% submission of all assignments",
+      "assessment": "100% on the exam",
       "examWeight": 100
     },
     {
@@ -402,7 +531,7 @@
       ],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%, a minimum class test average of 35%.",
       "assessment": "Tests count 20%, Assignments count 25%, examination of 3 hours counts 55% (subminimum 40%).",
-      "examWeight": null
+      "examWeight": 55
     },
     {
       "code": "APG3013F",
@@ -429,7 +558,7 @@
       ],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%, a minimum class test average of 35%.",
       "assessment": "Written tests count 15%, practical tests and practical assignments count 25%, examination of 3 hours counts 60% (sub-minimum 40%).",
-      "examWeight": null
+      "examWeight": 60
     },
     {
       "code": "APG3016C",
@@ -456,7 +585,7 @@
       ],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%, a minimum class test average of 35%.",
       "assessment": "Tests count 20%, practical assignments count 20%, examination of 1 ½ hours counts 60% (sub-minimum 40%). DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 83",
-      "examWeight": null
+      "examWeight": 60
     },
     {
       "code": "APG3017D",
@@ -483,7 +612,7 @@
       ],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%, a minimum class test average of 35%.",
       "assessment": "Tests count 20%, practical assignments count 20%, examination of 1 ½ hours counts 60% (sub-minimum 40%).",
-      "examWeight": null
+      "examWeight": 60
     },
     {
       "code": "APG3023W",
@@ -541,7 +670,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. APG3030F DESIGN & THEORY STUDIO III 40 NQF credits at NQF level 7; For study abroad students. Convener: Ms H Boulanger",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
+      "code": "APG3030F",
+      "title": "Design & Theory Studio III",
+      "credits": 40,
+      "nqf": 7,
+      "conveners": [
+        "Ms H Boulanger"
+      ],
+      "outline": "This course focuses on the integration of design proposals and theoretical issues in coherent responses which cross urban, landscape and architectural scales, and which are well developed in detail. The use of digital media is emphasised in terms of conceptualisation, design development and presentation. The format of the course consists of short experimental exercises, longer projects and en-loge tests. The third quarter is spent on a major project, which provides scope for individual direction within the constraints of the course objectives.",
+      "entry": "",
+      "corequisites": "None",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
     },
     {
@@ -553,15 +701,32 @@
         "Professor J Whittal"
       ],
       "outline": "Fundamentals of Roman Dutch law, acquisition of rights in land, registration and recording of rights, cadastral systems and practical aspects of cadastral survey law. Statute and case law relating to cadastral survey, registration, planning, property holding, mineral and petroleum resources development rights, communal and informal rights, and land information management in South Africa. International law and law of the sea. Delimitation and delineation of offshore rights. Postapartheid land policies and legislation. Land reform and land delivery in the developing world.",
-      "entry": "APG2038W / APG2043F",
+      "entry": "",
       "corequisites": "CON2033F",
       "lectures": "First semester. Tues 11h00 to 12h45. Assignments and seminars: First semester, Wed 14h00-17h00. Second semester Fri 12:00 – 12:45. Assignments and seminars: 14h00 – 17h00.",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%, a minimum class test average of 40%.",
-      "assessment": "Tests count 34%, assignments count 66%. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 85 APG3034Z ENVIRONMENT & SERVICES II 10 NQF credits at NQF level 7 Convener: TBC",
+      "assessment": "Tests count 34%, assignments count 66%. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 85",
       "examWeight": null
+    },
+    {
+      "code": "APG3034Z",
+      "title": "Environment & Services II",
+      "credits": 10,
+      "nqf": 7,
+      "conveners": [],
+      "outline": "This course introduces sophisticated architectural strategies for passive and hybrid environmental control systems and services for medium and large scale buildings. Building energy simulation is emphasised. Students undertake analysis of best practice case studies. Students also independently apply sustainable design solutions to own design work.",
+      "entry": "APG2038W / APG2043F",
+      "corequisites": "APG3023W ; APG3037W",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% attendance and100% submission of all assignments",
+      "assessment": "100% on the portfolio exam",
+      "examWeight": 100
     },
     {
       "code": "APG3035F",
@@ -589,6 +754,25 @@
         "B Mathole"
       ],
       "outline": "The course provides a broad understanding of social and organizational principles which influence the production of the built environment as well as business principles of practice management related to architectural design and practice. Economic and legal principles are introduced in global and national contexts, giving emphasis to the following two themes: production of the built environment (incl.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "Refer to departmental timetable",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 86",
+      "examWeight": null
+    },
+    {
+      "code": "APG3037W",
+      "title": "Design & Theory Studio III",
+      "credits": 60,
+      "nqf": 7,
+      "conveners": [
+        "Ms H Boulanger"
+      ],
+      "outline": "The course focuses on the integration of design proposals, theoretical issues, in coherent responses which cross urban, landscape and architectural scales and which are well developed in detail. The use of digital media is emphasised in terms of conceptualisation, design development, and presentation. The format of the course consists of short experimental exercises, longer projects and en-loge tests. The third quarter is spent on a major project, which provides scope for individual direction within the constraints of the course objectives.",
       "entry": "APG2039W.",
       "corequisites": "APG3023W, APG3034W.",
       "lectures": "Refer to departmental timetable",
@@ -596,7 +780,7 @@
       "periodChoice": false,
       "days": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 86 APG3037W DESIGN & THEORY STUDIO III 60 NQF credits at NQF level 7; 1 theory and studio, 10 hours per week. \\third year undergraduate. Convener: Ms H Boulanger",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
     },
     {
@@ -670,7 +854,7 @@
       ],
       "dp": "Attendance at and completion of all assignments with a minimum average assignment mark of 50%, a minimum class test average of 40% and an 80% lecture attendance record.",
       "assessment": "Tests count 15%, Assignments count 30%, examination of 2 hours counts 55% (subminimum 40.",
-      "examWeight": null
+      "examWeight": 55
     },
     {
       "code": "APG3041Z",
@@ -713,8 +897,27 @@
         "Friday"
       ],
       "dp": "Attendance at and completion of all assignments and tests with a combined minimum average of 40%.",
-      "assessment": "Tests count 15%, practical assignments count 25%, examination of 3 hours counts 60%. APG4002Z LAND USE PLANNING & TOWNSHIP DESIGN 16 NQF credits at NQF level 8 Convener: Professor J Whittal",
+      "assessment": "Tests count 15%, practical assignments count 25%, examination of 3 hours counts 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "APG4002Z",
+      "title": "Land Use Planning & Township Design",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Professor J Whittal"
+      ],
+      "outline": "Course Aims: This course provides students with both a theoretical and a practical background in land use planning and the design of townships in the Southern African context. Course Content: Historical and theoretical bases of land use planning, hierarchy of land use plans, land use control and management. Sub-division and township layouts; site analysis. Social considerations; financial and economic considerations, institutional framework. Property development; current development issues.",
+      "entry": "APG3016C",
+      "corequisites": "",
+      "lectures": "Monday, 13h00- 17h00 DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 88",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Attendance at and completion of all assignments with a minimum average of 50%, a minimum class test average of 35%.",
+      "assessment": "Tests count 15%, practical assignments count 55%, examination of 3 hours counts 30%.",
+      "examWeight": 30
     },
     {
       "code": "APG4003Z",
@@ -732,8 +935,35 @@
       "periodChoice": false,
       "days": [],
       "dp": "None.",
-      "assessment": "Project proposal count 5%, final project presentation count 10%, final written project report count 85%. APG4005F ENGINEERING SURVEYING & ADJUSTMENT 18 NQF credits at NQF level 8 Convener: Dr M Shoko",
+      "assessment": "Project proposal count 5%, final project presentation count 10%, final written project report count 85%.",
       "examWeight": null
+    },
+    {
+      "code": "APG4005F",
+      "title": "Engineering Surveying & Adjustment",
+      "credits": 18,
+      "nqf": 8,
+      "conveners": [
+        "Dr M Shoko"
+      ],
+      "outline": "Course Aims: To provide knowledge on the design and optimisation of two- and three- dimensional engineering network, precision survey techniques and deformation analysis methods. To equip the student with problem solving skills for practical applications in precise engineering surveying and general project management. Course Content: Statistical analysis, deformation and subsidence surveys. Instrumentation and methods of precise engineering surveying, Kalman filters, engineering and industrial metrology, deformation analysis methods, case studies.",
+      "entry": "APG3013F, APG3017D.",
+      "corequisites": "",
+      "lectures": "2nd period Mon to Fri. Practicals: one per week, Wed 14h00-17h00.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Attendance at and completion of all assignments with a minimum average of 50%, a minimum class test average of 35%.",
+      "assessment": "Written tests count 15%, Practical Tests and practical assignments count 25%, examination of 3 hours counts 60% (sub-minimum 40%).",
+      "examWeight": 60
     },
     {
       "code": "APG4010X",
@@ -779,7 +1009,7 @@
       ],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%, a minimum class test average of 35%.",
       "assessment": "Written Tests count 15%, Practical Tests and practical assignments count 25%, examination of 3 hours counts 60% (sub-minimum 40%).",
-      "examWeight": null
+      "examWeight": 60
     },
     {
       "code": "APG4012S",
@@ -794,7 +1024,8 @@
       "corequisites": "",
       "lectures": "Thursday, meridian to 9th period",
       "periods": [
-        9
+        9,
+        0
       ],
       "periodChoice": false,
       "days": [
@@ -802,7 +1033,7 @@
       ],
       "dp": "Attendance at and completion of all assignments with a minimum average of 40%.",
       "assessment": "Assignments count 40%, examination of 3 hours counts 60% (sub-minimum 40%). DEPARTMENTS IN THE FACULTY AND COURSES OFFERED",
-      "examWeight": null
+      "examWeight": 60
     },
     {
       "code": "BIO1000F",
@@ -2307,7 +2538,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. CON3031W MEASUREMENT & DESIGN APPRAISAL II 26 NQF credits at NQF level 7 Convener: Ms E Edwardes",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
+      "code": "CON3031W",
+      "title": "Measurement & Design Appraisal II",
+      "credits": 26,
+      "nqf": 7,
+      "conveners": [
+        "Ms E Edwardes"
+      ],
+      "outline": "This course aims to develop the understanding of measurement and design appraisal. The theoretical aspects of the course are covered in lectures and includes detailed studies on: principles of measurement and documentation used in measurement and descriptive clauses in the Standard System of Measuring Building Work (6th ed.) The practical component of the syllabus is a progression from Measurement and Design Appraisal 1.",
+      "entry": "CON2006W and CON2037W",
+      "corequisites": "CON3012W, CON3030F and CON3043W",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
     },
     {
@@ -2398,7 +2648,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. CON3047F PROPERTY INVESTMENT & FINANCE II 14 NQF credits at NQF level 7 Convener: Dr S Nurick",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
+      "code": "CON3047F",
+      "title": "Property Investment & Finance II",
+      "credits": 14,
+      "nqf": 7,
+      "conveners": [
+        "Dr S Nurick"
+      ],
+      "outline": "This course aims to develop an understanding of: Cost of capital (cost of equity, cost of debit); equity capital; financial leverage; mortgages (types, borrowers’ decision-making, lenders’ decision making); investment decision-making; taxation; construction and development financing; and creative property financing (presales, joint ventures, leasebacks etc).",
+      "entry": "CON2032S",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
     },
     {
@@ -2734,7 +3003,34 @@
         "Friday"
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
-      "assessment": "Tests 20%; 15% for practicals, 15% for practical tests; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examinations. CSC3003S ADVANCED PROGRAMMING & ALGORITHMS Each student registered for this course is required to have a laptop for use during class sessions as well as after hours. The minimum specifications of the laptop are available at https://internal.cs.uct.ac.za/teaching/laptop_requirement.html (a tablet will not be suitable).",
+      "assessment": "Tests 20%; 15% for practicals, 15% for practical tests; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examinations.",
+      "examWeight": 50
+    },
+    {
+      "code": "CSC3003S",
+      "title": "Advanced Programming & Algorithms",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor P Marais"
+      ],
+      "outline": "This course covers three topics in advanced programming: software development, functional programming and the theory of algorithms (how algorithms are categorised, interesting algorithms in each category and how to analyse their complexity).",
+      "entry": "CSC2001F, CSC2002S, CSC2004Z and ((MAM1004F+MAM1008S) or (MAM1000W) or (MAM1031F or equivalent)).",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period, Practicals: Two 4-hour practicals per week, Monday Friday, 14h00 - 18h00",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Minimum of 45% aggregate in practical work.",
+      "assessment": "Tests 20%; practical work and practical tests 30%; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examination; 35% for the advanced computing module (comprising Theory of Algorithms and Functional Programming) in the final examination. CSC3024S INTRODUCTION TO C++ PROGRAMMING 18 NQF credits at NQF level 7 Convener: Associate Professor P Marais",
       "examWeight": 50
     },
     {
@@ -2879,6 +3175,25 @@
         "Dr D Ramotsoela"
       ],
       "outline": "This course aims to motivate and help students understand the basic concepts of power generation, transmission, distribution and basic principles of electric circuits and networks. A further aim is to develop students’ confidence in rational problem-solving approaches, in performing laboratory exercises and to introduce students to the design process. Topics include introduction to complex numbers, sinusoids and phasors, sinusoidal steady state analysis, AC power analysis, basics of semiconductor physics, transistors, digital systems and introduction to integrated circuits.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
+      "code": "EEE2041F",
+      "title": "Introduction to Electrical Engineering & Power Utilisation",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Dr S Jayalath"
+      ],
+      "outline": "This course aims to develop an understanding of (a) DC circuits and networks including series and parallel circuits, Kirchhoff’s laws, Mesh Analysis, Superposition Theorem, Star-to-delta and Deltato-star Transformation, Thevenin’s theorem, Maximum Power Transfer theorem, DC transients in RL and R-C circuits; (b) Fundamentals of AC including generation, concepts of waveform, period, frequency, angular velocity, phase etc., average, peak and RMS values; (c) Single-phase AC circuit including AC through resistance (R), inductance (L) and capacitance (C), concept of reactance and impedance,…",
       "entry": "PHY1013F/S (MEC), MAM1021S (MEC), PHY1004W or PHY1032S (CSC), MAM1004F (>60%) and MAM1008S (>60%) or MAM1000W (CSC)",
       "corequisites": "",
       "lectures": "",
@@ -2886,7 +3201,7 @@
       "periodChoice": false,
       "days": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. EEE2041F INTRODUCTION TO ELECTRICAL ENGINEERING & POWER UTILISATION For students in the Mechanical Engineering and Mechanical & Mechatronic Engineering programmes and Computer Science. 16 NQF credits at NQF level 6 Convener: Dr S Jayalath DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 130",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
     },
     {
@@ -3095,7 +3410,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. EEE3090F ELECTRONIC DEVICES & CIRCUITS 16 NQF credits at NQF level 7 Convener: Dr MY Abdul Gaffar",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
+      "code": "EEE3090F",
+      "title": "Electronic Devices & Circuits",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Dr MY Abdul Gaffar"
+      ],
+      "outline": "This course aims to do the recap of fundamental concepts – resistors, capacitors, inductors, diodes, bipolar transistors, op-amps, filters Active Filters – Second order and higher order filters, standard filter responses, design of low-pass, high-pass and band-pass filters, transfer function of Sallen and Key.Op-amps – Building blocks of internal circuitry, parameters and non-ideal effects, impact of DC non-ideal effects and compensation, effect of negative feedback on input impedance, output impedance and bandwidth of op-amps, identifying circuit parameters for various applications.",
+      "entry": "EEE2045F and EEE2047S",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
     },
     {
@@ -3114,7 +3448,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 135 EEE3092F SIGNALS & SYSTEMS II 16 NQF credits at NQF level 7 Convener: Associate Professor A Wilkinson",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 135",
+      "examWeight": null
+    },
+    {
+      "code": "EEE3092F",
+      "title": "Signals & Systems II",
+      "credits": 16,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor A Wilkinson"
+      ],
+      "outline": "This course aims to develop the understanding of: Random signals and processes in continuous /discrete time, probability distribution/density functions, random signals calculus (mean, variance, moment generation function), transforms of random signals, Bayesian Theorem, covariance and correlation, Central Limit theorem, Gaussian processes, random signals spectrum and bandwidth, power spectral density (PSD), Wiener-Khinchine Theorem, entropy function, estimation/filtering of random signals.",
+      "entry": "EEE2047S, MAM2083F/S",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
     },
     {
@@ -3435,7 +3788,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
-      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. EEE4126F ENERGY SYSTEMS & GRIDS II 16 NQF credits at NQF level 8 Convener: Professor K Folly",
+      "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
+      "examWeight": null
+    },
+    {
+      "code": "EEE4126F",
+      "title": "Energy Systems & Grids II",
+      "credits": 16,
+      "nqf": 8,
+      "conveners": [
+        "Professor K Folly"
+      ],
+      "outline": "",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -3447,15 +3819,42 @@
         "Dr J von Holdt"
       ],
       "outline": "Sustainability is one of the most important concepts to date and is critical to address the challenges we face in the Anthropocene. Challenges such as climate change, biodiversity loss, resource depletion, pollution and social inequity can only be addressed by adopting transformative changes in policies, behaviours and systems that foster sustainability. This course will explore the critical role engineers play in society and the impact of their activities on the social, industrial (workplace) and physical environment.",
-      "entry": "At least 50% for NSC Geography or GEO1009F. For Humanities students: At least 50% for NSC Geography",
+      "entry": "",
       "corequisites": "Any one of CIV4041F, CIV4042F, CIV4045F and CIV4046F",
       "lectures": "Students from outside Civil Engineering should confirm course scheduling with the convener.",
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "dp": "",
+      "assessment": "A class test, practical assignments and field report count 50%; one 2-hour examination written in June count 50% (sub-minimum of 40% required).",
+      "examWeight": 50
+    },
+    {
+      "code": "EGS1007S",
+      "title": "Human & Physical Systems",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Professor F Eckardt"
+      ],
+      "outline": "The course presents fundamental environmental and geographical concepts from the fields of human and physical geography and explores the interconnections, flows and boundaries across these systems. How these systems have played out in the past, how they are changing, and what the future may hold, is critical to a full appreciation of current and future environmental challenges.",
+      "entry": "At least 50% for NSC Geography or GEO1009F. For Humanities students: At least 50% for NSC Geography",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period, Tutorials/Practical: One per every two weeks on Monday, Tuesday or Thursdays, 14h00 - 17h00.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
       "dp": "Attendance of all, and satisfactory completion of all tutorial and practical assignments; students must attain an average mark of not less than 40% for the coursework component.",
-      "assessment": "A class test, practical assignments and field report count 50%; one 2-hour examination written in June count 50% (sub-minimum of 40% required). EGS1007S HUMAN & PHYSICAL SYSTEMS 18 NQF credits at NQF level 5 Convener: Professor F Eckardt",
-      "examWeight": null
+      "assessment": "Essays, assignments and tutorial work count 60%; one 2-hour theory examination written in November counts 40% (subminimum of 40% required).",
+      "examWeight": 40
     },
     {
       "code": "EGS2016F",
@@ -3533,8 +3932,35 @@
         "Friday"
       ],
       "dp": "Satisfactory completion of practicals and all written assignments, including essays, project reports and class tests.",
-      "assessment": "Essays and tests count 20%; project reports and practicals count 20%; one 3-hour examination in November counts 60% (subminimum of 40% required). EGS3021F SUSTAINABILITY & ENVIRONMENT There is a compulsory fieldwork component involving a half-day field excursion. 36 NQF credits at NQF level 7 Convener: Dr P Sabela-Rikhotso",
-      "examWeight": null
+      "assessment": "Essays and tests count 20%; project reports and practicals count 20%; one 3-hour examination in November counts 60% (subminimum of 40% required).",
+      "examWeight": 60
+    },
+    {
+      "code": "EGS3021F",
+      "title": "Sustainability & Environment",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr P Sabela-Rikhotso"
+      ],
+      "outline": "The course critically engages with current debates and discourses in the fields of sustainability, vulnerability and environmental management, including examination of key concepts such as integration, systems-thinking, complexity, equity, vulnerability, risk, resilience, adaptation and mitigation. Approaches and methods for analysing environmental problems and integrating risk reduction as well as sustainability principles and practices into policy, programme, plan and project cycle processes are investigated and applied in different contexts.",
+      "entry": "EGS2016F (or EGS2013F), EGS2017S (or EGS2015S)",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 3rd period, Practicals: One afternoon per week, Wednesday, 14h00 - 17h00.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Attendance and satisfactory completion of practicals (including fieldwork), other assignments and tests; students must attain an average mark of not less than 40% for the coursework.",
+      "assessment": "Practical reports (including fieldwork), class tests and other assignments count 60%; one 3-hour June examination counts 40% (subminimum of 40% required).",
+      "examWeight": 40
     },
     {
       "code": "EGS3022S",
@@ -3559,7 +3985,7 @@
       ],
       "dp": "Satisfactory completion of essay and practical assignments and participation in tutorials; students must attain an average mark of not less than 40% for the coursework",
       "assessment": "Essay and other assignments count 70%; one 3-hour written examination in November count 30% (subminimum of 40% required).",
-      "examWeight": null
+      "examWeight": 30
     },
     {
       "code": "EGS3023F",
@@ -3586,7 +4012,7 @@
       ],
       "dp": "Satisfactory completion of practicals and all written assignments, including fieldwork report, essays and class tests. Students must attain an average mark of not less than 40% for the coursework.",
       "assessment": "Field report, essays, class tests and practical assignments count 50%; one 3-hour examination written in June count 50% (sub-minimum of 40% required). GEOLOGICAL SCIENCES Philipson Stow Professor of Mineralogy & Geology and Head of Department: C Harris, MA DPhil Oxon",
-      "examWeight": null
+      "examWeight": 50
     },
     {
       "code": "END1000F",
@@ -3669,6 +4095,25 @@
         "Dr D A Quiros"
       ],
       "outline": "This course introduces students in civil engineering to the structure of planet Earth and plate tectonics of the lithosphere. Physical and chemical properties of rock forming minerals. Clay minerals, their structure and properties. Petrology of igneous, sedimentary and metamorphic rocks. Weathering and applied geomorphology. Structural geology, geomechanical classification of jointed rock masses. Field and laboratory testing techniques. Case studies of problem soils throughout South Africa and problem soils in general.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Attendance of at least 80% of the practicals.",
+      "assessment": "June examination 3 hours 60%, year mark 40%.",
+      "examWeight": 60
+    },
+    {
+      "code": "GEO1009F",
+      "title": "Geosystems: An Introduction to Earth & Environmental Sciences",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor E M Bordy"
+      ],
+      "outline": "This course aims to develop a broad understanding of how the Earth works. Over its >4.5 billion-yearlong history, the Earth has been shaped by chemical, physical and biological processes. The course demonstrates why decoding the rock record of deep-time events is critical for explaining past, present and future environmental changes and the distribution of natural resources. It examines the interplay of terrestrial, marine, atmospheric, and cryospheric processes within the Earth system, with an emphasis on monitoring essential variables for understanding climate variability and change.",
       "entry": "At least 50% for NSC Geography or at least 60% for NSC Physical Science or Life Sciences. NOTE: Preference will be given to students majoring in Archaeology, Environmental and Geographical Science, Geology or Oceanography.",
       "corequisites": "",
       "lectures": "Monday - Friday, 2nd period",
@@ -3683,9 +4128,36 @@
         "Thursday",
         "Friday"
       ],
-      "dp": "Attendance of at least 80% of the practicals.",
-      "assessment": "June examination 3 hours 60%, year mark 40%. GEO1009F GEOSYSTEMS: AN INTRODUCTION TO EARTH & ENVIRONMENTAL SCIENCES This course is presented jointly by the Departments of Archaeology, Environmental & Geographical Sciences, Geological Sciences, and Oceanography, but administered by Geological Sciences. Students majoring in these subjects are required to attend one half-day excursion. 18 NQF credits at NQF level 5 Convener: Associate Professor E M Bordy",
-      "examWeight": 60
+      "dp": "An average of 40% on all marked classwork and tests. Submission of 80% of weekly assignments in each of the four sections (i.e., GEO, AGE, SEA, EGS). Attendance of the field trip is compulsory for students majoring in Archaeology, EGS, Geology, or Oceanography.",
+      "assessment": "Marked classwork, including class test/s, counts 50%, and a 3-hour written examination counts 50%. A subminimum of 40% in the class mark is required to write the theory examination paper. Supplementary examinations for GEO1009F will be offered in July. DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 177",
+      "examWeight": 50
+    },
+    {
+      "code": "GEO1010F",
+      "title": "Geosystems: An Introduction to Earth & Environmental Sciences",
+      "credits": 12,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor E M Bordy"
+      ],
+      "outline": "This course aims to develop a broad understanding of how the Earth works. Over its >4.5 billion-yearlong history, the Earth has been shaped by chemical, physical and biological processes. The course demonstrates why decoding the rock record of deep-time events is critical for explaining past, present and future environmental changes and the distribution of natural resources. It examines the interplay of terrestrial, marine, atmospheric, and cryospheric processes within the Earth system, with an emphasis on monitoring essential variables for understanding climate variability and change.",
+      "entry": "At least 50% for NSC Geography or at least 60% for NSC Physical Science or Life Sciences.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "An average of 40% on all marked classwork and tests. Submission of 80% of weekly assignments in each of the 3 complusory sections: GEO, AGE, EGS. Attendance of the field trip is only compulsory for students majoring in Archaeology, EGS, Geology, or Oceanography.",
+      "assessment": "Final mark: Class record counting 50% and one final exam counting 50%.Class record: Weekly assignments (some face-to-face, some online) that are deadline-bound in each of the three taught sections of the course.Theory test:One face-to-face, invigilated on Upper Campus in week 5 of Term 1.Final exam: A 2-hour written, face-to-face examination covers all material presented in the course (lectures, readings, practical assignments).",
+      "examWeight": 50
     },
     {
       "code": "GEO2006S",
@@ -4092,12 +4564,48 @@
       "outline": "DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 183 This course aims to develop an understanding of differentiation of vector valued functions, space curves and surfaces. Partial derivatives, chain rule, maxima and minima, Lagrange multipliers. Gradient, divergence and curl. Taylor's theorem for one and several variables, Jacobians, Newton's method for several variables. Multiple integrals and change of variable. Surface integrals. Line integrals, work done by a force, potentials. Green's theorem, divergence theorem, and Stokes' theorem.",
       "entry": "MAM1020 or equivalent and MAM1021 or equivalent.",
       "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "35% class record and satisfactory tutorial attendance.",
+      "assessment": "One paper written in June or November no longer than 2.5 hours: up to 80%, year mark: up to 40%.",
+      "examWeight": null
+    },
+    {
+      "code": "MAM2084F",
+      "title": "Linear Algebra & Differential Equations for Engineers",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [
+        "Dr J van Zyl"
+      ],
+      "outline": "This course aims to develop an understanding of linear algebra and differential equations for engineers. Topics include: First order ordinary differential equations. Systems of linear equations, linear combinations, linear dependence, linear subspaces and basis. Determinants. Eigenvalues and eigenvectors, diagonalization, applications to systems of linear differential equations and finding principal axes. Solution of n-th order linear differential equations. The Laplace transform.",
+      "entry": "MAM1021F/S or equivalent.",
+      "corequisites": "",
       "lectures": "4 lectures per week, 1 double-period tutorial per week.",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "35% class record and satisfactory tutorial attendance.",
-      "assessment": "One paper written in June or November no longer than 2.5 hours: up to 80%, year mark: up to 40%. MAM2084F LINEAR ALGEBRA & DIFFERENTIAL EQUATIONS FOR ENGINEERS This course is designed specifically for students in the Faculty of Engineering & the Built Environment. 16 NQF credits at NQF level 6 Convener: Dr J van Zyl",
+      "assessment": "One paper written in June or November no longer than 2.5 hours: up to 80%, year mark: up to 40%.",
+      "examWeight": null
+    },
+    {
+      "code": "MAM2084S",
+      "title": "Linear Algebra & Differential Equations for Engineers",
+      "credits": 16,
+      "nqf": 6,
+      "conveners": [],
+      "outline": "This course aims to develop an understanding of linear algebra and differential equations for engineers. Topics include: First order ordinary differential equations. Systems of linear equations, linear combinations, linear dependence, linear subspaces and basis. Determinants. Eigenvalues and eigenvectors, diagonalization, applications to systems of linear differential equations and finding principal axes. Solution of n-th order linear differential equations. The Laplace transform.",
+      "entry": "MAM1021F/S or equivalent.",
+      "corequisites": "",
+      "lectures": "4 lectures per week, 1 double-period tutorial per week.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "35% class record and satisfactory tutorial attendance.",
+      "assessment": "One paper written in June or November no longer than 2.5 hours: up to 80%, year mark: up to 40%.",
       "examWeight": null
     },
     {

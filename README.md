@@ -28,7 +28,7 @@ Not affiliated with any university. "Kwaai" is South African slang that means bo
 
 ## Data
 
-About 1,360 courses from UCT's 2026 handbooks, downloaded from [uct.ac.za/students/study-uct-handbooks/handbooks](https://uct.ac.za/students/study-uct-handbooks/handbooks) on 30 Oct 2026:
+About 1,500 courses from UCT's 2026 handbooks, downloaded from [uct.ac.za/students/study-uct-handbooks/handbooks](https://uct.ac.za/students/study-uct-handbooks/handbooks) on 30 Oct 2026:
 
 | File | Handbook |
 |---|---|

@@ -5,6 +5,7 @@ const { createApp } = require('../src/app');
 const { seed } = require('../scripts/seed');
 const { screenComment } = require('../src/moderation');
 const { parseReviewForm, parseVerdictForm, overallOf, semesterLoad } = require('../src/ratings');
+const { analysePlan, termsOf } = require('../src/planner');
 const { html } = require('../src/html');
 const { titleCase, parseHandbook, expandCode, codesIn, lecturePeriods, examWeight } = require('../scripts/import-handbook');
 const { UNIVERSITIES } = require('../src/universities');
@@ -112,6 +113,7 @@ test('handbook parsing: courses in both semesters and the details the planner us
   assert.equal(f.entry, 'At least 70% for NSC Mathematics.');
   assert.ok(!f.assessment.includes('Second-Year'));
 
+  assert.equal(parseHandbook('PHY1004W MATTER & INTERACTIONS Each student needs a laptop. 36 NQF credits at NQF level 5 Convener: Prof A Buffler Course outline: x')[0]?.title, 'Matter & Interactions');
   assert.deepEqual(expandCode('STA1000F/S/H'), ['STA1000F', 'STA1000S', 'STA1000H']);
   assert.deepEqual(codesIn('PHY1004W, MAM1031F & MAM1032S (or equivalent), CSC1015F/S.'), ['PHY1004W', 'MAM1031F', 'MAM1032S', 'CSC1015F', 'CSC1015S']);
   assert.deepEqual(lecturePeriods('Tuesday and Thursday, 3rd period'), { periods: [3], periodChoice: false, days: ['Tuesday', 'Thursday'] });
@@ -120,6 +122,10 @@ test('handbook parsing: courses in both semesters and the details the planner us
   assert.equal(examWeight('Semester mark counts 33.3% and end-of-semester exam counts 66.6%.'), 67);
   assert.equal(examWeight('Class record counts 50%; one 2-hour examination counts 50%. Although a supplementary examination is 100%'), 50);
   assert.equal(examWeight('Coursework: 35% Exam: 65%'), 65);
+  assert.equal(examWeight('Theory tests 15%; June examination 2 hours 60%. Subminima: 45% for practicals, 45% on weighted average of theory tests and examination.'), 60);
+  assert.equal(examWeight('Class record counts 50%; one 2-hour examination in June counts 25%; one 2-hour examination in November counts 25%.'), 50);
+  assert.equal(examWeight('Coursework 50% (75% assessments, 15% assignments). Exam 50% (67% written examination; 33% computer examination)'), 50);
+  assert.equal(examWeight('Invigilated tests (40%) and one final exam (60%), no projects.'), 60);
   assert.equal(examWeight('Portfolio 100%'), null);
 });
 
@@ -392,8 +398,15 @@ test('semester planner: add by code or search, remove, and shared links do not o
   assert.equal(res.headers.get('location'), '/plan?c=EEE3099S,CSC1016S');
   let page = await b.text('/plan?c=EEE3099S,CSC1016S');
   assert.match(page, /class="plan-label">(Chilled|Survivable|Cooked|Fully cooked)</);
-  assert.match(page, /Based on 2 of 2 courses with reviews/);
-  assert.match(page, /href="https:\/\/wa\.me\/\?text=My%20semester%3A%20EEE3099S%2C%20CSC1016S/);
+  assert.match(page, /From student reviews of 2 of these courses/);
+  assert.match(page, /<h2 id="term-s2">Semester 2<\/h2>/);
+  assert.doesNotMatch(page, /id="term-s1"/, 'an empty semester is left out');
+  assert.match(page, /href="https:\/\/wa\.me\/\?text=My%20plan%20on%20Kwaai\.%20Semester%202%3A%20EEE3099S%2C%20CSC1016S/);
+
+  // the bug that started this: CSC1015F is written "CSC1015F/S" in the 2026 handbook
+  const other = browser();
+  assert.equal((await other.get('/plan?c=CSC1016S&add=csc1015f')).headers.get('location'), '/plan?c=CSC1016S,CSC1015F');
+  assert.match(await other.text('/plan?c=EEE3099S&add=csc1015'), /CSC1015S/, 'a code without its semester letter lists both');
 
   assert.match(await b.text('/plan?c=EEE3099S&add=dynamics'), /MEC2047F/, 'a name search lists matches to pick from');
   assert.match(await b.text('/plan?add=zzzznotacourse'), /No course matches/);
@@ -404,8 +417,43 @@ test('semester planner: add by code or search, remove, and shared links do not o
 
   assert.equal((await b.get('/plan?c=EEE3099S,CSC1016S&remove=EEE3099S')).headers.get('location'), '/plan?c=CSC1016S');
   page = await b.text('/plan?c=APG4001S');
-  assert.match(page, /Not enough reviews yet/, 'no made-up score for courses nobody reviewed');
+  assert.match(page, /Shows once students review these courses/, 'no made-up score for courses nobody reviewed');
+  page = await b.text('/plan?c=CSC1016S,CSC1015S');
+  assert.match(page, /CSC1016S lists CSC1015S in its entry requirements, but CSC1015S isn't finished before CSC1016S starts/);
+  page = await b.text('/plan?c=CSC1016S,CSC1015S,CSC1015F');
+  assert.doesNotMatch(page, /isn't finished before/, 'CSC1015F in semester 1 meets the requirement');
+  assert.match(page, /Same course twice/);
+  assert.match(page, /Entry requirement in your plan: CSC1015F/);
+  assert.match(page, /Minimum of 45% aggregate in practical work/, 'DP rules from the handbook');
   assert.match(await b.text('/plan?c='), /Your plan is empty/);
+});
+
+test('planner checks: semesters, lecture clashes, which group to pick, exam share', () => {
+  const course = (code, periods, extra = {}) => ({ code, credits: 18, n: 0, periods, period_choice: periods.includes('|') ? 1 : 0, days: 'Monday|Tuesday|Wednesday|Thursday|Friday', entry: '', exam_weight: null, ...extra });
+  assert.deepEqual(['CSC1015F', 'CSC1016S', 'MAM1000W', 'STA1000L'].map(termsOf), [['s1'], ['s2'], ['s1', 's2'], []]);
+
+  // CSC1015F can go 4th or 5th; MAM1031F is fixed at 4th, so the student must pick 5th for CSC1015F
+  let p = analysePlan([course('CSC1015F', '4|5', { exam_weight: 60 }), course('MAM1031F', '4', { exam_weight: 70 }), course('MAM1000W', '', { credits: 36 })]);
+  const s1 = p.terms[0];
+  assert.equal(s1.timetable.fits, true);
+  assert.deepEqual(s1.timetable.picks, [{ code: 'CSC1015F', periods: [5] }]);
+  assert.deepEqual(s1.timetable.untimed, ['MAM1000W']);
+  assert.equal(s1.credits, 54, 'a year course is half of each semester');
+  assert.equal(s1.examShare, 65);
+  assert.equal(p.terms[1].credits, 18);
+
+  // two fixed courses in the same slot clash; on different days they don't
+  p = analysePlan([course('AAA1000F', '2'), course('BBB1000F', '2')]);
+  assert.deepEqual(p.terms[0].timetable.clashes, [{ a: 'AAA1000F', b: 'BBB1000F', periods: [2] }]);
+  p = analysePlan([course('AAA1000F', '2', { days: 'Monday' }), course('BBB1000F', '2', { days: 'Tuesday' })]);
+  assert.equal(p.terms[0].timetable.fits, true);
+
+  // "passed or taken concurrently" allows the same semester; a plain requirement doesn't
+  const together = 'MAM1031F & MAM1032S must have been passed or be taken concurrently.';
+  p = analysePlan([course('PHY1004W', '', { entry: together }), course('MAM1031F', ''), course('MAM1032S', '')]);
+  assert.deepEqual(p.entry.PHY1004W.tooLate, []);
+  p = analysePlan([course('MAM1032S', '', { entry: 'MAM1031F' }), course('MAM1031S', '')]);
+  assert.deepEqual(p.entry.MAM1032S.tooLate, ['MAM1031S']);
 });
 
 test('a demo password keeps every page private until it is given', async (t) => {

@@ -70,7 +70,7 @@ function parseVerdictForm(form, { currentYear = new Date().getFullYear() } = {})
 }
 
 // Semester planner: how heavy a set of courses is, from reviewers' difficulty and workload scores.
-const PLAN_MAX = 8;
+const PLAN_MAX = 14; // a plan covers both semesters of a year
 const LOAD_LABELS = [
   { below: 2.5, label: 'Chilled', advice: 'Very doable. You should have time for a life.' },
   { below: 3.2, label: 'Survivable', advice: 'Busy, but fine if you keep up from week one.' },

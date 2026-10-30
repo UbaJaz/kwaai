@@ -1,6 +1,7 @@
 const { html } = require('./html');
 const { QUALITY, SCALES, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FREE_COMMENTS, RANKINGS } = require('./ratings');
 const { REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
+const { ordinal } = require('./planner');
 
 const fmt = (n) => (n == null ? '–' : Number(n).toFixed(1));
 const month = (iso) => new Date(iso.replace(' ', 'T') + 'Z').toLocaleDateString('en-ZA', { month: 'short', year: 'numeric' });
@@ -350,6 +351,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
         <table class="offerings"><thead><tr><th>Lecturer</th><th>Year</th><th>Rating</th></tr></thead><tbody>
         ${offerings.map((o) => html`<tr><td>${o.lecturer_id ? html`<a href="/lecturers/${o.lecturer_id}">${o.lecturer_name}</a>` : html`<span class="muted">Not listed</span>`}</td><td>${o.year}</td><td>${chip(o.overall)} <span class="meta">(${o.n})</span></td></tr>`)}
         </tbody></table>` : ''}
+      ${handbookFacts(c)}
     </aside>
     <div class="reviews">
       ${gateNotice(ctx, hidden)}
@@ -360,7 +362,19 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
   </section>`);
 }
 
-function reviewForm(ctx, { c, conveners, others, years, values = {}, error }) {
+function handbookFacts(c) {
+  if (!c.outline && !c.entry && !c.dp && !c.assessment && !c.lectures) return '';
+  return html`<h3>From the 2026 handbook</h3>
+    <dl class="handbook">
+      ${c.outline ? html`<dt>What it covers</dt><dd>${c.outline}</dd>` : ''}
+      ${c.entry ? html`<dt>Entry requirements</dt><dd>${c.entry}</dd>` : ''}
+      ${c.lectures ? html`<dt>Lecture times</dt><dd>${c.lectures}</dd>` : ''}
+      ${c.dp ? html`<dt>DP (to be allowed to write the exam)</dt><dd>${c.dp}</dd>` : ''}
+      ${c.assessment ? html`<dt>Assessment</dt><dd>${c.exam_weight != null ? html`<strong>About ${c.exam_weight}% final exam.</strong> ` : ''}${c.assessment}</dd>` : ''}
+    </dl>`;
+}
+
+function reviewForm(ctx,{ c, conveners, others, years, values = {}, error }) {
   const v = (k, d) => values[k] ?? d;
   const pickedTags = [values.tags ?? []].flat();
   return layout({ ...ctx, title: `Rate ${c.code}` }, html`
@@ -477,49 +491,129 @@ function rankings(ctx, { rows, depts, dept, rank, kind }) {
   </div>`);
 }
 
-function plan(ctx, { courses: list, load, matches, add, codes }) {
+const PERIOD_TIMES = { 0: '13:00', 1: '08:00', 2: '09:00', 3: '10:00', 4: '11:00', 5: '12:00', 6: '14:00', 7: '15:00', 8: '16:00', 9: '17:00' };
+const periodName = (p) => (p === 0 ? 'meridian' : `${ordinal(p)} period`);
+const periodList = (ps, joiner = 'or') => ps.map((p) => `${periodName(p)} (${PERIOD_TIMES[p]})`).join(` ${joiner} `);
+
+// The whole semester in one line, for WhatsApp and link previews.
+function planSummary(plan) {
+  const parts = plan.terms.filter((t) => t.courses.length).map((t) => `${t.label}: ${t.courses.map((c) => c.code).join(', ')}${t.load.load != null ? ` (${t.load.label.toLowerCase()}, ${fmt(t.load.load)}/5)` : ''}`);
+  return parts.join('. ');
+}
+
+function planWarnings(plan) {
+  const items = [];
+  for (const t of plan.terms) {
+    for (const x of t.timetable.clashes) items.push(html`<li><strong>${t.label} clash:</strong> ${x.a} and ${x.b} both lecture in the ${periodList(x.periods, 'and')}, and neither has another lecture group.</li>`);
+    if (t.timetable.squeezed?.length) items.push(html`<li><strong>${t.label}:</strong> ${t.timetable.squeezed.join(', ')} can't all fit. Whichever lecture groups you pick, two of them overlap.</li>`);
+  }
+  for (const [code, e] of Object.entries(plan.entry)) for (const r of e.tooLate) items.push(html`<li><strong>Order:</strong> ${code} lists ${r} in its entry requirements, but ${r} isn't finished before ${code} starts in your plan.</li>`);
+  for (const [a, b] of plan.twice) items.push(html`<li><strong>Same course twice:</strong> ${a} and ${b} are the same course in different semesters. You only need one.</li>`);
+  return items;
+}
+
+function planCourse(c, entry, picks, link) {
+  const pct = kwaaiPct({ n: c.votes || 0, lekker: c.lekker || 0 });
+  const pick = picks.find((p) => p.code === c.code);
+  const facts = [
+    c.periodList.length ? `Lectures ${c.period_choice ? periodList(c.periodList) : periodList(c.periodList, 'and')}` : 'Lecture time not in the handbook',
+    c.exam_weight != null ? `about ${c.exam_weight}% final exam` : null,
+    c.credits ? `${c.credits} credits` : null,
+  ].filter(Boolean);
+  return html`<li class="plan-course">
+    <div class="plan-course-head">
+      <a href="/courses/${c.code}" class="plan-course-name"><span class="code">${c.code}</span> ${c.title}</a>
+      <a class="plan-remove" href="${link({ remove: c.code })}" aria-label="Remove ${c.code} from the plan">Remove</a>
+    </div>
+    <p class="plan-facts">${facts.join(' · ')}</p>
+    <p class="plan-facts">
+      ${c.n ? html`Students rate the workload <strong>${fmt(c.workload)}/5</strong> and exams <strong>${fmt(c.difficulty)}/5</strong> ${sampleBadge(c.has_sample)}` : html`<span class="muted">No full reviews yet</span>`}
+      ${pct != null ? html` · <strong>${pct}%</strong> say kwaai` : ''}
+      ${c.tips ? html` · <a href="/courses/${c.code}#tips">${plural(c.tips, 'tip')} from students</a>` : ''}
+    </p>
+    ${pick ? html`<p class="plan-note ok">Pick the ${periodList(pick.periods)} lecture group so it doesn't clash with the rest of your semester.</p>` : ''}
+    ${entry.inPlan.length ? html`<p class="plan-note ok">Entry requirement in your plan: ${entry.inPlan.join(', ')}.</p>` : ''}
+    ${c.entry || c.dp || c.assessment ? html`<details class="plan-details">
+      <summary>Entry requirements, DP and assessment</summary>
+      <dl>
+        ${c.entry ? html`<dt>Entry requirements</dt><dd>${c.entry}</dd>` : ''}
+        ${c.corequisites ? html`<dt>Take at the same time</dt><dd>${c.corequisites}</dd>` : ''}
+        ${c.dp ? html`<dt>DP (to be allowed to write the exam)</dt><dd>${c.dp}</dd>` : ''}
+        ${c.assessment ? html`<dt>Assessment</dt><dd>${c.assessment}</dd>` : ''}
+        ${c.lectures ? html`<dt>Lecture times</dt><dd>${c.lectures}</dd>` : ''}
+      </dl>
+    </details>` : ''}
+  </li>`;
+}
+
+function planTerm(t, plan, link) {
+  const tt = t.timetable;
+  const clashCount = tt.clashes.length + (tt.squeezed?.length ? 1 : 0);
+  return html`<section class="card plan-term" aria-labelledby="term-${t.key}">
+    <header class="plan-term-head">
+      <div>
+        <h2 id="term-${t.key}">${t.label}</h2>
+        <p class="meta">${t.when} · ${plural(t.courses.length, 'course')} · ${t.credits} credits</p>
+      </div>
+      ${t.load.load != null ? html`<p class="plan-label">${t.load.label}</p>` : ''}
+    </header>
+    <dl class="plan-stats">
+      <div><dt>Workload and exam difficulty</dt><dd>${t.load.load != null ? html`${fmt(t.load.load)}<small>/5</small>` : html`<span class="muted">No reviews yet</span>`}</dd>
+        <p class="meta">${t.load.load != null ? `${t.load.advice} From student reviews of ${t.load.rated} of these courses.` : 'Shows once students review these courses.'}</p></div>
+      <div><dt>Marks from final exams</dt><dd>${t.examShare != null ? html`${t.examShare}<small>%</small>` : html`<span class="muted">Unknown</span>`}</dd>
+        <p class="meta">${t.examShare != null ? `Weighted by credits, from the handbook's assessment rules for ${t.examKnown} of these courses.` : "The handbook doesn't give exam weights for these courses."}</p></div>
+      <div><dt>Lecture clashes</dt><dd>${tt.timed < 2 ? html`<span class="muted">Can't check</span>` : clashCount ? html`<span class="bad">${clashCount}</span>` : 'None'}</dd>
+        <p class="meta">${tt.timed < 2 ? 'Needs lecture periods for at least two courses.' : `Checked ${tt.timed} courses with lecture periods in the handbook.`}${tt.untimed.length ? ` No period listed for ${tt.untimed.join(', ')}: check the timetable.` : ''}</p></div>
+    </dl>
+    <ul class="plan-courses">${t.courses.map((c) => planCourse(c, plan.entry[c.code], tt.picks, link))}</ul>
+  </section>`;
+}
+
+function plan(ctx, { courses: list, plan: p, matches, add, codes, suggestions }) {
   const link = (o) => `/plan?${new URLSearchParams({ c: codes.join(','), ...o })}`;
-  const shareText = load.load != null
-    ? `My semester: ${codes.join(', ')}. Kwaai says ${load.label.toLowerCase()} (${fmt(load.load)}/5). How cooked is yours? ${ctx.site.origin}/plan?c=${codes.join(',')}`
-    : `My semester: ${codes.join(', ')}. How cooked is yours? ${ctx.site.origin}/plan?c=${codes.join(',')}`;
+  const url = `${ctx.site.origin}/plan?c=${codes.join(',')}`;
+  const summary = planSummary(p);
+  const warnings = planWarnings(p);
   const description = list.length
-    ? `${codes.join(', ')}: ${load.load != null ? `${load.label} (${fmt(load.load)}/5 for difficulty and workload)` : 'not enough reviews to score yet'}. Check how heavy your own semester is.`
-    : 'Add the courses you plan to take and see how heavy the mix is, from UCT students\' ratings of exam difficulty and workload.';
-  return layout({ ...ctx, title: 'How cooked is your semester?', description, path: codes.length ? `/plan?c=${codes.join(',')}` : '/plan' }, html`
-  <h1 class="page-title">How cooked is your semester?</h1>
-  <p class="lede small">Add the courses you plan to take. We combine what students said about each one's exam difficulty and workload into one score out of 5.</p>
+    ? `${summary || codes.join(', ')}. Plan your own semester on Kwaai.`
+    : 'Plan your UCT semesters: lecture clashes, entry requirements, exam weight and how heavy students say each course is.';
+  return layout({ ...ctx, title: 'Semester planner', here: '/plan', description, path: codes.length ? `/plan?c=${codes.join(',')}` : '/plan' }, html`
+  <h1 class="page-title">Plan your semesters</h1>
+  <p class="lede small">Add the courses you're thinking of taking. Kwaai checks them against the 2026 handbook and what students say, and splits them into Semester 1 and Semester 2.</p>
 
   <form class="search search-inline plan-add" action="/plan" role="search">
     <input type="hidden" name="c" value="${codes.join(',')}">
-    <input type="search" name="add" value="${add}" placeholder="Course code or name, e.g. CSC1015F" aria-label="Add a course by code or name" required>
-    <button class="btn">Add</button>
+    <input type="search" name="add" value="${add}" list="course-codes" placeholder="Code or name, e.g. CSC1015F" aria-label="Add a course by code or name" autocomplete="off" required>
+    <button class="btn btn-ink">Add</button>
   </form>
+  <datalist id="course-codes">${suggestions.map((s) => html`<option value="${s.code}">${s.title}</option>`)}</datalist>
   ${matches ? matches.length
-    ? html`<div class="card panel plan-matches"><p class="meta">Courses matching “${add}”:</p><ul class="plain">${matches.map((m) => html`<li><a href="${link({ add: m.code })}"><span class="code">${m.code}</span> ${m.title}</a></li>`)}</ul></div>`
-    : html`<p class="flash flash-error" role="alert">No course matches “${add}”. Try the course code, like MAM1000W.</p>` : ''}
+    ? html`<div class="card panel plan-matches"><p class="meta">Pick the course you mean:</p><ul class="plain">${matches.map((m) => html`<li><a href="${link({ add: m.code })}"><span class="code">${m.code}</span> ${m.title}</a></li>`)}</ul></div>`
+    : html`<p class="flash flash-error" role="alert">No course matches “${add}”. Try the course code from your handbook, like MAM1031F.</p>` : ''}
 
   ${list.length ? html`
-  <section class="card plan-result" aria-live="polite">
-    ${load.load != null
-      ? html`<p class="plan-label">${load.label}</p>
-        <div class="bar plan-meter" role="img" aria-label="Load ${fmt(load.load)} out of 5"><span style="width:${load.load * 20}%"></span></div>
-        <p><strong>${fmt(load.load)}/5</strong> for difficulty and workload. ${load.advice}</p>
-        <p class="meta">Based on ${load.rated} of ${plural(list.length, 'course')} with reviews · ${load.credits} NQF credits in total</p>`
-      : html`<p class="plan-label">Not enough reviews yet</p><p class="meta">None of these courses has a full review yet, so there's nothing to score. ${load.credits} NQF credits in total.</p>`}
-    <a class="btn btn-quiet" href="https://wa.me/?text=${encodeURIComponent(shareText)}" target="_blank" rel="noopener">Share on WhatsApp</a>
-  </section>
-
-  <table class="offerings plan-table">
-    <thead><tr><th>Course</th><th>Credits</th><th>Exam difficulty</th><th>Workload</th><th>Kwaai</th></tr></thead>
-    <tbody>${list.map((c) => html`<tr>
-      <td><a href="/courses/${c.code}"><span class="code">${c.code}</span></a> ${c.title} ${sampleBadge(c.has_sample)} <a class="plan-remove" href="${link({ remove: c.code })}" aria-label="Remove ${c.code} from the plan">Remove</a></td>
-      <td>${c.credits ?? '–'}</td>
-      ${c.n ? html`<td>${fmt(c.difficulty)}/5</td><td>${fmt(c.workload)}/5</td>` : html`<td colspan="2" class="muted">No reviews yet</td>`}
-      <td>${kwaaiPct({ n: c.votes || 0, lekker: c.lekker || 0 }) != null ? `${kwaaiPct({ n: c.votes, lekker: c.lekker })}%` : html`<span class="muted">–</span>`}</td>
-    </tr>`)}</tbody>
-  </table>
-  <p class="fine">Scores average every student who reviewed the course, across lecturers and years. Your semester could feel different.</p>`
-  : html`<p class="empty">Your plan is empty. Add a course above to start.</p>`}`);
+  ${warnings.length ? html`<section class="card plan-warnings" role="status"><h2>Check these before you register</h2><ul>${warnings}</ul></section>` : ''}
+  <div class="plan-terms">
+    ${p.terms.filter((t) => t.courses.length).map((t) => planTerm(t, p, link))}
+  </div>
+  ${p.other.length ? html`<section class="card plan-term"><h2>Other terms</h2><p class="meta">Summer, winter or non-standard courses. They're not counted in either semester.</p>
+    <ul class="plan-courses">${p.other.map((c) => planCourse(c, p.entry[c.code], [], link))}</ul></section>` : ''}
+  <div class="plan-share">
+    <a class="btn btn-quiet" href="https://wa.me/?text=${encodeURIComponent(`My plan on Kwaai. ${summary}. How cooked is yours? ${url}`)}" target="_blank" rel="noopener">Share on WhatsApp</a>
+    <span class="meta">Your plan is saved on this device. The link works for anyone you send it to.</span>
+  </div>
+  <p class="fine">Lecture periods, entry requirements and assessment come from UCT's 2026 handbooks and can change. Check the official timetable before you register. Student scores average every review of the course, across lecturers and years.</p>`
+  : html`<div class="card panel plan-empty">
+      <p><strong>Your plan is empty.</strong> Add the courses you're considering for next year, from both semesters. You'll see:</p>
+      <ul>
+        <li>lecture clashes, and which lecture group to pick to avoid them</li>
+        <li>entry requirements, and whether you've planned them in the right order</li>
+        <li>how much of each semester's marks ride on final exams</li>
+        <li>what it takes to get DP for each course</li>
+        <li>how heavy students say each semester is</li>
+      </ul>
+      <p class="meta">Try it with <a href="/plan?c=CSC1015F,MAM1031F,STA1000F,CSC1016S,MAM1032S">a first-year computer science plan</a>.</p>
+    </div>`}`);
 }
 
 function universities(ctx, { universities: list, liveCourses }) {

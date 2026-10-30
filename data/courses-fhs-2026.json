@@ -121,16 +121,16 @@
       "credits": 22,
       "nqf": 5,
       "conveners": [],
-      "outline": "This course builds on the foundational concepts covered in Movement Science 1 and will consolidate the principles of application to health promotion and well-being. The course is taught through lectures, practical demonstrations and workshops, self-study sessions and tutorials. Where possible, exposure to the clinical platform is provided.",
+      "outline": "",
       "entry": "All first semester courses in the BSc Physiotherapy programme.",
-      "corequisites": "HUB1020S & HUB1023S",
+      "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
-      "assessment": "The coursework mark is weighted 60% and comprises post-module tasks (weighted 24%) towards the final mark); a theory test (20%); a structured practical test (16%) The final exam is weighted 40% and comprises of a written examination (25%) and a structured practical exam (15%).",
-      "examWeight": 40
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
     },
     {
       "code": "AHS1035F",
@@ -216,14 +216,14 @@
         "Dr I Nwanze"
       ],
       "outline": "Students learn the importance of information management and how adequate and inadequate application of the principles of record keeping affect the overall quality of client quality of care. Student learn skills in adult learning, group management and giving appropriate feedback depending on the audience. Students demonstrate skills in communicating information appropriately to clients while observing the verbal and non-verbal modes of communication. Students learn how to prepare and use appropriate visual aids for information dissemination to the appropriate audience.",
-      "entry": "AHS1060S",
+      "entry": "",
       "corequisites": "AHS1063S, AHS1065S and AHS1066S",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of portfolio by the due dates.",
-      "assessment": "Coursework assessments comprising (oral presentations 10% and portfolio assessments 15%). The examination mark counts 25% of the year mark and comprises an oral presentation. AHS1061F/S DISABILITY INFORMATION MANAGEMENT & COMMUNICATION SYSTEM PART II 8 NQF credits at NQF level 5 Convener: Dr I Nwanze DEPARTMENTS IN THE FACULTY 93",
+      "assessment": "Coursework assessments comprising (oral presentations 10% and portfolio assessments 15%). The examination mark counts 25% of the year mark and comprises an oral presentation.",
       "examWeight": 25
     },
     {
@@ -235,14 +235,52 @@
         "Dr I Nwanze"
       ],
       "outline": "Students learn the importance of information management and how adequate and inadequate application of the principles of record keeping affect the overall quality of client quality of care. Student learn skills in adult learning, group management and giving appropriate feedback depending on the audience. Students demonstrate skills in communicating information appropriately to clients while observing the verbal and non-verbal modes of communication. Students learn how to prepare and use appropriate visual aids for information dissemination to the appropriate audience.",
-      "entry": "AHS1060S",
+      "entry": "",
       "corequisites": "AHS1063S, AHS1065S and AHS1066S",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of portfolio by the due dates.",
-      "assessment": "Coursework assessments comprising (oral presentations 10% and portfolio assessments 15%). The examination mark counts 25% of the year mark and comprises an oral presentation. AHS1061F/S DISABILITY INFORMATION MANAGEMENT & COMMUNICATION SYSTEM PART II 8 NQF credits at NQF level 5 Convener: Dr I Nwanze DEPARTMENTS IN THE FACULTY 93",
+      "assessment": "Coursework assessments comprising (oral presentations 10% and portfolio assessments 15%). The examination mark counts 25% of the year mark and comprises an oral presentation.",
+      "examWeight": 25
+    },
+    {
+      "code": "AHS1061F",
+      "title": "Disability Information Management & Communication System Part II",
+      "credits": 8,
+      "nqf": 5,
+      "conveners": [
+        "Dr I Nwanze"
+      ],
+      "outline": "The students will learn basic information and communication systems in relation to care pathways and referral systems for people with disabilities. By the end of this course, students should appreciate critical enquiry; know how to use a variety of participatory rural appraisal methods; be able to apply ethical principles in research ethics work with DPOs; know the components of an information system; understand the principles and practice of record-keeping; know how to use a variety of different tools to gather information (WHO checklist, ICF, PRA); and know how to identify relevant support…",
+      "entry": "AHS1060S",
+      "corequisites": "AHS1064F, AHS1062F and AHS1067F",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of portfolio by the due dates.",
+      "assessment": "Coursework assessments comprising (oral presentations 10% and portfolio assessments 15%). The examination mark counts 25% of the year mark and comprises an oral presentation",
+      "examWeight": 25
+    },
+    {
+      "code": "AHS1061S",
+      "title": "Disability Information Management & Communication System Part II",
+      "credits": 8,
+      "nqf": 5,
+      "conveners": [
+        "Dr I Nwanze"
+      ],
+      "outline": "The students will learn basic information and communication systems in relation to care pathways and referral systems for people with disabilities. By the end of this course, students should appreciate critical enquiry; know how to use a variety of participatory rural appraisal methods; be able to apply ethical principles in research ethics work with DPOs; know the components of an information system; understand the principles and practice of record-keeping; know how to use a variety of different tools to gather information (WHO checklist, ICF, PRA); and know how to identify relevant support…",
+      "entry": "AHS1060S",
+      "corequisites": "AHS1064F, AHS1062F and AHS1067F",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of portfolio by the due dates.",
+      "assessment": "Coursework assessments comprising (oral presentations 10% and portfolio assessments 15%). The examination mark counts 25% of the year mark and comprises an oral presentation",
       "examWeight": 25
     },
     {
@@ -2020,7 +2058,7 @@
       "days": [],
       "dp": "A blended approach to academic activities may be used to support and enhance face-to face-learning. Attendance at, and/or participation in all academic activities, including lectures, practical sessions, workshops and tutorials, and submission of assignments on time.",
       "assessment": "To pass, a sub-minimum of 45% in each of the physiology and anatomy sections of the course is required. Final examinations contribute 50% (Theory 40%, Practical 10%), Tests (35%) and Practical’s (15%).",
-      "examWeight": 50
+      "examWeight": null
     },
     {
       "code": "HUB2017H",
@@ -2881,9 +2919,16 @@
       "entry": "PSY1004F, PSY1005S; and meeting mathematics criterion for entrance into PSY1004F.",
       "corequisites": "None",
       "lectures": "Monday to Thursday, Meridian.",
-      "periods": [],
+      "periods": [
+        0
+      ],
       "periodChoice": false,
-      "days": [],
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
       "dp": "Completion of all coursework, 80% attendance at tutorials, and obtaining 3 points through the Student Research Participation Programme (SRPP).",
       "assessment": "Coursework will be weighted at 50%, and will include completion of tutorial assignments, and tests as required. An exam at the end of the semester will be weighted 50%.",
       "examWeight": 50
@@ -3068,7 +3113,7 @@
       "days": [],
       "dp": "Attendance of at least 80% of the lectures; completion by the due dates of all assessments and projects. FACULTIES AND DEPARTMENTS OFFERING COURSES TO THE FACULTY 257",
       "assessment": "Coursework (vocabulary and oral assessments based on topics covered in the course) counts 50% and comprises four tests (two weighted at 15% each, and two weighted at 10% each); and examinations (June examination – simulated client interviews: 20%; and November examination – simulated client interviews: 30%).",
-      "examWeight": 30
+      "examWeight": null
     },
     {
       "code": "SLL1041S",

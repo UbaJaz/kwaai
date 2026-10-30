@@ -2521,7 +2521,7 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at and participation in seminars and completion of written assignments.",
-      "assessment": "Coursework 30% (Assignments) Examination 70%. PBL5624W MARINE & ENVIRONMENTAL LAW MINOR DISSERTATION Higher postgraduate course, whole year. 120 NQF credits at NQF level 9 Convener: Professor A R Paterson",
+      "assessment": "Coursework 30% (Assignments) Examination 70%.",
       "examWeight": 70
     },
     {
@@ -2749,8 +2749,25 @@
       "periodChoice": false,
       "days": [],
       "dp": "Satisfactory attendance at and participation in lectures and completion of written and other assignments.",
-      "assessment": "Coursework 40%, Examination 60%. PBL5663S TRANSPARENCY LAW & GOVERNANCE: GLOBAL AND LOCAL THEORY & PRACTICE (Not offered in 2026) Higher postgraduate course, second semester. 30 NQF credits at NQF level 9 Convener: TBA",
+      "assessment": "Coursework 40%, Examination 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "PBL5663S",
+      "title": "Transparency Law & Governance: Global and Local Theory & Practice",
+      "credits": 30,
+      "nqf": 9,
+      "conveners": [],
+      "outline": "This course explores both the theory and the practice of modern access to information law (ATI) and the implications for transparency policy as a critical accountability mechanism for a democratic state. The first part of the course includes a comparative law dimension, which asks what works best where, and why, and which considers the potential scope of the law, including whether it encompasses private as well as public information.",
+      "entry": "See Rules for LLM and MPhil degrees.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "None",
+      "assessment": "50% Practical Assignment (comparative usage of ATI Law), 50% Examination.",
+      "examWeight": 50
     },
     {
       "code": "PBL5664S",
@@ -3465,7 +3482,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance of block lectures, full participation in groupwork and submission of all written assignments.",
-      "assessment": "Coursework 40%, Examination: 60%. PVL4636F EXTRACTIVES LAW & THE ENERGY TRANSITION 30 NQF credits at NQF level 8 Convener: Professor H Mostert",
+      "assessment": "Coursework 40%, Examination: 60%.",
+      "examWeight": 60
+    },
+    {
+      "code": "PVL4636F",
+      "title": "Extractives Law & the Energy Transition",
+      "credits": 30,
+      "nqf": 8,
+      "conveners": [
+        "Professor H Mostert"
+      ],
+      "outline": "The course offers a theoretical engagement with discourses in Mineral and Petroleum Law and Policy under the global transition away from hydrocarbon-based production and consumption systems to low-carbon and/or renewable energy sources (the “Just Transition”). The reality of climate change means that an urgent transition to low- or net-zero energy systems are needed to ensure a sustainable future for humanity.",
+      "entry": "See Rules for Postgraduate Diplomas",
+      "corequisites": "PVL4630F: Comparative Mineral Law in Africa, PVL4633S Resource Revenue Law, PVL4631S: Negotiation of Extractive Agreements and Mining Contracts.",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% attendance of block lectures, full participation in groupwork and submission of all written assignments.",
+      "assessment": "Coursework 40%, Examination: 60%. PVL5000X PRIVATE LAW - RESEARCH TASK Higher postgraduate course 15 NQF credits at NQF level 9",
       "examWeight": 60
     },
     {

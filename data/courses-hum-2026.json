@@ -86,7 +86,30 @@
         "Wednesday"
       ],
       "dp": "Students are expected to attend all classes, and to submit all required assignments by deadlines identified in the course curriculum.",
-      "assessment": "Continuous assessment (essays, projects, tests, etc.) counts 100%. AFS2102S GENDER & THE POLITICS OF DEVELOPMENT 20 NQF credits at NQF level 6 Convener: TBA",
+      "assessment": "Continuous assessment (essays, projects, tests, etc.) counts 100%.",
+      "examWeight": null
+    },
+    {
+      "code": "AFS2102S",
+      "title": "Gender & the Politics of Development",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [],
+      "outline": "AFRICAN FEMINIST STUDIES 128 The aim of this course is to enable students to understand and analyse the impact of development practices, particularly as they have affected women and men in different contexts. The course will offer an introduction to debates around the gendered impact of different economic and political development trajectories, and policies, such as industrialisation, agricultural transformations, democratisation, and contemporary structural adjustment programmes.",
+      "entry": "2nd year status",
+      "corequisites": "",
+      "lectures": "Monday, Tuesday, Wednesday 3rd period.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday"
+      ],
+      "dp": "Completion of all semester coursework by deadlines as specified on the course curriculum.",
+      "assessment": "Continuous assessment (essays, projects, tests, etc.) counts 100%.",
       "examWeight": null
     },
     {
@@ -218,6 +241,23 @@
       "examWeight": 50
     },
     {
+      "code": "AGE3006H",
+      "title": "Directed Reading & Research",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [],
+      "outline": "A flexible intensive study course in a specific area customised to the needs of individual students.",
+      "entry": "Only for students specialising in Archaeology, with permission of the Head of Department.",
+      "corequisites": "",
+      "lectures": "By arrangement",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion of assignments.",
+      "assessment": "Assignments count 20%; a long paper counts 40%; one 3-hour examination in November counts 40%.",
+      "examWeight": 40
+    },
+    {
       "code": "AGE3011F",
       "title": "The Roots of Recent African Identities",
       "credits": 36,
@@ -286,6 +326,31 @@
       "dp": "Participation in all field excursions and completion of all assignments.",
       "assessment": "Assignments 30%; Research paper 20%; Practical examination 25%; Theory examination 25%. COMMERCIAL LAW",
       "examWeight": 25
+    },
+    {
+      "code": "ANS1400F",
+      "title": "Words, Deeds, Bones & Things",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr M Swai"
+      ],
+      "outline": "This course is an introduction to Anthropology. Anthropology is explored through four contingent entry points: \"Words\" focuses on intra- and cross-cultural meaning making; \"Deeds\" examines the individual's agency within social contexts; \"Things\" analyses interaction with objects and \"Bones\" introduces basic principles of archaeology. The course privileges hands-on immersion into anthropology and provides an overview of its complex history. As an introductory course, we use content that engages the diversity of students’ life worlds and is cognisant of our African location.",
+      "entry": "None",
+      "corequisites": "",
+      "lectures": "Wednesday, Thursday, Friday1st period. ANTHROPOLOGY 139",
+      "periods": [
+        1
+      ],
+      "periodChoice": false,
+      "days": [
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Attendance at tutorials and submission of all written work, plus class test.",
+      "assessment": "Continuous assessment (essays, projects, class tests) counts 100%.",
+      "examWeight": null
     },
     {
       "code": "ANS1401S",
@@ -372,7 +437,32 @@
         "Thursday"
       ],
       "dp": "All essays, assignments and projects, plus a satisfactory tutorial attendance.",
-      "assessment": "Continuous assessment (essays, projects, class tests) counts 100%. ANS2402S ANTHROPOLOGY OF POWER & WEALTH 20 NQF credits at NQF level 6 Convener: Professor S Levine",
+      "assessment": "Continuous assessment (essays, projects, class tests) counts 100%.",
+      "examWeight": null
+    },
+    {
+      "code": "ANS2402S",
+      "title": "Anthropology of Power & Wealth",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor S Levine"
+      ],
+      "outline": "This course examines the symbiotic relationship between power and wealth. Part I explores power, how it is produced, the way it works and its relationship with inequality; Part II examines the production and circulation of wealth through the lens of economic anthropology; Part III focuses on neoliberalism through an anthropological critique of colonisation and development. The course includes a short ethnographic project.",
+      "entry": "ANS1400F; ANS1401S; ANS1402F; ANS1403S; ANS2401F; AFS1100S or any first-year cognate discipline including African Studies, Gender Studies, or any Social Science course or by permission of the Head of Department.",
+      "corequisites": "",
+      "lectures": "Tuesday, Wednesday, Thursday 8th period.",
+      "periods": [
+        8
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "All essays, assignments and projects, plus a satisfactory tutorial attendance.",
+      "assessment": "Continuous assessment (essays, projects, class tests) counts 100%.",
       "examWeight": null
     },
     {
@@ -572,6 +662,25 @@
       "outline": "The purpose of this course is to augment and support its co-requisite course: ASL1301S (Introduction to Applied Language Studies). It aims to improve students’ performance by enhancing their grasp of key ideas and concepts, and by developing their mastery of the disciplinary discourse. It provides additional pedagogic enrichment in the form of regular Plus Tutorials that extend into Writing Hub exercises and consultations. In these tutorials, students will receive explicit support around the corequisite course assignments and detailed feedback on their written work.",
       "entry": "None (extended programme students only).",
       "corequisites": "ASL1301S.",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "No DP requirements.",
+      "assessment": "This course will be assessed on a Pass/Fail basis. In order to receive a pass grade, students will be required to complete at least 80% of all course requirements (attendance at tutorials, submission of exercises, etc.) AFRICAN STUDIES AND LINGUISTICS 134",
+      "examWeight": null
+    },
+    {
+      "code": "ASL2200S",
+      "title": "Culture, Identity & Globalisation in Africa",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor H Chitonge"
+      ],
+      "outline": "In the context of the current level of globalisation, this course explores Africa’s position in and relations with other parts of the globalising world. The course highlights Africa’s experience of globalization, focusing on the challenges and opportunities which globalisation presents, particularly on cultures and identities in the continent.",
+      "entry": "Students must be in their second or subsequent year of study.",
+      "corequisites": "",
       "lectures": "Monday, Tuesday and Wednesday, 6th period.",
       "periods": [
         6
@@ -582,8 +691,8 @@
         "Tuesday",
         "Wednesday"
       ],
-      "dp": "No DP requirements.",
-      "assessment": "This course will be assessed on a Pass/Fail basis. In order to receive a pass grade, students will be required to complete at least 80% of all course requirements (attendance at tutorials, submission of exercises, etc.) AFRICAN STUDIES AND LINGUISTICS 134 ASL2200S CULTURE, IDENTITY & GLOBALISATION IN AFRICA 20 NQF credits at NQF level 6; Three lectures and one compulsory tutorial per week. Convener: Professor H Chitonge",
+      "dp": "None.",
+      "assessment": "Continuous assessment (essays, projects, tests, etc.) counts 100%.",
       "examWeight": null
     },
     {
@@ -1101,7 +1210,34 @@
         "Friday"
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
-      "assessment": "Tests 20%; 15% for practicals, 15% for practical tests; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examinations. CSC3003S ADVANCED PROGRAMMING & ALGORITHMS Each student registered for this course is required to have a laptop for use during class sessions as well as after hours. The minimum specifications of the laptop are available at https://internal.cs.uct.ac.za/teaching/laptop_requirement.html (a tablet will not be suitable).",
+      "assessment": "Tests 20%; 15% for practicals, 15% for practical tests; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examinations.",
+      "examWeight": 50
+    },
+    {
+      "code": "CSC3003S",
+      "title": "Advanced Programming & Algorithms",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor P Marais"
+      ],
+      "outline": "This course covers three topics in advanced programming: software development, functional programming and the theory of algorithms (how algorithms are categorised, interesting algorithms in each category and how to analyse their complexity).",
+      "entry": "CSC2001F, CSC2002S, CSC2004Z and ((MAM1004F+MAM1008S) or (MAM1000W) or (MAM1031F or equivalent)).",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period, Practicals: Two 4-hour practicals per week, Monday Friday, 14h00 - 18h00",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Minimum of 45% aggregate in practical work.",
+      "assessment": "Tests 20%; practical work and practical tests 30%; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examination; 35% for the advanced computing module (comprising Theory of Algorithms and Functional Programming) in the final examination. ECONOMICS, SCHOOL OF",
       "examWeight": 50
     },
     {
@@ -1366,40 +1502,34 @@
       "title": "Macroeconomics I",
       "credits": 18,
       "nqf": 5,
-      "conveners": [
-        "L Mateane – ECO1011F",
-        "L Neethling – ECO1011S"
-      ],
-      "outline": "This course is an introductory level course in macroeconomic theory and policy. Macroeconomics studies the aggregate behaviour of the economy. The list of topics covered include gross domestic product, economic growth, unemployment, inflation, exchange rates, balance of payments, business cycles, fiscal and monetary policy tools and objectives. The course will build on macroeconomic relationships to develop basic models explaining various interactions within the economy, providing students with a framework for understanding and interrogating the workings of the economy.",
-      "entry": "A minimum mark of 50% for ECO1010F/S or ECO1110F/S. ECO1010F/S may be taken concurrently with ECO1011F/S if ECO1010F/S has been previously attempted.",
+      "conveners": [],
+      "outline": "",
+      "entry": "",
       "corequisites": "",
-      "lectures": "ECO1011F 15h00 – 16h00 Monday, Tuesday, Wednesday & Thursday ECO1011S 09h00 – 10h00 Tuesday, Wednesday, Thursday & Friday10h00 – 11h00 Tuesday, Wednesday, Thursday & Friday11h00 – 12h00 Tuesday, Wednesday, Thursday & Friday12h00 – 13h00…",
+      "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "All tests/assignments/essays/projects/tutorial attendance/submissions to be completed for DP purposes (details will be provided in the course documentation). If your year mark is below 40% you will not be permitted to write the final examination",
-      "assessment": "Coursework: 50%; Exam: 50%. The course documentation will detail the breakdown for assessment weightings and variation for exemptions and absences. Note: The ECO1011F supplementary/deferred exam will be scheduled during the last week of the mid-year vacation. If students do not write this exam they will be marked as AB and will have to retake the course. The ECO1011S supplementary/deferred exam will be scheduled during January of the following year.",
-      "examWeight": 50
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
     },
     {
       "code": "ECO1011S",
       "title": "Macroeconomics I",
       "credits": 18,
       "nqf": 5,
-      "conveners": [
-        "L Mateane – ECO1011F",
-        "L Neethling – ECO1011S"
-      ],
-      "outline": "This course is an introductory level course in macroeconomic theory and policy. Macroeconomics studies the aggregate behaviour of the economy. The list of topics covered include gross domestic product, economic growth, unemployment, inflation, exchange rates, balance of payments, business cycles, fiscal and monetary policy tools and objectives. The course will build on macroeconomic relationships to develop basic models explaining various interactions within the economy, providing students with a framework for understanding and interrogating the workings of the economy.",
-      "entry": "A minimum mark of 50% for ECO1010F/S or ECO1110F/S. ECO1010F/S may be taken concurrently with ECO1011F/S if ECO1010F/S has been previously attempted.",
+      "conveners": [],
+      "outline": "",
+      "entry": "",
       "corequisites": "",
-      "lectures": "ECO1011F 15h00 – 16h00 Monday, Tuesday, Wednesday & Thursday ECO1011S 09h00 – 10h00 Tuesday, Wednesday, Thursday & Friday10h00 – 11h00 Tuesday, Wednesday, Thursday & Friday11h00 – 12h00 Tuesday, Wednesday, Thursday & Friday12h00 – 13h00…",
+      "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
-      "dp": "All tests/assignments/essays/projects/tutorial attendance/submissions to be completed for DP purposes (details will be provided in the course documentation). If your year mark is below 40% you will not be permitted to write the final examination",
-      "assessment": "Coursework: 50%; Exam: 50%. The course documentation will detail the breakdown for assessment weightings and variation for exemptions and absences. Note: The ECO1011F supplementary/deferred exam will be scheduled during the last week of the mid-year vacation. If students do not write this exam they will be marked as AB and will have to retake the course. The ECO1011S supplementary/deferred exam will be scheduled during January of the following year.",
-      "examWeight": 50
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
     },
     {
       "code": "ECO2003F",
@@ -1721,7 +1851,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "Completion and submission of all assignments; at least 80% attendance record.",
-      "assessment": "Assignment and tests count for 50%; the examination counts for 50%. EDN2502W LISTENING & SPEAKING SP 24 NQF credits at NQF level 6 Convener: K Hassan",
+      "assessment": "Assignment and tests count for 50%; the examination counts for 50%.",
+      "examWeight": 50
+    },
+    {
+      "code": "EDN2502W",
+      "title": "Listening & Speaking Sp",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ],
+      "outline": "This course is grounded in the theoretical framework of listening and speaking using bottom-up, topdown and interpretive processes, involving prior knowledge and schema in comprehension and production. Teachers will learn about the integrated nature of listening and speaking and the relationship between the two in terms of communicative competence. Listening comprehension as a three-stage process will be examined, and practical exercises for pre-listening, during-listening and post-listening will be covered.",
+      "entry": "Acceptance for the Advanced Certificate in Teaching.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion and submission of all assignments; at least 80% attendance record.",
+      "assessment": "Assignment and tests count for 50%; the examination counts for 50%. EDUCATION, SCHOOL OF 174",
       "examWeight": 50
     },
     {
@@ -1759,7 +1908,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "Completion and submission of all assignments; at least 80% attendance record.",
-      "assessment": "Assignment and tests count for 50%; the examination counts for 50%. EDN2505W ENGLISH FAL COMMUNICATION & LEARNING SP 8 NQF credits at NQF level 6 Convener: K Hassan",
+      "assessment": "Assignment and tests count for 50%; the examination counts for 50%.",
+      "examWeight": 50
+    },
+    {
+      "code": "EDN2505W",
+      "title": "English Fal Communication & Learning Sp",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ],
+      "outline": "This course will look at classroom communication from intrapersonal, instructional, and interpersonal perspectives. Teachers will look at the role communication plays in the classroom and to relational/intrapersonal development and its impact on learning. Racial and gender biases in classroom interactions will be explored. The role of language, gesture, nonverbal communication and classroom materials will be explored in relation to language learning and cognitive development. Classroom strategies for encouraging communication that enhances learning will also be investigated.",
+      "entry": "Acceptance for the Advanced Certificate in Teaching.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion and submission of all assignments; at least 80% attendance record.",
+      "assessment": "Assignment and tests count for 50%; the examination counts for 50%.",
       "examWeight": 50
     },
     {
@@ -1816,7 +1984,45 @@
       "periodChoice": false,
       "days": [],
       "dp": "Completion and submission of all assignments and at least 80% attendance record.",
-      "assessment": "Assignment and tests count for 50%; the examination counts for 50%. EDN2509W EUCLIDEAN GEOM & MEASURE SP 24 NQF credits at NQF level 6 Convener: Y Johnson",
+      "assessment": "Assignment and tests count for 50%; the examination counts for 50%.",
+      "examWeight": 50
+    },
+    {
+      "code": "EDN2509W",
+      "title": "Euclidean Geom & Measure Sp",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Y Johnson"
+      ],
+      "outline": "EDUCATION, SCHOOL OF 176 This course focuses on introducing participants to the content and to appropriate pedagogic strategies that will enable the teaching and learning of the content in a more formal way. The emphasis of the course is on the relations between propositions and how these propositional relations could be deployed to solve geometry problems. While construction and measurement will not be discounted, the proofs of particular propositions will necessarily also be developed using already established propositions.",
+      "entry": "Acceptance for the Advanced Certificate in Teaching.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion and submission of all assignments.",
+      "assessment": "Assignment and tests count for 50%; the examination counts for 50%.",
+      "examWeight": 50
+    },
+    {
+      "code": "EDN2510W",
+      "title": "Data Handling & Statistics Sp",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Y Johnson"
+      ],
+      "outline": "This course focuses on developing and/or strengthening students’ knowledge of collecting, organising, summarising, representing and analysing data (discrete and bivariate). This includes knowledge of using appropriate tools (e.g. questionnaires, interviews), tables, summaries and charts (including bar graphs, pie charts, histograms, line graphs, scatter plots, box-and-whisker plots, ogives). Students will apply their acquired knowledge in various real-life contexts. In this regard, they will be expected to conduct a related project in their own contexts.",
+      "entry": "Acceptance for the Advanced Certificate in Teaching.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completion and submission of all assignments.",
+      "assessment": "Assignment and tests count for 50%; the examination counts for 50%.",
       "examWeight": 50
     },
     {
@@ -1930,7 +2136,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "Completion and submission of all assignments and at least 80% attendance record.",
-      "assessment": "Assignments and tests count for 50%; the examination counts for 50%. EDN2517W LIFE & LIVING SP 26 NQF credits at NQF level 6 Convener: G Dolo",
+      "assessment": "Assignments and tests count for 50%; the examination counts for 50%.",
+      "examWeight": 50
+    },
+    {
+      "code": "EDN2517W",
+      "title": "Life & Living Sp",
+      "credits": 26,
+      "nqf": 6,
+      "conveners": [
+        "G Dolo"
+      ],
+      "outline": "Life and living leads on to the knowledge strand of Life Sciences in the FET band. The Life and Living course is geared to encourage students to deepen their understanding of the biological sciences. The following concepts will be addressed in the course: the cell, the molecular basis of heredity, biological evolution, the interdependence of organisms, matter, energy and organization in living systems, and the adaptive response. Further, unifying concepts and provide a context for teaching content and process skills outcomes/goals.",
+      "entry": "Acceptance for the Advanced Certificate in Teaching.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Submission of all assignments and at least 80% attendance record.",
+      "assessment": "Assignments and tests count for 50%; the examination counts for 50%.",
       "examWeight": 50
     },
     {
@@ -2044,8 +2269,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance record plus submission of all assessment requirements. 100% School-based assignments.",
-      "assessment": "Coursework 100%. EDN2524W FIRST LANGUAGE & LITERACY FOUNDATION PHASE 12 NQF credits at NQF level 6 Convener: K Hassan",
+      "assessment": "Coursework 100%.",
       "examWeight": null
+    },
+    {
+      "code": "EDN2524W",
+      "title": "First Language & Literacy Foundation Phase",
+      "credits": 12,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ],
+      "outline": "The course informs and develops teachers’ knowledge of language learning and acquisition. It contributes to a significant paradigm shift from teaching isolated language topics to learning the principles of teaching reading, writing and comprehension within a balanced approach. It focuses on the relationship between pedagogical beliefs (theory and policy) in language education and classroom practice. The course develops teachers’ knowledge of reading and writing across the curriculum, as well as the use of talk for learning.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% attendance record plus submission of all assignments 50% Assignments 50% one two-hour examination",
+      "assessment": "Coursework 50%; exam 50%.",
+      "examWeight": 50
     },
     {
       "code": "EDN2525W",
@@ -2063,7 +2307,45 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance record plus submission of all assessment requirements. 60% Assignments and school-based tasks 40% teaching related portfolio.",
-      "assessment": "Coursework 100%. EDN2526W NUMBER & ALGEBRA IN THE FOUNDATION PHASE 20 NQF credits at NQF level 6 Convener: K Hassan",
+      "assessment": "Coursework 100%.",
+      "examWeight": null
+    },
+    {
+      "code": "EDN2526W",
+      "title": "Number & Algebra in the Foundation Phase",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ],
+      "outline": "This course consists of two related components: mathematics knowledge for teaching and teaching mathematics. Mathematics knowledge for teaching focuses on developing students' knowledge of the structure of number systems, from natural numbers to real numbers. In this component, students will explore the relation between counting and the basic operations. In teaching mathematics students engage with issues relating to the teaching and learning of number and algebra in the Foundation Phase.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% attendance and submission of all assignments and tasks 50% Tests, assignments and classroom-based tasks 50% Examination.",
+      "assessment": "Coursework 50%; exam 50%. EDN2527W SPACE; MEASUREMENT; DATA HANDLING IN THE FOUNDATION PHASE 20 NQF credits at NQF level 6 Convener: K Hassan",
+      "examWeight": 50
+    },
+    {
+      "code": "EDN2528W",
+      "title": "Teachers As Readers & Writers",
+      "credits": 8,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ],
+      "outline": "The course develops and extends teachers’ own reading and writing habits. Teachers are required to show that they have joined a public library and to source books for this course from this library as EDUCATION, SCHOOL OF 182 well as that read online, especially blogs related to literacy. Modelled on a book club format which can be replicated with children, students read fiction and/or non-fiction books of their own choice throughout the year and engage in structured discussions with peers about these books.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% attendance; full participation in book club discussions; 100% submission of written tasks; 100% portfolio assessment.",
+      "assessment": "Coursework 100%.",
       "examWeight": null
     },
     {
@@ -2082,7 +2364,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance record plus submission of all assessment requirements. 60% Assignments 40% Portfolio of school-based tasks.",
-      "assessment": "Coursework 100%. EDN2530W CURRICULUM & ASSESSMENT IN THE INTERMEDIATE PHASE 10 NQF credits at NQF level 6 Convener: K Hassan",
+      "assessment": "Coursework 100%.",
+      "examWeight": null
+    },
+    {
+      "code": "EDN2530W",
+      "title": "Curriculum & Assessment in the Intermediate Phase",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ],
+      "outline": "The course focuses on Mathematics and English as a First Additional Language in the Intermediate Phase of the General Education and Training band for schooling. It will concentrate on issues of assessment as it relates to curriculum delivery within an Intermediate Phase classroom context. The students will develop a critical understanding of general curriculum principles and their applications. The course addresses issues of effective change in practice, progression and pacing, assessment for teaching and learning in order to optimize the utilization of existing systems and resources.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "100% assignment-based assessment.",
       "examWeight": null
     },
     {
@@ -2120,7 +2421,45 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance record plus submission of all assignments and tasks.",
-      "assessment": "Assignments count 50%; one two-hour examination counts 50%. EDN2533W LEARNING & TEACHING IN THE INTERMEDIATE PHASE 10 NQF credits at NQF level 6 Convener: K Hassan",
+      "assessment": "Assignments count 50%; one two-hour examination counts 50%.",
+      "examWeight": 50
+    },
+    {
+      "code": "EDN2533W",
+      "title": "Learning & Teaching in the Intermediate Phase",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": [
+        "K Hassan"
+      ],
+      "outline": "The course introduces students to two key developmental theories in order to develop their understanding 1) of how children learn and 2) how one can therefore teach children in an effective manner. The course begins by providing theoretical insights into learning before linking this knowledge to practical applications of the theory in a classroom situation. Students will also focus on the relation between teaching, theories of learning and the curriculum. The main approach involves selection and translation from the curriculum into teaching strategies.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "100% assignment-based assessment.",
+      "examWeight": null
+    },
+    {
+      "code": "EDN2534W",
+      "title": "Number & Algebra in the Intermediate Phase",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Y Johnson"
+      ],
+      "outline": "The course consists of two related components: (1) Developing students’ knowledge of mathematics underpinning the Intermediate Phase mathematics curriculum, specifically in relation to Number and EDUCATION, SCHOOL OF 184 Algebra (Mathematics knowledge for teaching) (2) Teaching of Number and Algebra to Intermediate Phase learners and their learning of Number and Algebra (Teaching mathematics).",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "50% written tests, assignments and tasks; 50% examination. EDN2535W SPACE; MEASUREMENT; DATA HANDLING IN THE INTERMEDIATE PHASE 24 NQF credits at NQF level 6 Convener: K Hassan",
       "examWeight": 50
     },
     {
@@ -2158,7 +2497,64 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance at contact sessions and submission of assessment tasks.",
-      "assessment": "Portfolio of professional work 100%. EDN3705W LEADING & MANAGING TEACHING & LEARNING IN THE SCHOOL 18 NQF credits at NQF level 7 Convener: Dr R B Terhoven",
+      "assessment": "Portfolio of professional work 100%.",
+      "examWeight": null
+    },
+    {
+      "code": "EDN3705W",
+      "title": "Leading & Managing Teaching & Learning in the School",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr R B Terhoven"
+      ],
+      "outline": "The course assumes that schools exist to provide systematic, quality learning opportunities for children and therefore that effective leadership and management of teaching and learning is a critical role for the school principal. As such the course covers the leadership and management roles and functions of the school to lead quality teaching, effectively manage implementation of the core curriculum and track and support improved learning.",
+      "entry": "Acceptance for the Advanced Diploma in SLM.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% attendance at contact sessions and submission of assessment tasks.",
+      "assessment": "Two assignments. EDUCATION, SCHOOL OF 186",
+      "examWeight": null
+    },
+    {
+      "code": "EDN3706W",
+      "title": "Leading & Managing Extra-Curricular and Cocurricular Activities",
+      "credits": 9,
+      "nqf": 7,
+      "conveners": [
+        "Dr R B Terhoven"
+      ],
+      "outline": "The course focusses on effective leadership and management of extra-curricular and co-curricular activities to support the development of well-rounded individuals. The general principles of leadership applicable to all schools nationally and internationally in relation to extra-curricular and co-curricular activities are explored. Theories and practices underpinned by the South African legal, policy and financial requirements for schools address the challenges present and the advocacy required in the local context.",
+      "entry": "Acceptance for the Advanced Diploma in SLM.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% attendance at contact sessions and submission of assessment tasks.",
+      "assessment": "Two assignments.",
+      "examWeight": null
+    },
+    {
+      "code": "EDN3707W",
+      "title": "Leading & Managing People and Change",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr R B Terhoven"
+      ],
+      "outline": "The course focusses on people as the key resource of the school and explores theoretical understanding and practical competence to lead and manage oneself and others in the school and the wider community. Alongside developing practices in human resource management, staff development and the application of relevant employment legislation, the course addresses issues related to the socioeconomic background and health of learners, teachers and the school community.",
+      "entry": "Acceptance for the Advanced Diploma in SLM.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% attendance at contact sessions and submission of assessment tasks.",
+      "assessment": "Two assignments.",
       "examWeight": null
     },
     {
@@ -2177,7 +2573,26 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance at contact sessions and submission of assessment tasks.",
-      "assessment": "Two assignments. EDN3709W LEADING & MANAGING THE SCHOOL AS AN ORGANISATION 18 NQF credits at NQF level 7 Convener: Dr R B Terhoven",
+      "assessment": "Two assignments.",
+      "examWeight": null
+    },
+    {
+      "code": "EDN3709W",
+      "title": "Leading & Managing the School As an Organisation",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "Dr R B Terhoven"
+      ],
+      "outline": "The course focuses on developing an integrated knowledge of the school as an organisation, to evaluate and apply organisational systems holistically in context, lead and manage the use of ICT and effectively utilise physical and financial resources. As such it addresses issues related to building and enhancing the school as a safe, disciplined and caring environment that is conducive to effective teaching and learning.",
+      "entry": "Acceptance for the Advanced Diploma in SLM.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "80% attendance at contact sessions and submission of assessment tasks.",
+      "assessment": "Two assignments. EDUCATION, SCHOOL OF 187",
       "examWeight": null
     },
     {
@@ -2217,6 +2632,33 @@
       "dp": "",
       "assessment": "",
       "examWeight": null
+    },
+    {
+      "code": "EGS1007S",
+      "title": "Human & Physical Systems",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Professor F Eckardt"
+      ],
+      "outline": "The course presents fundamental environmental and geographical concepts from the fields of human and physical geography and explores the interconnections, flows and boundaries across these systems. How these systems have played out in the past, how they are changing, and what the future may hold, is critical to a full appreciation of current and future environmental challenges.",
+      "entry": "At least 50% for NSC Geography or GEO1009F. For Humanities students: At least 50% for NSC Geography",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period, Tutorials/Practical: One per every two weeks on Monday, Tuesday or Thursdays, 14h00 - 17h00.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Attendance of all, and satisfactory completion of all tutorial and practical assignments; students must attain an average mark of not less than 40% for the coursework component.",
+      "assessment": "Essays, assignments and tutorial work count 60%; one 2-hour theory examination written in November counts 40% (subminimum of 40% required). ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE 198",
+      "examWeight": 40
     },
     {
       "code": "EGS2016F",
@@ -2294,8 +2736,35 @@
         "Friday"
       ],
       "dp": "Satisfactory completion of practicals and all written assignments, including essays, project reports and class tests.",
-      "assessment": "Essays and tests count 20%; project reports and practicals count 20%; one 3-hour examination in November counts 60% (subminimum of 40% required). EGS3021F SUSTAINABILITY & ENVIRONMENT There is a compulsory fieldwork component involving a half-day field excursion. 36 NQF credits at NQF level 7 Convener: Dr P Sabela-Rikhotso",
-      "examWeight": null
+      "assessment": "Essays and tests count 20%; project reports and practicals count 20%; one 3-hour examination in November counts 60% (subminimum of 40% required).",
+      "examWeight": 60
+    },
+    {
+      "code": "EGS3021F",
+      "title": "Sustainability & Environment",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Dr P Sabela-Rikhotso"
+      ],
+      "outline": "The course critically engages with current debates and discourses in the fields of sustainability, vulnerability and environmental management, including examination of key concepts such as integration, systems-thinking, complexity, equity, vulnerability, risk, resilience, adaptation and mitigation. Approaches and methods for analysing environmental problems and integrating risk reduction as well as sustainability principles and practices into policy, programme, plan and project cycle processes are investigated and applied in different contexts.",
+      "entry": "EGS2016F (or EGS2013F), EGS2017S (or EGS2015S)",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 3rd period, Practicals: One afternoon per week, Wednesday, 14h00 - 17h00.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Attendance and satisfactory completion of practicals (including fieldwork), other assignments and tests; students must attain an average mark of not less than 40% for the coursework.",
+      "assessment": "Practical reports (including fieldwork), class tests and other assignments count 60%; one 3-hour June examination counts 40% (subminimum of 40% required).",
+      "examWeight": 40
     },
     {
       "code": "EGS3022S",
@@ -2320,7 +2789,7 @@
       ],
       "dp": "Satisfactory completion of essay and practical assignments and participation in tutorials; students must attain an average mark of not less than 40% for the coursework ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE 200",
       "assessment": "Essay and other assignments count 70%; one 3-hour written examination in November count 30% (subminimum of 40% required).",
-      "examWeight": null
+      "examWeight": 30
     },
     {
       "code": "EGS3023F",
@@ -2347,7 +2816,7 @@
       ],
       "dp": "Satisfactory completion of practicals and all written assignments, including fieldwork report, essays and class tests. Students must attain an average mark of not less than 40% for the coursework.",
       "assessment": "Field report, essays, class tests and practical assignments count 50%; one 3-hour examination written in June count 50% (sub-minimum of 40% required). FILM AND MEDIA STUDIES, CENTRE FOR",
-      "examWeight": null
+      "examWeight": 50
     },
     {
       "code": "ELL1010S",
@@ -2608,6 +3077,30 @@
       "examWeight": null
     },
     {
+      "code": "FAM2000F",
+      "title": "Writing & Editing in the Media",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Associate Professor M Evans"
+      ],
+      "outline": "The course serves as an introduction to journalism and will expose students to theoretical and practical aspects of media production. By the end of this course students should be able to demonstrate good writing and editing skills; an understanding of print, broadcast and online media practices; and an understanding of the theoretical underpinnings of these media practices.",
+      "entry": "At least second-year status, or at the discretion of the Head of Department",
+      "corequisites": "",
+      "lectures": "1st period, Monday and Wednesday.",
+      "periods": [
+        1
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Wednesday"
+      ],
+      "dp": "Completion of all written assignments and regular attendance. Students who miss more than two seminars will lose their DPs.",
+      "assessment": "Continuous assessment (essays, projects, tests, etc.) counts 100%.",
+      "examWeight": null
+    },
+    {
       "code": "FAM2003S",
       "title": "Media, Power and Culture",
       "credits": 20,
@@ -2666,7 +3159,7 @@
       ],
       "outline": "This course provides an introduction to genre studies for screen texts. This investigation of genre is supported by a sampling of film and television genre texts. The concept of genre provides a lens for considering the industrial, historical and sociopolitical factors which shape screen media. While drawing from a range of global examples, this course will also pay attention to the ways genre has been adapted for African audiences and South African audiences, in particular.",
       "entry": "At least second year status",
-      "corequisites": "FAM2000F",
+      "corequisites": "",
       "lectures": "Monday and Tuesday, 5th period.",
       "periods": [
         5
@@ -2678,6 +3171,23 @@
       ],
       "dp": "All written work must be submitted by the stipulated dates.",
       "assessment": "Continuous assessment (essays, projects, tests, etc.) counts 100%. FILM AND MEDIA STUDIES, CENTRE FOR 206 FAM2014FS SCREEN PRODUCTION I 20 NQF credits at NQF level 6 Convener: Dr L Maasdorp",
+      "examWeight": null
+    },
+    {
+      "code": "FAM2015F",
+      "title": "Writing & Editing in the Media",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": [],
+      "outline": "The purpose of this course is to augment and support its co-requisite course:",
+      "entry": "None (extended programme students only).",
+      "corequisites": "FAM2000F",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
       "examWeight": null
     },
     {
@@ -3334,6 +3844,60 @@
       "examWeight": 60
     },
     {
+      "code": "GEO1006S",
+      "title": "Introduction to Minerals, Rocks & Structure",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor R Pickering"
+      ],
+      "outline": "This course introduces students to the Geology major and covers the essentials of the discipline as follows: crystals and minerals; igneous and metamorphic rocks; structural geology; mineral deposits and economic geology; palaeontology; the interpretation of geological maps. A three-day field trip to the Western Cape serves as an introduction to field geology.",
+      "entry": "A minimum of 45% in GEO1009F",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 5th period",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "An average of 30% in all marked classwork and tests.",
+      "assessment": "Class tests count 35%; field reports count 15%; one 2-hour theory examination written in November counts 50%. A subminimum of 40% is required in the theory examination paper.",
+      "examWeight": 50
+    },
+    {
+      "code": "GEO1009F",
+      "title": "Geosystems: An Introduction to Earth & Environmental Sciences",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Associate Professor E M Bordy"
+      ],
+      "outline": "This course aims to develop a broad understanding of how the Earth works. Over its >4.5 billion-yearlong history, the Earth has been shaped by chemical, physical and biological processes. The course demonstrates why decoding the rock record of deep-time events is critical for explaining past, present and future environmental changes and the distribution of natural resources. It examines the interplay of terrestrial, marine, atmospheric, and cryospheric processes within the Earth system, with an emphasis on monitoring essential variables for understanding climate variability and change.",
+      "entry": "At least 50% for NSC Geography or at least 60% for NSC Physical Science or Life Sciences. NOTE: Preference will be given to students majoring in Archaeology, Environmental and Geographical Science, Geology or Oceanography.",
+      "corequisites": "",
+      "lectures": "Monday - Friday, 2nd period",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "An average of 40% on all marked classwork and tests. Submission of 80% of weekly assignments in each of the four sections (i.e., GEO, AGE, SEA, EGS). Attendance of the field trip is compulsory for students majoring in Archaeology, EGS, Geology, or Oceanography.",
+      "assessment": "Marked classwork, including class test/s, counts 50%, and a 3-hour written examination counts 50%. A subminimum of 40% in the class mark is required to write the theory examination paper. Supplementary examinations for GEO1009F will be offered in July. HISTORICAL STUDIES",
+      "examWeight": 50
+    },
+    {
       "code": "HST1013F",
       "title": "Connections and Interruptions, 1500-1800",
       "credits": 15,
@@ -3559,7 +4123,7 @@
       "days": [],
       "dp": "Year mark greater or equal to 45% (based on all continuous assessment prior to the final exam) and 80% participation for all practicals (tutorials and workshops).",
       "assessment": "Coursework 60%, Final Examination 40% with a Sub-minimum of 40% for the final exam.",
-      "examWeight": null
+      "examWeight": 40
     },
     {
       "code": "INF2008F",
@@ -3606,6 +4170,51 @@
       "examWeight": null
     },
     {
+      "code": "INF2010S",
+      "title": "Information & Communication Technologies",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "G Oosterwyk"
+      ],
+      "outline": "This course is intended to provide students with an in-depth knowledge of hardware, software, data communications and networking theory. This course is designed to build the skills required for the management and building of distributed systems and commercial networks. This course provides the hardware and software technology background required for understanding various computer architectures for single and multiple users.",
+      "entry": "Minimum 45% final mark for INF2003F or equivalent. Students cannot be credited for this course and CSC2002S",
+      "corequisites": "",
+      "lectures": "Monday to Wednesday 12h00 -12h45",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Completing 80% of deliverables including quizzes, assignments (including the IT technical report) and semester test. Year mark of 45%.",
+      "assessment": "The final grade is derived from the results of quizzes, assignments (including IT technical report) and the semester test which counts 60%; the Final Exam (40%)—sub-minimum of 45% for the final examination",
+      "examWeight": 40
+    },
+    {
+      "code": "INF2011S",
+      "title": "Systems Design & Development",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "D Snyman"
+      ],
+      "outline": "This course is intended to provide students with an in-depth knowledge of the systems development process with particular emphasis on the design and implementation stages of the life cycle. There is a strong practical component to the course, where students will use object - oriented tools to design and construct a working system. This course is designed to build on the skills acquired in INF2009F Systems Analysis.",
+      "entry": "Minimum 45% final mark for [INF2007 or INF2008 or CSC2001 or equivalent] and INF2009 and [INF1003 or CSC1016 or equivalent]",
+      "corequisites": "",
+      "lectures": "Monday, Tuesday and Wednesday, 4th period, Thursday: Weekly workshop sessions 3rd to 4th OR 4th to 5th periods. Friday: Practical workshops 5th – 7th",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Submit 80% of workshops and quizzes. Year-mark of 45%. Submitted all project work.",
+      "assessment": "The final grade is derived from the following deliverables: Coursework: 60%; Exam 40%. Subminimum 45% for the final exam.",
+      "examWeight": 40
+    },
+    {
       "code": "INF3003W",
       "title": "Systems Development Project I",
       "credits": 48,
@@ -3640,8 +4249,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "Submission of required project work and a sub-minimum of 45% for the year mark prior to writing the final examination. In addition, students must have satisfactory attendance at tutorials and lectures.",
-      "assessment": "Coursework counts 70%. Final examination counts 30%. Sub-minimum of 40% for the final examination. INF3012S BPM & ENTERPRISE SYSTEMS 18 NQF credits at NQF level 7 Convener: P Tsibolane",
+      "assessment": "Coursework counts 70%. Final examination counts 30%. Sub-minimum of 40% for the final examination.",
       "examWeight": 30
+    },
+    {
+      "code": "INF3012S",
+      "title": "Bpm & Enterprise Systems",
+      "credits": 18,
+      "nqf": 7,
+      "conveners": [
+        "P Tsibolane"
+      ],
+      "outline": "This course examines the role, relationship and effect IT Applications have on businesses and vice versa. It has a heavy emphasis on ERP systems, business processes and Business Process Management (BPM). Students will be exposed to methodologies and techniques to identify, model, measure and improve processes. Students will be introduced to technologies that can be used as part of process improvement initiatives as well as technologies such as ERP that impact business processes. A group project will allow students to apply their analytical skills to improving an existing process.",
+      "entry": "A pass in INF2003F, INF2009F and INF2011S",
+      "corequisites": "",
+      "lectures": "11h00-11h45 Tuesday- Friday and 10h00-10h45 Thursday and Friday",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Acceptable participation in group project, 45% for the year mark and completion and submission of 80% of workshops.",
+      "assessment": "Classwork 65% (workshops, class exercises, test and a group project), final examination 35%. Sub-minimum of 40% for the final examination. INFORMATION SYSTEMS 239",
+      "examWeight": 35
     },
     {
       "code": "INF3014F",
@@ -3722,9 +4350,17 @@
       "entry": "At least 70% in NSC Mathematics. Students registered in other faculties who do not meet the 70% NSC requirement may instead complete MAM1014F/MAM1022F followed by MAM1015S with a mark of 70% or higher. From 2027 the 70% NSC requirement may be replaced by MAM1025F/MAM1026F followed by MAM1015S with a mark of 70% or higher.",
       "corequisites": "",
       "lectures": "Monday - Friday, Meridian",
-      "periods": [],
+      "periods": [
+        0
+      ],
       "periodChoice": false,
-      "days": [],
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
       "dp": "Minimum of 30% in class tests, and at least 80% attendance at tutorials.",
       "assessment": "Year mark counts up to 40%; one 3-hour examination makes up the balance. MATHEMATICS AND APPLIED MATHEMATICS 304",
       "examWeight": null
@@ -3944,9 +4580,17 @@
       "entry": "At least 70% in NSC Mathematics",
       "corequisites": "MAM1031F and MAM1032S or equivalent.",
       "lectures": "Five lectures every two weeks in meridian.",
-      "periods": [],
+      "periods": [
+        0
+      ],
       "periodChoice": false,
-      "days": [],
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
       "dp": "Minimum of 30% in year mark and satisfactory tutorial attendance.",
       "assessment": "Year mark counts 30 - 40%; one 2-hour examination paper written in June/July and one in October/November equally make up the balance.",
       "examWeight": null
@@ -4017,7 +4661,7 @@
       ],
       "outline": "MATHEMATICS AND APPLIED MATHEMATICS 309 The aim of this course is to continue from the work in MAM1031F and introduce students to integral calculus, taylor polynomials, complex numbers, vector geometry, linear algebra and differential equations. This course, along with MAM1031F is necessary for entry into second year mathematics.",
       "entry": "MAM1031F or MAM1033F or MAM1004F (with 65% or higher)",
-      "corequisites": "MAM1031F and MAM1032S or equivalent.",
+      "corequisites": "",
       "lectures": "Five lectures per week, Monday - Friday, 1st or 3rd period.",
       "periods": [
         1,
@@ -4032,8 +4676,35 @@
         "Friday"
       ],
       "dp": "Minimum of 30% for class tests, minimum 30% for weekly online tests, and 80% attendance at tutorial sessions.",
-      "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%. MAM1043H MODELLING & APPLIED COMPUTING This course can be taken in conjunction with MAM1044H as lectures are arranged so that this is possible. Each student registered for this course is required to have a laptop for use during class sessions as well as after hours. A tablet or “netbook” will not be suitable. The course convener will provide details of additional software required.",
+      "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%.",
       "examWeight": 67
+    },
+    {
+      "code": "MAM1043H",
+      "title": "Modelling & Applied Computing",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "Dr P W Adams"
+      ],
+      "outline": "The aim of this course is to introduce Applied Mathematics and Mathematical Modelling through approximations and estimation theory, dimensional analysis, numerical methods, rudimentary modelling using first- and second-order ordinary differential equations, discrete- and continuous-time dynamical systems, and modelling and simulation of discrete- and continuous-time processes with MATLAB.",
+      "entry": "",
+      "corequisites": "MAM1031F and MAM1032S or equivalent.",
+      "lectures": "First Semester: 2nd period Monday, Wednesday, Friday. Second Semester: 2nd period Tuesday, Thursday.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "A class record of 30% or more, satsifactory attendance at lectures and tutorials, and submission of all assigned work.",
+      "assessment": "Class record counts 20 - 40%; one 3-hour examination written in October/November makes up the balance.",
+      "examWeight": null
     },
     {
       "code": "MAM1044H",
@@ -4959,8 +5630,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "At least 80% attendance at lectures and the completion of all assignments, projects and tests.",
-      "assessment": "Tests and assignments 40%; final examination 60%. MUZ2365H TEACHING METHOD & REPERTOIRE I 9 NQF credits at NQF level 6 Convener: C Malefane",
+      "assessment": "Tests and assignments 40%; final examination 60%.",
       "examWeight": 60
+    },
+    {
+      "code": "MUZ2365H",
+      "title": "Teaching Method & Repertoire I",
+      "credits": 9,
+      "nqf": 6,
+      "conveners": [
+        "C Malefane"
+      ],
+      "outline": "This course is intended as a supplement to a classical singer’s practical lessons. Instruction and information are offered concerning the rudiments of the technique of a healthy singing voice, through reading, lectures, listening. The basic conducting patterns and elementary lessons in diction are also addressed. Together, and with the guidance of the lecturer, the class also listens to a prescribed list of vocal repertoire and discusses its vocal challenges.",
+      "entry": "",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "At least 75% attendance at lectures.",
+      "assessment": "Tests 75%; final examination 25%.",
+      "examWeight": 25
     },
     {
       "code": "MUZ2366H",
@@ -5428,8 +6118,27 @@
       "periodChoice": false,
       "days": [],
       "dp": "At least 80% attendance and completion of all prescribed coursework and assignments.",
-      "assessment": "As per individual instrumental teaching method course requirements hand-out. Projects and/or exams set by individual lecturers. MUZ3365H TEACHING METHOD & REPERTOIRE II 9 NQF credits at NQF level 7 Convener: Associate Professor P Tikolo",
+      "assessment": "As per individual instrumental teaching method course requirements hand-out. Projects and/or exams set by individual lecturers.",
       "examWeight": null
+    },
+    {
+      "code": "MUZ3365H",
+      "title": "Teaching Method & Repertoire II",
+      "credits": 9,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor P Tikolo"
+      ],
+      "outline": "This course is intended as a supplement to a classical singer’s practical lessons. Instruction and information are offered concerning the rudiments of the technique of a healthy singing voice, through reading, lectures, listening and through one-on-one student teaching (in the second year of the course only). The basic conducting patterns and elementary lessons in diction are also addressed. Together, and with the guidance of the lecturer, the class also listens to a prescribed list of vocal repertoire and discusses its vocal challenges.",
+      "entry": "A pass in Teaching Method & Repertoire I.",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "At least 75% attendance at lectures.",
+      "assessment": "Tests 75%; final examination 25%.",
+      "examWeight": 25
     },
     {
       "code": "MUZ3366H",
@@ -5555,14 +6264,33 @@
       ],
       "outline": "This course aims to introduce students to the basic rules of French pronunciation for the stage, in both operatic and art song repertoire. The use of IPA (International Phonetic Alphabet) is continued and expanded to apply to the French language, and issues such as proper vocal execution of the French nasal vowels, liaison and elision, and correct execution of the “mute” vowel are examined, always with the twin goals of clarity and vocal efficacy used as the standard by which results are judged.",
       "entry": "A pass in Lyric Diction II.",
-      "corequisites": "Theory of Jazz II (for students who did not complete the course in their second year of study).",
+      "corequisites": "",
       "lectures": "",
       "periods": [],
       "periodChoice": false,
       "days": [],
       "dp": "At least 75% attendance at lectures.",
-      "assessment": "Tests, quizzes and participation 50%; performance of diction excerpts 50%. MUZ3379H JAZZ STYLES & ANALYSIS 24 NQF credits at NQF level 7 Convener: Associate Professor A Tiffin",
+      "assessment": "Tests, quizzes and participation 50%; performance of diction excerpts 50%.",
       "examWeight": null
+    },
+    {
+      "code": "MUZ3379H",
+      "title": "Jazz Styles & Analysis",
+      "credits": 24,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor A Tiffin"
+      ],
+      "outline": "An in-depth study of jazz styles from the 1920s to the present, focusing on significant recordings by major artists representing the definitive style periods. Core material includes analysis of jazz improvisation transcribed from such recordings in order to identify stylistic traits and technical approaches, and the development of aural recognition of contemporary harmonic and linear vocabularies.",
+      "entry": "A pass in Theory of Jazz I and History of Jazz II.",
+      "corequisites": "Theory of Jazz II (for students who did not complete the course in their second year of study).",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "At least 80% attendance at lectures and the timeous completion of all assignments.",
+      "assessment": "Coursework 50%; examination 50%.",
+      "examWeight": 50
     },
     {
       "code": "MUZ3380H",
@@ -6044,18 +6772,12 @@
       "outline": "There are two objectives in the course. In the first place, we consider the nature of deviance, crime and criminality in South Africa, from both historical and current viewpoints. We consider questions such as: How much crime is there in South Africa? Who are the victims of crime and who are the offenders? Why is crime in South Africa so violent? This discussion will draw freely from international, criminological debate and locate those debates within a developing context. The second objective of the course aims at exploring responses to crime in the South African context.",
       "entry": "SOC1001F or SOC1005S or any 1000-level social science course.",
       "corequisites": "",
-      "lectures": "Tuesday, Thursday, 7th and 8th periods.",
-      "periods": [
-        7,
-        8
-      ],
+      "lectures": "",
+      "periods": [],
       "periodChoice": false,
-      "days": [
-        "Tuesday",
-        "Thursday"
-      ],
+      "days": [],
       "dp": "Completion of all written tests, essays and assignments.",
-      "assessment": "Coursework counts 50% and one two-hour examination counts 50% of the final mark. SOC2004S RACE, CLASS, GENDER & SEXUALITY 20 NQF credits at NQF level 6 Convener: Professor A Pande",
+      "assessment": "Coursework counts 50% and one two-hour examination counts 50% of the final mark.",
       "examWeight": 50
     },
     {
@@ -6911,9 +7633,16 @@
       "entry": "PSY1004F, PSY1005S; and meeting mathematics criterion for entrance into PSY1004F.",
       "corequisites": "None",
       "lectures": "Monday to Thursday, Meridian.",
-      "periods": [],
+      "periods": [
+        0
+      ],
       "periodChoice": false,
-      "days": [],
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
       "dp": "Completion of all coursework, 80% attendance at tutorials, and obtaining 3 points through the Student Research Participation Programme (SRPP).",
       "assessment": "Coursework will be weighted at 50%, and will include completion of tutorial assignments, and tests as required. An exam at the end of the semester will be weighted 50%.",
       "examWeight": 50
@@ -6982,9 +7711,16 @@
       "entry": "Students must have passed PSY2015F and PSY2014S.",
       "corequisites": "",
       "lectures": "Monday to Thursday Meridian.",
-      "periods": [],
+      "periods": [
+        0
+      ],
       "periodChoice": false,
-      "days": [],
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
       "dp": "Completion of all coursework, as well as completion of 90 minutes in the Student Research Participation Programme (SRPP) or equivalent and attendance of at least 5 tutorials.",
       "assessment": "Coursework: counts a total of 50%. This coursework is broken down into weekly tests (25%), and a group field project (25%). Examination: the two-hour examination in June counts 50% towards the final mark.",
       "examWeight": 50
@@ -7001,9 +7737,16 @@
       "entry": "Students must have passed PSY2015F and PSY2014S.",
       "corequisites": "",
       "lectures": "Monday to Thursday Meridian.",
-      "periods": [],
+      "periods": [
+        0
+      ],
       "periodChoice": false,
-      "days": [],
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
       "dp": "Completion of all coursework, attendance at a minimum of 5 tutorials, as well as completion of 90 minutes in the Student Research Participation Programme (SRPP) or equivalent.",
       "assessment": "Coursework (tests and tutorial response papers) counts 45%; one two-hour examination in November counts 55% towards the final mark.",
       "examWeight": 55
@@ -7349,7 +8092,8 @@
       "corequisites": "",
       "lectures": "Monday 5th period and meridian, Tuesday, 5th period.",
       "periods": [
-        5
+        5,
+        0
       ],
       "periodChoice": false,
       "days": [
@@ -7858,7 +8602,7 @@
       "periodChoice": false,
       "days": [],
       "dp": "80% attendance, handing in of all assignments and tests throughout the semester.",
-      "assessment": "Continuous assessment (80%) and an oral exam (20%). SLL2060F FRENCH LANGUAGE & LITERATURE IIA 20 NQF credits at NQF level 6 Convener: Dr R de Oliveira",
+      "assessment": "Continuous assessment (80%) and an oral exam (20%).",
       "examWeight": 20
     },
     {
@@ -7928,9 +8672,10 @@
       "corequisites": "",
       "lectures": "Monday to Friday 1st period or meridian. Plus, one tutorial and one conversation class.",
       "periods": [
-        1
+        1,
+        0
       ],
-      "periodChoice": false,
+      "periodChoice": true,
       "days": [
         "Monday",
         "Tuesday",
@@ -7955,9 +8700,10 @@
       "corequisites": "",
       "lectures": "Monday to Friday 1st period or meridian. Plus, one tutorial and one conversation class.",
       "periods": [
-        1
+        1,
+        0
       ],
-      "periodChoice": false,
+      "periodChoice": true,
       "days": [
         "Monday",
         "Tuesday",
@@ -8020,7 +8766,7 @@
         "Friday"
       ],
       "dp": "As for SLL1082F.",
-      "assessment": "One two-hour examination counts 50% of the final mark; the remaining 50% is awarded for classwork (35%) and oral (15%). SLL2082F HEBREW LANGUAGE & LITERATURE IIA 24 NQF credits at NQF level 6 Convener: A Laskov LANGUAGES AND LITERATURES, SCHOOL OF 283",
+      "assessment": "One two-hour examination counts 50% of the final mark; the remaining 50% is awarded for classwork (35%) and oral (15%).",
       "examWeight": 50
     },
     {
@@ -8299,6 +9045,56 @@
       "examWeight": 40
     },
     {
+      "code": "SLL1131F",
+      "title": "Isixhosa Language & Literature Studies IA",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr W Gambushe"
+      ],
+      "outline": "The course introduces students to isiXhosa language, literacy and culture. It examines the contributions of isiXhosa linguistic and cultural competence to multilingualism discourses through an examination of language in context, literary discourse, language and society and translation studies. The main focus at this level is on developing writing skills such as awareness of orthographic changes and spelling conventions, academic writing, and language policy issues such as standardisation, dialects and the impact on education.",
+      "entry": "The student must have passed an African language (isiXhosa, isiZulu, isiNdebele, isiSwati) at Grade 12 level or have completed SLL1101F Xhosa Communication IA and SLL1102S Xhosa Communication IB.",
+      "corequisites": "",
+      "lectures": "Tuesday, Wednesday, Thursday 2nd period.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Students are expected to attend 80% of all lectures and tutorials and to complete all tests, projects and assignments.",
+      "assessment": "Year work (tests, assignments and projects) 50%, one two-hour examination 50%.",
+      "examWeight": 50
+    },
+    {
+      "code": "SLL1132S",
+      "title": "Isixhosa Language & Literature Studies IB",
+      "credits": 15,
+      "nqf": 5,
+      "conveners": [
+        "Dr H Kunju"
+      ],
+      "outline": "This course is a continuation of SLL1131F. The course further develops students’ isiXhosa linguistic skills and cultural competence and literacy. The approach in this course is to discuss topics of language development and apply them to specific areas of language policy and planning. We also explore the role of African languages under the topics of language and power. LANGUAGES AND LITERATURES, SCHOOL OF 252",
+      "entry": "SLL1131F isiXhosa Language and Literature Studies IA.",
+      "corequisites": "",
+      "lectures": "Tuesday, Wednesday, Thursday 2nd period.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Students are expected to attend 80% of all lectures and tutorials and to complete all tests, projects and assignments.",
+      "assessment": "Year work (tests, assignments and projects) 50%, one two-hour examination 50%.",
+      "examWeight": 50
+    },
+    {
       "code": "SLL1136S",
       "title": "Introduction to Roman Literature and Culture",
       "credits": 15,
@@ -8337,9 +9133,16 @@
       "entry": "SLL1023S Sesotho Communication IB.",
       "corequisites": "",
       "lectures": "Monday, Tuesday, Wednesday, Friday Meridian.",
-      "periods": [],
+      "periods": [
+        0
+      ],
       "periodChoice": false,
-      "days": [],
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
       "dp": "Students are expected to complete all tests and assignments and attend at least 80% of all lectures, tutorials and language labs.",
       "assessment": "Year work (tests, assignments and portfolio activities) counts 50%; orals count 10%; one two-hour examination counts 40% of the final mark.",
       "examWeight": 40
@@ -8356,9 +9159,16 @@
       "entry": "SLL2025F Sesotho Communication IIA.",
       "corequisites": "",
       "lectures": "Monday, Tuesday, Wednesday, Friday Meridian.",
-      "periods": [],
+      "periods": [
+        0
+      ],
       "periodChoice": false,
-      "days": [],
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
       "dp": "Students are expected to complete all tests and assignments and attend at least 80% of all lectures, tutorials and language labs.",
       "assessment": "Year work (tests, assignments and portfolio activities) counts 50%; orals count 10%; one two-hour examination counts 40% of the final mark. LANGUAGES AND LITERATURES, SCHOOL OF 249",
       "examWeight": 40
@@ -8602,6 +9412,60 @@
       "dp": "Students must attend classes regularly, submit the prescribed number of essays and assignments and write any class test that may be scheduled. Submission dates must be adhered to.",
       "assessment": "One two-hour examination in June counts for 50% of the final mark; coursework counts for 50%.",
       "examWeight": 50
+    },
+    {
+      "code": "SLL2060F",
+      "title": "French Language & Literature IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr R de Oliveira"
+      ],
+      "outline": "Intermediate General French Studies. This course includes a grammar module, which aims to develop language skills in listening, speaking, reading and writing, and provides an introduction to the basic techniques of translation (French-English); and an introduction to French and Francophone cultures, civilizations and literatures.",
+      "entry": "SLL1061S or a pass in Matriculation French within the past 3 years with at least a C symbol, or 5 in NSC (or equivalent) or approval by the Head of Department in consultation with the Section Head. Francophone students may not register for this course.",
+      "corequisites": "",
+      "lectures": "Monday to Friday in 3rd period and one conversation class per week.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Completion of class tests and oral examinations on the date indicated, submission of all assignments by the due date, and minimum of 80% attendance of all sections of the course are compulsory for the Duly Performed Certificate.",
+      "assessment": "Students are evaluated by continuous assessment (80% of the final mark) and an endof-semester oral examination (20% of final mark).",
+      "examWeight": 20
+    },
+    {
+      "code": "SLL2061S",
+      "title": "French Language & Literature IIB",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr R de Oliveira"
+      ],
+      "outline": "This course extends the concepts taught in SLL2060F at intermediate level. It is composed of two modules: one focuses and develops the language (skills in listening, speaking, reading and writing, and the basic techniques of translation (English-French), the other focuses on French and Francophone cultures, civilizations and literatures (i.e. novel, theatre and poetry).",
+      "entry": "SLL2060F or equivalent, or approval by the Head of Department in consultation with the Section Head. Francophone students may not register for this course.",
+      "corequisites": "",
+      "lectures": "Monday to Friday in 3rd period and one conversation class per week.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Completion of class tests and oral examinations, submission of all assignments by the due date, and minimum of 80% attendance of all sections of the course are compulsory for the Duly Performed Certificate.",
+      "assessment": "Students are evaluated by continuous assessment (80% of the final mark and an end-ofsemester oral examination (20% of final mark). SLL2090S BLACK FRANCOPHONE THOUGHT: FROM NÉGRITUDE TO AFROTOPIA 20 NQF credits at NQF level 6 Convener: Associate Professor M Arnold",
+      "examWeight": 20
     },
     {
       "code": "SLL2062F",
@@ -8874,6 +9738,60 @@
       "examWeight": 50
     },
     {
+      "code": "SLL2082F",
+      "title": "Hebrew Language & Literature IIA",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "A Laskov"
+      ],
+      "outline": "The course comprises Hebrew language, stylistics and literary texts, with attention to the development of Hebrew literature through the ages. It covers biblical poetry and prose, and introduces the students to texts from the Dead Sea scrolls, Mishnaic Hebrew, Middle Ages and Golden Era. It finishes by introducing the classical modern national poets such as Bialik and Tchernichovsky.",
+      "entry": "A pass in Hebrew (SC), or a 4 rating (NSC), or SLL1083S, or with the permission of the Head of Department.",
+      "corequisites": "",
+      "lectures": "Monday to Friday 4th period.",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Students are expected to attend regularly, prepare adequately for language classes and tutorials and submit the prescribed number of written assignments, and write any class tests.",
+      "assessment": "One two-hour examination counts 50% of the final mark; the remaining 50% is awarded for classwork (35%) and oral (15%).",
+      "examWeight": 50
+    },
+    {
+      "code": "SLL2083S",
+      "title": "Hebrew Language & Literature IIB",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "A Laskov"
+      ],
+      "outline": "The course comprises Hebrew language and stylistics and literature. Modern literature is studied under various themes, such as women’s writing, Holocaust literature and people at the margin. Students are introduced to methodology which allows them to analyse Hebrew literature at the academic level. They are introduced to the canonical authors, and become familiar with their writings.",
+      "entry": "SLL2082F or with the permission of the Head of Department.",
+      "corequisites": "",
+      "lectures": "Monday to Friday 4th period.",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "As for SLL2082F.",
+      "assessment": "One two-hour examination counts 50% of the final mark; the remaining 50% is awarded for classwork (35%) and oral (15%) ITALIAN STUDIES SECTION The Italian Studies Section is housed in the Beattie Building, University Avenue, Upper Campus and can be contacted by email at: tara.pretorius@uct.ac.za, or telephone: 021 650 2712.",
+      "examWeight": 50
+    },
+    {
       "code": "SLL2101F",
       "title": "Xhosa Communication IIA",
       "credits": 20,
@@ -8982,6 +9900,31 @@
       "examWeight": 40
     },
     {
+      "code": "SLL2131F",
+      "title": "Isixhosa Language & Literature Studies IIA",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr W Gambushe"
+      ],
+      "outline": "This course is a continuation of SLL1132S. The course introduces students to contemporary theories in language studies, linguistics and literary discourse. It highlights the contributions of African languages to linguistic theory and development. Further, the course explores how sociolinguistic theories can be used to describe the relationship between language, culture and society in a systematic manner.",
+      "entry": "SLL1132S isiXhosa Language and Literature Studies IB.",
+      "corequisites": "",
+      "lectures": "Tuesday, Wednesday, Thursday 3rd period.",
+      "periods": [
+        3
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Students are expected to attend 80% of all lectures and tutorials and to complete all tests, projects and assignments.",
+      "assessment": "Year work (tests, assignments and projects) 50%, one two-hour examination 50%.",
+      "examWeight": 50
+    },
+    {
       "code": "SLL2132S",
       "title": "Isixhosa Language and Literature Studies IIB",
       "credits": 20,
@@ -9003,7 +9946,7 @@
         "Friday"
       ],
       "dp": "Students are expected to attend 80% of all lectures and tutorials and to complete all tests, projects and assignments.",
-      "assessment": "Year work (tests, assignments and projects) 50%, one two-hour examination 50%. SLL3131F ISIXHOSA LANGUAGE & LITERATURE STUDIES IIIA 30 NQF credits at NQF level 7 Convener: Dr W Gambushe",
+      "assessment": "Year work (tests, assignments and projects) 50%, one two-hour examination 50%.",
       "examWeight": 50
     },
     {
@@ -9220,6 +10163,33 @@
       "dp": "Submission of all written work.",
       "assessment": "One two-hour examination in June counts for 50% of the final mark; coursework counts for 50%. FRENCH LANGUAGE AND LITERATURE SECTION The French Language and Literature Section is housed in the Beattie Building, University Avenue, Upper Campus, and can be contacted by email at: tara.pretorius@uct.ac.za, or telephone: 021 650 2712.",
       "examWeight": 50
+    },
+    {
+      "code": "SLL3060F",
+      "title": "French Language & Literature IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr K Plaiche"
+      ],
+      "outline": "The course offers advanced language work, including history of the language and translation (theory and practice), and focuses on selected literary works of major French and Francophone authors from the 17th century up to today. Emphasis will be put on French prose fiction and Francophone writers from Africa, the Indian Ocean and the Caribbean. Taught in French, the course includes literary theory, concepts from cultural and postcolonial studies, and may discuss theatre and poetry, as well as contemporary graphic literature (bande-dessinée).",
+      "entry": "SLL2061S. Francophone students may register directly for 3rd year courses after consultation with the Section Head.",
+      "corequisites": "",
+      "lectures": "Monday to Friday (4th period), and one tutorial/conversation class per week.",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Completion of class tests and oral examinations on the date indicated, submission of all assignments by the due date, and a minimum of 80% attendance of all sections of the course are compulsory for the Duly Performed Certificate.",
+      "assessment": "Students are evaluated by continuous assessment (80% of the final mark) and an endof-semester oral examination (20% of final mark).",
+      "examWeight": 20
     },
     {
       "code": "SLL3061S",
@@ -9694,7 +10664,7 @@
         "Friday"
       ],
       "dp": "Students are expected to complete all tests and assignments and attend at least 80% of all lectures, tutorials and language labs.",
-      "assessment": "Year work (tests, assignments and portfolio activities) counts 50%; orals count 10%; one two-hour examination counts 40% of the final mark. SLL1131F ISIXHOSA LANGUAGE & LITERATURE STUDIES IA 15 NQF credits at NQF level 5 Convener: Dr W Gambushe",
+      "assessment": "Year work (tests, assignments and portfolio activities) counts 50%; orals count 10%; one two-hour examination counts 40% of the final mark.",
       "examWeight": 40
     },
     {
@@ -9750,6 +10720,56 @@
       "dp": "Students must attend classes, lab sessions and tutorials regularly, submit the prescribed number of assignments and write any class test that may be scheduled. Submission dates must be adhered to.",
       "assessment": "Coursework (assignments and tests) counts for 40% of the final mark; two-hour written examination counts for 40%; oral and aural examination counts for 20%. CLASSICS SECTION The Classics Section is housed in the Beattie Building, University Avenue, Upper Campus and can be contacted by email at: tara.pretorius@uct.ac.za, or telephone: 021 650 2712.",
       "examWeight": 40
+    },
+    {
+      "code": "SLL3131F",
+      "title": "Isixhosa Language & Literature Studies IIIA",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr W Gambushe"
+      ],
+      "outline": "This course is a continuation of SLL2132S. The course introduces students to contemporary theories in language studies, linguistics and literary discourse. It highlights the contributions of African languages to linguistic theory and development. Further, the course explores how sociolinguistic theories can be used to describe the relationship between language, culture and society in a systematic manner.",
+      "entry": "SLL2132S isiXhosa Language and Literature Studies IIB.",
+      "corequisites": "",
+      "lectures": "Tuesday, Wednesday, Thursday 4th period.",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Students are expected to attend 80% of all lectures and tutorials and to complete all tests, projects and assignments.",
+      "assessment": "Year work (tests, assignments and projects) 50%, one two-hour examination 50%.",
+      "examWeight": 50
+    },
+    {
+      "code": "SLL3132S",
+      "title": "Isixhosa Language & Literature Studies IIIB",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Dr H Kunju"
+      ],
+      "outline": "This course is a continuation of SLL2131F. The course is a further exploration of contemporary language and linguistic theories. The emphasis is on the investigation of the connections between theoretical structural language studies and language and society. The course attempts to bridge the gap between theory and application. In addition, an exploration of topics in language and society allows students to relate theory to language description.",
+      "entry": "SLL3131F isiXhosa Language and Literature Studies IIIA",
+      "corequisites": "",
+      "lectures": "Tuesday, Wednesday, Thursday 4th period.",
+      "periods": [
+        4
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Students are expected to attend 80% of all lectures and tutorials and to complete all tests, projects and assignments.",
+      "assessment": "Year work (tests, assignments and projects) 50%, one two-hour examination 50%. AFRIKAANS AND NETHERLANDIC STUDIES SECTION The Afrikaans and Netherlandic Studies Section is housed in the AC Jordan Building, University Avenue, Upper Campus, and can be contacted by email at: liziwe.futuse@uct.ac.za, or telephone: 021 650 2301.",
+      "examWeight": 50
     },
     {
       "code": "SOC1001F",
@@ -9842,6 +10862,57 @@
       "examWeight": null
     },
     {
+      "code": "SOC2004S",
+      "title": "Race, Class, Gender & Sexuality",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor A Pande"
+      ],
+      "outline": "This course introduces and critically examines various understandings of the social categories race, class, gender and sexuality, among others. Instead of assuming these categories to be biological, ahistorical and/or static, we use theories of social constructionism to analyse these categories as relational and contingent – depending on the historical, political, socio-cultural, economic and national contexts. Finally the class explores ways in which these categories intersect to shape experiences of inequalities in South Africa and outside, both historically and in the present.",
+      "entry": "SOC1001F or SOC1005S or at least three 1000-level social science courses, and be in the second or subsequent year of study.",
+      "corequisites": "",
+      "lectures": "Tuesday, Thursday, 7th and 8th periods.",
+      "periods": [
+        7,
+        8
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Thursday"
+      ],
+      "dp": "Completion of all written tests, essays and assignments.",
+      "assessment": "Coursework counts 70%; an examination counts 30% of the final mark.",
+      "examWeight": 30
+    },
+    {
+      "code": "SOC2015S",
+      "title": "Comparative Industrial & Labour Studies",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Dr B Tame"
+      ],
+      "outline": "This course focuses on change in industrial and labour practices internationally. The following could be included: paths of industrialisation followed by selected countries; the international division of labour; the implications of these and other global economic trends for labour and industrial relations. SOCIOLOGY 403 The countries and regions selected for close study will usually lie in East Asia, Latin America and Africa.",
+      "entry": "SOC1001F or SOC1005S or at least three 1000-level social science courses, and be in the second or subsequent year of study.",
+      "corequisites": "",
+      "lectures": "Tuesday to Friday 1st period.",
+      "periods": [
+        1
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Completion of all written tests, essays and assignments.",
+      "assessment": "Coursework counts 70%; an examination counts 30% of the final mark.",
+      "examWeight": 30
+    },
+    {
       "code": "SOC2019S",
       "title": "Social Theory",
       "credits": 20,
@@ -9863,7 +10934,33 @@
         "Thursday"
       ],
       "dp": "Completion of all written tests, essays and assignments.",
-      "assessment": "Coursework counts 60%; an examination counts 40% of the final mark. SOC2030F POVERTY, DEVELOPMENT & GLOBALISATION This course may also be offered in Summer Term - please consult the department. 20 NQF credits at NQF level 6 Convener: Professor F Matose",
+      "assessment": "Coursework counts 60%; an examination counts 40% of the final mark.",
+      "examWeight": 40
+    },
+    {
+      "code": "SOC2030F",
+      "title": "Poverty, Development & Globalisation",
+      "credits": 20,
+      "nqf": 6,
+      "conveners": [
+        "Professor F Matose"
+      ],
+      "outline": "This course examines the great contemporary problems of poverty and inequality within the context of a globalising world. Sources and selected empirical cases of poverty and inequality are explored and related development theories and policies are examined. The geographical scope of the course ranges from the local to the international. One or more African languages may accompany English in some lectures or reading material.",
+      "entry": "SOC1001F or SOC1005S or at least three 1000-level social science courses, and be in the second or subsequent year of study.",
+      "corequisites": "",
+      "lectures": "Tuesday to Friday 1st period.",
+      "periods": [
+        1
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Completion of all written tests, essays and assignments.",
+      "assessment": "Coursework counts 60%; an examination counts 40% of the final mark.",
       "examWeight": 40
     },
     {
@@ -9876,7 +10973,7 @@
       ],
       "outline": "This course proceeds from the view that in order to understand the relationship between culture and society in contemporary times, we need to understand the workings of power. The ways in which power organises our domestic spheres, everyday disposition, and performances of selves and identities have gone through rapid changes in the 20th and 21st centuries. This course maps the ways in which different modes of power have historically shaped our gender roles, our understanding of authority, tradition, and adversarial relationships between different ethnicised and racialised groups.",
       "entry": "SOC1001F or SOC1005S or at least three 1000-level social science courses, and be in the second or subsequent year of study.",
-      "corequisites": "SOC2030F.",
+      "corequisites": "",
       "lectures": "Tuesday to Friday 2nd period.",
       "periods": [
         2
@@ -9889,8 +10986,46 @@
         "Friday"
       ],
       "dp": "Completion of all written tests, essays and assignments.",
-      "assessment": "Coursework counts 60%; an examination counts 40% of the final mark. SOC2034F POVERTY, DEVELOPMENT & GLOBALISATION + 10 NQF credits at NQF level 6 Convener: Professor F Matose",
+      "assessment": "Coursework counts 60%; an examination counts 40% of the final mark.",
       "examWeight": 40
+    },
+    {
+      "code": "SOC2034F",
+      "title": "Poverty, Development & Globalisation",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": [
+        "Professor F Matose"
+      ],
+      "outline": "This course examines the great contemporary global problems of poverty and inequality. Sources and selected empirical cases of poverty and inequality are explored and related development theories and policies are examined. The geographical scope of the course ranges from the local to the international. This course is an augmented version of its host course: Poverty, Development & Globalisation, SOC2030F. The content covered and assessments are identical but it offers additional tutoring and writing support.",
+      "entry": "None (extended programme students only).",
+      "corequisites": "SOC2030F.",
+      "lectures": "Tutorial times by sign-up with the department.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "100% tutorial attendance plus successful completion of all coursework assignments.",
+      "assessment": "Coursework 100% comprising of tutorial assessments and other written work.",
+      "examWeight": null
+    },
+    {
+      "code": "SOC2035S",
+      "title": "Comparative Industrial & Labour Study",
+      "credits": 10,
+      "nqf": 6,
+      "conveners": [
+        "Dr B Tame"
+      ],
+      "outline": "The purpose of this course is to augment and support its co-requisite course:",
+      "entry": "None (extended programme students only).",
+      "corequisites": "SOC2015S.",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "",
+      "assessment": "",
+      "examWeight": null
     },
     {
       "code": "SOC3007F",
@@ -9916,6 +11051,32 @@
       "dp": "Completion of all tests, assignments and exercises, 100% tutorial attendance.",
       "assessment": "Continuous assessment (essays, projects, tests, etc.) counts 100%. NOTE: Credit will not be given for both SOC3007F and SOC3027F. This course is only offered for the major in Sociology and for students requiring the course for a named programme. SOC3027F SOCIAL RESEARCH (INDUSTRIAL SOCIOLOGY) 30 NQF credits at NQF level 7 Convener: Dr T Meyer",
       "examWeight": null
+    },
+    {
+      "code": "SOC3029S",
+      "title": "Industrial Society & Social Change",
+      "credits": 30,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor F Garba Muhammed"
+      ],
+      "outline": "South Africa post 1994 has become an integral part of the globalised economy. This course examines socio-economic issues with a particular focus on the world of work, exploring change and continuity in terms of theory, policy and the lived experience of everyday life. It asks, what is changing? Where is change coming from? Who is driving change? Who benefits from change? What challenges stand in the way of development towards a more just society? Against the background of questions such as these, industrial society, broader political economy questions and popular traditions of mobilising and…",
+      "entry": "SOC2015S and any other 2000-level course in Sociology, and be in the third or subsequent year of study.",
+      "corequisites": "",
+      "lectures": "Tuesday to Friday 5th period.",
+      "periods": [
+        5
+      ],
+      "periodChoice": false,
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Completion of all written tests, essays and assignments.",
+      "assessment": "Coursework counts 70%; an examination counts 30% of the final mark. SOCIOLOGY 406",
+      "examWeight": 30
     },
     {
       "code": "SOC3031S",
@@ -9990,6 +11151,90 @@
       "examWeight": 60
     },
     {
+      "code": "STA2007F",
+      "title": "Study Design & Data Analysis for Scientists",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Altwegg"
+      ],
+      "outline": "The course aims to equip students with practical experience and skills in analysing data, using statistical techniques frequently used in the sciences. The skills include designing experiments, choosing appropriate statistical methods for visual display and statistical modelling of data, model checking, interpretation and reporting of statistical results, and understanding of limitations of statistical methods and data. By the end of the course the student should have gained enough confidence to transfer these skills to new problems or data sets in their own profession.",
+      "entry": "A pass in STA1000F/S or STA1006S or STA1007S or STA1106H or STA1100S or STA1008F/S) and (MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1005H or MAM1010F/S or MAM1020F/S or MAM1110F/H)",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA2007H",
+      "title": "Study Design & Data Analysis for Scientists",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Altwegg"
+      ],
+      "outline": "The course aims to equip students with practical experience and skills in analysing data, using statistical techniques frequently used in the sciences. The skills include designing experiments, choosing appropriate statistical methods for visual display and statistical modelling of data, model checking, interpretation and reporting of statistical results, and understanding of limitations of statistical methods and data. By the end of the course the student should have gained enough confidence to transfer these skills to new problems or data sets in their own profession.",
+      "entry": "A pass in STA1000F/S or STA1006S or STA1007S or STA1106H or STA1100S or STA1008F/S) and (MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1005H or MAM1010F/S or MAM1020F/S or MAM1110F/H)",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
+      "code": "STA2007P",
+      "title": "Study Design & Data Analysis for Scientists",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Altwegg"
+      ],
+      "outline": "The course aims to equip students with practical experience and skills in analysing data and applying statistical techniques relevant to the natural sciences. Skills include designing experiments, choosing appropriate statistical methods for analysing data, visual display and statistical modelling of data, model checking, interpretation and reporting of statistical results, and understanding limitations of statistical methods and data. Topics include: introduction to statistical notation, linear regression, design and analysis of experiments, generalised linear models.",
+      "entry": "A pass in STA1007S (preferably) or STA1000F/S or STA1006S or STA1106H or STA1100S or STA1008F/S) and (MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1005H or MAM1010F/S or MAM1020F/S, MAM1110F/H).",
+      "corequisites": "Concurrent registration for MAM1032S or MAM1034S or MAM1012S or MAM1021F/S. Note: A student may not register concurrently for STA2030S and MAM1006H.",
+      "lectures": "Monday - Thursday, 1st or 5th period",
+      "periods": [
+        1,
+        5
+      ],
+      "periodChoice": true,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. STATISTICAL SCIENCES 413 STA2020F APPLIED STATISTICS A student cannot obtain credits for more than one of STA2020F/S, STA2007F/H/S, STA2005S. 24 NQF credits at NQF level 6 Convener: N Watson",
+      "examWeight": 60
+    },
+    {
+      "code": "STA2007S",
+      "title": "Study Design & Data Analysis for Scientists",
+      "credits": 24,
+      "nqf": 6,
+      "conveners": [
+        "Professor R Altwegg"
+      ],
+      "outline": "The course aims to equip students with practical experience and skills in analysing data, using statistical techniques frequently used in the sciences. The skills include designing experiments, choosing appropriate statistical methods for visual display and statistical modelling of data, model checking, interpretation and reporting of statistical results, and understanding of limitations of statistical methods and data. By the end of the course the student should have gained enough confidence to transfer these skills to new problems or data sets in their own profession.",
+      "entry": "A pass in STA1000F/S or STA1006S or STA1007S or STA1106H or STA1100S or STA1008F/S) and (MAM1000W or MAM1031F or MAM1033F or MAM1004F/S or MAM1005H or MAM1010F/S or MAM1020F/S or MAM1110F/H)",
+      "corequisites": "",
+      "lectures": "",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
+      "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
+      "examWeight": 60
+    },
+    {
       "code": "STA3022F",
       "title": "Applied Multivariate Data Analysis",
       "credits": 36,
@@ -10039,6 +11284,33 @@
       ],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. STA3041F STOCHASTIC PROCESSES & TIME SERIES A student cannot obtain credits for both STA3030F and STA3041F. 36 NQF credits at NQF level 7 Convener: D Katshunga",
+      "examWeight": 70
+    },
+    {
+      "code": "STA3045F",
+      "title": "Advanced Stochastic Processes & Distribution Theory",
+      "credits": 36,
+      "nqf": 7,
+      "conveners": [
+        "Associate Professor T Gebbie"
+      ],
+      "outline": "This course is a third-year module for students studying Actuarial Science or Mathematical Statistics, though not a requirement for a major in Mathematical Statistics. The course begins by giving a brief introduction to copulas and extreme value theory, together with some applications to risk management. The rest of the course gives a theoretical overview of stochastic processes, with the models covered spanning both discrete and continuous time as well as discrete and continuous statespace.",
+      "entry": "STA2004F, STA2005S, MAM2000W and concurrent registration for STA3041F. Recommended MAM2000W modules: MAM2011F - Linear Algebra (2LA), MAM 2010F - Advanced Calculus (2AC), MAM2012S - Differential Equations (2DE) and MAM2014S Real Analysis (2RA). Note: A student may not register concurrently for STA3045F and CSC2001F.",
+      "corequisites": "",
+      "lectures": "Five lectures per week, Monday - Friday, 2nd period.",
+      "periods": [
+        2
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
+      "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. THEATRE, DANCE AND PERFORMANCE STUDIES",
       "examWeight": 70
     },
     {
@@ -10415,8 +11687,77 @@
         "Tuesday"
       ],
       "dp": "At least 80% attendance at lectures/seminars, submission of all essays, projects, seminar materials and other required written work by the due date.",
-      "assessment": "Coursework counts 50%; June examination counts 50%. SWK4031S PSYCHOSOCIAL FUNCTIONING & EMPOWERMENT 22 NQF credits at NQF level 8 Convener: Associate Professor L Holtzhausen",
+      "assessment": "Coursework counts 50%; June examination counts 50%.",
       "examWeight": 50
+    },
+    {
+      "code": "SWK4031S",
+      "title": "Psychosocial Functioning & Empowerment",
+      "credits": 22,
+      "nqf": 8,
+      "conveners": [
+        "Associate Professor L Holtzhausen"
+      ],
+      "outline": "The course examines the social, environmental determinants of mental health. Risk factors are presented and the process of developing protective factors are explored and examined. The course is designed inter alia to present the South African demographics regarding the social, environmental and economic determinants of mental health and focusses on selected risk populations.",
+      "entry": "This course is only for students doing the BSW and must have fourth year status, or with permission from the Head of Department.",
+      "corequisites": "",
+      "lectures": "Monday and Tuesday 6th and 7th periods.",
+      "periods": [
+        6,
+        7
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday"
+      ],
+      "dp": "At least 80% attendance at lectures/seminars and submission of all essays/projects/seminar materials and other required written work by the due date.",
+      "assessment": "Coursework counts 50%; November examination counts 50%.",
+      "examWeight": 50
+    },
+    {
+      "code": "SWK4032S",
+      "title": "Social Policy & Management",
+      "credits": 22,
+      "nqf": 8,
+      "conveners": [
+        "Dr E Campbell"
+      ],
+      "outline": "This course introduces the students to structures, frameworks and basic tools for policy formulation and analysis. It introduces inter alia an introduction to organisational life and management through concepts of planning, decision making, organising and staffing, leadership, supervision and consultation, motivation and management control, funding strategies and financial and information management.",
+      "entry": "Unless otherwise approved, for BSW students and must have fourth year status, or with permission from the Head of Department.",
+      "corequisites": "",
+      "lectures": "Monday and Tuesday 8th and 9th periods.",
+      "periods": [
+        8,
+        9
+      ],
+      "periodChoice": false,
+      "days": [
+        "Monday",
+        "Tuesday"
+      ],
+      "dp": "At least 80% attendance at lectures/seminars and submission of all essays/projects/seminar materials and other required written work by the due date.",
+      "assessment": "Coursework counts 50%; November examination counts 50%. SWK4033FS FIELD PRACTICE VI 22 NQF credits at NQF level 8 Convener: Dr F Williams",
+      "examWeight": 50
+    },
+    {
+      "code": "TDP1017H",
+      "title": "Theatrical Production & Stagecraft A",
+      "credits": 18,
+      "nqf": 5,
+      "conveners": [
+        "J-L Crewe"
+      ],
+      "outline": "This hands-on, intensely practical course introduces students to selected aspects of theatre production including stage management, properties, costume, lighting and sound. The role and functions of the FOH personnel, stage-manager, props ASM, lighting and sound operator/technicians will be explored and practised in workshops and by assignment on production.",
+      "entry": "This course is compulsory for all students enrolled for the BA Theatre and Performance and the Diploma in Theatre and Performance. Students from the general degrees will be admitted subject to Head of Department’s approval, and subject to capacity.",
+      "corequisites": "",
+      "lectures": "Lectures and practicals scheduled departmentally. Students will also be assigned to between one and three productions for their apprenticeship practicums and attendance will be compulsory at all times stipulated by the nature of the job.",
+      "periods": [],
+      "periodChoice": false,
+      "days": [],
+      "dp": "Attendance at all rehearsals/performances/office experience slots as assigned. In order to obtain a DP certificate, students must earn the required number of apprenticeship 'credits' by completing sufficient apprenticeship practicums as determined by the course co-ordinator in any particular year.",
+      "assessment": "Coursework counts for 40% of final mark; examination counts for 60%. A sub-minimum of 40% must be achieved in coursework and the examination.",
+      "examWeight": 60
     },
     {
       "code": "TDP1018H",
@@ -10623,7 +11964,8 @@
       "corequisites": "",
       "lectures": "Mondays and Thursdays 5th and meridian. Fridays 5th to 7th period.",
       "periods": [
-        7
+        7,
+        0
       ],
       "periodChoice": false,
       "days": [
@@ -10648,7 +11990,8 @@
       "corequisites": "",
       "lectures": "Mondays and Thursdays 5th and meridian. Fridays 5th to 7th period.",
       "periods": [
-        7
+        7,
+        0
       ],
       "periodChoice": false,
       "days": [

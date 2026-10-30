@@ -2,7 +2,8 @@ const crypto = require('node:crypto');
 const path = require('node:path');
 const express = require('express');
 const views = require('./views');
-const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm, semesterLoad } = require('./ratings');
+const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
+const { analysePlan } = require('./planner');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { UNIVERSITIES, CURRENT } = require('./universities');
 
@@ -208,22 +209,29 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     let matches = null;
     if (add) {
-      const exact = getCourse(add.replace(/\s+/g, ''));
+      // "csc1015f", "CSC 1015F" and "csc1015" all work; a code that matches one course adds it straight away
+      const squashed = add.replace(/\s+/g, '').toUpperCase();
+      const byCode = /^[A-Z]{3}\d{1,4}[A-Z]?$/.test(squashed) ? q(`SELECT code FROM courses WHERE code LIKE ? ORDER BY code LIMIT 13`).all(`${squashed}%`) : [];
+      const exact = getCourse(squashed) || (byCode.length === 1 ? getCourse(byCode[0].code) : null);
       if (exact) {
         if (!codes.includes(exact.code) && codes.length >= PLAN_MAX) return flashRedirect(res, planUrl(codes), 'error', `A plan can hold ${PLAN_MAX} courses. Remove one first.`);
         if (!codes.includes(exact.code)) codes.push(exact.code);
         savePlan(res, codes);
         return res.redirect(303, planUrl(codes));
       }
-      matches = q(`SELECT code, title FROM courses WHERE code LIKE ? OR title LIKE ? ORDER BY code LIMIT 12`).all(`%${add}%`, `%${add}%`);
+      matches = q(`SELECT code, title FROM courses WHERE code LIKE ? OR title LIKE ? ORDER BY (code LIKE ?) DESC, (nqf IS NULL OR nqf <= 7) DESC, code LIMIT 12`)
+        .all(`%${squashed}%`, `%${add}%`, `${squashed}%`);
     }
     if (!fromUrl && codes.length && !matches) return res.redirect(303, planUrl(codes));
-    const rows = codes.length ? q(`SELECT c.code, c.title, c.credits, s.n, s.difficulty, s.workload, s.has_sample, v.votes, v.lekker FROM courses c
+    const rows = codes.length ? q(`SELECT c.code, c.title, c.credits, c.entry, c.corequisites, c.lectures, c.periods, c.period_choice, c.days, c.dp, c.assessment, c.exam_weight,
+      s.n, s.difficulty, s.workload, s.has_sample, v.votes, v.lekker, v.tips FROM courses c
       LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(difficulty) AS difficulty, AVG(workload) AS workload, MAX(is_sample) AS has_sample FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
-      LEFT JOIN (SELECT course, COUNT(*) AS votes, SUM(lekker) AS lekker FROM verdicts WHERE status = 'published' GROUP BY course) v ON v.course = c.code
+      LEFT JOIN (SELECT course, COUNT(*) AS votes, SUM(lekker) AS lekker, SUM(tip != '') AS tips FROM verdicts WHERE status = 'published' GROUP BY course) v ON v.course = c.code
       WHERE c.code IN (${codes.map(() => '?').join(',')})`).all(...codes) : [];
     const courses = codes.map((code) => rows.find((r) => r.code === code)).filter(Boolean);
-    res.page(views.plan(req.ctx, { courses, load: semesterLoad(courses), matches, add, codes: courses.map((c) => c.code) }));
+    // every undergraduate course, for the browser's own suggestions as you type in the add box
+    const suggestions = q(`SELECT code, title FROM courses WHERE nqf IS NULL OR nqf <= 7 ORDER BY code`).all();
+    res.page(views.plan(req.ctx, { courses, plan: analysePlan(courses), matches, add, codes: courses.map((c) => c.code), suggestions }));
   });
 
   app.get('/universities', (req, res) => {
