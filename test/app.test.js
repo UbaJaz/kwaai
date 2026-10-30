@@ -351,6 +351,16 @@ test('wrong guesses are capped per IP and never burn the real code, and opening 
   assert.equal((await scanner.post(path, {})).status, 303);
 });
 
+test('mangled plan and csrf values give a normal page, not a crash', async () => {
+  const b = browser();
+  await b.get('/');
+  const plan = await fetch(`${base}/plan`, { headers: { cookie: 'plan=%E0%A4%A' }, redirect: 'manual' });
+  assert.equal(plan.status, 200);
+  // 16 two-byte characters: 32 characters long, 48 bytes
+  const res = await fetch(`${base}/takedown`, { method: 'POST', redirect: 'manual', headers: { cookie: `csrf=${b.jar.csrf}`, 'content-type': 'application/x-www-form-urlencoded' }, body: `_csrf=${encodeURIComponent('é'.repeat(32))}` });
+  assert.equal(res.status, 403);
+});
+
 test('plus-addresses are the same student, so they get one vote', async (t) => {
   const db = openDb(':memory:');
   seed(db, { samples: false });

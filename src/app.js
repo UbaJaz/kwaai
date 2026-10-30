@@ -72,8 +72,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
   app.use((req, res, next) => {
     if (req.method !== 'POST') return next();
-    const sent = String(req.body._csrf || '');
-    if (sent.length === 32 && crypto.timingSafeEqual(Buffer.from(sent), Buffer.from(req.ctx.csrf))) return next();
+    // compare bytes, not characters: a multi-byte value of the right length would make timingSafeEqual throw
+    const sent = Buffer.from(String(req.body._csrf || ''));
+    const want = Buffer.from(req.ctx.csrf);
+    if (sent.length === want.length && crypto.timingSafeEqual(sent, want)) return next();
     res.status(403).page(views.message(req.ctx, { title: 'Form expired', emoji: '🔄', text: 'Please go back, refresh the page and try again.' }));
   });
 
@@ -208,7 +210,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.get('/plan', (req, res) => {
     const saved = /(?:^|;\s*)plan=([A-Za-z0-9,%]*)/.exec(req.headers.cookie || '')?.[1];
     const fromUrl = req.query.c != null;
-    let codes = planCodes(fromUrl ? req.query.c : decodeURIComponent(saved || ''));
+    let savedPlan = '';
+    try { savedPlan = decodeURIComponent(saved || ''); } catch { /* a mangled cookie is just an empty plan */ }
+    let codes = planCodes(fromUrl ? req.query.c : savedPlan);
     const remove = String(req.query.remove || '').toUpperCase();
     const add = String(req.query.add || '').trim().slice(0, 80);
     if (remove) {
