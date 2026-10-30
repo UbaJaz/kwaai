@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" role="img" aria-labelledby="title desc">
+  <title id="title">Kwaai icon</title>
+  <desc id="desc">A lime rounded square with a geometric navy K symbol.</desc>
+  <rect x="0" y="0" width="220" height="220" rx="42" fill="#C8F169"/>
+  <rect x="48" y="35" width="32" height="150" rx="5" fill="#151D2B"/>
+  <path d="M145 43 L89 110 L145 177 L166 177 L110 110 L166 43 Z" fill="#151D2B"/>
+</svg>
