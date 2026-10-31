@@ -67,9 +67,32 @@ function seed(db, { samples = true } = {}) {
       for (const name of c.conveners) addLecturer.run(name, dept, 0);
     }
   }
+  addStaff(db, addDept);
   if (samples) addSamples(db);
   const n = (t) => db.prepare(`SELECT COUNT(*) AS n FROM ${t}`).get().n;
   return { courses: n('courses'), lecturers: n('lecturers'), reviews: n('reviews') };
+}
+
+// Department teaching staff from the handbooks (data/staff-2026.json, scripts/import-staff.js), so students can pick
+// who taught them. Someone already listed as a convener in the same department ("Associate Professor P Marais" and
+// "Associate Professor P C Marais": same surname and first initial) gets their role added instead of a second entry.
+function addStaff(db, addDept) {
+  const file = path.join(__dirname, '..', 'data', 'staff-2026.json');
+  if (!fs.existsSync(file)) return;
+  const key = (name) => {
+    const parts = name.replace(/^(?:Associate Professor|Professor|Prof|Doctor|Dr|Mr|Ms|Mrs)\.?\s+/i, '').replace(/[.*]/g, '').trim().split(/\s+/);
+    return `${parts[0][0]}|${parts[parts.length - 1]}`.toLowerCase();
+  };
+  const known = new Map();
+  for (const l of db.prepare('SELECT id, name, dept FROM lecturers WHERE is_sample = 0').all()) known.set(`${l.dept}|${key(l.name)}`, l.id);
+  const add = db.prepare('INSERT OR IGNORE INTO lecturers (name, dept, is_sample, role) VALUES (?, ?, 0, ?)');
+  const setRole = db.prepare("UPDATE lecturers SET role = ? WHERE id = ? AND role = ''");
+  for (const s of JSON.parse(fs.readFileSync(file, 'utf8')).staff) {
+    addDept.run(s.dept, DEPARTMENTS[s.dept] || s.dept);
+    const id = known.get(`${s.dept}|${key(s.name)}`);
+    if (id) setRole.run(s.role, id);
+    else known.set(`${s.dept}|${key(s.name)}`, Number(add.run(s.name, s.dept, s.role).lastInsertRowid));
+  }
 }
 
 // ---- demo data ----
@@ -149,4 +172,4 @@ if (require.main === module) {
   console.log('seeded', seed(db, { samples: process.env.SAMPLES ? process.env.SAMPLES !== '0' : process.env.NODE_ENV !== 'production' }));
 }
 
-module.exports = { seed };
+module.exports = { seed, DEPARTMENTS };

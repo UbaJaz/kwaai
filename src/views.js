@@ -343,7 +343,9 @@ function courses(ctx, { list, total, depts, q, dept }) {
   ${list.length ? html`<div class="course-grid">${list.map(courseCard)}</div>` : html`<p class="empty">No courses found. Try the course code from your handbook, like CSC1015F, or part of the name.</p>`}`);
 }
 
-function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked }) {
+const personLink = (l) => (l.id ? html`<a href="/lecturers/${l.id}">${l.name}</a>` : l.name);
+
+function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked, conveners = [], staff = [] }) {
   const cards = hideAfterFree(reviews, locked);
   const hidden = cards.filter((x) => x.hideBody).length + (locked ? Math.max(0, tips.length - FREE_COMMENTS) : 0);
   return layout({ ...ctx, title: `${c.code} ${c.title}`, description: courseSummary(c, stats, votes), path: `/courses/${c.code}` }, html`
@@ -353,7 +355,12 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
       <span class="code code-big">${c.code}</span>
       <h1>${c.title}</h1>
       <p class="meta">${c.dept_name}${c.credits ? ` · ${c.credits} NQF credits` : ''}${c.nqf ? ` · NQF level ${c.nqf}` : ''}</p>
-      ${c.conveners ? html`<p class="meta">Convener: ${c.conveners.split('|').join(', ')} <span class="src">(source: ${c.source})</span></p>` : ''}
+      ${conveners.length ? html`<p class="meta">${conveners.length > 1 ? 'Conveners' : 'Convener'}: ${conveners.map((l, i) => html`${i ? ', ' : ''}${personLink(l)}`)} <span class="src">(source: ${c.source})</span></p>` : ''}
+      ${staff.length ? html`<details class="dept-staff">
+        <summary>Teaching staff in ${c.dept_name} (${staff.length})</summary>
+        <p class="meta">From the 2026 handbook's staff list. The handbook names only the convener for each course, so these are people in the department, not necessarily lecturers on ${c.code}.</p>
+        <ul class="plain">${staff.map((l) => html`<li>${personLink(l)} <span class="meta">${l.role}</span></li>`)}</ul>
+      </details>` : ''}
     </div>
     <div class="hero-actions">
       <a class="btn btn-quiet" href="/plan?add=${c.code}">Add to my semester plan</a>
@@ -472,7 +479,7 @@ function lecturer(ctx, { l, stats, courses: taught, reviews, locked }) {
     <div>
       <span class="code code-big">${l.dept}</span>
       <h1>${l.name} ${sampleBadge(l.is_sample)}</h1>
-      <p class="meta">${l.dept_name}</p>
+      <p class="meta">${l.role ? `${l.role}, ` : ''}${l.dept_name}</p>
       ${l.is_sample ? html`<p class="meta">This is a made-up lecturer used to demo the site. Not a real person.</p>` : ''}
     </div>
   </section>

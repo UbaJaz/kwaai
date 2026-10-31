@@ -177,7 +177,14 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const votes = verdictStats(c.code);
     const tips = q(`SELECT id, year, lekker, tip, created_at FROM verdicts WHERE course = ? AND status = 'published' AND tip != '' ORDER BY created_at DESC, id DESC LIMIT 30`).all(c.code);
     const myVerdict = req.user && q(`SELECT * FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
-    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req) })));
+    // the convener is the handbook's link between a person and this course; the rest of the department's teaching
+    // staff are listed as "in the department", never as teaching this course
+    const inDept = q(`SELECT id, name, role FROM lecturers WHERE dept = ? AND is_sample = 0 ORDER BY name`).all(c.dept);
+    const convNames = c.conveners.split('|').filter(Boolean);
+    const conveners = convNames.map((name) => inDept.find((l) => l.name === name) || { name });
+    const RANK = { Professor: 1, 'Associate Professor': 2, 'Senior Lecturer': 3, Lecturer: 4 };
+    const staff = inDept.filter((l) => l.role && !convNames.includes(l.name)).sort((a, b) => (RANK[a.role] || 9) - (RANK[b.role] || 9) || a.name.localeCompare(b.name));
+    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff })));
   });
 
   app.get('/lecturers/:id', (req, res) => {

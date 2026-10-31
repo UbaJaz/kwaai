@@ -11,6 +11,7 @@ const { titleCase, parseHandbook, expandCode, codesIn, lecturePeriods, examWeigh
 const { UNIVERSITIES } = require('../src/universities');
 const { scan: scanTables } = require('../scripts/import-tables');
 const { parseProgrammes, tidyName } = require('../scripts/import-programmes');
+const { parseStaff } = require('../scripts/import-staff');
 
 // ---- unit ----
 
@@ -185,6 +186,17 @@ test('majors: required courses per year, with the handbook\'s choices', () => {
   assert.deepEqual(show(3), ['1:STA3022F|STA3036S|STA3047S+STA3048S']);
   assert.equal(tidyName('BCom Economics with LAW*'), 'BCom Economics with Law');
   assert.equal(tidyName('BCom Financial ACCOUNTING: General Accounting'), 'BCom Financial Accounting: General Accounting');
+});
+
+test('department staff lists: teaching staff only, titles from the role and degrees', () => {
+  const text = 'DEPARTMENT OF ASTRONOMY Professors: R Deane, MSc Cape Town DPhil Oxford P A Woudt, MSc Groningen PhD Cape Town '
+    + 'Emeritus Professor: X Y Old, PhD Cantab Senior Lecturers HE Delport, B.Arch Port Elizabeth *J Franco, BA LLB UCT Attorney '
+    + 'Adjunct Senior Lecturer: B Frank, PhD Cape Town Lecturer: J Delhaize, MSc Perth Administrative Officer: Q Smith, BA '
+    + 'AST1000F INTRODUCTION TO ASTRONOMY 18 NQF credits at NQF level 5 AST2002S ASTROPHYSICS 24 NQF';
+  assert.deepEqual(parseStaff(text).map((s) => [s.dept, s.name, s.role]), [
+    ['AST', 'Professor R Deane', 'Professor'], ['AST', 'Professor P A Woudt', 'Professor'],
+    ['AST', 'HE Delport', 'Senior Lecturer'], ['AST', 'J Franco', 'Senior Lecturer'], ['AST', 'J Delhaize', 'Lecturer'],
+  ]);
 });
 
 // ---- end to end: sign in, review, report, moderate ----
@@ -633,7 +645,11 @@ test('semester planner: add by code or search, remove, and shared links do not o
   assert.match(await b.text('/plan?c=CSC1015F,MAM1031F,MAM1032S'), /MAM1000W has been replaced by MAM1031F and MAM1032S/);
   assert.match(await b.text('/plan?c=CML4503F'), /the handbook says CML4503F is not offered in 2026/);
   assert.match(await b.text('/courses/PHI2043S'), /list PHI2043S in degree tables but don&#39;t describe it|list PHI2043S in degree tables but don't describe it/);
-  assert.match(await b.text('/courses/STA1006S'), /Mathematical Statistics I/);
+  const sta = await b.text('/courses/STA1006S');
+  assert.match(sta, /Mathematical Statistics I/);
+  assert.match(sta, /Convener: <a href="\/lecturers\/\d+">S Salau<\/a>/);
+  assert.match(sta, /Teaching staff in Statistical Sciences \(\d+\)/);
+  assert.match(sta, /not necessarily lecturers on STA1006S/);
 });
 
 test('planner checks: semesters, lecture clashes, which group to pick, exam share', () => {

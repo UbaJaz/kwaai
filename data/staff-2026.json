@@ -1,0 +1,5295 @@
+{
+ "source": "UCT 2026 undergraduate handbooks, department staff lists",
+ "staff": [
+  {
+   "dept": "AAE",
+   "name": "Associate Professor DA Thomson",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AAE",
+   "name": "Associate Professor MB Nejthardt",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AAE",
+   "name": "Associate Professor MR Hofmeyr",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AAE",
+   "name": "Associate Professor SA D Van Dyk",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AAE",
+   "name": "Associate Professor SA V Madden",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AAE",
+   "name": "Professor PL Semple",
+   "role": "Professor"
+  },
+  {
+   "dept": "ACC",
+   "name": "A Adams",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "A Dhansay",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "Associate Professor G Modack",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ACC",
+   "name": "Associate Professor J Kew",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ACC",
+   "name": "Associate Professor J Winfield",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ACC",
+   "name": "Associate Professor NS Sewpersadh",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ACC",
+   "name": "Associate Professor R Carpenter",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ACC",
+   "name": "Associate Professor S Herbert",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ACC",
+   "name": "Associate Professor T Miller",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ACC",
+   "name": "B Diale",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "C de Jesus",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "D Govender",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "D McGregor",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "Dr M Phaswana",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "F Jacobs",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "J Allie",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "J Dean",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "K Krause",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "K Williams",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "M Bardien",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "M Gajewski",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "M Tshingilane",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "M West",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "N Daniels",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "Professor GD Willows",
+   "role": "Professor"
+  },
+  {
+   "dept": "ACC",
+   "name": "Professor I Lubbe",
+   "role": "Professor"
+  },
+  {
+   "dept": "ACC",
+   "name": "Professor S Parsons",
+   "role": "Professor"
+  },
+  {
+   "dept": "ACC",
+   "name": "R Davids",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "R Hoch",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "S Esack",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "S Fakier",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "S Gwadiso",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "S Maqhubela",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "S Shamsoodien",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "T Adams",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ACC",
+   "name": "T Phaswana",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "A Adams",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "A Dhansay",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "Associate Professor J Kew",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AFS",
+   "name": "Associate Professor J Winfield",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AFS",
+   "name": "Associate Professor R Carpenter",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AFS",
+   "name": "Associate Professor S Herbert",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AFS",
+   "name": "Associate Professor T Miller",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AFS",
+   "name": "B Diale",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "C de Jesus",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "D Govender",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "D McGregor",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "F Jacobs",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "J Allie",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "J Dean",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "K Krause",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "K Williams",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "M Bardien",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "M Gajewski",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "M Phaswana",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "M Tshingilane",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "M West",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "N Daniels",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "Professor G Modack",
+   "role": "Professor"
+  },
+  {
+   "dept": "AFS",
+   "name": "Professor I Lubbe",
+   "role": "Professor"
+  },
+  {
+   "dept": "AFS",
+   "name": "R Davids",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "R Hoch",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "S Esack",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "S Fakier",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "S Gwadiso",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "S Maqhubela",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "S Shamsoodien",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "T Adams",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "T Phaswana",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AFS",
+   "name": "T Prince",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AGE",
+   "name": "Dr V Hare",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AGE",
+   "name": "Dr V J Hare",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AGE",
+   "name": "Dr V Lupuwana",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AGE",
+   "name": "Dr Y Sahle",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AGE",
+   "name": "Professor R R Ackermann",
+   "role": "Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "Associate Professor A Sonday",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "Associate Professor G Ferguson",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "Associate Professor H Buchanan",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "Associate Professor M Harty",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "Associate Professor N Naidoo",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "Associate Professor S Maart",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "Associate Professor SA Singh",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "Associate Professor T Burgess",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "B Shumane",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "C Davids",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "C Sebata",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Dr A Ebrahim",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Dr C Hendricks",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Dr C Rogers",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Dr F Gamieldien",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Dr K Abrahams",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Dr M Naidoo",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Dr N Mayat",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Dr NA Fouche",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Dr OM Silaule",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Dr S Manie",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Dr S Pillay",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "F Harris",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "F Solomons",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "H Talberg",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "I Abbas",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "I du Plessis",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "L Hector",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "L Rees",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "L Richards",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "L Rustin",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "M Francke",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "M Hannington",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "N Arends",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "N Edries-Khan",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "N Ntinga",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "N Pandey",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Professor J McKenzie",
+   "role": "Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "Professor L Ramma",
+   "role": "Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "Professor R Galvaan",
+   "role": "Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "Professor T Lorenzo",
+   "role": "Professor"
+  },
+  {
+   "dept": "AHS",
+   "name": "R Hassam",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "S Damonse",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "T Mohomed",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "V Norman",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AHS",
+   "name": "Z Syed",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ANS",
+   "name": "Associate Professor H Macdonald",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ANS",
+   "name": "Dr K Mohamed",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ANS",
+   "name": "Dr M Swai",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ANS",
+   "name": "Dr N Solomon",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ANS",
+   "name": "Professor F B Nyamnjoh",
+   "role": "Professor"
+  },
+  {
+   "dept": "ANS",
+   "name": "Professor F C Ross",
+   "role": "Professor"
+  },
+  {
+   "dept": "ANS",
+   "name": "Professor S L Levine",
+   "role": "Professor"
+  },
+  {
+   "dept": "APG",
+   "name": "Associate Professor M Basitere",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "APG",
+   "name": "Associate Professor P Odera",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "APG",
+   "name": "Associate Professor P Padayachee",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "APG",
+   "name": "Associate Professor P Tumubweinee",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "APG",
+   "name": "Associate Professor W Smit",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "APG",
+   "name": "B Mathole",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "APG",
+   "name": "C Abrahams",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "APG",
+   "name": "C Hindes",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "APG",
+   "name": "Dr A L Campbell",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "APG",
+   "name": "Dr M Shoko",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "APG",
+   "name": "Dr M Toffa",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "APG",
+   "name": "Dr T Sanya",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "APG",
+   "name": "F Isaacs",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "APG",
+   "name": "Professor A Tucker",
+   "role": "Professor"
+  },
+  {
+   "dept": "APG",
+   "name": "Professor E Pieterse",
+   "role": "Professor"
+  },
+  {
+   "dept": "APG",
+   "name": "Professor T Winkler",
+   "role": "Professor"
+  },
+  {
+   "dept": "APG",
+   "name": "S Le Grange",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "APG",
+   "name": "SS Papanicolaou",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "APG",
+   "name": "T Katzschner",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ASL",
+   "name": "Associate Professor B Moolman",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ASL",
+   "name": "Dr D Jethro",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ASL",
+   "name": "Dr M Osman",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ASL",
+   "name": "Dr M Thompson",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ASL",
+   "name": "Dr N Titi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ASL",
+   "name": "Dr S Mpendukana",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ASL",
+   "name": "Dr W Mushwana",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ASL",
+   "name": "Dr Z Mkhize",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ASL",
+   "name": "Dr Z Msomi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ASL",
+   "name": "J Brown",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ASL",
+   "name": "Professor A Deumert",
+   "role": "Professor"
+  },
+  {
+   "dept": "ASL",
+   "name": "Professor H Chitonge",
+   "role": "Professor"
+  },
+  {
+   "dept": "ASL",
+   "name": "Professor S Pillay",
+   "role": "Professor"
+  },
+  {
+   "dept": "AST",
+   "name": "Dr I Monageng",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AST",
+   "name": "Dr J Delhaize",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "AST",
+   "name": "Dr L Marchetti",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "AST",
+   "name": "Professor P A Woudt",
+   "role": "Professor"
+  },
+  {
+   "dept": "AST",
+   "name": "Professor R Deane",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor A D Amar",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor D Pillay",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor G Haysom",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor J A Slingsby",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor J M Bishop",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor L Nkula-Wenz",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor L R Cirolia",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor R L Thomson",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor S B M Chimphango",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor S J Cunningham",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor T van der Niet",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Associate Professor W Smit",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Dr C A Ngcamphalala",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BIO",
+   "name": "Dr C Janion-Scheepers",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BIO",
+   "name": "Dr G Jamie",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BIO",
+   "name": "Dr L D Vorsatz",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BIO",
+   "name": "Dr N Karenyi",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BIO",
+   "name": "Dr S Welman",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor A Chinsamy-Turan",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor A G West",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor A M Muasya",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor A Selmeczi",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor A Tucker",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor A Weimann",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor C J Okolie",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor C Skinner",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor E Pieterse",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor I Najaar",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor L Tshuwa",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor M J O’Riain",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor N Odendaal",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor P W Froneman",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor R Sitas",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor T A Hedderson",
+   "role": "Professor"
+  },
+  {
+   "dept": "BIO",
+   "name": "Professor Z Sogoni",
+   "role": "Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "A Meadows",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "Associate Professor A Boodhoo",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Associate Professor D Polakow",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Associate Professor D Priilaid",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Associate Professor DM Maralack",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Associate Professor J Lappeman",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Associate Professor L Robertson",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Associate Professor R Chohan",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Associate Professor S Dlamini",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Associate Professor S Mataramvura",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Associate Professor S Savahl",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "B Arendse",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "C Kalil",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "D Strugnell",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "D Williams",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "Dr C Duffy",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "Dr E Maritz",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "Dr N Bundwini",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "Dr P Pillay",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "Dr S Rousseau",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "Dr T Mc Walter",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "Dr V Adjiwanou",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "E Flint",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "F Farista",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "G Nodoba",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "I Melzer",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "J Jurgens",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "J Rousseau",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "L Mototo",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "LK Mulaudzi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "M Abraham",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "M Lowther",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "N Veldsman",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "P Botha",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "P Broster",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "Professor A Botha",
+   "role": "Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Professor A Jaga",
+   "role": "Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Professor A Schlechter",
+   "role": "Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Professor F De Kock",
+   "role": "Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Professor H McLeod",
+   "role": "Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Professor I Meyer",
+   "role": "Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Professor J Bagraim",
+   "role": "Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Professor L Van Vuuren",
+   "role": "Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Professor S Chapman",
+   "role": "Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "Professor UJ E Wood",
+   "role": "Professor"
+  },
+  {
+   "dept": "BUS",
+   "name": "S Hendry",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "BUS",
+   "name": "Z Zungu",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CEM",
+   "name": "Associate Professor C G L Veale",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CEM",
+   "name": "Associate Professor M A Jardine",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CEM",
+   "name": "Dr C Edmonds-Smith",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CEM",
+   "name": "Dr G A Venter",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CEM",
+   "name": "Dr K Wicht",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CEM",
+   "name": "Dr M Rylands",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CEM",
+   "name": "Dr M W Mogodi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CEM",
+   "name": "Dr R Mohunlal",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CEM",
+   "name": "Dr S Douman",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CEM",
+   "name": "Dr S Ngubane",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CEM",
+   "name": "Professor G S Smith",
+   "role": "Professor"
+  },
+  {
+   "dept": "CEM",
+   "name": "Professor K J Naidoo",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHE",
+   "name": "Associate Professor BJ McFadzean",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHE",
+   "name": "Associate Professor MS Manono",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHE",
+   "name": "Dr RK Abrahams",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHE",
+   "name": "Dr SC Mokwatlo",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHE",
+   "name": "Dr T Rampai",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHE",
+   "name": "Dr TG Gambu",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHE",
+   "name": "Dr TP Mokone",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHE",
+   "name": "HR Heydenrych",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHE",
+   "name": "I Hajee",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CHE",
+   "name": "LO Jona",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CHE",
+   "name": "Professor AE Lewis",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHE",
+   "name": "Professor DA Deglon",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHE",
+   "name": "Professor E van Steen",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHE",
+   "name": "Professor J Petersen",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHE",
+   "name": "Professor M Becker",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHE",
+   "name": "Professor M Claeys",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHE",
+   "name": "Professor NF Fischer",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHE",
+   "name": "Professor PJ Kooyman",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "A Mbonisweni",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor DA Thomson",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor E Kalk",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor F Malherbe",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor G McCollum",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor H Bougard",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor J Olivier",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor JC Kloppers",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor M Laubscher",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor M Shung King",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor OA Alaba",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor S Adams",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor SA A le Fevre",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor SA G Chinnery",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Associate Professor T Harris",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "BA Ndweni",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Dr A de Voux",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Dr C Cunningham",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Dr H Madlala",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Dr J Githaiga",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Dr J Irlam",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Dr L Cunnama",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Dr M Jagarnath",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Dr MA Witwatersrand",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Dr T Assegaai",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Dr T Phillips",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "E Whyle",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "I Ntatamala",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "J Raad",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "M Arnold",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "O Khamag",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor A Boulle",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor A Dalvie",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor AJ Nicol",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor DE Lubbe",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor E Muller",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor L London",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor M Held",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor N Davies",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor P Navsaria",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor PL Semple",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor S Cleary",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor SA E Jonas",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor SA M Davies",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor SA S Maqungo",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor SA S Roche",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "Professor VN Nfonsam",
+   "role": "Professor"
+  },
+  {
+   "dept": "CHM",
+   "name": "S Burmeister",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "SP Mthembu",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "T Mendes",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CHM",
+   "name": "T Siyotula",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CIV",
+   "name": "Associate Professor KJ Carden",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CIV",
+   "name": "Associate Professor S Motala",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CIV",
+   "name": "Dr J Okedi",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CIV",
+   "name": "Dr K Mudenda",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CIV",
+   "name": "Dr NS Wolmarans",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CIV",
+   "name": "FC Chebet",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CIV",
+   "name": "L Nolutshungu",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CIV",
+   "name": "Professor A Zingoni",
+   "role": "Professor"
+  },
+  {
+   "dept": "CIV",
+   "name": "Professor D Kalumba",
+   "role": "Professor"
+  },
+  {
+   "dept": "CIV",
+   "name": "Professor DG Randall",
+   "role": "Professor"
+  },
+  {
+   "dept": "CIV",
+   "name": "Professor DS Ikumi",
+   "role": "Professor"
+  },
+  {
+   "dept": "CIV",
+   "name": "Professor H Beushausen",
+   "role": "Professor"
+  },
+  {
+   "dept": "CIV",
+   "name": "Professor M Vanderschuren",
+   "role": "Professor"
+  },
+  {
+   "dept": "CIV",
+   "name": "Professor P Moyo",
+   "role": "Professor"
+  },
+  {
+   "dept": "CIV",
+   "name": "Professor R Behrens",
+   "role": "Professor"
+  },
+  {
+   "dept": "CIV",
+   "name": "Professor S Skatulla",
+   "role": "Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "A Motala",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "Associate Professor J Hall",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "Associate Professor R Simo",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "B Cronin",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "B Zungu",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "Dr C de Villiers",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "Dr F Adams",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "Dr L Mkhwanazi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "Dr T Thabane",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "K Ramantsima",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "M de Souza Louw",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "N Luwaya",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "N Mngqibisa",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "N Sihlali",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "Professor A R Paterson",
+   "role": "Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "Professor C Modise",
+   "role": "Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "Professor E Viljoen",
+   "role": "Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "Professor F Khan",
+   "role": "Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "Professor M Schoeman",
+   "role": "Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "Professor N Marinus",
+   "role": "Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "Professor O Mosimanekgosi",
+   "role": "Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "Professor S Kruger",
+   "role": "Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "Professor S Sader",
+   "role": "Professor"
+  },
+  {
+   "dept": "CML",
+   "name": "S Mesthrie",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CML",
+   "name": "T Duda",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CON",
+   "name": "B Mashele",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CON",
+   "name": "Dr A Ametefe",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CON",
+   "name": "Dr A Filtane",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CON",
+   "name": "Dr E Musvoto",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CON",
+   "name": "Dr SD Nurick",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CON",
+   "name": "E Edwardes",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CON",
+   "name": "G Goliath",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CON",
+   "name": "K Le Jeune",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CON",
+   "name": "M Lefoka",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CON",
+   "name": "Professor A Windapo",
+   "role": "Professor"
+  },
+  {
+   "dept": "CON",
+   "name": "Professor KA Michell",
+   "role": "Professor"
+  },
+  {
+   "dept": "CON",
+   "name": "U Ordor",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CSC",
+   "name": "A Jeewa",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CSC",
+   "name": "A Safla",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CSC",
+   "name": "Associate Professor G Nitschke",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CSC",
+   "name": "Associate Professor M Densmore",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CSC",
+   "name": "Associate Professor P C Marais",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CSC",
+   "name": "Associate Professor S Berman",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "CSC",
+   "name": "Dr J Chavula",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CSC",
+   "name": "Dr J M Buys",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CSC",
+   "name": "Dr Z Mahlaza",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CSC",
+   "name": "F Meyer",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CSC",
+   "name": "F R Meyer",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CSC",
+   "name": "G Stewart",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "CSC",
+   "name": "K Prag",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "CSC",
+   "name": "Professor H Suleman",
+   "role": "Professor"
+  },
+  {
+   "dept": "CSC",
+   "name": "Professor J E Gain",
+   "role": "Professor"
+  },
+  {
+   "dept": "CSC",
+   "name": "Professor M M Kuttel",
+   "role": "Professor"
+  },
+  {
+   "dept": "CSC",
+   "name": "Professor R Simmonds",
+   "role": "Professor"
+  },
+  {
+   "dept": "CSC",
+   "name": "Professor T A Meyer",
+   "role": "Professor"
+  },
+  {
+   "dept": "DOH",
+   "name": "Associate Professor S Morreira",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "DOH",
+   "name": "Dr T Wilks",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "Associate Professor A Kerr",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Associate Professor C Mlatsheni",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Associate Professor H Hollander",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Associate Professor K Eyal",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Associate Professor K Kotze",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Associate Professor M Keswell",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Dr A Davids",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "Dr C Makanza",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "Dr D Fadiran",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "Dr G Ndlovu",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "Dr L Mateane",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "Dr L Neethling",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "Dr L Njozela",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "Dr N Pillay",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "Dr R Lepelle",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "Dr T Mpofu",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "J Chien",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "M Smith",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor A Hofmeyr",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor A Karimu",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor B Conradie",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor C Ardington",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor C Van Walbeek",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor D Ross",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor D Thiam",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor E Muchapondwa",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor E Nikolaidou",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor H Bhorat",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor H Winkler",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor J Burns",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor L Edwards",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor L Grzybowski",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor M V Leibbrandt",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor M Visser",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor N Nattrass",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "Professor V Ranchhod",
+   "role": "Professor"
+  },
+  {
+   "dept": "ECO",
+   "name": "R Chetty",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ECO",
+   "name": "S Khan",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EDN",
+   "name": "Associate Professor A Hattingh",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "EDN",
+   "name": "Associate Professor L J Powell",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "EDN",
+   "name": "Associate Professor R C Laugksch",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "EDN",
+   "name": "Dr A Visagie",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EDN",
+   "name": "Dr K L Angier",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "EDN",
+   "name": "Dr R Reynolds",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "EDN",
+   "name": "Dr S Abdulatief",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EDN",
+   "name": "Dr X W Guzula",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "EDN",
+   "name": "Dr Y Omar",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "EDN",
+   "name": "L Pottier",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EDN",
+   "name": "Professor C W McKinney",
+   "role": "Professor"
+  },
+  {
+   "dept": "EDN",
+   "name": "Professor D Ng’ambi",
+   "role": "Professor"
+  },
+  {
+   "dept": "EDN",
+   "name": "Professor J Hardman",
+   "role": "Professor"
+  },
+  {
+   "dept": "EDN",
+   "name": "Professor U K Hoadley",
+   "role": "Professor"
+  },
+  {
+   "dept": "EEE",
+   "name": "Associate Professor AJ Wilkinson",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "EEE",
+   "name": "Associate Professor OE Falowo",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "EEE",
+   "name": "Associate Professor S Chowdhury",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "EEE",
+   "name": "Associate Professor S Winberg",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "EEE",
+   "name": "Dr MY Abdul Gaffar",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "EEE",
+   "name": "Dr P Amayo",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "EEE",
+   "name": "Dr S Jayalath",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "EEE",
+   "name": "Professor F Nicolls",
+   "role": "Professor"
+  },
+  {
+   "dept": "EEE",
+   "name": "Professor KA Folly",
+   "role": "Professor"
+  },
+  {
+   "dept": "EEE",
+   "name": "Professor P Barendse",
+   "role": "Professor"
+  },
+  {
+   "dept": "EEE",
+   "name": "RA Verrinder",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "EGS",
+   "name": "Associate Professor G Ziervogel",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "EGS",
+   "name": "Associate Professor J Battersby",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "EGS",
+   "name": "Associate Professor S Daya",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "EGS",
+   "name": "Associate Professor Z Patel",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "EGS",
+   "name": "Dr D Kibirige",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EGS",
+   "name": "Dr J R von Holdt",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EGS",
+   "name": "Dr M Norton",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EGS",
+   "name": "Dr P Matikinca",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EGS",
+   "name": "Dr P Mbatha",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "EGS",
+   "name": "Dr P Sabela-Rikhotso",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EGS",
+   "name": "Dr S Conradie",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EGS",
+   "name": "Dr S Rikhotso",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EGS",
+   "name": "Dr S Scheba",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "EGS",
+   "name": "K Ntombini",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "EGS",
+   "name": "Professor B J Abiodun",
+   "role": "Professor"
+  },
+  {
+   "dept": "EGS",
+   "name": "Professor F D Eckardt",
+   "role": "Professor"
+  },
+  {
+   "dept": "EGS",
+   "name": "Professor M New",
+   "role": "Professor"
+  },
+  {
+   "dept": "ELL",
+   "name": "Associate Professor P Anderson",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ELL",
+   "name": "Associate Professor P Moji",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "ELL",
+   "name": "Dr B Fortuin",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ELL",
+   "name": "Dr H Moosa",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ELL",
+   "name": "Dr K B Highman",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ELL",
+   "name": "Dr W Mushwana",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ELL",
+   "name": "M Mohulatsi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "ELL",
+   "name": "Professor B Boswell",
+   "role": "Professor"
+  },
+  {
+   "dept": "ELL",
+   "name": "Professor S Young",
+   "role": "Professor"
+  },
+  {
+   "dept": "ELL",
+   "name": "S Busuku",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FAM",
+   "name": "Associate Professor L J Modisane",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FAM",
+   "name": "Associate Professor M J Evans",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FAM",
+   "name": "Associate Professor M Ndlovu",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FAM",
+   "name": "Associate Professor M Walton",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FAM",
+   "name": "Associate Professor W Chuma",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FAM",
+   "name": "D Valley",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FAM",
+   "name": "Dr A J Smit",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FAM",
+   "name": "Dr D Becker",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FAM",
+   "name": "Dr J Cain",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FAM",
+   "name": "Dr L Maasdorp",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FAM",
+   "name": "Dr R H Irwin",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FAM",
+   "name": "Dr V Suparsad",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FAM",
+   "name": "Professor T Bosch",
+   "role": "Professor"
+  },
+  {
+   "dept": "FCE",
+   "name": "Associate Professor C D’Alton",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FCE",
+   "name": "Associate Professor J Kroff",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FCE",
+   "name": "Associate Professor M Namane",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FCE",
+   "name": "Associate Professor P Hodkinson",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FCE",
+   "name": "Associate Professor W Stassen",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FCE",
+   "name": "Dr I Datay",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FCE",
+   "name": "J Irlam",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FCE",
+   "name": "S Crawford-Browne",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FCE",
+   "name": "T Ross",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "Associate Professor G Mahashe",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FIN",
+   "name": "Associate Professor J Brundrit",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FIN",
+   "name": "Associate Professor J van der Schijff",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FIN",
+   "name": "Associate Professor S Josephy",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FIN",
+   "name": "Dr A Soudien",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "Dr P Brijlal",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "Dr S Huigen-Conradie",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "Dr S Mguni",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "Dr T Monoa",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "Dr UJ P Malatjie",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "F Saptouw",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "G van der Byl",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "J Nair",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "N Jwara",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "NB Disclaimer",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FIN",
+   "name": "Professor B Searle",
+   "role": "Professor"
+  },
+  {
+   "dept": "FIN",
+   "name": "Professor N Makhubu",
+   "role": "Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "A Abdulla",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FTX",
+   "name": "Associate Professor A Sayed",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "Associate Professor C Huang",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "Associate Professor D Taylor",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "Associate Professor F Toerien",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "Associate Professor G Holman",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "Associate Professor K Moutanabbir",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "Associate Professor P Brijlal",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "Associate Professor P Ouwehand",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "Associate Professor R Kruger",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "Dr A Futter",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FTX",
+   "name": "Dr A Majoni",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FTX",
+   "name": "Dr E Swanepoel",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FTX",
+   "name": "Dr F Peerbhai",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "FTX",
+   "name": "M Aidoo",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FTX",
+   "name": "N Jwara",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FTX",
+   "name": "Professor A Charteris",
+   "role": "Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "Professor P de Jager",
+   "role": "Professor"
+  },
+  {
+   "dept": "FTX",
+   "name": "R Oosthuizen",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FTX",
+   "name": "T Johnson",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "FTX",
+   "name": "X Mtiki",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "GEO",
+   "name": "Associate Professor A Sloan",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "GEO",
+   "name": "Associate Professor G Howarth",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "GEO",
+   "name": "Associate Professor J F A Diener",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "GEO",
+   "name": "Associate Professor P J le Roux",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "GEO",
+   "name": "Associate Professor R Pickering",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "GEO",
+   "name": "Dr D Quiros",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GEO",
+   "name": "Dr M Abrahams",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GEO",
+   "name": "Professor E M Bordy",
+   "role": "Professor"
+  },
+  {
+   "dept": "GEO",
+   "name": "Professor G M Branch",
+   "role": "Professor"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr A Surmeier",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr B Dharani",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr B Spatz",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr B Zolfaghari",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr C Feront",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr C Ferreira",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr D Rule",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr E Shelley",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr M Camerer",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr M Kabinga",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr M Nxele",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr R Albertus",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr S Haricharan",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr T Mthanti",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Dr W Kruger",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "J Ahlers",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "J Schueler",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "GSB",
+   "name": "Professor A L Alhassan",
+   "role": "Professor"
+  },
+  {
+   "dept": "GSB",
+   "name": "Professor H Parker",
+   "role": "Professor"
+  },
+  {
+   "dept": "GSB",
+   "name": "Professor J Luiz",
+   "role": "Professor"
+  },
+  {
+   "dept": "GSB",
+   "name": "Professor K April",
+   "role": "Professor"
+  },
+  {
+   "dept": "GSB",
+   "name": "Professor M Samuelsson",
+   "role": "Professor"
+  },
+  {
+   "dept": "GSB",
+   "name": "Professor R Hamann",
+   "role": "Professor"
+  },
+  {
+   "dept": "GSB",
+   "name": "Professor S Gossel",
+   "role": "Professor"
+  },
+  {
+   "dept": "HSE",
+   "name": "Dr BO Ige",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "HSE",
+   "name": "Dr E Badenhorst",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HSE",
+   "name": "Dr FJ Cilliers",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "HSE",
+   "name": "Dr L McNamee",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "HSE",
+   "name": "Dr L Pienaar",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "HSE",
+   "name": "Dr N Muna",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HSE",
+   "name": "Dr R Weiss",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HSE",
+   "name": "J Muller-Stuurman",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "HSE",
+   "name": "S Buthelezi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "HST",
+   "name": "Associate Professor B Kar",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "HST",
+   "name": "Associate Professor L van Sittert",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "HST",
+   "name": "Associate Professor M Mbali",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "HST",
+   "name": "Associate Professor S Jeppie",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "HST",
+   "name": "Dr A Masola",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HST",
+   "name": "Dr A Sen",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HUB",
+   "name": "Associate Professor A Gwanyanya",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "HUB",
+   "name": "Associate Professor AN Bosch",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "HUB",
+   "name": "Associate Professor DM Lang",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "HUB",
+   "name": "Associate Professor G Gunston",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "HUB",
+   "name": "Associate Professor J Friedling",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "HUB",
+   "name": "Associate Professor JV Raimondo",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "HUB",
+   "name": "Associate Professor Y Albertus",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "HUB",
+   "name": "Dr A Abrahams",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HUB",
+   "name": "Dr A Bhagwandin",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HUB",
+   "name": "Dr D Hockman",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HUB",
+   "name": "Dr K Bugarith",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HUB",
+   "name": "Dr L du Plessis",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "HUB",
+   "name": "Dr M Goolam",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HUB",
+   "name": "Dr N Conrad",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "HUB",
+   "name": "Dr R Dangarembizi",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HUB",
+   "name": "Dr S Hendricks",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "HUB",
+   "name": "Professor AV September",
+   "role": "Professor"
+  },
+  {
+   "dept": "HUB",
+   "name": "Professor MR Collins",
+   "role": "Professor"
+  },
+  {
+   "dept": "HUB",
+   "name": "Professor S Prince",
+   "role": "Professor"
+  },
+  {
+   "dept": "HUB",
+   "name": "Professor T Franz",
+   "role": "Professor"
+  },
+  {
+   "dept": "HUB",
+   "name": "Professor VE Gibbon",
+   "role": "Professor"
+  },
+  {
+   "dept": "INF",
+   "name": "Associate Professor A Budree",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "INF",
+   "name": "Dr D Snyman",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "INF",
+   "name": "Dr DP Snyman",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "INF",
+   "name": "Dr L Tekeni",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "INF",
+   "name": "Dr M Kapepo",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "INF",
+   "name": "Dr T Chimboza",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "INF",
+   "name": "Dr W Uys",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "INF",
+   "name": "G Mwalemba",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "INF",
+   "name": "G Oosterwyk",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "INF",
+   "name": "M Jacobs-Basadien",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "INF",
+   "name": "M Jacobs-Besadien",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "INF",
+   "name": "P Tsibolane",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "INF",
+   "name": "Professor L F Seymour",
+   "role": "Professor"
+  },
+  {
+   "dept": "INF",
+   "name": "Professor M Kyobe",
+   "role": "Professor"
+  },
+  {
+   "dept": "INF",
+   "name": "Professor M Tanner",
+   "role": "Professor"
+  },
+  {
+   "dept": "INF",
+   "name": "Professor S K Kabanda",
+   "role": "Professor"
+  },
+  {
+   "dept": "INF",
+   "name": "Professor U Rivett",
+   "role": "Professor"
+  },
+  {
+   "dept": "INF",
+   "name": "Professor W M Chigona",
+   "role": "Professor"
+  },
+  {
+   "dept": "INF",
+   "name": "Z Ruhwanya",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Associate Professor A Schauerte",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MAM",
+   "name": "Associate Professor E E Berdysheva",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MAM",
+   "name": "Associate Professor J P Shock",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MAM",
+   "name": "Associate Professor Z Patel",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr B Mongwane",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr E Fredericks",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr F Ebobisse Bille",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr H J R van Zyl",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr H Spakowski",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr H Z Wiggins",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr I Allie",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr M Hillebrand",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr P W Adams",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr R P Slayen",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr S Haque",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Dr T Janelidze-Gray",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "M Mokhithi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "M Vandeyar",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "Professor B A Bassett",
+   "role": "Professor"
+  },
+  {
+   "dept": "MAM",
+   "name": "Professor G Janelidze",
+   "role": "Professor"
+  },
+  {
+   "dept": "MAM",
+   "name": "Professor H Skokos",
+   "role": "Professor"
+  },
+  {
+   "dept": "MAM",
+   "name": "Professor I V Barashenkov",
+   "role": "Professor"
+  },
+  {
+   "dept": "MAM",
+   "name": "Professor J Murugan",
+   "role": "Professor"
+  },
+  {
+   "dept": "MAM",
+   "name": "Professor P K S Dunsby",
+   "role": "Professor"
+  },
+  {
+   "dept": "MAM",
+   "name": "S Chili",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MAM",
+   "name": "T W Robertson",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MCB",
+   "name": "Associate Professor C O'Ryan",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MCB",
+   "name": "Associate Professor R A Ingle",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MCB",
+   "name": "Dr C Ross",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MCB",
+   "name": "Dr F Dube",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MCB",
+   "name": "Dr M J Williams",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MCB",
+   "name": "Dr P Meyers",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MCB",
+   "name": "Dr R Hurdayal",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MCB",
+   "name": "Dr S Rafudeen",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MCB",
+   "name": "Professor E P Rybicki",
+   "role": "Professor"
+  },
+  {
+   "dept": "MCB",
+   "name": "Professor J P Hapgood",
+   "role": "Professor"
+  },
+  {
+   "dept": "MCB",
+   "name": "Professor N Illing",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor A Chin",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor BJ Cupido",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor E Jones",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor E Verburgh",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor G Shaboodien",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor G Watermeyer",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor HH Ndlovu",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor J de Vries",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor K Cohen",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor S Dlamini",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor SA E Charani",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Associate Professor Z Woodman",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "DF Maughan",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "Dr CK Wibmer",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "Dr H Bendou",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "Dr L Sitole",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "Dr M Nel",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "Dr M Sinkala",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "I Ntatamala",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "N Papavarnaras",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "NA Gogela",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor C Orrell",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor D Martin",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor H McIlleron",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor IL Ross",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor KI Barnes",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor L Wiesner",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor LG Bekker",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor M Blockman",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor M Sonderup",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor ME Engel",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor MI Combrinck",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor N Khumalo",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor N Ntusi",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor P Denti",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "Professor S Barth",
+   "role": "Professor"
+  },
+  {
+   "dept": "MDN",
+   "name": "RI Raine",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "SA B Davidson",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "SA G Symons",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "W Toet",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "Z Barday",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "Z Sonday",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MDN",
+   "name": "ZA Barday",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MEC",
+   "name": "A de Villiers",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MEC",
+   "name": "CF du Sart",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MEC",
+   "name": "Dr A Pretorius",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MEC",
+   "name": "Dr R Govender",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MEC",
+   "name": "Dr SL Gabriel",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MEC",
+   "name": "Dr SL George",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MEC",
+   "name": "Dr TJ Cloete",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MEC",
+   "name": "EB Ismail",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MEC",
+   "name": "LC Raw",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MEC",
+   "name": "Professor TH Becker",
+   "role": "Professor"
+  },
+  {
+   "dept": "MEC",
+   "name": "S Parker",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MEC",
+   "name": "SC Mashau",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MUZ",
+   "name": "Associate Professor A Herbst",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MUZ",
+   "name": "Associate Professor A Tiffin",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MUZ",
+   "name": "Associate Professor F Bacharova",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MUZ",
+   "name": "Associate Professor F du Toit",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MUZ",
+   "name": "Associate Professor P Tikolo",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MUZ",
+   "name": "Associate Professor S Bruinders",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "MUZ",
+   "name": "B Phillips",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MUZ",
+   "name": "C Malefane",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MUZ",
+   "name": "Dr B Clacherty",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MUZ",
+   "name": "J Bellairs",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MUZ",
+   "name": "M van Noie",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MUZ",
+   "name": "Professor R Sandmeier",
+   "role": "Professor"
+  },
+  {
+   "dept": "MUZ",
+   "name": "S Fubesi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "MUZ",
+   "name": "T Herbst",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "MUZ",
+   "name": "V Anguelov",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "OBS",
+   "name": "Professor SJ Dyer",
+   "role": "Professor"
+  },
+  {
+   "dept": "PBL",
+   "name": "Associate Professor H Woolaver",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PBL",
+   "name": "Associate Professor I Kinnes",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PBL",
+   "name": "Associate Professor J Hall",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PBL",
+   "name": "Associate Professor J Omar",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PBL",
+   "name": "Associate Professor K Moult",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PBL",
+   "name": "C Willis-Smith",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PBL",
+   "name": "D Mafora",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PBL",
+   "name": "Dr D Metuge",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PBL",
+   "name": "Dr L Sadiki",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PBL",
+   "name": "Dr N Palmer",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PBL",
+   "name": "Dr N Ramalekana",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PBL",
+   "name": "Dr R Nunlall- Hiralal",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PBL",
+   "name": "Dr S Samtani",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PBL",
+   "name": "N Ally",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PBL",
+   "name": "Professor A R Paterson",
+   "role": "Professor"
+  },
+  {
+   "dept": "PBL",
+   "name": "Professor D M Chirwa",
+   "role": "Professor"
+  },
+  {
+   "dept": "PBL",
+   "name": "Professor F Khan",
+   "role": "Professor"
+  },
+  {
+   "dept": "PBL",
+   "name": "Professor P de Vos",
+   "role": "Professor"
+  },
+  {
+   "dept": "PBL",
+   "name": "Professor W Amien",
+   "role": "Professor"
+  },
+  {
+   "dept": "PBL",
+   "name": "S Lutchman",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PBL",
+   "name": "S Mesthrie",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor C Hlela",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor HA Buys",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor JC Nuttall",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor L Tooke",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor M Coetzee",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor M Zampoli",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor MC Harrison",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor P Nourse",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor RN C Gray",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor SA A Westwood",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor SA M Coetzee",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor SA W Slemming",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor UK A Horn",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor UK M Zampoli",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Associate Professor W Hanekom",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "C Afonso",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PED",
+   "name": "J Shea",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PED",
+   "name": "Professor A Davidson",
+   "role": "Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Professor J Wilmshurst",
+   "role": "Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Professor KA Donald",
+   "role": "Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Professor M McCulloch",
+   "role": "Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Professor ME Levin",
+   "role": "Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Professor N North",
+   "role": "Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Professor R Muloiwa",
+   "role": "Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Professor S Mathews",
+   "role": "Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Professor SA B Morrow",
+   "role": "Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "Professor T Soko",
+   "role": "Professor"
+  },
+  {
+   "dept": "PED",
+   "name": "S Salie",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PHI",
+   "name": "Associate Professor E Galgut",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PHI",
+   "name": "Associate Professor G Hull",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PHI",
+   "name": "Associate Professor J Ritchie",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PHI",
+   "name": "Associate Professor T Angier",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PHI",
+   "name": "O Mogomotsi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PHI",
+   "name": "Professor R Nefdt",
+   "role": "Professor"
+  },
+  {
+   "dept": "PHY",
+   "name": "Associate Professor D L Taylor",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PHY",
+   "name": "Associate Professor H W G Weigert",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PHY",
+   "name": "Associate Professor J M Keaveney",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PHY",
+   "name": "Associate Professor M D Blumenthal",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PHY",
+   "name": "Associate Professor W A Horowitz",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PHY",
+   "name": "D R Geduld",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PHY",
+   "name": "Dr K Barends",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PHY",
+   "name": "Dr M Lushozi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PHY",
+   "name": "Dr S M Wheaton",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PHY",
+   "name": "Dr T D Bucher",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PHY",
+   "name": "Dr T Leadbeater",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PHY",
+   "name": "Dr T Salagaram",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PHY",
+   "name": "N Majiet",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PHY",
+   "name": "Professor A Buffler",
+   "role": "Professor"
+  },
+  {
+   "dept": "PHY",
+   "name": "Professor A Peshier",
+   "role": "Professor"
+  },
+  {
+   "dept": "PHY",
+   "name": "Professor M S Allie",
+   "role": "Professor"
+  },
+  {
+   "dept": "POL",
+   "name": "Associate Professor H Scanlon",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "POL",
+   "name": "Associate Professor L Paremoer",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "POL",
+   "name": "Associate Professor T Reddy",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "POL",
+   "name": "Associate Professor V Naidoo",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "POL",
+   "name": "Dr G M Maluleke",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "POL",
+   "name": "Dr G M Maxaulane",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "POL",
+   "name": "Dr I Makgetla",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "POL",
+   "name": "Dr L Lushaba",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "POL",
+   "name": "Dr X A Ndlovu",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "POL",
+   "name": "Dr Z T Zondi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "POL",
+   "name": "Professor A Butler",
+   "role": "Professor"
+  },
+  {
+   "dept": "POL",
+   "name": "Z Lategan",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Associate Professor A Marais",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Associate Professor G Sibeko",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Associate Professor J J Dawson-Squibb",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Associate Professor N Groenewold",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Associate Professor N Koen",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Associate Professor P Naude",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Associate Professor S Honikman",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Associate Professor S Nightingale",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Associate Professor S Rabie",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "C Farmer",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "CO Iyegbe",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "D Pieterse",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "D Rosenstein",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr A Adams",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr D Terburg",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr H Temmingh",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr H Thornton",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr J Ipser",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr L Andersen",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr M Lappeman",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr N Lagerstrom",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr R Kader",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr SA A Kibi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr SA L Schlebusch",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Dr UJ E Benjamin",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "E Reid",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "EC Garman",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "F Ashburner",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "F Dangor",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "F Ismail",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "H Julius",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "H Shannon",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "I Akpabio",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "I Hoosen",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "I Lewis",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "I Tayob",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "J Bouwer",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "J Jordaan",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "J Moolman",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "J Torline",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "M Abbas",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "M Karjiker",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "N Alie",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "N Dyakalashe",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "NR Horn",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "O Coetzee",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "P Gasela",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor A Hamilton",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor B Myers-Franchi",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor BL Atwoli",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor C Kuo",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor C Lund",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor CR Newton",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor D Baldwin",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor D Castle",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor D Edwards",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor D Williams",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor E McAuliffe",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor FG Njenga",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor G Wyatt",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor H Gouse",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor J Campion",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor J Hoare",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor JR Bantjes",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor K Sikkema",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor L Cluver",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor L Franz",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor L Simbayi",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor N Milburn",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor N Siegfried",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor NC Burnhams",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor O Shisana",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor R Stoop",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor S Mokitimi",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor SA J Joska",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor SA K Sorsdahl",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor SJ Shoptaw",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "Professor SL Halligan",
+   "role": "Professor"
+  },
+  {
+   "dept": "PRY",
+   "name": "R Ori",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "S Allie",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "S de Vaal",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SA B Mpinda",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SA B Romburgh",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SA C Dean",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SA C Mtati",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SA J Yako",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SA N Cader-Mokoa",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SA N Gqomfa",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SA N Lalkhen",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SA S Docrat",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SA S Edross",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SA S Lintnaar",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SD Pickstone-Taylor",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "SE Baumann",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "T Abrahams",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "T Letsatsi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "T Timmermans",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "TC Roos",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "U Meys",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "UK J Campion",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "W Hawa",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PRY",
+   "name": "Z Parker",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PSY",
+   "name": "Associate Professor G Lipinska",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PSY",
+   "name": "Associate Professor L E Schrieff-Brown",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PSY",
+   "name": "Associate Professor L Wild",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PSY",
+   "name": "B U Christ",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PSY",
+   "name": "Dr A Maw",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PSY",
+   "name": "Dr G Spies",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PSY",
+   "name": "Dr M Malinga",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PSY",
+   "name": "Dr P Njomboro",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PSY",
+   "name": "Dr R Makama",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PSY",
+   "name": "Dr S Mkabile",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PSY",
+   "name": "H Diara",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PSY",
+   "name": "Professor C G Tredoux",
+   "role": "Professor"
+  },
+  {
+   "dept": "PSY",
+   "name": "Professor C L Ward",
+   "role": "Professor"
+  },
+  {
+   "dept": "PSY",
+   "name": "Professor D Kaminer",
+   "role": "Professor"
+  },
+  {
+   "dept": "PSY",
+   "name": "Professor F Boonzaier",
+   "role": "Professor"
+  },
+  {
+   "dept": "PSY",
+   "name": "Professor G Solms",
+   "role": "Professor"
+  },
+  {
+   "dept": "PSY",
+   "name": "Professor S Kessi",
+   "role": "Professor"
+  },
+  {
+   "dept": "PSY",
+   "name": "Professor S Malcolm-Smith",
+   "role": "Professor"
+  },
+  {
+   "dept": "PSY",
+   "name": "Professor W Long",
+   "role": "Professor"
+  },
+  {
+   "dept": "PTY",
+   "name": "Associate Professor JC Hoving",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PTY",
+   "name": "Associate Professor K Shires",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PTY",
+   "name": "Associate Professor R Guler",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PTY",
+   "name": "Associate Professor S Dalvie",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PTY",
+   "name": "Associate Professor S Mowla",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PTY",
+   "name": "Associate Professor T Wessels",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PTY",
+   "name": "Dr C Moodley",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PTY",
+   "name": "Dr DM Blackhurst",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PTY",
+   "name": "Dr K Mnika",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PTY",
+   "name": "Dr L Paul",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PTY",
+   "name": "Dr S Hadebe",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PTY",
+   "name": "H Vreede",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PTY",
+   "name": "Professor M Hatherill",
+   "role": "Professor"
+  },
+  {
+   "dept": "PTY",
+   "name": "Professor M Jacobs",
+   "role": "Professor"
+  },
+  {
+   "dept": "PTY",
+   "name": "Professor S Parihar",
+   "role": "Professor"
+  },
+  {
+   "dept": "PTY",
+   "name": "Professor T Scriba",
+   "role": "Professor"
+  },
+  {
+   "dept": "PVL",
+   "name": "Associate Professor A Barratt",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PVL",
+   "name": "Associate Professor F Osman",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "PVL",
+   "name": "C Le Roith",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PVL",
+   "name": "Dr G Mathiba",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PVL",
+   "name": "Dr K Moshikaro",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PVL",
+   "name": "Dr R Cupido",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "PVL",
+   "name": "I Ahmed",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PVL",
+   "name": "M Baase",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "PVL",
+   "name": "Professor T W Price",
+   "role": "Professor"
+  },
+  {
+   "dept": "REL",
+   "name": "Dr A Alhourani",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "REL",
+   "name": "Dr L P Blond",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "REL",
+   "name": "Professor S Shaikh",
+   "role": "Professor"
+  },
+  {
+   "dept": "SEA",
+   "name": "Associate Professor K E Altieri",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "SEA",
+   "name": "Associate Professor S E Fawcett",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "SEA",
+   "name": "Dr M N Ragoasha",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SEA",
+   "name": "Professor I J Ansorge",
+   "role": "Professor"
+  },
+  {
+   "dept": "SLL",
+   "name": "A K Plaiche",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "Associate Professor J A Murray",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "SLL",
+   "name": "Dr B Burger",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "Dr E Mahenge",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "Dr G J Ortner",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "Dr H Kunju",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "Dr J Claassen",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "Dr J Corwin",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "Dr M J Shelton",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "Dr M Shongwe",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "Dr W Gambushe",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "M Kahn",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "Professor D Wardle",
+   "role": "Professor"
+  },
+  {
+   "dept": "SLL",
+   "name": "Professor J Raju",
+   "role": "Professor"
+  },
+  {
+   "dept": "SLL",
+   "name": "R Higgs",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "S Deyi",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "S Ntshingana",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SLL",
+   "name": "T De Young",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SOC",
+   "name": "Associate Professor A Benya",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "SOC",
+   "name": "Associate Professor F Garba Muhammed",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "SOC",
+   "name": "Associate Professor J de Wet",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "SOC",
+   "name": "Associate Professor R Chaturvedi",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "SOC",
+   "name": "Dr B Tame",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "SOC",
+   "name": "Dr N Vally",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SOC",
+   "name": "Dr T Meyer",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "SOC",
+   "name": "N Mabandla",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SOC",
+   "name": "Professor A Pande",
+   "role": "Professor"
+  },
+  {
+   "dept": "SOC",
+   "name": "Professor E Moore",
+   "role": "Professor"
+  },
+  {
+   "dept": "SOC",
+   "name": "Professor F Matose",
+   "role": "Professor"
+  },
+  {
+   "dept": "STA",
+   "name": "A Cloete",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "A Paskaramoorthy",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "Associate Professor A Clark",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "STA",
+   "name": "Associate Professor G Distiller",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "STA",
+   "name": "Associate Professor T Gebbie",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "STA",
+   "name": "D Katshunga",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "D van Wyk",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "Dr B Erni",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "Dr E Pienaar",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "Dr M Christian",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "Dr R G Rakotonirainy",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "Dr S Er",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "J Stangroom",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "M Mavuso",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "M Ngwenya",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "N Watson",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "Professor L M Haines",
+   "role": "Professor"
+  },
+  {
+   "dept": "STA",
+   "name": "Professor R Altwegg",
+   "role": "Professor"
+  },
+  {
+   "dept": "STA",
+   "name": "Professor S Silal",
+   "role": "Professor"
+  },
+  {
+   "dept": "STA",
+   "name": "S Britz",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "S Salau",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "UP N Watson",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "STA",
+   "name": "Y Robbertze",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SWK",
+   "name": "A Manqoyi-Ouamba",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SWK",
+   "name": "Associate Professor S Abdullah",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "SWK",
+   "name": "C Bruyns",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SWK",
+   "name": "Dr A M Kubeka",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "SWK",
+   "name": "Dr F Williams",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "SWK",
+   "name": "Dr S Hoosain",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "SWK",
+   "name": "L van Niekerk",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "SWK",
+   "name": "R Addinall",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "TDP",
+   "name": "Associate Professor G Samuel",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "TDP",
+   "name": "Associate Professor J Job",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "TDP",
+   "name": "Associate Professor S Matchett",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "TDP",
+   "name": "Associate Professor V Baxter",
+   "role": "Associate Professor"
+  },
+  {
+   "dept": "TDP",
+   "name": "J Crewe",
+   "role": "Senior Lecturer"
+  },
+  {
+   "dept": "TDP",
+   "name": "J Manyaapelo",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "TDP",
+   "name": "M Steyn",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "TDP",
+   "name": "P Nqelenga",
+   "role": "Lecturer"
+  },
+  {
+   "dept": "TDP",
+   "name": "Professor M Fleishman",
+   "role": "Professor"
+  }
+ ]
+}

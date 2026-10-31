@@ -372,6 +372,9 @@ legend { font: 600 1.05rem var(--display); padding: 0 8px 0 0; }
 .handbook { font-size: .86rem; }
 .plan-share { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 24px 0 0; }
 .plan-remove { flex: none; font-size: .8rem; color: var(--muted); }
+.dept-staff { margin: 8px 0 0; font-size: .9rem; max-width: 640px; }
+.dept-staff summary { cursor: pointer; color: var(--muted); }
+.dept-staff ul { margin-top: 8px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
 /* about you, credits and what the major still needs */
 .plan-about { margin: 0 0 16px; }
 .plan-about > summary { cursor: pointer; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
