@@ -1,5 +1,6 @@
 const crypto = require('node:crypto');
 const path = require('node:path');
+const zlib = require('node:zlib');
 const express = require('express');
 const views = require('./views');
 const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
@@ -42,7 +43,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!devMode) res.set('Strict-Transport-Security', 'max-age=31536000');
     next();
   });
-  app.use(express.static(path.join(__dirname, '..', 'public')));
+  // an hour of caching: the files aren't fingerprinted, so a longer cache would show old styles after a deploy
+  app.use(express.static(path.join(__dirname, '..', 'public'), { maxAge: '1h' }));
   app.use(express.urlencoded({ extended: false, limit: '20kb' }));
   app.use((req, res, next) => { req.body ??= {}; next(); }); // Express 5 leaves it undefined for empty POSTs
 
@@ -67,7 +69,14 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       res.cookie('csrf', csrf, { httpOnly: true, sameSite: 'lax', secure: !devMode });
     }
     req.ctx.csrf = csrf;
-    res.page = (page) => res.send(String(page).replace(/<form method="post"([^>]*)>/g, `<form method="post"$1><input type="hidden" name="_csrf" value="${csrf}">`));
+    res.page = (page) => {
+      const body = String(page).replace(/<form method="post"([^>]*)>/g, `<form method="post"$1><input type="hidden" name="_csrf" value="${csrf}">`);
+      res.vary('Accept-Encoding');
+      // pages are 5-45 KB of repetitive HTML; gzip cuts them to a fifth, which matters on student mobile data
+      const canGzip = body.length >= 1024 && /gzip/.test(req.headers['accept-encoding'] || '');
+      if (!canGzip) return res.send(body);
+      res.set('Content-Encoding', 'gzip').type('html').send(zlib.gzipSync(body));
+    };
     next();
   });
   app.use((req, res, next) => {
@@ -149,17 +158,52 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     })));
   });
 
+  // ---- browse: faculty -> department -> year ----
+  // Which faculty a course belongs to comes from the handbook it was imported from. The curriculum-table courses
+  // have no handbook of their own, so they take the faculty most of their department's courses belong to.
+  const FACULTY_BY_NAME = { Commerce: 'com', EBE: 'ebe', 'Health Sciences': 'fhs', Humanities: 'hum', Law: 'law', Science: 'sci' };
+  const browse = (() => {
+    const rows = q('SELECT code, title, credits, nqf, dept, source FROM courses').all();
+    const own = (r) => FACULTY_BY_NAME[/^UCT 2026 (.+?) (?:undergraduate |postgraduate )?handbook/.exec(r.source)?.[1]] || null;
+    const tally = {};
+    for (const r of rows) if (own(r)) ((tally[r.dept] ??= {})[own(r)] = (tally[r.dept][own(r)] || 0) + 1);
+    const home = (d) => Object.entries(tally[d] || {}).sort((x, y) => y[1] - x[1])[0]?.[0] || null;
+    const byFaculty = {};
+    for (const r of rows) {
+      const f = own(r) || home(r.dept);
+      if (f) ((byFaculty[f] ??= {})[r.dept] ??= []).push({ ...r, faculty: f });
+    }
+    return byFaculty;
+  })();
+  const YEAR_GROUPS = [[1, '1st year'], [2, '2nd year'], [3, '3rd year'], [4, '4th year and honours'], [5, 'Postgraduate']];
+  const yearOf = (code) => Math.min(5, Math.max(1, Number(code[3]) || 1));
+
   app.get('/courses', (req, res) => {
     const text = String(req.query.q || '').trim().slice(0, 80);
     const dept = String(req.query.dept || '').toUpperCase().slice(0, 3);
-    const where = [];
-    const params = [];
-    if (text) { where.push('(c.code LIKE ? OR c.title LIKE ?)'); params.push(`%${text}%`, `%${text}%`); }
-    if (dept) { where.push('c.dept = ?'); params.push(dept); }
-    const max = where.length ? 500 : 60; // the unfiltered list shows reviewed courses first, then a taste of the rest
-    const list = courseList(where.length ? `WHERE ${where.join(' AND ')}` : '', params, 's.n IS NULL, s.n DESC, c.code', max);
-    const total = q(`SELECT COUNT(*) AS n FROM courses c ${where.length ? `WHERE ${where.join(' AND ')}` : ''}`).get(...params).n;
-    res.page(views.courses(req.ctx, { list, total, depts: depts(), q: text, dept }));
+    const faculty = Object.hasOwn(browse, req.query.faculty) ? req.query.faculty : '';
+    const names = Object.fromEntries(facultyOptions().map((f) => [f.key, f.name]));
+    if (text) {
+      const list = courseList('WHERE (c.code LIKE ? OR c.title LIKE ?)', [`%${text}%`, `%${text}%`], 's.n IS NULL, s.n DESC, c.code', 500);
+      return res.page(views.courses(req.ctx, { mode: 'search', list, q: text }));
+    }
+    if (dept) {
+      // a department can teach in several faculties; with a faculty chosen, only that faculty's courses show
+      const pools = faculty ? [browse[faculty]?.[dept]] : Object.values(browse).map((f) => f[dept]);
+      const all = pools.flat().filter(Boolean);
+      if (!all.length) return res.status(404).page(notFound(req));
+      const reviewed = new Map(q(`SELECT course, COUNT(*) AS n, AVG(overall) AS overall, MAX(is_sample) AS has_sample FROM reviews WHERE status = 'published' AND course LIKE ? GROUP BY course`).all(`${dept}%`).map((r) => [r.course, r]));
+      const years = YEAR_GROUPS.map(([n, label]) => ({ n, label, list: all.filter((c) => yearOf(c.code) === n).sort((x, y) => x.code.localeCompare(y.code)).map((c) => ({ ...c, ...reviewed.get(c.code) })) })).filter((y) => y.list.length);
+      const deptName = q('SELECT name FROM departments WHERE code = ?').get(dept)?.name || dept;
+      return res.page(views.courses(req.ctx, { mode: 'dept', dept, deptName, faculty, facultyName: names[faculty] || '', years, total: all.length }));
+    }
+    if (faculty) {
+      const deptNames = Object.fromEntries(depts().map((d) => [d.code, d.name]));
+      const list = Object.entries(browse[faculty]).map(([code, cs]) => ({ code, name: deptNames[code] || code, courses: cs.length })).sort((x, y) => x.name.localeCompare(y.name));
+      return res.page(views.courses(req.ctx, { mode: 'faculty', faculty, facultyName: names[faculty], list }));
+    }
+    const list = facultyOptions().filter((f) => browse[f.key]).map((f) => ({ ...f, depts: Object.keys(browse[f.key]).length, courses: Object.values(browse[f.key]).flat().length }));
+    res.page(views.courses(req.ctx, { mode: 'faculties', list }));
   });
 
   // Suggestions as you type in a course search box (public/app.js). Codes that start with what you typed come
@@ -555,7 +599,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.get('/login', (req, res) => res.page(views.login(req.ctx, { next: safeNext(req.query.next) })));
 
   // Brevo's free plan sends 300 emails a day. Stop below that so sign-ins fail with a clear message, not silently.
-  const sentToday = { day: '', n: 0 };
+  // The count lives in the database so a restart (Render's free plan sleeps) doesn't reset it.
+  const sentTodayCount = (day) => q('SELECT n FROM email_count WHERE day = ?').get(day)?.n ?? 0;
   app.post('/login', limits.login, limits.loginEmail, limits.loginSend, async (req, res) => {
     const email = normEmail(req.body.email);
     const next = safeNext(req.body.next);
@@ -566,8 +611,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const token = crypto.randomBytes(32).toString('hex');
     const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
     const today = new Date().toISOString().slice(0, 10);
-    if (sentToday.day !== today) Object.assign(sentToday, { day: today, n: 0 });
-    if (sendLoginEmail && sentToday.n >= emailDailyCap) {
+    if (sendLoginEmail && sentTodayCount(today) >= emailDailyCap) {
       console.error(`sign-in emails paused: ${emailDailyCap} sent today`);
       return res.status(503).page(views.login(req.ctx, { email, next, error: "Kwaai has sent today's limit of sign-in emails. Please try again tomorrow. If you already have a code from today, it still works." }));
     }
@@ -579,7 +623,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const link = `${baseUrl || `${req.protocol}://${req.get('host')}`}/auth/${token}`;
     if (sendLoginEmail) {
       try {
-        sentToday.n++;
+        q('DELETE FROM email_count WHERE day < ?').run(today);
+        q('INSERT INTO email_count (day, n) VALUES (?, 1) ON CONFLICT(day) DO UPDATE SET n = n + 1').run(today);
         await sendLoginEmail(email, { link, code });
       } catch (e) {
         console.error('login email failed:', e.message);

@@ -2,6 +2,8 @@ const { DatabaseSync } = require('node:sqlite');
 const path = require('node:path');
 
 const SCHEMA = `
+CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS email_count (day TEXT PRIMARY KEY, n INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS departments (
   code TEXT PRIMARY KEY,
   name TEXT NOT NULL

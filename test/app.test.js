@@ -726,6 +726,17 @@ test('semester planner: add by code or search, remove, and shared links do not o
   assert.ok((await (await b.get('/api/courses?q=mathematical%20stat')).json()).some((c) => c.code === 'STA1006S'), 'title search');
   assert.deepEqual(await (await b.get('/api/courses?q=c')).json(), [], 'one letter is too short');
   assert.match(await b.text('/'), /data-suggest="go"/);
+  // layered browse: faculties, then departments, then year folders
+  const top = await b.text('/courses');
+  assert.match(top, /layer-card/);
+  assert.doesNotMatch(top, /course-card|year-folder/, 'the first layer lists faculties, not courses');
+  assert.match(await b.text('/courses?faculty=ebe'), /href="\/courses\?faculty=ebe&dept=EEE"/);
+  const eee = await b.text('/courses?faculty=ebe&dept=EEE');
+  assert.match(eee, /<details class="year-folder" open>/);
+  assert.match(eee, /2nd year/);
+  assert.match(eee, /href="\/courses\/EEE3099S"/);
+  assert.equal((await b.get('/courses?dept=ZZZ')).status, 404);
+  assert.match(await b.text('/courses?faculty=nope'), /layer-card/, 'an unknown faculty falls back to the top');
   const sta = await b.text('/courses/STA1006S');
   assert.match(sta, /Mathematical Statistics I/);
   assert.match(sta, /Convener: <a href="\/lecturers\/\d+">S Salau<\/a>/);
@@ -865,4 +876,19 @@ test('re-running the seed keeps real reviews and only swaps demo data', () => {
   assert.equal(count('SELECT COUNT(*) AS n FROM reviews WHERE is_sample = 1'), 0);
   assert.equal(count('SELECT COUNT(*) AS n FROM lecturers WHERE is_sample = 1'), 0);
   assert.ok(count('SELECT COUNT(*) AS n FROM courses') > 900);
+});
+
+test('re-seeding after a handbook update keeps students\' reviews and votes', () => {
+  const db = openDb(':memory:');
+  seed(db, { samples: true });
+  db.prepare(`INSERT INTO users (email) VALUES ('keep001@myuct.ac.za')`).run();
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'keep001@myuct.ac.za'`).get().id;
+  db.prepare(`INSERT INTO reviews (user_id, course, year, teaching, engagement, exams, support, difficulty, workload, overall, tags, body, is_sample)
+    VALUES (?, 'CSC1015F', 2026, 4, 4, 4, 4, 3, 3, 4, '', 'A real review that must survive.', 0)`).run(uid);
+  seed(db, { samples: true });
+  seed(db, { samples: false });
+  const n = (sql) => db.prepare(sql).get().n;
+  assert.equal(n(`SELECT COUNT(*) AS n FROM reviews WHERE is_sample = 0`), 1);
+  assert.equal(n(`SELECT COUNT(*) AS n FROM reviews WHERE body = 'A real review that must survive.'`), 1);
+  assert.equal(n(`SELECT COUNT(*) AS n FROM reviews WHERE is_sample = 1`), 0, 'a production re-seed drops the samples');
 });
