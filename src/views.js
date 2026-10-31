@@ -70,8 +70,8 @@ ${body}
 <footer class="site-footer">
   <div class="wrap footer-row">
     <p class="footer-brand"><img src="/kwaai-icon.svg" alt="" width="22" height="22"> kwaai</p>
-    <p>Kwaai is an independent, student-run site. It isn't affiliated with, endorsed by or run by any university. Reviews are students' personal opinions.</p>
-    <p><a href="/universities">Universities</a> · <a href="/rules">House rules</a> · <a href="/takedown">Report or request removal</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
+    <p>Kwaai is made by two UCT students, <a href="https://ubayd.me">Ubayd Hattas</a> and <a href="https://jaswin.me">Jaswin Chinthala</a>. It isn't affiliated with, endorsed by or run by any university. Reviews are students' personal opinions.</p>
+    <p><a href="/about">About us</a> · <a href="/universities">Universities</a> · <a href="/rules">House rules</a> · <a href="/takedown">Report or request removal</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
   </div>
 </footer>
 </body>
@@ -831,6 +831,35 @@ function rules(ctx) {
   </article>`);
 }
 
+function about(ctx, { courses }) {
+  return layout({ ...ctx, title: 'About Kwaai', path: '/about', description: 'Kwaai is a course review and semester planning site for South African university students, made by two UCT students.' }, html`
+  <article class="prose">
+  <h1 class="page-title">About Kwaai</h1>
+  <p class="lede small">Kwaai is a course review and semester planning site for South African university students. It starts at UCT.</p>
+
+  <h2>Who we are</h2>
+  <p>We're two students at the University of Cape Town, both still studying. <a href="https://ubayd.me">Ubayd Hattas</a> studies computer science, data science and statistics. <a href="https://jaswin.me">Jaswin Chinthala</a> studies electrical engineering. We build and run Kwaai ourselves, outside our degrees.</p>
+
+  <h2>Why we built it</h2>
+  <p>American students have RateMyProfessors. Ubayd went looking for a South African version that covered our universities and couldn't find one. A local search turned up very little, and nothing close to what he had in mind. So he told Jaswin about it, and we decided to build it.</p>
+  <p>Rating lecturers was only the starting point. Picking courses at a South African university means reading a handbook of several hundred pages, checking entry requirements, guessing at the workload and hoping your lectures don't clash. We wanted one place that does that work for you.</p>
+
+  <h2>What you can do here</h2>
+  <ul>
+    <li><strong>Kwaai or nah:</strong> a one-tap vote on a course you've done, plus a one-line tip for next year's class.</li>
+    <li><strong>Full reviews</strong> of the teaching, the exams, the workload and how hard it was, for one lecturer in one year.</li>
+    <li><strong>The <a href="/plan">semester planner</a></strong>, which reads UCT's 2026 handbooks: lecture clashes, entry requirements, how much rides on the exam, DP rules, whether your credits are under or over the load, and what your major still needs.</li>
+    <li><strong>Every course in the 2026 handbooks</strong>, ${plural(courses, 'course')} so far, with what the handbook says about each one.</li>
+  </ul>
+
+  <h2>How we keep it fair</h2>
+  <p>Only students with a @myuct.ac.za address can post, and only one review per course, lecturer and year. Reviews are anonymous to readers. Comments are screened before they go up, anyone can report a review, and lecturers can ask for a review to be taken down through the <a href="/takedown">removal request form</a>. The <a href="/rules">house rules</a> say what isn't allowed.</p>
+
+  <h2>Not affiliated with UCT</h2>
+  <p>Kwaai isn't affiliated with, endorsed by or run by UCT or any other university. Course details come from UCT's public 2026 handbooks and can change, so check the official timetable before you register. See the <a href="/privacy">privacy notice</a> for how we handle your information.</p>
+  </article>`);
+}
+
 function privacy(ctx) {
   const { operator, contactEmail } = ctx.site;
   const contact = contactEmail ? html`<a href="mailto:${contactEmail}">${contactEmail}</a>` : html`the <a href="/takedown">contact form</a>`;
@@ -1079,4 +1108,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log }) {
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, privacy, terms, account };
+module.exports = { universities, plan, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };

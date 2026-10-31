@@ -770,8 +770,15 @@ test('home page offers the two paths: rate a course and plan a semester', async 
   assert.match(home, /href="\/login\?next=%2Fcourses"/, 'signed out, rating starts with sign-in and comes back to courses');
 });
 
-test('privacy and terms pages render', async () => {
-  for (const p of ['/privacy', '/terms']) assert.equal((await fetch(base + p)).status, 200, p);
+test('privacy, terms and about pages render, and every page says who makes Kwaai', async () => {
+  for (const p of ['/privacy', '/terms', '/about']) assert.equal((await fetch(base + p)).status, 200, p);
+  const about = await (await fetch(`${base}/about`)).text();
+  assert.match(about, /<a href="https:\/\/ubayd\.me">Ubayd Hattas<\/a>/);
+  assert.match(about, /<a href="https:\/\/jaswin\.me">Jaswin Chinthala<\/a>/);
+  assert.match(about, /RateMyProfessors/);
+  const home = await (await fetch(`${base}/`)).text();
+  assert.match(home, /made by two UCT students/);
+  assert.match(home, /isn't affiliated with, endorsed by or run by any university/, 'the disclaimer stays');
 });
 
 test('re-running the seed keeps real reviews and only swaps demo data', () => {

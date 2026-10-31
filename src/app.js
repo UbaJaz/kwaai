@@ -314,6 +314,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.page(views.universities(req.ctx, { universities: UNIVERSITIES, liveCourses: courses }));
   });
 
+  app.get('/about', (req, res) => res.page(views.about(req.ctx, { courses: q(`SELECT COUNT(*) AS n FROM courses`).get().n })));
   app.get('/privacy', (req, res) => res.page(views.privacy(req.ctx)));
   app.get('/terms', (req, res) => res.page(views.terms(req.ctx)));
 
