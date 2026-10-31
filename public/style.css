@@ -434,6 +434,23 @@ label > .meta { display: block; font-weight: 400; margin-top: 4px; }
 .log { width: 100%; border-collapse: collapse; font-size: .84rem; }
 .log th, .log td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
 
+/* ---------- layered browse: faculty > department > year ---------- */
+.layer-title { font-size: 1.3rem; margin: 20px 0 4px; }
+.layer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; margin-top: 16px; }
+.layer-card { display: grid; gap: 4px; padding: 16px 18px; text-decoration: none; align-content: start; }
+.layer-card:hover { border-color: var(--ink); }
+.year-folder { border-bottom: 1px solid var(--line); }
+.year-folder summary { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 2px; cursor: pointer; font-weight: 700; list-style: none; }
+.year-folder summary::-webkit-details-marker { display: none; }
+.year-folder summary::before { content: "B8"; margin-right: 10px; transition: transform .15s; display: inline-block; }
+.year-folder[open] summary::before { transform: rotate(90deg); }
+.year-folder summary span:first-child { flex: 1; }
+.course-rows { margin: 0 0 12px; }
+.course-row { display: grid; grid-template-columns: 92px 1fr auto auto; gap: 12px; align-items: center; padding: 10px 2px; text-decoration: none; border-top: 1px solid var(--line); }
+.course-row:hover .course-row-title { text-decoration: underline; }
+.course-row-title { font-weight: 500; }
+@media (prefers-reduced-motion: reduce) { .year-folder summary::before { transition: none; } }
+
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .hero, .lists, .paths { grid-template-columns: 1fr; gap: 36px; }
@@ -459,6 +476,8 @@ label > .meta { display: block; font-weight: 400; margin-top: 4px; }
   .course-filter input { flex: 1 1 100%; }
   .course-filter select { flex: 1; border-left: 0; border-top: 1px solid var(--line); max-width: none; }
   .verdict-box, .plan-term { padding: 18px; }
+  .course-row { grid-template-columns: 78px 1fr; }
+  .course-row > :nth-child(n+3) { grid-column: 2; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }

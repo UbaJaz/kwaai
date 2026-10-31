@@ -726,6 +726,17 @@ test('semester planner: add by code or search, remove, and shared links do not o
   assert.ok((await (await b.get('/api/courses?q=mathematical%20stat')).json()).some((c) => c.code === 'STA1006S'), 'title search');
   assert.deepEqual(await (await b.get('/api/courses?q=c')).json(), [], 'one letter is too short');
   assert.match(await b.text('/'), /data-suggest="go"/);
+  // layered browse: faculties, then departments, then year folders
+  const top = await b.text('/courses');
+  assert.match(top, /layer-card/);
+  assert.doesNotMatch(top, /course-card|year-folder/, 'the first layer lists faculties, not courses');
+  assert.match(await b.text('/courses?faculty=ebe'), /href="\/courses\?faculty=ebe&dept=EEE"/);
+  const eee = await b.text('/courses?faculty=ebe&dept=EEE');
+  assert.match(eee, /<details class="year-folder" open>/);
+  assert.match(eee, /2nd year/);
+  assert.match(eee, /href="\/courses\/EEE3099S"/);
+  assert.equal((await b.get('/courses?dept=ZZZ')).status, 404);
+  assert.match(await b.text('/courses?faculty=nope'), /layer-card/, 'an unknown faculty falls back to the top');
   const sta = await b.text('/courses/STA1006S');
   assert.match(sta, /Mathematical Statistics I/);
   assert.match(sta, /Convener: <a href="\/lecturers\/\d+">S Salau<\/a>/);

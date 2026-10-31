@@ -328,19 +328,37 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false }) {
   </section>`);
 }
 
-function courses(ctx, { list, total, depts, q, dept }) {
+const courseRow = (c) => html`<li><a class="course-row" href="/courses/${c.code}">
+    <span class="code">${c.code}</span><span class="course-row-title">${c.title}</span>
+    <span class="meta">${c.credits ? `${c.credits} cr` : ''}</span><span>${sampleBadge(c.has_sample)} ${c.n ? chip(c.overall) : html`<span class="meta">No reviews yet</span>`}</span>
+  </a></li>`;
+
+// Courses are browsed one layer at a time: faculty, then department, then year folders that open to show courses.
+function courses(ctx, { mode, list, q, years, dept, deptName, faculty, facultyName, total }) {
+  const search = html`<form class="search search-inline course-filter" action="/courses" role="search">
+    <input type="search" name="q" value="${q || ''}" placeholder="Search code or name" aria-label="Search courses" autocomplete="off" data-suggest="go">
+    <button class="btn">Search</button>
+  </form>`;
+  const crumbs = html`<nav class="crumbs"><a href="/courses">Courses</a>${faculty && mode !== 'faculties' ? html` / <a href="/courses?faculty=${faculty}">${facultyName}</a>` : ''}${mode === 'dept' ? html` / ${deptName}` : ''}</nav>`;
+  let body;
+  if (mode === 'search') {
+    body = html`<p class="meta">${list.length ? plural(list.length, 'course') : ''}</p>
+      ${list.length ? html`<div class="course-grid">${list.map(courseCard)}</div>` : html`<p class="empty">No courses found. Try the course code from your handbook, like CSC1015F, or part of the name.</p>`}`;
+  } else if (mode === 'faculties') {
+    body = html`<p class="meta">Pick a faculty, then a department, then a year. Or search above.</p>
+      <div class="layer-grid">${list.map((f) => html`<a class="card layer-card" href="/courses?faculty=${f.key}"><strong>${f.name}</strong><span class="meta">${plural(f.depts, 'department')} · ${plural(f.courses, 'course')}</span></a>`)}</div>`;
+  } else if (mode === 'faculty') {
+    body = html`<h2 class="layer-title">${facultyName}</h2><div class="layer-grid">${list.map((d) => html`<a class="card layer-card" href="/courses?faculty=${faculty}&dept=${d.code}"><strong>${d.name}</strong><span class="meta">${d.code} · ${plural(d.courses, 'course')}</span></a>`)}</div>`;
+  } else {
+    body = html`<h2 class="layer-title">${deptName}</h2><p class="meta">${plural(total, 'course')}. Open a year to see its courses.</p>
+      ${years.map((y, i) => html`<details class="year-folder" ${i === 0 ? 'open' : ''}><summary><span>${y.label}</span><span class="meta">${plural(y.list.length, 'course')}</span></summary>
+        <ul class="plain course-rows">${y.list.map(courseRow)}</ul></details>`)}`;
+  }
   return layout({ ...ctx, title: 'Courses' }, html`
   <h1 class="page-title">Courses</h1>
-  <form class="search search-inline course-filter" action="/courses" role="search">
-    <input type="search" name="q" value="${q}" placeholder="Search code or name" aria-label="Search courses" autocomplete="off" data-suggest="go">
-    <select name="dept" aria-label="Department" data-autosubmit>
-      <option value="">All departments</option>
-      ${depts.map((d) => html`<option value="${d.code}" ${dept === d.code ? 'selected' : ''}>${d.name} (${d.code})</option>`)}
-    </select>
-    <button class="btn">Search</button>
-  </form>
-  <p class="meta">${total > list.length ? `Showing ${list.length} of ${total} courses. Search or pick a department to see the rest.` : plural(total, 'course')}${dept ? ` in ${depts.find((d) => d.code === dept)?.name || dept}` : ''}${q ? ` matching “${q}”` : ''}</p>
-  ${list.length ? html`<div class="course-grid">${list.map(courseCard)}</div>` : html`<p class="empty">No courses found. Try the course code from your handbook, like CSC1015F, or part of the name.</p>`}`);
+  ${search}
+  ${mode === 'faculties' || mode === 'search' ? '' : crumbs}
+  ${body}`);
 }
 
 const personLink = (l) => (l.id ? html`<a href="/lecturers/${l.id}">${l.name}</a>` : l.name);
