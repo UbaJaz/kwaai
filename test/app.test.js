@@ -877,3 +877,18 @@ test('re-running the seed keeps real reviews and only swaps demo data', () => {
   assert.equal(count('SELECT COUNT(*) AS n FROM lecturers WHERE is_sample = 1'), 0);
   assert.ok(count('SELECT COUNT(*) AS n FROM courses') > 900);
 });
+
+test('re-seeding after a handbook update keeps students\' reviews and votes', () => {
+  const db = openDb(':memory:');
+  seed(db, { samples: true });
+  db.prepare(`INSERT INTO users (email) VALUES ('keep001@myuct.ac.za')`).run();
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'keep001@myuct.ac.za'`).get().id;
+  db.prepare(`INSERT INTO reviews (user_id, course, year, teaching, engagement, exams, support, difficulty, workload, overall, tags, body, is_sample)
+    VALUES (?, 'CSC1015F', 2026, 4, 4, 4, 4, 3, 3, 4, '', 'A real review that must survive.', 0)`).run(uid);
+  seed(db, { samples: true });
+  seed(db, { samples: false });
+  const n = (sql) => db.prepare(sql).get().n;
+  assert.equal(n(`SELECT COUNT(*) AS n FROM reviews WHERE is_sample = 0`), 1);
+  assert.equal(n(`SELECT COUNT(*) AS n FROM reviews WHERE body = 'A real review that must survive.'`), 1);
+  assert.equal(n(`SELECT COUNT(*) AS n FROM reviews WHERE is_sample = 1`), 0, 'a production re-seed drops the samples');
+});

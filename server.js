@@ -35,7 +35,7 @@ const dataHash = hasher.digest('hex');
 const seenHash = db.prepare("SELECT value FROM meta WHERE key = 'data_hash'").get()?.value;
 const empty = !db.prepare('SELECT COUNT(*) AS n FROM courses').get().n;
 if (empty || seenHash !== dataHash) {
-  console.log(empty ? 'Empty database, seeding…' : 'Handbook data changed, updating courses…', require('./scripts/seed').seed(db, { samples: empty && devMode }));
+  console.log(empty ? 'Empty database, seeding…' : 'Handbook data changed, updating courses…', require('./scripts/seed').seed(db, { samples: devMode }));
 }
 db.prepare("INSERT INTO meta (key, value) VALUES ('data_hash', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(dataHash);
 // Hourly clean-up: expired sign-in links and sessions, plus the 12-month retention promised in /privacy.
