@@ -35,7 +35,8 @@ const sweep = () => {
     DELETE FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
     DELETE FROM verdicts WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
     DELETE FROM takedowns WHERE status = 'closed' AND created_at < datetime('now', '-12 months');
-    DELETE FROM lecturer_suggestions WHERE status != 'open' AND created_at < datetime('now', '-12 months');`);
+    DELETE FROM lecturer_suggestions WHERE status != 'open' AND created_at < datetime('now', '-12 months');
+    DELETE FROM mod_log WHERE created_at < datetime('now', '-12 months');`);
 };
 sweep();
 setInterval(sweep, 60 * 60 * 1000).unref();
@@ -49,6 +50,8 @@ createApp(db, {
   sendLoginEmail: senderFromEnv(env),
   contactEmail: env.CONTACT_EMAIL,
   operator: env.OPERATOR || undefined,
+  informationOfficer: env.INFORMATION_OFFICER || undefined,
+  emailDailyCap: Number(env.EMAIL_DAILY_CAP) || undefined,
   demoPassword: env.DEMO_PASSWORD || undefined,
 }).listen(port, () => {
   console.log(`Kwaai running on http://localhost:${port}${devMode ? ' (dev mode)' : ''}`);

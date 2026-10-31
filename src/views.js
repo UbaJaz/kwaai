@@ -861,7 +861,7 @@ function about(ctx, { courses }) {
 }
 
 function privacy(ctx) {
-  const { operator, contactEmail } = ctx.site;
+  const { operator, informationOfficer, contactEmail } = ctx.site;
   const contact = contactEmail ? html`<a href="mailto:${contactEmail}">${contactEmail}</a>` : html`the <a href="/takedown">contact form</a>`;
   return layout({ ...ctx, title: 'Privacy notice' }, html`
   <article class="prose">
@@ -869,24 +869,25 @@ function privacy(ctx) {
   <p class="lede small">How Kwaai handles personal information under South Africa's Protection of Personal Information Act (POPIA).</p>
 
   <h2>Who is responsible</h2>
-  <p>Kwaai is run by ${operator}, an independent student project. It is not run by or affiliated with any university, including the University of Cape Town. The responsible party and information officer is ${operator}, reachable at ${contact}.</p>
+  <p>Kwaai is run by ${operator}, two students at the University of Cape Town (see <a href="/about">About us</a>). It is not run by or affiliated with any university, including UCT. ${operator} are the responsible party. The information officer is ${informationOfficer}, reachable at ${contact}.</p>
 
   <h2>What we collect, and why</h2>
   <ul>
-    <li><strong>Your @myuct.ac.za email</strong>, to check you're a UCT student, send sign-in links, and enforce bans. It is never shown publicly.</li>
+    <li><strong>Your @myuct.ac.za email</strong>, to check you're a UCT student, send sign-in codes and links, and enforce bans. It is never shown publicly. We also record when you confirmed you're 18 or older and agreed to the terms.</li>
     <li><strong>Your reviews and votes</strong> (ratings, tags, comment, kwaai-or-nah vote, tip, course, lecturer, year). They are published without your name or email.</li>
-    <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), a short-lived one for on-screen messages, and one that remembers the course codes in your semester plan for 180 days. No advertising or tracking cookies.</li>
-    <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many reports). It isn't written to our database.</li>
+    <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), a short-lived one for on-screen messages, and one that remembers your semester plan for 180 days. The plan cookie holds the course codes you added and, if you filled them in, your faculty, majors, year of study and the courses you've passed. That information stays on your device and in the plan's link. We don't store it on our server. No advertising or tracking cookies.</li>
+    <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many sign-in attempts). It isn't written to our database.</li>
     <li><strong>Removal requests:</strong> the name, email and details you give us, used only to deal with that request.</li>
-    <li><strong>Lecturers' names</strong> come from UCT's public handbooks and course pages, and are shown only in connection with the courses they teach.</li>
+    <li><strong>Lecturers' names and job titles</strong> come from UCT's public 2026 handbooks: the convener of each course and each department's staff list. A lecturer is shown with a course only when the handbook names them as its convener or a student picks them in a review.</li>
   </ul>
-  <p>We process this information for our legitimate interest, and our users', in running a fair course-review service (POPIA section 11(1)(f)), and with your consent when you sign up.</p>
+  <p>We process this information with your consent when you sign up, and for our legitimate interest, and our users', in running a fair course-review service (POPIA section 11(1)(f)).</p>
+  <p><strong>Kwaai is for students aged 18 and older.</strong> POPIA needs a parent's or guardian's consent to process a child's information, so you can't create an account if you're under 18. If we learn an account belongs to someone under 18, we delete it.</p>
 
   <h2>Who else sees it</h2>
   <ul>
-    <li>Volunteer moderators, who can see hidden reviews and removal requests but not which student wrote a review.</li>
-    <li>Our email provider (Resend), which sends sign-in emails and may process your email address outside South Africa under its own data-protection terms.</li>
-    <li>Our hosting provider, which stores the database.</li>
+    <li>Moderators (currently the two of us), who can see hidden reviews and removal requests but not which student wrote a review.</li>
+    <li>Our email provider, Brevo (a French company), which sends sign-in emails. It receives your email address and processes it in the EU under the GDPR and its own data-processing terms.</li>
+    <li>Our hosting provider, Render (a US company), which runs the site and stores the database outside South Africa under its own data-protection terms. We transfer information to it under POPIA section 72 because we need it to run the service you signed up for.</li>
   </ul>
   <p>We never sell personal information and never share it with UCT unless a court or the law requires us to.</p>
 
@@ -894,12 +895,13 @@ function privacy(ctx) {
   <ul>
     <li>Your account, reviews and votes stay until you delete them.</li>
     <li>Sign-in links expire after 15 minutes and sessions after 30 days. Both are then deleted.</li>
-    <li>Reviews and tips removed by moderators, and handled removal requests, are deleted after 12 months.</li>
+    <li>Reviews and tips removed by moderators, handled removal requests and the moderators' action log are deleted after 12 months.</li>
+    <li>Database backups are kept for 30 days, so something you delete can stay in a backup for up to 30 days before it's gone for good.</li>
   </ul>
 
   <h2>Your rights</h2>
   <ul>
-    <li>See or delete your reviews, or delete your whole account, at <a href="/account">My reviews</a>.</li>
+    <li>See or delete your reviews, download everything we hold about you, or delete your whole account, at <a href="/account">My reviews</a>.</li>
     <li>Ask what information we hold about you, ask for corrections, or object to processing, via ${contact}.</li>
     <li>Lecturers can object to a review through the <a href="/takedown">removal request form</a>.</li>
     <li>If you're unhappy with how we've handled your information, you can complain to the <a href="https://inforegulator.org.za" rel="noopener">Information Regulator</a>.</li>
@@ -932,6 +934,7 @@ function account(ctx, { reviews, verdicts }) {
   return layout({ ...ctx, title: 'My reviews' }, html`
   <h1 class="page-title">My reviews</h1>
   <p class="lede small">Signed in as <strong>${ctx.user.email}</strong>. Only you can see this page. Your email is never shown next to your reviews.</p>
+  <p><a class="btn btn-small btn-quiet" href="/account/data" download>Download my data</a> <span class="meta">Everything Kwaai holds about you, as a JSON file.</span></p>
   <h2 class="section-title">My votes</h2>
   ${verdicts.length ? html`<div class="my-reviews">${verdicts.map((v) => html`<div class="card mod-item">
     <div class="mod-meta"><a href="/courses/${v.course}"><span class="code">${v.course}</span></a> · ${v.year} · <strong>${v.lekker ? 'Kwaai' : 'Nah'}</strong> · <span class="status ${label[v.status][1]}">${label[v.status][0]}</span></div>
@@ -964,8 +967,11 @@ function login(ctx, { error, email = '', next = '/' } = {}) {
       <label>Student email
         <input type="email" name="email" value="${email}" required autocomplete="email" inputmode="email" placeholder="abcxyz001@myuct.ac.za" pattern="[A-Za-z0-9._%+\\-]+@myuct\\.ac\\.za">
       </label>
+      <label class="check">
+        <input type="checkbox" name="agree" value="1" required>
+        <span>I'm 18 or older, and I agree to the <a href="/terms">terms of use</a>, the <a href="/rules">house rules</a> and the <a href="/privacy">privacy notice</a>.</span>
+      </label>
       <button class="btn btn-big">Email me a code</button>
-      <p class="fine">By signing in you agree to the <a href="/terms">terms of use</a> and the <a href="/privacy">privacy notice</a>.</p>
     </form>
   </section>`);
 }

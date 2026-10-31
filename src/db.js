@@ -150,6 +150,9 @@ const REPORT_DETAILS = { user_id: 'INTEGER' };
 // A lecturer's role from the handbook's department staff list ("Senior Lecturer"); '' for conveners not on a list.
 const LECTURER_DETAILS = { role: "TEXT NOT NULL DEFAULT ''" };
 
+// When the student ticked "I'm 18 or older and agree to the terms" (shown on /account and in their data export).
+const USER_DETAILS = { agreed_at: 'TEXT' };
+
 function addMissingColumns(db, table, columns) {
   const have = new Set(db.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name));
   for (const [name, type] of Object.entries(columns)) if (!have.has(name)) db.exec(`ALTER TABLE ${table} ADD COLUMN ${name} ${type}`);
@@ -163,6 +166,7 @@ function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker
   addMissingColumns(db, 'login_tokens', LOGIN_DETAILS);
   addMissingColumns(db, 'reports', REPORT_DETAILS);
   addMissingColumns(db, 'lecturers', LECTURER_DETAILS);
+  addMissingColumns(db, 'users', USER_DETAILS);
   db.exec('CREATE UNIQUE INDEX IF NOT EXISTS one_report_each ON reports (review_id, user_id)');
   return db;
 }

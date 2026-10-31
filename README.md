@@ -134,7 +134,9 @@ Backups: `fly ssh console -C "npm run backup"`, then `fly ssh sftp get /data/bac
 | `EMAIL_FROM` | yes, and whenever an email key is set | e.g. `Kwaai <kwaai.signin@gmail.com>`. Must be the sender verified in Brevo, or on the domain verified in Resend. |
 | `MODERATORS` | yes | Comma-separated @myuct.ac.za emails that can use `/mod`. |
 | `CONTACT_EMAIL` | yes | Shown in the privacy notice for POPIA requests. |
-| `OPERATOR` | no | Who runs the site, shown in the privacy notice. Defaults to "the Kwaai team". |
+| `OPERATOR` | no | Who runs the site (the POPIA responsible party), shown in the privacy notice. Defaults to "Ubayd Hattas and Jaswin Chinthala". |
+| `INFORMATION_OFFICER` | before launch | The one person named as POPIA information officer. Defaults to `OPERATOR`. |
+| `EMAIL_DAILY_CAP` | no | Sign-in emails per day before the site pauses sending. Defaults to 280, under Brevo's free 300. |
 | `TRUST_PROXY` | set by Dockerfile | `1` = trust one proxy hop, so rate limits see the real client IP. Set it to `0` only if nothing sits in front of the app. |
 | `DB_FILE`, `BACKUP_DIR`, `PORT` | no | Paths and port. |
 
@@ -146,17 +148,30 @@ The server refuses to start in production if a required variable is missing.
 npm run backup
 ```
 
-This writes a consistent copy to `backups/` (or `BACKUP_DIR`) while the site runs. Schedule it daily and copy the files off the server.
+This writes a consistent copy to `backups/` (or `BACKUP_DIR`) while the site runs, and deletes backups older than 30 days (the privacy notice promises deleted data is gone from backups within 30 days). Schedule it daily and copy the files off the server.
 
 ### Housekeeping the server does itself
 
-Every hour it deletes expired sign-in links and sessions, plus moderator-removed reviews, handled takedown requests and closed lecturer suggestions older than 12 months, as the privacy notice promises.
+Every hour it deletes expired sign-in links and sessions, plus moderator-removed reviews, handled takedown requests, closed lecturer suggestions and moderation-log entries older than 12 months, as the privacy notice promises.
+
+### Abuse limits
+
+- Only the newest sign-in code for an address works.
+- An address gets at most 20 code guesses an hour across all IPs. After that, codes pause for an hour, but the link in the email still signs the student in.
+- Each IP can request 30 sign-in emails an hour, and sending stops at `EMAIL_DAILY_CAP` a day.
+- A student's report for a serious reason (false allegation, private details) hides a review straight away, up to 3 times a day. After that it waits for a second reporter.
+- Once a moderator approves a review, later reports and removal requests go to the queue without hiding it again.
+
+Limits are kept in memory, so they reset when the app restarts.
 
 ## Launch checklist (things only you can do)
 
+Step-by-step email, contact and POPIA setup: [`docs/email-setup.md`](docs/email-setup.md).
+
+- [ ] **Persistent database.** Render's free plan wipes it on sleep. Move to a plan with a disk (about $7 a month) before inviting real students.
 - [ ] **Get a lawyer to read `/privacy`, `/terms` and `/rules`.** They're careful drafts, not legal advice. UCT's Law Clinic or a POPIA-focused attorney is a cheap place to start.
-- [ ] **Pick the operator details** (`OPERATOR`, `CONTACT_EMAIL`). Under POPIA, whoever runs the site is the responsible party.
-- [ ] **Register a domain** and verify it in Resend. New sending domains often land in junk at first, so send yourself a few test sign-ins on a myuct address.
-- [ ] **Create the hosting account**, a volume, and set the env vars.
-- [ ] **Recruit 2–3 moderators** you trust, so takedowns get handled within the 48 hours the rules promise.
+- [ ] **Name the information officer** (`INFORMATION_OFFICER`) and register them with the Information Regulator if the lawyer confirms it applies.
+- [ ] **Domain, Brevo and contact address**, following `docs/email-setup.md`. Send test sign-ins to a few myuct addresses.
+- [ ] **Switch to production:** `NODE_ENV=production`, remove `DEMO_PASSWORD`, check `TRUST_PROXY`.
+- [ ] **Moderators:** check `/mod` daily, so removal requests get handled within the 48 hours the rules promise.
 - [ ] **Schedule `npm run backup`.**

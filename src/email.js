@@ -26,6 +26,7 @@ function brevoSender({ apiKey, from }) {
     const { subject, text, html } = message(details);
     const res = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
+      signal: AbortSignal.timeout(10_000), // a stuck email API shouldn't hang the sign-in page
       headers: { 'api-key': apiKey, 'Content-Type': 'application/json', accept: 'application/json' },
       body: JSON.stringify({ sender, to: [{ email: to }], subject, textContent: text, htmlContent: html }),
     });
@@ -38,6 +39,7 @@ function resendSender({ apiKey, from }) {
     const { subject, text, html } = message(details);
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
+      signal: AbortSignal.timeout(10_000),
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ from, to, subject, text, html }),
     });

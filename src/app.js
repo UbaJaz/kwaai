@@ -21,7 +21,7 @@ const STATS = `COUNT(*) AS n, AVG(overall) AS overall, AVG(teaching) AS teaching
 const REVIEW_COLS = `r.*, l.name AS lecturer_name`;
 const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; form-action 'self'; frame-ancestors 'none'; base-uri 'none'";
 
-function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'the Kwaai team', demoPassword } = {}) {
+function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'Ubayd Hattas and Jaswin Chinthala', informationOfficer = operator, demoPassword, emailDailyCap = 280 } = {}) {
   const app = express();
   const mods = new Set([...moderators].map(normEmail));
   app.disable('x-powered-by');
@@ -59,7 +59,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (flash) res.clearCookie('flash');
     req.ctx = { user: req.user, isMod: !!req.user && mods.has(req.user.email), flash: parseFlash(flash), uni: CURRENT, here: req.path,
       // origin for share links and link previews; production always has BASE_URL
-      site: { contactEmail, operator, origin: baseUrl || `${req.protocol}://${req.get('host')}` } };
+      site: { contactEmail, operator, informationOfficer, origin: baseUrl || `${req.protocol}://${req.get('host')}` } };
     // CSRF: double-submit token, added to every POST form on its way out
     let csrf = /(?:^|;\s*)csrf=([a-f0-9]{32})/.exec(req.headers.cookie || '')?.[1];
     if (!csrf) {
@@ -80,7 +80,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   // shortcut: in-memory counters, fine for one server process; move them to SQLite or Redis if you ever run several
-  function limit(max, windowMs, keyOf = (req) => req.ip) {
+  function limit(max, windowMs, keyOf = (req) => req.ip, text = 'Too many requests from you. Please wait a while and try again.') {
     const hits = new Map();
     return (req, res, next) => {
       const now = Date.now();
@@ -88,7 +88,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       let h = hits.get(key);
       if (!h || h.reset < now) hits.set(key, (h = { n: 0, reset: now + windowMs }));
       if (hits.size > 50_000) for (const [k, v] of hits) if (v.reset < now) hits.delete(k);
-      if (++h.n > max) return res.status(429).page(views.message(req.ctx, { title: 'Slow down', emoji: '🐢', text: 'Too many requests from you. Please wait a while and try again.' }));
+      if (++h.n > max) return res.status(429).page(views.message(req.ctx, { title: 'Slow down', emoji: '🐢', text }));
       next();
     };
   }
@@ -101,6 +101,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     // keyed by IP too, so a stranger using up an address's quota can't stop that student signing in
     loginEmail: limit(3, 15 * MIN, (req) => `${req.ip}|${normEmail(req.body.email)}`), // stops someone spamming a student's inbox
     loginCode: limit(8, 15 * MIN, (req) => `${req.ip}|${normEmail(req.body.email)}`), // caps guesses at the 6-digit code
+    // and across all IPs: with only the newest code valid, that's 20 guesses an hour at one in a million. Going over
+    // only pauses codes for that address; the link in the email still works, so nobody can be locked out.
+    loginCodeEmail: limit(20, 60 * MIN, (req) => `code:${normEmail(req.body.email)}`, 'Too many codes have been tried for this address. Use the "Sign in to Kwaai" button in the email instead, or try a code again in an hour.'),
+    // sign-in emails per IP, kept high enough for a computer lab or residence Wi-Fi
+    loginSend: limit(30, 60 * MIN, (req) => `send:${req.ip}`),
     review: limit(10, 60 * MIN, byUser),
     verdict: limit(30, 60 * MIN, byUser),
     suggest: limit(5, 60 * MIN, byUser),
@@ -108,7 +113,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     takedown: limit(10, 60 * MIN),
   };
   const flashRedirect = (res, to, type, text) => {
-    res.cookie('flash', JSON.stringify({ type, text }), { httpOnly: true, sameSite: 'lax', maxAge: 60_000 });
+    res.cookie('flash', JSON.stringify({ type, text }), { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: 60_000 });
     res.redirect(303, to);
   };
   const requireUser = (req, res, next) => (req.user ? next() : res.redirect(303, `/login?next=${encodeURIComponent(req.originalUrl)}`));
@@ -325,6 +330,23 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.page(views.account(req.ctx, { reviews, verdicts }));
   });
 
+  // POPIA right of access: everything held about the signed-in student, as a file they can keep
+  app.get('/account/data', requireUser, (req, res) => {
+    const id = req.user.id;
+    const data = {
+      exported_at: new Date().toISOString(),
+      account: q(`SELECT email, created_at, agreed_at FROM users WHERE id = ?`).get(id),
+      reviews: q(`SELECT r.course, l.name AS lecturer, r.year, r.teaching, r.engagement, r.exams, r.support, r.difficulty, r.workload, r.overall, r.tags, r.body, r.status, r.created_at
+        FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.user_id = ? ORDER BY r.created_at`).all(id),
+      votes: q(`SELECT course, year, lekker, tip, status, created_at FROM verdicts WHERE user_id = ? ORDER BY created_at`).all(id),
+      reports_you_made: q(`SELECT review_id, reason, details, created_at FROM reports WHERE user_id = ? ORDER BY created_at`).all(id),
+      tips_you_reported: q(`SELECT verdict_id FROM verdict_reports WHERE user_id = ?`).all(id),
+      lecturer_suggestions: q(`SELECT name, course, status, created_at FROM lecturer_suggestions WHERE user_id = ? ORDER BY created_at`).all(id),
+      note: 'Your semester plan and "about you" answers are kept only in a cookie on your device and in the plan link, not on our server. Sign-in codes, links and sessions are stored as one-way hashes and deleted when they expire.',
+    };
+    res.set({ 'Content-Disposition': 'attachment; filename="kwaai-my-data.json"', 'Cache-Control': 'no-store' }).json(data);
+  });
+
   app.post('/account/delete', requireUser, (req, res) => {
     const id = req.user.id;
     db.exec('BEGIN');
@@ -472,8 +494,12 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, `/courses/${r.course}`, 'ok', 'Your review was deleted.');
   });
 
+  const INSTANT_HIDES_PER_DAY = 3;
+  // Approved after a report or removal request: later reports and requests go to the moderator queue without hiding
+  // it again, so the same request can't keep a checked review offline.
+  const modApproved = (id) => !!q(`SELECT 1 FROM mod_log WHERE review_id = ? AND action = 'approve'`).get(id);
   // Hides a review pending moderation and records why.
-  const hold = (id, why) => q(`UPDATE reviews SET status = 'held', flags = CASE WHEN flags = '' THEN ? ELSE flags || '|' || ? END WHERE id = ? AND status = 'published'`).run(why, why, id);
+  const hold =(id, why) => q(`UPDATE reviews SET status = 'held', flags = CASE WHEN flags = '' THEN ? ELSE flags || '|' || ? END WHERE id = ? AND status = 'published'`).run(why, why, id);
 
   app.post('/reviews/:id/report', signInToReport('reviews'), limits.report, (req, res) => {
     const r = q(`SELECT * FROM reviews WHERE id = ? AND status != 'removed'`).get(Number(req.params.id) || 0);
@@ -483,8 +509,14 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (q(`SELECT 1 FROM reports WHERE review_id = ? AND user_id = ?`).get(r.id, req.user.id)) return flashRedirect(res, `/courses/${r.course}`, 'info', 'You already reported this review. A moderator will take a look.');
     q(`INSERT INTO reports (review_id, reason, details, user_id) VALUES (?, ?, ?, ?)`).run(r.id, reason.key, String(req.body.details || '').slice(0, 500), req.user.id);
     const open = q(`SELECT COUNT(*) AS n FROM reports WHERE review_id = ? AND resolved = 0`).get(r.id).n;
-    if (reason.hideNow || open >= HIDE_AFTER_REPORTS) hold(r.id, `Reported: ${reason.label}`);
-    flashRedirect(res, `/courses/${r.course}`, 'ok', reason.hideNow || open >= HIDE_AFTER_REPORTS
+    // Serious reasons (a false allegation, private details) hide a review straight away, but one student gets three
+    // of those a day; after that a serious report needs a second reporter, like any other.
+    const seriousKeys = REPORT_REASONS.filter((x) => x.hideNow).map((x) => x.key);
+    const seriousToday = q(`SELECT COUNT(*) AS n FROM reports WHERE user_id = ? AND reason IN (${seriousKeys.map(() => '?').join(',')}) AND created_at > datetime('now', '-1 day')`).get(req.user.id, ...seriousKeys).n;
+    const hideNow = (reason.hideNow && seriousToday <= INSTANT_HIDES_PER_DAY) || open >= HIDE_AFTER_REPORTS;
+    // a review a moderator already checked and put back stays up until a moderator looks again
+    if (hideNow && !modApproved(r.id)) hold(r.id, `Reported: ${reason.label}`);
+    flashRedirect(res, `/courses/${r.course}`, 'ok', hideNow && !modApproved(r.id)
       ? 'Thanks. That review is hidden until a moderator checks it.'
       : 'Thanks. A moderator will take a look.');
   });
@@ -506,10 +538,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       return res.status(400).page((views.takedown(req.ctx, { review, values: b, error: 'Please fill in your name, a valid email and what the problem is.' })));
     }
     q(`INSERT INTO takedowns (review_id, name, email, relation, details) VALUES (?, ?, ?, ?, ?)`).run(review?.id ?? null, name, email, String(b.relation || '').slice(0, 100), details);
-    if (review) hold(review.id, 'Removal requested');
+    const hidden = review && !modApproved(review.id);
+    if (hidden) hold(review.id, 'Removal requested');
     res.page((views.message(req.ctx, {
       title: 'Request received', emoji: '📮',
-      text: review ? 'The review is now hidden while a moderator looks at it. We aim to reply within 48 hours.' : 'A moderator will look at your request and reply by email, usually within 48 hours.',
+      text: hidden ? 'The review is now hidden while a moderator looks at it. We aim to reply within 48 hours.' : 'A moderator will look at your request and reply by email, usually within 48 hours.',
       link: { href: '/', label: 'Back to Kwaai' },
     })));
   });
@@ -521,19 +554,32 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/login', (req, res) => res.page(views.login(req.ctx, { next: safeNext(req.query.next) })));
 
-  app.post('/login', limits.login, limits.loginEmail, async (req, res) => {
+  // Brevo's free plan sends 300 emails a day. Stop below that so sign-ins fail with a clear message, not silently.
+  const sentToday = { day: '', n: 0 };
+  app.post('/login', limits.login, limits.loginEmail, limits.loginSend, async (req, res) => {
     const email = normEmail(req.body.email);
     const next = safeNext(req.body.next);
     if (!STUDENT_EMAIL.test(email)) return res.status(400).page(views.login(req.ctx, { email, next, error: 'That isn\'t a student email. Use your @myuct.ac.za address.' }));
+    // POPIA: children's information needs a guardian's consent, so accounts are for students 18 and older
+    if (req.body.agree !== '1') return res.status(400).page(views.login(req.ctx, { email, next, error: 'Tick the box to confirm you\'re 18 or older and agree to the terms, house rules and privacy notice.' }));
     if (q(`SELECT 1 FROM users WHERE email = ? AND banned = 1`).get(email)) return res.status(403).page(views.login(req.ctx, { email, next, error: 'This account has been suspended for breaking the house rules.' }));
     const token = crypto.randomBytes(32).toString('hex');
     const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
+    const today = new Date().toISOString().slice(0, 10);
+    if (sentToday.day !== today) Object.assign(sentToday, { day: today, n: 0 });
+    if (sendLoginEmail && sentToday.n >= emailDailyCap) {
+      console.error(`sign-in emails paused: ${emailDailyCap} sent today`);
+      return res.status(503).page(views.login(req.ctx, { email, next, error: "Kwaai has sent today's limit of sign-in emails. Please try again tomorrow. If you already have a code from today, it still works." }));
+    }
     q(`DELETE FROM login_tokens WHERE expires < ?`).run(Date.now());
+    // only the newest code works (older emails' links still do), so guessers face one code at a time
+    q(`UPDATE login_tokens SET code_hash = '' WHERE email = ?`).run(email);
     q(`INSERT INTO login_tokens (hash, email, expires, code_hash, next) VALUES (?, ?, ?, ?, ?)`).run(sha(token), email, Date.now() + TOKEN_TTL, codeHash(email, code), next);
     // the link must use the configured BASE_URL whenever real emails go out, never the request's Host header
     const link = `${baseUrl || `${req.protocol}://${req.get('host')}`}/auth/${token}`;
     if (sendLoginEmail) {
       try {
+        sentToday.n++;
         await sendLoginEmail(email, { link, code });
       } catch (e) {
         console.error('login email failed:', e.message);
@@ -548,6 +594,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   function startSession(req, res, email, next) {
     q(`INSERT INTO users (email) VALUES (?) ON CONFLICT(email) DO NOTHING`).run(email);
+    // every sign-in starts at the form with the 18+ and terms box, so this records when the account first agreed
+    q(`UPDATE users SET agreed_at = CURRENT_TIMESTAMP WHERE email = ? AND agreed_at IS NULL`).run(email);
     const user = q(`SELECT * FROM users WHERE email = ?`).get(email);
     if (user.banned) return res.status(403).page(views.message(req.ctx, { title: 'Account suspended', emoji: '🚫', text: 'This account has been suspended for breaking the house rules.' }));
     const sid = crypto.randomBytes(32).toString('hex');
@@ -556,7 +604,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, safeNext(next), 'ok', "You're signed in. Anything you post shows without your name.");
   }
 
-  app.post('/login/code', limits.login, limits.loginCode, (req, res) => {
+  app.post('/login/code', limits.login, limits.loginCode, limits.loginCodeEmail, (req, res) => {
     const email = normEmail(req.body.email);
     const code = String(req.body.code || '').replace(/\D/g, '');
     const rows = q(`SELECT * FROM login_tokens WHERE email = ? AND expires > ?`).all(email, Date.now());
@@ -624,7 +672,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!v || !['approve', 'remove', 'ban'].includes(action)) return res.status(404).page(notFound(req));
     q(`UPDATE verdicts SET status = ?, flags = CASE WHEN ? = 'approve' THEN '' ELSE flags END WHERE id = ?`).run(action === 'approve' ? 'published' : 'removed', action, v.id);
     if (action === 'ban') q(`UPDATE users SET banned = 1 WHERE id = ?`).run(v.user_id);
-    q(`INSERT INTO mod_log (action, note, moderator) VALUES (?, ?, ?)`).run(`${action} tip`, `tip #${v.id} on ${v.course}: ${v.tip}`.slice(0, 200), req.user.email);
+    q(`INSERT INTO mod_log (action, note, moderator) VALUES (?, ?, ?)`).run(`${action} tip`, `tip #${v.id} on ${v.course}`, req.user.email); // no tip text: the log outlives deleted accounts
     flashRedirect(res, '/mod', 'ok', `Tip #${v.id}: ${action === 'approve' ? 'approved and back up' : action === 'ban' ? 'removed, author banned' : 'removed'}.`);
   });
 
@@ -642,7 +690,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const t = q(`SELECT * FROM takedowns WHERE id = ?`).get(Number(req.params.id) || 0);
     if (!t) return res.status(404).page((notFound(req)));
     q(`UPDATE takedowns SET status = 'closed' WHERE id = ?`).run(t.id);
-    q(`INSERT INTO mod_log (review_id, action, note, moderator) VALUES (?, 'close request', ?, ?)`).run(t.review_id, `request #${t.id} from ${t.name}`, req.user.email);
+    q(`INSERT INTO mod_log (review_id, action, note, moderator) VALUES (?, 'close request', ?, ?)`).run(t.review_id, `request #${t.id}`, req.user.email);
     flashRedirect(res, '/mod', 'ok', 'Request marked as handled.');
   });
 

@@ -218,10 +218,11 @@ function browser(root = () => base) {
   const remember = (res) => { for (const c of res.headers.getSetCookie()) { const [kv] = c.split(';'); const [k, v] = kv.split('='); jar[k] = v; } return res; };
   const cookie = () => Object.entries(jar).filter(([, v]) => v).map(([k, v]) => `${k}=${v}`).join('; ');
   const get = async (p) => remember(await fetch(root() + p, { headers: { cookie: cookie() }, redirect: 'manual' }));
-  const post = async (p, body, { csrf = true } = {}) => {
+  const post = async (p, body, { csrf = true, headers = {} } = {}) => {
     if (!jar.csrf) await get('/');
-    const data = new URLSearchParams({ ...body, ...(csrf ? { _csrf: jar.csrf } : {}) });
-    return remember(await fetch(root() + p, { method: 'POST', body: data, headers: { cookie: cookie() }, redirect: 'manual' }));
+    // the sign-in form's "I'm 18 or older and agree" box is ticked, like a real student would; tests can untick it
+    const data = new URLSearchParams(Object.entries({ ...(p === '/login' ? { agree: '1' } : {}), ...body, ...(csrf ? { _csrf: jar.csrf } : {}) }).filter(([, v]) => v !== undefined));
+    return remember(await fetch(root() + p, { method: 'POST', body: data, headers: { cookie: cookie(), ...headers }, redirect: 'manual' }));
   };
   const text = async (p) => (await get(p)).text();
   // dev mode shows the emailed link on screen; opening it shows a button, and pressing it signs you in
@@ -236,6 +237,9 @@ function browser(root = () => base) {
 
 test('only @myuct.ac.za emails can sign in', async () => {
   assert.equal((await browser().post('/login', { email: 'someone@gmail.com' })).status, 400);
+  const unticked = await browser().post('/login', { email: 'age001@myuct.ac.za', agree: undefined });
+  assert.equal(unticked.status, 400, 'signing in needs the 18+ and terms box ticked');
+  assert.match(await unticked.text(), /18 or older/);
 });
 
 test('posts without a valid CSRF token are refused', async () => {
@@ -379,6 +383,66 @@ test('demo with an email service set up sends real emails and shows nothing on s
   assert.doesNotMatch(page, /\/auth\/|class="card dev"/);
 });
 
+test('launch safety: one live code per address, guess cap across IPs, daily email cap, report and takedown abuse', async (t) => {
+  const sent = [];
+  const db = openDb(':memory:');
+  seed(db, { samples: true });
+  const app = createApp(db, { devMode: true, trustProxy: '1', baseUrl: 'https://kwaai.example', emailDailyCap: 3, moderators: new Set(['mod009@myuct.ac.za']), sendLoginEmail: async (to, d) => sent.push(d) }).listen(0);
+  t.after(() => app.close());
+  await new Promise((r) => app.once('listening', r));
+  const root = () => `http://localhost:${app.address().port}`;
+
+  // asking again replaces the code: the first email's code stops working, its link doesn't
+  const b = browser(root);
+  await b.post('/login', { email: 'one001@myuct.ac.za' });
+  await b.post('/login', { email: 'one001@myuct.ac.za' });
+  const [first, second] = sent;
+  assert.equal((await b.post('/login/code', { email: 'one001@myuct.ac.za', code: first.code === second.code ? '999999' : first.code })).status, 400, 'old code is dead');
+  const firstPath = new URL(first.link).pathname;
+  assert.equal((await browser(root).get(firstPath)).status, 200, 'old link still works');
+  assert.equal((await b.post('/login/code', { email: 'one001@myuct.ac.za', code: second.code })).status, 303);
+
+  // 20 wrong guesses an hour per address across every IP; then codes pause but the link still signs you in
+  const victim = browser(root);
+  await victim.post('/login', { email: 'vic001@myuct.ac.za' });
+  const real = sent.at(-1);
+  const wrong = real.code === '000000' ? '111111' : '000000';
+  const statuses = [];
+  // each guess from a different IP, so only the per-address cap can stop them
+  const from = (i) => ({ headers: { 'x-forwarded-for': `10.0.${Math.floor(i / 250)}.${i % 250}` } });
+  for (let i = 0; i < 21; i++) statuses.push((await browser(root).post('/login/code', { email: 'vic001@myuct.ac.za', code: wrong }, from(i))).status);
+  assert.deepEqual([statuses.slice(0, 20).every((s) => s === 400), statuses[20]], [true, 429], String(statuses));
+  const paused = await browser(root).post('/login/code', { email: 'vic001@myuct.ac.za', code: real.code }, from(99));
+  assert.match(await paused.text(), /Use the &quot;Sign in to Kwaai&quot; button|Use the "Sign in to Kwaai" button/);
+  const linkPath = new URL(real.link).pathname;
+  await victim.get(linkPath);
+  assert.equal((await victim.post(linkPath, {})).status, 303, 'the link still signs the student in');
+
+  // the daily cap (3 here, 280 by default) stops sending with a clear message
+  const capped = await browser(root).post('/login', { email: 'cap001@myuct.ac.za' });
+  assert.equal(capped.status, 503);
+  assert.match(await capped.text(), /today&#39;s limit|today's limit/);
+  assert.equal(sent.length, 3);
+
+  // three instant hides a day per student, then serious reports wait for a second reporter
+  const ids = db.prepare(`SELECT id FROM reviews WHERE status = 'published' ORDER BY id LIMIT 5`).all().map((r) => r.id);
+  const reporter = browser(root);
+  db.prepare(`INSERT INTO users (email) VALUES ('rep001@myuct.ac.za')`).run();
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'rep001@myuct.ac.za'`).get().id;
+  const sid = 'ab'.repeat(32); // a session made directly, since today's emails are used up
+  db.prepare(`INSERT INTO sessions (hash, user_id, expires) VALUES (?, ?, ?)`).run(require('node:crypto').createHash('sha256').update(sid).digest('hex'), uid, Date.now() + 3_600_000);
+  reporter.jar.sid = sid;
+  for (const id of ids.slice(0, 4)) await reporter.post(`/reviews/${id}/report`, { reason: 'defamation' });
+  const status = (id) => db.prepare('SELECT status FROM reviews WHERE id = ?').get(id).status;
+  assert.deepEqual(ids.slice(0, 4).map(status), ['held', 'held', 'held', 'published']);
+
+  // once a moderator puts a review back, a takedown request doesn't hide it again
+  db.prepare(`INSERT INTO mod_log (review_id, action, moderator) VALUES (?, 'approve', 'mod009@myuct.ac.za')`).run(ids[4]);
+  const td = await browser(root).post('/takedown', { review_id: String(ids[4]), name: 'A Person', email: 'a@example.com', details: 'Please remove' });
+  assert.match(await td.text(), /A moderator will look at your request/);
+  assert.equal(status(ids[4]), 'published');
+});
+
 test('sign in with the emailed code, back to the page you came from', async () => {
   const b = browser();
   const page = await (await b.post('/login', { email: 'cod001@myuct.ac.za', next: '/courses/CSC1015F#verdict' })).text();
@@ -471,6 +535,14 @@ test('students can delete their account and all their reviews', async () => {
   await student.signIn('mno001@myuct.ac.za');
   await student.post('/courses/CSC1016S/review', { lecturer_id: 'none', year: '2025', teaching: 4, engagement: 4, exams: 4, support: 4, difficulty: 3, workload: 3, body: 'Delete-me marker review', agree: '1' });
   assert.match(await student.text('/account'), /Delete-me marker review/);
+  // first, download everything we hold
+  const file = await student.get('/account/data');
+  assert.match(file.headers.get('content-disposition'), /attachment/);
+  const data = await file.json();
+  assert.equal(data.account.email, 'mno001@myuct.ac.za');
+  assert.ok(data.account.agreed_at, 'when they agreed to the terms is recorded');
+  assert.equal(data.reviews[0].body, 'Delete-me marker review');
+  assert.equal((await browser().get('/account/data')).status, 303, 'signed out: no data');
   assert.equal((await student.post('/account/delete', {})).status, 303);
   assert.doesNotMatch(await student.text('/courses/CSC1016S'), /Delete-me marker/);
   assert.equal((await student.get('/account')).status, 303, 'signed out afterwards');
