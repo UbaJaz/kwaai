@@ -1,5 +1,6 @@
 const crypto = require('node:crypto');
 const path = require('node:path');
+const zlib = require('node:zlib');
 const express = require('express');
 const views = require('./views');
 const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
@@ -42,7 +43,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!devMode) res.set('Strict-Transport-Security', 'max-age=31536000');
     next();
   });
-  app.use(express.static(path.join(__dirname, '..', 'public')));
+  // an hour of caching: the files aren't fingerprinted, so a longer cache would show old styles after a deploy
+  app.use(express.static(path.join(__dirname, '..', 'public'), { maxAge: '1h' }));
   app.use(express.urlencoded({ extended: false, limit: '20kb' }));
   app.use((req, res, next) => { req.body ??= {}; next(); }); // Express 5 leaves it undefined for empty POSTs
 
@@ -67,7 +69,14 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       res.cookie('csrf', csrf, { httpOnly: true, sameSite: 'lax', secure: !devMode });
     }
     req.ctx.csrf = csrf;
-    res.page = (page) => res.send(String(page).replace(/<form method="post"([^>]*)>/g, `<form method="post"$1><input type="hidden" name="_csrf" value="${csrf}">`));
+    res.page = (page) => {
+      const body = String(page).replace(/<form method="post"([^>]*)>/g, `<form method="post"$1><input type="hidden" name="_csrf" value="${csrf}">`);
+      res.vary('Accept-Encoding');
+      // pages are 5-45 KB of repetitive HTML; gzip cuts them to a fifth, which matters on student mobile data
+      const canGzip = body.length >= 1024 && /gzip/.test(req.headers['accept-encoding'] || '');
+      if (!canGzip) return res.send(body);
+      res.set('Content-Encoding', 'gzip').type('html').send(zlib.gzipSync(body));
+    };
     next();
   });
   app.use((req, res, next) => {
