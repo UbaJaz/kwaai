@@ -282,7 +282,7 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false }) {
       <h1>Find out if a course is <em class="hl">kwaai</em> before you register.</h1>
       <p class="lede">Ratings, workload scores and one-line tips from students who already took it, plus a planner that checks your semester against the handbook.</p>
       <form class="search" action="/courses" role="search">
-        <input type="search" name="q" placeholder="Code or name, e.g. CSC1015F" aria-label="Search courses">
+        <input type="search" name="q" placeholder="Code or name, e.g. CSC1015F" aria-label="Search courses" autocomplete="off" data-suggest="go">
         <button class="btn btn-ink">Search</button>
       </form>
     </div>
@@ -332,7 +332,7 @@ function courses(ctx, { list, total, depts, q, dept }) {
   return layout({ ...ctx, title: 'Courses' }, html`
   <h1 class="page-title">Courses</h1>
   <form class="search search-inline course-filter" action="/courses" role="search">
-    <input type="search" name="q" value="${q}" placeholder="Search code or name" aria-label="Search courses">
+    <input type="search" name="q" value="${q}" placeholder="Search code or name" aria-label="Search courses" autocomplete="off" data-suggest="go">
     <select name="dept" aria-label="Department" data-autosubmit>
       <option value="">All departments</option>
       ${depts.map((d) => html`<option value="${d.code}" ${dept === d.code ? 'selected' : ''}>${d.name} (${d.code})</option>`)}
@@ -725,7 +725,7 @@ function creditCard(a) {
   </section>`;
 }
 
-function plan(ctx, { courses: list, plan: p, matches, add, codes, suggestions, profile, needs, advice, known, expanded, passed, programmeOptions, facultyOptions, state }) {
+function plan(ctx, { courses: list, plan: p, matches, add, codes, profile, needs, advice, known, expanded, passed, programmeOptions, facultyOptions, state }) {
   const link = (o) => `/plan?${new URLSearchParams({ ...state, ...o })}`;
   const url = `${ctx.site.origin}/plan?c=${codes.join(',')}`;
   const summary = planSummary(p);
@@ -741,10 +741,9 @@ function plan(ctx, { courses: list, plan: p, matches, add, codes, suggestions, p
 
   <form class="search search-inline plan-add" action="/plan" role="search">
     ${Object.entries({ c: '', ...state }).map(([k, v]) => html`<input type="hidden" name="${k}" value="${v}">`)}
-    <input type="search" name="add" value="${add}" list="course-codes" placeholder="Code or name, e.g. CSC1015F" aria-label="Add a course by code or name" autocomplete="off" required>
+    <input type="search" name="add" value="${add}" placeholder="Code or name, e.g. CSC1015F" aria-label="Add a course by code or name" autocomplete="off" required data-suggest="fill">
     <button class="btn btn-ink">Add</button>
   </form>
-  <datalist id="course-codes">${suggestions.map((s) => html`<option value="${s.code}">${s.title}</option>`)}</datalist>
   ${matches ? matches.length
     ? html`<div class="card panel plan-matches"><p class="meta">Pick the course you mean:</p><ul class="plain">${matches.map((m) => html`<li><a href="${link({ add: m.code })}"><span class="code">${m.code}</span> ${m.title}</a></li>`)}</ul></div>`
     : html`<p class="flash flash-error" role="alert">No course matches “${add}”. Try the course code from your handbook, like MAM1031F.</p>` : ''}

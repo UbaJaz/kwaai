@@ -157,6 +157,20 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.page(views.courses(req.ctx, { list, total, depts: depts(), q: text, dept }));
   });
 
+  // Suggestions as you type in a course search box (public/app.js). Codes that start with what you typed come
+  // first ("csc1" -> CSC1010H, CSC1015F, ...), then undergraduate courses, then title matches.
+  app.get('/api/courses', (req, res) => {
+    const text = String(req.query.q || '').trim().slice(0, 60);
+    const squashed = text.replace(/\s+/g, '').toUpperCase();
+    if (text.length < 2) return res.json([]);
+    const rows = q(`SELECT c.code, c.title, c.credits, d.name AS dept_name, (SELECT COUNT(*) FROM reviews r WHERE r.course = c.code AND r.status = 'published') AS reviews
+      FROM courses c JOIN departments d ON d.code = c.dept
+      WHERE c.code LIKE ? OR c.title LIKE ?
+      ORDER BY (c.code LIKE ?) DESC, (c.nqf IS NULL OR c.nqf <= 7) DESC, (c.title LIKE ?) DESC, c.code LIMIT 8`)
+      .all(`%${squashed}%`, `%${text}%`, `${squashed}%`, `${text}%`);
+    res.set('Cache-Control', 'private, max-age=60').json(rows);
+  });
+
   // Has this reader voted on or reviewed anything? If not, most comments stay hidden (see FREE_COMMENTS).
   const canReadAll = (req) => req.ctx.isMod || (!!req.user && !!q(`SELECT 1 FROM verdicts WHERE user_id = ? AND status != 'removed'
     UNION ALL SELECT 1 FROM reviews WHERE user_id = ? AND status != 'removed' LIMIT 1`).get(req.user.id, req.user.id));
@@ -288,10 +302,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const expanded = Object.fromEntries(wildcards.map((w) => [w, q(`SELECT code, title, credits, nqf, entry, not_offered FROM courses WHERE code LIKE ? ORDER BY code`).all(w.replace(/x/g, '_'))]));
     for (const list of Object.values(expanded)) for (const c of list) known.set(c.code, c);
     const advice = creditAdvice(profile, plan, courses, passed, needs);
-    // every undergraduate course, for the browser's own suggestions as you type in the add box
-    const suggestions = q(`SELECT code, title FROM courses WHERE nqf IS NULL OR nqf <= 7 ORDER BY code`).all();
     res.page(views.plan(req.ctx, {
-      courses, plan, matches, add, codes: courses.map((c) => c.code), suggestions,
+      courses, plan, matches, add, codes: courses.map((c) => c.code),
       profile, needs, advice, known, expanded, passed, programmeOptions: programmeOptions(), facultyOptions: facultyOptions(),
       state: Object.fromEntries(new URLSearchParams(planQuery(courses.map((c) => c.code), profile))),
     }));

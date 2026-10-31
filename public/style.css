@@ -153,6 +153,13 @@ legend { font: 600 1.05rem var(--display); padding: 0 8px 0 0; }
 .search input { border: 0; box-shadow: none !important; padding: 10px 12px; font-size: 1rem; background: none; }
 .search-inline { margin: 0 0 16px; max-width: 560px; border-width: 1px; border-color: var(--line-strong); }
 .search-inline:focus-within { border-color: var(--ink); }
+/* suggestions as you type (public/app.js) */
+.has-suggest { position: relative; }
+.suggest { position: absolute; z-index: 20; top: calc(100% + 6px); left: -1.5px; right: -1.5px; margin: 0; padding: 4px; list-style: none; background: var(--surface); border: 1px solid var(--line-strong); border-radius: 10px; box-shadow: 0 10px 30px rgb(0 0 0 / .12); max-height: 60vh; overflow-y: auto; }
+.suggest li { display: grid; grid-template-columns: auto 1fr; gap: 0 10px; align-items: baseline; padding: 8px 10px; border-radius: var(--radius-sm); cursor: pointer; }
+.suggest li[aria-selected="true"], .suggest li:hover { background: var(--paper); }
+.suggest .suggest-title { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.suggest .suggest-meta { grid-column: 2; font-size: .78rem; color: var(--muted); }
 .hero-hint { font-size: .88rem; color: var(--muted); margin: 12px 0 0; }
 .hero-hint a { color: var(--ink); font-weight: 500; }
 .pulse { border-left: 1px solid var(--line); padding-left: 32px; }

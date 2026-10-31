@@ -645,6 +645,15 @@ test('semester planner: add by code or search, remove, and shared links do not o
   assert.match(await b.text('/plan?c=CSC1015F,MAM1031F,MAM1032S'), /MAM1000W has been replaced by MAM1031F and MAM1032S/);
   assert.match(await b.text('/plan?c=CML4503F'), /the handbook says CML4503F is not offered in 2026/);
   assert.match(await b.text('/courses/PHI2043S'), /list PHI2043S in degree tables but don&#39;t describe it|list PHI2043S in degree tables but don't describe it/);
+  // suggestions as you type: codes that start with what you typed come first
+  const found = await (await b.get('/api/courses?q=csc1')).json();
+  assert.ok(found.length > 3 && found.length <= 8);
+  assert.ok(found.every((c) => c.code.startsWith('CSC1')), found.map((c) => c.code).join());
+  assert.ok(found.some((c) => c.code === 'CSC1015F'));
+  assert.deepEqual(Object.keys(found[0]).sort(), ['code', 'credits', 'dept_name', 'reviews', 'title']);
+  assert.ok((await (await b.get('/api/courses?q=mathematical%20stat')).json()).some((c) => c.code === 'STA1006S'), 'title search');
+  assert.deepEqual(await (await b.get('/api/courses?q=c')).json(), [], 'one letter is too short');
+  assert.match(await b.text('/'), /data-suggest="go"/);
   const sta = await b.text('/courses/STA1006S');
   assert.match(sta, /Mathematical Statistics I/);
   assert.match(sta, /Convener: <a href="\/lecturers\/\d+">S Salau<\/a>/);
