@@ -564,7 +564,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.get('/login', (req, res) => res.page(views.login(req.ctx, { next: safeNext(req.query.next) })));
 
   // Brevo's free plan sends 300 emails a day. Stop below that so sign-ins fail with a clear message, not silently.
-  const sentToday = { day: '', n: 0 };
+  // The count lives in the database so a restart (Render's free plan sleeps) doesn't reset it.
+  const sentTodayCount = (day) => q('SELECT n FROM email_count WHERE day = ?').get(day)?.n ?? 0;
   app.post('/login', limits.login, limits.loginEmail, limits.loginSend, async (req, res) => {
     const email = normEmail(req.body.email);
     const next = safeNext(req.body.next);
@@ -575,8 +576,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const token = crypto.randomBytes(32).toString('hex');
     const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
     const today = new Date().toISOString().slice(0, 10);
-    if (sentToday.day !== today) Object.assign(sentToday, { day: today, n: 0 });
-    if (sendLoginEmail && sentToday.n >= emailDailyCap) {
+    if (sendLoginEmail && sentTodayCount(today) >= emailDailyCap) {
       console.error(`sign-in emails paused: ${emailDailyCap} sent today`);
       return res.status(503).page(views.login(req.ctx, { email, next, error: "Kwaai has sent today's limit of sign-in emails. Please try again tomorrow. If you already have a code from today, it still works." }));
     }
@@ -588,7 +588,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const link = `${baseUrl || `${req.protocol}://${req.get('host')}`}/auth/${token}`;
     if (sendLoginEmail) {
       try {
-        sentToday.n++;
+        q('DELETE FROM email_count WHERE day < ?').run(today);
+        q('INSERT INTO email_count (day, n) VALUES (?, 1) ON CONFLICT(day) DO UPDATE SET n = n + 1').run(today);
         await sendLoginEmail(email, { link, code });
       } catch (e) {
         console.error('login email failed:', e.message);
