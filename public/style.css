@@ -447,6 +447,7 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
 .group-live { max-width: 720px; margin: 0 0 18px; }
 .group-live h2 { font-size: 1.05rem; }
+.study-hours { font-size: .93rem; margin: 0 0 6px; }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }

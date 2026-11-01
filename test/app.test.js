@@ -1506,3 +1506,21 @@ test('studying now: course pages from 3 students, the university count, and grou
   assert.doesNotMatch(page, /<strong>Dee<\/strong>/, 'a stale timer is not "studying now"');
   db.prepare(`DELETE FROM study_sessions WHERE course = 'STA1000F' AND status = 'running'`).run();
 });
+
+test('course pages show real weekly hours once 5 students have timed the course', async () => {
+  const today = Study.saDay(Date.now());
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', 'PHY1012F', ?, 0, 0, 90, ?, 'done')`);
+  const student = (n) => {
+    db.prepare(`INSERT INTO users (email) VALUES (?) ON CONFLICT DO NOTHING`).run(`hours00${n}@myuct.ac.za`);
+    return db.prepare('SELECT id FROM users WHERE email = ?').get(`hours00${n}@myuct.ac.za`).id;
+  };
+  // each started 27 days ago (4 weeks including today) and logged 4 hours a week in total
+  for (const n of [1, 2, 3, 4]) add.run(student(n), Study.addDay(today, -27), 16 * 3600);
+  let page = await (await fetch(`${base}/courses/PHY1012F`)).text();
+  assert.match(page, /No timed study figure yet/);
+  assert.match(page, /Its 18 credits suggest about \d+ h a week in total/);
+  add.run(student(5), Study.addDay(today, -27), 16 * 3600);
+  page = await (await fetch(`${base}/courses/PHY1012F`)).text();
+  assert.match(page, /About 4 h a week<\/strong> of timed study, from 5 students who track PHY1012F/);
+  db.prepare(`DELETE FROM study_sessions WHERE course = 'PHY1012F'`).run();
+});

@@ -458,7 +458,7 @@ function courseWeek(ctx, c, facts, topics) {
   </section>`;
 }
 
-function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked, conveners = [], staff = [], facts = { lecture: [], tut: [], prac: [], topic: [], event: [] }, weekTopics = [], studyingNow = 0 }) {
+function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked, conveners = [], staff = [], facts = { lecture: [], tut: [], prac: [], topic: [], event: [] }, weekTopics = [], studyingNow = 0, realHours = null, creditHours = null }) {
   const cards = hideAfterFree(reviews, locked);
   const hidden = cards.filter((x) => x.hideBody).length + (locked ? Math.max(0, tips.length - FREE_COMMENTS) : 0);
   return layout({ ...ctx, title: `${c.code} ${c.title}`, description: courseSummary(c, stats, votes), path: `/courses/${c.code}` }, html`
@@ -499,6 +499,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
         <table class="offerings"><thead><tr><th>Lecturer</th><th>Year</th><th>Rating</th></tr></thead><tbody>
         ${offerings.map((o) => html`<tr><td>${o.lecturer_id ? html`<a href="/lecturers/${o.lecturer_id}">${o.lecturer_name}</a>` : html`<span class="muted">Not listed</span>`}</td><td>${o.year}</td><td>${chip(o.overall)} <span class="meta">(${o.n})</span></td></tr>`)}
         </tbody></table>` : ''}
+      ${studyHours(c, realHours, creditHours)}
       ${handbookFacts(c)}
     </aside>
     <div class="reviews">
@@ -509,6 +510,15 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
       ${reviews.length ? cards.map(({ r, hideBody }) => reviewCard(r, { ...ctx, hideBody })) : html`<p class="empty">Nothing here yet. Took ${c.code}? Tell the next class what it's really like.</p>`}
     </div>
   </section>`);
+}
+
+// Real study time from students who time this course on Kwaai, next to the hours its credits suggest
+function studyHours(c, real, credit) {
+  if (!real && !credit) return '';
+  return html`<h3>Time it takes</h3>
+    ${real ? html`<p class="study-hours"><strong>About ${real.hours} h a week</strong> of timed study, from ${real.students} students who track ${c.code} on Kwaai (the middle figure, over the last 16 weeks).</p>`
+      : html`<p class="meta">No timed study figure yet. It shows once ${Study.HOURS_MIN_STUDENTS} students have timed ${c.code} for two weeks. <a href="/study?course=${c.code}">Time yours</a>.</p>`}
+    ${credit ? html`<p class="meta">Its ${c.credits} credits suggest about ${credit} h a week in total, lectures, tuts and pracs included. The timer only sees study that students time, so read the first figure as the least it takes.</p>` : ''}`;
 }
 
 function handbookFacts(c) {
