@@ -421,6 +421,8 @@ legend { font: 600 1.05rem var(--display); padding: 0 8px 0 0; }
 .study-stats { display: flex; flex-wrap: wrap; gap: 8px 32px; margin: 0 0 18px; }
 .study-stats dt { font-size: .8rem; color: var(--muted); }
 .study-stats dd { margin: 0; font: 700 1.5rem/1.2 var(--display); }
+.reminder-form { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; margin: 18px 0 6px; }
+.reminder-form label { flex: 0 1 260px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
 .study-day h3 { font-size: 1rem; }

@@ -1064,6 +1064,17 @@ function week(ctx, { wk, week: w, codes, state, calendar, upcoming = [] }) {
       <p>Get a calendar link that keeps itself up to date, or download the year as a file. Weekly classes repeat from the first day of each semester to the last, with the vacations left out.</p>
       <form method="post" action="/week/subscribe" class="inline"><button class="btn btn-ink">Make my calendar link</button></form>
       <a class="btn btn-quiet" href="/week.ics?${new URLSearchParams({ ...state })}">Download as a file (.ics)</a>`}
+    <form action="/week#calendar" class="reminder-form">
+      ${Object.entries(state).filter(([k]) => k !== 'sr').map(([k, v]) => html`<input type="hidden" name="${k}" value="${v}">`)}
+      <label>Daily study reminder in the calendar
+        <select name="sr" data-autosubmit>
+          <option value="">None</option>
+          ${['0700', '0800', '1200', '1400', '1600', '1700', '1800', '1900', '2000', '2100'].map((t) => html`<option value="${t}" ${w.reminder.replace(':', '') === t ? 'selected' : ''}>${t.slice(0, 2)}:${t.slice(2)}</option>`)}
+        </select>
+      </label>
+      <button class="btn btn-small btn-quiet">Save</button>
+    </form>
+    <p class="meta">A 30-minute "Study for 30 minutes" event every day of the year's terms, with a notification, to keep your <a href="/study">study streak</a> going.</p>
     <p class="fine">The link holds your course codes and timetable choices under a random address, nothing else. Term dates are UCT's published ${wk.year} dates (<a href="https://uct.ac.za/students/calendar/terms" rel="noopener">source</a>); UCT doesn't publish a separate last day of lectures, so classes run to the end of each term. Times come from the 2026 handbooks: check your official timetable.</p>
   </section>`);
 }

@@ -1307,3 +1307,16 @@ test('the streak shows on Study, Today and the home page once a student has stud
   add.run(uid, today, 25 * 60);
   assert.match(await s.text('/study'), /<dt>Streak<\/dt><dd>2 days<\/dd>[\s\S]*?Today counts\./);
 });
+
+test('a daily study reminder can go in the calendar', async () => {
+  assert.equal(parseWeek({ sr: '2000' }).reminder, '20:00');
+  assert.equal(parseWeek({ sr: '2500' }).reminder, '', 'not a time');
+  assert.deepEqual(weekParams(parseWeek({ sr: '0700', st: '1' })), { st: '1', sr: '0700' });
+  const ics = icsFor([], parseWeek({ sr: '2000' }), { year: 2027 });
+  assert.match(ics, /DTSTART:20270208T180000Z\r\nDTEND:20270208T183000Z\r\nRRULE:FREQ=DAILY;UNTIL=20271217T215900Z/, '20:00 South African time every day of the year\'s terms');
+  assert.match(ics, /SUMMARY:Study for 30 minutes[\s\S]*BEGIN:VALARM/);
+  assert.doesNotMatch(icsFor([], parseWeek({}), { year: 2027 }), /Study for 30 minutes/, 'off unless asked for');
+  const page = await (await fetch(`${base}/week?c=CSC1015F&sr=2000`)).text();
+  assert.match(page, /<option value="2000" selected>20:00<\/option>/);
+  assert.match(await (await fetch(`${base}/week.ics?c=CSC1015F&sr=2000`)).text(), /Study for 30 minutes/);
+});
