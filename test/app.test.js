@@ -1359,9 +1359,12 @@ test('leaderboards: opt in, named or anonymous, faculty boards, reports and leav
   add.run(id('board102@myuct.ac.za'), today, 90 * 60);
   add.run(id('board103@myuct.ac.za'), today, 120 * 60); // studied most, but never joined
 
-  assert.match(await a.text('/account/profile'), /<input type="checkbox" name="join" value="1" >/, 'the box starts unticked');
+  const form = await a.text('/account/profile');
+  assert.match(form, /<input type="checkbox" name="join" value="1" >/, 'the box starts unticked');
+  assert.match(form, /<option value="CSC05" >Computer Science<\/option>/, 'the major menu sends the code the server checks');
   assert.equal((await a.post('/account/profile', { join: '1', show: 'name', display_name: 'call me on 082 123 4567' })).status, 400);
   assert.equal((await a.post('/account/profile', { join: '1', show: 'name', display_name: 'Thandi M', faculty: 'sci', major: 'CSC05', year: '2' })).status, 303);
+  assert.match(await a.text('/account/profile'), /<option value="CSC05" selected>Computer Science<\/option>/, 'and shows it chosen next time');
   await b.post('/account/profile', { join: '1', show: 'anon', display_name: 'Secret Name', faculty: 'sci', major: 'CSC05', year: '1' });
 
   let page = await a.text('/study/leaderboards?period=day');

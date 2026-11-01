@@ -1275,7 +1275,7 @@ function profile(ctx, { profile: p, faculties, programmes, error }) {
         <select name="faculty"><option value="">Don't show</option>${faculties.map((f) => html`<option value="${f.key}" ${p?.faculty === f.key ? 'selected' : ''}>${f.name}</option>`)}</select>
       </label>
       <label>Major or programme
-        <select name="major"><option value="">Don't show</option>${programmes.map((f) => html`<optgroup label="${f.name}">${f.items.map((m) => html`<option value="${m.id}" ${p?.faculty === f.key && p?.major === m.id ? 'selected' : ''}>${m.name}</option>`)}</optgroup>`)}</select>
+        <select name="major"><option value="">Don't show</option>${programmes.map((f) => html`<optgroup label="${f.name}">${f.items.map((m) => html`<option value="${m.key.split(':')[1]}" ${`${p?.faculty}:${p?.major}` === m.key ? 'selected' : ''}>${m.name}</option>`)}</optgroup>`)}</select>
       </label>
       <p class="meta">Pick a major from the faculty you chose above, or it won't be shown.</p>
       <label>Year of study
