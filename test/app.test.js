@@ -335,6 +335,16 @@ test('leaderboards: periods, shared ranks, and the opt-in profile form', () => {
   assert.deepEqual(ok, { display_name: 'Thandi M', show_name: 1, faculty: '', major: '', year: null }, 'unknown faculty, major and year are dropped');
 });
 
+test('groups: names and join codes', () => {
+  assert.deepEqual(Study.cleanName('  Res  study   squad ', 40, screenComment), { name: 'Res study squad' });
+  assert.ok(Study.cleanName('x', 40, screenComment).error);
+  assert.ok(Study.cleanName('y'.repeat(41), 40, screenComment).error);
+  assert.ok(Study.cleanName('whatsapp 082 123 4567', 40, screenComment).error);
+  const code = Study.groupCode(Buffer.from([0, 31, 32, 255, 100, 7, 8, 9, 10]));
+  assert.equal(code, 'A9A9EHJK');
+  assert.match(Study.groupCode(require('node:crypto').randomBytes(8)), /^[A-HJ-NP-Z2-9]{8}$/, 'no 0, O, 1 or I');
+});
+
 test('study dashboard: heatmap weeks, totals and weekly goals', () => {
   assert.deepEqual([0, 1, 29, 30, 59, 60, 119, 120, 600].map(Study.levelOf), [0, 1, 1, 2, 2, 3, 3, 4, 4]);
   const totals = Study.dayTotals([
@@ -1403,4 +1413,50 @@ test('leaderboards: opt in, named or anonymous, faculty boards, reports and leav
   await b.post('/account/delete', {});
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM profiles WHERE user_id = ?').get(bid).n, 0, 'deleting the account removes the profile');
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM name_reports WHERE user_id = ?').get(bid).n, 0, 'and the reports it made');
+});
+
+test('study groups: start, invite, join, the group board, owner powers, leaving and deletion', async () => {
+  const [owner, friend, stranger] = [browser(), browser(), browser()];
+  await owner.signIn('group001@myuct.ac.za');
+  await friend.signIn('group002@myuct.ac.za');
+  await stranger.signIn('group003@myuct.ac.za');
+  const id = (e) => db.prepare('SELECT id FROM users WHERE email = ?').get(e).id;
+  assert.match((await browser().get('/groups')).headers.get('location'), /^\/login/);
+
+  assert.equal((await owner.post('/groups', { name: 'x', me: 'Sam' })).status, 400, 'group names need 2 characters');
+  const made = await owner.post('/groups', { name: 'Res 3rd floor', me: 'Sam' });
+  assert.equal(made.status, 303);
+  const code = /^\/g\/([A-HJ-NP-Z2-9]{8})$/.exec(made.headers.get('location'))[1];
+  let page = await owner.text(`/g/${code}`);
+  assert.match(page, /Res 3rd floor/);
+  assert.ok(page.includes('https://wa.me/?text=') && page.includes(`%2Fg%2F${code}"`), 'a WhatsApp invite with the link');
+
+  // joining by code, with lower case and from the /groups box
+  assert.match((await friend.get(`/groups/join?code=${code.toLowerCase()}`)).headers.get('location'), new RegExp(`/g/${code}$`));
+  page = await friend.text(`/g/${code.toLowerCase()}`);
+  assert.match(page, /Join Res 3rd floor/);
+  assert.doesNotMatch(page, /\bSam\b/, 'non-members don\'t see who is in it');
+  assert.equal((await friend.post(`/g/${code}/join`, { me: 'call 082 123 4567' })).status, 400);
+  assert.equal((await friend.post(`/g/${code}/join`, { me: 'Lindi' })).status, 303);
+  assert.match((await friend.get('/groups/join?code=ZZZZZZZZ')).headers.get('location'), /^\/groups$/, 'an unknown code goes back with a message');
+
+  const today = Study.saDay(Date.now());
+  db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 50, 2700, 'done')`).run(id('group002@myuct.ac.za'), today);
+  page = await owner.text(`/g/${code}?period=day`);
+  assert.match(page, /board-rank">1<\/span>\s*<span class="board-name">Lindi<\/span>\s*<span class="board-time">45 min/);
+  assert.match(page, /<span class="board-name">Sam <span class="badge">You<\/span><\/span>\s*<span class="board-time">No study yet/);
+  assert.doesNotMatch(await friend.text(`/g/${code}`), /action="\/g\/[A-Z0-9]+\/remove"/, 'only the owner can remove people');
+
+  // the owner removes the stranger after they join; the owner leaving hands the group to the next member
+  await stranger.post(`/g/${code}/join`, { me: 'Pat' });
+  await owner.post(`/g/${code}/remove`, { user: id('group003@myuct.ac.za') });
+  assert.match(await stranger.text(`/g/${code}`), /Join Res 3rd floor/, 'removed members are back outside');
+  await owner.post(`/g/${code}/leave`, {});
+  assert.match(await friend.text(`/g/${code}`), /Delete the group/, 'the next member is the owner now');
+  await friend.post('/account/profile', { join: '1', show: 'anon' });
+  await friend.post('/account/profile', {}); // leaving the public leaderboards...
+  assert.match(await friend.text(`/g/${code}`), /Delete the group/, '...keeps the student in their groups');
+  assert.equal((await friend.get('/account/data').then((r) => r.json())).study_groups[0].your_name_there, 'Lindi');
+  await friend.post('/account/delete', {});
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM study_groups WHERE code = ?').get(code).n, 0, 'the last member leaving deletes the group');
 });

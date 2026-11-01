@@ -176,6 +176,24 @@ CREATE TABLE IF NOT EXISTS name_reports (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (user_id, target_id)
 );
+-- Study groups: friends, a residence, a tut group. Anyone with the join code can join; members see each other's
+-- group name and study minutes. name in group_members is what that member is called in that group.
+CREATE TABLE IF NOT EXISTS study_groups (
+  id INTEGER PRIMARY KEY,
+  uni TEXT NOT NULL,
+  name TEXT NOT NULL,
+  code TEXT NOT NULL UNIQUE,
+  owner_id INTEGER NOT NULL REFERENCES users(id),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS group_members (
+  group_id INTEGER NOT NULL REFERENCES study_groups(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  name TEXT NOT NULL,
+  joined_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (group_id, user_id)
+);
+CREATE INDEX IF NOT EXISTS groups_by_member ON group_members (user_id);
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,

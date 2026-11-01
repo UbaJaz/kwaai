@@ -1299,7 +1299,7 @@ function leaderboard(ctx, { joined, period, scope, faculty, faculties, rows, me,
   return layout({ ...ctx, title: 'Study leaderboards', here: '/study', path: '/study/leaderboards' }, html`
   <h1 class="page-title">Study leaderboards</h1>
   <p class="lede small">Who timed the most study${scope === 'faculty' ? ` in ${facultyName}` : ` at ${ctx.uni.short}`}. Only timer sessions count, so nobody can type hours in.</p>
-  ${joined ? html`<p class="meta"><a href="/account/profile">Change how you appear, or leave the leaderboards</a></p>`
+  ${joined ? html`<p class="meta"><a href="/account/profile">Change how you appear, or leave the leaderboards</a> · <a href="/groups">Your study groups</a></p>`
     : html`<div class="card panel"><p><strong>You're not on the leaderboards.</strong> Your study still counts on your own <a href="/study">Study page</a>. <a href="/account/profile">Join the leaderboards</a> to appear here, with a display name or anonymously.</p></div>`}
   <div class="toggle" role="group" aria-label="Period">${Object.entries(Study.PERIODS).map(([k, label]) => html`<a href="${link({ period: k })}" class="${k === period ? 'on' : ''}" ${k === period ? html`aria-current="page"` : ''}>${label}</a>`)}</div>
   <p class="chips">
@@ -1311,6 +1311,71 @@ function leaderboard(ctx, { joined, period, scope, faculty, faculties, rows, me,
     <p class="meta">${plural(total, 'student')} on this board.</p>`
     : html`<div class="card panel"><p>Nobody on this board has logged study ${period === 'day' ? 'today' : period === 'week' ? 'this week' : 'this month'} yet. <a href="/study">Start a timer</a> and you're first.</p></div>`}
   <p class="fine">Minutes come from the study timer: time counts only while the timer page is open, a session counts at most 5 minutes past its length, and a day counts at most 14 hours. Weeks start on Monday, in South African time.</p>`);
+}
+
+// ---------- study groups ----------
+function groups(ctx, { groups: list, me, groupName = '', error }) {
+  return layout({ ...ctx, title: 'Study groups', here: '/study', path: '/groups' }, html`
+  <h1 class="page-title">Study groups</h1>
+  <p class="lede small">A leaderboard for the people you study with: friends, your residence, a tut group or a society. Anyone with the invite link can join.</p>
+  ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
+  ${list.length ? html`<ul class="plain group-list">${list.map((g) => html`<li class="card"><a href="/g/${g.code}"><strong>${g.name}</strong></a> <span class="meta">${plural(g.members, 'member')} · you're "${g.my_name}"</span></li>`)}</ul>`
+    : html`<p class="meta">You're not in a group yet.</p>`}
+  <div class="group-forms">
+    <form method="post" action="/groups" class="card panel study-form">
+      <h2>Start a group</h2>
+      <label>Group name <input type="text" name="name" maxlength="40" required value="${groupName}" placeholder="e.g. Res 3rd floor"></label>
+      <label>Your name in the group <input type="text" name="me" maxlength="30" required value="${me}" autocomplete="nickname"></label>
+      <p class="meta">Members see this name next to your study minutes. It's separate from the public leaderboards.</p>
+      <div class="form-actions"><button class="btn">Start the group</button></div>
+    </form>
+    <form action="/groups/join" class="card panel study-form">
+      <h2>Join with a code</h2>
+      <label>Invite code <input type="text" name="code" maxlength="8" required autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="8 letters and numbers"></label>
+      <div class="form-actions"><button class="btn btn-quiet">Find the group</button></div>
+    </form>
+  </div>`);
+}
+
+function groupJoin(ctx, { group: g, members, me, error }) {
+  return layout({ ...ctx, title: `Join ${g.name}`, here: '/study' }, html`
+  <div class="narrow">
+    <h1 class="page-title">Join ${g.name}</h1>
+    <p class="lede small">A study group on Kwaai with ${plural(members, 'member')}. Members see each other's names and how long each person studied today, this week and this month.</p>
+    ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
+    <form method="post" action="/g/${g.code}/join" class="card panel study-form">
+      <label>Your name in the group <input type="text" name="me" maxlength="30" required value="${me}" autocomplete="nickname"></label>
+      <p class="meta">By joining you agree that members of this group see this name and your study minutes. Leave whenever you like.</p>
+      <div class="form-actions"><button class="btn">Join the group</button> <a href="/groups">Not now</a></div>
+    </form>
+  </div>`);
+}
+
+function group(ctx, { group: g, owner, period, rows, idle, invite }) {
+  const share = `https://wa.me/?text=${encodeURIComponent(`Join my study group "${g.name}" on Kwaai: ${invite}`)}`;
+  const row = (r) => html`<li class="board-row${r.you ? ' board-you' : ''}">
+    <span class="board-rank">${r.rank ?? '–'}</span>
+    <span class="board-name">${r.name}${r.you ? html` <span class="badge">You</span>` : ''}</span>
+    <span class="board-time">${r.minutes ? Study.hoursText(r.minutes) : 'No study yet'}</span>
+    ${owner && !r.you ? html`<form method="post" action="/g/${g.code}/remove" class="inline board-report" data-confirm="Remove ${r.name} from the group?"><input type="hidden" name="user" value="${r.id}"><button class="link-btn">Remove</button></form>` : ''}
+  </li>`;
+  return layout({ ...ctx, title: g.name, here: '/study' }, html`
+  <p class="crumbs"><a href="/groups">Study groups</a></p>
+  <h1 class="page-title">${g.name}</h1>
+  <div class="toggle" role="group" aria-label="Period">${Object.entries(Study.PERIODS).map(([k, label]) => html`<a href="/g/${g.code}?period=${k}" class="${k === period ? 'on' : ''}" ${k === period ? html`aria-current="page"` : ''}>${label}</a>`)}</div>
+  <ol class="board card">${rows.map(row)}${idle.map(row)}</ol>
+  <section class="card panel group-invite" aria-labelledby="invite-head">
+    <h2 id="invite-head">Invite people</h2>
+    <p>Code <strong class="code-big">${g.code}</strong></p>
+    <label>Invite link <input type="text" readonly value="${invite}" class="cal-link"></label>
+    <p><a class="btn btn-small" href="${share}" target="_blank" rel="noopener">Share on WhatsApp</a></p>
+  </section>
+  <div class="form-actions">
+    <a class="btn btn-quiet" href="/study">Start studying</a>
+    <form method="post" action="/g/${g.code}/leave" class="inline" data-confirm="Leave ${g.name}?"><button class="btn btn-quiet">Leave the group</button></form>
+    ${owner ? html`<form method="post" action="/g/${g.code}/delete" class="inline" data-confirm="Delete ${g.name} for everyone? This can't be undone."><button class="btn btn-danger">Delete the group</button></form>` : ''}
+  </div>
+  <p class="fine">Minutes come from the study timer, with the same rules as the leaderboards.${owner ? ' You started this group, so you can remove members or delete it. If you leave, the longest-standing member takes over.' : ''}</p>`);
 }
 
 // the signed-in dashboard: totals, a year of days as a heatmap (with the same days as a list), and this week by course
@@ -1330,7 +1395,7 @@ function studyBoard(b) {
       <div><dt>Streak</dt><dd>${plural(b.streak.current, 'day')}</dd></div>
     </dl>
     <p class="study-streak">${streakNote(b.streak)} A day counts from ${Study.STREAK_MIN} minutes. Vacations pause the streak, so missing a vacation day never ends it.</p>
-    <p class="meta"><a href="/study/leaderboards">See the leaderboards</a> for UCT and your faculty.</p>
+    <p class="meta"><a href="/study/leaderboards">See the leaderboards</a> for UCT and your faculty, or <a href="/groups">your study groups</a>.</p>
     ${b.dayDetail ? html`<div class="study-day" id="day">
       <h3>${dayLabel(b.dayDetail.day)}: ${Study.hoursText(b.dayDetail.minutes)}</h3>
       ${b.dayDetail.minutes ? html`<ul class="plain">${Object.entries(b.dayDetail.courses).filter(([, m]) => m > 0).sort((x, y) => y[1] - x[1]).map(([c, m]) => html`<li>${c ? html`<a class="code" href="/courses/${c}">${c}</a>` : 'General study'} · ${Study.hoursText(m)}</li>`)}</ul>` : html`<p class="meta">No study logged that day.</p>`}
@@ -1468,6 +1533,7 @@ function privacy(ctx) {
     <li><strong>Your study timer sessions</strong>, if you use the <a href="/study">study timer</a> while signed in: the course, the day, when the session started, how long you planned, and how many minutes counted. You see them on the Study page, they're in your data download, and they're deleted with your account. Nobody else sees them.</li>
     <li><strong>Your study sessions</strong>, if you use the <a href="/study">study timer</a> while signed in: the course, the day, when you started, the length you picked and the minutes that counted. You see them on the Study page and in your data download. They're deleted with your account. Signed out, the timer runs on your device and sends us nothing.</li>
     <li><strong>A leaderboard profile</strong>, only if you tick "Put me on the leaderboards" in <a href="/account/profile">leaderboard settings</a>: a display name (or none, if you appear anonymously), and the faculty, major and year you choose to give, with the date you joined. Other signed-in students at your university then see that name or an anonymous label like "2nd-year Computer Science student", next to your study minutes for the day, week and month. Students can report a name; reports record who reported which student, and a moderator sees the name and the report count. Untick the box to leave: your profile is deleted straight away and you disappear from the boards. Your email is never shown.</li>
+    <li><strong>Study groups</strong> you start or join: the group's name, its invite code, who started it, and the name you chose to be called in it. Members of a group see each other's group names and study minutes; people outside it see only the group's name and size when they open the invite link. Leave a group at any time; a group is deleted when its last member leaves or its owner deletes it.</li>
     <li><strong>A calendar link</strong>, only if you make one on <a href="/week">Your week</a>: your course codes and timetable choices, stored under a random address so your calendar app can fetch them. No name, email or "about you" answers. Delete it there at any time; links nobody has used for 12 months are deleted automatically.</li>
     <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many sign-in attempts). It isn't written to our database.</li>
     <li><strong>Removal requests:</strong> the name, email and details you give us, used only to deal with that request.</li>
@@ -1723,4 +1789,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };

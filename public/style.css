@@ -435,6 +435,11 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .board-report .link-btn { color: var(--muted); }
 .board-you { background: var(--lime-soft); }
 .board-me { margin-top: -2px; }
+.group-list { margin: 0 0 18px; }
+.group-list li { padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.group-forms { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; align-items: start; }
+.group-forms h2 { font-size: 1.15rem; margin: 0; }
+.group-invite { max-width: 720px; margin: 18px 0; }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
