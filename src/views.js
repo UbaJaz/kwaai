@@ -2,6 +2,7 @@ const { html } = require('./html');
 const { QUALITY, SCALES, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FREE_COMMENTS, RANKINGS } = require('./ratings');
 const { REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { ordinal, entryStatus } = require('./planner');
+const Marks = require('../public/marks-math');
 
 const fmt = (n) => (n == null ? '–' : Number(n).toFixed(1));
 const month = (iso) => new Date(iso.replace(' ', 'T') + 'Z').toLocaleDateString('en-ZA', { month: 'short', year: 'numeric' });
@@ -14,7 +15,7 @@ const DEFAULT_DESCRIPTION = 'Course ratings, workload scores and tips from South
 // Sign-in links remember the page you were on, so you land back there afterwards.
 const loginHref = (back) => (back && back !== '/' && !back.startsWith('/login') && !back.startsWith('/auth') ? `/login?next=${encodeURIComponent(back)}` : '/login');
 
-const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/week', 'My week'], ['/rankings', 'Rankings']];
+const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/week', 'My week'], ['/marks', 'Marks'], ['/rankings', 'Rankings']];
 
 // description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
 // uni sets the accent colour for the university being browsed; the Kwaai brand colours never change.
@@ -272,10 +273,15 @@ function homePaths(ctx, ratingSeason) {
   return ratingSeason ? [rate, planner] : [planner, rate];
 }
 
-function home(ctx, { counts, topCourses, heaviest, ratingSeason = false }) {
+function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null }) {
   const { uni } = ctx;
   const n = (v) => v.toLocaleString('en-ZA');
   return layout({ ...ctx, path: '/' }, html`
+  ${t ? html`<a class="card today-strip" href="/today">
+    <strong>Today</strong>
+    <span>${t.weekend ? `Weekend. Monday: ${t.classes ? `${t.classes} ${t.classes === 1 ? 'class' : 'classes'}` : 'no classes'}` : t.next ? `Next: ${t.next.code || t.next.label} at ${t.next.start}` : t.classes ? `${`${t.classes} ${t.classes === 1 ? 'class' : 'classes'}`} on your timetable` : 'No classes today'}${t.soon ? ` · ${t.soon.code} ${t.soon.title} on ${fmtDate(t.soon.date)}` : ''}</span>
+    <span class="meta">Your day, deadlines and DP →</span>
+  </a>` : ''}
   <section class="hero">
     <div class="hero-main">
       <p class="eyebrow"><b>${uni.name}</b> · ${plural(counts.courses, 'course')}</p>
@@ -1046,6 +1052,80 @@ function week(ctx, { wk, week: w, codes, state, calendar, upcoming = [] }) {
   </section>`);
 }
 
+// ---------- marks and DP tracker ----------
+const resultLines = (r) => Marks.describe(r).map((l) => html`<li class="${l.tone === 'ok' ? 'ok-text' : l.tone === 'bad' ? 'bad' : ''}">${l.text}</li>`);
+function marksCard(c) {
+  const rows = [...c.items];
+  while (rows.length < Math.min(12, c.items.length + 2)) rows.push({ name: '', weight: '', exam: false });
+  const id = c.code || 'any';
+  return html`<form method="post" action="/marks" class="card marks-card" data-marks="${id}" aria-labelledby="mk-${id}">
+    <input type="hidden" name="code" value="${c.code}">
+    <h2 id="mk-${id}">${c.code ? html`<a href="/courses/${c.code}" class="code">${c.code}</a> ` : ''}${c.title}</h2>
+    <p class="meta">${c.fromHandbook ? 'Weights from the 2026 handbook. Change them if your course outline says otherwise.' : "There's no clear split in the handbook, so this starts at 40% class mark and 60% exam. Set it from your course outline."}</p>
+    <table class="marks-table">
+      <thead><tr><th scope="col">Part</th><th scope="col">Weight (%)</th><th scope="col">Exam</th><th scope="col">Your mark (%)</th></tr></thead>
+      <tbody>${rows.map((it, i) => html`<tr>
+        <td><input type="text" name="n${i}" value="${it.name}" maxlength="40" aria-label="Part ${i + 1} name" placeholder="e.g. Test 2"></td>
+        <td><input type="number" name="w${i}" value="${it.weight}" min="0" max="100" step="0.1" inputmode="decimal" aria-label="Part ${i + 1} weight"></td>
+        <td><input type="checkbox" name="e${i}" value="1" ${it.exam ? 'checked' : ''} aria-label="Part ${i + 1} is a final exam"></td>
+        <td><input type="number" name="m${i}" value="${c.marks?.[i] ?? ''}" min="0" max="100" step="0.1" inputmode="decimal" aria-label="Your mark for part ${i + 1}" placeholder="${it.exam ? 'later' : ''}"></td>
+      </tr>`)}</tbody>
+    </table>
+    <div class="marks-rules">
+      <label>DP minimum for the class mark (%) <input type="number" name="dp" value="${c.dpMin ?? ''}" min="0" max="100" inputmode="decimal"></label>
+      <label>Exam subminimum (%) <input type="number" name="sub" value="${c.examSub ?? ''}" min="0" max="100" inputmode="decimal"></label>
+    </div>
+    <button class="btn btn-small marks-go">Work it out</button>
+    <ul class="plain marks-result" aria-live="polite">${resultLines(c.result)}</ul>
+    ${c.assessment || c.dp ? html`<details class="plan-details"><summary>What the handbook says</summary><dl>
+      ${c.assessment ? html`<dt>Assessment</dt><dd>${c.assessment}</dd>` : ''}
+      ${c.dp ? html`<dt>DP</dt><dd>${c.dp}</dd>` : ''}
+    </dl></details>` : ''}
+  </form>`;
+}
+
+function marks(ctx, { courses, planLink, hasPlan }) {
+  return layout({ ...ctx, title: 'Marks and DP', here: '/marks', path: '/marks', description: 'Type in your marks: see your class mark, whether you have DP, and what you need in the exam to pass, get a 2:1 or a first.' }, html`
+  <h1 class="page-title">Marks and DP</h1>
+  <p class="lede small">Type in marks as you get them back. Kwaai works out your class mark, whether you're on track for DP, and what you need in the exam to pass, get a 2:1 or a first.</p>
+  <p class="privacy-note"><strong>Your marks stay on this device.</strong> They're saved in this browser only and never sent to Kwaai. Clearing your browser data clears them.</p>
+  ${hasPlan ? '' : html`<p class="meta">This is a quick calculator for any course. <a href="${planLink}">Add your courses to the planner</a> and each one gets its own card with the handbook's weights filled in.</p>`}
+  <div class="marks-grid">${courses.map(marksCard)}</div>
+  <p class="fine">Weights, DP rules and subminima come from UCT's 2026 handbooks where they're clear. Your course outline is the final word. Marks still to come are assumed to go like the ones you have.</p>
+  <script src="/marks-math.js" defer></script>`);
+}
+
+// ---------- today ----------
+function today(ctx, { today: t, weekLink }) {
+  const dayDate = t ? new Date(`${t.date}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
+  return layout({ ...ctx, title: 'Today', here: '/today', path: '/today' }, html`
+  <h1 class="page-title">Today</h1>
+  ${!t ? html`<div class="card panel"><p><strong>Nothing planned yet.</strong> Add your courses in the <a href="/plan">planner</a>, and this page shows your classes for the day, tests coming up and your DP status.</p></div>` : html`
+  <p class="lede small">${dayDate}${t.note ? html` · ${t.note}` : ''}</p>
+  <div class="today-grid">
+    <section class="card panel" aria-labelledby="today-classes">
+      <h2 id="today-classes">${t.weekend ? `It's the weekend. Here's ${t.dayName}` : 'Your classes'}</h2>
+      ${t.classes.length ? html`<ul class="plain">${t.classes.map((e) => html`<li class="agenda-ev"><span class="agenda-time">${e.start}–${e.end}</span><span>${e.code && e.kind !== 'own' && e.kind !== 'set' ? html`<a href="/courses/${e.code}" class="code">${e.code}</a> ${KIND_LABEL[e.kind]}` : e.label}${e.suggested ? html` <span class="meta">(suggested group)</span>` : ''}</span></li>`)}</ul>`
+        : html`<p class="meta">No classes on your timetable today.</p>`}
+      <p class="meta"><a href="${weekLink}">Your whole week</a></p>
+    </section>
+    <section class="card panel" aria-labelledby="today-soon">
+      <h2 id="today-soon">Next two weeks</h2>
+      ${t.upcoming.length ? html`<ul class="plain">${t.upcoming.map((e) => html`<li><a href="/courses/${e.code}#course-week" class="code">${e.code}</a> <strong>${e.title}</strong> · ${fmtDate(e.date)}${e.time ? ` ${e.time}` : ''}${e.confirmed ? '' : html` <span class="meta">(not confirmed yet)</span>`}</li>`)}</ul>`
+        : html`<p class="meta">No tests or deadlines added for your courses. Classmates add them on each course page.</p>`}
+    </section>
+    <section class="card panel" aria-labelledby="today-dp" data-dp-alerts data-courses="${JSON.stringify(t.marks.map((c) => ({ code: c.code, items: c.items, dpMin: c.dpMin, examSub: c.examSub })))}">
+      <h2 id="today-dp">DP and marks</h2>
+      <p class="meta dp-alerts-text">Your marks are saved on this device only. <a href="/marks">Open Marks</a> to type them in and see where you stand.</p>
+    </section>
+    ${t.tip ? html`<section class="card panel" aria-labelledby="today-tip">
+      <h2 id="today-tip">From students who took ${t.tip.course}</h2>
+      <p>“${t.tip.tip}”</p>
+    </section>` : ''}
+  </div>`}
+  <script src="/marks-math.js" defer></script>`);
+}
+
 function universities(ctx, { universities: list, liveCourses }) {
   return layout({ ...ctx, title: 'Universities', here: '/universities', path: '/universities' }, html`
   <h1 class="page-title">Universities</h1>
@@ -1144,6 +1224,7 @@ function privacy(ctx) {
     <li><strong>Your reviews and votes</strong> (ratings, tags, comment, kwaai-or-nah vote, tip, course, lecturer, year). They are published without your name or email.</li>
     <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), a short-lived one for on-screen messages, and one that remembers your semester plan for 180 days. The plan cookie holds the course codes you added and, if you filled them in, your faculty, majors, year of study and the courses you've passed. That information stays on your device and in the plan's link. We don't store it on our server. No advertising or tracking cookies.</li>
     <li><strong>Course details you add</strong> (a class time, a week's topic, a test date). They're shown with a count of how many students agree, never with your name or email, and they're deleted with your account.</li>
+    <li><strong>Marks you type on <a href="/marks">Marks and DP</a></strong> stay in your browser on your device. We never receive them. If you use the page without JavaScript, the numbers are sent once to work out the answer and aren't stored or logged.</li>
     <li><strong>A calendar link</strong>, only if you make one on <a href="/week">Your week</a>: your course codes and timetable choices, stored under a random address so your calendar app can fetch them. No name, email or "about you" answers. Delete it there at any time; links nobody has used for 12 months are deleted automatically.</li>
     <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many sign-in attempts). It isn't written to our database.</li>
     <li><strong>Removal requests:</strong> the name, email and details you give us, used only to deal with that request.</li>
@@ -1390,4 +1471,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [] 
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, marks, today, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };

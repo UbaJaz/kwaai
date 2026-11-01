@@ -10,6 +10,7 @@ const { html } = require('../src/html');
 const { titleCase, parseHandbook, expandCode, codesIn, lecturePeriods, examWeight, sessionsOf } = require('../scripts/import-handbook');
 const { buildWeek, parseWeek, weekParams, icsFor } = require('../src/week');
 const { parseFact, weekTopics, draftTopics } = require('../src/facts');
+const Marks = require('../public/marks-math');
 const { UNIVERSITIES } = require('../src/universities');
 const { scan: scanTables } = require('../scripts/import-tables');
 const { parseProgrammes, tidyName } = require('../scripts/import-programmes');
@@ -969,6 +970,54 @@ test('course details from students: two agree before it reaches timetables, repo
   assert.ok((await (await a.get('/account/data')).json()).course_details_you_added.length >= 3);
   await a.post('/account/delete', {});
   assert.match(await b.text('/courses/STA1000F'), /1 student so far/, 'only the other student\'s time is left');
+});
+
+test('marks and DP: handbook weights, what you need in the exam, subminimum, nothing stored on the server', async () => {
+  const items = Marks.parseAssessment('Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted');
+  assert.deepEqual(items.map((i) => [i.name, i.weight, i.exam]), [['Class record', 30, false], ['Exam', 70, true]]);
+  assert.deepEqual(Marks.parseAssessment('Coursework counts 40%, one 3-hour examination in June counts 60%.').map((i) => i.name), ['Coursework', 'Examination']);
+  assert.deepEqual(Marks.parseAssessment('Portfolio of work', null), [], 'no clear split: no guess');
+  assert.deepEqual(Marks.parseAssessment('Portfolio of work', 60).map((i) => i.weight), [40, 60], 'the handbook exam share still splits it');
+  assert.equal(Marks.dpMinimum('Class record of at least 35%.'), 35);
+  assert.equal(Marks.dpMinimum('An average of 30% in marked class work, and attendance at 80% of practicals.'), 30);
+  assert.equal(Marks.examSubminimum('Subminima of 40% are required in practical and theory examination papers.'), 40);
+
+  // 55% class record at 30%: a pass needs (50 - 16.5) / 0.7 = 47.9% in the exam
+  let r = Marks.compute(items, [55, ''], { dpMin: 35, examSub: 40 });
+  assert.equal(r.dp, 'ok');
+  assert.deepEqual(r.needed.map((n) => n.need), [47.9, 62.1, 76.4, 83.6]);
+  // a strong class mark: the 40% exam subminimum is what counts for a pass
+  r = Marks.compute(items, [95, ''], { examSub: 40 });
+  assert.deepEqual([r.needed[0].need, r.needed[0].subBites], [40, true]);
+  r = Marks.compute(items, [10, ''], { dpMin: 35 }); // a first would need (75 - 3) / 0.7 = 102.9%
+  assert.equal(r.dp, 'below');
+  assert.equal(r.needed.find((n) => n.target === 75).possible, false);
+  assert.match(Marks.describe(r).map((l) => l.text).join(' '), /Below the 35% DP minimum[^]*For a first: out of reach/);
+  // two parts of the class work, one marked: the other is assumed to go the same way
+  r = Marks.compute([{ name: 'T1', weight: 20 }, { name: 'T2', weight: 20 }, { name: 'Exam', weight: 60, exam: true }], [60, '', '']);
+  assert.deepEqual([r.classSoFar, r.markedShare], [60, 50]);
+
+  // the page: a card per planned course with the handbook's weights; without JavaScript it posts and gets the answer back
+  const b = browser();
+  const page = await b.text('/marks?c=STA1006S,CSC1015F');
+  assert.match(page, /Your marks stay on this device/);
+  assert.match(page, /id="mk-STA1006S"/);
+  assert.match(page, /name="n0" value="Class record"/);
+  assert.match(page, /name="dp" value="35"/, 'DP minimum from the handbook');
+  assert.match(page, /<script src="\/marks-math\.js" defer>/);
+  const res = await b.post('/marks?c=STA1006S', { code: 'STA1006S', n0: 'Class record', w0: '30', m0: '55', n1: 'Exam', w1: '70', e1: '1', m1: '', dp: '35', sub: '' });
+  assert.equal(res.headers.get('cache-control'), 'no-store');
+  assert.match(await res.text(), /To pass: you need 47\.9% in the exam/);
+  assert.match(await b.text('/marks'), /Any course/, 'with no plan, a quick calculator');
+
+  // today and the home page shortcut
+  assert.match(await b.text('/today?c='), /Nothing planned yet/);
+  const today = await b.text('/today?c=MAM1031F,CSC1016S');
+  assert.match(today, /data-dp-alerts data-courses="\[/);
+  assert.match(today, /Next two weeks/);
+  await b.get('/plan?c=MAM1031F&add=CSC1016S');
+  assert.match(await b.text('/'), /class="card today-strip" href="\/today"/);
+  assert.doesNotMatch(await browser().text('/'), /today-strip/, 'no plan, no shortcut');
 });
 
 test('a demo password keeps every page private until it is given', async (t) => {

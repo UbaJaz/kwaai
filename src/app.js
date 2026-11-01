@@ -5,7 +5,8 @@ const express = require('express');
 const views = require('./views');
 const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
 const { analysePlan, REPLACED, parseProfile, hasProfile, profileParams, majorNeeds, creditAdvice, programmeOptions, facultyOptions } = require('./planner');
-const { parseWeek, weekParams, buildWeek, icsFor, DAYS } = require('./week');
+const { parseWeek, weekParams, buildWeek, icsFor, DAYS, termDates } = require('./week');
+const Marks = require('../public/marks-math');
 const { parseFact, screenFact, groupFacts, weekTopics, crowdSlots } = require('./facts');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { UNIVERSITIES, CURRENT } = require('./universities');
@@ -159,6 +160,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       heaviest: ranking('course', byKey('workload'), null, 5),
       // November to January: exams are done and registration hasn't opened, the best time to ask for ratings
       ratingSeason: [10, 11, 0].includes(new Date().getMonth()),
+      // a returning student with a plan on this device gets a way straight into their day
+      today: (() => {
+        const { codes, week } = readPlan(req, {}); // the home page has no plan in its link: only this device's plan
+        if (!codes.length) return null;
+        const t = todayFor(codes, week);
+        return { classes: t.classes.length, next: t.classes.find((e) => e.start >= new Date(Date.now() + 2 * 3_600_000).toISOString().slice(11, 16)), soon: t.upcoming[0], weekend: t.weekend };
+      })(),
     })));
   });
 
@@ -301,12 +309,12 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   const PLAN_KEYS = ['c', 'f', 'm', 'y', 'done', 't', 'pk', 'bl', 'st'];
   // the plan from the link if it has one, else from this device's cookie (which holds the query string; older ones
   // hold only the course codes)
-  function readPlan(req) {
+  function readPlan(req, query = req.query) {
     let savedRaw = '';
     try { savedRaw = decodeURIComponent(/(?:^|;\s*)plan=([^;]*)/.exec(req.headers.cookie || '')?.[1] || ''); } catch { /* a mangled cookie is just an empty plan */ }
     const saved = savedRaw.includes('=') ? Object.fromEntries(new URLSearchParams(savedRaw)) : { c: savedRaw };
-    const fromUrl = PLAN_KEYS.some((k) => req.query[k] != null);
-    const state = fromUrl ? req.query : saved;
+    const fromUrl = PLAN_KEYS.some((k) => query[k] != null);
+    const state = fromUrl ? query : saved;
     return { fromUrl, codes: planCodes(state.c), profile: parseProfile(state), week: parseWeek(state) };
   }
 
@@ -507,6 +515,86 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const rows = weekRows(codes);
     res.set({ 'Content-Type': 'text/calendar; charset=utf-8', 'Cache-Control': 'no-cache' })
       .send(icsFor(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), parseWeek(state), { origin: baseUrl || '', ...crowdFor(codes) }));
+  });
+
+  // ---- marks and DP tracker ----
+  // Marks stay on the student's device: the page saves them in the browser (public/app.js). Without JavaScript the
+  // form posts here, the server works the answer out from the posted numbers and stores nothing.
+  const GENERIC = [{ name: 'Class mark', weight: 40, exam: false }, { name: 'Final exam', weight: 60, exam: true }];
+  function marksCourses(codes) {
+    const rows = codes.length ? q(`SELECT code, title, assessment, dp, exam_weight FROM courses WHERE code IN (${codes.map(() => '?').join(',')})`).all(...codes) : [];
+    return codes.map((code) => rows.find((r) => r.code === code)).filter(Boolean).map((c) => {
+      const items = Marks.parseAssessment(c.assessment, c.exam_weight);
+      return { ...c, items: items.length ? items : GENERIC, fromHandbook: items.length > 0, dpMin: Marks.dpMinimum(c.dp), examSub: Marks.examSubminimum(c.assessment) };
+    });
+  }
+  const anyCourse = () => ({ code: '', title: 'Any course', assessment: '', dp: '', items: GENERIC, fromHandbook: false, dpMin: null, examSub: null });
+
+  app.get('/marks', (req, res) => {
+    const { codes, profile, week } = readPlan(req);
+    const courses = marksCourses(codes);
+    res.page(views.marks(req.ctx, { courses: courses.length ? courses : [anyCourse()], planLink: planUrl(codes, profile, week), hasPlan: courses.length > 0 }));
+  });
+
+  app.post('/marks', (req, res) => {
+    const { codes, profile, week } = readPlan(req);
+    const courses = marksCourses(codes);
+    const list = courses.length ? courses : [anyCourse()];
+    const code = String(req.body.code || '');
+    const b = req.body;
+    // the posted rows replace that course's rows, so edited names and weights are used as typed
+    const items = [];
+    const marks = [];
+    for (let i = 0; i < 12; i++) {
+      const weight = Number(b[`w${i}`]);
+      if (b[`n${i}`] == null || !(weight > 0) || weight > 100) continue;
+      items.push({ name: String(b[`n${i}`]).slice(0, 40) || `Part ${i + 1}`, weight, exam: b[`e${i}`] === '1' });
+      const m = String(b[`m${i}`] ?? '').trim();
+      marks.push(m === '' || Number.isNaN(Number(m)) ? '' : Math.max(0, Math.min(100, Number(m))));
+    }
+    const num = (v) => (v === '' || v == null || Number.isNaN(Number(v)) ? null : Math.max(0, Math.min(100, Number(v))));
+    const opts = { dpMin: num(b.dp), examSub: num(b.sub) };
+    const result = items.length ? Marks.compute(items, marks, opts) : null;
+    const posted = list.map((c) => (c.code === code ? { ...c, items: items.length ? items : c.items, marks, dpMin: opts.dpMin, examSub: opts.examSub, result } : c));
+    res.set('Cache-Control', 'no-store').page(views.marks(req.ctx, { courses: posted, planLink: planUrl(codes, profile, week), hasPlan: courses.length > 0 }));
+  });
+
+  // ---- today ----
+  // Today's classes from the week, what's coming up in the next two weeks, a tip for a course you have today, and DP
+  // alerts worked out in the browser from the marks saved on this device.
+  const saDate = () => new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().slice(0, 10); // South Africa is UTC+2
+  function todayFor(codes, week) {
+    const date = saDate();
+    const year = Number(date.slice(0, 4));
+    const dates = termDates(year, 's1') && termDates(year, 's2') ? { s1: termDates(year, 's1'), s2: termDates(year, 's2') } : null;
+    let term = 's1';
+    let note = null;
+    if (dates) {
+      if (date >= dates.s1.start && date <= dates.s1.end) term = 's1';
+      else if (date >= dates.s2.start && date <= dates.s2.end) term = 's2';
+      else {
+        term = date < dates.s1.start ? 's1' : date < dates.s2.start ? 's2' : 's1';
+        note = date > dates.s2.end ? 'The year is over. Your plan for next year shows from the first day of term.' : `Classes start on ${dates[term].start}.`;
+      }
+      const inBreak = dates[term].breaks.find(([a, b]) => date >= a && date <= b);
+      if (inBreak && !note) note = `It's the vacation, until ${inBreak[1]}.`;
+    }
+    const weekday = new Date(`${date}T12:00:00Z`).getUTCDay(); // 0 Sunday
+    const dayName = DAYS[weekday >= 1 && weekday <= 5 ? weekday - 1 : 0];
+    const rows = weekRows(codes);
+    const facts = factsFor(codes);
+    const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), { ...week, t: term }, { year, crowd: crowdSlots(facts) });
+    const classes = wk.events.filter((e) => e.day === dayName).sort((a, b) => a.start.localeCompare(b.start));
+    const soon = new Date(Date.parse(`${date}T00:00:00Z`) + 14 * 86_400_000).toISOString().slice(0, 10);
+    const upcoming = datedFor(facts).filter((d) => d.date >= date && d.date <= soon);
+    const todays = [...new Set(classes.map((e) => e.code).filter(Boolean))];
+    const tip = todays.length ? q(`SELECT course, tip FROM verdicts WHERE status = 'published' AND tip != '' AND course IN (${todays.map(() => '?').join(',')}) ORDER BY RANDOM() LIMIT 1`).get(...todays) : null;
+    return { date, term, note, weekend: weekday === 0 || weekday === 6, dayName, classes, upcoming, tip, marks: marksCourses(wk.courses.map((c) => c.code)) };
+  }
+
+  app.get('/today', (req, res) => {
+    const { codes, profile, week } = readPlan(req);
+    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week) : null, weekLink: planUrl(codes, profile, week, '/week') }));
   });
 
   app.get('/universities', (req, res) => {
