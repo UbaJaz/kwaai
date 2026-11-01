@@ -127,3 +127,83 @@ document.querySelectorAll('input[data-suggest]').forEach((input, n) => {
     }
   });
 });
+
+// Marks and DP (/marks and /today). Marks are saved in this browser only (localStorage) and never sent anywhere.
+// public/marks-math.js does the sums; it loads after this file, so this waits for the page.
+document.addEventListener('DOMContentLoaded', () => {
+  const M = window.KwaaiMarks;
+  if (!M) return;
+  const KEY = 'kwaai.marks.v1';
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
+  const save = (all) => { try { localStorage.setItem(KEY, JSON.stringify(all)); } catch { /* private mode: works, just isn't kept */ } };
+  const num = (v) => (v === '' || v == null || Number.isNaN(Number(v)) ? null : Math.max(0, Math.min(100, Number(v))));
+  // saved { rows: [{ n, w, e, m }], dp, sub } -> what compute() needs
+  const fromSaved = (s) => {
+    const rows = (s.rows || []).filter((r) => Number(r.w) > 0);
+    return { items: rows.map((r) => ({ name: r.n, weight: Number(r.w), exam: !!r.e })), marks: rows.map((r) => (num(r.m) == null ? '' : num(r.m))), opts: { dpMin: num(s.dp), examSub: num(s.sub) } };
+  };
+  const show = (list, lines) => list.replaceChildren(...lines.map((l) => {
+    const li = document.createElement('li');
+    li.textContent = l.text;
+    if (l.tone) li.className = l.tone === 'ok' ? 'ok-text' : 'bad';
+    return li;
+  }));
+
+  document.querySelectorAll('form[data-marks]').forEach((form) => {
+    const id = form.dataset.marks;
+    const field = (name) => form.elements.namedItem(name);
+    const saved = load()[id];
+    if (saved) {
+      (saved.rows || []).forEach((r, i) => {
+        if (!field(`n${i}`)) return;
+        field(`n${i}`).value = r.n ?? '';
+        field(`w${i}`).value = r.w ?? '';
+        field(`e${i}`).checked = !!r.e;
+        field(`m${i}`).value = r.m ?? '';
+      });
+      field('dp').value = saved.dp ?? '';
+      field('sub').value = saved.sub ?? '';
+    }
+    const read = () => {
+      const rows = [];
+      for (let i = 0; field(`n${i}`); i++) rows.push({ n: field(`n${i}`).value, w: field(`w${i}`).value, e: field(`e${i}`).checked, m: field(`m${i}`).value });
+      return { rows, dp: field('dp').value, sub: field('sub').value };
+    };
+    const update = (keep) => {
+      const state = read();
+      if (keep) { const all = load(); all[id] = state; save(all); }
+      const { items, marks, opts } = fromSaved(state);
+      show(form.querySelector('.marks-result'), M.describe(items.length ? M.compute(items, marks, opts) : null));
+    };
+    form.addEventListener('input', () => update(true));
+    form.addEventListener('change', () => update(true));
+    form.addEventListener('submit', (e) => { e.preventDefault(); update(true); });
+    update(false);
+  });
+
+  // Today: an alert for each course below DP or out of reach of a pass, from the marks saved on this device
+  const box = document.querySelector('[data-dp-alerts]');
+  if (box) {
+    const all = load();
+    const alerts = [];
+    let tracked = 0;
+    for (const c of JSON.parse(box.dataset.courses || '[]')) {
+      const saved = all[c.code];
+      if (!saved) continue;
+      const { items, marks, opts } = fromSaved(saved);
+      const r = items.length ? M.compute(items, marks, opts) : null;
+      if (!r || r.classSoFar == null) continue;
+      tracked++;
+      const pass = r.needed.find((n) => n.target === 50);
+      if (r.dp === 'below') alerts.push({ tone: 'bad', text: `${c.code}: class mark ${r.classSoFar}%, below the ${r.dpMin}% DP minimum.` });
+      else if (pass && !pass.possible) alerts.push({ tone: 'bad', text: `${c.code}: a pass needs ${pass.need}% in the exam. Talk to your lecturer about options.` });
+      else if (pass) alerts.push({ tone: pass.need > 70 ? 'bad' : 'ok', text: `${c.code}: you need ${pass.need}% in the exam to pass.` });
+    }
+    if (tracked) {
+      const list = document.createElement('ul');
+      list.className = 'plain';
+      show(list, alerts);
+      box.querySelector('.dp-alerts-text').replaceWith(list);
+    }
+  }
+});
