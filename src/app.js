@@ -648,7 +648,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.set('Cache-Control', 'no-store').page(views.study(req.ctx, {
       courses, pick: current?.course || (courses.some((c) => c.code === pick) ? pick : ''), current: current && sessionState(current),
       today: Study.dayTotals(sessions.filter((s) => s.status === 'done'))[0] || null, sessions: sessions.filter((s) => s.status === 'done'),
-      board: req.user ? studyBoard(req.user.id, codes, req.query.day) : null,
+      board: req.user ? studyBoard(req.user, codes, req.query.day) : null,
       studyingNow: liveStudents(`uni = ?`, req.user?.uni ?? CURRENT.slug),
     }));
   });
@@ -666,9 +666,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     return totals.length ? Study.streak(totals, today, TERMS.years) : null;
   }
 
-  function studyBoard(userId, codes, askedDay) {
+  function studyBoard(user, codes, askedDay) {
     const today = Study.saDay(Date.now());
-    const totals = studyTotals(userId, today);
+    const totals = studyTotals(user.id, today);
+    const recap = Study.weekRecap(totals, today);
+    if (recap) recap.ranks = ranksFor(user, recap.from, recap.to);
     const sum = Study.summary(totals, today);
     // this semester's courses from the plan (by date: from the second semester's start it's S courses), plus any
     // course studied this week
@@ -684,9 +686,28 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     return {
       today, weeks: Study.heatmap(totals, today), summary: sum, goals, general: sum.weekCourses[''] || 0, streak: Study.streak(totals, today, TERMS.years),
       dayDetail: day ? totals.find((t) => t.day === day) || { day, minutes: 0, courses: {} } : null,
-      days: totals.filter((t) => t.minutes > 0).reverse(),
+      days: totals.filter((t) => t.minutes > 0).reverse(), recap,
     };
   }
+
+  // Wrapped: a semester in numbers on one card, sized for a phone screenshot. Defaults to the semester running now,
+  // or the last one that started; ?year=2027&term=s1 picks another that has started.
+  const semestersSoFar = (today) => Object.keys(TERMS.years).sort().flatMap((y) => ['s1', 's2'].map((t) => ({ year: Number(y), term: t, ...termDates(y, t) })))
+    .filter((s) => s.start && s.start <= today);
+  app.get('/study/wrapped', requireUser, (req, res) => {
+    const today = Study.saDay(Date.now());
+    const all = semestersSoFar(today);
+    const sem = all.find((s) => String(s.year) === req.query.year && s.term === req.query.term) || all[all.length - 1];
+    if (!sem) return res.status(404).page(notFound(req));
+    const to = sem.end < today ? sem.end : today;
+    const w = Study.wrapped(studyTotals(req.user.id, today), sem.start, to, TERMS.years);
+    const codes = w.courses.map((c) => c.code).filter(Boolean);
+    const titles = codes.length ? Object.fromEntries(q(`SELECT code, title FROM courses WHERE code IN (${codes.map(() => '?').join(',')})`).all(...codes).map((c) => [c.code, c.title])) : {};
+    res.set('Cache-Control', 'no-store').page(views.wrapped(req.ctx, {
+      sem: { ...sem, to, running: sem.end >= today }, w: { ...w, courses: w.courses.slice(0, 3).map((c) => ({ ...c, title: titles[c.code] ?? '' })) },
+      ranks: ranksFor(req.user, sem.start, to), others: all.slice(-4).reverse(),
+    }));
+  });
 
   app.post('/study/start', requireUser, limits.study, (req, res) => {
     const parsed = Study.parseStart(req.body, courseExists);
