@@ -270,7 +270,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const facts = factsFor([c.code], req.user?.id)[c.code] || { lecture: [], tut: [], prac: [], topic: [], event: [] };
     let draft = [];
     try { draft = c.topics ? JSON.parse(c.topics) : []; } catch { draft = []; }
-    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic) })));
+    const studying = liveStudents(`course = ?`, c.code);
+    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0 })));
   });
 
   app.get('/lecturers/:id', (req, res) => {
@@ -612,6 +613,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // ---- study timer ----
   // The rules (what a heartbeat earns, the caps) live in src/study.js. The page sends a heartbeat about once a minute
   // while the timer runs; a session nobody is timing any more is closed with what it had earned.
+  // students with a timer running right now (a heartbeat in the last two minutes), counted over a filter
+  function liveStudents(where, ...args) {
+    return q(`SELECT COUNT(DISTINCT user_id) AS n FROM study_sessions WHERE status = 'running' AND last_beat >= ? AND ${where}`).get(Study.liveSince(Date.now()), ...args).n;
+  }
   const runningSession = (userId) => q(`SELECT * FROM study_sessions WHERE user_id = ? AND status = 'running'`).get(userId);
   const closeStale = (userId, now = Date.now()) => {
     const s = runningSession(userId);
@@ -639,6 +644,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       courses, pick: current?.course || (courses.some((c) => c.code === pick) ? pick : ''), current: current && sessionState(current),
       today: Study.dayTotals(sessions.filter((s) => s.status === 'done'))[0] || null, sessions: sessions.filter((s) => s.status === 'done'),
       board: req.user ? studyBoard(req.user.id, codes, req.query.day) : null,
+      studyingNow: liveStudents(`uni = ?`, req.user?.uni ?? CURRENT.slug),
     }));
   });
 
@@ -831,8 +837,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
         WHERE status = 'done' AND day BETWEEN ? AND ? GROUP BY user_id, day
       ) x ON x.user_id = m.user_id WHERE m.group_id = ? GROUP BY m.user_id ORDER BY m.name`).all(from, to, g.id);
     const show = (r) => ({ id: r.user_id, name: r.name, minutes: r.minutes, rank: r.rank, you: r.user_id === req.user.id });
+    // members with a timer running now, what they're studying and for how long so far
+    const now = Date.now();
+    const live = q(`SELECT m.name, s.course, s.started_at, m.user_id FROM study_sessions s JOIN group_members m ON m.user_id = s.user_id AND m.group_id = ?
+      WHERE s.status = 'running' AND s.last_beat >= ? ORDER BY s.started_at`).all(g.id, Study.liveSince(now))
+      .map((s) => ({ name: s.name, course: s.course, minutes: Math.max(1, Math.round((now - s.started_at) / 60_000)), you: s.user_id === req.user.id }));
     res.set('Cache-Control', 'no-store').page(views.group(req.ctx, {
-      group: g, owner: g.owner_id === req.user.id, period, invite: `${req.ctx.site.origin}/g/${g.code}`,
+      group: g, owner: g.owner_id === req.user.id, period, live, invite: `${req.ctx.site.origin}/g/${g.code}`,
       rows: Study.rankBoard(rows, req.user.id, Study.MAX_MEMBERS).rows.map(show), idle: rows.filter((r) => !r.minutes).map(show),
     }));
   });
