@@ -155,6 +155,7 @@ CREATE TABLE IF NOT EXISTS study_sessions (
 );
 CREATE INDEX IF NOT EXISTS study_by_user ON study_sessions (user_id, day);
 CREATE INDEX IF NOT EXISTS study_by_day ON study_sessions (uni, day);
+CREATE UNIQUE INDEX IF NOT EXISTS one_running_timer ON study_sessions (user_id) WHERE status = 'running';
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,
