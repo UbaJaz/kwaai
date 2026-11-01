@@ -1345,3 +1345,56 @@ test('a daily study reminder can go in the calendar', async () => {
   assert.match(page, /<option value="2000" selected>20:00<\/option>/);
   assert.match(await (await fetch(`${base}/week.ics?c=CSC1015F&sr=2000`)).text(), /Study for 30 minutes/);
 });
+
+test('leaderboards: opt in, named or anonymous, faculty boards, reports and leaving', async () => {
+  assert.match((await browser().get('/study/leaderboards')).headers.get('location'), /^\/login/, 'signed-in students only');
+  const [a, b, c] = [browser(), browser(), browser()];
+  await a.signIn('board101@myuct.ac.za');
+  await b.signIn('board102@myuct.ac.za');
+  await c.signIn('board103@myuct.ac.za');
+  const id = (e) => db.prepare('SELECT id FROM users WHERE email = ?').get(e).id;
+  const today = Study.saDay(Date.now());
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 90, ?, 'done')`);
+  add.run(id('board101@myuct.ac.za'), today, 60 * 60);
+  add.run(id('board102@myuct.ac.za'), today, 90 * 60);
+  add.run(id('board103@myuct.ac.za'), today, 120 * 60); // studied most, but never joined
+
+  assert.match(await a.text('/account/profile'), /<input type="checkbox" name="join" value="1" >/, 'the box starts unticked');
+  assert.equal((await a.post('/account/profile', { join: '1', show: 'name', display_name: 'call me on 082 123 4567' })).status, 400);
+  assert.equal((await a.post('/account/profile', { join: '1', show: 'name', display_name: 'Thandi M', faculty: 'sci', major: 'CSC05', year: '2' })).status, 303);
+  await b.post('/account/profile', { join: '1', show: 'anon', display_name: 'Secret Name', faculty: 'sci', major: 'CSC05', year: '1' });
+
+  let page = await a.text('/study/leaderboards?period=day');
+  assert.match(page, /board-rank">1<\/span>\s*<span class="board-name">1st-year Computer Science student/);
+  assert.match(page, /board-rank">2<\/span>\s*<span class="board-name">Thandi M <span class="badge">You/);
+  assert.doesNotMatch(page, /Secret Name/, 'an anonymous student\'s name never shows');
+  assert.doesNotMatch(page, /2 h/, 'a student who never joined is not on the board');
+  assert.match(page, /2 students on this board/);
+  assert.match(await c.text('/study/leaderboards?period=week'), /You're not on the leaderboards/);
+  assert.doesNotMatch(await a.text('/study/leaderboards?period=day&scope=faculty&f=hum'), /Thandi M/, 'other faculties\' boards');
+  assert.match(await a.text('/study/leaderboards?period=day&scope=faculty&f=sci'), /Thandi M/);
+
+  // two reports hide the name until a moderator decides
+  const aid = id('board101@myuct.ac.za');
+  assert.equal((await a.post('/study/report-name', { user: aid })).status, 404, 'no reporting yourself');
+  await b.post('/study/report-name', { user: aid });
+  assert.match(await c.text('/study/leaderboards?period=day'), /Thandi M/, 'one report hides nothing');
+  await c.post('/study/report-name', { user: aid });
+  page = await c.text('/study/leaderboards?period=day');
+  assert.doesNotMatch(page, /Thandi M/);
+  assert.match(page, /2nd-year Computer Science student/);
+  const mod = browser();
+  await mod.signIn('mod002@myuct.ac.za');
+  assert.match(await mod.text('/mod'), /Student #\d+ · 2 reports[\s\S]*?Thandi M/);
+  await mod.post(`/mod/names/${aid}/allow`, {});
+  assert.match(await c.text('/study/leaderboards?period=day'), /Thandi M/);
+
+  // leaving, and deleting the account
+  assert.ok((await (await a.get('/account/data')).json()).leaderboard_profile.display_name === 'Thandi M');
+  await a.post('/account/profile', {});
+  assert.doesNotMatch(await b.text('/study/leaderboards?period=day'), /Thandi M|2nd-year/);
+  const bid = id('board102@myuct.ac.za');
+  await b.post('/account/delete', {});
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM profiles WHERE user_id = ?').get(bid).n, 0, 'deleting the account removes the profile');
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM name_reports WHERE user_id = ?').get(bid).n, 0, 'and the reports it made');
+});

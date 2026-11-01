@@ -424,6 +424,18 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .study-stats dd { margin: 0; font: 700 1.5rem/1.2 var(--display); }
 .reminder-form { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; margin: 18px 0 6px; }
 .reminder-form label { flex: 0 1 260px; }
+/* leaderboards */
+.board { list-style: none; margin: 0 0 10px; padding: 0; max-width: 720px; }
+.board-row { display: grid; grid-template-columns: 2.5em minmax(0, 1fr) auto; gap: 2px 12px; align-items: baseline; padding: 10px 16px; border-top: 1px solid var(--line); }
+.board-row:first-child { border-top: 0; }
+.board-rank { font: 700 1rem var(--display); color: var(--muted); }
+.board-name { font-weight: 600; overflow-wrap: anywhere; }
+.board-time { font-variant-numeric: tabular-nums; font-weight: 600; }
+.board-report { grid-column: 2 / -1; font-size: .78rem; }
+.board-report .link-btn { color: var(--muted); }
+.board-you { background: var(--lime-soft); }
+.board-me { margin-top: -2px; }
+.profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
 .study-day h3 { font-size: 1rem; }
