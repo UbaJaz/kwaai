@@ -4,7 +4,7 @@ const zlib = require('node:zlib');
 const express = require('express');
 const views = require('./views');
 const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
-const { analysePlan, REPLACED, parseProfile, hasProfile, profileParams, majorNeeds, creditAdvice, programmeOptions, facultyOptions } = require('./planner');
+const { analysePlan, REPLACED, parseProfile, hasProfile, profileParams, majorNeeds, creditAdvice, programmeOptions, facultyOptions, FACULTIES, PROGRAMMES, ordinal } = require('./planner');
 const { parseWeek, weekParams, buildWeek, icsFor, DAYS, termDates, planYear, semesterWeeks, TERMS } = require('./week');
 const Marks = require('../public/marks-math');
 const { revisionPlan, yearTimeline } = require('./year');
@@ -129,6 +129,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     takedown: limit(10, 60 * MIN),
     fact: limit(40, 60 * MIN, byUser),
     study: limit(40, 60 * MIN, byUser),
+    profile: limit(20, 60 * MIN, byUser),
     studyBeat: limit(150, 60 * MIN, byUser), // one a minute while a timer runs, with room for reloads
   };
   const flashRedirect = (res, to, type, text) => {
@@ -708,6 +709,72 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, '/study', 'ok', loggedText(done));
   });
 
+  // ---- leaderboards ----
+  // Opt-in only: a student is on the boards while they have a profiles row. Boards are shown to signed-in students.
+  const NAME_HIDE_AFTER = 2; // reports from different students before a name is hidden for a moderator
+  const knownProfile = { faculty: (f) => !!FACULTIES[f], major: (f, m) => PROGRAMMES.has(`${f}:${m}`) };
+  const profileOf = (userId) => q(`SELECT * FROM profiles WHERE user_id = ?`).get(userId) || null;
+  // what other students see: the name if shown and not held, else "2nd-year Computer Science student"
+  const boardName = (p) => {
+    if (p.show_name && p.display_name && !p.name_held) return p.display_name;
+    const what = PROGRAMMES.get(`${p.faculty}:${p.major}`)?.name || FACULTIES[p.faculty]?.name;
+    const label = [p.year ? `${ordinal(p.year)}-year` : null, what].filter(Boolean).join(' ');
+    return label ? `${label} student` : `${CURRENT.short} student`;
+  };
+
+  app.get('/account/profile', requireUser, (req, res) => {
+    res.page(views.profile(req.ctx, { profile: profileOf(req.user.id), faculties: facultyOptions(), programmes: programmeOptions() }));
+  });
+
+  app.post('/account/profile', requireUser, limits.profile, (req, res) => {
+    const parsed = Study.parseProfileForm(req.body, knownProfile, screenComment);
+    const id = req.user.id;
+    if (parsed.leave) {
+      q(`DELETE FROM profiles WHERE user_id = ?`).run(id);
+      q(`DELETE FROM name_reports WHERE target_id = ?`).run(id);
+      return flashRedirect(res, '/account/profile', 'ok', "You've left the leaderboards. Your study time is still yours on the Study page.");
+    }
+    if (parsed.error) return res.status(400).page(views.profile(req.ctx, { profile: { ...req.body, show_name: req.body.show === 'name' ? 1 : 0 }, faculties: facultyOptions(), programmes: programmeOptions(), error: parsed.error }));
+    const p = parsed.profile;
+    const before = profileOf(id);
+    // a new name gets a fresh start: earlier reports were about the old one
+    if (before && before.display_name !== p.display_name) q(`DELETE FROM name_reports WHERE target_id = ?`).run(id);
+    q(`INSERT INTO profiles (user_id, uni, display_name, show_name, faculty, major, year) VALUES (?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(user_id) DO UPDATE SET display_name = excluded.display_name, show_name = excluded.show_name, faculty = excluded.faculty, major = excluded.major, year = excluded.year,
+        name_held = CASE WHEN profiles.display_name = excluded.display_name THEN profiles.name_held ELSE 0 END`)
+      .run(id, req.user.uni, p.display_name, p.show_name, p.faculty, p.major, p.year);
+    flashRedirect(res, '/study/leaderboards', 'ok', before ? 'Saved.' : "You're on the leaderboards.");
+  });
+
+  app.get('/study/leaderboards', requireUser, (req, res) => {
+    const me = profileOf(req.user.id);
+    const period = Study.PERIODS[req.query.period] ? req.query.period : 'week';
+    const scope = req.query.scope === 'faculty' ? 'faculty' : 'uni';
+    const faculty = FACULTIES[req.query.f] ? req.query.f : me?.faculty || 'sci';
+    const [from, to] = Study.periodRange(period, Study.saDay(Date.now()));
+    // minutes per student over the period, each day capped like everywhere else
+    const rows = q(`SELECT p.*, SUM(x.m) AS minutes FROM profiles p JOIN (
+        SELECT user_id, day, MIN(SUM(credited_sec / 60), ${Study.DAY_CAP_MIN}) AS m FROM study_sessions
+        WHERE status = 'done' AND uni = ? AND day BETWEEN ? AND ? GROUP BY user_id, day
+      ) x ON x.user_id = p.user_id WHERE p.uni = ? ${scope === 'faculty' ? 'AND p.faculty = ?' : ''} GROUP BY p.user_id`)
+      .all(...[req.user.uni, from, to, req.user.uni, ...(scope === 'faculty' ? [faculty] : [])]);
+    const board = Study.rankBoard(rows, req.user.id);
+    const show = (r) => ({ rank: r.rank, minutes: r.minutes, name: boardName(r), you: r.user_id === req.user.id, id: r.user_id, reportable: !!(r.show_name && r.display_name && !r.name_held) && r.user_id !== req.user.id });
+    res.set('Cache-Control', 'no-store').page(views.leaderboard(req.ctx, {
+      joined: !!me, period, scope, faculty, faculties: facultyOptions(), rows: board.rows.map(show), me: board.me && show(board.me), total: board.total,
+    }));
+  });
+
+  app.post('/study/report-name', requireUser, limits.report, (req, res) => {
+    const target = Number(req.body.user);
+    const back = String(req.body.back || '').startsWith('/study/leaderboards') ? req.body.back : '/study/leaderboards';
+    const p = Number.isInteger(target) && target !== req.user.id ? profileOf(target) : null;
+    if (!p || !p.show_name || !p.display_name) return res.status(404).page(notFound(req));
+    q(`INSERT INTO name_reports (user_id, target_id) VALUES (?, ?) ON CONFLICT DO NOTHING`).run(req.user.id, target);
+    if (q(`SELECT COUNT(*) AS n FROM name_reports WHERE target_id = ?`).get(target).n >= NAME_HIDE_AFTER) q(`UPDATE profiles SET name_held = 1 WHERE user_id = ?`).run(target);
+    flashRedirect(res, back, 'ok', 'Thanks. A moderator will look at that name.');
+  });
+
   // ---- the year ----
   // Both semesters side by side with their load, UCT's term dates, the tests and exams students added, and when to
   // start revising for each exam.
@@ -762,6 +829,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       reports_you_made: q(`SELECT review_id, reason, details, created_at FROM reports WHERE user_id = ? ORDER BY created_at`).all(id),
       tips_you_reported: q(`SELECT verdict_id FROM verdict_reports WHERE user_id = ?`).all(id),
       lecturer_suggestions: q(`SELECT name, course, status, created_at FROM lecturer_suggestions WHERE user_id = ? ORDER BY created_at`).all(id),
+      leaderboard_profile: q(`SELECT display_name, show_name, faculty, major, year, boards_agreed_at FROM profiles WHERE user_id = ?`).get(id) || null,
       study_sessions: q(`SELECT course, day, started_at, planned_min, credited_sec, status FROM study_sessions WHERE user_id = ? ORDER BY started_at`).all(id),
       course_details_you_added: q(`SELECT course, kind, data, status, created_at FROM course_facts WHERE user_id = ? ORDER BY created_at`).all(id).map((f) => ({ ...f, data: JSON.parse(f.data) })),
       note: 'Your semester plan and "about you" answers are kept only in a cookie on your device and in the plan link, not on our server. Sign-in codes, links and sessions are stored as one-way hashes and deleted when they expire.',
@@ -779,6 +847,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM verdicts WHERE user_id = ?`).run(id);
       q(`DELETE FROM course_facts WHERE user_id = ?`).run(id);
       q(`DELETE FROM study_sessions WHERE user_id = ?`).run(id);
+      q(`DELETE FROM name_reports WHERE user_id = ? OR target_id = ?`).run(id, id);
+      q(`DELETE FROM profiles WHERE user_id = ?`).run(id);
       q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
       q(`UPDATE reports SET user_id = NULL WHERE user_id = ?`).run(id);
@@ -1080,7 +1150,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const log = q(`SELECT * FROM mod_log ORDER BY id DESC LIMIT 30`).all();
     const heldFacts = q(`SELECT course, kind, key, MIN(data) AS data, COUNT(DISTINCT user_id) AS n, (SELECT COUNT(*) FROM fact_reports r WHERE r.course = f.course AND r.key = f.key) AS reports
       FROM course_facts f WHERE status = 'held' GROUP BY course, key ORDER BY MIN(created_at)`).all().map((f) => ({ ...f, data: JSON.parse(f.data) }));
-    res.page(views.mod(req.ctx, { held, heldTips, takedowns, suggestions, log, heldFacts }));
+    const heldNames = q(`SELECT p.user_id, p.display_name, (SELECT COUNT(*) FROM name_reports r WHERE r.target_id = p.user_id) AS reports FROM profiles p WHERE p.name_held = 1 ORDER BY p.user_id`).all();
+    res.page(views.mod(req.ctx, { held, heldTips, takedowns, suggestions, log, heldFacts, heldNames }));
   });
 
   // a held course detail: approve puts it back and clears its reports; remove takes it down for good
@@ -1093,6 +1164,18 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     q(`DELETE FROM fact_reports WHERE course = ? AND key = ?`).run(course, key);
     q(`INSERT INTO mod_log (action, note, moderator) VALUES (?, ?, ?)`).run(`${action} course detail`, `${course} ${key.split('|')[0]}`, req.user.email);
     flashRedirect(res, '/mod', 'ok', `${course}: ${action === 'approve' ? 'back up' : 'removed'}.`);
+  });
+
+  // a reported leaderboard name: allow puts it back; reset removes it, so the student shows anonymously until they pick another
+  app.post('/mod/names/:id/:action', requireUser, requireMod, (req, res) => {
+    const { action } = req.params;
+    const p = q(`SELECT * FROM profiles WHERE user_id = ?`).get(Number(req.params.id));
+    if (!['allow', 'reset'].includes(action) || !p) return res.status(404).page(notFound(req));
+    if (action === 'allow') q(`UPDATE profiles SET name_held = 0 WHERE user_id = ?`).run(p.user_id);
+    else q(`UPDATE profiles SET display_name = '', show_name = 0, name_held = 0 WHERE user_id = ?`).run(p.user_id);
+    q(`DELETE FROM name_reports WHERE target_id = ?`).run(p.user_id);
+    q(`INSERT INTO mod_log (action, note, moderator) VALUES (?, ?, ?)`).run(`${action} leaderboard name`, `student #${p.user_id}`, req.user.email);
+    flashRedirect(res, '/mod', 'ok', action === 'allow' ? 'Name back up.' : 'Name removed.');
   });
 
   app.post('/mod/reviews/:id/:action', requireUser, requireMod, (req, res) => {
