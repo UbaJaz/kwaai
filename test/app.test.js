@@ -287,6 +287,26 @@ test('study timer: heartbeats credit time, gaps and caps stop padding', () => {
   assert.equal(Study.hoursText(45), '45 min');
 });
 
+test('study dashboard: heatmap weeks, totals and weekly goals', () => {
+  assert.deepEqual([0, 1, 29, 30, 59, 60, 119, 120, 600].map(Study.levelOf), [0, 1, 1, 2, 2, 3, 3, 4, 4]);
+  const totals = Study.dayTotals([
+    { day: '2027-03-01', course: 'CSC1015F', credited_sec: 3000 }, // Monday
+    { day: '2027-03-03', course: 'MAM1031F', credited_sec: 1800 },
+    { day: '2027-02-27', course: 'CSC1015F', credited_sec: 600 }, // the Saturday before
+  ]);
+  const weeks = Study.heatmap(totals, '2027-03-03');
+  assert.equal(weeks.length, 52);
+  assert.equal(weeks[0][0].day, '2026-03-09', 'starts on a Monday 51 weeks before this week');
+  assert.deepEqual(weeks[51].map((d) => d && d.minutes), [50, 0, 30, null, null, null, null], 'days after today are empty');
+  assert.equal(weeks[51][0].level, 2);
+  assert.deepEqual(Study.summary(totals, '2027-03-03'), { today: 30, week: 80, month: 80, weekCourses: { CSC1015F: 50, MAM1031F: 30 } });
+  const weeksOf = (t) => ({ s1: 16, s2: 14 }[t]);
+  assert.equal(Study.weeklyGoal({ code: 'CSC1015F', credits: 18 }, weeksOf), 11);
+  assert.equal(Study.weeklyGoal({ code: 'CSC1016S', credits: 18 }, weeksOf), 13);
+  assert.equal(Study.weeklyGoal({ code: 'MAM1000W', credits: 36 }, weeksOf), 12);
+  assert.equal(Study.weeklyGoal({ code: 'XYZ1000F', credits: null }, weeksOf), null);
+});
+
 // ---- end to end: sign in, review, report, moderate ----
 
 let server;
