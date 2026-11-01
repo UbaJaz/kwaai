@@ -3,6 +3,7 @@ const { QUALITY, SCALES, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FRE
 const { REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { ordinal, entryStatus } = require('./planner');
 const Marks = require('../public/marks-math');
+const Study = require('./study');
 
 const fmt = (n) => (n == null ? '–' : Number(n).toFixed(1));
 const month = (iso) => new Date(iso.replace(' ', 'T') + 'Z').toLocaleDateString('en-ZA', { month: 'short', year: 'numeric' });
@@ -1170,6 +1171,56 @@ function today(ctx, { today: t, weekLink }) {
   <script src="/marks-math.js" defer></script>`);
 }
 
+// ---------- study timer ----------
+const STUDY_PRESETS = [[25, '25 min', 'then a 5-minute break'], [50, '50 min', 'then a 10-minute break'], [90, '90 min', 'then a 15-minute break']];
+const clock = (ms) => new Date(ms + 2 * 60 * 60 * 1000).toISOString().slice(11, 16); // South African time
+
+function study(ctx, { courses, pick, current, today, sessions }) {
+  const signedIn = !!ctx.user;
+  const courseName = (code) => (code ? `${code} ${courses.find((c) => c.code === code)?.title ?? ''}`.trim() : 'General study');
+  return layout({ ...ctx, title: 'Study', here: '/study', path: '/study', description: 'A study timer for your courses. Kwaai logs the time so you can see how much you studied each day and for which course.' }, html`
+  <h1 class="page-title">Study</h1>
+  <p class="lede small">Pick a course, start the timer and work until it rings. Kwaai logs the time against the course.</p>
+  ${signedIn ? '' : html`<p class="privacy-note">The timer works without an account. <a href="${loginHref('/study')}">Sign in with your UCT email</a> to keep your hours.</p>`}
+  ${current ? html`
+  <section class="card panel study-timer" aria-labelledby="study-now" data-study="${JSON.stringify(current)}">
+    <h2 id="study-now">Studying ${courseName(current.course)}</h2>
+    <p class="study-clock" role="timer" aria-live="off" data-clock>${current.plannedMin}:00</p>
+    <p class="meta" data-study-status>Started at ${clock(current.startedAt)} for ${current.plannedMin} minutes. Keep this page open (another tab is fine) so the time counts.</p>
+    <form method="post" action="/study/stop" class="form-actions" data-study-stop>
+      <button class="btn btn-big btn-ink">Stop and log it</button>
+    </form>
+  </section>` : html`
+  <section class="card panel study-timer" aria-labelledby="study-start">
+    <h2 id="study-start">Start a session</h2>
+    <p class="study-break" data-break hidden></p>
+    <form method="post" action="/study/start" class="form study-form" ${signedIn ? '' : html`data-study-local`}>
+      <label>Course
+        <select name="course">
+          <option value="">General study</option>
+          ${courses.map((c) => html`<option value="${c.code}" ${c.code === pick ? 'selected' : ''}>${c.code} ${c.title}</option>`)}
+        </select>
+      </label>
+      ${courses.length ? '' : html`<p class="meta">Your courses show here once you <a href="/plan">add them to the planner</a>.</p>`}
+      <fieldset class="study-lengths">
+        <legend>How long</legend>
+        ${STUDY_PRESETS.map(([min, label, note], i) => html`<label class="radio"><input type="radio" name="minutes" value="${min}" ${i === 0 ? 'checked' : ''}> <strong>${label}</strong> <span class="meta">${note}</span></label>`)}
+      </fieldset>
+      <div class="form-actions">
+        <button class="btn btn-big">${signedIn ? 'Start the timer' : 'Start without saving'}</button>
+      </div>
+    </form>
+  </section>`}
+  ${signedIn ? html`
+  <section class="card panel" aria-labelledby="study-today">
+    <h2 id="study-today">Today</h2>
+    ${today ? html`<p><strong>${Study.hoursText(today.minutes)}</strong> studied today.</p>
+    <ul class="plain">${sessions.map((s) => html`<li>${clock(s.started_at)} · ${s.course ? html`<a class="code" href="/courses/${s.course}">${s.course}</a>` : 'General study'} · ${Study.hoursText(Math.floor(s.credited_sec / 60))}</li>`)}</ul>`
+      : html`<p class="meta">Nothing logged yet today.</p>`}
+  </section>` : ''}
+  <p class="fine">How time counts: while the timer runs, this page checks in with Kwaai about once a minute. Time with the page closed or offline doesn't count, a session counts at most 5 minutes past its length, and a day counts at most 14 hours. There's no way to type hours in by hand, so everyone's numbers mean the same thing.</p>`);
+}
+
 function universities(ctx, { universities: list, liveCourses }) {
   return layout({ ...ctx, title: 'Universities', here: '/universities', path: '/universities' }, html`
   <h1 class="page-title">Universities</h1>
@@ -1515,4 +1566,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [] 
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, year, marks, today, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, year, marks, today, study, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
