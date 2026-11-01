@@ -350,6 +350,25 @@ test('real hours per course: the median week of students who track it, from 5 st
   assert.equal(Study.courseHours(six, today).hours, 7.5, 'an even count averages the middle two, to the half hour');
 });
 
+test('recaps: last week against the week before, and a semester for Wrapped', () => {
+  const terms = require('../data/terms.json').years;
+  const s = (day, course, min) => ({ day, course, credited_sec: min * 60 });
+  const totals = Study.dayTotals([
+    s('2027-03-03', 'MAM1031F', 50), // the week before last
+    s('2027-03-09', 'CSC1015F', 60), s('2027-03-09', 'MAM1031F', 30), s('2027-03-10', 'CSC1015F', 45), // last week
+    s('2027-03-15', 'CSC1015F', 100), // this week: not in the recap
+  ]);
+  assert.deepEqual(Study.weekRecap(totals, '2027-03-17'), {
+    from: '2027-03-08', to: '2027-03-14', minutes: 135, days: 2,
+    courses: [{ code: 'CSC1015F', minutes: 105 }, { code: 'MAM1031F', minutes: 30 }],
+    bestDay: { day: '2027-03-09', minutes: 90 }, before: 50, change: 170,
+  });
+  assert.equal(Study.weekRecap(totals, '2027-05-17'), null, 'nothing in either week');
+  assert.equal(Study.weekRecap(totals, '2027-03-10').change, null, 'no week before to compare with');
+  const w = Study.wrapped(totals, '2027-02-08', '2027-03-17', terms);
+  assert.deepEqual([w.minutes, w.days, w.longest, w.courses[0].code], [285, 4, 2, 'CSC1015F']);
+});
+
 test('groups: names and join codes', () => {
   assert.deepEqual(Study.cleanName('  Res  study   squad ', 40, screenComment), { name: 'Res study squad' });
   assert.ok(Study.cleanName('x', 40, screenComment).error);

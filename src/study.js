@@ -197,6 +197,35 @@ function courseHours(rows, today) {
   return { students: perWeek.length, hours: Math.round(median * 2) / 2 }; // to the nearest half hour
 }
 
+// ---- recaps ----
+// the totals of one span of days: minutes, days with study, courses by time, and the best day
+function spanStats(totals, from, to) {
+  const inSpan = totals.filter((t) => t.day >= from && t.day <= to && t.minutes > 0);
+  const courses = {};
+  for (const t of inSpan) for (const [c, m] of Object.entries(t.courses)) courses[c] = (courses[c] || 0) + m;
+  const best = inSpan.reduce((b, t) => (!b || t.minutes > b.minutes ? t : b), null);
+  return {
+    from, to, minutes: inSpan.reduce((s, t) => s + t.minutes, 0), days: inSpan.length,
+    courses: Object.entries(courses).filter(([, m]) => m > 0).sort((a, b) => b[1] - a[1]).map(([code, minutes]) => ({ code, minutes })),
+    bestDay: best && { day: best.day, minutes: best.minutes },
+  };
+}
+
+// last week (Monday to Sunday) next to the week before; null when there's nothing in either
+function weekRecap(totals, today) {
+  const monday = addDay(today, -weekdayOf(today));
+  const last = spanStats(totals, addDay(monday, -7), addDay(monday, -1));
+  const before = spanStats(totals, addDay(monday, -14), addDay(monday, -8));
+  if (!last.minutes && !before.minutes) return null;
+  return { ...last, before: before.minutes, change: before.minutes ? Math.round(((last.minutes - before.minutes) / before.minutes) * 100) : null };
+}
+
+// a semester in numbers, for the Wrapped card: the span's stats plus its longest streak (vacations pause as usual)
+function wrapped(totals, from, to, terms) {
+  const s = spanStats(totals, from, to);
+  return { ...s, longest: streak(totals.filter((t) => t.day >= from && t.day <= to), to, terms).best };
+}
+
 // ---- groups ----
 const MAX_GROUPS = 20; // groups one student can be in
 const MAX_MEMBERS = 200;
@@ -213,4 +242,4 @@ function cleanName(text, max, screen) {
 // 8 characters from random bytes; 256 is a multiple of 32, so every character is equally likely
 const groupCode = (bytes) => [...bytes].slice(0, 8).map((b) => CODE_CHARS[b % CODE_CHARS.length]).join('');
 
-module.exports = { HOURS_WINDOW_DAYS, HOURS_MIN_STUDENTS, courseHours, LIVE_MS, liveSince, MIN_LIVE_SHOWN, MAX_GROUPS, MAX_MEMBERS, CODE_CHARS, cleanName, groupCode, PERIODS, BOARD_SIZE, periodRange, rankBoard, parseProfileForm, PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
+module.exports = { spanStats, weekRecap, wrapped, HOURS_WINDOW_DAYS, HOURS_MIN_STUDENTS, courseHours, LIVE_MS, liveSince, MIN_LIVE_SHOWN, MAX_GROUPS, MAX_MEMBERS, CODE_CHARS, cleanName, groupCode, PERIODS, BOARD_SIZE, periodRange, rankBoard, parseProfileForm, PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
