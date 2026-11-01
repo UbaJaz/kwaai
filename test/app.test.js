@@ -335,6 +335,21 @@ test('leaderboards: periods, shared ranks, and the opt-in profile form', () => {
   assert.deepEqual(ok, { display_name: 'Thandi M', show_name: 1, faculty: '', major: '', year: null }, 'unknown faculty, major and year are dropped');
 });
 
+test('real hours per course: the median week of students who track it, from 5 students', () => {
+  const today = '2027-04-30';
+  // started 28 days ago (4 weeks), each with a different habit: 4, 6, 7, 8 and 20 hours a week
+  const rows = [4, 6, 7, 8, 20].flatMap((h, i) => [
+    { user_id: i + 1, day: '2027-04-03', minutes: h * 60 },
+    { user_id: i + 1, day: '2027-04-20', minutes: h * 3 * 60 },
+  ]);
+  assert.deepEqual(Study.courseHours(rows, today), { students: 5, hours: 7 }, 'the median, so one 20-hour student barely moves it');
+  const newcomer = { user_id: 9, day: '2027-04-25', minutes: 600 };
+  assert.deepEqual(Study.courseHours([...rows, newcomer], today), { students: 5, hours: 7 }, 'under two weeks of tracking is left out');
+  assert.equal(Study.courseHours(rows.filter((r) => r.user_id !== 5), today), null, 'four students are too few to show');
+  const six = [...rows, { user_id: 6, day: '2027-04-03', minutes: 9 * 4 * 60 }];
+  assert.equal(Study.courseHours(six, today).hours, 7.5, 'an even count averages the middle two, to the half hour');
+});
+
 test('groups: names and join codes', () => {
   assert.deepEqual(Study.cleanName('  Res  study   squad ', 40, screenComment), { name: 'Res study squad' });
   assert.ok(Study.cleanName('x', 40, screenComment).error);
