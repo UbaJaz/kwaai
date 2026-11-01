@@ -1543,3 +1543,37 @@ test('course pages show real weekly hours once 5 students have timed the course'
   assert.match(page, /About 4 h a week<\/strong> of timed study, from 5 students who track PHY1012F/);
   db.prepare(`DELETE FROM study_sessions WHERE course = 'PHY1012F'`).run();
 });
+
+test('the weekly recap on /study and the Wrapped card', async () => {
+  const s = browser();
+  await s.signIn('wrap001@myuct.ac.za');
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'wrap001@myuct.ac.za'`).get().id;
+  const today = Study.saDay(Date.now());
+  const monday = Study.addDay(today, -Study.weekdayOf(today));
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', ?, ?, 0, 0, 90, ?, 'done')`);
+  add.run(uid, 'CSC1015F', Study.addDay(monday, -6), 90 * 60); // last Tuesday
+  add.run(uid, 'CSC1015F', Study.addDay(monday, -5), 60 * 60); // last Wednesday
+  add.run(uid, '', Study.addDay(monday, -12), 50 * 60); // the week before
+  let page = await s.text('/study');
+  assert.match(page, /Last week[\s\S]*?<strong>2 h 30 min<\/strong> over 2 days, up 200% on the week before\./);
+  assert.match(page, /Most time on CSC1015F \(2 h 30 min\)/);
+  assert.doesNotMatch(page, /You came/, 'no rank for a student who is not on the leaderboards');
+  await s.post('/account/profile', { join: '1', show: 'anon', faculty: 'sci' });
+  assert.match(await s.text('/study'), /You came \d+(st|nd|rd|th) at UCT and \d+(st|nd|rd|th) in Science\./);
+
+  // Wrapped, for the semester that holds last Tuesday (if it was in a semester at all)
+  const terms = require('../data/terms.json').years;
+  const tue = Study.addDay(monday, -6);
+  const sem = Object.entries(terms).flatMap(([y, t]) => ['s1', 's2'].map((k) => ({ year: y, term: k, ...t[k] }))).find((x) => tue >= x.start && tue <= x.end);
+  if (sem) {
+    page = await s.text(`/study/wrapped?year=${sem.year}&term=${sem.term}`);
+    const inSem = [[Study.addDay(monday, -6), 90], [Study.addDay(monday, -5), 60], [Study.addDay(monday, -12), 50]].filter(([d]) => d >= sem.start && d <= sem.end);
+    const hours = Math.round(inSem.reduce((n, [, m]) => n + m, 0) / 6) / 10;
+    assert.ok(page.includes(`class="wrapped-big">${hours} h</p>`), `${hours} h of timed study in the semester`);
+    assert.match(page, /<b>CSC1015F<\/b> Computer Science 1015/);
+    assert.match(page, /Longest streak<\/dt><dd>2 days/);
+    assert.doesNotMatch(/<article class="wrapped-card"[\s\S]*?<\/article>/.exec(page)[0], /wrap001/, 'no email on the card');
+  }
+  assert.equal((await s.get('/study/wrapped?year=1999&term=s1')).status, 200, 'an unknown semester falls back to the latest');
+  assert.match((await browser().get('/study/wrapped')).headers.get('location'), /^\/login/);
+});

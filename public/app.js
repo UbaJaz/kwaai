@@ -217,6 +217,13 @@ document.querySelectorAll('form[action="/logout"]').forEach((form) => form.addEv
   if (window.caches) caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
 }));
 
+// Wrapped: the phone's share sheet, where there is one
+document.querySelectorAll('[data-share]').forEach((btn) => {
+  if (!navigator.share) return;
+  btn.hidden = false;
+  btn.addEventListener('click', () => navigator.share({ title: 'My semester on Kwaai', text: btn.dataset.shareText, url: btn.dataset.shareUrl }).catch(() => { /* closed the share sheet */ }));
+});
+
 // the study heatmap opens scrolled to this week, its right-hand end
 document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el.scrollWidth; });
 

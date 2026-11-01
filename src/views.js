@@ -1260,7 +1260,7 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
     <ul class="plain">${sessions.map((s) => html`<li>${clock(s.started_at)} · ${s.course ? html`<a class="code" href="/courses/${s.course}">${s.course}</a>` : 'General study'} · ${Study.hoursText(Math.floor(s.credited_sec / 60))}</li>`)}</ul>`
       : html`<p class="meta">Nothing logged yet today.</p>`}
   </section>` : ''}
-  ${board ? studyBoard(board) : ''}
+  ${board ? studyBoard(board, ctx.uni.short) : ''}
   <p class="fine">How time counts: while the timer runs, this page checks in with Kwaai about once a minute. Time with the page closed or offline doesn't count, a session counts at most 5 minutes past its length, and a day counts at most 14 hours. There's no way to type hours in by hand, so everyone's numbers mean the same thing.</p>`);
 }
 
@@ -1396,9 +1396,53 @@ function group(ctx, { group: g, owner, period, rows, idle, invite, live = [] }) 
   <p class="fine">Minutes come from the study timer, with the same rules as the leaderboards.${owner ? ' You started this group, so you can remove members or delete it. If you leave, the longest-standing member takes over.' : ''}</p>`);
 }
 
+// ---------- recap and Wrapped ----------
+const rankText = (ranks, uniShort) => (ranks?.uni ? [`${ordinal(ranks.uni)} at ${uniShort}`, ranks.faculty ? `${ordinal(ranks.faculty)} in ${ranks.facultyName}` : null].filter(Boolean).join(' and ') : '');
+
+function weekRecapCard(r, uniShort) {
+  const top = r.courses[0];
+  return html`<div class="study-recap">
+    <h3>Last week <span class="meta">${dayLabel(r.from)} to ${dayLabel(r.to)}</span></h3>
+    <p><strong>${Study.hoursText(r.minutes)}</strong>${r.minutes ? ` over ${plural(r.days, 'day')}` : ''}${r.change !== null ? html`, ${r.change >= 0 ? `up ${r.change}%` : `down ${-r.change}%`} on the week before` : ''}.</p>
+    ${top ? html`<p class="meta">Most time on ${top.code || 'general study'} (${Study.hoursText(top.minutes)}). Best day: ${dayLabel(r.bestDay.day)}, ${Study.hoursText(r.bestDay.minutes)}.${r.ranks?.uni ? ` You came ${rankText(r.ranks, uniShort)}.` : ''}</p>` : ''}
+    <p class="meta"><a href="/study/wrapped">Your semester so far, on one card</a></p>
+  </div>`;
+}
+
+const SEMESTER_NAME = { s1: 'Semester 1', s2: 'Semester 2' };
+function wrapped(ctx, { sem, w, ranks, others }) {
+  const title = `${SEMESTER_NAME[sem.term]} ${sem.year}${sem.running ? ' so far' : ''}`;
+  return layout({ ...ctx, title: `Your ${title}`, here: '/study' }, html`
+  <div class="wrapped-page">
+    <article class="wrapped-card" aria-labelledby="wrapped-title">
+      <p class="wrapped-kicker">kwaai · ${ctx.uni.short}</p>
+      <h1 id="wrapped-title">${title}</h1>
+      ${w.minutes ? html`
+      <p class="wrapped-big">${Math.round(w.minutes / 6) / 10} h</p>
+      <p class="wrapped-sub">of timed study</p>
+      <dl class="wrapped-stats">
+        <div><dt>Days studied</dt><dd>${w.days}</dd></div>
+        <div><dt>Longest streak</dt><dd>${plural(w.longest, 'day')}</dd></div>
+        <div><dt>Best day</dt><dd>${Study.hoursText(w.bestDay.minutes)}</dd></div>
+      </dl>
+      ${w.courses.length ? html`<h2>Most time on</h2>
+      <ol class="wrapped-courses">${w.courses.map((c) => html`<li><span>${c.code ? html`<b>${c.code}</b> ${c.title}` : 'General study'}</span><span>${Study.hoursText(c.minutes)}</span></li>`)}</ol>` : ''}
+      ${ranks?.uni ? html`<p class="wrapped-rank">${rankText(ranks, ctx.uni.short)}</p>` : ''}`
+      : html`<p class="wrapped-sub">No timed study yet this semester. <a href="/study">Start a timer</a> and this card fills itself in.</p>`}
+      <p class="wrapped-foot">${dayLabel(sem.start)} to ${dayLabel(sem.to)} · kwaai</p>
+    </article>
+    <div class="wrapped-actions">
+      ${w.minutes ? html`<button class="btn" type="button" data-share hidden data-share-text="${`I timed ${Math.round(w.minutes / 60)} hours of study in ${title} on Kwaai.`}" data-share-url="${ctx.site.origin}/study">Share</button>` : ''}
+      <p class="meta">Take a screenshot for your story. The card shows only what's on it: no email, and your name only if you add it.</p>
+      ${others.length > 1 ? html`<p class="meta">Other semesters: ${others.map((s, i) => html`${i ? ' · ' : ''}<a href="/study/wrapped?year=${s.year}&term=${s.term}">${SEMESTER_NAME[s.term]} ${s.year}</a>`)}</p>` : ''}
+      <p class="meta"><a href="/study">Back to Study</a></p>
+    </div>
+  </div>`);
+}
+
 // the signed-in dashboard: totals, a year of days as a heatmap (with the same days as a list), and this week by course
 const dayLabel = (d) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
-function studyBoard(b) {
+function studyBoard(b, uniShort) {
   const monthOf = (w) => w.find(Boolean).day.slice(0, 7);
   const monthName = (ym) => new Date(`${ym}-15T12:00:00Z`).toLocaleDateString('en-ZA', { month: 'short', timeZone: 'UTC' });
   const courseText = (courses) => Object.entries(courses).filter(([, m]) => m > 0).sort((x, y) => y[1] - x[1]).map(([c, m]) => `${c || 'General study'} ${Study.hoursText(m)}`).join(', ');
@@ -1406,6 +1450,7 @@ function studyBoard(b) {
   return html`
   <section class="card panel study-board" aria-labelledby="study-board">
     <h2 id="study-board">Your study</h2>
+    ${b.recap ? weekRecapCard(b.recap, uniShort) : ''}
     <dl class="study-stats">
       <div><dt>Today</dt><dd>${Study.hoursText(b.summary.today)}</dd></div>
       <div><dt>This week</dt><dd>${Study.hoursText(b.summary.week)}</dd></div>
@@ -1807,4 +1852,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };

@@ -448,6 +448,27 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .group-live { max-width: 720px; margin: 0 0 18px; }
 .group-live h2 { font-size: 1.05rem; }
 .study-hours { font-size: .93rem; margin: 0 0 6px; }
+.study-recap { background: var(--lime-soft); border-radius: var(--radius-sm); padding: 12px 16px; margin: 0 0 18px; }
+.study-recap h3 { font-size: 1rem; margin: 0 0 4px; }
+.study-recap p { margin: 4px 0 0; }
+/* Wrapped: one 9:16 card, sized to fill a phone screenshot */
+.wrapped-page { display: grid; justify-items: center; gap: 18px; padding: 24px 0; }
+.wrapped-card { width: min(100%, 380px); aspect-ratio: 9 / 16; background: var(--ink); color: var(--paper); border-radius: 22px; padding: 30px 26px; display: flex; flex-direction: column; overflow: hidden; }
+.wrapped-card a { color: var(--lime); }
+.wrapped-kicker { font: 600 .75rem/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--lime); margin: 0 0 14px; }
+.wrapped-card h1 { font-size: 1.6rem; margin: 0 0 18px; }
+.wrapped-big { font: 800 4.2rem/1 var(--display); letter-spacing: -.03em; margin: 0; color: var(--lime); }
+.wrapped-sub { margin: 4px 0 18px; color: color-mix(in srgb, var(--paper) 80%, transparent); }
+.wrapped-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 0 18px; }
+.wrapped-stats dt { font-size: .72rem; color: color-mix(in srgb, var(--paper) 70%, transparent); }
+.wrapped-stats dd { margin: 2px 0 0; font: 700 1.15rem/1.2 var(--display); }
+.wrapped-card h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: color-mix(in srgb, var(--paper) 70%, transparent); margin: 0 0 8px; }
+.wrapped-courses { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 8px; font-size: .9rem; }
+.wrapped-courses li { display: flex; justify-content: space-between; gap: 10px; }
+.wrapped-courses b { color: var(--lime); font-family: var(--mono); font-size: .82rem; }
+.wrapped-rank { font: 700 1.05rem/1.3 var(--display); margin: 0; }
+.wrapped-foot { margin: auto 0 0; font-size: .75rem; color: color-mix(in srgb, var(--paper) 60%, transparent); }
+.wrapped-actions { text-align: center; max-width: 380px; }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
