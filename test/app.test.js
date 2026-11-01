@@ -14,6 +14,7 @@ const Marks = require('../public/marks-math');
 const { revisionPlan, yearTimeline } = require('../src/year');
 const { planYear: planYearOf } = require('../src/week');
 const { UNIVERSITIES } = require('../src/universities');
+const Study = require('../src/study');
 const { scan: scanTables } = require('../scripts/import-tables');
 const { parseProgrammes, tidyName } = require('../scripts/import-programmes');
 const { parseStaff } = require('../scripts/import-staff');
@@ -248,6 +249,42 @@ test('week view: tuts and pracs from the handbook, picks, own blocks, study time
   assert.match(ics, /EXDATE:20270322T070000Z,20270329T070000Z/, 'the March vacation Mondays');
   assert.ok(ics.split('\r\n').every((l) => Buffer.byteLength(l) <= 75), 'lines are folded at 75 bytes');
   assert.equal((ics.match(/BEGIN:VEVENT/g) || []).length, 5);
+});
+
+test('study timer: heartbeats credit time, gaps and caps stop padding', () => {
+  const known = (c) => c === 'CSC1015F';
+  assert.deepEqual(Study.parseStart({ course: 'csc1015f', minutes: '25' }, known), { course: 'CSC1015F', minutes: 25 });
+  assert.deepEqual(Study.parseStart({ course: '', minutes: '50' }, known), { course: '', minutes: 50 });
+  assert.ok(Study.parseStart({ course: 'XYZ9999F', minutes: '25' }, known).error);
+  assert.ok(Study.parseStart({ minutes: '121' }, known).error);
+  assert.ok(Study.parseStart({ minutes: '2' }, known).error);
+  assert.ok(Study.parseStart({ minutes: '25.5' }, known).error);
+
+  const t0 = Date.parse('2027-03-01T08:00:00Z');
+  let s = { started_at: t0, last_beat: t0, planned_min: 25, credited_sec: 0 };
+  s = { ...s, ...Study.beat(s, t0 + 60_000) };
+  assert.equal(s.credited_sec, 60);
+  s = { ...s, ...Study.beat(s, t0 + 60_000 + 10 * 60_000) };
+  assert.equal(s.credited_sec, 60, 'a 10-minute gap (tab closed) earns nothing');
+  for (let m = 12; m <= 40; m++) s = { ...s, ...Study.beat(s, t0 + m * 60_000) };
+  assert.equal(s.credited_sec, 30 * 60, 'never more than the planned 25 minutes plus 5 of grace');
+  assert.equal(Study.beat(s, t0).last_beat, s.last_beat, 'a heartbeat from the past changes nothing');
+
+  assert.equal(Study.isStale({ started_at: t0, last_beat: t0, planned_min: 25 }, t0 + 4 * 60_000), false);
+  assert.equal(Study.isStale({ started_at: t0, last_beat: t0, planned_min: 25 }, t0 + 6 * 60_000), true, 'no heartbeat for over 5 minutes');
+  assert.equal(Study.isStale({ started_at: t0, last_beat: t0 + 31 * 60_000, planned_min: 25 }, t0 + 31 * 60_000), true, 'past planned length plus grace');
+
+  assert.equal(Study.saDay(Date.parse('2027-03-01T21:59:00Z')), '2027-03-01');
+  assert.equal(Study.saDay(Date.parse('2027-03-01T22:00:00Z')), '2027-03-02', 'midnight in South Africa is 22:00 UTC');
+  const days = Study.dayTotals([
+    { day: '2027-03-01', course: 'CSC1015F', credited_sec: 25 * 60 + 59 },
+    { day: '2027-03-01', course: '', credited_sec: 600 },
+    { day: '2027-03-02', course: 'CSC1015F', credited_sec: 20 * 3600 },
+  ]);
+  assert.deepEqual(days[0], { day: '2027-03-01', minutes: 35, courses: { CSC1015F: 25, '': 10 } });
+  assert.equal(days[1].minutes, 14 * 60, 'a day counts 14 hours at most');
+  assert.equal(Study.hoursText(65), '1 h 5 min');
+  assert.equal(Study.hoursText(45), '45 min');
 });
 
 // ---- end to end: sign in, review, report, moderate ----
