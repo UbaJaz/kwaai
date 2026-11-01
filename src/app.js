@@ -312,7 +312,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const cal = /(?:^|;\s*)cal=([A-Za-z0-9_-]{22})/.exec(req.headers.cookie || '')?.[1];
     if (cal) q(`UPDATE calendars SET query = ? WHERE id = ?`).run(calendarQuery(codes, week), cal);
   };
-  const PLAN_KEYS = ['c', 'f', 'm', 'y', 'done', 't', 'pk', 'bl', 'st'];
+  const PLAN_KEYS = ['c', 'f', 'm', 'y', 'done', 't', 'pk', 'bl', 'st', 'sr'];
   // the plan from the link if it has one, else from this device's cookie (which holds the query string; older ones
   // hold only the course codes)
   function readPlan(req, query = req.query) {

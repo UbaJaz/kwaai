@@ -30,7 +30,9 @@ function parseWeek(q = {}) {
     .map((m) => ({ day: DAYS[Number(m[1])], start: `${m[2].slice(0, 2)}:${m[2].slice(2)}`, end: `${m[3].slice(0, 2)}:${m[3].slice(2)}`, label: m[4].trim() }))
     .filter((b) => validSpan(b.start, b.end))
     .slice(0, MAX_BLOCKS);
-  return { t: q.t === 's1' || q.t === 's2' ? q.t : '', picks, blocks, study: q.st === '1' };
+  // sr: a daily study reminder in the calendar at that time ("2000" is 20:00), for keeping a study streak
+  const reminder = /^([01]\d|2[0-3])[0-5]\d$/.test(String(q.sr || '')) ? `${q.sr.slice(0, 2)}:${q.sr.slice(2)}` : '';
+  return { t: q.t === 's1' || q.t === 's2' ? q.t : '', picks, blocks, study: q.st === '1', reminder };
 }
 const validSpan = (start, end) => /^([01]\d|2[0-3]):[0-5]\d$/.test(start) && /^([01]\d|2[0-3]):[0-5]\d$/.test(end) && toMin(end) > toMin(start) && toMin(end) - toMin(start) <= 8 * 60;
 const blockParam = (b) => `${DAYS.indexOf(b.day)}~${b.start.replace(':', '')}~${b.end.replace(':', '')}~${b.label}`;
@@ -40,6 +42,7 @@ function weekParams(w) {
     pk: Object.entries(w.picks).map(([k, v]) => `${k}${v}`).join(','),
     bl: w.blocks.map(blockParam).join(','),
     st: w.study ? '1' : '',
+    sr: (w.reminder || '').replace(':', ''),
   }).filter(([, v]) => v));
 }
 
@@ -246,6 +249,18 @@ function icsFor(courses, week, { year = planYear(), origin = '', crowd = {}, dat
     lines.push('BEGIN:VEVENT', `UID:${uid}@kwaai`, `DTSTAMP:${stamp}`, `DTSTART;VALUE=DATE:${r.start.replace(/-/g, '')}`, `DTEND;VALUE=DATE:${addDays(r.start, 1).replace(/-/g, '')}`,
       `SUMMARY:${escapeText(`Start revising ${r.code}`)}`,
       `DESCRIPTION:${escapeText(`${r.code} exam on ${r.date}, ${r.days} days away. Why this much time: ${r.reasons.join('; ')}.${origin ? `\n${origin}/year` : ''}`)}`,
+      'END:VEVENT');
+  }
+  // the daily study reminder: 30 minutes every day from the first day of term to the last, with a notification
+  const first = termDates(year, 's1');
+  const last = termDates(year, 's2');
+  if (week.reminder && first && last) {
+    const uid = crypto.createHash('sha1').update(['reminder', year, week.reminder].join('|')).digest('hex').slice(0, 20);
+    lines.push('BEGIN:VEVENT', `UID:${uid}@kwaai`, `DTSTAMP:${stamp}`, `DTSTART:${utc(first.start, week.reminder)}`, `DTEND:${utc(first.start, toTime(Math.min(toMin(week.reminder) + 30, 23 * 60 + 59)))}`,
+      `RRULE:FREQ=DAILY;UNTIL=${utc(last.end, '23:59')}`,
+      'SUMMARY:Study for 30 minutes',
+      `DESCRIPTION:${escapeText(`30 minutes of timed study keeps your Kwaai streak going. Vacations pause it.${origin ? `\n${origin}/study` : ''}`)}`,
+      'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Study for 30 minutes', 'TRIGGER:PT0M', 'END:VALARM',
       'END:VEVENT');
   }
   lines.push('END:VCALENDAR');
