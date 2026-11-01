@@ -287,6 +287,26 @@ test('study timer: heartbeats credit time, gaps and caps stop padding', () => {
   assert.equal(Study.hoursText(45), '45 min');
 });
 
+test('study dashboard: heatmap weeks, totals and weekly goals', () => {
+  assert.deepEqual([0, 1, 29, 30, 59, 60, 119, 120, 600].map(Study.levelOf), [0, 1, 1, 2, 2, 3, 3, 4, 4]);
+  const totals = Study.dayTotals([
+    { day: '2027-03-01', course: 'CSC1015F', credited_sec: 3000 }, // Monday
+    { day: '2027-03-03', course: 'MAM1031F', credited_sec: 1800 },
+    { day: '2027-02-27', course: 'CSC1015F', credited_sec: 600 }, // the Saturday before
+  ]);
+  const weeks = Study.heatmap(totals, '2027-03-03');
+  assert.equal(weeks.length, 52);
+  assert.equal(weeks[0][0].day, '2026-03-09', 'starts on a Monday 51 weeks before this week');
+  assert.deepEqual(weeks[51].map((d) => d && d.minutes), [50, 0, 30, null, null, null, null], 'days after today are empty');
+  assert.equal(weeks[51][0].level, 2);
+  assert.deepEqual(Study.summary(totals, '2027-03-03'), { today: 30, week: 80, month: 80, weekCourses: { CSC1015F: 50, MAM1031F: 30 } });
+  const weeksOf = (t) => ({ s1: 16, s2: 14 }[t]);
+  assert.equal(Study.weeklyGoal({ code: 'CSC1015F', credits: 18 }, weeksOf), 11);
+  assert.equal(Study.weeklyGoal({ code: 'CSC1016S', credits: 18 }, weeksOf), 13);
+  assert.equal(Study.weeklyGoal({ code: 'MAM1000W', credits: 36 }, weeksOf), 12);
+  assert.equal(Study.weeklyGoal({ code: 'XYZ1000F', credits: null }, weeksOf), null);
+});
+
 // ---- end to end: sign in, review, report, moderate ----
 
 let server;
@@ -1221,4 +1241,29 @@ test('Today and the week link to the study timer', async () => {
   const week = await (await fetch(`${base}/week?c=CSC1015F,MAM1031F&st=1`)).text();
   assert.match(week, /href="\/study\?course=(CSC1015F|MAM1031F)">Start the timer/, 'suggested study blocks start a timer for their course');
   assert.match(await (await fetch(`${base}/study?course=MAM1031F`)).text(), /<option value="MAM1031F" selected>/);
+});
+
+test('study dashboard: totals, heatmap, a day\'s detail and this week by course', async () => {
+  const s = browser();
+  await s.signIn('board001@myuct.ac.za');
+  let page = await s.text('/study');
+  assert.match(page, /Your first session shows up here/, 'empty state');
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'board001@myuct.ac.za'`).get().id;
+  const today = Study.saDay(Date.now());
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', ?, ?, 0, 0, 50, ?, 'done')`);
+  add.run(uid, 'CSC1015F', today, 50 * 60);
+  add.run(uid, '', today, 10 * 60);
+  add.run(uid, 'MAM1031F', Study.addDay(today, -400), 3600); // older than a year: not on the heatmap
+  page = await s.text('/study?c=CSC1015F');
+  assert.match(page, /<dt>Today<\/dt><dd>1 h<\/dd>/);
+  assert.ok(page.includes(`class="h3 h-today" href="/study?day=${today}#day"`),'an hour today is the second-darkest shade');
+  assert.equal((page.match(/class="h\d/g) || []).length, (page.match(/<a class="h\d/g) || []).length + 5, 'every past day is a cell (plus 5 legend swatches)');
+  assert.match(page, /CSC1015F<\/a> Computer Science 1015[\s\S]*?1 h|50 min of about \d+ h/);
+  assert.match(page, /Plus 10 min of general study/);
+  assert.match(page, /Every day you studied, as a list/);
+  assert.doesNotMatch(page, /MAM1031F 1 h/, 'sessions older than a year stay off the dashboard');
+  page = await s.text(`/study?day=${today}`);
+  assert.match(page, /id="day"[\s\S]*?CSC1015F<\/a> · 50 min[\s\S]*?General study · 10 min/);
+  assert.match(await s.text('/study?day=nonsense'), /Your study/, 'a bad day is ignored');
+  assert.doesNotMatch(await browser().text('/study'), /Your study/, 'signed out: no dashboard');
 });

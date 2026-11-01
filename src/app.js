@@ -5,7 +5,7 @@ const express = require('express');
 const views = require('./views');
 const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
 const { analysePlan, REPLACED, parseProfile, hasProfile, profileParams, majorNeeds, creditAdvice, programmeOptions, facultyOptions } = require('./planner');
-const { parseWeek, weekParams, buildWeek, icsFor, DAYS, termDates, planYear } = require('./week');
+const { parseWeek, weekParams, buildWeek, icsFor, DAYS, termDates, planYear, semesterWeeks } = require('./week');
 const Marks = require('../public/marks-math');
 const { revisionPlan, yearTimeline } = require('./year');
 const { parseFact, screenFact, groupFacts, weekTopics, crowdSlots } = require('./facts');
@@ -635,8 +635,34 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.set('Cache-Control', 'no-store').page(views.study(req.ctx, {
       courses, pick: current?.course || (courses.some((c) => c.code === pick) ? pick : ''), current: current && sessionState(current),
       today: Study.dayTotals(sessions.filter((s) => s.status === 'done'))[0] || null, sessions: sessions.filter((s) => s.status === 'done'),
+      board: req.user ? studyBoard(req.user.id, codes, req.query.day) : null,
     }));
   });
+
+  // the signed-in dashboard: a year of days for the heatmap, this week by course against the handbook's hours, and
+  // one day's detail when a heatmap day is opened (?day=2027-03-01)
+  function studyBoard(userId, codes, askedDay) {
+    const today = Study.saDay(Date.now());
+    const rows = q(`SELECT course, credited_sec, day FROM study_sessions WHERE user_id = ? AND status = 'done' AND day >= ?`).all(userId, Study.addDay(today, -371));
+    const totals = Study.dayTotals(rows);
+    const sum = Study.summary(totals, today);
+    // this semester's courses from the plan (by date: from the second semester's start it's S courses), plus any
+    // course studied this week
+    const year = Number(today.slice(0, 4));
+    const term = (termDates(year, 's2')?.start ?? `${year}-07-15`) <= today ? 's2' : 's1';
+    const inTerm = codes.filter((c) => (term === 's1' ? !c.endsWith('S') : !c.endsWith('F')));
+    const goalCodes = [...new Set([...inTerm, ...Object.keys(sum.weekCourses).filter(Boolean)])];
+    const goalRows = goalCodes.length ? q(`SELECT code, title, credits FROM courses WHERE code IN (${goalCodes.map(() => '?').join(',')})`).all(...goalCodes) : [];
+    const weeksOf = (t) => semesterWeeks(termDates(year, t) ? year : planYear(), t);
+    const goals = goalRows.map((c) => ({ code: c.code, title: c.title, goal: Study.weeklyGoal(c, weeksOf), minutes: sum.weekCourses[c.code] || 0 }))
+      .sort((x, y) => y.minutes - x.minutes || x.code.localeCompare(y.code));
+    const day = /^\d{4}-\d{2}-\d{2}$/.test(String(askedDay || '')) ? askedDay : null;
+    return {
+      today, weeks: Study.heatmap(totals, today), summary: sum, goals, general: sum.weekCourses[''] || 0,
+      dayDetail: day ? totals.find((t) => t.day === day) || { day, minutes: 0, courses: {} } : null,
+      days: totals.filter((t) => t.minutes > 0).reverse(),
+    };
+  }
 
   app.post('/study/start', requireUser, limits.study, (req, res) => {
     const parsed = Study.parseStart(req.body, courseExists);
