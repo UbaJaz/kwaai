@@ -596,7 +596,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const upcoming = datedFor(facts).filter((d) => d.date >= date && d.date <= soon);
     const todays = [...new Set(classes.map((e) => e.code).filter(Boolean))];
     const tip = todays.length ? q(`SELECT course, tip FROM verdicts WHERE status = 'published' AND tip != '' AND course IN (${todays.map(() => '?').join(',')}) ORDER BY RANDOM() LIMIT 1`).get(...todays) : null;
-    return { date, term, note, weekend: weekday === 0 || weekday === 6, dayName, classes, upcoming, tip, marks: marksCourses(wk.courses.map((c) => c.code)) };
+    return { date, term, note, weekend: weekday === 0 || weekday === 6, dayName, classes, upcoming, tip, marks: marksCourses(wk.courses.map((c) => c.code)),
+      // courses to start a study timer for: this term's, or the whole plan between terms
+      study: wk.courses.length ? wk.courses.map((c) => c.code) : codes };
   }
 
   app.get('/today', (req, res) => {

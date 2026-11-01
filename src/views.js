@@ -946,7 +946,7 @@ function weekAgenda(wk) {
       <h3>${day}</h3>
       ${today.length ? html`<ul class="plain">${today.map((e) => html`<li class="agenda-ev ev-${e.kind}">
         <span class="agenda-time">${e.start}–${e.end}</span>
-        <span>${e.code && e.kind !== 'set' && e.kind !== 'own' ? html`<a href="/courses/${e.code}" class="code">${e.code}</a> ${KIND_LABEL[e.kind]}` : e.label}${e.suggested ? html` <span class="meta">(suggested)</span>` : ''}</span>
+        <span>${e.code && e.kind !== 'set' && e.kind !== 'own' ? html`<a href="/courses/${e.code}" class="code">${e.code}</a> ${KIND_LABEL[e.kind]}` : e.label}${e.suggested ? html` <span class="meta">(suggested)</span>` : ''}${e.kind === 'study' && e.code ? html` · <a href="/study?course=${e.code}">Start the timer</a>` : ''}</span>
       </li>`)}</ul>` : html`<p class="meta">Nothing planned.</p>`}
     </section>`;
   })}</div>`;
@@ -1162,6 +1162,11 @@ function today(ctx, { today: t, weekLink }) {
     <section class="card panel" aria-labelledby="today-dp" data-dp-alerts data-courses="${JSON.stringify(t.marks.map((c) => ({ code: c.code, items: c.items, dpMin: c.dpMin, examSub: c.examSub })))}">
       <h2 id="today-dp">DP and marks</h2>
       <p class="meta dp-alerts-text">Your marks are saved on this device only. <a href="/marks">Open Marks</a> to type them in and see where you stand.</p>
+    </section>
+    <section class="card panel" aria-labelledby="today-study">
+      <h2 id="today-study">Study</h2>
+      ${t.study.length ? html`<p class="chips">${t.study.map((code) => html`<a class="chip" href="/study?course=${code}">${code}</a>`)}</p>` : ''}
+      <p class="meta"><a href="/study">Start a study timer</a> and Kwaai logs the time against the course.</p>
     </section>
     ${t.tip ? html`<section class="card panel" aria-labelledby="today-tip">
       <h2 id="today-tip">From students who took ${t.tip.course}</h2>

@@ -1214,3 +1214,11 @@ test('study timer: start, heartbeats, stop, one at a time, and account deletion'
   await s.post('/account/delete', {});
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM study_sessions WHERE user_id = ?').get(uid).n, 0, 'deleting the account deletes the study log');
 });
+
+test('Today and the week link to the study timer', async () => {
+  const today = await (await fetch(`${base}/today?c=CSC1015F,MAM1031F`)).text();
+  assert.match(today, /href="\/study\?course=CSC1015F"/);
+  const week = await (await fetch(`${base}/week?c=CSC1015F,MAM1031F&st=1`)).text();
+  assert.match(week, /href="\/study\?course=(CSC1015F|MAM1031F)">Start the timer/, 'suggested study blocks start a timer for their course');
+  assert.match(await (await fetch(`${base}/study?course=MAM1031F`)).text(), /<option value="MAM1031F" selected>/);
+});
