@@ -16,6 +16,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -51,6 +52,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at lectures and tutorials and completion of assignments.",
       "assessment": "Assignments and class tests count 50% towards the final mark and one 3-hour examination written in November counts 50%. A sub-minimum of 40% is required for the examination.",
@@ -71,6 +73,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Class participation (workshops/tutorials and online discussions) 20%, online tests 20%, final exam 30%, final project 30%. NOTE: The allocation of 30% to the final exam breaks with the traditional 50% threshold. Given the format and intense interactive nature of the courses, the decision has been made that a large component of student assessment should be a course project which allows DEPARTMENTS IN THE FACULTY 59 them to engage with and reflect on their changing understanding of decolonisation…",
@@ -98,6 +101,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -133,6 +137,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -159,6 +164,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Completion of assignments.",
       "assessment": "Assignments count 20%; a long paper counts 40%; one 3-hour examination in November counts 40%.",
@@ -186,6 +192,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -220,6 +227,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -266,6 +274,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Participation in all field excursions and completion of all assignments.",
       "assessment": "Assignments 30%; Research paper 20%; Practical examination 25%; Theory examination 25%.",
@@ -286,6 +295,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "On average the course work component counts 70% (this includes 50% from final examinations) and the research project counts 30%. A sub-minimum of 50% is required for the research project. These component parts of the course will be combined in a final overall mark which will be reflected against the course code AGE4000W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
@@ -306,6 +316,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "On average the course work component counts 70% (this includes 50% from final examinations) and the research project counts 30%. A sub-minimum of 50% is required for the research project. These component parts of the course will be combined in a final overall mark which will be reflected against the course code AGE4001W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
@@ -334,6 +345,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -383,6 +395,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -432,6 +445,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -481,6 +495,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -530,6 +545,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -563,6 +579,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory lecture attendance (minimum 50%); class record of at least 40%.",
       "assessment": "The assessment of the coursework is based on the class records and examinations for each of the modules. In general they are made up from tests, oral presentations, projects and a final examination. Examinations count 40%, class record 40% and research project 20% of the final result. The project component must be passed at 50%.",
@@ -581,6 +598,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "On average, examinations of individual modules count 60% of the final result, and marked practical work counts 40%. DEPARTMENTS IN THE FACULTY 69",
@@ -599,6 +617,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "50% average for the two projects.",
       "assessment": "Two projects: 25% each. Practical 'take-home' data science examination: 50%. A subminimum of 50% for each of the projects, and examination component will be required.",
@@ -627,6 +646,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -691,6 +711,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -740,6 +761,52 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Evolution as a means of interpreting change with time"
+        },
+        {
+          "week": 2,
+          "text": "Modern theories on the mechanisms of evolution"
+        },
+        {
+          "week": 3,
+          "text": "The origin of species, including humans"
+        },
+        {
+          "week": 4,
+          "text": "Structure and functioning of the simplest microbial life forms"
+        },
+        {
+          "week": 5,
+          "text": "Structure and life cycles of fungi"
+        },
+        {
+          "week": 6,
+          "text": "The evolution of aquatic and terrestrial plants"
+        },
+        {
+          "week": 7,
+          "text": "The diversity and adaptations of invertebrate animals"
+        },
+        {
+          "week": 8,
+          "text": "The development and adaptations of chordate groups"
+        },
+        {
+          "week": 9,
+          "text": "Primate diversity and evolution"
+        },
+        {
+          "week": 10,
+          "text": "Conservation and biodiversity issues in relation to South African biomes and global change"
+        },
+        {
+          "week": 11,
+          "text": "A strong practical component which further examines biodiversity and related concepts"
+        }
+      ],
       "sessions": [
         {
           "kind": "tut",
@@ -783,6 +850,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -825,6 +893,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -867,6 +936,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -909,6 +979,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -951,6 +1022,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -993,6 +1065,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -1035,6 +1108,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1076,6 +1150,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -1119,6 +1194,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1168,6 +1244,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1209,6 +1286,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance of field camp and all lectures are required for the DP. The non-project component of the course carries a sub-minimum of 50% and the project component a sub-minimum of 50%.",
       "assessment": "Two 3-hour examinations written in November count 20%; project and research seminar count 40%; compulsory coursework counts 20%; elective coursework counts 20%. These component DEPARTMENTS IN THE FACULTY 83 parts of the course will be combined in a final overall mark which will be reflected against the course code BIO4000W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
@@ -1229,6 +1307,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance of field camp and all lectures are required for the DP. The non-project component of the course carries a sub-minimum of 50% and the project component a sub-minimum of 50%.",
       "assessment": "Two 3-hour examinations written in November count 20%; project and research seminar count 40%; compulsory coursework counts 20%; elective coursework counts 20%. These component parts of the course will be combined in a final overall mark which will be reflected against the course code BIO4001W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
@@ -1249,6 +1328,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Each student receives a mark for each of the modules, and the modules are examined in two examinations.",
@@ -1270,6 +1350,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Students must pass all coursework components with a subminimum of 40% for the fundamental course BIO5013Z and the disciplinary courses (BIO5014Z and SEA5011Z); an aggregate coursework mark of 50% is required. A composite grade of the performance on the coursework component as a whole will be reflected against the assessment course code BIO5012W. The minor dissertation component is 50% of the degree.",
@@ -1291,6 +1372,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Every module is assessed independently either with a class test or individual project assignments. The syllabus and the relative weight for each module are described in a handbook that",
@@ -1311,6 +1393,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Every module is assessed independently either with a class test or individual project assignments. The syllabus and the relative weight for each module are described in a handbook that will be made available on the BIO5012W website (hosted by the Marine and Antarctic Research Centre for Innovation and Sustainability).",
@@ -1339,6 +1422,7 @@
         "Wednesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1407,6 +1491,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1466,6 +1551,7 @@
         "Wednesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1515,6 +1601,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1579,6 +1666,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -1618,6 +1706,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1661,6 +1750,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1709,6 +1799,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1759,6 +1850,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1844,6 +1936,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1929,6 +2022,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -2003,6 +2097,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -2039,6 +2134,24 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Concurrent and parallel computing (including practical work in Java)"
+        },
+        {
+          "week": 4,
+          "text": "Computer architecture"
+        },
+        {
+          "week": 7,
+          "text": "An introduction to Society"
+        },
+        {
+          "week": 10,
+          "text": "Theory of Computing (including Turing Machines and the limits of computation)"
+        }
+      ],
       "sessions": [
         {
           "kind": "prac",
@@ -2067,6 +2180,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Practical programming examination counts for 100%",
@@ -2087,6 +2201,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Proposal 20%, Final research report 80%",
@@ -2107,6 +2222,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Proposal 20%, Final research report 80%",
@@ -2135,6 +2251,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -2171,6 +2288,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -2207,6 +2325,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -2243,6 +2362,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -2279,6 +2399,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -2313,6 +2434,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -2347,6 +2469,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -2381,6 +2504,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -2415,6 +2539,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -2441,6 +2566,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -2459,6 +2585,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50% and Coursework: 50%",
@@ -2477,6 +2604,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50% and Coursework: 50%",
@@ -2497,6 +2625,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for assignment component. DEPARTMENTS IN THE FACULTY 109",
       "assessment": "Students will be assessed with assignments (50%) and an exam (50%). A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
@@ -2517,6 +2646,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "The practical aspects of the work will be evaluated through: a series of 4 NVP assignments (10%/15%/35%/40%), culminating in a business plan; a literature review for the project (35%) and the project proposal (40%). NVP and RM are equally weighted.",
@@ -2537,6 +2667,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 50%; Practical assignments: 50%",
@@ -2557,6 +2688,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
@@ -2575,6 +2707,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
@@ -2593,6 +2726,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
@@ -2613,6 +2747,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None DEPARTMENTS IN THE FACULTY 111",
       "assessment": "Participation: 5% (measured by participation in user studies, in-class activities, in-class discussion/presentations, and pre-class quizzes online) Individual Practical Assessments: 15%. Group Project Assessments: 30% Final Exam: 50%",
@@ -2633,6 +2768,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
@@ -2653,6 +2789,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
@@ -2673,6 +2810,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
@@ -2693,6 +2831,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 50%; Coursework: 50%; Subminima of 45% for both exam and the assignments.",
@@ -2713,6 +2852,40 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "The rendering pipeline and rasterization"
+        },
+        {
+          "week": 2,
+          "text": "3D mesh model representation"
+        },
+        {
+          "week": 4,
+          "text": "Homogeneous coordinates"
+        },
+        {
+          "week": 5,
+          "text": "Modelling and viewing transformations"
+        },
+        {
+          "week": 7,
+          "text": "Shading, lighting and texturing"
+        },
+        {
+          "week": 8,
+          "text": "GLSL shader programming"
+        },
+        {
+          "week": 10,
+          "text": "OpenGL/WebGL programming"
+        },
+        {
+          "week": 11,
+          "text": "Advanced rendering - ray-tracing"
+        }
+      ],
       "sessions": [],
       "dp": "40% in the practical assignments for the course.",
       "assessment": "Assignment (40%), Exam (60%)",
@@ -2733,6 +2906,20 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Reasoning in propositional logic with tableaux algorithms 2"
+        },
+        {
+          "week": 5,
+          "text": "The Description Logic ALC 3"
+        },
+        {
+          "week": 9,
+          "text": "Reasoning in Description Logics with tableaux algorithms"
+        }
+      ],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: open book, 3 hours, 50%; Assignments: 50%.",
@@ -2753,6 +2940,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "24-hour take-home exam, 50%; Assignments: 50%.",
@@ -2773,6 +2961,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: 24 hour take-home exam, 50%; Assignments: 50%",
@@ -2793,6 +2982,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: closed book, 2 hours, 60%; Practical assignment: 40%.",
@@ -2813,6 +3003,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50%; Practical Work: 50%. DEPARTMENTS IN THE FACULTY 115 Master's specialising in Computer Science by Dissertation",
@@ -2833,6 +3024,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Final examination: 50%; Practical assignments: 50%. A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
@@ -2853,6 +3045,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Students will be assessed with assignments (50%) and an exam (50%). A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
@@ -2873,6 +3066,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Final examination: 50%; Practical assignments: 50%. A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
@@ -2891,6 +3085,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Final examination: 50%; Practical assignments: 50%. A sub-minimum of 40% will be required for each of the assignment and exam components of the course. DEPARTMENTS IN THE FACULTY 125",
@@ -2909,6 +3104,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Final examination: 50%; Practical assignments: 50%. A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
@@ -2929,6 +3125,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Introduction to IT Research"
+        },
+        {
+          "week": 2,
+          "text": "Ethics in Research"
+        },
+        {
+          "week": 3,
+          "text": "Conducting a Literature Review"
+        },
+        {
+          "week": 4,
+          "text": "Finding a Research Question/Goal"
+        },
+        {
+          "week": 5,
+          "text": "Project Management"
+        },
+        {
+          "week": 6,
+          "text": "Research Proposals"
+        },
+        {
+          "week": 7,
+          "text": "Experimentation"
+        },
+        {
+          "week": 8,
+          "text": "Prototypes"
+        },
+        {
+          "week": 9,
+          "text": "Case Studies"
+        },
+        {
+          "week": 10,
+          "text": "Surveys"
+        },
+        {
+          "week": 11,
+          "text": "Conducting Observations"
+        },
+        {
+          "week": 12,
+          "text": "Testing in IT Research"
+        }
+      ],
       "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Final examination: 50%; Practical assignments: 50%. A sub-minimum of 40% will be required for each of the assignment and exam components of the course. Master's specialising in Data Science For details of this course, refer to the Department of Statistical Sciences. The curriculum structure is outlined in the front section of this book.",
@@ -2949,6 +3195,52 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "An introduction to finding and reading research papers"
+        },
+        {
+          "week": 2,
+          "text": "Literature reviews"
+        },
+        {
+          "week": 3,
+          "text": "Writing research proposals"
+        },
+        {
+          "week": 4,
+          "text": "Problem statements, research questions, and hypotheses"
+        },
+        {
+          "week": 5,
+          "text": "Types of research within Computer Science"
+        },
+        {
+          "week": 6,
+          "text": "Research Ethics within Computer Science"
+        },
+        {
+          "week": 7,
+          "text": "Scientific and technical writing"
+        },
+        {
+          "week": 8,
+          "text": "Qualitative and quantitative research methods"
+        },
+        {
+          "week": 9,
+          "text": "Research statistics"
+        },
+        {
+          "week": 10,
+          "text": "Research planning and grant writing"
+        },
+        {
+          "week": 11,
+          "text": "Academic career planning"
+        }
+      ],
       "sessions": [],
       "dp": "None",
       "assessment": "A submitted literature review (50%) and research proposal (50%). DEPARTMENTS IN THE FACULTY 117",
@@ -2969,6 +3261,48 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Geometry and Topology for Computer Graphics"
+        },
+        {
+          "week": 2,
+          "text": "3D Printing Concepts: Printing Hardware"
+        },
+        {
+          "week": 3,
+          "text": "Overhang Support"
+        },
+        {
+          "week": 4,
+          "text": "Applications"
+        },
+        {
+          "week": 5,
+          "text": "Volumetric Concepts: Voxels"
+        },
+        {
+          "week": 7,
+          "text": "Computational Solid Geometry"
+        },
+        {
+          "week": 8,
+          "text": "Isosurface Extraction"
+        },
+        {
+          "week": 9,
+          "text": "Surface Concepts: Parametric Surfaces"
+        },
+        {
+          "week": 10,
+          "text": "Mesh Smoothing"
+        },
+        {
+          "week": 11,
+          "text": "Free-Form Deformation"
+        }
+      ],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: open book, 2 hours, 40%. Practical assessments 50%; Final printed show piece, 10%",
@@ -2989,6 +3323,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
@@ -3009,6 +3344,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50%; Practical assignments: 50%.",
@@ -3027,6 +3363,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Introduction to Information Retrieval (IR)"
+        },
+        {
+          "week": 2,
+          "text": "Models of Basic IR (Boolean"
+        },
+        {
+          "week": 3,
+          "text": "Vector"
+        },
+        {
+          "week": 4,
+          "text": "Probabilistic)"
+        },
+        {
+          "week": 5,
+          "text": "IR evaluation and testbeds"
+        },
+        {
+          "week": 6,
+          "text": "Stemming"
+        },
+        {
+          "week": 7,
+          "text": "Stopping"
+        },
+        {
+          "week": 8,
+          "text": "Relevance Feedback"
+        },
+        {
+          "week": 9,
+          "text": "Models of Web and linked-data retrieval (Pagerank"
+        },
+        {
+          "week": 10,
+          "text": "HITS)"
+        },
+        {
+          "week": 11,
+          "text": "Latent Semantic Analysis and Clustering"
+        },
+        {
+          "week": 12,
+          "text": "Multimedia IR"
+        }
+      ],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam (take-home): 40%; Assignments: 40%; Class participation: 20%",
@@ -3047,6 +3433,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "2 hour open book exam: 50%, Practical assignments: 50%",
@@ -3067,6 +3454,32 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Introduction to key terminology around socio-economic development"
+        },
+        {
+          "week": 3,
+          "text": "Key concepts in ICT4D (e.g"
+        },
+        {
+          "week": 5,
+          "text": "Social inclusion, after access)"
+        },
+        {
+          "week": 7,
+          "text": "Case studies in specific domains, including healthcare, agriculture, mobile money, education, etc"
+        },
+        {
+          "week": 9,
+          "text": "Critical evaluation of ICT4D projects"
+        },
+        {
+          "week": 11,
+          "text": "DEPARTMENTS IN THE FACULTY 119"
+        }
+      ],
       "sessions": [],
       "dp": "None",
       "assessment": "Practical assignments: 80%; Case Study Presentation: 10%; Class Participation: 10%",
@@ -3087,6 +3500,24 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "The Description Logic ALC"
+        },
+        {
+          "week": 4,
+          "text": "Reasoning in Description Logics with Tableaux Algorithms"
+        },
+        {
+          "week": 7,
+          "text": "Reasoning in the EL family of Description Logics"
+        },
+        {
+          "week": 10,
+          "text": "Query Answering"
+        }
+      ],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: open book, 3 hours, 50%; Assignments: 50%.",
@@ -3105,6 +3536,36 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "While some of these applications pass the revue, the main focus of the course is on the ontologies"
+        },
+        {
+          "week": 2,
+          "text": "The topics covered include the following: Logic foundations for ontologies: Languages (Description Logics"
+        },
+        {
+          "week": 4,
+          "text": "OWL)"
+        },
+        {
+          "week": 6,
+          "text": "Automated reasoning (class and instance classification, satisfiability and ontology consistency checking)"
+        },
+        {
+          "week": 7,
+          "text": "Ontology development: Ontology engineering, top-down - foundational ontologies, ontology design patterns"
+        },
+        {
+          "week": 9,
+          "text": "Ontology engineering, bottom-up - exploiting legacy material, such as relational databases, thesauri, text"
+        },
+        {
+          "week": 11,
+          "text": "Methodologies for ontology development and maintenance, methods to enhance ontology quality and to automate some aspect of the methodology"
+        }
+      ],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam (closed-book but with some material provided) - 50%, assignments - 50%.",
@@ -3125,6 +3586,44 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Basic Signal processing"
+        },
+        {
+          "week": 2,
+          "text": "Image Transforms & Operations"
+        },
+        {
+          "week": 3,
+          "text": "Feature Detection"
+        },
+        {
+          "week": 5,
+          "text": "Object Descriptions"
+        },
+        {
+          "week": 6,
+          "text": "Basic Segmentation & Registration"
+        },
+        {
+          "week": 7,
+          "text": "Fundamental Segmentation techniques"
+        },
+        {
+          "week": 9,
+          "text": "Machine Learning & GAs in Cvision"
+        },
+        {
+          "week": 10,
+          "text": "Case Study"
+        },
+        {
+          "week": 11,
+          "text": "Paper Reviews"
+        }
+      ],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: Open Book; 2 hours. Class Record: Practical 60%, Review Questions 40%. Final Mark: Exam 40%, Class Record 60%.",
@@ -3145,6 +3644,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50% and Coursework: 50%",
@@ -3165,6 +3665,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50% and Coursework: 50%",
@@ -3185,6 +3686,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "New Network and Transport Protocols (IPv6"
+        },
+        {
+          "week": 2,
+          "text": "Mobile IP"
+        },
+        {
+          "week": 3,
+          "text": "IP Multicast"
+        },
+        {
+          "week": 4,
+          "text": "Multipath TCP"
+        },
+        {
+          "week": 5,
+          "text": "QUIC)"
+        },
+        {
+          "week": 6,
+          "text": "Routing and Traffic Engineering (Interdomain Routing and Traffic DEPARTMENTS IN THE FACULTY 121 Engineering with Border Gateway Protocol)"
+        },
+        {
+          "week": 7,
+          "text": "Traffic Engineering with Overlay Networking (MPLS/GMPL"
+        },
+        {
+          "week": 8,
+          "text": "Location/Identifier Separation Protocols"
+        },
+        {
+          "week": 9,
+          "text": "Software Defined Networking and Network Function Virtualization)"
+        },
+        {
+          "week": 10,
+          "text": "Internet Measurements (Quality of Service and Quality of Experience (QoS and QoE)"
+        },
+        {
+          "week": 11,
+          "text": "IP Traffic Monitoring and Analysis) Selected reading/discussion topics will be included from: Cloud Infrastructure"
+        },
+        {
+          "week": 12,
+          "text": "Content Delivery Networks"
+        }
+      ],
       "sessions": [],
       "dp": "None",
       "assessment": "Assignments: 40%. Discussion sessions: 15%. Active Participation in Class: 5%. Final Exam: 40%",
@@ -3205,6 +3756,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Participation: 10% (measured by participation in user studies, in-class activities, in-class discussion/presentations, and pre-class quizzes on Vula) Individual Practical Assessments: 20%. Group Project Assessments: 40% Final Exam: 30%",
@@ -3225,6 +3777,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Practical work counts 50%; examination counts 50%.",
@@ -3245,6 +3798,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Text preprocessing"
+        },
+        {
+          "week": 2,
+          "text": "Naive Bayes and logistic regression for text classification"
+        },
+        {
+          "week": 3,
+          "text": "Word vectors and distributional semantics"
+        },
+        {
+          "week": 4,
+          "text": "N-gram language models"
+        },
+        {
+          "week": 5,
+          "text": "Sequence labelling with hidden Markov Models"
+        },
+        {
+          "week": 6,
+          "text": "Syntactic parsing"
+        },
+        {
+          "week": 7,
+          "text": "Recurrent neural networks for sequence processing"
+        },
+        {
+          "week": 8,
+          "text": "Encoder-decoder neural networks"
+        },
+        {
+          "week": 9,
+          "text": "Transformers neural networks and contextual embeddings"
+        },
+        {
+          "week": 10,
+          "text": "A selection of Natural Language Processing applications included from: Sentiment analysis"
+        },
+        {
+          "week": 11,
+          "text": "Parts-of-Speech tagging"
+        },
+        {
+          "week": 12,
+          "text": "Named Entity Recognition, machine translation, information extraction and question answering"
+        }
+      ],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam (take-home): 50%; Assignments: 50%.",
@@ -3265,6 +3868,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: open book, 24 hours, 50%; Assignments: 50%.",
@@ -3285,6 +3889,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50%; Practical Work: 50%. DEPARTMENTS IN THE FACULTY 123",
@@ -3305,6 +3910,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "24-hour take-home exam, 50%; Assignments: 50%.",
@@ -3325,6 +3931,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Exam: 24-hour take-home exam, 60%; Assignments: 40%. Master's specialising in Information Technology by Coursework and Minor dissertation Programme Convener: Associate Professor G Nitschke",
@@ -3345,6 +3952,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -3363,6 +3971,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -3383,6 +3992,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3403,6 +4013,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. Departments in the Faculty of Health Sciences HUMAN BIOLOGY Associate Professor and Head: D Shamley, BSc (Medicine) BScHons(Physiotherapy) PhD Wits EMBA Cape Town",
@@ -3431,6 +4042,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -3490,6 +4102,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -3530,6 +4143,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -3571,6 +4185,32 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Atmospheric energy balance, thermodynamics, dynamics, and general circulation"
+        },
+        {
+          "week": 3,
+          "text": "Tropical and mid-latitude weather producing systems"
+        },
+        {
+          "week": 5,
+          "text": "Weather and climate extreme events (e.g"
+        },
+        {
+          "week": 7,
+          "text": "Heat-waves, drought, and floods) in Africa"
+        },
+        {
+          "week": 9,
+          "text": "Climate variability and change"
+        },
+        {
+          "week": 11,
+          "text": "Atmospheric boundary layer turbulence, chemistry, and pollution"
+        }
       ],
       "sessions": [
         {
@@ -3619,6 +4259,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -3659,6 +4300,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -3701,6 +4343,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -3735,6 +4378,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Students must pass at least three of their coursework electives and achieve a composite pass on the coursework. Students must achieve a pass on their research project to proceed to graduation in the degree.",
       "assessment": "The examinations will follow the same structure as EGS4004W. Not all course options have formal examinations, and a significant portion of the total coursework mark may be based on set project tasks. Students must pass the project component in order to qualify.",
@@ -3755,6 +4399,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Students must pass at least three of their coursework electives and achieve a composite pass on the coursework. Students must achieve a pass on their research project to proceed to graduation in the degree.",
       "assessment": "Courses will be examined at the end of each semester, and the marks combined with project, essay, fieldwork and seminar presentation marks. The combined module results count 75% and the research project counts 25% of the degree as a whole. Students must pass the project component in order to qualify.",
@@ -3775,6 +4420,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -3795,6 +4441,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -3815,6 +4462,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -3835,6 +4483,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -3855,6 +4504,40 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Sustainable development"
+        },
+        {
+          "week": 2,
+          "text": "The climate system, anthropogenic forcing and climate system response"
+        },
+        {
+          "week": 4,
+          "text": "African climate variability and change"
+        },
+        {
+          "week": 5,
+          "text": "International climate change legal frameworks, negotiations, and politics"
+        },
+        {
+          "week": 7,
+          "text": "The economics of climate change and climate change financing"
+        },
+        {
+          "week": 8,
+          "text": "The concept of climate compatible development"
+        },
+        {
+          "week": 10,
+          "text": "The course is lecture, seminar and groupwork based"
+        },
+        {
+          "week": 11,
+          "text": "Each section of the course will involve basic framing lectures, supported by either an essay exercise or a group work exercise and seminar"
+        }
+      ],
       "sessions": [],
       "dp": "80% of classes, and all assignments.",
       "assessment": "Coursework 75%; examination 25%",
@@ -3875,6 +4558,40 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Sustainable development"
+        },
+        {
+          "week": 2,
+          "text": "The climate system, anthropogenic forcing and climate system response"
+        },
+        {
+          "week": 4,
+          "text": "African climate variability and change"
+        },
+        {
+          "week": 5,
+          "text": "International climate change legal frameworks, negotiations, and politics"
+        },
+        {
+          "week": 7,
+          "text": "The economics of climate change and climate change financing"
+        },
+        {
+          "week": 8,
+          "text": "The concept of climate compatible development"
+        },
+        {
+          "week": 10,
+          "text": "The course is lecture, seminar and groupwork based"
+        },
+        {
+          "week": 11,
+          "text": "Each section of the course will involve basic framing lectures, supported by either an essay exercise or a group work exercise and seminar"
+        }
+      ],
       "sessions": [],
       "dp": "80% of classes, and all assignments.",
       "assessment": "Coursework 75%; examination 25%",
@@ -3896,6 +4613,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% of classes and all assignments",
       "assessment": "Coursework 80%; examination 20%",
@@ -3917,6 +4635,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% of classes and all assignments",
       "assessment": "Coursework 80%; examination 20%",
@@ -3937,6 +4656,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -3957,6 +4677,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -3977,6 +4698,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -3997,6 +4719,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4017,6 +4740,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 75%; examination 25%.",
@@ -4037,6 +4761,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 75%; examination 25%.",
@@ -4057,6 +4782,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework",
@@ -4077,6 +4803,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework",
@@ -4097,6 +4824,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4117,6 +4845,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4137,6 +4866,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -4157,6 +4887,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -4177,6 +4908,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%.",
@@ -4197,6 +4929,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%.",
@@ -4217,6 +4950,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -4237,6 +4971,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -4257,6 +4992,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 70%; examination 30%.",
@@ -4277,6 +5013,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 70%; examination 30%.",
@@ -4297,6 +5034,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (3000-4000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
@@ -4317,6 +5055,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (3000-4000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
@@ -4337,6 +5076,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -4357,6 +5097,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -4377,6 +5118,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% class attendance and 40% minimum in assignments.",
       "assessment": "Assignments 60%; Examination 40%",
@@ -4397,6 +5139,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% class attendance and 40% minimum in assignments.",
       "assessment": "Assignments 60%; Examination 40%",
@@ -4417,6 +5160,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Assignments 50%, Final exam 50%",
@@ -4437,6 +5181,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Assignments 50%, Final exam 50%",
@@ -4457,6 +5202,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40%",
@@ -4477,6 +5223,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40%",
@@ -4497,6 +5244,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces. DEPARTMENTS IN THE FACULTY 141",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
@@ -4517,6 +5265,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces. DEPARTMENTS IN THE FACULTY 141",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
@@ -4537,6 +5286,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
@@ -4557,6 +5307,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
@@ -4577,6 +5328,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Assessment for the coursework modules includes both written examinations and coursework assignments such as essays, projects, practical assignments, etc. Examinations on average count 50% and coursework 50% for each module. The combined module results will be reflected as a final coursework result.",
@@ -4597,6 +5349,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "To qualify for the Master’s degree, students must pass all coursework with a subminimum of 33% for each core or elective course module; an aggregate coursework mark of 50% is required. A composite grade of the performance on the coursework component as a whole will be reflected against the assessment course EGS5012W. The choice of project for the minor dissertation will be determined by prior qualification.",
@@ -4617,6 +5370,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4637,6 +5391,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "The minor dissertation must be presented for formal examination. The coursework and minor dissertation each count 50% towards the degree; each must be passed separately for the award of the degree.",
@@ -4657,6 +5412,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4677,6 +5433,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4697,6 +5454,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4717,6 +5475,40 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Sustainable development"
+        },
+        {
+          "week": 2,
+          "text": "The climate system, anthropogenic forcing and climate system response"
+        },
+        {
+          "week": 4,
+          "text": "African climate variability and change"
+        },
+        {
+          "week": 5,
+          "text": "International climate change legal frameworks, negotiations, and politics"
+        },
+        {
+          "week": 7,
+          "text": "The economics of climate change and climate change financing"
+        },
+        {
+          "week": 8,
+          "text": "The concept of climate compatible development"
+        },
+        {
+          "week": 10,
+          "text": "The course is lecture, seminar and groupwork based"
+        },
+        {
+          "week": 11,
+          "text": "Each section of the course will involve basic framing lectures, supported by either an essay exercise or a group work exercise and seminar"
+        }
+      ],
       "sessions": [],
       "dp": "",
       "assessment": "Coursework 75%; Examination 25%",
@@ -4737,6 +5529,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Coursework 80%; Examination 20%.",
@@ -4757,6 +5550,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Coursework 80%; Examination 20%.",
@@ -4777,6 +5571,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4797,6 +5592,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4817,6 +5613,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 75%; examination 25%.",
@@ -4837,6 +5634,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 75%; examination 25%.",
@@ -4857,6 +5655,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4877,6 +5676,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4897,6 +5697,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4917,6 +5718,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
@@ -4937,6 +5739,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%.",
@@ -4957,6 +5760,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%.",
@@ -4977,6 +5781,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%. DEPARTMENTS IN THE FACULTY 147",
@@ -4997,6 +5802,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%. DEPARTMENTS IN THE FACULTY 147",
@@ -5017,6 +5823,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -5037,6 +5844,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -5057,6 +5865,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 70%; examination 30%.",
@@ -5077,6 +5886,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 70%; examination 30%.",
@@ -5097,6 +5907,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (4000-5000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
@@ -5117,6 +5928,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (4000-5000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
@@ -5137,6 +5949,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -5157,6 +5970,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
@@ -5177,6 +5991,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% class attendance and 40% minimum in assignments.",
       "assessment": "Literature review 10%, data analysis assignment and paper 35%, discussion piece 10%, project poster and presentation 15%, final capstone exam 30%.",
@@ -5197,6 +6012,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% class attendance and 40% minimum in assignments.",
       "assessment": "Literature review 10%, data analysis assignment and paper 35%, discussion piece 10%, project poster and presentation 15%, final capstone exam 30%.",
@@ -5217,6 +6033,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Assignments 50%, Final exam 50%",
@@ -5237,6 +6054,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40%",
@@ -5257,6 +6075,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40%",
@@ -5277,6 +6096,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces.",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
@@ -5297,6 +6117,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces.",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
@@ -5317,6 +6138,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
@@ -5337,6 +6159,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
@@ -5355,6 +6178,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -5373,6 +6197,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -5401,6 +6226,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "An average of 30% in all marked classwork and tests. DEPARTMENTS IN THE FACULTY 153",
       "assessment": "Class tests count 35%; field reports count 15%; one 2-hour theory examination written in November counts 50%. A subminimum of 40% is required in the theory examination paper.",
@@ -5429,6 +6255,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "An average of 40% on all marked classwork and tests. Submission of 80% of weekly assignments in each of the four sections (i.e., GEO, AGE, SEA, EGS). Attendance of the field trip is compulsory for students majoring in Archaeology, EGS, Geology, or Oceanography.",
       "assessment": "Marked classwork, including class test/s, counts 50%, and a 3-hour written examination counts 50%. A subminimum of 40% in the class mark is required to write the theory examination paper. Supplementary examinations for GEO1009F will be offered in July.",
@@ -5457,6 +6284,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at 80% of practicals and an average of 30% in all marked class work and tests.",
       "assessment": "Marked class work, including tests, count 20%; one 2-hour practical examination in June counts 30%; one 2-hour theory examination in June counts 50%. Subminima of 40% are required in practical and theory examination papers.",
@@ -5485,6 +6313,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "An average of 30% in marked class work, and attendance at 80% of practicals.",
       "assessment": "Class tests and practicals count 25%; one 2-hour practical examination in November counts 30%; one 2-hour theory examination in November counts 45%. Subminima of 40% are required in practical and theory examination papers.",
@@ -5505,6 +6334,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at all field camps",
       "assessment": "Maps and reports count 70%; three 2-hour practical examinations in June and November count for 30%.",
@@ -5533,6 +6363,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "An average of 30% in all marked class work and class tests. DEPARTMENTS IN THE FACULTY 155",
       "assessment": "Practicals and tests count 25%; one 3-hour theory examination written in November counts 45%; two 2-hour practical examinations written in November count 30%. Subminima of 40% required in practical and theory examination papers.",
@@ -5561,6 +6392,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at 80% of practicals and an average of 30% in all marked class work and tests.",
       "assessment": "Class work counts 20%; one 4-hour practical examination written in June counts 30%; one 3-hour theory examination written in June counts 50%. Subminima of 40% required in practical and theory examination papers.",
@@ -5581,6 +6413,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "The modules will be examined in mid-year and in October, and the latter examinations will include a 3 hour General Exam. Examinations will count 45%, practical and assignment work done during the year counts 30%, and the research project 25% towards the final grade. Subminima are required for the overall examination mark (40%) and for the research project (50%).",
@@ -5599,6 +6432,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -5620,6 +6454,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -5659,6 +6494,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -5698,6 +6534,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -5741,6 +6578,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at all practicals, 40% average mark for class tests and an average of 50% for all assignments.",
       "assessment": "Class tests (30%); practicals including assignments/seminar presentation (20%) and examinations (written theory and practical theory) (50%). A subminimum of 40% is required for the theory and practical examinations to pass this course. A subminimum of 40% is required for the theory and practical examination to pass this course. Supplementary examinations in the form of written, practical or oral assessment, may be offered to students whose overall score is 45 - 49%.",
@@ -5759,6 +6597,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -5786,6 +6625,7 @@
         "Wednesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "80% Class attendance.",
       "assessment": "Note: Assessment requirements for both INF2006F and INF2007F need to be met in order to pass INF2008F.",
@@ -5812,6 +6652,7 @@
         "Tuesday",
         "Wednesday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -5865,6 +6706,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -5900,6 +6742,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Submission of required project work and a sub-minimum of 45% for the year mark prior to writing the final examination. In addition, students must have satisfactory attendance at tutorials and lectures.",
       "assessment": "Coursework counts 70%. Final examination counts 30%. Sub-minimum of 40% for the final examination.",
@@ -5920,6 +6763,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -5940,6 +6784,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Submission of tutorials, seminar, and project work as well as a subminimum of 45% for the year mark prior to writing the final examination.",
       "assessment": "Coursework 70%. Exam 30%. Subminimum of 40% for the final examination. Departments in the Faculty of Engineering and the Built Environment ELECTRICAL ENGINEERING Professor and Head of Department MA Khan, MSc(Eng) PhD Cape Town SMIEEE",
@@ -5960,6 +6805,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "In order to be permitted to sit the final exam a minimum average of 40% on the coursework must be obtained.",
       "assessment": "2 Assignments (50%) and an Exam (50%).",
@@ -5980,6 +6826,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "In order to be permitted to sit the final exam a minimum average of 40% on the coursework must be obtained.",
       "assessment": "2 Assignments (50%) and an Exam (50%).",
@@ -6000,6 +6847,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "In order to be permitted to sit the final exam a minimum average of 40% on the coursework must be obtained",
       "assessment": "2 Assignments (50%) and an Exam (50%).",
@@ -6028,6 +6876,56 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Functions and graphs"
+        },
+        {
+          "week": 2,
+          "text": "Straight lines, power functions, polynomials, exponential and logarithmic functions, trigonometric functions (radians)"
+        },
+        {
+          "week": 3,
+          "text": "Discrete-time dynamical systems"
+        },
+        {
+          "week": 4,
+          "text": "Stability and equilibria"
+        },
+        {
+          "week": 5,
+          "text": "Rates of change"
+        },
+        {
+          "week": 6,
+          "text": "Limits, derivatives"
+        },
+        {
+          "week": 7,
+          "text": "Maxima and minima"
+        },
+        {
+          "week": 8,
+          "text": "Concavity"
+        },
+        {
+          "week": 9,
+          "text": "Asymptotes and curve sketching"
+        },
+        {
+          "week": 10,
+          "text": "Antiderivatives and integrals"
+        },
+        {
+          "week": 11,
+          "text": "Mathematical modelling"
+        },
+        {
+          "week": 12,
+          "text": "Separable and linear differential equations"
+        }
+      ],
       "sessions": [],
       "dp": "A class record of 30% or more, satisfactory lecture and tutorial attendance.",
       "assessment": "Class tests and regular assignments determine a class record; one 3-hour examination makes up the balance of the final mark.",
@@ -6053,6 +6951,56 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Functions and graphs"
+        },
+        {
+          "week": 2,
+          "text": "Straight lines, power functions, polynomials, exponential and logarithmic functions, trigonometric functions (radians)"
+        },
+        {
+          "week": 3,
+          "text": "Discrete-time dynamical systems"
+        },
+        {
+          "week": 4,
+          "text": "Stability and equilibria"
+        },
+        {
+          "week": 5,
+          "text": "Rates of change"
+        },
+        {
+          "week": 6,
+          "text": "Limits, derivatives"
+        },
+        {
+          "week": 7,
+          "text": "Maxima and minima"
+        },
+        {
+          "week": 8,
+          "text": "Concavity"
+        },
+        {
+          "week": 9,
+          "text": "Asymptotes and curve sketching"
+        },
+        {
+          "week": 10,
+          "text": "Antiderivatives and integrals"
+        },
+        {
+          "week": 11,
+          "text": "Mathematical modelling"
+        },
+        {
+          "week": 12,
+          "text": "Separable and linear differential equations"
+        }
       ],
       "sessions": [],
       "dp": "Minimum of 30% in class tests, and at least 80% attendance at tutorials.",
@@ -6083,6 +7031,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6122,6 +7071,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6150,6 +7100,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Class Record of at least 30% and attendance at 10 or more (out of 12) tutorials.",
       "assessment": "Class Record counts 50% and Exam counts 50%.",
@@ -6178,6 +7129,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Minimum of 30% in year mark and satisfactory tutorial attendance.",
       "assessment": "Year mark counts 30 - 40%; one 2-hour examination paper written in June/July and one in October/November equally make up the balance.",
@@ -6207,6 +7159,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Minimum of 30% for class tests, minimum 30% for weekly online tests, and 80% attendance at tutorial sessions.",
       "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%.",
@@ -6236,6 +7189,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Minimum of 30% for class tests, minimum 30% for weekly online tests, and 80% attendance at tutorial sessions.",
       "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%.",
@@ -6265,6 +7219,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Minimum of 30% for class tests, minimum 30% for weekly online tests, 80% attendance at tutorial sessions and 100% attendance at Mathematical Thinking workshops.",
       "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%.",
@@ -6294,6 +7249,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Minimum of 30% for class tests, minimum 30% for weekly online tests, 80% attendance at tutorial sessions, and 100% attendance at Mathematical Thinking workshops.",
       "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%. DEPARTMENTS IN THE FACULTY 169",
@@ -6322,6 +7278,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record of 30% or more, satsifactory attendance at lectures and tutorials, and submission of all assigned work.",
       "assessment": "Class record counts 20 - 40%; one 3-hour examination written in October/November makes up the balance.",
@@ -6350,6 +7307,28 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Kinematics in three dimensions"
+        },
+        {
+          "week": 3,
+          "text": "Newton's laws of motion, models of forces (friction, elastic springs, fluid resistance)"
+        },
+        {
+          "week": 5,
+          "text": "Conservation of energy and momentum"
+        },
+        {
+          "week": 8,
+          "text": "Simple systems of particles, including brief introduction to rigid systems"
+        },
+        {
+          "week": 10,
+          "text": "Orbital Mechanics with applications to the planning of space missions to the outer planets"
+        }
+      ],
       "sessions": [],
       "dp": "A class record of 30% or more.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
@@ -6375,6 +7354,7 @@
         "Tuesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6400,6 +7380,7 @@
         "Monday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6424,6 +7405,44 @@
       "days": [
         "Tuesday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "First and secondorder difference equations"
+        },
+        {
+          "week": 2,
+          "text": "Linear differential equations, constant coefficients"
+        },
+        {
+          "week": 3,
+          "text": "Laplace transforms"
+        },
+        {
+          "week": 5,
+          "text": "Nonlinear equations, phase plane analysis"
+        },
+        {
+          "week": 6,
+          "text": "Parabolic partial differential equations, separation of variables, boundary value problems"
+        },
+        {
+          "week": 7,
+          "text": "Black-Scholes equation"
+        },
+        {
+          "week": 9,
+          "text": "Stochastic differential equations"
+        },
+        {
+          "week": 10,
+          "text": "Please note that lectures alternate during the week so that students can take any of MAM2012S"
+        },
+        {
+          "week": 11,
+          "text": "MAM2013S and MAM2014S concurrently"
+        }
       ],
       "sessions": [],
       "dp": "",
@@ -6450,6 +7469,7 @@
         "Tuesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6476,6 +7496,7 @@
         "Monday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6504,6 +7525,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record of 30% or more, satisfactory attendance at lectures and tutorials, and submission of all assigned work.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
@@ -6532,6 +7554,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record of 30% or more.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
@@ -6560,6 +7583,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record of 30% or more, satisfactory attendance at lectures and tutorials, and submission of all assigned work.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
@@ -6588,6 +7612,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record of 30% or more, satisfactory attendance at lectures and tutorials, and submission of all assigned work.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
@@ -6608,6 +7633,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6633,6 +7659,7 @@
         "Tuesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6658,6 +7685,7 @@
         "Monday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6686,6 +7714,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6711,6 +7740,7 @@
         "Tuesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6736,6 +7766,7 @@
         "Monday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6761,6 +7792,7 @@
         "Tuesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6789,6 +7821,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record of 30% or more.",
       "assessment": "Class record counts up to 20%, while the balance is made up by the final examination.",
@@ -6814,6 +7847,52 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "The Fourier-transform solution of linear PDEs on the line"
+        },
+        {
+          "week": 2,
+          "text": "The long-term asymptotic behaviour of solutions: the methods of Laplace, stationary phase and steepest descents"
+        },
+        {
+          "week": 3,
+          "text": "Nonlinear waves: the method of characteristics"
+        },
+        {
+          "week": 4,
+          "text": "The effect of dissipation"
+        },
+        {
+          "week": 5,
+          "text": "The Cole-Hopf transform for the Burgers equation"
+        },
+        {
+          "week": 6,
+          "text": "Travelling fronts for the KPP equation"
+        },
+        {
+          "week": 7,
+          "text": "The effect of dispersion: KdV and nonlinear Schrödinger equation"
+        },
+        {
+          "week": 8,
+          "text": "Elliptic integrals and elliptic functions"
+        },
+        {
+          "week": 9,
+          "text": "Dark and bright solitons"
+        },
+        {
+          "week": 10,
+          "text": "Kinks and breathers for the sine-Gordon equation"
+        },
+        {
+          "week": 11,
+          "text": "Multisoliton solutions: the Hirota method and Bäcklund transformations"
+        }
       ],
       "sessions": [],
       "dp": "A class record of 30% or more.",
@@ -6843,6 +7922,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record of 30% or more, satisfactory attendance at lectures and tutorials, and submission of all assigned work.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
@@ -6871,6 +7951,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record of 30% or more.",
       "assessment": "Class record counts up to 50%, while the balance is given by the final examination.",
@@ -6898,6 +7979,7 @@
         "Tuesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record 30% or more, and attendance of both 75% of all lectures and 75% of all tutorials.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
@@ -6918,6 +8000,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6938,6 +8021,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "The project counts 25% of the final mark and must be passed (with 50%). On average, the examination counts at least 50% of the balance of the final mark for the course. Three core modules together count 37.5% of the final mark. The remaining 37.5% of the final mark is calculated using the student’s best marks in their other modules.",
@@ -6958,6 +8042,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "The project and seminar together count 25% of the final mark and must be passed (with 50%). On average, the examination counts at least 50% of the balance of the final mark for the course. At least 37.5% of the final mark must come from the previously mentioned applied mathematics modules taught by MAM. The remaining 37.5% of the final mark is calculated using the student’s best marks in their other modules.",
@@ -6978,6 +8063,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "As per MAM4000W DEPARTMENTS IN THE FACULTY 173",
@@ -6998,6 +8084,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "As per MAM4001W",
@@ -7018,6 +8105,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "As per MAM4000W",
@@ -7038,6 +8126,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "As per MAM4001W",
@@ -7056,6 +8145,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -7084,6 +8174,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests and assignments count 40%; practicals count 10%; one three-hour paper written in June counts 50%. A subminimum of 40% in the examination is required.",
@@ -7112,6 +8203,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests and assignments count 40%; practicals count 10%; one three-hour paper written in June counts 50%. A subminimum of 40% in the examination is required.",
@@ -7140,6 +8232,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests and assignments count 40%; practicals count 10%; one three-hour paper written in November counts 50%. A subminimum of 40% in the examination is required.",
@@ -7168,6 +8261,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests and assignments count 40%; practicals count 10%; one three-hour paper written in November counts 50%. A subminimum of 40% in the examination is required.",
@@ -7188,6 +8282,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Project counts 100%",
@@ -7215,6 +8310,20 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "The origins and molecular genetics of viruses, principles of mouse molecular genetics applied to limb and neural development"
+        },
+        {
+          "week": 5,
+          "text": "Evo-devo or how genetic change leads to morphological diversity"
+        },
+        {
+          "week": 9,
+          "text": "Interactions between genetics, the environment and development"
+        }
       ],
       "sessions": [],
       "dp": "None",
@@ -7244,6 +8353,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Tests count 40%; one 3-hour examination written in November counts 60%. A subminimum of 40% in the examination is required.",
@@ -7272,6 +8382,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests count 40%; practicals, tutorials essays and assignments count 10%; one 3-hour examination written in June counts 50%. A subminimum of 40% in the examination is required.",
@@ -7300,6 +8411,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests count 40%; practicals, tutorials, essays and assignments count 10%; one 3-hour examination written in June counts 50%. A subminimum of 40% in the examination is required.",
@@ -7320,6 +8432,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Techniques examination must be passed at 50% to continue course.",
       "assessment": "Two 3-hour techniques examinations written in May, and the techniques course assignments, count 20%; essays count 15%; oral presentations count 20%; statistics module 1%, one 4-hour examination written in November counts 10%; project counts 34%. The research project must be passed at 50%.",
@@ -7347,6 +8460,20 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Gauss' Law"
+        },
+        {
+          "week": 5,
+          "text": "Ampere's Law"
+        },
+        {
+          "week": 9,
+          "text": "Faraday's Law, induction, electromagnetic radiation, waves and particles"
+        }
       ],
       "sessions": [],
       "dp": "Minimum of 40% in class record, including 50% in laboratory assessment.",
@@ -7376,6 +8503,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Minimum of 40% for the class record, including 50% in laboratory assessment.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2-hour written examination in November counts 50%.",
@@ -7404,6 +8532,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Minimum of 40% for the class record; including 50% in laboratory assessment.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2-hour written examination in June counts 50%.",
@@ -7431,6 +8560,40 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Electricity and magnetism: electric charge, electric field"
+        },
+        {
+          "week": 2,
+          "text": "Gauss’ law, electric potential, capacitance, current, current density, emf, resistance, resistivity, networks, magnetic field"
+        },
+        {
+          "week": 4,
+          "text": "Biot Savart law"
+        },
+        {
+          "week": 5,
+          "text": "Ampere’s law, electromagnetic induction, inductance, alternating currents"
+        },
+        {
+          "week": 7,
+          "text": "Thermal physics: temperature, heat, kinetic theory of gases, first and second laws of thermodynamics"
+        },
+        {
+          "week": 8,
+          "text": "Optics: Geometrical optics, polarization, electromagnetic waves, interference, diffraction"
+        },
+        {
+          "week": 10,
+          "text": "Modern physics: atomic structure, quantum physical phenomena, waveparticle duality"
+        },
+        {
+          "week": 11,
+          "text": "X-rays, elementary nuclear physics, radioactivity"
+        }
       ],
       "sessions": [],
       "dp": "Minimum of 40% for the class record, including 50% in laboratory assessment.",
@@ -7460,6 +8623,28 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Euler’s equation"
+        },
+        {
+          "week": 3,
+          "text": "Lagrange’s equation, generalized co-ordinates and constrained systems"
+        },
+        {
+          "week": 5,
+          "text": "Ohm’s law, circuits, electromagnetic induction, electrodynamics"
+        },
+        {
+          "week": 8,
+          "text": "Maxwell’s equations"
+        },
+        {
+          "week": 10,
+          "text": "Electromagnetism and Quantum Mechanics"
+        }
+      ],
       "sessions": [],
       "dp": "Minimum of 40% for the class record; completion of all laboratory reports and 75% of tutorial work and problem sets; attendance at all tests.",
       "assessment": "Class record (tests, weekly problem sets and laboratory work) counts 50%; one 3-hour examination in June counts 25%; one 3-hour examination in November counts 25%. A subminimum of 40% is required in each of the two examinations.",
@@ -7488,6 +8673,20 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Thermodynamics and Statistical Physics: Temperature, heat and work, laws of thermodynamics, ensembles and entropy"
+        },
+        {
+          "week": 5,
+          "text": "Boltzmann distribution and Helmholtz free energy, thermal radiation, chemical potential and Gibbs distribution"
+        },
+        {
+          "week": 9,
+          "text": "Fermi-Dirac statistics, electrons in metals"
+        }
+      ],
       "sessions": [],
       "dp": "Minimum of 40% for the class record; attendance at all tests; completion of all laboratory reports; completion of the project and completion of 75% of tutorials and problem sets.",
       "assessment": "Class record (tests, weekly problem sets, laboratory work and project) counts 50%; two 2-hour examinations in June count 25%; two 2-hour examinations in November count 25%. A subminimum of 40% exists in the weighted average of the four examinations.",
@@ -7508,6 +8707,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "30% for class tests and problem sets, and suitable progress in the Research Project.",
       "assessment": "The pass mark is 50% and is based on an aggregation of the results of all modules, and is further subject to the subminimum criteria of obtaining a minimum mark of 50% in the Research Project, passing two thirds of all modules, and achieving a mark of at least 35% in all but one of the compulsory modules. The Research Project will count 25% of the final mark.",
@@ -7528,6 +8728,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "50% average for the two projects.",
       "assessment": "Two projects: 25% each. Practical 'take-home' Computing examination: 50%. A subminimum of 50% for each of the project and examination components will be required.",
@@ -7557,6 +8758,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -7592,6 +8794,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% average in class tests or quizzes, and an average of 50% for assignments. Attendance at all practicals, field trips and tutorials. Submission of at least 80% of assignments.",
       "assessment": "The breakdown of course marks is as follows: the class record counts 60%; and one 3hour final examination written in June counts 40%. The class record consists of class tests and/or quizzes (20%), practical reports and tutorials (20%) and assignments (20%). Supplementary examinations, in the form of written assessment, may be offered to students whose overall score is 4549%.",
@@ -7618,6 +8821,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at practicals and a class mark of at least 40%.",
       "assessment": "Practicals and tests count 40%; one 3-hour examination written in June/July counts 40%. A subminimum of 40% in the examination is required.",
@@ -7646,6 +8850,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance of lectures and practicals, and a class mark of at least 40%.",
       "assessment": "Practicals, tests, and in-class activities count 60%; a final examination written in October/November counts 40%. A subminimum of 40% in the examination is required.",
@@ -7674,6 +8879,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at tutorials and practicals, and a class mark of at least 40%.",
       "assessment": "Tutorials/practicals and tests count 50%; one 3-hour examination written in June/July counts 50%. A subminimum of 40% in the examination is required.",
@@ -7694,6 +8900,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Module assessment by submission of a research portfolio, which includes compulsory fieldtrip reports, skills examination and formal test results. A weighted average of the continuous assessment of reports and tests counts 65% of the final mark; the research project counts 35% of the final mark. The research project must be passed at 50%.",
@@ -7714,6 +8921,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Every module is assessed independently either with a class test or individual project assignments. The syllabus and the relative weight for each module are described in a handbook that will be made available on the BIO5012W website (hosted by the Marine and Antarctic Research Centre for Innovation and Sustainability - MARIS).",
@@ -7734,6 +8942,40 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Exploratory data analysis and summary statistics"
+        },
+        {
+          "week": 2,
+          "text": "Probability theory"
+        },
+        {
+          "week": 4,
+          "text": "Random variables"
+        },
+        {
+          "week": 5,
+          "text": "Probability mass and density functions"
+        },
+        {
+          "week": 7,
+          "text": "Binomial"
+        },
+        {
+          "week": 8,
+          "text": "Poisson"
+        },
+        {
+          "week": 10,
+          "text": "Exponential"
+        },
+        {
+          "week": 11,
+          "text": "Normal and Uniform distributions"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7754,6 +8996,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Exploratory data analysis and summary statistics"
+        },
+        {
+          "week": 2,
+          "text": "Probability theory"
+        },
+        {
+          "week": 3,
+          "text": "Random variables"
+        },
+        {
+          "week": 4,
+          "text": "Probability mass and density functions"
+        },
+        {
+          "week": 5,
+          "text": "Binomial"
+        },
+        {
+          "week": 6,
+          "text": "Poisson"
+        },
+        {
+          "week": 7,
+          "text": "Exponential"
+        },
+        {
+          "week": 8,
+          "text": "Normal and Uniform distributions"
+        },
+        {
+          "week": 9,
+          "text": "Sampling distributions"
+        },
+        {
+          "week": 10,
+          "text": "Confidence intervals"
+        },
+        {
+          "week": 11,
+          "text": "Introduction to hypothesis testing (including tests on means, tabular data and bivariate data)"
+        },
+        {
+          "week": 12,
+          "text": "Determining sample sizes"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7774,6 +9066,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Exploratory data analysis and summary statistics"
+        },
+        {
+          "week": 2,
+          "text": "Probability theory"
+        },
+        {
+          "week": 3,
+          "text": "Random variables"
+        },
+        {
+          "week": 4,
+          "text": "Probability mass and density functions"
+        },
+        {
+          "week": 5,
+          "text": "Binomial"
+        },
+        {
+          "week": 6,
+          "text": "Poisson"
+        },
+        {
+          "week": 7,
+          "text": "Exponential"
+        },
+        {
+          "week": 8,
+          "text": "Normal and Uniform distributions"
+        },
+        {
+          "week": 9,
+          "text": "Sampling distributions"
+        },
+        {
+          "week": 10,
+          "text": "Confidence intervals"
+        },
+        {
+          "week": 11,
+          "text": "Introduction to hypothesis testing (including tests on means, tabular data and bivariate data)"
+        },
+        {
+          "week": 12,
+          "text": "Determining sample sizes"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7794,6 +9136,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Exploratory data analysis and summary statistics"
+        },
+        {
+          "week": 2,
+          "text": "Probability theory"
+        },
+        {
+          "week": 3,
+          "text": "Random variables"
+        },
+        {
+          "week": 4,
+          "text": "Probability mass and density functions"
+        },
+        {
+          "week": 5,
+          "text": "Binomial"
+        },
+        {
+          "week": 6,
+          "text": "Poisson"
+        },
+        {
+          "week": 7,
+          "text": "Exponential"
+        },
+        {
+          "week": 8,
+          "text": "Normal and Uniform distributions"
+        },
+        {
+          "week": 9,
+          "text": "Sampling distributions"
+        },
+        {
+          "week": 10,
+          "text": "Confidence intervals"
+        },
+        {
+          "week": 11,
+          "text": "Introduction to hypothesis testing (including tests on means, tabular data and bivariate data)"
+        },
+        {
+          "week": 12,
+          "text": "Determining sample sizes"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7821,6 +9213,56 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Types of data variables"
+        },
+        {
+          "week": 2,
+          "text": "Exploratory data analysis"
+        },
+        {
+          "week": 3,
+          "text": "Grouping and graphing of data"
+        },
+        {
+          "week": 4,
+          "text": "Set theory and counting rules"
+        },
+        {
+          "week": 5,
+          "text": "Probability: conditional probabilities, independence"
+        },
+        {
+          "week": 6,
+          "text": "Bayes theorem"
+        },
+        {
+          "week": 7,
+          "text": "Random variables and values, probability mass and density functions, cumulative distribution functions"
+        },
+        {
+          "week": 8,
+          "text": "Population models and parameters: binomial"
+        },
+        {
+          "week": 9,
+          "text": "Poisson, geometric, negative binomial, hypergeometric"
+        },
+        {
+          "week": 10,
+          "text": "Uniform, exponential"
+        },
+        {
+          "week": 11,
+          "text": "Gaussian, expectation"
+        },
+        {
+          "week": 12,
+          "text": "Coefficient of variation"
+        }
       ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
@@ -7850,6 +9292,56 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Exploratory data analysis and summary statistics"
+        },
+        {
+          "week": 2,
+          "text": "Set theory"
+        },
+        {
+          "week": 3,
+          "text": "Probability: conditional probabilities, independence"
+        },
+        {
+          "week": 4,
+          "text": "Bayes theorem"
+        },
+        {
+          "week": 5,
+          "text": "Random variables"
+        },
+        {
+          "week": 6,
+          "text": "Probability mass and density functions"
+        },
+        {
+          "week": 7,
+          "text": "Binomial"
+        },
+        {
+          "week": 8,
+          "text": "Poisson, exponential, normal and uniform distributions"
+        },
+        {
+          "week": 9,
+          "text": "Sampling distributions"
+        },
+        {
+          "week": 10,
+          "text": "Confidence intervals"
+        },
+        {
+          "week": 11,
+          "text": "Hypothesis testing: Z-test and t-test (means, difference between means for independent and dependent samples)"
+        },
+        {
+          "week": 12,
+          "text": "Chi-square test for independence and for Goodness-of-fit"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7878,6 +9370,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7898,6 +9391,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -7918,6 +9412,16 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Introduction to statistical notation, linear regression, design and analysis of experiments, generalized linear models"
+        },
+        {
+          "week": 7,
+          "text": "There will be strong emphasis on the practical application of the above methods, using open-source statistical software such as R"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7938,6 +9442,16 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Introduction to statistical notation, linear regression, design and analysis of experiments, generalized linear models"
+        },
+        {
+          "week": 7,
+          "text": "There will be strong emphasis on the practical application of the above methods, using open-source statistical software such as R"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7958,6 +9472,16 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Introduction to statistical notation, linear regression, design and analysis of experiments, generalised linear models"
+        },
+        {
+          "week": 7,
+          "text": "There will be a strong emphasis on the practical application of these methods using the open-source statistical software R"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7978,6 +9502,16 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Introduction to statistical notation, linear regression, design and analysis of experiments, generalized linear models"
+        },
+        {
+          "week": 7,
+          "text": "There will be strong emphasis on the practical application of the above methods, using open-source statistical software such as R"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -8006,6 +9540,40 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Analysis of variance and experimental design"
+        },
+        {
+          "week": 2,
+          "text": "Revision and extension of simple linear regression"
+        },
+        {
+          "week": 4,
+          "text": "Multiple regression"
+        },
+        {
+          "week": 5,
+          "text": "Logistic regression"
+        },
+        {
+          "week": 7,
+          "text": "Model building"
+        },
+        {
+          "week": 8,
+          "text": "Time series analysis"
+        },
+        {
+          "week": 10,
+          "text": "Non-parametric statistics"
+        },
+        {
+          "week": 11,
+          "text": "Students will analyse data using R"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures and lab practicals and the completion of class tests, mini practical lab tests, and practical tests as set out in course outline. Class record of at least 35% and at least 35% for Practical test.",
       "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -8032,6 +9600,36 @@
         "Tuesday",
         "Wednesday",
         "Thursday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Analysis of variance and experimental design"
+        },
+        {
+          "week": 2,
+          "text": "Revision and extension of simple linear regression"
+        },
+        {
+          "week": 4,
+          "text": "Multiple regression"
+        },
+        {
+          "week": 6,
+          "text": "Logistic regression"
+        },
+        {
+          "week": 7,
+          "text": "Time series analysis"
+        },
+        {
+          "week": 9,
+          "text": "Non-parametric statistics"
+        },
+        {
+          "week": 11,
+          "text": "Students will analyse data using R"
+        }
       ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures and lab practicals and the completion of class tests, mini practical lab tests, and practical tests as set out in course outline. Class record of at least 35% and at least 35% for Practical test.",
@@ -8060,6 +9658,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -8087,6 +9686,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -8114,6 +9714,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -8141,6 +9742,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -8168,6 +9770,20 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Branching processes are examined with an emphasis on analysing probability of extinction/survival"
+        },
+        {
+          "week": 5,
+          "text": "The module also covers both discrete and continuous time counting processes for purposes constructing forecasts and backcasts"
+        },
+        {
+          "week": 9,
+          "text": "Finally, a detailed introduction to homogeneous and non-homogeneous Poisson processes is given"
+        }
       ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
@@ -8197,6 +9813,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -8217,6 +9834,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline.",
       "assessment": "A computer based exam.",
@@ -8237,6 +9855,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -8258,6 +9877,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance of 85% of departmental seminars.",
       "assessment": "Each coursework module comprises tests, assignments and a final examination. The weighting of coursework varies between 30% and 50%, while the final examination may contribute up to 70% of the module mark. The overall program mark is a weighted average of the final marks for all coursework modules, according to their credit values, together with the research project.",
@@ -8278,6 +9898,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory completion of assignments",
       "assessment": "Assignments, a Computer-based Exam and a Theory Exam",
@@ -8298,6 +9919,16 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Bayesian linear regression, variable selection, mixture modelling"
+        },
+        {
+          "week": 7,
+          "text": "Markov chain Monte Carlo methods (theory and practical applications)"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory completion of assignments",
       "assessment": "Assignments and Exam",
@@ -8318,6 +9949,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory completion of assignments",
       "assessment": "Assignments and Exam",
@@ -8338,6 +9970,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Class record of at least 40%",
       "assessment": "Assignments, Class tests and Exam",
@@ -8358,6 +9991,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "This component will be assessed through class assessments and examinations. A pass for this coursework requires an average of 50% over all modules, as well as a minimum of 50% for certain modules designated as core material.",
@@ -8378,6 +10012,16 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Introduction to statistical notation, linear regression, design and analysis of experiments, generalized linear models"
+        },
+        {
+          "week": 7,
+          "text": "There will be strong emphasis on the practical application of the above methods, using open-source statistical software such as R"
+        }
+      ],
       "sessions": [],
       "dp": "",
       "assessment": "Assignments and quizzes count 20%; one 2-hour examination in June or November counts 80%. A sub-minimum of 40% is required for the examination.",
@@ -8398,6 +10042,16 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Introduction to statistical notation, linear regression, design and analysis of experiments, generalized linear models"
+        },
+        {
+          "week": 7,
+          "text": "There will be strong emphasis on the practical application of the above methods, using open-source statistical software such as R"
+        }
+      ],
       "sessions": [],
       "dp": "",
       "assessment": "Assignments and quizzes count 20%; one 2-hour examination in June or November counts 80%. A sub-minimum of 40% is required for the examination.",
@@ -8418,6 +10072,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Class assignments 50%; one 3-hour examination counts 50%. A sub-minimum of 40% is required for the examination and the class assignments. DEPARTMENTS IN THE FACULTY 213",
@@ -8438,6 +10093,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Class assignments 50%; one 3-hour examination counts 50%. A sub-minimum of 40% is required for the examination and the class assignments.",
@@ -8458,6 +10114,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Completion and submission of the assignment component at a satisfactory grade (40% minimum)",
       "assessment": "Assignments 35%. Written examination 65%. A subminimum of 40% in each of the assignments and examination is required.",
@@ -8478,6 +10135,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignments 40%. Written exam 60%. Sub-minimum of 40% in each of assignment and examination component.",
@@ -8498,6 +10156,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignments 50%. Written exam 50%. Sub-minimum of 40% in each of assignment and examination component.",
@@ -8518,6 +10177,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "100% Assignments",
@@ -8536,6 +10196,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignment - 30%. Examination, 3 hours 70%. A subminimum of 40% in each of the assignment and examination components.",
@@ -8556,6 +10217,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignments 40%. Written examination 60%. Sub-minimum of 40% for each of assignment and examination component.",
@@ -8576,6 +10238,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignments 50%. Written exam 50%. Sub-minimum of 40% in each of assignment and examination component.",
@@ -8596,6 +10259,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for assignment and project component",
       "assessment": "Assignments, making up the course mark, and two exams, one written and one computer-based exam. A subminimum of 40% is required for each component.",
@@ -8616,6 +10280,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for assignment component",
       "assessment": "Project 45%, class exercises 5%, written examination (theory and practical) 50%. Subminimum of 40% in each of project and overall written examination.",
@@ -8636,6 +10301,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for project work components.",
       "assessment": "Problem Structuring section: project work (50%); written exam (50%). System Dynamics section: project work (40%); written exam (60%). The two sections count equally to the final grade. In each section a subminimum of 40% is required in both the project and written exam.",
@@ -8656,6 +10322,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for assignment component",
       "assessment": "Module is split into three sections. For each section, we have: Assignments: 50% Exam: 50%. A subminimum of 40% in each of the assignment and exam component is required.",
@@ -8676,6 +10343,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignments 50%. Written exam 50%. Sub-minimum of 40% in each of assignment and examination component. DEPARTMENTS IN THE FACULTY 217",
@@ -8696,6 +10364,20 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Workflow/productivity tools and skills"
+        },
+        {
+          "week": 5,
+          "text": "Modelling"
+        },
+        {
+          "week": 9,
+          "text": "R shiny)"
+        }
+      ],
       "sessions": [],
       "dp": "At least 40% for the assignments section",
       "assessment": "Assignments: 50%. Examination: 50%. A sub-minimum of 40% for each of the assignment and examination component will be required.",
@@ -8716,6 +10398,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Assignments and Exam",
@@ -8736,6 +10419,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Assignments and Exam.",
@@ -8756,6 +10440,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Six quizzes (25%) and a take-home exam on each of three sections (75%)",
@@ -8776,6 +10461,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Assignments and Exam.",
@@ -8796,6 +10482,20 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Semimartingales, stochastic integration"
+        },
+        {
+          "week": 5,
+          "text": "Ito's formula"
+        },
+        {
+          "week": 9,
+          "text": "Feyman-Kac theorem, martingale representation, discrete trading, continuous trading"
+        }
+      ],
       "sessions": [],
       "dp": "Class record of at least 40%",
       "assessment": "Assignments, Class Test and Exam.",
@@ -8816,6 +10516,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Interest rates"
+        },
+        {
+          "week": 2,
+          "text": "Equity evaluation"
+        },
+        {
+          "week": 3,
+          "text": "Portfolio risk components"
+        },
+        {
+          "week": 4,
+          "text": "Risk in thinlytraded environments- the SA and African case"
+        },
+        {
+          "week": 5,
+          "text": "Advanced risk measures"
+        },
+        {
+          "week": 6,
+          "text": "Systematic risk"
+        },
+        {
+          "week": 7,
+          "text": "Eigenvectors"
+        },
+        {
+          "week": 8,
+          "text": "Tail risk measures"
+        },
+        {
+          "week": 9,
+          "text": "Active management and the Generalised Fundamental Law"
+        },
+        {
+          "week": 10,
+          "text": "Absolute and Active Portfolio optimisation"
+        },
+        {
+          "week": 11,
+          "text": "The Black-Litterman Model"
+        },
+        {
+          "week": 12,
+          "text": "The Qualitative Model"
+        }
+      ],
       "sessions": [],
       "dp": "",
       "assessment": "Final examination counts 60% and the assignments count the remaining 40%",
@@ -8836,6 +10586,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "One examination counting 100% of the final mark",
@@ -8856,6 +10607,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "Assignments and/or Exam",
@@ -8876,6 +10628,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -8896,6 +10649,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "A take-home exam on each of the three sections",

@@ -110,6 +110,27 @@ CREATE TABLE IF NOT EXISTS lecturer_suggestions (
   status TEXT NOT NULL DEFAULT 'open',
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+-- Course details students add (src/facts.js): a lecture/tut/prac time, a week's topic, or a dated event. The same key
+-- from another student is a confirmation. status: published, held (screened or reported) or removed.
+CREATE TABLE IF NOT EXISTS course_facts (
+  id INTEGER PRIMARY KEY,
+  course TEXT NOT NULL REFERENCES courses(code),
+  kind TEXT NOT NULL,
+  key TEXT NOT NULL,
+  data TEXT NOT NULL,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  status TEXT NOT NULL DEFAULT 'published',
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (course, key, user_id)
+);
+CREATE INDEX IF NOT EXISTS course_facts_course ON course_facts (course, status);
+CREATE TABLE IF NOT EXISTS fact_reports (
+  course TEXT NOT NULL,
+  key TEXT NOT NULL,
+  user_id INTEGER NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (course, key, user_id)
+);
 -- A subscribed week calendar: a random id in the URL that calendar apps fetch, and the plan's course codes and week
 -- settings (no names, emails or "about you" answers). Deleted after 12 months without a fetch.
 CREATE TABLE IF NOT EXISTS calendars (
@@ -145,6 +166,7 @@ const COURSE_DETAILS = {
   not_offered: 'INTEGER', // the year the handbook says it isn't offered, e.g. 2026
   table_only: 'INTEGER NOT NULL DEFAULT 0', // listed in a curriculum table, but no course description in any handbook
   sessions: "TEXT NOT NULL DEFAULT ''", // tutorials and practicals as JSON, from sessionsOf() in scripts/import-handbook.js
+  topics: "TEXT NOT NULL DEFAULT ''", // a rough week-by-week topic draft as JSON, from draftTopics() in src/facts.js
 };
 
 // A sign-in email carries a link and a 6-digit code (for reading the email on your phone and signing in on a laptop).

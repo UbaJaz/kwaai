@@ -34,7 +34,7 @@ const DEPARTMENTS = {
 
 function seed(db, { samples = true } = {}) {
   // Never wipe real students' work. Once real reviews exist, only add or update courses and swap the demo data.
-  const live = db.prepare('SELECT 1 FROM reviews WHERE is_sample = 0 UNION ALL SELECT 1 FROM verdicts LIMIT 1').get();
+  const live = db.prepare('SELECT 1 FROM reviews WHERE is_sample = 0 UNION ALL SELECT 1 FROM verdicts UNION ALL SELECT 1 FROM course_facts LIMIT 1').get();
   if (live) {
     db.exec(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE is_sample = 1);
       UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE is_sample = 1);
@@ -48,7 +48,7 @@ function seed(db, { samples = true } = {}) {
   const addDept = db.prepare('INSERT INTO departments (code, name) VALUES (?, ?) ON CONFLICT(code) DO UPDATE SET name = excluded.name');
   // first handbook to list a course wins within a run; a later run with a newer handbook updates it
   const seen = new Set();
-  const DETAILS = ['outline', 'entry', 'corequisites', 'lectures', 'periods', 'period_choice', 'days', 'dp', 'assessment', 'exam_weight', 'not_offered', 'table_only', 'sessions'];
+  const DETAILS = ['outline', 'entry', 'corequisites', 'lectures', 'periods', 'period_choice', 'days', 'dp', 'assessment', 'exam_weight', 'not_offered', 'table_only', 'sessions', 'topics'];
   const addCourse = db.prepare(`INSERT INTO courses (code, title, dept, credits, nqf, conveners, source, ${DETAILS.join(', ')})
     VALUES (?, ?, ?, ?, ?, ?, ?, ${DETAILS.map(() => '?').join(', ')})
     ON CONFLICT(code) DO UPDATE SET title = excluded.title, credits = excluded.credits, nqf = excluded.nqf, conveners = excluded.conveners, source = excluded.source,
@@ -63,7 +63,7 @@ function seed(db, { samples = true } = {}) {
       addDept.run(dept, DEPARTMENTS[dept] || dept);
       addCourse.run(c.code, c.title, dept, c.credits, c.nqf, c.conveners.join('|'), source,
         c.outline || '', c.entry || '', c.corequisites || '', c.lectures || '', (c.periods || []).join('|'), c.periodChoice ? 1 : 0,
-        (c.days || []).join('|'), c.dp || '', c.assessment || '', c.examWeight ?? null, c.notOffered ?? null, c.tableOnly ? 1 : 0, c.sessions?.length ? JSON.stringify(c.sessions) : '');
+        (c.days || []).join('|'), c.dp || '', c.assessment || '', c.examWeight ?? null, c.notOffered ?? null, c.tableOnly ? 1 : 0, c.sessions?.length ? JSON.stringify(c.sessions) : '', c.topics?.length ? JSON.stringify(c.topics) : '');
       for (const name of c.conveners) addLecturer.run(name, dept, 0);
     }
   }

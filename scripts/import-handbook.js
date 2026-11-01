@@ -3,6 +3,7 @@
 //        node scripts/import-handbook.js handbook.txt ebe-2026 "2026 EBE undergraduate handbook"
 const fs = require('node:fs');
 const path = require('node:path');
+const { draftTopics } = require('../src/facts');
 
 // Course descriptions look like:
 //   "MEC2047F ENGINEERING DYNAMICS 16 NQF credits at NQF level 6 Convener: Professor M Ngoepe Course outline: ..."
@@ -56,6 +57,8 @@ function parseHandbook(text) {
       corequisites: clip(parts['Co-requisites'], 200),
       lectures,
       ...lecturePeriods(lectures),
+      // a rough week-by-week draft from the full outline's topic list (src/facts.js), for students to correct
+      topics: draftTopics(String(parts['Course outline'] || parts.Objective || '').replace(PAGE_HEADER, '')),
       sessions: sessionsOf(String(parts['Lecture times'] || '').replace(PAGE_HEADER, '').slice(0, 600)),
       dp: clip(parts['DP requirements'], 400),
       assessment,

@@ -9,6 +9,7 @@ const TERMS = require('../data/terms.json');
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 const KIND_KEY = { lecture: 'L', tut: 'T', prac: 'P' };
+const KIND_NAME_FULL = { lecture: 'lecture', tut: 'tutorial', prac: 'practical' };
 const toMin = (t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
 const toTime = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
 const periodEnd = (start) => toTime(toMin(start) + 45); // a period is 45 minutes from the hour
@@ -60,7 +61,9 @@ function semesterWeeks(year, term) {
 
 // ---- building the week ----
 // courses: rows with code, title, credits, periods ('4|5'), days, period_choice, sessions (JSON), workload (review average)
-function buildWeek(courses, week, { year = planYear() } = {}) {
+// crowd: times students added where the handbook is silent, { CSC1015F: { lecture: [...], tut: [...], prac: [...] } }
+// (src/facts.js). Confirmed ones go on the timetable; the rest are offered as hints.
+function buildWeek(courses, week, { year = planYear(), crowd = {} } = {}) {
   const term = week.t || (courses.some((c) => termsOf(c.code).includes('s1')) || !courses.length ? 's1' : 's2');
   const inTerm = courses.filter((c) => termsOf(c.code).includes(term));
   const events = [];
@@ -75,9 +78,13 @@ function buildWeek(courses, week, { year = planYear() } = {}) {
     return { ...c, periodList: fixed ? [chosen] : periodList, period_choice: fixed ? 0 : c.period_choice, dayList: c.days ? c.days.split('|') : DAYS, allPeriods: periodList };
   });
   const fit = fitTimetable(asList);
+  const said = (code, kind) => crowd[code]?.[kind] || [];
+  const hints = (code, kind) => said(code, kind).filter((s) => !s.confirmed);
   for (const c of asList) {
     if (!c.periodList.length) {
-      unplaced.push({ code: c.code, kind: 'lecture', text: c.lectures || "The handbook doesn't give lecture times." });
+      const confirmed = said(c.code, 'lecture').filter((s) => s.confirmed);
+      if (confirmed.length) for (const s of confirmed) events.push(event(c, 'lecture', s.day, s.start, s.end, 'students'));
+      else unplaced.push({ code: c.code, kind: 'lecture', text: c.lectures || "The handbook doesn't give lecture times.", hints: hints(c.code, 'lecture') });
       continue;
     }
     const suggested = fit.picks.find((p) => p.code === c.code)?.periods;
@@ -99,21 +106,30 @@ function buildWeek(courses, week, { year = planYear() } = {}) {
   for (const c of inTerm) {
     let sessions = [];
     try { sessions = c.sessions ? JSON.parse(c.sessions) : []; } catch { sessions = []; }
+    // where the handbook gives no times (or no session at all), confirmed student times become the options
+    for (const kind of ['tut', 'prac']) {
+      const confirmed = said(c.code, kind).filter((s) => s.confirmed).map(({ day, start, end }) => ({ day, start, end }));
+      const s = sessions.find((x) => x.kind === kind);
+      if (s && !s.options.length && confirmed.length) Object.assign(s, { options: confirmed, choice: confirmed.length > 1, source: 'students' });
+      else if (!s && confirmed.length) sessions.push({ kind, count: 1, choice: confirmed.length > 1, options: confirmed, text: '', source: 'students' });
+      else if (!s && hints(c.code, kind).length) sessions.push({ kind, count: 1, choice: false, options: [], text: '' });
+    }
     for (const s of sessions) {
       const key = KIND_KEY[s.kind];
       if (!s.options.length) {
-        if (!events.some((e) => e.code === c.code && e.kind === 'set' && e.label.toLowerCase().includes(s.kind))) unplaced.push({ code: c.code, kind: s.kind, text: s.text });
+        if (!events.some((e) => e.code === c.code && e.kind === 'set' && e.label.toLowerCase().includes(KIND_NAME_FULL[s.kind]))) unplaced.push({ code: c.code, kind: s.kind, text: s.text, hints: hints(c.code, s.kind) });
         continue;
       }
+      const source = s.source || 'handbook';
       if (!s.choice) {
-        for (const o of s.options) events.push(event(c, s.kind, o.day, o.start, o.end, 'handbook'));
+        for (const o of s.options) events.push(event(c, s.kind, o.day, o.start, o.end, source));
         continue;
       }
       const picked = week.picks[`${c.code}.${key}`];
       const idx = s.options[picked] ? picked : s.options.findIndex((o) => !events.some((e) => overlaps(e, o)));
       const use = idx >= 0 ? idx : 0;
       choices.push({ code: c.code, kind: s.kind, key, options: s.options.map((o, i) => ({ value: i, label: `${o.day.slice(0, 3)} ${o.start}–${o.end}` })), chosen: use, picked: s.options[picked] != null });
-      events.push({ ...event(c, s.kind, s.options[use].day, s.options[use].start, s.options[use].end, 'handbook'), suggested: s.options[picked] == null });
+      events.push({ ...event(c, s.kind, s.options[use].day, s.options[use].start, s.options[use].end, source), suggested: s.options[picked] == null });
     }
   }
 
@@ -188,13 +204,14 @@ function fold(line) {
   return out.join('\r\n ');
 }
 const KIND_NAME = { lecture: 'lecture', tut: 'tutorial', prac: 'practical', set: '', own: '', study: 'study' };
-function icsFor(courses, week, { year = planYear(), origin = '' } = {}) {
+// dated: tests, assignments and exams students added for these courses ({ code, type, title, date, time, confirmed })
+function icsFor(courses, week, { year = planYear(), origin = '', crowd = {}, dated = [] } = {}) {
   const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Kwaai//Week planner//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', `X-WR-CALNAME:Kwaai ${year}`, 'X-WR-TIMEZONE:Africa/Johannesburg'];
   const stamp = utc(new Date().toISOString().slice(0, 10), '00:00');
   for (const term of ['s1', 's2']) {
     const dates = termDates(year, term);
     if (!dates) continue;
-    const w = buildWeek(courses, { ...week, t: term }, { year });
+    const w = buildWeek(courses, { ...week, t: term }, { year, crowd });
     for (const e of w.events) {
       if (e.kind === 'study' && !week.study) continue;
       // first teaching day on that weekday, then weekly; vacation days are skipped
@@ -210,6 +227,18 @@ function icsFor(courses, week, { year = planYear(), origin = '' } = {}) {
         `DESCRIPTION:${escapeText(`${e.title || ''}${e.suggested ? ' (suggested group: pick yours in Kwaai)' : ''}\nFrom ${e.source === 'handbook' ? "UCT's 2026 handbook" : e.source === 'you' ? 'your Kwaai week' : 'Kwaai'}. Check your official timetable.${origin ? `\n${origin}/week` : ''}`)}`,
         'END:VEVENT');
     }
+  }
+  // one-off dates: a timed hour if students gave a time, else an all-day event
+  for (const d of dated) {
+    const uid = crypto.createHash('sha1').update(['dated', d.code, d.type, d.date, d.title].join('|')).digest('hex').slice(0, 20);
+    const day = d.date.replace(/-/g, '');
+    const when = d.time
+      ? [`DTSTART:${utc(d.date, d.time)}`, `DTEND:${utc(d.date, toTime(Math.min(toMin(d.time) + 60, 23 * 60 + 59)))}`]
+      : [`DTSTART;VALUE=DATE:${day}`, `DTEND;VALUE=DATE:${addDays(d.date, 1).replace(/-/g, '')}`];
+    lines.push('BEGIN:VEVENT', `UID:${uid}@kwaai`, `DTSTAMP:${stamp}`, ...when,
+      `SUMMARY:${escapeText(`${d.code} ${d.title}${d.confirmed ? '' : ' (unconfirmed)'}`)}`,
+      `DESCRIPTION:${escapeText(`Added by students on Kwaai${d.confirmed ? ` and confirmed by ${d.n}` : ', not confirmed yet'}. Check your course site.${origin ? `\n${origin}/courses/${d.code}` : ''}`)}`,
+      'END:VEVENT');
   }
   lines.push('END:VCALENDAR');
   return lines.map(fold).join('\r\n') + '\r\n';
