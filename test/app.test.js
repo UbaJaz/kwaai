@@ -287,6 +287,29 @@ test('study timer: heartbeats credit time, gaps and caps stop padding', () => {
   assert.equal(Study.hoursText(45), '45 min');
 });
 
+test('study streaks: 30 minutes a day, paused over vacations', () => {
+  const terms = require('../data/terms.json').years;
+  assert.equal(Study.isVacation('2027-01-10', terms), true, 'before the first term');
+  assert.equal(Study.isVacation('2027-06-20', terms), true, 'between the semesters');
+  assert.equal(Study.isVacation('2027-03-25', terms), true, 'the March break');
+  assert.equal(Study.isVacation('2027-04-01', terms), false);
+  assert.equal(Study.isVacation('2027-12-24', terms), true, 'after the year ends');
+  assert.equal(Study.isVacation('2030-01-05', terms), false, 'a year with no term dates has no vacations');
+
+  const day = (d, min) => ({ day: d, course: 'CSC1015F', credited_sec: min * 60 });
+  const totals = Study.dayTotals([
+    day('2027-03-10', 45), day('2027-03-11', 45), // a run of 2, broken by the 12th (a term day, no study)
+    day('2027-03-15', 40), day('2027-03-16', 40), day('2027-03-17', 40), day('2027-03-18', 40), day('2027-03-19', 40),
+    day('2027-03-25', 30), // studied in the vacation: still counts
+    day('2027-03-30', 31),
+    day('2027-03-31', 10), // today, not there yet
+  ]);
+  assert.deepEqual(Study.streak(totals, '2027-03-31', terms), { current: 7, best: 7, todayDone: false, needed: 20, vacation: false });
+  assert.equal(Study.streak(totals, '2027-04-01', terms).current, 0, 'a term day with under 30 minutes ends it');
+  assert.equal(Study.streak(totals, '2027-03-26', terms).current, 6, 'skipping vacation days pauses it');
+  assert.deepEqual(Study.streak([], '2027-03-31', terms), { current: 0, best: 0, todayDone: false, needed: 30, vacation: false });
+});
+
 test('study dashboard: heatmap weeks, totals and weekly goals', () => {
   assert.deepEqual([0, 1, 29, 30, 59, 60, 119, 120, 600].map(Study.levelOf), [0, 1, 1, 2, 2, 3, 3, 4, 4]);
   const totals = Study.dayTotals([

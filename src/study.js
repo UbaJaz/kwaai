@@ -89,4 +89,42 @@ function weeklyGoal(course, weeksOf) {
   return Math.round((course.credits * 10) / weeks);
 }
 
-module.exports = { PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal };
+// ---- streaks ----
+// A day keeps the streak going with STREAK_MIN minutes of timed study. Vacations pause it: a vacation day without
+// study is skipped, and a vacation day with study still adds one. Vacations are the breaks inside each semester, the
+// gap between the semesters, and the time between the end of the year and the next year's first term. Years with
+// no term dates have no vacations, so every day counts.
+const STREAK_MIN = 30;
+
+// terms: { 2027: { s1: { start, end, breaks: [[from, to]] }, s2: {...} } }, as in data/terms.json
+function isVacation(day, terms) {
+  const t = terms[day.slice(0, 4)];
+  if (!t?.s1 || !t?.s2) return false;
+  if (day < t.s1.start || day > t.s2.end) return true; // the long holiday around new year
+  if (day > t.s1.end && day < t.s2.start) return true;
+  return [...t.s1.breaks, ...t.s2.breaks].some(([a, b]) => day >= a && day <= b);
+}
+
+// totals from dayTotals(); today's date. If today hasn't reached STREAK_MIN yet the streak still stands (from
+// yesterday) and `needed` says how many minutes would keep it.
+function streak(totals, today, terms) {
+  const minutes = new Map(totals.map((t) => [t.day, t.minutes]));
+  const counts = (d) => (minutes.get(d) || 0) >= STREAK_MIN;
+  const todayMin = minutes.get(today) || 0;
+  let current = 0;
+  const earliest = totals.length ? totals[0].day : today;
+  for (let d = counts(today) ? today : addDay(today, -1); d >= earliest; d = addDay(d, -1)) {
+    if (counts(d)) current++;
+    else if (!isVacation(d, terms)) break;
+  }
+  // the best run in the history, by the same rule
+  let best = 0;
+  let run = 0;
+  for (let d = earliest; d <= today; d = addDay(d, 1)) {
+    if (counts(d)) best = Math.max(best, ++run);
+    else if (!isVacation(d, terms) && d !== today) run = 0;
+  }
+  return { current, best, todayDone: counts(today), needed: Math.max(0, STREAK_MIN - todayMin), vacation: isVacation(today, terms) };
+}
+
+module.exports = { PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
