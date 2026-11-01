@@ -310,6 +310,31 @@ test('study streaks: 30 minutes a day, paused over vacations', () => {
   assert.deepEqual(Study.streak([], '2027-03-31', terms), { current: 0, best: 0, todayDone: false, needed: 30, vacation: false });
 });
 
+test('leaderboards: periods, shared ranks, and the opt-in profile form', () => {
+  assert.deepEqual(Study.periodRange('day', '2027-03-03'), ['2027-03-03', '2027-03-03']);
+  assert.deepEqual(Study.periodRange('week', '2027-03-03'), ['2027-03-01', '2027-03-03'], 'Monday to today');
+  assert.deepEqual(Study.periodRange('month', '2027-03-03'), ['2027-03-01', '2027-03-03']);
+
+  const rows = [{ user_id: 1, minutes: 50 }, { user_id: 2, minutes: 90 }, { user_id: 3, minutes: 50 }, { user_id: 4, minutes: 10 }, { user_id: 5, minutes: 0 }];
+  const board = Study.rankBoard(rows, 4);
+  assert.deepEqual(board.rows.map((r) => [r.user_id, r.rank]), [[2, 1], [1, 2], [3, 2], [4, 4]], 'ties share a rank; nobody with 0 minutes');
+  assert.equal(board.me, null, 'the viewer is already in the list');
+  const many = Array.from({ length: 60 }, (_, i) => ({ user_id: i + 1, minutes: 100 - i }));
+  const far = Study.rankBoard(many, 58);
+  assert.equal(far.rows.length, 50);
+  assert.deepEqual([far.me.rank, far.total], [58, 60], 'the viewer sees their own rank below the top 50');
+
+  const known = { faculty: (f) => f === 'sci', major: (f, m) => f === 'sci' && m === 'CSC05' };
+  assert.deepEqual(Study.parseProfileForm({}, known, screenComment), { leave: true }, 'unticked means not on the boards');
+  assert.deepEqual(Study.parseProfileForm({ join: '1', show: 'anon', faculty: 'sci', major: 'CSC05', year: '2' }, known, screenComment).profile,
+    { display_name: '', show_name: 0, faculty: 'sci', major: 'CSC05', year: 2 });
+  assert.ok(Study.parseProfileForm({ join: '1', show: 'name', display_name: 'A' }, known, screenComment).error, 'too short');
+  assert.ok(Study.parseProfileForm({ join: '1', show: 'name', display_name: 'call 082 123 4567' }, known, screenComment).error, 'contact details');
+  assert.ok(Study.parseProfileForm({ join: '1', show: 'name', display_name: 'kak lecturer' }, known, screenComment).error, 'insults');
+  const ok = Study.parseProfileForm({ join: '1', show: 'name', display_name: '  Thandi   M ', faculty: 'law', major: 'CSC05', year: '9' }, known, screenComment).profile;
+  assert.deepEqual(ok, { display_name: 'Thandi M', show_name: 1, faculty: '', major: '', year: null }, 'unknown faculty, major and year are dropped');
+});
+
 test('study dashboard: heatmap weeks, totals and weekly goals', () => {
   assert.deepEqual([0, 1, 29, 30, 59, 60, 119, 120, 600].map(Study.levelOf), [0, 1, 1, 2, 2, 3, 3, 4, 4]);
   const totals = Study.dayTotals([

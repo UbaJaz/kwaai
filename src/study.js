@@ -127,4 +127,39 @@ function streak(totals, today, terms) {
   return { current, best, todayDone: counts(today), needed: Math.max(0, STREAK_MIN - todayMin), vacation: isVacation(today, terms) };
 }
 
-module.exports = { PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
+// ---- leaderboards ----
+const PERIODS = { day: 'Today', week: 'This week', month: 'This month' };
+const BOARD_SIZE = 50;
+
+// the days a board covers, in South African dates: today, Monday to today, or the 1st of the month to today
+function periodRange(period, today) {
+  if (period === 'week') return [addDay(today, -weekdayOf(today)), today];
+  if (period === 'month') return [`${today.slice(0, 7)}-01`, today];
+  return [today, today];
+}
+
+// rows: [{ user_id, minutes }]. Ranks by minutes, and students on the same minutes share a rank (1, 2, 2, 4). The top
+// BOARD_SIZE are listed; `me` is the viewer's own row when it's further down.
+function rankBoard(rows, meId) {
+  const sorted = rows.filter((r) => r.minutes > 0).sort((a, b) => b.minutes - a.minutes || a.user_id - b.user_id);
+  let rank = 0;
+  const ranked = sorted.map((r, i) => ({ ...r, rank: i && r.minutes === sorted[i - 1].minutes ? rank : (rank = i + 1) }));
+  const top = ranked.slice(0, BOARD_SIZE);
+  return { rows: top, me: top.some((r) => r.user_id === meId) ? null : ranked.find((r) => r.user_id === meId) || null, total: ranked.length };
+}
+
+// the "Join the leaderboards" form. Nobody is on a board without ticking the box; unticking it means leaving.
+// known: { faculty(key), major(faculty, key) } say which faculties and majors exist; screen(text) is screenComment.
+function parseProfileForm(body, known, screen) {
+  if (body.join !== '1') return { leave: true };
+  const showName = body.show === 'name';
+  const name = String(body.display_name || '').replace(/\s+/g, ' ').trim();
+  if (showName && (name.length < 2 || name.length > 30)) return { error: 'Add a display name of 2 to 30 characters, or choose to appear anonymously.' };
+  if (name && screen(name).action !== 'publish') return { error: "That name can't be used. Pick another one: no contact details, insults or anyone else's name." };
+  const faculty = known.faculty(body.faculty) ? body.faculty : '';
+  const major = faculty && known.major(faculty, body.major) ? body.major : '';
+  const year = Number(body.year);
+  return { profile: { display_name: name.slice(0, 30), show_name: showName ? 1 : 0, faculty, major, year: Number.isInteger(year) && year >= 1 && year <= 6 ? year : null } };
+}
+
+module.exports = { PERIODS, BOARD_SIZE, periodRange, rankBoard, parseProfileForm, PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
