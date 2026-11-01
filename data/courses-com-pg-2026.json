@@ -16,6 +16,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "See PGDA requirements for DP.",
       "assessment": "Tests and mid-year examination: 40%. Final examination: 60%.",
       "examWeight": 60
@@ -35,6 +36,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "See PGDA requirements for DP",
       "assessment": "Tests and mid-year examination 40%. Final examination 60%.",
       "examWeight": 60
@@ -54,6 +56,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "See PGDA requirements for DP.",
       "assessment": "Tests and mid-year examination 40%. Final examination: 60%",
       "examWeight": 60
@@ -73,6 +76,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "See PGDA requirements for DP.",
       "assessment": "Tests and mid-year examination: 40%. Final examination: 60%.",
       "examWeight": 60
@@ -92,6 +96,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the Programme Convenor. Students are required to submit all assignments.",
       "assessment": "Assessment will include individual and group work assignments (submissions and presentations). Students must achieve a minimum of 50% in individual work to pass the course.",
       "examWeight": null
@@ -111,6 +116,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the Programme Convenor. Students are required to submit all assignments and present their research proposal. Students are allowed to resubmit their research proposal twice.",
       "assessment": "Assessment will involve individual assignments (submissions and presentations) and an approved research proposal.",
       "examWeight": null
@@ -130,6 +136,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the Programme Convenor. Students are required to submit all assignments.",
       "assessment": "Assessment will involve individual and group work assignments (submissions and presentations). Students must achieve a minimum of 50% in individual work to pass the course.",
       "examWeight": null
@@ -149,6 +156,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the Programme Convenor. Students are required to submit all assignments.",
       "assessment": "Assessment will involve individual and group work assignments (submissions and presentations). Students must achieve a minimum of 50% in individual work to pass the course.",
       "examWeight": null
@@ -168,6 +176,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "100% Thesis SCHOOL OF ECONOMICS",
       "examWeight": null
@@ -187,6 +196,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Your DP certificate is contingent on your full participation in all course assessments.",
       "assessment": "Coursework: Case studies, class presentations, individual assignment (50%);",
       "examWeight": null
@@ -206,6 +216,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all lectures and complete all assessments.",
       "assessment": "Students are required to obtain at least 50% overall for all coursework modules. Students are required to pass both the coursework (BUS4006W) and the research (BUS4030H) components in order to be awarded the degree.",
       "examWeight": null
@@ -225,6 +236,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Minimum classwork mark of 50% is required.",
       "assessment": "Coursework 50%; Final examination 50%",
       "examWeight": 50
@@ -244,6 +256,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Minimum class work mark of 50% is required.",
       "assessment": "Coursework (project, assignment(s) and/or class test) 50% Final examination 50%.",
       "examWeight": 50
@@ -263,6 +276,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Minimum class work mark of 50% (projects, assignments and tests) is required.",
       "assessment": "Coursework (group project and assignment) 50%; Final examination 50%.",
       "examWeight": 50
@@ -282,6 +296,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A minimum of 50% for coursework",
       "assessment": "Coursework (group project and assignment) 50%; Final Examination 50%.",
       "examWeight": 50
@@ -301,6 +316,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion and timeous submission of tutorial exercises. Sitting all class tests. An overall average of 40% for class work.",
       "assessment": "Tutorials and Tests 50%; End of year examinations (2x 3 hours) 50%",
       "examWeight": 50
@@ -320,6 +336,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of tutorials and tests with an average of 40%.",
       "assessment": "Tutorials 8%; Tests 32%; 3h15min written examination 42%; 1h45min computer-based examination 18%.",
       "examWeight": 42
@@ -339,6 +356,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assignments and participation in oral presentations; attendance at all compulsory lectures and workshops.",
       "assessment": "PCU component: semester course work and presentations (60%); 3-hour written examination [Paper 1] (40%). Students must achieve a sub-minimum of 40% for each component with an average of 50%. In addition there is a 3-hour written examination (Paper 2) for professional exemption (N211). The final BUS4034S mark will be weighted as follows: PCU final mark: 70%; N211 Paper 2: 30%.",
       "examWeight": 40
@@ -358,6 +376,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all tutorials and submission of all assignments as indicated in the course outline to be distribute at the beginning of the course. A minimum of 40% is required for all coursework.",
       "assessment": "Tutorials and assignments 60%; Final assessment 40%.",
       "examWeight": null
@@ -377,6 +396,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all tutorials and submission of all assignments as indicated in the course outline to be distribute at the beginning of the course. A minimum of 40% is required for all coursework.",
       "assessment": "Tutorials and assignments 60%; Final assessment 40%.",
       "examWeight": null
@@ -396,6 +416,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all tutorials and submission of all assignments as indicated in the course outline to be distributed at the beginning of the course. A minimum of 50% is required for all coursework.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -415,6 +436,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all tutorials and submission of all assignments as indicated in the course outline to be distributed at the beginning of the course. A minimum of 50% is required for all coursework.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -434,6 +456,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all tutorials and submission of all assignments as indicated in the course outline to be distributed at the beginning of the course. A minimum of 40% is required for all coursework.",
       "assessment": "Tutorials and assignments 60%; Final assessment 40%.",
       "examWeight": null
@@ -453,6 +476,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all tutorials and submission of all assignments as indicated in the course outline to be distributed at the beginning of the course. A minimum of 40% is required for all coursework.",
       "assessment": "Tutorials and assignments 60%; Final assessment 40%.",
       "examWeight": null
@@ -472,6 +496,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all tutorials and submission of all assignments as indicated in the course outline to be distributed at the beginning of the course. A minimum of 50% is required for all coursework.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -491,6 +516,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all tutorials and submission of all assignments as indicated in the course outline to be distributed at the beginning of the course. A minimum of 50% is required for all coursework.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -510,6 +536,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "While attendance at all Genesis activities is expected, to receive their DP, students are required to attend a minimum of 80% of all Genesis lectures, group meetings and networking activities; submit all group and individual assessments; and obtain a weighted overall average of 40% for their coursework.",
       "assessment": "Coursework 80%; Exam 20%. A minimum of 40% is required in the final examination to pass the course.",
       "examWeight": 20
@@ -529,6 +556,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of all coursework assessments.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -548,6 +576,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for semester tests, equally weighted.",
       "assessment": "2X semester tests. 1X 3hr final examination. Coursework 50% Exam 50%.",
       "examWeight": 50
@@ -567,6 +596,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A minimum aggregate class work mark of 50%.",
       "assessment": "Coursework (individual & group project) 50%; Final examination 50%.",
       "examWeight": 50
@@ -586,6 +616,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% classwork mark. Must attend all lectures and submit all assignments as indicated in the course outline to be distributed at the beginning of the course.",
       "assessment": "Coursework 50%, Final examination 50%; 40% subminimum for exams",
       "examWeight": 50
@@ -605,6 +636,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% classwork mark. Must attend all lectures and submit all assignments as indicated in the course outline to be distributed at the beginning of the course.",
       "assessment": "Coursework 50%; Final Assessment 50%; 40% subminimum for exams.",
       "examWeight": null
@@ -624,6 +656,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "An overall average of 40% for class work.",
       "assessment": "Class tests and tutorials 50%, Examination 50%. SCHOOL OF MANAGEMENT STUDIES 179",
       "examWeight": 50
@@ -643,6 +676,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Participation in all classes/workshops. Completion and submission of an Individual Learning Log, an Individual assignment and a Group project, and to attain a minimum of 40% for the coursework.",
       "assessment": "Coursework 50%; Final assessment 50%; Subminimum for exam 40%.",
       "examWeight": null
@@ -662,6 +696,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students need to submit all work as documented in the course outline to be distributed at the beginning of the course. Students need a minimum coursework mark of 40%.",
       "assessment": "Mid-term test (20%) Group project (50%) Final Assessment (30%)",
       "examWeight": null
@@ -681,6 +716,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "BUS4092S– Submission of all assessments. Participation in group work and mandatory tutorials. Obtain a minimum of 50% coursework average.",
       "assessment": "",
       "examWeight": null
@@ -700,6 +736,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A coursework mark of 40% or above. Students must attend 80% of all guest lectures and workshops, participate fully in and submit the group project and write the class test.",
       "assessment": "Coursework: 60%; Exam: 40%",
       "examWeight": 40
@@ -719,6 +756,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all compulsory activities, submission of all required work and participation in a group project.",
       "assessment": "Coursework: 50% of final mark; Final exam: 50% of final mark.",
       "examWeight": 50
@@ -738,6 +776,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all compulsory activities, submission of all required work and participation in a group project.",
       "assessment": "Coursework: 50% of final mark; Final exam: 50% of final mark.",
       "examWeight": 50
@@ -757,6 +796,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "2 x 100 mark final capstone assessments - 50% each",
       "examWeight": null
@@ -776,6 +816,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at a minimum of 80% of all workshops during the semester. A 40% subminimum in the year mark (which comprises 60% of the marks) and final examination (which comprises 40% of the marks), with an overall passing grade of 50%",
       "assessment": "Formative assessment: DP requirement is 60% for coursework comprising short assignments, a group written project and a practical oral seminar presentation. Summative assessment: Final written examination (40%) with 50% passing average overall.",
       "examWeight": 40
@@ -795,6 +836,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at a minimum of 80% of all workshops during the semester. A 40% subminimum in the year mark (which comprises 60% of the marks) and final examination (which comprises 40% of the marks), with an overall passing grade of 50%.",
       "assessment": "Formative assessment: DP requirement is 60% for coursework comprising short assignments, seminars, a mid-semester test and team project. Summative assessment: Final written examination (40%).",
       "examWeight": 40
@@ -814,6 +856,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at a minimum of 80% of all workshops during the semester. A 40% subminimum in the year mark (which comprises 60% of the marks) and final examination (which comprises 40% of the marks), with an overall passing grade of 50%.",
       "assessment": "DP requirement is 60% for coursework comprising individual and team assignments (which comprises 25% of the marks), with an overall passing grade of 50%.",
       "examWeight": null
@@ -833,6 +876,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at a minimum of 80% of all workshops during the semester. A 40% subminimum in the year mark (which comprises 60% of the marks) and final examination (which comprises 40% of the marks), with an overall passing grade of 50%.",
       "assessment": "Formative assessment: DP requirement is 60% for coursework comprising assignments and seminars. Summative assessment: Final written individual business proposal/plan (40%).",
       "examWeight": null
@@ -852,6 +896,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at a minimum of 80% of all workshops during the semester. A 40% subminimum in the year mark (which comprises 60% of the marks) and final examination (which comprises 40% of the marks), with an overall passing grade of 50%.",
       "assessment": "Formative assessment: DP requirement is 60% for coursework comprising short assignments and presentations. Summative assessment: Final campaign project (40%).",
       "examWeight": null
@@ -871,6 +916,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For each module students must obtain at least 50% for all class work (projects, assignments and tests) to be allowed to write the examination. Students must also pass each module (>50%) and obtain at least a 50% aggregate mark to pass the course.",
       "assessment": "Coursework 50%; Final Exam 50%. Coursework includes formative and summative assessments.",
       "examWeight": 50
@@ -890,6 +936,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Minimum aggregate class work mark of 50%. Completion of all required assessments. Attendance is compulsory for all tutorials.",
       "assessment": "Coursework (tutorials, group project and semester test) 70%, Final examination 30%.",
       "examWeight": 30
@@ -909,6 +956,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -928,6 +976,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -947,6 +996,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Your DP certificate is contingent on your full participation in all course assessments.",
       "assessment": "Coursework: Case studies, class presentations, individual assignment (50%);",
       "examWeight": null
@@ -966,6 +1016,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "100% written work.",
       "examWeight": null
@@ -985,6 +1036,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Class attendance and completion of all assessments are compulsory.",
       "assessment": "The first-year coursework component, i.e. BUS5003W contributes 33% towards the final mark for the degree programme. Students are required to pass each of the coursework modules i.e. awarded a mark of at least 50% for each module, in order to pass the course.",
       "examWeight": null
@@ -1004,6 +1056,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Class attendance and completion of all assessments.",
       "assessment": "The second-year coursework component, i.e. BUS5004W contributes 33% towards the final mark for the degree programme. Students are required to pass each of the modules i.e. awarded a mark of at least 50% for each module, in order to pass the course.",
       "examWeight": null
@@ -1023,6 +1076,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "45% average over all class tests.",
       "assessment": "Examination (3 hours) 50%; Class tests 50%.",
       "examWeight": 50
@@ -1042,6 +1096,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Compulsory class attendance. Completion of all assessments.",
       "assessment": "The coursework component contributes 50% towards the ﬁnal mark for the master’s degree. Students are required to pass each module to pass the coursework component.",
       "examWeight": null
@@ -1061,6 +1116,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "45% average over all class tests.",
       "assessment": "Examination (3 hours) 50%; Class tests 50%.",
       "examWeight": 50
@@ -1080,6 +1136,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% Class attendance and completion of all assessments.",
       "assessment": "Regular assessments for each of the compulsory modules are proportionately weighted and averaged to contribute to a final coursework grade for BUS5037W. Students are required to obtain at least 50% for each of the compulsory coursework modules in order to pass BUS5037W. A student’s final coursework grade for BUS5037W contributes 33.3% towards the final mark for the degree.",
       "examWeight": null
@@ -1099,6 +1156,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "45% average over all class tests and tutorials.",
       "assessment": "Examination (3 hours) 50%; Class Tests 50%.",
       "examWeight": 50
@@ -1118,6 +1176,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "45% average over all class tests and tutorials.",
       "assessment": "Examination (3 hours) 50%; Class tests 50%.",
       "examWeight": 50
@@ -1137,6 +1196,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of four quarterly reports and meetings, signed off by supervising Psychologists.",
       "assessment": "Portfolio of evidence.",
       "examWeight": null
@@ -1156,6 +1216,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "The research component, i.e. the two applied research tasks together, counts for 33% of the credits of the degree programme. They are weighted equally, 16.5% each. Students are required to obtain at least 50% for each of the applied research task courses (BUS5051W and BUS5052W) to pass.",
       "examWeight": null
@@ -1175,6 +1236,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "The research component, i.e. the two applied research tasks together, counts for 33% of the credits of the degree programme. They are weighted equally, 16.5% each. Students are required to obtain at least 50% for each of the applied research task courses (BUS5051W and BUS5052W) to pass.",
       "examWeight": null
@@ -1194,6 +1256,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for semester tests, equally weighted.",
       "assessment": "2x semester tests; 1x 3hr final examination.",
       "examWeight": null
@@ -1213,6 +1276,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% Class attendance and completion of all assessments.",
       "assessment": "Regular assessments for each of the compulsory modules are proportionately weighted and averaged to contribute to a final coursework grade for BUS5056W. Students are required to obtain at least 50% for each of the compulsory coursework modules in order to pass BUS5056W. A student’s final coursework grade for BUS5056W contributes 33.3% towards the final mark for the degree.",
       "examWeight": null
@@ -1230,6 +1294,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "100% Thesis.",
       "examWeight": null
@@ -1249,6 +1314,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "100% Thesis.",
       "examWeight": null
@@ -1268,6 +1334,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Final examination: 50%; Practical assignments: 50%. A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
       "examWeight": 50
@@ -1287,6 +1354,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40% and examination 60% Note: A supplementary exam will only be offered for ECO4006F during the mid-year vacation.",
       "examWeight": null
@@ -1306,6 +1374,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%, Examination 50%. Note: A supplementary exam will only be offered for ECO4007F during the mid-year vacation.",
       "examWeight": 50
@@ -1325,6 +1394,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%, Examination 60%. Note: No supplementary exam is offered for this course.",
       "examWeight": 60
@@ -1344,6 +1414,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 60%; examination 40%. Note: A supplementary exam will only be offered for ECO4016F during the mid-year vacation.",
       "examWeight": 40
@@ -1363,6 +1434,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework only consisting of 2 essays, each 25%; 20% on panel performance and class participation. Note: No supplementary exam is offered for this course.",
       "examWeight": null
@@ -1382,6 +1454,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "100% written work. Note: Students that receive a subminimum of 40% for their research paper (ECO4021W), will be given one opportunity to revise and resubmit their paper before the start of the following academic year. The revised research paper will be eligible for a maximum grade of 50%. Any student who fails ECO4021W after re-submission fails the degree.",
       "examWeight": null
@@ -1401,6 +1474,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%; examination 50%. Note: No supplementary exam is offered for this course.",
       "examWeight": 50
@@ -1420,6 +1494,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 60%; examination 40%. Note: No supplementary exam is offered for this course.",
       "examWeight": 40
@@ -1439,6 +1514,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 100%. Note: No supplementary exam is offered for this course.",
       "examWeight": null
@@ -1458,6 +1534,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 60%; examination 40%. Note: No supplementary exam is offered for this course.",
       "examWeight": 40
@@ -1477,6 +1554,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework (30%); final examination (70%). Note: No supplementary exam is offered for this course.",
       "examWeight": 70
@@ -1496,6 +1574,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework consisting of essays, presentation and class participation (60%), examination (40%). Weightings may change from year to year and will be specified clearly in the course outline. Note: No supplementary exam is offered for this course.",
       "examWeight": 40
@@ -1515,6 +1594,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%; examination 50%. Note: No supplementary exam is offered for this course.",
       "examWeight": 50
@@ -1534,6 +1614,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None. ECO4100Z/",
       "assessment": "",
       "examWeight": null
@@ -1553,6 +1634,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework consisting of 3 tests (15% each); 45%; examination 55%. Note: Students who obtain less than 50% for ECO4112F will not be allowed to continue with the programme.",
       "examWeight": 55
@@ -1572,6 +1654,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%; examination 60%. Note: No supplementary exam is offered for this course.",
       "examWeight": 60
@@ -1591,6 +1674,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -1610,6 +1694,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Final examination 60%; Coursework 40%. ECO4101Z/",
       "examWeight": 60
@@ -1629,6 +1714,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Final examination 60%; Coursework 40%. ECO4102Z/",
       "examWeight": 60
@@ -1648,6 +1734,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Final examination 60%; Coursework 40%. ECO4103Z/",
       "examWeight": 60
@@ -1667,6 +1754,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Final examination 60%; Coursework 40%. ECO4104Z/",
       "examWeight": 60
@@ -1686,6 +1774,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Final examination 60%; Coursework 40%. ECO4105Z/",
       "examWeight": 60
@@ -1705,6 +1794,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Final examination 60%; Coursework 40%. ECO4106Z/",
       "examWeight": 60
@@ -1724,6 +1814,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -1743,6 +1834,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Final examination 60%; Coursework 40%. ECO4109Z/",
       "examWeight": 60
@@ -1762,6 +1854,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Final examination 60%; Coursework 40%.",
       "examWeight": 60
@@ -1781,6 +1874,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submitted homework assignments; Case study presentation.",
       "assessment": "Coursework: 40%; Written examination: 60%. Note: No supplementary exam is offered for this course. SCHOOL OF ECONOMICS 131",
       "examWeight": 60
@@ -1800,6 +1894,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The classroom presentation will be compulsory. This will be a 10-15-minute presentation on a topic of the student's choosing where they investigate some aspect of economic inequality.",
       "assessment": "The course will have three assessment components. 1. A mid-term essay (30%) 2. A classroom presentation (20%) 3. A final essay (50%). Note: No supplementary exam is offered for this course.",
       "examWeight": null
@@ -1819,6 +1914,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 30%, Examination 70%. Note: No supplementary exam is offered for this course.",
       "examWeight": 70
@@ -1838,6 +1934,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -1857,6 +1954,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%; Examination 60%.",
       "examWeight": 60
@@ -1876,6 +1974,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%; examination 60%.",
       "examWeight": 60
@@ -1895,6 +1994,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%; Examination 60%.",
       "examWeight": 60
@@ -1914,6 +2014,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -1933,6 +2034,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%; examination 60%.",
       "examWeight": 60
@@ -1952,6 +2054,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%; Exam 50%. 1. Two assignments counting 25% each of the final mark. 2. Two exams counting 15% and 35% of the year mark, respectively.",
       "examWeight": 50
@@ -1971,6 +2074,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%; Examination 50%.",
       "examWeight": 50
@@ -1990,6 +2094,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%; examination 60%.",
       "examWeight": 60
@@ -2009,6 +2114,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%; examination 50%.",
       "examWeight": 50
@@ -2028,6 +2134,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%; examination 50%.",
       "examWeight": 50
@@ -2047,6 +2154,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%; examination 60%. SCHOOL OF ECONOMICS 137",
       "examWeight": 60
@@ -2066,6 +2174,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "50% coursework and 50% exam. SCHOOL OF ECONOMICS 141",
       "examWeight": 50
@@ -2085,6 +2194,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 70%; examination 30%.",
       "examWeight": 30
@@ -2104,6 +2214,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Course presentations 10%; exams 60%; course paper 30%.",
       "examWeight": 60
@@ -2123,6 +2234,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%; examination 50%.",
       "examWeight": 50
@@ -2142,6 +2254,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Tests 50%; Project 50%.",
       "examWeight": null
@@ -2161,6 +2274,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -2180,6 +2294,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -2199,6 +2314,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -2218,6 +2334,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%; Final exam 50%.",
       "examWeight": 50
@@ -2237,6 +2354,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework consists of 4 homework assignments (30%) and one presentation (10%); final examination (60%).",
       "examWeight": 60
@@ -2256,6 +2374,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Written work counts 100%.",
       "examWeight": null
@@ -2275,6 +2394,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 20%; examination 80%.",
       "examWeight": 80
@@ -2294,6 +2414,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "for up to 4 hours."
+        }
+      ],
       "dp": "Satisfactory progress in course assignments and participation in sessions / workshops.",
       "assessment": "In-course assignments: 40% and final assessment: 60%.",
       "examWeight": null
@@ -2313,6 +2442,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory progress to the convenor's satisfaction.",
       "assessment": "Technical report (or equivalent): 100%.",
       "examWeight": null
@@ -2330,6 +2460,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2347,6 +2478,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2366,6 +2498,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "for up to 4 hours."
+        }
+      ],
       "dp": "Satisfactory progress in course assignments and participation in sessions / workshops.",
       "assessment": "In-course assignments: 40% and final assessment: 60%.",
       "examWeight": null
@@ -2385,6 +2526,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A minimum weighted average of at least 40% for tests and assignments as well as 100% workshop attendance.",
       "assessment": "Coursework (including tests and assignments) 40% final examination 60%.",
       "examWeight": 60
@@ -2404,6 +2546,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory progress in the assignments and mid-term test.",
       "assessment": "Coursework (including tests and assignments) 50%; final examination 50%.",
       "examWeight": 50
@@ -2423,6 +2566,21 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "11:00",
+              "end": "13:00"
+            }
+          ],
+          "text": "Wednesday: 11h00 - 13h00."
+        }
+      ],
       "dp": "Cannot miss more than two tutorial submissions.",
       "assessment": "Coursework 60%; Exam 40%.",
       "examWeight": 40
@@ -2442,6 +2600,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Cannot miss more than one tutorial submissions.",
       "assessment": "Three individual invigilated assessments (50%). Final group project to be completed at the end of the module (50%).",
       "examWeight": null
@@ -2467,6 +2626,7 @@
         "Tuesday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework including tests and projects 40%; Final examination 60%.",
       "examWeight": 60
@@ -2486,6 +2646,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework including test and project (40%); final examination 60%",
       "examWeight": 60
@@ -2505,6 +2666,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% completion of tutorials.",
       "assessment": "One practical exam, taken individually; 100% of the final mark.",
       "examWeight": null
@@ -2524,6 +2686,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "One exam, and weekly short quizzes. The final mark is the better of the exam mark and a 70-30 weighted average of the exam mark and average quiz mark.",
       "examWeight": null
@@ -2543,6 +2706,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Two, equally-weighted exams, one covering theory and simple computations, and the other computer implementation, taken individually; 100% of the final mark.",
       "examWeight": null
@@ -2562,6 +2726,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%, Final examination 50%.",
       "examWeight": 50
@@ -2581,6 +2746,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%, Final examination 50%.",
       "examWeight": 50
@@ -2600,6 +2766,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Composite mark 100%.",
       "examWeight": null
@@ -2619,6 +2786,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, Final examination 50%",
       "examWeight": 50
@@ -2638,6 +2806,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Assignments and projects 50%, examination 50%.",
       "examWeight": 50
@@ -2657,6 +2826,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Successful performance in each of the progress tests and assignments.",
       "assessment": "Assignments and projects 50%, examination 50%. Students need to achieve a mark of 50% or higher for all components of the course.",
       "examWeight": 50
@@ -2676,6 +2846,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None. DEPARTMENT OF FINANCE AND TAX 151",
       "assessment": "2 X Indivual Assignments at 20% of overall grade, 1 X Capstone Project at 40% of overall grade, 1 x Final Exam / Test at 40% of overall grade.",
       "examWeight": 40
@@ -2695,6 +2866,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Case study assignments 25%, group project 25%, tests 50%.",
       "examWeight": null
@@ -2714,6 +2886,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Successful performance in each of the progress tests and assignments.",
       "assessment": "Assignments and projects 50%, examination 50%. Students need to achieve a mark of 50% or higher for all components of the course.",
       "examWeight": 50
@@ -2733,6 +2906,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Successful performance in each of the progress tests and assignments.",
       "assessment": "Assignments and projects 50%, examination 50%. Students need to achieve a mark of 50% or higher for all components of the course.",
       "examWeight": 50
@@ -2752,6 +2926,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory progress for in-course assessments and group project.",
       "assessment": "A student must achieve an average of 50% calculated as follows: Assessments 90%; Group project 10%. [An oral assessment may be substituted for any of the written assessments at the discretion of the course convener.]",
       "examWeight": null
@@ -2771,6 +2946,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory progress for in-course assessments.",
       "assessment": "45% for in-course assessments and 55% for the final assessment.",
       "examWeight": null
@@ -2790,6 +2966,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory progress for in-course assessments.",
       "assessment": "45% for in-course assessments and 55% for the final assessment.",
       "examWeight": null
@@ -2809,6 +2986,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "90% minimum attendance of lectures and seminars and submission of all coursework assignments. Students need to achieve a mark of 50% or higher for all components of the course.",
       "assessment": "50% coursework and 50% an individual examination.",
       "examWeight": 50
@@ -2828,6 +3006,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Two class tests, one in each semester, each contributing 10% towards the final grade. Two assignments, one in each semester, each contributing 10% toward the final grade. Two theory exams, one in each semester, each contributing 15% toward the final grade. Two practical exams, one in each semester, each contributing 15% toward the final grade.",
       "examWeight": null
@@ -2847,6 +3026,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Minimum mark of 70% for each of the practical sessions.",
       "assessment": "Two class tests (one theory and one practical), with each contributing 20% towards the final grade. One assignment contributing 10% towards the final grade. Two exams (one theory and one practical), with each contributing 25% towards the final grade.",
       "examWeight": null
@@ -2866,6 +3046,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Minimum mark of 70% for each of the practical sessions.",
       "assessment": "Two class tests (one theory and one practical) and three assignments, with each contributing 10% towards the final grade. Two exams (one theory and one practical), with each contributing 25% towards the final grade.",
       "examWeight": null
@@ -2885,6 +3066,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Assignments 10% Class tests 30%; Final exam 60%.",
       "examWeight": 60
@@ -2904,6 +3086,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Assignments 10%; Class tests 30%; Final exam 60%.",
       "examWeight": 60
@@ -2923,6 +3106,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "A final result is composed from the results of the individual tasks.",
       "examWeight": null
@@ -2942,6 +3126,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "100% Thesis.",
       "examWeight": null
@@ -2961,6 +3146,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "100% Thesis",
       "examWeight": null
@@ -2980,6 +3166,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Acceptable research proposal. Thesis to be completed within 5 years.",
       "assessment": "This is a research degree under supervision and examination is by thesis alone",
       "examWeight": null
@@ -2999,6 +3186,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the Head of Department. Submission of all assignments is required (research papers).",
       "assessment": "No examinations. Two papers (each 50% of the course grade) that apply the knowledge and tools of the course.",
       "examWeight": null
@@ -3018,6 +3206,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "100% coursework. Submission of all assignments and projects.",
       "examWeight": null
@@ -3038,6 +3227,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the convener.",
       "assessment": "100% coursework. Submission of all assignments and projects.",
       "examWeight": null
@@ -3057,6 +3247,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the instructor.",
       "assessment": "Assessment will comprise the following: 100% coursework.",
       "examWeight": null
@@ -3076,6 +3267,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the instructor.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -3095,6 +3287,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3115,6 +3308,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and workshops.",
       "assessment": "Submission of proposal of 3,500 words or less (100% coursework).",
       "examWeight": null
@@ -3134,6 +3328,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions, and submission of all assignments.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -3153,6 +3348,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions, and submission of all assignments.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -3172,6 +3368,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Class attendance and participation grade.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3191,6 +3388,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "An average of 30% for the individual coursework components. Attendance at all sessions and submission of all assignments.",
       "assessment": "Group Project: 30%, Individual Exam: 70%.",
       "examWeight": 70
@@ -3210,6 +3408,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Fully engage in academic process by attending lectures, group sessions and by submitting all assignments on or before the due date.",
       "assessment": "Group Presentation 30%, Class Participation 10%, Final Individual Essay 60%.",
       "examWeight": null
@@ -3229,6 +3428,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all lecture sessions; full preparedness for class participation; submission of all assessments on/before the due dates.",
       "assessment": "Pre-MBA Excel Assignment: 2%, Quantitative methods Excel assignment Part 1: 6%, Quantitative methods Excel assignment Part 2: 12%, Group assignment: 20%, Qualitative methods 2pager: 20%, Research Proposal: 40%. GSB4621V/Z/",
       "examWeight": null
@@ -3248,6 +3448,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all lectures and group meetings except where excused by the Programme Convener; all assignments submitted by the deadline.",
       "assessment": "1.Preparatory assignment (10%);2.Group Assignment (30%);3.Individual Action Learning Assignment (60%). GSB4622V/Z/",
       "examWeight": null
@@ -3267,6 +3468,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all lectures and group meetings except where excused by the Programme Convener; all assignments submitted by the deadline.",
       "assessment": "1.Preparatory assignment (10%);2.Group Assignment (30%);3.Individual Action Learning Assignment (60%). GSB4624V/Z/",
       "examWeight": null
@@ -3286,6 +3488,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all lectures and group meetings except where excused by the Programme Convener; all assignments submitted by the deadline.",
       "assessment": "1.Preparatory assignment (10%);2.Group Assignment (30%);3.Individual Action Learning Assignment (60%). GSB4625V/Z/",
       "examWeight": null
@@ -3305,6 +3508,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Action Learning Report submitted by the deadline.",
       "assessment": "Action Learning Report (100%).",
       "examWeight": null
@@ -3324,6 +3528,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all classes and group meetings (except where excused by the course convener), participate in course activities, and complete all assessments.",
       "assessment": "Class participation, and submission of all assignments.",
       "examWeight": null
@@ -3343,6 +3548,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all classes and group meetings (except where excused by the course convener), participate in course activities, and complete all assessments.",
       "assessment": "Class participation, and submission of all assignments.",
       "examWeight": null
@@ -3362,6 +3568,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all classes and group meetings (except where excused by the course convener), participate in course activities, and complete all assessments.",
       "assessment": "Class participation, and submission of all assignments.",
       "examWeight": null
@@ -3381,6 +3588,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all classes and group meetings (except where excused by the course convener), participate in course activities, and complete all assessments.",
       "assessment": "Class participation, and submission of all assignments.",
       "examWeight": null
@@ -3400,6 +3608,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all classes and group meetings (except where excused by the course convener), participate in course activities, and complete all assessments.",
       "assessment": "Class participation, and submission of all assignments.",
       "examWeight": null
@@ -3419,6 +3628,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance at all lecture sessions and group meetings; full preparedness for class participation.",
       "assessment": "Business Model Innovation Project: 30%, Design on Business Models Paper: 45%, Performance Management Framework: 15%, Group Project and Presentations: 10%, Qualitative Research Assignment: duly performed.",
       "examWeight": null
@@ -3438,6 +3648,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of all lecture sessions and group meetings; full preparedness for class participation.",
       "assessment": "Ethics & Macro-Economics Project: 30%; ‘Sustainability by Design’ conceptual framework: 25%; Strategic Social Engagement: 25%; Reflective Paper: 10%; Group Project and Presentations: 10%.",
       "examWeight": null
@@ -3457,6 +3668,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Research Report: 100%.",
       "examWeight": null
@@ -3476,6 +3688,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance at all lecture sessions and group meetings; full preparedness for class participation.",
       "assessment": "Position Paper: 55%; Business Acumen: Paper on Financial Literacy: 15%; Reflective Practice Paper: 15%; Group Project & Presentation: 15%.",
       "examWeight": null
@@ -3495,6 +3708,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of all lecture sessions and group meetings; full preparedness for class participation.",
       "assessment": "Marketing Project: 25%; Finance Management Project:25%; Strategy Dynamics Framework: 20%; Reflective Paper: 10%; Qualitative Methods Project: 10%; Group Project and Presentations: 10%.",
       "examWeight": null
@@ -3514,6 +3728,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of all lecture sessions and group meetings; full preparedness for class participation.",
       "assessment": "Viable Systems Modelling: 30%; Micro-Economics Project: 25%, Business Acumen: Operations Management Project: 15%, Reflective paper, Narrating the leadership experience: 10%; Quantitative Methods Project: 10%, Group project and presentations: 10%.",
       "examWeight": null
@@ -3533,6 +3748,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Complete all assessments; achieve an average mark of 50% or more across all assessments.",
       "assessment": "Forum discussion: 15%, Online quiz: 20%, Group presentation: 20%, Written paper: 45%.",
       "examWeight": null
@@ -3552,6 +3768,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions, min 50% on assessments.",
       "assessment": "10% of mark is based on a self-evaluation of their engagement with the course; 20% of mark is based on the submission of a topic for the group assignment and list of relevant resources/reference list; 70% of the mark is based on the group assignment (groups of either 4 or 5 students), which contains both group and individual assessment elements.",
       "examWeight": null
@@ -3571,6 +3788,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions, min 50% on assessments.",
       "assessment": "10% of mark is based on a self-evaluation of their engagement with the course; 20% of mark is based on the submission of a topic for the group assignment and list of relevant resources/reference list; 70% of the mark is based on the group assignment (groups of either 4 or 5 students), which contains both group and individual assessment elements.",
       "examWeight": null
@@ -3590,6 +3808,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures and sessions is compulsory except with the permission of the Head of Department. Students are required to submit all assessments. GRADUATE SCHOOL OF BUSINESS 209",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -3609,6 +3828,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures and sessions is compulsory except with the permission of the Head of Department. Students are required to submit all assessments.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -3628,6 +3848,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all lecture sessions and group meetings; full preparedness for class participation; submission of all assessments on/before the due dates.",
       "assessment": "Business Project Report (60%), Business Project presentation (20%), Individual learning log (20%).",
       "examWeight": null
@@ -3647,6 +3868,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "100% internship.",
       "examWeight": null
@@ -3666,6 +3888,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "100% internship.",
       "examWeight": null
@@ -3685,6 +3908,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except with the permission of the programme convener. Submission of all deliverables by the agreed deadline.",
       "assessment": "Coursework (100%).",
       "examWeight": null
@@ -3704,6 +3928,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Min. 80% Attendance of all lecture sessions and group meetings; full preparedness for class participation; submission of all assessments on/before the due dates.",
       "assessment": "Group assignment: 40%, Individual assignment: 60%.",
       "examWeight": null
@@ -3723,6 +3948,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Min. 80% Attendance of all lecture sessions and group meetings; full preparedness for class participation; submission of all assessments on/before the due dates.",
       "assessment": "Pre-course reflection: 5%; Individual Assignment: 50%, Group presentation: 25%, Participation: 20%.",
       "examWeight": null
@@ -3742,6 +3968,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Min. 80% Attendance of all lecture sessions and group meetings; full preparedness for class participation; submission of all assessments on/before the due dates.",
       "assessment": "Group Assignment (25%), Mid-term Examination (25%), Final Examination (50%).",
       "examWeight": 50
@@ -3761,6 +3988,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except with the permission of the programme convener. Submission of all deliverables by the agreed deadline.",
       "assessment": "Coursework (100%).",
       "examWeight": null
@@ -3780,6 +4008,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assessments by the due date, attendance at all lectures except with the permission of the Head of Department.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -3799,6 +4028,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all contact sessions unless excused by the course convener. Submission of all assessments by the due date.",
       "assessment": "Group presentation: 30%, Group case discussion: 10%, Final essay: 60%.",
       "examWeight": null
@@ -3818,6 +4048,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of assignments and activities by the due date.",
       "assessment": "Group assignment (15%), individual assignment (85%).",
       "examWeight": null
@@ -3837,6 +4068,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except with the permission of the programme convener. Submission of all deliverables by the agreed deadline.",
       "assessment": "Coursework (100%). GRADUATE SCHOOL OF BUSINESS 213",
       "examWeight": null
@@ -3856,6 +4088,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except with the permission of the programme convener. Submission of all deliverables by the agreed deadline.",
       "assessment": "100% coursework. FACULTIES AND DEPARTMENTS OFFERING COURSES TO THE FACULTY OF COMMERCE",
       "examWeight": null
@@ -3875,6 +4108,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except with the permission of the programme convener. Submission of all deliverables by the agreed deadline.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -3894,6 +4128,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except with the permission of the programme convener. Submission of all deliverables by the agreed deadline.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -3913,6 +4148,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except with the permission of the programme convener. Submission of all deliverables by the agreed deadline.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -3932,6 +4168,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except with the permission of the programme convener. Submission of all deliverables by the agreed deadline.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -3951,6 +4188,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except with the permission of the programme convener. Submission of all deliverables by the agreed deadline.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -3970,6 +4208,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except with the permission of the programme convener. Submission of all deliverables by the agreed deadline.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -3989,6 +4228,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assessments by the due date, attendance at lectures.",
       "assessment": "The course consists of several sections, that together make up the final grade, please refer to course outline for the allocation.",
       "examWeight": null
@@ -4008,6 +4248,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assessments by the due date, attendance at lectures.",
       "assessment": "The course consists of several sections, that together make up the final grade, please refer to course outline for the allocation.",
       "examWeight": null
@@ -4027,6 +4268,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assessments by the due date, attendance at lectures.",
       "assessment": "The course consists of several sections, that together make up the final grade, please refer to course outline for the allocation.",
       "examWeight": null
@@ -4046,6 +4288,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assessments by the due date, attendance at block lectures.",
       "assessment": "The course consists of several sections, that together make up the final grade, please refer to course outline for the allocation.",
       "examWeight": null
@@ -4065,6 +4308,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assessments by the due date, attendance at block lectures.",
       "assessment": "The course consists of several sections, that together make up the final grade, please refer to course outline for the allocation.",
       "examWeight": null
@@ -4084,6 +4328,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assessments by the due date, attendance at block lectures.",
       "assessment": "The course consists of several sections, that together make up the final grade, please refer to course outline for the allocation.",
       "examWeight": null
@@ -4103,6 +4348,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures and sessions is compulsory except with the permission of the Head of Department. Students are required to submit all assessments.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4122,6 +4368,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures and sessions is compulsory except with the permission of the Head of Department. Students are required to submit all assessments.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4141,6 +4388,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attend all lectures, submit all assignments and achieve an average of 33% on all individual coursework components.",
       "assessment": "Class participation: 10%, Syndicate group assignment: 30%, Individual assignment: 60%.",
       "examWeight": null
@@ -4160,6 +4408,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all lectures and obtaining 33% for all individual components.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4179,6 +4428,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full engagement in the academic process by attending lectures, group sessions and by submitting all assignments on or before the due date. Achieve a minimum of 33% of individual marks.",
       "assessment": "Group Assignment: 50%; Individual Assignment: 50%.",
       "examWeight": null
@@ -4198,6 +4448,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures except with the permission of the course convener; presentation of the individual presentation.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4217,6 +4468,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attend all lectures, submit all assignments and achieve an average of 50% on all individual coursework components.",
       "assessment": "Module 1: Class Participation: 10%, Final Individual Essay: 90%, Module 2: Class Participation: 10%, Final Individual Essay: 90%.",
       "examWeight": null
@@ -4236,6 +4488,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attend all lectures, submit all assignments and achieve an average of 30% on all individual coursework components.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4255,6 +4508,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attend all lectures, submit all assignments and achieve an average of 33% on all individual coursework components.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4274,6 +4528,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attend lectures, submit all assignments and achieve an average of 33% on all individual coursework components.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4293,6 +4548,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Fully engage in the academic process by attending lectures, group sessions and by submitting all assignments on or before the due date.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4312,6 +4568,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attend all lectures, submit all assignments and achieve an average of 33% on all individual coursework components.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4331,6 +4588,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attend lectures, submit all assignments and achieve an average of 33% on all individual coursework components.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4350,6 +4608,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attend all lectures, submit all assignments and achieve an average of 33% on all individual coursework components.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4369,6 +4628,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all lectures except where excused by the Programme Convener. Submission of all assessments.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments. GRADUATE SCHOOL OF BUSINESS 223",
       "examWeight": null
@@ -4388,6 +4648,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4407,6 +4668,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attend all lectures, submit all assignments and achieve an average of 33% on all individual coursework components.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4426,6 +4688,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all lectures except where excused by the Programme Convener. Submission of all assessments.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4445,6 +4708,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full engagement in academic process by attending lectures, group sessions and by submitting all assignments on or before the due date.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4464,6 +4728,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "An average of 33% for the individual coursework components. Attendance at lecture sessions and submission of all assignments.",
       "assessment": "Group project: 100%.",
       "examWeight": null
@@ -4483,6 +4748,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attend all lectures, submit all assignments and achieve an average of 33% on all individual coursework components.",
       "assessment": "Class Participation: 50%, Individual Assignment: 50%.",
       "examWeight": null
@@ -4502,6 +4768,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all lecture sessions and group meetings; full preparedness for class participation; submission of all assessments on/before the due dates.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4521,6 +4788,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attend all lectures, submit all assignments and achieve an average of 33% on all individual coursework components.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4540,6 +4808,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all lecture sessions and group meetings; full preparedness for class participation; submission of all assessments on/before the due dates.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -4559,6 +4828,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all lectures unless excused by the course convener. Submission of all assessments.",
       "assessment": "Final project (30%), class participation (20%), leadership development plan (50%).",
       "examWeight": null
@@ -4578,6 +4848,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Per the GNAM elective.",
       "assessment": "Per the GNAM elective.",
       "examWeight": null
@@ -4597,6 +4868,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4616,6 +4888,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4635,6 +4908,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4654,6 +4928,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4673,6 +4948,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4692,6 +4968,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4711,6 +4988,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4730,6 +5008,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4749,6 +5028,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4768,6 +5048,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4787,6 +5068,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4806,6 +5088,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4825,6 +5108,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 40%; Final exam: 60%. GRADUATE SCHOOL OF BUSINESS 231",
       "examWeight": 60
@@ -4844,6 +5128,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4863,6 +5148,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Research proposal 100%.",
       "examWeight": null
@@ -4882,6 +5168,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Written assignment: 60%; Final exam: 40%.",
       "examWeight": 40
@@ -4901,6 +5188,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Physical attendance at lectures is compulsory except with the permission of the Head of Department.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -4920,6 +5208,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except where excused by the Course Convener.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -4939,6 +5228,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except where excused by the Course Convener.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -4958,6 +5248,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except where excused by the Course Convener. GRADUATE SCHOOL OF BUSINESS 233",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -4977,6 +5268,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions except where excused by the Course Convener.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -4996,6 +5288,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assessments by the due date, attendance at all lectures except with the permission of the Head of Department.",
       "assessment": "The course is assessed by means of class and/or mid-term tests, individual and group assignments, presentations, final examinations, and/or report submissions. 50% individual assessments and 50% group assessments.",
       "examWeight": null
@@ -5015,6 +5308,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the Head of Department. Students are required to write all tests; and to hand in all necessary individual assessments or reports.",
       "assessment": "Written assignment: 40%; Final exam: 60%.",
       "examWeight": 60
@@ -5034,6 +5328,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the Head of Department. Students are required to write all tests; and to hand in all necessary individual assessments or reports.",
       "assessment": "Written assignment: 40%; Final exam: 60%.",
       "examWeight": 60
@@ -5053,6 +5348,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at lectures is compulsory except with the permission of the Head of Department. Students are required to write all tests; and to hand in all necessary individual assessments or reports.",
       "assessment": "Written assignment: 40%; Final exam: 60%.",
       "examWeight": 60
@@ -5072,6 +5368,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Thesis.",
       "examWeight": null
@@ -5091,6 +5388,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all workshop sessions except where excused. Submission of all preparation exercises. Submission, presentation and acceptance of a PhD research proposal.",
       "assessment": "PhD research proposal.",
       "examWeight": null
@@ -5110,6 +5408,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes except where excused by the programme convener.",
       "assessment": "None.",
       "examWeight": null
@@ -5129,6 +5428,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must participate in at least 80% of the sessions and submit all major assignments.",
       "assessment": "Coursework: 50%; Exam: 50%.",
       "examWeight": 50
@@ -5148,6 +5448,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend at least 80% of lectures.",
       "assessment": "Coursework: 50%; Exam: 50%.",
       "examWeight": 50
@@ -5167,6 +5468,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all deliverables including an unmarked progress report in July.",
       "assessment": "There are two deliverables which will be assessed: A proposal must be submitted and approved at the start of the course (weighting of 20% towards final mark);The final work project - A minimum of 50% must be obtained in order to pass (weighting of 80% towards final mark); The marks for the above assessment will be combined to produce a final INF4017W course mark and an overall mark of 50% is required to pass.",
       "examWeight": null
@@ -5186,6 +5488,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must participate in at least 80% of the UCT sessions and failure to achieve a year mark of more than 50% may, at the discretion of UCT, result in your exclusion from the UCT programme.",
       "assessment": "Coursework: 50%; Exam: 50%.",
       "examWeight": 50
@@ -5205,6 +5508,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Written papers and essays 50%; Written examinations 50%. Examination requirements: Each of the four modules will be examined. The examination may be written at the end of each module on dates announced at the start of the semester, and/or combined papers in June and November. A sub-minimum of 45% is required for the combined exam marks.",
       "examWeight": 50
@@ -5224,6 +5528,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "75% attendance and participation in seminars, a minimum of 50% for seminar management (developing and presenting a seminar paper according to scope, quality and time guidelines), and a sub-minimum of 45% in the final examination.",
       "assessment": "Seminar and classwork deliverables 60%; Final Assessment 40%.",
       "examWeight": null
@@ -5248,6 +5553,7 @@
         "Monday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "75% attendance and participation in seminars, a minimum of 50% for seminar management (developing and presenting a seminar paper according to scope, quality and time guidelines), and a sub-minimum of 45% in the final examination.",
       "assessment": "Seminar and classwork deliverables 60%; Final Assessment 40%.",
       "examWeight": null
@@ -5268,6 +5574,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Assessment will be based on compulsory deliverables within the following categories: Programming Test, Vision Presentation, BA & Innovation Document, Iterations Assessments (Documentation & Presentation) and the individual portfolio of evidence of each student.",
       "examWeight": null
@@ -5293,6 +5600,7 @@
         "Monday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "Assessment will be based on deliverables within the following categories: Assignments on IS management topics, Professional writing, Systems thinking, Quantitative analysis, Essays in a critical reading module. Draft research proposal: Full literature survey on proposed dissertation topic, Research design proposal for dissertation topic. Student presentations on various topics, Research article and Participation.",
       "examWeight": null
@@ -5312,6 +5620,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "at the start of the course and monthly class"
+        }
+      ],
       "dp": "",
       "assessment": "Students will be assessed based on interim deliverables. The final mark for the course will be based on the final assignment – the research proposal and the presentation. Students are expected to submit and present their doctoral proposals to the department within the first year of their studies. SCHOOL OF MANAGEMENT STUDIES",
       "examWeight": null
@@ -5332,6 +5649,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of 85% of departmental seminars.",
       "assessment": "Each coursework module comprises tests, assignments and a final examination. The weighting of coursework varies between 30% and 50%, while the final examination may contribute up to 70% of the module mark. The overall program mark is a weighted average of the final marks for all coursework modules, according to their credit values, together with the research project.",
       "examWeight": 70

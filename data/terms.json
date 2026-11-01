@@ -1,0 +1,14 @@
+{
+  "source": "https://uct.ac.za/students/calendar/terms, read 1 Nov 2026. UCT says it may change these dates.",
+  "note": "Semester 1 is the 1st and 2nd quarters, semester 2 the 3rd and 4th. The page gives no separate last day of lectures, so terms run to the end of each quarter (exams included).",
+  "years": {
+    "2026": {
+      "s1": { "start": "2026-02-16", "end": "2026-06-15", "breaks": [["2026-03-28", "2026-04-06"]] },
+      "s2": { "start": "2026-07-27", "end": "2026-12-21", "breaks": [["2026-09-05", "2026-09-13"]] }
+    },
+    "2027": {
+      "s1": { "start": "2027-02-08", "end": "2027-06-07", "breaks": [["2027-03-20", "2027-03-29"]] },
+      "s2": { "start": "2027-07-12", "end": "2027-12-17", "breaks": [["2027-08-21", "2027-08-29"]] }
+    }
+  }
+}

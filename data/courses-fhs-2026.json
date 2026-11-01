@@ -16,6 +16,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -35,6 +36,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -54,6 +56,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Appropriately completed logbook (including airway simulation training), satisfactory attendance of seminars (4 out of 6), attendance of a Pain Workshop.",
       "assessment": "One computer-based exam comprising multiple choice questions (single best answer) and matching items format.",
       "examWeight": null
@@ -73,6 +76,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full completion of all anaesthesia skills listed in the logbook (including airway and simulation workshops) and attendance of at least 5 of the 6 seminars.",
       "assessment": "One computer-based exam comprising multiple choice questions (single best answer)and matching items format.",
       "examWeight": null
@@ -92,6 +96,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion and submission of two supervised and assessed clinical cases (practical skills assessment). Completion of 13 online learning activities with a mark of greater than",
       "assessment": "An end-of-block (EOB) exam including single best answer (SBA) and extended matching questions (EMQ). The EOB SBA and EMQ exam contributes 60% to the final anaesthesia mark. This must be passed with a minimum of 50% in order to pass the course. A mark of 48% or 49% for the EOB SBA and EMQ exam may qualify the student to be considered for a supplementary exam without needing to repeat the course.",
       "examWeight": 60
@@ -112,6 +117,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -131,6 +137,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark",
       "examWeight": 40
@@ -151,6 +158,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The Division of Occupational Therapy considers all academic activities important and full attendance is encouraged to ensure rich learning, engagement and competence in theory and practice. This course, however, involves a number of academic activities that are designated as ‘compulsory’ in order to ensure that each student has obtained a minimum level of competence through their in-class…",
       "assessment": "Coursework assessments contribute 50% to the final mark. The final examination contributes 50% of the final mark and comprises of a written paper. The final mark is calculated as follows: Coursework mark (50%) and Examination mark (50%).",
       "examWeight": 50
@@ -168,6 +176,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials.",
       "assessment": "In-course assessment is weighted 50% and comprises assignments and post-module tests (15%) a mid-semester theory test (20%); and a structured practical test (15%). The final examination mark is weighted at 50% and comprises a written examination (25%) and a structured practical examination (25%). Students who fail the course may be required to register for the Fundamentals of Health Science programme or will repeat the course in the following academic year.",
       "examWeight": 50
@@ -185,6 +194,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "The coursework mark is weighted 60% and comprises post-module tasks (weighted 24%) towards the final mark); a theory test (20%); a structured practical test (16%) The final exam is weighted 40% and comprises of a written examination (25%) and a structured practical exam (15%).",
       "examWeight": 40
@@ -205,6 +215,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The Division of Occupational Therapy considers all academic activities important and full attendance is encouraged to ensure rich learning, engagement and competence in theory and practice. This course, however, involves a number of academic activities that are designated as DEPARTMENTS IN THE FACULTY 91 ‘compulsory’ in order to ensure that each student has obtained a minimum level of competence…",
       "assessment": "Coursework assessments contribute 50% to the final mark. The final exam contributes 50% to the final mark and comprises a written paper. The final mark is calculated as follows: Coursework mark (50%) and examination mark (50%).",
       "examWeight": 50
@@ -224,6 +235,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40% of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -241,6 +253,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -260,6 +273,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination..",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -279,6 +293,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of portfolio by the due dates.",
       "assessment": "Coursework assessments comprising (oral presentations 10% and portfolio assessments 15%). The examination mark counts 25% of the year mark and comprises an oral presentation.",
       "examWeight": 25
@@ -298,6 +313,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of portfolio by the due dates.",
       "assessment": "Coursework assessments comprising (oral presentations 10% and portfolio assessments 15%). The examination mark counts 25% of the year mark and comprises an oral presentation.",
       "examWeight": 25
@@ -317,6 +333,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of portfolio by the due dates.",
       "assessment": "Coursework assessments comprising (oral presentations 10% and portfolio assessments 15%). The examination mark counts 25% of the year mark and comprises an oral presentation",
       "examWeight": 25
@@ -336,6 +353,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of portfolio by the due dates.",
       "assessment": "Coursework assessments comprising (oral presentations 10% and portfolio assessments 15%). The examination mark counts 25% of the year mark and comprises an oral presentation",
       "examWeight": 25
@@ -355,6 +373,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "Coursework mark counts 50% and comprises assignments, written tests and practical tests. Exam mark counts 50% and comprises written and structured practical examinations.",
       "examWeight": 50
@@ -374,6 +393,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "Coursework mark counts 50% and comprises assignments, written tests and practical tests. Exam mark counts 50% and comprises written and structured practical examinations.",
       "examWeight": 50
@@ -393,6 +413,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "The final course mark is comprised of a coursework mark weighted at 50% and the summative exam that is weighted at 50%.",
       "examWeight": 50
@@ -412,6 +433,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "The final course mark is comprised of a coursework mark weighted at 50% and the summative exam that is weighted at 50%.",
       "examWeight": 50
@@ -431,6 +453,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "The final course mark is comprised of a coursework mark weighted at 50% and the summative exam that is weighted at 50%.",
       "examWeight": 50
@@ -450,6 +473,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "The final course mark is comprised of a coursework mark weighted at 50% and the summative exam that is weighted at 50%.",
       "examWeight": 50
@@ -469,6 +493,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "Coursework mark counts 50% of the year mark and comprises assignments (essay writing and oral presentations). The examination mark counts 50% of the year mark and comprises a structured practical examination.",
       "examWeight": 50
@@ -488,6 +513,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "Coursework mark counts 50% of the year mark and comprises assignments (essay writing and oral presentations). The examination mark counts 50% of the year mark and comprises a structured practical examination.",
       "examWeight": 50
@@ -507,6 +533,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "Coursework includes weekly task submission and a Portfolio of evidence which contributes 50% and the examination contributes 50% toward the final course mark.",
       "examWeight": 50
@@ -526,6 +553,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "Coursework includes weekly task submission and a Portfolio of evidence which contributes 50% and the examination contributes 50% toward the final course mark.",
       "examWeight": 50
@@ -545,6 +573,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "Coursework (weekly task submission and Portfolio of Evidence) contributes 50% and the examination contributes 50%.",
       "examWeight": 50
@@ -564,6 +593,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "Coursework (weekly task submission and Portfolio of Evidence) contributes 50% and the examination contributes 50%.",
       "examWeight": 50
@@ -583,6 +613,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of portfolio by the due dates.",
       "assessment": "The final course mark is comprised of the in-course mark weighted at 60% and the endof-course mark weighted at 40%.",
       "examWeight": null
@@ -602,6 +633,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "The final course mark is comprised of the in-course mark weighted at 60% and the endof-course mark weighted at 40%.",
       "examWeight": null
@@ -621,6 +653,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance and participation in all lectures, block placements, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "The final course mark is comprised of the in-course mark weighted at 60% and the endof-course mark weighted at 40%",
       "examWeight": null
@@ -640,6 +673,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of face-to-face lectures, synchronous online lectures, and online forum tasks. Full participation in all learning activities and completion of all coursework and three assignments by the due dates.",
       "assessment": "There are three term assessments, in March, June and September. Each of these is a onehour online test and counts 10% each towards the year mark. 6% of the year mark is made up from forum tasks during the year. Each of the three assignments is worth 7% to the final year mark There is an examination at the end of the year (a two-hour exam) which accounts for 43% of the total mark.",
       "examWeight": 43
@@ -660,6 +694,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The Division of Occupational Therapy considers all academic activities important and full attendance is encouraged to ensure rich learning, engagement and competence in theory and practice. This course, however, involves a number of academic activities that are designated as ‘compulsory’ in order to ensure that each student has obtained a minimum level of competence through their in-class…",
       "assessment": "In course assessment contributes to 60% of the course weighting and comprises of class tests, assignments, small group projects, presentations and practicals. End of course assessment contributes 40% of the course weighting and comprises of a written theory exam, an objective standardised practical examination and a written report.",
       "examWeight": 40
@@ -679,6 +714,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -696,6 +732,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -715,6 +752,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance and participation in all coursework. Student attendance at clinical sessions is monitored in accordance with HPCSA regulations.",
       "assessment": "The course is assessed via continuous in course assessment. The theoretical modules are assessed through integrated written or clinical assessment and an online component. Clinical modules are assessed through end of block clinical submissions (including but not limited to block performance, case study presentation) and skill testing. The pass mark for the course is 50%. Should a student obtain between 45-49% an opportunity for re- assessment will be provided.",
       "examWeight": null
@@ -734,6 +772,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are expected to attend and participate in 80% of all lectures and practical sessions and attend all tutorials. Attendance is monitored through the signing of an attendance register at each session. Students are required to submit all coursework as required.",
       "assessment": "Formative online quizzes throughout the year (15%); Term 1 tests (5%); Term 2 tests (theory: 20%; structured practical evaluation: 10%); Term 3 assignment (10%); and Final Term 4 examination (theory: 25% and structured practical evaluation: 15%). The pass mark of the course is 50%. Students who obtain between 45-49% in the final year mark, will be eligible for a supplementary exam.",
       "examWeight": 25
@@ -753,6 +792,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "In course assessment contributes 65% and is made up of the following: Term 1: 7,5%; Term 2: 35% (25% theory, 10%SPE); Term 3: 17,5% and Term 4: 5%. Assessments for coursework will include but not be limited to written tests, oral test, online quizzes, group and individual assignments and practical tests. Specifics regarding assessment will be provided for each module within the course by the course convenor.",
       "examWeight": null
@@ -772,6 +812,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -791,6 +832,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -810,6 +852,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -827,6 +870,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -846,6 +890,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all clinic activities; completion of all coursework and required documentation (e.g. ELOs and hours) by the due dates; and professional conduct. A concession to miss clinic activities with a valid reason must be approved by the course convenor.",
       "assessment": "Continuous assessments during each clinical block contributes to the final course mark. Refer to AHS2108W clinic descriptor document for specific assessment details.",
       "examWeight": null
@@ -863,6 +908,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -882,6 +928,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all clinic activities; completion of all coursework and required documentation (e.g. ELOs and hours) by the due dates; and professional conduct. A concession to miss clinic activities with a valid reason must be approved by the course convenor.",
       "assessment": "Continuous assessments during each clinical block contributes to the final course mark. Refer to AHS2110W clinic descriptor document for specific assessment details.",
       "examWeight": null
@@ -901,6 +948,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -920,6 +968,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Eighty per cent attendance of Face to face lectures, synchronous online lectures and online forum tasks. Full participation in all learning activities and completion of all coursework and three assignments by the due dates.",
       "assessment": "There are three term assessments, in March, June and September. Each of these is a onehour online test and counts 9% each towards the year mark. A microbiology module test in counts a further 9% towards the end of year mark 6%) of the year mark is made up from forum tasks during the year. Each assignment is worth 6% to the final year mark. There is an examination at the end of the year (a two-hour exam) which accounts for 40% of the total mark.",
       "examWeight": 40
@@ -939,6 +988,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all clinic activities; completion of all coursework and required documentation (e.g. ELOs and hours) by the due dates; and professional conduct. A concession to miss clinic activities with a valid reason must be approved by the course convenor.",
       "assessment": "Continuous assessments during each clinical block contributes 90% of the course mark; examination in November contributes 10% of the course mark. Refer to AHS3005W clinic descriptor document for specific assessment details.",
       "examWeight": 10
@@ -958,6 +1008,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all clinic activities; completion of all coursework and required documentation (e.g. ELOs and hours) by the due dates; and professional conduct. A concession to miss clinic activities with a valid reason must be approved by the course convenor.",
       "assessment": "Continuous assessments during each clinical block contribute 90% of the course mark; examination in November contributes 10% of the course mark. Refer to AHS3008H clinic descriptor document for specific assessment details.",
       "examWeight": 10
@@ -977,6 +1028,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -994,6 +1046,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -1013,6 +1066,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are obliged to complete all the required clinical hours for the year as per HPCSA regulations. Further requirements are full attendance of and participation in all clinical activities and completion of clinical portfolio requirements by the due dates, to be able to complete each end of block exam.",
       "assessment": "The course is assessed via continuous assessment, and the pass mark for the course is 50%. The final course mark is calculated as an average of all the completed clinical module/ block marks. Each clinical module mark comprises of an overall performance mark (which includes a portfolio submission) and either a patient-focused engagement or related tasks. Students who obtain below 45% will fail and need to repeat the course.",
       "examWeight": null
@@ -1032,6 +1086,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "This course assessment will comprise of two components namely CHH and Physiotherapy in Context, each weighted at 50%. Details pertaining to the type of assessments for each component will be provided at the beginning of the academic year. Students who obtain between 45-49% will be offered the opportunity of a supplementary examination.",
       "examWeight": null
@@ -1051,6 +1106,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -1070,6 +1126,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The final course mark is made up of a coursework mark (weighted 60%) and an examination mark (weighted 40%). If a supplementary examination is awarded it will count 40% of the final mark, as the coursework mark will still be included in the final mark",
       "examWeight": 40
@@ -1089,6 +1146,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -1108,6 +1166,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -1127,6 +1186,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are expected to attend and participate in 80% of all lectures and practical sessions, and all tutorials. Attendance is monitored through the signing of an attendance register at each session. Students are required to submit all coursework as required.",
       "assessment": "The course will be assessed through a combination of written tests (40%), two OSPEs (Term 2 OSPE 15% and final Term 4 OSPE 15%); an assignment (15%) and formative revision MCQ’s (15%) which form part of the continuous assessment process. The pass mark of the course is DEPARTMENTS IN THE FACULTY 109 50%. Students who obtain between 45-49% in the final year mark, will be eligible for a supplementary exam.",
       "examWeight": null
@@ -1146,6 +1206,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are expected to attend and participate in 80% of all lectures, practical sessions, workshops and tutorials. Attendance is monitored through the signing of an attendance register at each session. Students are required to submit all coursework as required in the different modules by the due dates.",
       "assessment": "Coursework contributes 60% toward the final mark. The coursework comprises tests and assignments in Women's Health (6%), tests, assignments and OSPES in Neurology (30%) and tests, OSPE's and assignments in CPR (24%). The final examination contributes 40% and consists of assignments, OSPEs and written tests in CPR, Neurology and Women’s Health",
       "examWeight": 40
@@ -1166,6 +1227,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are expected to attend 80% of all lectures and 80% of all supervision sessions.",
       "assessment": "Students will take part in continuous assessment which will contribute to a 100% course work mark for the course. They will complete six online assessments in the form of quizzes which will contribute 10% each, totalling a 60% contribution to the course mark. Students will need to pass four out of the six quizzes to progress to the 4000-level research course. One additional opportunity for reassessment will be created should they not meet this requirement.",
       "examWeight": null
@@ -1185,6 +1247,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -1202,6 +1265,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -1219,6 +1283,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -1238,6 +1303,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "For discipline specific courses in the BSc Audiology and BSc in Speech-Language Pathology programmes a minimum coursework mark of 40% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -1258,6 +1324,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The Division of Occupational Therapy considers all academic activities important and full attendance is encouraged to ensure rich learning, engagement and competence in theory and practice. This course, however, involves a number of academic activities that are designated as ‘compulsory’ in order to ensure that each student has obtained a minimum level of competence through their in-class…",
       "assessment": "Coursework assessments contribute 60% and comprise a range of theoretical and practice-based assessments. The final examinations contributes 40% to the final mark and comprise a written paper, and an objective standardised practical examination.",
       "examWeight": 40
@@ -1278,6 +1345,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -1297,6 +1365,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The Division of Occupational Therapy considers all academic activities important and full attendance is encouraged to ensure rich learning, engagement and competence in theory and practice. This course, however, involves a number of academic activities that are designated as ‘compulsory’ in order to ensure that each student has obtained a minimum level of competence through their in-class…",
       "assessment": "Coursework assessments contribute 50% to the final mark and comprise a written paper, assignments and small group projects. The final examination contributes 50% to the overall mark and comprises a written paper.",
       "examWeight": 50
@@ -1316,6 +1385,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all clinic activities; completion of all coursework and required documentation (e.g. ELOs and hours) by the due dates; and professional conduct. A concession to miss clinic activities with a valid reason must be approved by the course convenor.",
       "assessment": "Continuous assessments during each clinical block contribute to 60% of course mark; final qualifying examination in June contributes 40% of course mark. Refer to AHS4005H clinic descriptor document for specific assessment details.",
       "examWeight": 40
@@ -1335,6 +1405,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all clinic activities; completion of all coursework and required documentation (e.g. ELOs and hours) by the due dates; and professional conduct. A concession to miss clinic activities with a valid reason must be approved by the course convenor.",
       "assessment": "Continuous assessments during each clinical block contribute to 60% of course mark; final qualifying examination in November contributes 40% of course mark. Refer to AHS4006H clinic descriptor documents for specific assessment details.",
       "examWeight": 40
@@ -1354,6 +1425,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all clinic activities; completion of all coursework and required documentation (e.g. ELOs and hours) by the due dates; and professional conduct. A concession to miss clinic activities with a valid reason must be approved by the course convenor.",
       "assessment": "Continuous assessments during each clinical block contribute to 60% of course mark; final qualifying examination in June contributes 40% of course mark. Refer to AHS4008H clinic descriptor document for specific assessment details.",
       "examWeight": 40
@@ -1373,6 +1445,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Minimum 80% attendance at all clinics; completion of all coursework by the due dates; and professional conduct.",
       "assessment": "Continuous assessments during each clinical block contribute to 60% of course mark; final qualifying examination in November contributes 40% of course mark. Refer to AHS4009H clinic descriptor document for specific assessment details",
       "examWeight": 40
@@ -1392,6 +1465,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Pre-block assessment requirements exist for ICU and some paediatric placements. Students who do not meet these requirements will be ineligible to complete the specific block and will be required to re-do the block. (Rule FBF3.3) Students are obliged to complete all the required hours for the year as per HPCSA regulations.",
       "assessment": "The course is assessed via continuous assessment conducted at the end of each clinical module/block and an additional unseen patient exam. The pass mark for the course is 50%. Each clinical block comprises of a block performance mark (which includes portfolio submissions) and an end of block patient or presentation exam where applicable. Weightings for the individual components will be provided at the start of the academic year.",
       "examWeight": null
@@ -1411,6 +1485,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance at all clinical days If a student is absent 8 days (2 weeks) or more on a particular block, the student would be required to re-do the entire block before being eligible to do the end of block exam. Supporting documentation needs to be submitted together with the concession to miss class form to support the application to the Division for a deferred block.",
       "assessment": "This course is assessed via Continuous assessment on the three clinical blocks and one additional unseen patient examination. Each block comprises of a block performance mark (40%) and a patient examination (60%). In some placements the patient examination may be replaced by a patient-based presentation. The final course grade is calculated as an average of all the clinical block marks plus the additional exam. If a student obtains 50% or more by the end of the course, they will have passed.",
       "examWeight": 60
@@ -1430,6 +1505,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "All course activities.",
       "assessment": "This course will be assessed via an in-course assignment (50%) and a summative examination (written paper) (50%). Students who obtain between 45-49 % will be offered a written or oral supplementary examination. Students who fail the course or the supplementary will register for AHS4185S in the second semester.",
       "examWeight": 50
@@ -1447,6 +1523,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all academic activities is required. Students are required to submit all coursework by the due date. A minimum course work mark of 45% is required for entrance into the examination.",
       "assessment": "The course grade is made up of a coursework mark (weighted 60%) and a final examination mark (weighted 40%). If a supplementary examination is awarded, it will count 40 % of the final mark, as the course work mark will still be included in the final mark.",
       "examWeight": 40
@@ -1466,6 +1543,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates.",
       "assessment": "The course is assessed via continuous evaluation (CE) weighted at 60%, and the June exam is weighted at 40%. The modules within the course will be weighted according to the contact hours given to each module and will be provided to students at the start of the year. The Final theory examination contributes 40% to the final mark. A student who obtains between 45 - 49% will be offered a written supplementary opportunity.",
       "examWeight": 40
@@ -1485,6 +1563,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "The course comprises a literature review, research project and presentation. These components contribute 75% to the final course grade. Peer review is incorporated into each of the three components of the course and contributes 25% to the final course grade. If the final course grade is between 40-49% an opportunity for reassessment will be offered. A maximum of 50% will be awarded for this re-assessment.",
       "examWeight": null
@@ -1504,6 +1583,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The Division of Occupational Therapy considers all academic activities important and full attendance is encouraged to ensure rich learning, engagement and competence in theory and practice. This course, however, involves a number of academic activities that are designated as ‘compulsory’ in order to ensure that each student has obtained a minimum level of competence through their in-class…",
       "assessment": "Coursework assessments contribute 50% to the final mark and comprise a group research project and a June test. The final examinations contribute 50% to the overall mark and comprise a policy brief and a written paper.",
       "examWeight": 50
@@ -1523,6 +1603,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The Division of Occupational Therapy considers all academic activities important and full attendance is encouraged to ensure rich learning, engagement and competence in theory and practice. This course, however, involves a number of academic activities that are designated as ‘compulsory’ in order to ensure that each student has obtained a minimum level of competence through their in-class…",
       "assessment": "Coursework assessments contributes 50% to the final mark and comprise a work practice strategies assignment, a child learning development and play assignment, a community development practice assignment and a June test paper. Final assessment contributes 50% to the course mark and comprises a written examination paper.",
       "examWeight": 50
@@ -1543,6 +1624,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The Division of Occupational Therapy considers all academic activities important and full attendance is encouraged to ensure rich learning, engagement and competence in theory and practice. This course, however, involves a number of academic activities that are designated as ‘compulsory’ in order to ensure that each student has obtained a minimum level of competence through their in-class…",
       "assessment": "Coursework assessments contribute 50% to the final mark and comprise various types of practical demonstrations and practice learning student performance reports. The final examination contributes 50%, to the final mark and includes a range of examinations that evaluate skills in workrelated practice, community development practice and child, learning, development and play.",
       "examWeight": 50
@@ -1563,6 +1645,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The Division of Occupational Therapy considers all academic activities important and full attendance is encouraged to ensure rich learning, engagement and competence in theory and practice. This course, however, involves a number of academic activities that are designated as ‘compulsory’ in order to ensure that each student has obtained a minimum level of competence through their in-class…",
       "assessment": "Coursework assessments contribute 30% to the final course mark and include various practical assessments, demonstrations and practice learning student performance reports. The final examinations contribute 40% to the overall mark and comprise three practical assessments. The total Course Mark is calculated out of 70 % (to be converted to 100% for final course mark). This course needs to be completed together with AHS4123X to gain full credit weighting.",
       "examWeight": 40
@@ -1583,6 +1666,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The Division of Occupational Therapy considers all academic activities important and full attendance is encouraged to ensure rich learning, engagement and competence in theory and practice. This course, however, involves a number of academic activities that are designated as ‘compulsory’ in order to ensure that each student has obtained a minimum level of competence through their in-class…",
       "assessment": "Course assessments contribute 15% to the final mark and comprise practical demonstrations and a practice learning student block performance report. The final examinations contribute 15% to the overall mark and will comprise a tailored practical examination that links to the student’s participation in their practice learning block. Total Course Mark: 30% (to be converted to 100% for final course mark). This course needs to be completed together with AHS4122X to gain full credit weighting.",
       "examWeight": 15
@@ -1602,6 +1686,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates",
       "assessment": "The course will be assessed through in course components and final examination at the of the year. Students who obtain an examination mark of 45-49% will be offered a re-assessment opportunity. Should a mark below 50% be obtained for the reassessment the student will reregister for the AHS4071F course in the first semester of the following academic year",
       "examWeight": 49
@@ -1621,6 +1706,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due dates",
       "assessment": "The course will be assessed through course components and final examination at the of the year. Students who obtain an examination mark of 45-49% will be offered a re-assessment opportunity. Should a mark below 50% be obtained for the reassessment, the student will re-register for the AHS 4066F course in the first semester of the following academic year.",
       "examWeight": 49
@@ -1644,6 +1730,7 @@
         "Tuesday",
         "Wednesday"
       ],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Continuous assessment (essays, projects, tests, etc.) counts 100%.",
       "examWeight": null
@@ -1661,6 +1748,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, tutorials and self-directed learning sessions.",
       "assessment": "In-course assessment contributes 60% and comprises tutorial tasks (10%); and two tests (weighted at 25% each). The examination contributes 40% of the final mark. Students who fail the final assessment may be allowed to register for a summer term course and write another examination in the same year.",
       "examWeight": 40
@@ -1678,6 +1766,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance of and participation in all lectures, fieldwork and self-directed learning sessions.",
       "assessment": "In-course assessment contributes 60% and comprises fieldwork and self-directed learning tasks (10%), a test (25%) and an assignment (25%). The final examination contributes 40% to the final mark. These assessments and examination contribute 60% towards the final year mark at the end of Intervention Programme 2.",
       "examWeight": 60
@@ -1705,6 +1794,28 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "/"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Friday",
+              "start": "12:00",
+              "end": "12:45"
+            }
+          ],
+          "text": "Friday, 2nd-5th period."
+        }
+      ],
       "dp": "Irrespective of whether learning activities are delivered online or face-to-face, attendance and/or participation in all scheduled academic activities, completion of all set written course activities (i.e., practical reports, course tests and tutorial exercises).",
       "assessment": "The class record counts 45% and comprises a practical record (8%); tutorial exercises (5%); two class tests (20%); and a practical test (12%). The final examination counts 55%. A subminimum of 45% is required in the final examination.",
       "examWeight": 55
@@ -1724,6 +1835,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -1743,6 +1855,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -1762,6 +1875,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "room."
+        }
+      ],
       "dp": "All scheduled activities are considered compulsory. DP for the General Surgery course is granted for: (a) Full attendance at Introduction to Surgical Practice: Interdisciplinary Week. Students will sign the register for each session. DP withheld if the student misses any session without CMC, (b) Attendance at scheduled clinical activities.",
       "assessment": "The General Surgery mark comprises three assessments. Students must obtain 50% for each component (sub-minimum) and a weighted overall average of 50% to pass. Students obtaining an average of between 48% and 50% will be recommended to complete a supplementary assessment. Students obtaining less than 48% will be required to repeat the surgical block. (a) In-Course Assessment – weighted 10",
       "examWeight": null
@@ -1781,6 +1903,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": ", online lectures, clinical sessions, one course assignment"
+        }
+      ],
       "dp": "Full and punctual attendance of all ward rounds, clinics, and tutorials as per timetable. Completion of 2-week firm attachment, signed off by registrar or consultant. Attendance of ASCI tutorial, hands tutorial and Red Cross fracture clinic. The student needs to have a minimum of 4 out of the suggested 10 clinical skills signed off as competent.",
       "assessment": "End-of-course examination consists of an invigilated",
       "examWeight": null
@@ -1800,6 +1931,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": ", online lectures, clinical sessions, one course assignment."
+        }
+      ],
       "dp": "Full and punctual attendance of all ward rounds, clinics, and tutorials as per timetable. Completion of 2-week firm attachment, signed off by registrar or consultant. Attendance of ASCI tutorial, hands tutorial and Red Cross fracture clinic. The student needs to have a minimum of 4 out of the suggested 8 clinical skills signed off as competent.",
       "assessment": "End-of-course examination consists of an invigilated",
       "examWeight": null
@@ -1819,6 +1959,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are expected to attend a minimum of 33 out of the 41 seminars. This and the six portfolio cases represent the DP requirements. Tutorials are however considered compulsory. Both tutorials and witnessed procedures are signed off in a logbook, which may be reviewed during the end-of-block assessment.",
       "assessment": "Students are provided with continuous feedback from their tutors informally during their block. This is not recorded, and does not form part in the final promotion mark. The final mark is made up of an end-of-block written paper (33,3%), end-of-block clinically-based MCQ (33,3%), endof-block oral and portfolio assessment (33,3%). The general surgery component of the course must be passed with 50%.",
       "examWeight": null
@@ -1839,6 +1980,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "and bedside teaching are offered, some sessions are optional others are required as stipulated in the teaching program"
+        }
+      ],
       "dp": "Minimum 75% attendance of scheduled teaching sessions. If a student fails to meet 75% attendance, they must complete a concession to miss academic activities form and meet with the convenor to discuss reasons for not attending else risk DPR.",
       "assessment": "Formative assessment occurs throughout the course/block. The summative assessment consists of: (a) a Participation Cards (15%): Each student will receive a card at the start of the course/block. During tutorials, clinical teaching or other interactive sessions, the lecturer will ask a series of questions (clinical or theory related) of a student, or of the group where any student can volunteer to answer.",
       "examWeight": null
@@ -1859,6 +2009,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "In order to qualify to write the end of course assessment, students must have completed the clinical component of the course to achieve a ‘Duly Performed’ certificate. The requirements include full attendance and a completed portfolio of cases as is stipulated in the course document.",
       "assessment": "The final ophthalmology mark will be made up of the following components: a) An invigilated online MCQ exam (contributing 40%); b) An invigilated online OSCE exam (contributing 40%; c) A Portfolio exam (contributing 20%). Any students obtaining less than 50% as a final ophthalmology mark will fail the course.",
       "examWeight": 40
@@ -1878,6 +2029,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students will be required to: 1) complete an otoscopy clinical examination(10% of final mark); 2) complete the Otosim simulation assessment (10% of final mark); 3) do a case presentation according to a rubric provided on Vula as an example of a typical referral case from a general practitioner to as specialist (10% of final mark).",
       "assessment": "Assessment consists of: 1. End-of-block multiple choice question exam (70% of final mark); 2. In-course assessments(30% of final mark) – otoscopy exam (10%), Otosim exam (10%), case presentation (10%) The pass mark of the course is 50%. The following will be recommended to the Faculty Examinations Committee, that students who: (a) achieve 48–49% in end-of-block final mark, are required to undertake a supplementary examination in the failed component/s; (b) fail the course overall with a mark of…",
       "examWeight": 70
@@ -1897,6 +2049,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance and completion of all requisite coursework/clinical work. A student who for any reason is or has been unable to meet the above requirements by the due date must supply a reason to the convener, who has the discretion to decide whether the reason is adequate to",
       "assessment": "The final mark is made up of a case report. This comprises a case report (20%) a logbook/ward performance (30%) and an end-of-block MCQ examination (50%).",
       "examWeight": 50
@@ -1916,6 +2069,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of the six portfolio cases and a completed logbook of eight presented cases comprise the DP for the course. However, full attendance and participation in unit is considered compulsory.",
       "assessment": "The end-of-block assessment comprises a clinical, scenario-based and portfolio oral assessment (50%); a patient-based oral examination (50%);",
       "examWeight": 50
@@ -1935,6 +2089,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "."
+        }
+      ],
       "dp": "All scheduled activities are considered compulsory. DP for the General Surgery course is granted for: (a) Attendance at Suturing and Wound Care workshop. Students will sign the register. Attendance at Pathways to Surgical Care workshop. Students will sign the register, (b) Attendance at scheduled clinical activities. Clinical supervisor will sign the students’ rotation logbook daily.",
       "assessment": "The General Surgery mark comprises three assessments. Students must obtain 50% for each component (sub-minimum) and a weighted overall average of 50% to pass. Students obtaining an average of between 48% and 50% will be recommended to complete a supplementary examination. Students obtaining less than 48% will be required to repeat the surgical block.",
       "examWeight": null
@@ -1954,6 +2117,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of the six portfolio cases and a completed logbook of eight presented cases comprise the DP for the course. However, full attendance and participation in unit is considered compulsory.",
       "assessment": "The end-of-block assessment comprises a clinical, scenario-based and portfolio oral assessment (25%); a patient-based oral examination (25%); a computerised, clinically-based MCQ (25%); and a computerised theoretical knowledge-based MCQ (25%). FACULTIES AND DEPARTMENTS OFFERING COURSES TO THE FACULTY",
       "examWeight": 25
@@ -1975,6 +2139,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attending all clinical skills sessions, language and communication activities, tutorials, and practical’s and all family medicine tutorials. Completing the portfolios of learning and undergoing assessment activities.",
       "assessment": "An integrated, Objective Structured Clinical Examination (OSCE) covers the three Courses of the BaDr theme, that is, Family Medicine (FCE2000W), Clinical Skills (HSE2000W) and the Languages (SLL2002H). An OSCE tests practical skills, the ability to conduct an appropriate consultation, to communicate with patients and peers, and to communicate (in English, Afrikaans, and isiXhosa) at a level sufficient for a basic sharing of health-related information.",
       "examWeight": null
@@ -1994,6 +2159,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2013,6 +2179,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2034,6 +2201,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attending all clinical skills sessions, language and communication activities, tutorials, and practicals and all family medicine tutorials. Completing the portfolios of learning and undergoing assessment activities.",
       "assessment": "An integrated, Objective Structured Clinical Examination (OSCE) covers the three Courses within the BaDr theme, that is, Family Medicine (FCE3000F), Clinical Skills (HSE3000F) and Languages (SLL3002F). An OSCE tests practical skills, the ability to conduct an appropriate consultation, to communicate with patients and peers, and to communicate (in English, Afrikaans and isiXhosa) at a level sufficient for a basic sharing of health-related information.",
       "examWeight": null
@@ -2053,6 +2221,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "from 2 to 4pm"
+        }
+      ],
       "dp": "(a) Completion of all required coursework and attendance of compulsory academic activities on campus (including orientation day session and tutorials/seminars conducted virtually or DEPARTMENTS IN THE FACULTY 83 face to face). A completed Portfolio and a completed Logbook must be submitted on Amathuba as a DP requirement.",
       "assessment": "The final mark is made up of: (A) an in-course mark comprising a patient study (25%) and a Facility Clinical mark (CHC and Vredenburg/Garden Route):15%. The facility clinical mark is weighted according to time spent at CHCs (50%) and VB (50%). The breakdown for the CHC facility mark and the VB rural facility mark is as",
       "examWeight": null
@@ -2072,6 +2249,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "An evaluation form and activity form (if applicable) signed by the elective supervisor.",
       "assessment": "A written report on the elective for 100 marks within four weeks of the elective. A penalty of one mark per day applies for late submission. The marking rubrics are available on the VULA Electives site. Students who fail (i.e. obtain less than 50% for the elective report) will be given",
       "examWeight": null
@@ -2091,6 +2269,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A completed student evaluation of the elective using the standard template provided, as well as an evaluation form and activity form signed by the elective supervisor.",
       "assessment": "A Pass/Not Pass assessment is made by the electives convener. No mark is awarded for the report. Students who do not pass (i.e. who do not submit a report) will be given one opportunity to re-submit, otherwise they may be required to repeat the elective in the following year.",
       "examWeight": null
@@ -2111,6 +2290,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are required to attend all learning and assessment opportunities which form the basis for this course as scheduled.",
       "assessment": "Assessment is continuous and formative. Students need to demonstrate competencies and milestones. There will be no summative assessment at the end of the course. Students who have completed this course, will be allowed to register and repeat first year failed semester one or semester two courses.",
       "examWeight": null
@@ -2131,6 +2311,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are required to attend all learning and assessment opportunities which form the basis for this course as scheduled.",
       "assessment": "Assessment is continuous and formative. Students need to demonstrate competencies and milestones. There will be no summative assessment at the end of the course. Students who have completed this course, will be allowed to register and repeat first year failed semester one or semester two courses.",
       "examWeight": null
@@ -2151,6 +2332,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all lectures and tutorial sessions, participate in lectures and practical sessions, and submit homework, self-study tasks and assignments by the due dates.",
       "assessment": "In-course assessments contribute 50% towards the final mark and consist of term tests (15%); OSPE tests (15%); and assignments (20%). The final test contributes 50% and consists of a written theory paper (25%) and a structured practical test (25%). These assessments contribute 40% towards the final year mark for AHS1040F at the end of IP2. There is no summative examination for this course after IP1. The final assessment takes place in AHS1040F.",
       "examWeight": null
@@ -2170,6 +2352,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "(a) Compulsory attendance of face-to-face clinical skills contact sessions; (b) Compulsory online seminars as indicated on the timetable. (c) Participate and complete all mid & end semester activities. Students to consult the online weekly planner that will provide detailed information regarding teaching and assessment activities.",
       "assessment": "An integrated, Objective Structured Clinical Examination (OSCE) covers the three Courses of the BaDr theme, that is Clinical Skills (HSE2000W), Family Medicine (PPH2000W) and the Languages (SLL2002H). Coursework: 40% in-course assessments, 60% end of semester assessments (MCQ and OSCE).Each of the Courses within the BaDr theme must be passed independently. A final mark of less than and equal to 45% in any of the Courses, constitutes a fail for that Course(s).",
       "examWeight": null
@@ -2189,6 +2372,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2208,6 +2392,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2227,6 +2412,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "All DP requirements must be met, including compulsory attendance of all ward tutorials, patient-linked activities, and assessments. DP requirements are stipulated on the Clinical Skills Vula site.",
       "assessment": "An integrated, Objective Structured Clinical Examination (OSCE) covers the three Courses within the BaDr theme, that is, Family Medicine (PPH3000F), Clinical Skills (HSE3000F) and the Languages (SLL3002F). Coursework: 30% in-course assessment, 70% end of semester assessments. Assessments comprises of OSCE, MCQ and written reflective portfolio (marked). Each of the Courses must be passed independently.",
       "examWeight": null
@@ -2246,6 +2432,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are required to have attained DP for the relevant block before attempting that station during the EXIT OSCE. HUMAN BIOLOGY Human Biology Room 5.14, Level 5 Anatomy Building, Health Sciences Campus, and Sports Science Institute of South Africa Building, Newlands.",
       "assessment": "",
       "examWeight": null
@@ -2266,6 +2453,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A blended approach to academic activities may be used to support and enhance face-to face-learning. Attendance at and/or participation in all academic activities, where official registers are circulated or online monitoring is available, including problem-based learning sessions, tutorials, workshops, and BHS practical sessions are a requirement for DP.",
       "assessment": "Both in-course and end-of-course assessments may include written, computer-based and practical components. All components of in-course and end-of-course assessments must be written to pass the course. When students are unable to write an assessment for what is deemed a legitimate reason, a deferred assessment may be given. Students who miss a component of an in-course assessment must apply for a concession to miss classes/academic activities to write a deferred incourse assessment.",
       "examWeight": null
@@ -2285,6 +2473,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due date.",
       "assessment": "The course comprises written and on-going practical assessments, which make up 45% of the course mark. The other 55% comprises marks for the final written and practical exams",
       "examWeight": 55
@@ -2304,6 +2493,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of and participation in all lectures, practical sessions, workshops and tutorials, and submission of assignments by the due date. Both the anatomy and physiology components of the course require a subminimum of at least 40% to achieve DP.",
       "assessment": "The in-course assessments comprise written and on-going practical assessments, which make up 45% of the final course mark. The final written and practical exams make up the remaining 55% of the final course mark. In order to pass HUB1019F, a final course mark of 50% is required. However, both the anatomy and physiology components of the course must be passed with a subminimum of at least 45% in the final course mark. In addition, a subminimum of 40% needs to be achieved in the examination.",
       "examWeight": 55
@@ -2323,6 +2513,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A blended approach to academic activities may be used to support and enhance face-to-face learning. Attendance of, and or participation in all learning activities, including lectures, practical sessions, workshops and tutorials, and submissions of assignments by the due date are required for DP.",
       "assessment": "The in-course assessments comprise written and on-going practical assessments, which make up 45% of the final course mark. The final written and practical exams make up the remaining 55% of the final course mark. In order to pass HUB1020S, a final course mark of 50% is required. However, both the anatomy and physiology components of the course must be passed with a subminimum of at least 45% in the final course mark. In addition, a subminimum of 40% needs to be achieved in the examination.",
       "examWeight": 55
@@ -2342,6 +2533,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend 75% of tutorials, hand-ins and mini tests and must obtain a combined class mark of at least 40%.",
       "assessment": "The course mark contributes 60% and comprises assignments (10%); class tests (30%); and ad hoc mini tests (20%). The examination contributes 40% and consists of a three-hour written examination in June. Both the physics and chemistry components of the course must be passed, with a subminimum of at least 40% for each component in the final examination.",
       "examWeight": 40
@@ -2361,6 +2553,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend 75% of tutorials, hand-ins, and mini tests and obtain a combined class mark of at least 40%.",
       "assessment": "The course mark contributes 60% and consists of assignments (10%), class tests (30%) and ad hoc mini tests (20%). The examination contributes 40% and consists of a three-hour written paper in November. Both the physics and chemistry components must be passed with a subminimum of 40% for each component in the final examination.",
       "examWeight": 40
@@ -2380,6 +2573,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "(a) Participation in all formative assessments on each module, (b) Attendance: 80% class attendance, (c) Achieving a weighted average mark of 40% on two in-class tests.",
       "assessment": "(a) Two written in-class tests (40%) and the final examination (60%), (b) If the combined final mark is between 45% and 49% the student may be awarded a supplementary exam.",
       "examWeight": 60
@@ -2400,6 +2594,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A blended approach to academic activities may be used to support and enhance face-to face-learning. Attendance at, and/or participation in all academic activities, including lectures, practical sessions, workshops and tutorials, and submission of assignments on time.",
       "assessment": "To pass, a sub-minimum of 45% in each of the physiology and anatomy sections of the course is required. Final examinations contribute 50% (Theory 40%, Practical 10%), Tests (35%) and Practical’s (15%).",
       "examWeight": null
@@ -2420,6 +2615,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at and/or participation in all problem-based learning sessions, tutorials, and practical’s and completion and submission of all set assignments, quizzes, tasks and assessment DEPARTMENTS IN THE FACULTY 137 activities by the due dates. Public Health specifically requires all exercises on Vula to be completed as part of HUB2017H and PTY2000S DP requirements.",
       "assessment": "HUB2017H and PTY2000S are assessed together in a final examination at the end of second year. Students must achieve an overall pass in semesters 3 and 4 (year 2) in order to progress to year 3. Students are required to complete a series of in-course assessments and portfolio tasks during semesters 3 and 4 that contribute 60% of the total mark for the year. Learning exercises, and quizzes contribute to the portfolio mark.",
       "examWeight": null
@@ -2440,6 +2636,26 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "Mondays or Tuesdays (14h0017h00)."
+        }
+      ],
       "dp": "Attendance at all practical sessions, 40% average in class tests and an average of 50% for all assignments.",
       "assessment": "The breakdown of course marks is as follows: Class tests 30%, practical write-up 15%, assignments or tutorials 5%. Final examinations (50%) as follows: Theory examination 30%, practical examination 20%. A subminimum of 40% is required for the theory and practical examination to pass this course. Supplementary examinations, in the form of written, practical or oral assessment, may be offered to students whose overall score is 45-49%.",
       "examWeight": 50
@@ -2459,6 +2675,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2478,6 +2695,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2497,6 +2715,26 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "Mondays or Tuesdays (14h0017h00)."
+        }
+      ],
       "dp": "Attendance at all practicals, 40% average in class tests and an average of 50% for all assignments.",
       "assessment": "The final mark comprises class tests (30%); practicals, assignments and tutorials (20%); and final examinations (50%), consisting of a written theory exam (30%) and a practical (20%). A subminimum of 40% is required for the theory and practical examination to pass this course. Supplementary examinations, in the form of written, practical or oral assessment, may be offered to students whose overall score is between 45% and 49%. An oral examination may be required in the case of selected students.",
       "examWeight": 50
@@ -2516,6 +2754,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of 80% of the class tests.",
       "assessment": "For PDL mode: Continuous assessment with a minimum of three class tests and a minimum of four mini tests per semester. Composition of course mark: 90% class tests, 10% mini tests. For standard teaching mode: The course mark contributes 60% and comprises mini tests (5%) and class tests in April, June and September (55%). There is a three-hour written examination in November (40%). The final exam must be passed with a subminimum of 40%.",
       "examWeight": 40
@@ -2535,6 +2774,22 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "/"
+        },
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "W or Th 14h00 – 17h00"
+        }
+      ],
       "dp": "Attendance at all practicals, (including tutorials and seminar presentations held during the “practical” time slot), 40% average in class tests and an average of 50% for all assignments.",
       "assessment": "The final mark comprises class tests (30%); practical and tutorial assignments (20%), and final examinations (50%). The final examinations consist of a written theory exam (30%) and a practical exam (20%). A subminimum of 40% is required for both the theory and practical examinations to pass this course. Supplementary examinations in the form of written, practical or oral assessment may be offered to students whose overall course mark is 45 - 49%.",
       "examWeight": 50
@@ -2562,6 +2817,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Attendance at all practicals, 40% average mark for class tests and an average of 50% for all assignments.",
       "assessment": "Class tests (30%); practicals including assignments/seminar presentation (20%) and examinations (written theory and practical theory) (50%). A subminimum of 40% is required for the theory and practical examinations to pass this course. A subminimum of 40% is required for the theory and practical examination to pass this course. Supplementary examinations in the form of written, practical or oral assessment, may be offered to students whose overall score is 45 - 49%.",
       "examWeight": 50
@@ -2581,6 +2837,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are expected to attend and participate in all lectures and practical demonstrations. Attendance is monitored through the signing of an attendance register at each session.",
       "assessment": "Course mark contributes 40% and comprises attendance and participation (10%); assignments and class test (30%). The final examination contributes 60% and comprises a written theory examination. INTEGRATIVE BIOMEDICAL SCIENCES Integrative Biomedical Sciences Professor and Head of Department: DP Martin, BSc (Genetics and Microbiology), BScHons (Genetics), MSc (Genetics), PhD (Virology) Cape Town Biochemistry and Structural Biology Level 6, Falmouth Building, and Level 2, Wernher and Beit Building…",
       "examWeight": 60
@@ -2601,6 +2858,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Irrespective of whether online or face-to-face, attendance of all academic activities, where official registers are circulated, including problem-based learning sessions, tutorials, Family Medicine OPD visits, workshops, and BHS practical sessions are a requirement for DP.",
       "assessment": "Assessments include in-course and end-of-course assessments. Regular self-assessment activities provide feedback to students on their progress. Assessments include written, computer-based and practical components. Written components use a case-based format. When students are unable to DEPARTMENTS IN THE FACULTY 143 write an assessment for what is deemed a legitimate reason, a deferred assessment may be given.",
       "examWeight": null
@@ -2620,6 +2878,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2639,6 +2898,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2658,6 +2918,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all practicals and an average mark of 50% in tests and assignments/laboratory reports combined.",
       "assessment": "Two tests and assignments/laboratory reports that are written during the course and one examination at the end of the course. Tests contribute 60%, assignments/laboratory reports contribute 5% and the end-of-year examination contributes 35% to the course final mark.",
       "examWeight": 35
@@ -2677,6 +2938,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all scheduled orientation, training, and teaching sessions as stipulated in the SSM course information booklet. Completion of the Ethics online short course by the stipulated due date. Attendance and completion of specified learning objectives are decided upon by the student and supervisor at the start of the SSM.",
       "assessment": "Assessment in SSMs is based on a referenced, written report of 2500 – 3000 words, relating to the field of work and subject to a formative process throughout the SSM. Performance is marked using a criterion-based marking schedule, which is described in the SSM information booklet.",
       "examWeight": null
@@ -2696,6 +2958,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all scheduled orientation, training, and teaching sessions as stipulated in the SSM course information booklet. Completion of the Ethics online short course by the stipulated due date. Attendance and completion of specified learning objectives are decided upon by the student and supervisor at the start of the SSM.",
       "assessment": "Assessment in SSMs is based on a referenced, written report of 2500 – 3000 words, relating to the field of work and subject to a formative process throughout the SSM. Performance is marked using a criterion-based marking schedule, which is described in the SSM information booklet.",
       "examWeight": null
@@ -2715,6 +2978,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of clinical tutorials and activities and all clinical skills training sessions; Demonstration of competence in key resuscitation skills; Ability to identify, interview, examine, assess and present cases to the satisfaction of the convener in charge of each clinical attachment; Attendance of ethics and all other tutorials, unless one is ill and submission to miss lectures is presented;…",
       "assessment": "Assessment includes all of the following components: Theory exam (50%). This will be in the form of an MCQ exam which will cover all of the clinical blocks (Adult, Mental, Women's, Perinatal Health and Clinical Skills) covered in this semester as well as lectures on Ethics and Therapeutics. Portfolio examination on the following 3 clinical attachments (10% each) based on a selected number of cases from your portfolio: Adult Health: Marked portfolio exam.",
       "examWeight": 50
@@ -2734,6 +2998,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students will be required to attend 90% of their bedside tutorials and complete a portfolio of 15 patients which must be handed in to the convener on the dates stipulated in the course manual. If students are unable to see their allocated patients for the second and third term, they must apply for a concession to miss classes.",
       "assessment": "Portfolio’s exam will be a marked exam. Re-assessments will be offered if a student achieves less than 50% but no supplementary exam will be offered.",
       "examWeight": null
@@ -2754,6 +3019,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A minimum of 90% attendance of all lectures; a year mark of at least 50%, unless approved otherwise by the programme convener.",
       "assessment": "The course mark contributes 70% to the final mark. The final examination contributes 30% to the final mark. The course mark includes tests (multiple-choice questions, open-ended questions, case-studies); assignments (written report or oral presentation) on topical issues and practical reports.",
       "examWeight": 30
@@ -2774,6 +3040,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A minimum of 90% attendance of all lectures; a year mark of at least 50%, unless approved otherwise by the programme convener.",
       "assessment": "The course mark contributes 70% to the final mark. A final examination contributes 30% to the final mark. The course mark includes tests (multiple-choice questions, open-ended questions, case-studies) - assignments (written report or oral presentation) on topical issues; and practical reports.",
       "examWeight": 30
@@ -2793,6 +3060,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A minimum of 90% attendance of all lectures; a year mark of at least 50%, unless approved otherwise by the programme convener.",
       "assessment": "The course mark contributes 70% to the final mark. A final examination contributes 30% to the final mark. The course mark includes tests (multiple-choice questions, open-ended questions, case-studies); assignments (written report or oral presentation) on topical issues; and practical reports. DEPARTMENTS IN THE FACULTY 163",
       "examWeight": 30
@@ -2812,6 +3080,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A minimum of 90% attendance of all lectures; a year mark of at least 50%, unless approved otherwise by the programme convener.",
       "assessment": "The course mark contributes 70% to the final mark. A final examination contributes 30% to the final mark. The course mark includes tests (multiple choice questions, open-ended questions, case-studies); assignments (written report or oral presentation) on topical issues; and practical reports.",
       "examWeight": 30
@@ -2831,6 +3100,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "The course mark contributes 100% to the final mark. The course mark includes tests (multiple choice questions, open-ended questions, case-studies); assignments (written report or oral presentation) on topical issues; and practical reports.",
       "examWeight": null
@@ -2850,6 +3120,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "The student must submit a report to the course convenor or his/her assignee, which shall include a description of formulation science work in a Research & Development laboratory of an approved company. The company will submit a report on a company letterhead indicating time spent by the student on in-service training and signed by the line manager.(1) Student to submit a report to the course convener, which shall include a description of formulation science work aligned to learning outcomes…",
       "examWeight": null
@@ -2872,6 +3143,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "(i) Acute Care: attendance of Acute Care shifts (one of which must be a triage shift) and completion of formative miniCEX cases, GSH Skills Lab sessions and all online SDL learning tasks as stipulated in the course manual. (ii) Ambulatory Care: attendance of Medical Outpatient clinics with completion of differential diagnosis charts and mind-maps as stipulated in the course manual.",
       "assessment": "(i) Theory Assessment (90%): MCQ exam from Acute Care, Ambucare and Palliative Care (65%); EBM task (10%), PHC task (10%), and PACK MCQ (5%). (ii) Workplace assessment (10%): Professionalism, Knowledge, and Clinical Skill (PKC) assessment from AmbuCare (10%). miniCEX assessments are only formative in nature and do not contribute to the overall course mark.",
       "examWeight": 90
@@ -2894,6 +3166,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "hosted on the MBChB Yr4 Ward Care Vula page."
+        }
+      ],
       "dp": "(a) Attendance of bedside tutorials, medical intakes, post-intake ward rounds, and completion of formative miniCEX patient presentations and a Portfolio of Medicine (patient assessments with attached clinical notes and follow-up notes) - the numbers required will be stipulated in the course manual.",
       "assessment": "Clinical examination (25%) and Clinical Languages (5%). Theory of Medicine: multiple-choice question test including Dermatology (35%). Portfolio of Medicine (15%). Workplace Assessment (20%) – a combination of two continuous assessments, one after three weeks (10%) and one after six weeks (10%). miniCEX assessments are only formative in nature and do not contribute to the overall course mark. Pass mark overall of 50% for the course.",
       "examWeight": 25
@@ -2913,6 +3194,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of all in-course assignments submitted by the deadline/s as stipulated in the course manual and on the timetable; participation and equal contribution to group-work; attendance at the group presentations. A minimum of 80% of all lectures are to be attended, of which the orientation and workshops are compulsory.",
       "assessment": "Pass mark of ≥50% overall. The final mark is made up of in-course assessments (30% weighting) and an end-of-block examination (70% weighting). Subminimum requirement: must pass the end of block exam (≥50%). Students who achieve 48-49% for the exam may be recommended to the FEC for a supplementary examination. Students who achieve <48% for the exam will be required to repeat the course.",
       "examWeight": 70
@@ -2933,6 +3215,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "(a) Attendance of 8 Bedside Tutorials, (b) Attendance of three Pack Tutorials, (c) Complete and submit 8 Medicine portfolio cases with assessment templates by due dates, (d) Complete and submit eight MiniCEX cases by due dates, (e) Attendance of 10 Masterclasses, (f) Attendance of three ECG tutorials, (g) Attendance of 3 Clinical Intakes, (h) Attendance of 3 Post Intake Ward Rounds and (j)…",
       "assessment": "(a) Clinical examination (3 clinical cases to be examined): 40%, (b) Portfolio of Medicine (online examination – 3 cases): 50% Workplace,",
       "examWeight": 50
@@ -2953,6 +3236,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "WARD CARE: (a) Attend a minimum of 9 Bedside Tutorials, (b) Attend a minimum of 3 Ward Intakes, (c) Attend a minimum of 3 Post Intake Ward Rounds (PIWRs), (d) Complete 8 Medicine portfolio cases with assessment templates, (e) Complete 8 Mini-CEX cases, (f) Complete a discharge letter, (g) Complete a VULA referral.",
       "assessment": "Assessment in the Internal Medicine for external credit course includes Workplacebased assessment (20%), Ward care (10%) and Acute Care (10%): (a) Ward Care: Ward Mark (5%) and Mini-CEX (5%), (b) Acute Care: Ward Mark (5%) and Mini-CEX (5%), End of Block Assessment (80%); (a) Clinical examination: 30%, (b) Portfolio of Medicine (Oral): 50%. In order to participate in and pass the assessment the student must: i. Complete all the DP requirements, ii.",
       "examWeight": 30
@@ -2972,6 +3256,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": ", and clinical case presentations take place as stipulated in the course outline."
+        }
+      ],
       "dp": "Completion of all in-course assignments submitted by the deadline/s as stipulated in the course manual and on the timetable; participation and equal contribution to group work; attendance at the group presentations. A minimum of 80% of all lectures are to be attended, of which the orientation and workshops are compulsory.",
       "assessment": "Pass mark of ≥50% overall. The final mark is made up of in-course assessments (30% weighting) and an end-of-block examination (70% weighting). Subminimum requirement: must pass the end-of-block exam to pass the block (≥50%). Students who achieve 48-49% for the exam may be recommended to the FEC for a supplementary examination. Students who achieve <48% for the exam will be required to repeat the 8-week Therapeutics course.",
       "examWeight": 70
@@ -2991,6 +3284,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3010,6 +3304,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 75% attendance at tutorials and teaching exercises, and completion of compulsory on-line Vula tasks. A student who for any reason is or has been unable to attend an activity or submit a requirement by the due date must supply a reason to the convener, who has the discretion to decide whether the reason is adequate to avoid being given a DPR.",
       "assessment": "The final mark is made up of an in-course assessment (information pamphlet for patient), to be presented to and marked by peer assessment and facilitator (20%). Total mark will be calculated as 50% from peer assessment and 50% from facilitator and an end-of-block MCQ (based on core clinical topics) (80%). DEPARTMENTS IN THE FACULTY 171",
       "examWeight": null
@@ -3029,6 +3324,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all activities and completion of the following coursework requirements: Eight Rheumatology clinics; four seminars; two portfolio cases; all academic departmental activities; and nine tutorials.",
       "assessment": "In-course-assessment (10%); end-of-block clinical examination (30%); and an end-ofblock OSCE (60%). If a student fails the course with 48% or 49% a recommendation will be made to the Faculty Examinations Committee that the student spend two weeks in rheumatology before undergoing a supplementary examination.",
       "examWeight": 30
@@ -3046,6 +3342,22 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "in-ward care; three Pharmacology"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "in Acute Care."
+        }
+      ],
       "dp": "Attendance of all activities and completion of all coursework stipulated below: Ward Care rotation: A minimum of four admission intakes as scheduled. A minimum of four postintake ward rounds (PIWRs), A minimum of ten bedside tutorials, 12 mini-CEX cases, Write-up of at least 12 patient encounters during the module, to be included in portfolio of learning, Completion of portfolio compiled in 5th…",
       "assessment": "The final course mark is made up of the following: 1. Workplace-based assessment (WPBA) (30%) a. Ward Care Assessment (10%): which consists of an in-course assessment (5%) and ward care Mini-Cexes (5%), b. Ambucare Assessment (10%), c. Acute Care Assessment (10%). 2. Evidence-Based Medicine assignment (5%). 3. End of block (EOB) assessment (65%), a. a clinical examination (30%), b. an oral portfolio examination (20%), c. and a theory (MCQ) examination (15%).",
       "examWeight": 30
@@ -3065,6 +3377,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all intakes and post-intake ward rounds as well as all bedside tutorials and departmental academic meetings, including x-ray meetings. These activities are monitored by completion of a logbook.",
       "assessment": "The final mark is made up of an end-of-block clinical examination based on three patient encounters (40%), an end-of-block oral examination (40%) based on the portfolio of cases managed during the clerkship and an in-course assessment (20%) of clinical competence, theoretical knowledge and professional behaviour.",
       "examWeight": 40
@@ -3084,6 +3397,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3103,6 +3417,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3122,6 +3437,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Deliver at least 10 patients; perform at least 10 vaginal examinations in labour; monitor and care for at least eight patients during the first stage of labour; do at least seven-night calls during the block; perform 5 abdominal examinations under supervision; access at least 80% of the online learning activities.",
       "assessment": "The assessment for Obstetrics will comprise of an OSCE which will both take place during the last week of the block. OBS4003W Obstetrics and PED4016W Neonatology (informally called a joint perinatal medicine rotation) will be jointly examined during these examinations. Each student must achieve an OSCE mark of > 50% in order to pass the Obstetrics and Neonatology components of the two examinations.",
       "examWeight": 50
@@ -3141,6 +3457,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "(a) Do at least 5 calls at a secondary hospital; (b) Deliver at least 6 patients under supervision; (c) Perform at least 5 vaginal examinations in labour; (d) Perform at least 5 abdominal examinations; (e) Care for at least 5 patients in the first stage of labour; (f) 3 case reports submitted via Vula portal.",
       "assessment": "Objective Structured Clinical Examination (OSCE) when all clinical rotations have been completed. Each student must achieve a minimum mark of 50% in order to pass the course. Any student who obtains 47% or less for Obstetrics will need to repeat the full rotation. Should a student obtain a mark between 48% to 49%, a recommendation will be made to the Faculty Examinations Committee that the student be offered a supplementary assessment on a subsequent opportunity.",
       "examWeight": null
@@ -3161,6 +3478,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are required to attend and participate in all wards, clinic and theatre activities, as per the programmes of the individual firms. They are expected to be in attendance for the full working day and may not leave without permission from a registrar or consultant. Skills training sessions are compulsory.",
       "assessment": "Pass marks for all examination modalities is 50%. There are three components to the summative assessment. 1) Portfolio exam (20%). This must be passed to pass the block. This takes place during the course. Students must write up and submit by the due date the stipulated minimum number of patient cases as stated in the course manual for a written mark. Should the student fail a case, they will be reassessed during the block. Only one reassessment attempt is allowed.",
       "examWeight": 20
@@ -3181,6 +3499,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "All DP requirements must be fulfilled in order to write the exams. Students are expected to attend and participate in all wards, clinic and theatre activities, as per the programmes of the individual firms. They are expected to be in attendance for the full working day and may not leave without permission from a registrar or consultant. Skills training sessions are compulsory.",
       "assessment": "Pass marks for all examination modalities is 50%. There are two components to the summative assessment. 1) Portfolio exam (30%). This takes place during the course. Students must write up and submit by the due date the stipulated minimum number of patient cases as stated in the course manual for a written mark. Hand-in dates are to be found in the course manual. Each case must be passed to pass the course. Should a student obtain <50% for a case, they will be reassessed during the block.",
       "examWeight": 30
@@ -3201,6 +3520,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "All DP requirements must be fulfilled in order to write the exams. Students are required to attend and participate in all wards, clinic, and labour ward duties, as per the programmes of the individual hospitals to which they have been allocated. They are expected to be in attendance for the full working day and may not leave without permission from a registrar or consultant.",
       "assessment": "Pass marks for all examination modalities is 50%. End-of-block assessment will depend on whether Physically distanced Learning (PDL) or Standard Leaning (SL). For PDL, there are two components to the summative assessment. 1) 2 formal bedside case presentation (10% each); and 2) an MCQ examination (80%). In order to qualify for the end-of-course exam, all time must be completed, and all DP requirements met. For SL: One bedside case counting 15%; portfolio cases (35%); MCQ (50%).",
       "examWeight": 80
@@ -3221,6 +3541,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "All DP requirements must be fulfilled in order to write the exams. Students are required to attend and participate in all wards, clinic, and labour ward duties, as per the programmes of the individual hospitals to which they have been allocated. They are expected to be in attendance for the full working day and may not leave without permission from a registrar or consultant.",
       "assessment": "Pass marks for all examination modalities is 50%. End-of-block assessment will depend on whether Physically distanced Learning (PDL) or Standard Leaning (SL). For PDL, there are two components to the summative assessment. 1) 2 formal bedside case presentation (10% each); and 2) an MCQ examination (80%). In order to qualify for the end-of-course exam, all time must be completed, and all DP requirements met. For SL: One bedside case counting 15%; portfolio cases (35%); MCQ (50%).",
       "examWeight": 80
@@ -3241,6 +3562,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must: (a) complete all the online lecture materials; (b) examine the newborns of the mothers delivered by their clinical partners on at least five-night calls during the block; (c) have all four neonatal case reports completed before the end of the 3-week hospital rotation; (d) attend all six of the neonatal clinical bedside tutorials; (e) Complete the two online quizzes; (f)",
       "assessment": "The Obstetrics (OBS4003W) and Neonatology (PED4016W) courses are assessed concurrently at the end of the 8-week block. The PED4016W assessment comprises an MCQ [40% of the total mark for PED4016W], OSCE [20% of the total mark for PED4016W], case reports [20% of the total mark for PED4016W], and in-course assessment [20% of the total mark for PED4016W]. For PED4016W, each student must achieve an overall mark of 50% or more.",
       "examWeight": null
@@ -3260,6 +3582,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must: (a) attend the neonatal resuscitation training in the Introductory and Orientation week period; (b) Complete all of the online lecture materials; (c) examine a minimum of four new-born of the mothers delivered by their clinical partners during the block (will be included in obstetric logbook); (d) Complete four neonatal case reports and provide a discussion (1 page) on only one of…",
       "assessment": "The Obstetrics (OBS4006W) and Neonatology (PED4017W) courses are assessed concurrently at the end of the year. The PED4017W assessment comprises an OSCE [60% of the total mark], case reports [20% of the total mark], and in-course assessment [20% of the total mark]. For PED4017W, each student must achieve an overall mark of 50% or more. Any student who obtains 47% or less will need to repeat the 2-week neonatology course and repeat end of course assessment in full.",
       "examWeight": null
@@ -3280,6 +3603,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must fulfil all of the following: (a) Attendance at all face-to-face teaching and learning activities and (b) Completion of all online quizzes by the deadline stipulated on the course site.",
       "assessment": "The summative assessment comprises the following: (a) in-course assessment comprising (1) case-based written assignments [35% of overall course mark]; and (2), assessment of an oral presentation and contributing to the discussion at the cross-cutting seminar [25% of the overall course mark]; and (b) an end-of-block multiple choice format examination [40% of the overall course mark]. The overall course pass mark is 50%.",
       "examWeight": 40
@@ -3299,6 +3623,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "To qualify for the end-of-block assessment, students must fulfil all of the following: (1) Achieve at least 50% for both the paediatric and neonatal in-course assessments; (2) successfully complete the paediatric procedure and resuscitation training; (3) successfully complete the neonatal procedure and resuscitation training; (4) submit their Due Performance (DP) requirement logbook (completed,…",
       "assessment": "The general paediatric summative assessment comprises an in-course assessment [30% of the overall course mark]; an end-of-block short-case clinical assessment [20% of the overall course mark]; an oral portfolio assessment [10% of the overall course mark]; and an online assessment [20% of the overall course mark]. The neonatal summative assessment comprises an in-course assessment [10% of the overall course mark] and a neonatal medicine clinical case assessment [10% of the overall course mark].",
       "examWeight": null
@@ -3319,6 +3644,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students who do not meet DP requirements (a) or (c) above fail the course and must repeat it in full in the next academic year. Students who do not meet DP requirement (b) above must complete all quizzes by the deadline set by the course convener, failing which, the student’s mark will be DPR.",
       "assessment": "The courses PED5005W and PED5006W will be examined together in the last week of the eight-week modular block. The overall pass mark for PED5005W is 50%. The assessment comprises an MCQ/EMI-type online examination. The following will be recommended to the Faculty Examinations Committee, that students who: (a) achieve 48– 49% may be offered a supplementary examination* or (b) achieve 47% or less fail the course and must repeat it in full.",
       "examWeight": null
@@ -3339,6 +3665,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "To qualify for the end-of-block examination, students must fulfil ALL of the following: (a) Achieve a minimum of 80% attendance* at ward, ambulatory, and scheduled activities, monitored by signed attendance; (b) complete the online quizzes within the time stipulated in the Vula site; (c) produce and submit an original and honest portfolio of the required minimum number of original case writeups…",
       "assessment": "The courses PED5005W and PED5006W will be examined together in the last week of the eight-week modular block. The end-of-block summative assessment comprises a portfolio assessment [25% of the overall mark], a clinical assessment [25% of the overall mark], and an online MCQ and Extended Matching items (EMI) assessment [50% of the overall mark]. The overall pass mark for PED5006W is 50%.",
       "examWeight": null
@@ -3359,6 +3686,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "To qualify for the end-of-block examination, students must fulfil all of the following: (a) Achieve at least 50% for the paediatric in-course assessment; (b) successfully complete the procedure and resuscitation [Paediatric Life Support] training; (c) complete a written portfolio of the required minimum number of original case write-ups of patients seen during the time in PED6000W - this…",
       "assessment": "Formative assessment covering all aspects of the student’s performance is given during the block. The end-of-block summative assessment is made up as follows: (a) An in-course assessment [40% of the overall mark]; (b) short-cases clinical examination [30% of the overall mark]; (c) an oral portfolio exam [15% of the overall mark] and (d) a computer-based MCQ/EMI assessment [15% of the overall mark].",
       "examWeight": 30
@@ -3378,6 +3706,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "To qualify for the end-of-block examination, students must fulfil all of the following: (a) Achieve at least 50% for the neonatal in-course assessment; (b) successfully complete the neonatal procedure and resuscitation training; (c) submit the hard copy of the completed, signed, and dated course logbook by the deadline stipulated in the course handbook, and (d) achieve a minimum of 80%…",
       "assessment": "Formative assessment covering all aspects of the student’s performance is given during the block. The end-of-block summative assessment comprises a neonatal in-course assessment [40% of the overall mark], a neonatal clinical case assessment [30% of the overall mark] and an oral examination [30% of the overall mark]. In addition, students must obtain an exempt pass in the exit examination on procedural competence.",
       "examWeight": 30
@@ -3397,6 +3726,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all scheduled tutorials and practical sessions; completion of all set written course activities (i.e. tutorial assignments, practical reports and course tests); and a minimum class record of 35%.",
       "assessment": "Coursework counts 40% and comprises three class tests (10% each) and a laboratory record (10%); and the final examination counts 60%.",
       "examWeight": 60
@@ -3416,6 +3746,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all small group learning sessions and other academic commitments, including the HIV-AIDS workshop; completion of all set assignments and assessment activities.",
       "assessment": "Continuous, performance-based in-course assessments provide students with regular feedback. Those students who achieve an average of 60% or above for these in-course assessments are not required to write the final written examination. Those students who average below 60% for their in-course assessments are required to write a final examination and must achieve a minimum of 50% in this examination in order to pass the course.",
       "examWeight": 60
@@ -3435,6 +3766,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all group sessions, community and health service site visits and the life support skills workshop; completion of all assignments and assessment activities.",
       "assessment": "Continuous, performance-based in-course assessments provide students with regular feedback. Those students who achieve an average of 60% or above for these in-course assessments are not required to write the final written examination. Those students who average below 60% for their in-course assessments are required to write a final examination and must achieve a minimum of 50% in this examination in order to pass the course.",
       "examWeight": 60
@@ -3454,6 +3786,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3473,6 +3806,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3492,6 +3826,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "(a) Completion of all assignments submitted by the deadline/s as stipulated in the course manual; (b) Completion of summative and formative assessments by the stipulated deadlines, with a sub- minimum of 46% for in-course assignments/assessments; (c) Participation in and equal contribution to group- work; and (d) Attendance at all clinical and community teaching and group presentations; and 90%…",
       "assessment": "The following components contribute to the overall mark: (a) An epidemiology research protocol (group mark) (14.5%); (b) A health promotion project (group mark) (12.5%); (c) A combined epidemiology and health promotion oral presentation (group mark) (6%); (d) A motivational interview assessment (4%); (e) A family medicine patient case study (8%); (f) A biostatistics assessment (5%); (g) The end-of-course written examination is weighted at 50%.",
       "examWeight": 50
@@ -3511,6 +3846,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3530,6 +3866,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3550,6 +3887,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at 95% of the academic connection cafes and timeous submission of the clinical case assignment. There is an electronic record of online attendance.",
       "assessment": "Three written exams of two hours duration which count 30% each towards the final mark. The first two exams are after eight and sixteen lectures respectively. The third exam is at the end of the academic year. The work tested in each exam is not retested in the next exam. The clinical case assignment counts 10% towards the final mark. A student must achieve a combined mark of 50% to pass the course. There is a supplementary exam offered in the university appointed period for",
       "examWeight": 30
@@ -3570,6 +3908,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend 90% of all the ward clinical days and online sessions. There is an electronic record of the attendance of online sessions, and the ward staff will be aware of the attendance of the students in the clinical units.",
       "assessment": "There are four components to the course assessment: 1) Portfolio – this contributes 25% to the final mark. 2) Ward assessment – this is the combined impression that the clinical team in the ward has about a student’s performance and contributes 15% to the final mark. 3) SAQ exam – this takes place on the last Friday of the block and contributes 40% to the final mark. 4) MCQ exam – this takes place on the last Thursday of the block and contributes 20% to the final mark.",
       "examWeight": 40
@@ -3590,6 +3929,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "90% attendance of all ward rounds and clinical learning session as well as online tutorials which will be monitored by an attendance register. Completion and timeous submission of two portfolio cases. Should a student need to make up clinical time, and they cannot make up the time for whatever reason, then they will need to repeat the course.",
       "assessment": "The assessment is made up of three components. 1) SAQ written paper which counts 50% of the final mark and in which the student must attain 50% to pass. 2) Portfolio which counts 30% of the final mark and for which the student must score 50% to pass. 3) Ward assessment which counts 20% of the final mark. This is assessed by the clinical team based on the student’s engagement in clinical teaching, ward rounds and tutorials. The assessment takes place in the last week of the block.",
       "examWeight": null
@@ -3610,6 +3950,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend 90% of the ward clinical days and engage fully with clinical work from Mondays to Thursdays. They must attend all three Friday teaching sessions. The Friday sessions has an electronic record of attendance, and the clinical team will supervise the attendance of students in the wards. Students must participate academically in their group academic presentation.",
       "assessment": "There are four components to the course assessment: 1) Portfolio – this contributes 20% to the final mark. 2) Academic Presentation – This contributes 10% to the final mark. 3) Ward Assessment – this contributes20% to the final mark. 4) SAQ written exam – this contributes 50% to the final mark. This exam is written on the last Friday of the block. A student must achieve a total of 50% to pass the course. There is no supplementary exam for this course.",
       "examWeight": 50
@@ -3630,6 +3971,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend 90% of the ward clinical days and engage fully with clinical work from Mondays to Thursdays. They must attend all three Friday teaching sessions. The Friday sessions has an electronic record of attendance, and the clinical team will supervise the attendance of students in the wards. Students must participate academically in their group academic presentation.",
       "assessment": "There are four components to the course assessment: 1) Portfolio – this contributes 20% to the final mark. 2) Academic Presentation – This contributes 10% to the final mark. 3) Ward Assessment – this contributes20% to the final mark. 4) SAQ written exam – this contributes 50% to the final mark. This exam is written on the last Friday of the block. A student must achieve a total of DEPARTMENTS IN THE FACULTY 219 50% to pass the course. There is no supplementary exam for this course.",
       "examWeight": 50
@@ -3649,6 +3991,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3668,6 +4011,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3685,6 +4029,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3712,6 +4057,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Satisfactory completion of all assignments by the due date, attending at least 80% of classroom tutorials, submitting all statistics lab-based exercises, complete both class tests. In addition, obtain two Student Research Participation Programme (SRPP) points or equivalent.",
       "assessment": "Coursework (term assignments and tests) counts 50%; one two-hour examination in November counts 50%. Students are expected to complete the November examination and all coursework before being awarded a pass in this class.",
       "examWeight": 50
@@ -3738,6 +4084,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Completion of all coursework, and 80% attendance at tutorials.",
       "assessment": "Coursework will be weighted at 50%, and will include completion of tutorial assignments, essays and tests as required. An exam at the end of the semester will be weighted 50%.",
       "examWeight": 50
@@ -3764,6 +4111,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Completion of all coursework, attendance at all tutorials, and obtaining 3 points through the Student Research Participation Programme (SRPP).",
       "assessment": "Coursework: 70% (assignment submissions = 40% and class test = 30%) Exam: 30%.",
       "examWeight": 30
@@ -3790,6 +4138,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "Completion of all coursework, 80% attendance at tutorials, and obtaining 3 points through the Student Research Participation Programme (SRPP).",
       "assessment": "Coursework will be weighted at 50%, and will include completion of tutorial assignments, and tests as required. An exam at the end of the semester will be weighted 50%.",
       "examWeight": 50
@@ -3810,6 +4159,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at and/or participation in all problem-based learning sessions, tutorials, and practicals and completion and submission of all set assignments, quizzes, tasks and assessment activities by the due dates. Public Health specifically requires all exercises on Vula to be completed as part of HUB2017H and PTY2000S DP requirements.",
       "assessment": "HUB2017H and PTY2000S are assessed together in a final examination at the end of second year. Students must achieve an overall pass in semesters 3 and 4 (year 2) in order to progress to year 3. Students are required to complete a series of in-course assessments and portfolio tasks during semesters 3 and 4 that contribute 60% of the total mark for the year. Learning exercises, and quizzes contribute to the portfolio mark.",
       "examWeight": null
@@ -3838,6 +4188,21 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Friday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "’s: Fridays (14h00-17h00)"
+        }
+      ],
       "dp": "Attendance of 75% practical and tutorial sessions, 40% average in weekly quizzes and an average of 50% for all assignments.",
       "assessment": "The breakdown of course marks is as follows: the class record counts 60% (consisting of practicals, quizzes and assignments), and one 3-hour final examination written in November (40%). The class record consists of weekly quizzes (20%), practical write-ups (20%) and assignments (20%). Supplementary examinations, in the form of a written assessment, may be offered to students whose overall score is 45-49%.",
       "examWeight": 40
@@ -3857,6 +4222,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3876,6 +4242,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3896,6 +4263,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at and/or participation in all problem-based learning sessions, tutorials, stand-alone units and practical sessions; completion and submission of all set assignments, quizzes, tasks and assessment activities by the due dates. Public Health specifically requires all exercises on Vula to be completed as part of PTY3009F DP requirements.",
       "assessment": "Assessment tasks include written papers, computerised tests, practical examinations and a portfolio of work that comprises written assignments, computerised EMI and MCQ tests, oral assessments and practical book work. Regular self-assessment activities provide feedback to students on their progress. In year 3, all the in-course assessments comprise 60% of the total final mark. The final examination at the end of year 3 constitutes 40% of the total final mark.",
       "examWeight": 40
@@ -3916,6 +4284,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% average in class tests or quizzes, and an average of 50% for assignments. Attendance at all practicals, field trips and tutorials. Submission of at least 80% of assignments.",
       "assessment": "The breakdown of course marks is as follows: the class record counts 60%; and one 3hour final examination written in June counts 40%. The class record consists of class tests and/or quizzes (20%), practical reports and tutorials (20%) and assignments (20%). Supplementary examinations, in the form of written assessment, may be offered to students whose overall score is 4549%.",
       "examWeight": 40
@@ -3935,6 +4304,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "A two-hour written examination in October/November (100%). A supplementary written examination is offered in January the following year to students who have obtained 45-49%.",
       "examWeight": 100
@@ -3954,6 +4324,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "As a DP requirement students are expected to attend of all 4 practical sessions at the Salt River Forensic Pathology Laboratory as stipulated in the course guide, attendance of and/or participation in 60% of plenary sessions and completion of 4 tasks which comprise the in-course assessment.",
       "assessment": "The final mark is made up of in-course task assignments (40%), practical skill task/procedure (10%) and the final written short answer question (SAQ) examination (50%). Competency in Forensic Medicine requires achievement of a subminimum of the 50% in the in-course, 50% in the written exam and 50% in the practical skill task/procedure.",
       "examWeight": 50
@@ -3973,6 +4344,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "As a DP requirement, students are expected to attend all practical sessions at the Forensic Pathology Laboratory as stipulated in the course guide, attendance of and/or participation in 80% of plenary sessions, completion of five tasks and deliver a presentation during the attachment. The tasks and presentation comprise the in-course assessment, as stipulated in the course guide.",
       "assessment": "The final mark is made up of in-course assessments (40%) and the final examination (60%). The exit OSCE component forms part of the overall final MBChB clinical assessment. PSYCHIATRY AND MENTAL HEALTH Psychiatry and Mental Health Neuroscience Institute, E-Floor, Groote Schuur Hospital Professor and Head: DJ Stein, BSc (Medicine) MBChB Cape Town FRCPC PhD DPhil Stell Sue Struengmann Professor of Child & Adolescent Psychiatry: PJ de Vries, MBChB Stell FRCPsych London PhD Cantab Vera Grover…",
       "examWeight": 60
@@ -3993,6 +4365,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all lectures and tutorials and completion of all practicals. Satisfactory marks in tests during the year.",
       "assessment": "Essays, tests and practicals count 50%. Two three-hour examinations written in November count 50%.",
       "examWeight": 50
@@ -4012,6 +4385,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -4031,6 +4405,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -4050,6 +4425,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of the lectures; completion by the due dates of all assessments and projects. FACULTIES AND DEPARTMENTS OFFERING COURSES TO THE FACULTY 257",
       "assessment": "Coursework (vocabulary and oral assessments based on topics covered in the course) counts 50% and comprises four tests (two weighted at 15% each, and two weighted at 10% each); and examinations (June examination – simulated client interviews: 20%; and November examination – simulated client interviews: 30%).",
       "examWeight": null
@@ -4069,6 +4445,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all tutorials.",
       "assessment": "One oral summative assessment, for which students receive a PA (pass) or F (fail) grade.",
       "examWeight": null
@@ -4088,6 +4465,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all lectures AND students are required to complete all in-course vocabulary and listening comprehension tests.",
       "assessment": "In-course assessments (50%) and one oral summative assessment (50%). The students receive a PA (pass) or F (fail) grade at the end of the course.",
       "examWeight": null
@@ -4107,6 +4485,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% class attendance and completion of all assessments.",
       "assessment": "Continuous assessment will occur through a blend of asynchronous in-course and oral summative assessments. The cumulative Semester 1 and 2 marks count 50% each. The elected form of assessment will be aligned with the mode of content delivery.",
       "examWeight": null
@@ -4133,6 +4512,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Completion of all in-course assessments. Students may not miss more than two class attendance sessions per language.",
       "assessment": "Continuous assessment will occur through a blend of asynchronous in-course and oral summative assessments. The cumulative Semester 3 and 4 marks count 50% each. The elected form of assessment will be aligned with the mode of content delivery.",
       "examWeight": null
@@ -4152,6 +4532,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of all in-course assessments. Students may not miss more than two sessions per language.",
       "assessment": "Continuous assessment will occur through a blend of asynchronous in-course and oral summative assessments. Cumulative mid-term and end-of term assessments count 50% each. The elected form of assessment will be aligned with the mode of content delivery. If the mid-year final result is a fail (F), but a supplementary examination is granted, the second semester is to be used for asynchronous blended remediation.",
       "examWeight": null
@@ -4171,6 +4552,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null

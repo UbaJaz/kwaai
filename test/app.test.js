@@ -7,7 +7,8 @@ const { screenComment } = require('../src/moderation');
 const { parseReviewForm, parseVerdictForm, overallOf, semesterLoad } = require('../src/ratings');
 const { analysePlan, termsOf, parseProfile, majorNeeds, creditAdvice } = require('../src/planner');
 const { html } = require('../src/html');
-const { titleCase, parseHandbook, expandCode, codesIn, lecturePeriods, examWeight } = require('../scripts/import-handbook');
+const { titleCase, parseHandbook, expandCode, codesIn, lecturePeriods, examWeight, sessionsOf } = require('../scripts/import-handbook');
+const { buildWeek, parseWeek, weekParams, icsFor } = require('../src/week');
 const { UNIVERSITIES } = require('../src/universities');
 const { scan: scanTables } = require('../scripts/import-tables');
 const { parseProgrammes, tidyName } = require('../scripts/import-programmes');
@@ -197,6 +198,52 @@ test('department staff lists: teaching staff only, titles from the role and degr
     ['AST', 'Professor R Deane', 'Professor'], ['AST', 'Professor P A Woudt', 'Professor'],
     ['AST', 'HE Delport', 'Senior Lecturer'], ['AST', 'J Franco', 'Senior Lecturer'], ['AST', 'J Delhaize', 'Lecturer'],
   ]);
+});
+
+test('week view: tuts and pracs from the handbook, picks, own blocks, study time, calendar file', () => {
+  // tutorials and practicals
+  const cem = sessionsOf('Monday to Wednesday and Friday, 2nd or 4th period. Tutorials: Thursday 2nd or 4th period. Practicals: Tuesday, Thursday or Friday, 14h00 - 17h00.');
+  assert.deepEqual(cem.map((s) => [s.kind, s.choice, s.options.length]), [['tut', true, 2], ['prac', true, 3]]);
+  assert.deepEqual(cem[0].options[0], { day: 'Thursday', start: '09:00', end: '09:45' });
+  const csc = sessionsOf('4th or 5th period once per week, Tutorials: One per week, replacing one lecture, Practicals: One per week, Monday, Tuesday, Wednesday or Thursday 14h00 - 16h00 or 16h00 18h00');
+  assert.deepEqual(csc.map((s) => [s.kind, s.options.length]), [['tut', 0], ['prac', 8]], 'a tut with no time is left for the student to place');
+  assert.deepEqual(lecturePeriods('Monday to Wednesday and Friday, 2nd period').days, ['Monday', 'Tuesday', 'Wednesday', 'Friday']);
+
+  const course = (code, extra) => ({ code, title: code, credits: 18, periods: '', days: '', period_choice: 0, sessions: '', lectures: '', ...extra });
+  const courses = [
+    course('CEM1000W', { credits: 36, periods: '2|4', period_choice: 1, days: 'Monday|Tuesday|Wednesday|Friday', sessions: JSON.stringify(cem) }),
+    course('MAM1031F', { periods: '2', days: 'Monday|Tuesday|Wednesday|Thursday|Friday' }),
+    course('STA1000F', { lectures: 'One lecture per week' }),
+    course('CSC1016S', { periods: '3', days: 'Monday' }), // second semester: not in a semester 1 week
+  ];
+  // MAM1031F is fixed at 2nd period, so CEM1000W's lecture group is 4th; the gym on Tuesday afternoon pushes the prac to Thursday
+  let w = buildWeek(courses, parseWeek({ bl: '1~1300~1800~Gym', st: '1' }), { year: 2027 });
+  const at = (code, kind) => w.events.filter((e) => e.code === code && e.kind === kind).map((e) => `${e.day.slice(0, 3)} ${e.start}`);
+  assert.equal(w.term, 's1');
+  assert.deepEqual(at('CEM1000W', 'lecture'), ['Mon 11:00', 'Tue 11:00', 'Wed 11:00', 'Fri 11:00']);
+  assert.deepEqual(at('CEM1000W', 'prac'), ['Thu 14:00']);
+  assert.ok(w.events.find((e) => e.kind === 'prac').suggested);
+  assert.deepEqual(w.unplaced.map((u) => `${u.code} ${u.kind}`), ['STA1000F lecture']);
+  assert.ok(!w.courses.some((c) => c.code === 'CSC1016S'));
+  assert.equal(w.clashes.length, 0);
+  const real = w.events.filter((e) => e.kind !== 'study');
+  assert.ok(w.events.filter((e) => e.kind === 'study').every((s) => !real.some((e) => e.day === s.day && e.start < s.end && s.start < e.end)), 'study time never overlaps a class or block');
+  assert.equal(w.hours.weeks, 16, '8 Feb to 7 Jun 2027 minus the March vacation');
+
+  // the student's own pick wins over the suggestion
+  w = buildWeek(courses, parseWeek({ pk: 'CEM1000W.P0,CEM1000W.L2' }), { year: 2027 });
+  assert.deepEqual(at('CEM1000W', 'prac'), ['Tue 14:00']);
+  assert.ok(w.clashes.some(([a, b]) => [a.code, b.code].sort().join() === 'CEM1000W,MAM1031F'), 'picking 2nd period for CEM1000W clashes with MAM1031F');
+  assert.deepEqual(weekParams(parseWeek({ t: 's2', pk: 'CEM1000W.P0,bad', bl: '4~0900~1000~Job,9~x', st: '1' })), { t: 's2', pk: 'CEM1000W.P0', bl: '4~0900~1000~Job', st: '1' });
+
+  // calendar file: weekly from the first teaching day, vacation skipped, times in UTC (South Africa is UTC+2)
+  const ics = icsFor([courses[1]], parseWeek({}), { year: 2027 });
+  assert.match(ics, /^BEGIN:VCALENDAR\r\n/);
+  assert.match(ics, /DTSTART:20270208T070000Z/, 'first Monday of semester 1, 09:00 local');
+  assert.match(ics, /RRULE:FREQ=WEEKLY;UNTIL=20270607T215900Z/);
+  assert.match(ics, /EXDATE:20270322T070000Z,20270329T070000Z/, 'the March vacation Mondays');
+  assert.ok(ics.split('\r\n').every((l) => Buffer.byteLength(l) <= 75), 'lines are folded at 75 bytes');
+  assert.equal((ics.match(/BEGIN:VEVENT/g) || []).length, 5);
 });
 
 // ---- end to end: sign in, review, report, moderate ----
@@ -810,6 +857,40 @@ test('about you: what the major still needs, credit checks, passed courses count
   assert.match(page, /aria-label="Add MAM1032S to the plan"/);
   assert.match(page, /name="done" value="CSC1015F" checked/, 'first-year courses of the major can be ticked off');
   assert.equal((await br.get('/plan?c=STA2004F&about=clear')).headers.get('location'), '/plan?c=STA2004F');
+});
+
+test('week view end to end: pick a group, add a block, subscribe, the calendar follows the plan, delete it', async () => {
+  const b = browser();
+  let res = await b.get('/week?c=CEM1000W,MAM1031F&pick=CEM1000W.P&opt=2');
+  assert.equal(res.headers.get('location'), '/week?c=CEM1000W,MAM1031F&pk=CEM1000W.P2');
+  res = await b.get('/week?c=CEM1000W,MAM1031F&pk=CEM1000W.P2&add_block=1&day=1&start=16:00&end=18:00&label=Soccer!');
+  assert.equal(res.headers.get('location'), '/week?c=CEM1000W,MAM1031F&pk=CEM1000W.P2&bl=1~1600~1800~Soccer');
+  assert.equal((await b.get('/week?c=CEM1000W,MAM1031F&pk=CEM1000W.P2&bl=1~1600~1800~Soccer&add_block=1&day=1&start=18:00&end=16:00')).status, 303, 'a backwards time is refused with a message');
+  assert.equal((await b.get('/week')).headers.get('location'), '/week?c=CEM1000W,MAM1031F&pk=CEM1000W.P2&bl=1~1600~1800~Soccer', 'the week is remembered');
+  const page = await b.text('/week?c=CEM1000W,MAM1031F&pk=CEM1000W.P2&bl=1~1600~1800~Soccer');
+  assert.match(page, /About \d+ hours of work a week/);
+  assert.match(page, /Pick your groups/);
+  assert.match(page, /Fri 14:00–17:00/);
+  assert.match(page, /Soccer/);
+  assert.match(await b.text('/plan?c=CEM1000W'), /href="\/week\?c=CEM1000W"/, 'the planner links to the week');
+
+  // subscribe: a random link that serves the year and follows changes to this device's plan
+  assert.equal((await b.post('/week/subscribe', {})).status, 303);
+  const withLink = await b.text('/week?c=CEM1000W,MAM1031F&pk=CEM1000W.P2&bl=1~1600~1800~Soccer');
+  const calUrl = /value="(http[^"]+\/cal\/[A-Za-z0-9_-]{22}\.ics)"/.exec(withLink)[1];
+  assert.match(withLink, /calendar\.google\.com\/calendar\/render\?cid=webcal/);
+  const cal = await (await fetch(calUrl)).text();
+  assert.match(cal, /SUMMARY:CEM1000W practical/);
+  assert.match(cal, /SUMMARY:Soccer/);
+  assert.doesNotMatch(cal, /STA1006S/);
+  await b.get('/plan?c=CEM1000W,MAM1031F&pk=CEM1000W.P2&bl=1~1600~1800~Soccer&add=STA1006S');
+  assert.match(await (await fetch(calUrl)).text(), /SUMMARY:STA1006S lecture/, 'adding a course updates the subscribed calendar');
+  assert.equal((await b.post('/week/unsubscribe', {})).status, 303);
+  assert.equal((await fetch(calUrl)).status, 404);
+  assert.equal((await fetch(`${base}/cal/nope.ics`)).status, 404);
+  const ics = await fetch(`${base}/week.ics?c=MAM1031F`);
+  assert.match(ics.headers.get('content-type'), /text\/calendar/);
+  assert.match(await b.text('/week?c='), /Your plan is empty/);
 });
 
 test('a demo password keeps every page private until it is given', async (t) => {

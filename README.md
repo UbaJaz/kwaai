@@ -45,6 +45,7 @@ About 3,160 courses, undergraduate and postgraduate, from UCT's ten 2026 handboo
 | `data/courses-tables-2026.json` | Undergraduate courses that only appear in curriculum tables, with no description (e.g. PHI2043S) |
 | `data/replaced-2026.json` | Old codes the handbooks say were replaced (MAM1000W by MAM1031F and MAM1032S) |
 | `data/staff-2026.json` | About 1,060 teaching staff (professors and lecturers) from each department's staff list. The handbooks don't say who teaches which course, so staff are linked to their department and shown as "in the department"; only conveners are linked to a course. |
+| `data/terms.json` | UCT's 2026 and 2027 semester dates and vacations, from [uct.ac.za/students/calendar/terms](https://uct.ac.za/students/calendar/terms) (read 1 Nov 2026), for the week view's calendar file. |
 | `data/programmes-2026.json` | 156 majors and programmes with the courses required each year, read from the curriculum tables, plus each faculty's credit rules (typed in by hand, with the rule number) |
 
 For each course the importer keeps the official conveners plus what the handbook says about entry requirements, lecture times (and the lecture period, when one is given), DP requirements, assessment, roughly how much of the mark is the final exam, and whether it's "not offered in 2026". A course written `CSC1015F/S` becomes two courses, CSC1015F and CSC1015S. Dissertations and theses are left out: they aren't taught courses.

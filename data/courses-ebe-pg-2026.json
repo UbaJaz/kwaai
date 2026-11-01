@@ -16,6 +16,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at and submission of a minimum of 75% of tutorials in each semester AND a weighted average of 40% for class tests (excluding objective tests) AND a weighted average of 40% for assignments",
       "assessment": "Course work 40% Exam 60%. SCHOOL OF ECONOMICS Director of the School: L Edwards, BA Cape Town BA(Hons) Rhodes MA MSc LSE PhD Cape Town",
       "examWeight": 60
@@ -43,6 +44,21 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Friday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "once a week Fri 14h00-17h00"
+        }
+      ],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -60,6 +76,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 120",
       "examWeight": null
@@ -79,6 +96,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -98,6 +116,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -117,6 +136,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -136,6 +156,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -155,6 +176,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -172,6 +194,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -189,6 +212,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -208,6 +232,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -225,6 +250,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -244,6 +270,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 123",
       "examWeight": null
@@ -263,6 +290,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -282,6 +310,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -301,6 +330,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 124",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -320,6 +350,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -337,6 +368,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -356,6 +388,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -375,6 +408,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -394,6 +428,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -411,6 +446,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -428,6 +464,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 127",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -445,6 +482,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -464,6 +502,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -483,6 +522,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 128",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -500,6 +540,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -519,6 +560,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -536,6 +578,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -555,6 +598,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -574,6 +618,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -593,6 +638,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -610,6 +656,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -627,6 +674,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -646,6 +694,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "refer to course outline",
       "examWeight": null
@@ -665,6 +714,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to course outline for assessment information",
       "examWeight": null
@@ -684,6 +734,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to course outline for assessment information",
       "examWeight": null
@@ -703,6 +754,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "100% on the exam",
       "examWeight": 100
@@ -722,6 +774,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 125",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -742,6 +795,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -762,6 +816,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "100% of the final result is based on the submission and assessment of two term papers.",
       "examWeight": null
@@ -781,6 +836,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Based on a paper submission of assessment which counts 55% and a group work assignment which counts 45%.",
       "examWeight": null
@@ -798,6 +854,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -817,6 +874,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "100% of the final result is based on a series of assignments.",
       "examWeight": null
@@ -836,6 +894,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "The assessment is based on 100% of the final project.",
       "examWeight": null
@@ -855,6 +914,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of lectures and seminars and 100% submission of assignments.",
       "assessment": "The year mark counts 100% of the final grade.",
       "examWeight": null
@@ -874,6 +934,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "90% attendance of lectures and seminars and 100% submission of assignments.",
       "assessment": "By examination of assignments (100%)",
       "examWeight": 100
@@ -893,6 +954,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of lecturers and seminars and 100% submission of assignments",
       "assessment": "By examination of assignments (100%)",
       "examWeight": 100
@@ -912,6 +974,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of lectures and seminars and 100% submission of assignments",
       "assessment": "By examination of assignments (100%)",
       "examWeight": 100
@@ -931,6 +994,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of lectures and 100% completion of assignments.",
       "assessment": "By examination of an assignment (100%).",
       "examWeight": 100
@@ -950,6 +1014,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria of this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 137",
       "examWeight": null
@@ -969,6 +1034,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "The assessment of this course is based on group work analysis (Part A) and individual project work (Part B). In the first quarter of this studio students undertake an analysis-focused urban design project in teams.",
       "examWeight": null
@@ -988,6 +1054,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -1007,6 +1074,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -1026,6 +1094,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "100% of the final result is based on the final project submission.",
       "examWeight": null
@@ -1043,6 +1112,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance and 100% submission of assignments",
       "assessment": "Research paper (100%)",
       "examWeight": null
@@ -1062,6 +1132,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to course outline for assessment information.",
       "examWeight": null
@@ -1081,6 +1152,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Co-produced research outputs, journal and dissertation research proposal. For details please refer to course outline.",
       "assessment": "",
       "examWeight": null
@@ -1100,6 +1172,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to official course outline for assessment criteria DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 140",
       "examWeight": null
@@ -1119,6 +1192,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to official course outline for assessment criteria",
       "examWeight": null
@@ -1139,6 +1213,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to official course outline for assessment criteria",
       "examWeight": null
@@ -1158,6 +1233,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to official course outline for assessment criteria DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 141",
       "examWeight": null
@@ -1177,6 +1253,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to official course outline for assessment criteria",
       "examWeight": null
@@ -1196,6 +1273,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Written coursework.",
       "assessment": "Three 'reaction' papers to engage literature and field-based work (30%); long paper (40%); course participation and seminar presentation (10%); weekly journal reflecting on literature and new learning (20%)",
       "examWeight": null
@@ -1215,6 +1293,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Written coursework and participation.",
       "assessment": "Three 'reaction' papers to engage literature and field-based work (30%); long paper (40%); course participation and seminar presentation (10%); weekly journal reflecting on literature and new learning (20%)",
       "examWeight": null
@@ -1234,6 +1313,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to official course outline for assessment criteria",
       "examWeight": null
@@ -1253,6 +1333,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to official course outline for assessment criteria",
       "examWeight": null
@@ -1273,6 +1354,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to official course outline for assessment criteria",
       "examWeight": null
@@ -1292,6 +1374,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to official course outline for assessment criteria",
       "examWeight": null
@@ -1311,6 +1394,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to official course outline for assessment criteria DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 143",
       "examWeight": null
@@ -1330,6 +1414,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Research Project counts 80%; Popular publication highlighting major learnings from case counts 20% (e.g. infographic targeting policy-makers and decision-makers)",
       "examWeight": null
@@ -1349,6 +1434,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Written work counts 100%.",
       "examWeight": null
@@ -1366,6 +1452,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Written work counts 100% DEPARTMENTS IN THE FACULTY AND COURSES OFFERED",
       "examWeight": null
@@ -1385,6 +1472,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at seminars is compulsory, failing which students’ papers may not be marked.",
       "assessment": "One major project 100%. Departments Established in the Faculty of Law COMMERCIAL LAW Professor and Head of Department: R le Roux, BJuris LLB UPE LLM Stell PG Dip (Employment Law and Social Security Law) Cape Town LLM Anglia Polytechnic PhD Cape Town Attorney and Conveyancer of the High Court",
       "examWeight": null
@@ -1404,6 +1492,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% class mark and the completion of all required assignments.",
       "assessment": "Essays, case studies, project and test 50%; June / October examinations (2 hours) 50% Departments Established in the Faculty of Health Sciences HUMAN BIOLOGY Associate Professor and Head of Department: M R Collins, BSc(Hons) Stell PhD Cape Town FECSS The programme in Biomedical Engineering is offered in the Faculty of Health Sciences Its activities are concentrated at postgraduate level and students may pursue the following qualifications: Postgraduate Diploma in Health Care Technology…",
       "examWeight": 50
@@ -1423,6 +1512,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% class mark and the completion of all required assignments.",
       "assessment": "Essays, case studies, project and test 50%; June / October examinations (2 hours) 50% Departments Established in the Faculty of Health Sciences HUMAN BIOLOGY Associate Professor and Head of Department: M R Collins, BSc(Hons) Stell PhD Cape Town FECSS The programme in Biomedical Engineering is offered in the Faculty of Health Sciences Its activities are concentrated at postgraduate level and students may pursue the following qualifications: Postgraduate Diploma in Health Care Technology…",
       "examWeight": 50
@@ -1440,6 +1530,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 2 hours.",
       "examWeight": null
@@ -1459,6 +1550,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Assignments and practical examination.",
       "examWeight": null
@@ -1478,6 +1570,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of all assignments (100%).",
       "assessment": "Oral presentation and final report.",
       "examWeight": null
@@ -1497,6 +1590,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of all assignments (100%).",
       "assessment": "Oral presentation and final report.",
       "examWeight": null
@@ -1516,6 +1610,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory completion of all projects and assignments.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 150 CHE5082Z DISSERTATION PREPARATION DP requirement for entry to CHE5002Z. 0 NQF credits at NQF level 9",
       "examWeight": null
@@ -1535,6 +1630,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Pass presentation on experimental plan for heterogeneous catalysis preparation practical (pass/fail principle, no grades). A minimum average of 50% for written assignments.",
       "assessment": "Written report on heterogeneous catalyst preparation practical (40%); Written exam on course including safety aspects, planning/design/operation of rigs and heterogeneous catalysis preparation (60%).",
       "examWeight": null
@@ -1554,6 +1650,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A minimum average of 50% for written assignments.",
       "assessment": "Written reports on different practicals (each 10%, total 40%); Written exam on course covering all introduced characterization techniques, both in theoretical background as well as data collection and analysis (60%).",
       "examWeight": null
@@ -1573,6 +1670,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 60%, Examination 40%.",
       "examWeight": 40
@@ -1592,6 +1690,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Weekly assignment 20%, Seminar participation 10%, Course project 30%, Outline of the long paper 5%, Long paper (+/- 5 000 words) 35%.",
       "examWeight": null
@@ -1611,6 +1710,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Participation in lectures (at least 80%) and satisfactory completion of all assignments",
       "assessment": "Six short assignments to provide practical experience in developing different types of models (e.g.a small power systems model, a simple household model, a vehicle parc model, an appliance stock model, a simple input/output model) 60% Examination covering key subject concepts (e.g. LCOE) 40% DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 152",
       "examWeight": 60
@@ -1630,6 +1730,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Participation in lectures (at least 80%)",
       "assessment": "Students will be evaluated through a written report (70%) and oral presentation (30%).Students will be required to demonstrate an understanding of the modelling process, a proficiency with energy modelling techniques, and an ability to communicate the modelling process and results clearly.",
       "examWeight": null
@@ -1647,6 +1748,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Written work counts 100%.",
       "examWeight": null
@@ -1664,6 +1766,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -1683,6 +1786,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of lectures and practicals; submission of assignments and project reports.",
       "assessment": "Research paper 15%, research oral presentation 10%, laboratory report 15%, final examination 60% (closed book).",
       "examWeight": 60,
@@ -1703,6 +1807,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of lectures, an average assignment mark of 50%.",
       "assessment": "Assignments 40%, final exam 60%",
       "examWeight": 60
@@ -1722,6 +1827,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100%.",
       "examWeight": 100,
@@ -1742,6 +1848,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Preparatory Assignments 15%; group assignment 10%; major assignment 50% and course test 25%. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 157",
       "examWeight": null
@@ -1761,6 +1868,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Preparatory Assignments 15%; group assignment 10%; major assignment 50% and course test 25%.",
       "examWeight": null,
@@ -1781,6 +1889,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Preparatory Assignments 15%; group assignment 10%; major assignment 50% and course test 25%.",
       "examWeight": null
@@ -1800,6 +1909,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 158",
       "assessment": "Preparatory Assignments 15%; group assignment 10%; major assignment 50% and course test 25%.",
       "examWeight": null
@@ -1819,6 +1929,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of lectures and practicals, submission of assignments and project reports.",
       "assessment": "Assignments and projects 50%, final examination 50%.",
       "examWeight": 50,
@@ -1839,6 +1950,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100% DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 159",
       "examWeight": 100,
@@ -1859,6 +1971,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100%",
       "examWeight": 100
@@ -1878,6 +1991,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100%.",
       "examWeight": 100
@@ -1897,6 +2011,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100% DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 160",
       "examWeight": 100
@@ -1916,6 +2031,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100%",
       "examWeight": 100,
@@ -1936,6 +2052,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Major project 100%.",
       "examWeight": null
@@ -1955,6 +2072,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100%.",
       "examWeight": 100
@@ -1974,6 +2092,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100%",
       "examWeight": 100,
@@ -1994,6 +2113,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Assignments 40%; take home examination 60%.",
       "examWeight": 60
@@ -2013,6 +2133,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Preparatory Assignments 15%; group assignment 10%; major assignment 50% and course test 25%.",
       "examWeight": null,
@@ -2033,6 +2154,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are required to pass class exercises during the course week.",
       "assessment": "Preparatory Assignments 15%; group assignment 10%; major assignment 50% and course test 25%.",
       "examWeight": null
@@ -2052,6 +2174,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Project report 100%.",
       "examWeight": null
@@ -2071,6 +2194,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100%.",
       "examWeight": 100,
@@ -2091,6 +2215,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100% DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 163",
       "examWeight": 100,
@@ -2111,6 +2236,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% Subminimum in class tests.",
       "assessment": "Examination 60%, coursework 40%.",
       "examWeight": 60,
@@ -2131,6 +2257,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "50% Coursework, project 50%.",
       "examWeight": null,
@@ -2151,6 +2278,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Course work 50%, Project 50%",
       "examWeight": null,
@@ -2171,6 +2299,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, examination 50%.",
       "examWeight": 50,
@@ -2191,6 +2320,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, examination 50%.",
       "examWeight": 50
@@ -2210,6 +2340,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, project 50%.",
       "examWeight": null,
@@ -2230,6 +2361,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, examination 50%",
       "examWeight": 50,
@@ -2250,6 +2382,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, examination 50%.",
       "examWeight": 50,
@@ -2270,6 +2403,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, examination 50%.",
       "examWeight": 50,
@@ -2290,6 +2424,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, Project 50%",
       "examWeight": null
@@ -2309,6 +2444,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 30%, examination 70%",
       "examWeight": 70,
@@ -2329,6 +2465,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, Project 50%",
       "examWeight": null
@@ -2348,6 +2485,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 100%",
       "examWeight": null
@@ -2367,6 +2505,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Project report 100%.",
       "examWeight": null
@@ -2386,6 +2525,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -2405,6 +2545,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Preparatory Assignments 15%; group assignment 10%; major assignment 50% and course test 25%.",
       "examWeight": null
@@ -2424,6 +2565,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Preparatory Assignments 15%; group assignment 10%; major assignment 50% and course test 25%.",
       "examWeight": null
@@ -2443,6 +2585,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Project report 100%",
       "examWeight": null
@@ -2460,6 +2603,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Project report 100%.",
       "examWeight": null
@@ -2477,6 +2621,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Project report 100%.",
       "examWeight": null
@@ -2496,6 +2641,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Minimum average mark of 50% for Assignments, attendance at lab and practical sessions (80% attendance required).",
       "assessment": "Assignments 50%; Exam 50% (50% sub-minimum in exam)",
       "examWeight": 50
@@ -2515,6 +2661,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Minimum average mark of 50% for Assignments, attendance at lab and practical sessions (80% attendance required).",
       "assessment": "Assignments 50%; Exam 50% (50% sub-minimum in exam)",
       "examWeight": 50
@@ -2534,6 +2681,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Minimum average mark of 50% for Assignments 1 and 2, attendance at lab and practical sessions (80% attendance required).",
       "assessment": "Assignments 50%; Exam 50%",
       "examWeight": 50,
@@ -2554,6 +2702,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2573,6 +2722,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission and satisfactory performance in all assignments.",
       "assessment": "25% group assignment, 25% course test, 50% take-home major assignment",
       "examWeight": null
@@ -2592,6 +2742,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, Project 50%.",
       "examWeight": null
@@ -2611,6 +2762,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2628,6 +2780,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Project report 100%",
       "examWeight": null
@@ -2647,6 +2800,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null,
@@ -2667,6 +2821,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "",
       "examWeight": null
@@ -2686,6 +2841,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, Project 50%.",
       "examWeight": null
@@ -2705,6 +2861,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, Project 50%",
       "examWeight": null,
@@ -2725,6 +2882,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100%",
       "examWeight": 100,
@@ -2745,6 +2903,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 100%",
       "examWeight": 100,
@@ -2765,6 +2924,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%; Projects 50%",
       "examWeight": null,
@@ -2785,6 +2945,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Assignments 20%; Projects 80%",
       "examWeight": null,
@@ -2805,6 +2966,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam 100%",
       "examWeight": 100,
@@ -2825,6 +2987,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Design Project 100%",
       "examWeight": null,
@@ -2845,6 +3008,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam 100%",
       "examWeight": 100
@@ -2864,6 +3028,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Assignments 40%; Projects 60%",
       "examWeight": null
@@ -2883,6 +3048,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam 100% DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 176",
       "examWeight": 100,
@@ -2903,6 +3069,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam 100%",
       "examWeight": 100,
@@ -2923,6 +3090,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 100%",
       "examWeight": null,
@@ -2943,6 +3111,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%; Project 50%.",
       "examWeight": null
@@ -2962,6 +3131,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "two take home assignments (each 50% towards total course mark)",
       "examWeight": null
@@ -2981,6 +3151,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Preparatory Assignments 10%; group assignment 15%; post contact assignment 25% and take-home assignment 50%.",
       "examWeight": null,
@@ -3001,6 +3172,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "1 pre-contact assignment (each 10% towards total course mark). 1 contact week assignment (each 15% towards total course mark). 1 post-contact examination (each 25% towards total course mark). 1 take-home assignment (each 50% towards total course mark) DEPARTMENTS IN THE FACULTY AND COURSES OFFERED",
       "examWeight": 25
@@ -3020,6 +3192,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at least 80%, submit all assignments.",
       "assessment": "Research paper / case study report (50%), group project (15%), field trip assignment (15%), review paper (20%). DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 178",
       "examWeight": null
@@ -3037,6 +3210,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Written work counts 100%.",
       "examWeight": null
@@ -3054,6 +3228,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Written work counts 100%",
       "examWeight": null
@@ -3071,6 +3246,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3088,6 +3264,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3105,6 +3282,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3122,6 +3300,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3139,6 +3318,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -3158,6 +3338,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Coursework is compulsory. If the student does not submit hand-ins or write a test the student will receive a mark of 0 for that assessment (unless granted an exemption). But the student will be able to write the exam.",
       "assessment": "Coursework 40%; final examination 60%. DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 230",
       "examWeight": 60
@@ -3177,6 +3358,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Coursework is compulsory. If the student does not submit hand-ins or write a test the student will receive a mark of 0 for that assessment (unless granted an exemption). But the student will be able to write the exam.",
       "assessment": "Coursework 40%; final examination 60%. PUBLIC LAW Professor and Head of Department: TBC The courses offered by the department for students registered in the Faculty of Engineering & the Built Environment are described in the Courses Offered section of this Handbook under the course code PBL. Departments and Units Established in the Faculty of Science ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE Associate Professor and Head of Department: M R Sowman, MSc PhD Cape Town",
       "examWeight": 60
@@ -3196,6 +3378,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3215,6 +3398,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3232,6 +3416,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 183",
       "examWeight": null
@@ -3251,6 +3436,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3270,6 +3456,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3289,6 +3476,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 184",
       "examWeight": null
@@ -3308,6 +3496,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3327,6 +3516,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3346,6 +3536,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3365,6 +3556,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3384,6 +3576,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3403,6 +3596,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3420,6 +3614,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3439,6 +3634,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3458,6 +3654,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 187",
       "examWeight": null
@@ -3475,6 +3672,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null,
@@ -3493,6 +3691,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null,
@@ -3511,6 +3710,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 188",
       "examWeight": null,
@@ -3529,6 +3729,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3546,6 +3747,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3563,6 +3765,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null,
@@ -3581,6 +3784,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null,
@@ -3601,6 +3805,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3620,6 +3825,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3639,6 +3845,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3658,6 +3865,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3677,6 +3885,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3696,6 +3905,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3715,6 +3925,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Proposal Submission",
       "examWeight": null
@@ -3734,6 +3945,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3753,6 +3965,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3772,6 +3985,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3792,6 +4006,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3811,6 +4026,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -3830,6 +4046,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 194",
       "examWeight": null
@@ -3849,6 +4066,36 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 4,
+          "choice": false,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "09:00",
+              "end": "10:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "09:00",
+              "end": "10:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "09:00",
+              "end": "10:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "09:00",
+              "end": "10:00"
+            }
+          ],
+          "text": "times:09h00 – 10h00 Monday, Tuesday, Wednesday, Thursday"
+        }
+      ],
       "dp": "None",
       "assessment": "Coursework: 50%; Exam: 50%. The course outline will detail the breakdown for submission weightings and variation for exemptions and absences. Note: The ECO2003F supplementary/deferred exam will be scheduled during the last week of the mid-year vacation. If students do not write this exam they will be marked as AB and will have to retake the course.",
       "examWeight": 50
@@ -3868,6 +4115,76 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "09:00",
+              "end": "10:00"
+            },
+            {
+              "day": "Monday",
+              "start": "12:00",
+              "end": "13:00"
+            },
+            {
+              "day": "Monday",
+              "start": "13:00",
+              "end": "14:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "09:00",
+              "end": "10:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "12:00",
+              "end": "13:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "13:00",
+              "end": "14:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "09:00",
+              "end": "10:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "12:00",
+              "end": "13:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "13:00",
+              "end": "14:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "09:00",
+              "end": "10:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "12:00",
+              "end": "13:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "13:00",
+              "end": "14:00"
+            }
+          ],
+          "text": "times: 09h00 – 10h00 Monday, Tuesday, Wednesday, Thursday,12h00 – 13h00 Monday, Tuesday, Wednesday, Thursday,13h00 – 14h00 Monday, Tuesday, Wednesday, Thursday"
+        }
+      ],
       "dp": "None",
       "assessment": "Coursework: 50%; Exam: 50%. The course outline will detail the breakdown for submission weightings and variation for exemptions and absences. SCHOOL OF MANAGEMENT STUDIES Head of Department: S Goodman, BSocSc(Hons) MBusSc PhD Cape Town",
       "examWeight": 50
@@ -3887,6 +4204,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance and satisfactory completion of coursework.",
       "assessment": "Examination 50%, year mark 50%.",
       "examWeight": 50
@@ -3906,6 +4224,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance and satisfactory completion of coursework.",
       "assessment": "Examination 60%, year mark 40%.",
       "examWeight": 60
@@ -3925,6 +4244,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of lectures and completion of tutorials/projects.",
       "assessment": "Project 25%, tutorials 20% and examination 55%",
       "examWeight": 55
@@ -3944,6 +4264,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of lectures and completion of tutorials/projects.",
       "assessment": "Coursework 20%, examination 55% and project 25%.",
       "examWeight": 55
@@ -3963,6 +4284,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of lectures and completion of tutorials/projects.",
       "assessment": "Projects 25%, tutorials 20% and examinations 55%.",
       "examWeight": 55
@@ -3982,6 +4304,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of lectures and completion of tutorials/projects.",
       "assessment": "Projects 25%, tutorials 20% and examinations 55%.",
       "examWeight": 55
@@ -4001,6 +4324,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "2 hour examination 100%.",
       "examWeight": 100
@@ -4020,6 +4344,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "3 hour examination 100%",
       "examWeight": 100
@@ -4039,6 +4364,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "3 hour examination 100%",
       "examWeight": 100
@@ -4058,6 +4384,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "3 hour examination 100%",
       "examWeight": 100
@@ -4077,6 +4404,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of lectures and completion of tutorials/projects.",
       "assessment": "Coursework 40% and examination 60%",
       "examWeight": 60
@@ -4096,6 +4424,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of lectures and completion of tutorials/projects.",
       "assessment": "Coursework 40% and examination 60%",
       "examWeight": 60
@@ -4115,6 +4444,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50% and examination 50% DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 202",
       "examWeight": 50
@@ -4134,6 +4464,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance and submission of seminars and tutorial assignments",
       "assessment": "Coursework 30%, Examination 70%",
       "examWeight": 70
@@ -4153,6 +4484,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%, Examination 50%",
       "examWeight": 50
@@ -4172,6 +4504,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Assignment mark of at least 40%",
       "assessment": "Coursework 40%, Examination 60% DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 203",
       "examWeight": 60
@@ -4191,6 +4524,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance and handing in of tutorials",
       "assessment": "Coursework 10%, Project 30% and Examination 60%",
       "examWeight": 60
@@ -4210,6 +4544,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 40%, Examination 60% DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 204",
       "examWeight": 60
@@ -4229,6 +4564,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Minimum 45% for project",
       "assessment": "Coursework 50%, Examination 50%",
       "examWeight": 50
@@ -4246,6 +4582,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Written work counts 100%",
       "examWeight": null,
@@ -4266,6 +4603,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Lab, Project & Tutorial (40%), Exam (60%)",
       "examWeight": 60
@@ -4283,6 +4621,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Written work counts 100%.",
       "examWeight": null
@@ -4302,6 +4641,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -4319,6 +4659,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "",
       "examWeight": null
@@ -4338,6 +4679,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at least 80%, submit all assignments.",
       "assessment": "Research paper (35%), group project (15%), field trip assignment (20%), review paper (30%). DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED",
       "examWeight": null
@@ -4357,6 +4699,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -4376,6 +4719,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 210",
       "examWeight": null,
@@ -4396,6 +4740,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -4415,6 +4760,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Assessment of the assignments: the average mark obtained for the assignments will contribute 30% to the final course mark. Assessment of the final examination: the mark obtained for the final examination will contribute 70% to the final course mark.",
       "examWeight": 70
@@ -4434,6 +4780,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 211",
       "examWeight": null,
@@ -4454,6 +4801,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -4471,6 +4819,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -4490,6 +4839,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 212",
       "examWeight": null,
@@ -4510,6 +4860,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null,
@@ -4530,6 +4881,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -4549,6 +4901,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 213",
       "examWeight": null
@@ -4568,6 +4921,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null,
@@ -4588,6 +4942,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document regarding the assessment criteria for this course",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course",
       "examWeight": null
@@ -4607,6 +4962,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document regarding the assessment criteria for this course",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course",
       "examWeight": null
@@ -4626,6 +4982,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document regarding the assessment criteria for this course",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course",
       "examWeight": null
@@ -4645,6 +5002,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document regarding the assessment criteria for this course",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course",
       "examWeight": null
@@ -4664,6 +5022,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document regarding the assessment criteria for this course DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 215",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course",
       "examWeight": null
@@ -4683,6 +5042,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course",
       "examWeight": null
@@ -4702,6 +5062,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Project(s)",
       "examWeight": null
@@ -4721,6 +5082,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Project report(s), assignments, examination.",
       "examWeight": null,
@@ -4739,6 +5101,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null,
@@ -4759,6 +5122,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Project(s).",
       "examWeight": null,
@@ -4779,6 +5143,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Position papers 50%, portfolio of projects and reflective papers 50%.",
       "examWeight": null,
@@ -4797,6 +5162,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Project, November examination 3 hours DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 218",
       "examWeight": null,
@@ -4815,6 +5181,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination 3 hours.",
       "examWeight": null,
@@ -4833,6 +5200,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Examination and/or project.",
       "examWeight": null,
@@ -4853,6 +5221,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Position papers 50%, portfolio of projects and reflective papers 50%.",
       "examWeight": null,
@@ -4873,6 +5242,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "An average of 50% in all class tests. Submission of all assignments and projects.",
       "assessment": "June examination",
       "examWeight": null
@@ -4892,6 +5262,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "An average of 50% in all class tests. Submission of all projects and assignments.",
       "assessment": "November examination.",
       "examWeight": null
@@ -4911,6 +5282,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "A course mark (combined tests and projects) of at least 50%.",
       "assessment": "June examination",
       "examWeight": null,
@@ -4931,6 +5303,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "An average of 40% in all class tests.",
       "assessment": "June examination.",
       "examWeight": null
@@ -4950,6 +5323,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "An average of 40% in all class tests.",
       "assessment": "November examination DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 220",
       "examWeight": null
@@ -4969,6 +5343,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Project",
       "examWeight": null
@@ -4988,6 +5363,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Assignments and Examination.",
       "examWeight": null
@@ -5007,6 +5383,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Project, presentations and Learning Log .",
       "examWeight": null,
@@ -5027,6 +5404,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5046,6 +5424,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null

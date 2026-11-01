@@ -14,7 +14,7 @@ const DEFAULT_DESCRIPTION = 'Course ratings, workload scores and tips from South
 // Sign-in links remember the page you were on, so you land back there afterwards.
 const loginHref = (back) => (back && back !== '/' && !back.startsWith('/login') && !back.startsWith('/auth') ? `/login?next=${encodeURIComponent(back)}` : '/login');
 
-const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/rankings', 'Rankings']];
+const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/week', 'My week'], ['/rankings', 'Rankings']];
 
 // description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
 // uni sets the accent colour for the university being browsed; the Kwaai brand colours never change.
@@ -761,6 +761,7 @@ function plan(ctx, { courses: list, plan: p, matches, add, codes, profile, needs
   ${p.other.length ? html`<section class="card plan-term"><h2>Other terms</h2><p class="meta">Summer, winter or non-standard courses. They're not counted in either semester.</p>
     <ul class="plan-courses">${p.other.map((c) => planCourse(c, p.entry[c.code], [], link))}</ul></section>` : ''}
   <div class="plan-share">
+    <a class="btn btn-ink" href="/week?${new URLSearchParams({ ...state })}">See your week</a>
     <a class="btn btn-quiet" href="https://wa.me/?text=${encodeURIComponent(`My plan on Kwaai. ${summary}. How cooked is yours? ${url}`)}" target="_blank" rel="noopener">Share on WhatsApp</a>
     <span class="meta">Your plan is saved on this device. The link works for anyone you send it to.</span>
   </div>
@@ -777,6 +778,168 @@ function plan(ctx, { courses: list, plan: p, matches, add, codes, profile, needs
       </ul>
       <p class="meta">Try it with <a href="/plan?c=CSC1015F,MAM1031F,STA1000F,CSC1016S,MAM1032S">a first-year computer science plan</a>.</p>
     </div>`}`);
+}
+
+// ---------- the week view ----------
+const WEEK_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const KIND_LABEL = { lecture: 'Lecture', tut: 'Tutorial', prac: 'Practical', own: '', set: '', study: 'Study' };
+const mins = (t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
+const fmtDate = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+// side-by-side lanes for events that overlap on one day
+function lanes(events) {
+  const sorted = [...events].sort((a, b) => mins(a.start) - mins(b.start) || mins(b.end) - mins(a.end));
+  const out = [];
+  let cluster = [];
+  let clusterEnd = -1;
+  const flush = () => {
+    const ends = [];
+    for (const e of cluster) {
+      let lane = ends.findIndex((end) => end <= mins(e.start));
+      if (lane < 0) lane = ends.length;
+      ends[lane] = mins(e.end);
+      out.push({ e, lane });
+    }
+    for (const x of out.slice(out.length - cluster.length)) x.of = ends.length;
+  };
+  for (const e of sorted) {
+    if (cluster.length && mins(e.start) >= clusterEnd) { flush(); cluster = []; clusterEnd = -1; }
+    cluster.push(e);
+    clusterEnd = Math.max(clusterEnd, mins(e.end));
+  }
+  if (cluster.length) flush();
+  return out;
+}
+
+function eventName(e) {
+  if (e.kind === 'own' || e.kind === 'set') return e.label;
+  return `${e.code} ${KIND_LABEL[e.kind].toLowerCase()}`;
+}
+
+function weekGrid(wk, colour) {
+  const from = 8 * 60;
+  const to = Math.max(18 * 60, ...wk.events.map((e) => mins(e.end)));
+  const span = to - from;
+  const hours = [];
+  for (let h = from; h < to; h += 60) hours.push(h);
+  return html`<div class="week-grid" role="img" aria-label="Your week as a timetable. The same classes are listed day by day below." style="--hours:${hours.length}">
+    <div class="week-times" aria-hidden="true">${hours.map((h) => html`<span>${String(h / 60).padStart(2, '0')}:00</span>`)}</div>
+    ${WEEK_DAYS.map((day) => html`<div class="week-day">
+      <p class="week-day-name">${day.slice(0, 3)}</p>
+      <div class="week-col">
+        ${lanes(wk.events.filter((e) => e.day === day)).map(({ e, lane, of }) => html`<div class="week-ev ev-${e.kind}${e.suggested ? ' ev-suggested' : ''}" style="top:${((mins(e.start) - from) / span) * 100}%;height:${((mins(e.end) - mins(e.start)) / span) * 100}%;left:${(lane / of) * 100}%;width:${100 / of}%${e.code && e.kind !== 'own' ? `;--c:${colour(e.code)}` : ''}" title="${eventName(e)}, ${e.start} to ${e.end}">
+          <strong>${e.kind === 'own' || e.kind === 'set' ? e.label : e.code}</strong>
+          <span>${e.kind === 'own' || e.kind === 'set' ? '' : KIND_LABEL[e.kind]}${e.suggested ? ' (suggested)' : ''}</span>
+          <span>${e.start}–${e.end}</span>
+        </div>`)}
+      </div>
+    </div>`)}
+  </div>`;
+}
+
+function weekAgenda(wk) {
+  return html`<div class="week-agenda">${WEEK_DAYS.map((day) => {
+    const today = wk.events.filter((e) => e.day === day).sort((a, b) => mins(a.start) - mins(b.start));
+    return html`<section class="agenda-day">
+      <h3>${day}</h3>
+      ${today.length ? html`<ul class="plain">${today.map((e) => html`<li class="agenda-ev ev-${e.kind}">
+        <span class="agenda-time">${e.start}–${e.end}</span>
+        <span>${e.code && e.kind !== 'set' && e.kind !== 'own' ? html`<a href="/courses/${e.code}" class="code">${e.code}</a> ${KIND_LABEL[e.kind]}` : e.label}${e.suggested ? html` <span class="meta">(suggested)</span>` : ''}</span>
+      </li>`)}</ul>` : html`<p class="meta">Nothing planned.</p>`}
+    </section>`;
+  })}</div>`;
+}
+
+const timeOptions = (selected) => {
+  const out = [];
+  for (let m = 7 * 60; m <= 21 * 60; m += 15) {
+    const t = `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+    out.push(html`<option ${t === selected ? 'selected' : ''}>${t}</option>`);
+  }
+  return out;
+};
+// a small "when is it?" form: adds the item as one of the student's own blocks
+function placeForm(state, { label = '', start = '14:00', end = '15:00', button = 'Add' } = {}) {
+  return html`<form action="/week" class="place-form">
+    ${Object.entries(state).map(([k, v]) => html`<input type="hidden" name="${k}" value="${v}">`)}
+    <input type="hidden" name="add_block" value="1">
+    ${label ? html`<input type="hidden" name="label" value="${label}">` : html`<label>What <input type="text" name="label" maxlength="30" placeholder="e.g. Job, gym, society" required></label>`}
+    <label>Day <select name="day">${WEEK_DAYS.map((d, i) => html`<option value="${i}">${d}</option>`)}</select></label>
+    <label>From <select name="start">${timeOptions(start)}</select></label>
+    <label>To <select name="end">${timeOptions(end)}</select></label>
+    <button class="btn btn-small">${button}</button>
+  </form>`;
+}
+
+function week(ctx, { wk, week: w, codes, state, calendar }) {
+  const link = (o) => `/week?${new URLSearchParams({ ...state, ...o })}`;
+  const palette = ['#2f6fdf', '#c2410c', '#0f8a5f', '#8b3fd1', '#b8860b', '#d1365a', '#0e7490', '#6b7a1f'];
+  const colour = (code) => palette[Math.max(0, wk.courses.findIndex((c) => c.code === code)) % palette.length];
+  const termName = wk.term === 's1' ? 'Semester 1' : 'Semester 2';
+  const credits = wk.courses.reduce((s, c) => s + (c.credits || 0) / ((/[WH]$/.test(c.code) ? 2 : 1)), 0);
+  const webcal = calendar && calendar.replace(/^https?:/, 'webcal:');
+  return layout({ ...ctx, title: 'Your week', here: '/week', path: '/week', description: 'Your UCT week: lectures, tutorials, practicals and study time from your semester plan, in your phone calendar.' }, html`
+  <h1 class="page-title">Your week</h1>
+  <p class="lede small">Built from <a href="/plan?${new URLSearchParams({ ...state })}">your semester plan</a> and UCT's 2026 handbooks.${wk.dates ? ` ${termName} ${wk.year} runs ${fmtDate(wk.dates.start)} to ${fmtDate(wk.dates.end)}.` : ''}</p>
+
+  <nav class="chips" aria-label="Semester">
+    <a class="chip ${wk.term === 's1' ? 'on' : ''}" href="${link({ term: 's1' })}" ${wk.term === 's1' ? 'aria-current="page"' : ''}>Semester 1</a>
+    <a class="chip ${wk.term === 's2' ? 'on' : ''}" href="${link({ term: 's2' })}" ${wk.term === 's2' ? 'aria-current="page"' : ''}>Semester 2</a>
+  </nav>
+
+  ${!codes.length ? html`<div class="card panel"><p><strong>Your plan is empty.</strong> Add your courses in the <a href="/plan">semester planner</a> and your week builds itself: lectures, tutorials, practicals and time to study.</p></div>`
+  : !wk.courses.length ? html`<div class="card panel"><p>None of your planned courses run in ${termName}. <a href="/plan">Add some in the planner</a> or switch semester above.</p></div>`
+  : html`
+  <section class="card panel week-hours" aria-labelledby="hours-head">
+    <h2 id="hours-head">About ${wk.hours.total} hours of work a week</h2>
+    <p>${Math.round(credits)} credits this semester. One credit is 10 hours of work (that's how South Africa's NQF counts it), spread over about ${wk.hours.weeks} weeks. About ${wk.hours.contact} of those hours are in lectures, tuts and pracs on this timetable; the rest is reading, assignments and studying on your own.</p>
+    <p class="meta"><a href="${link({ study: w.study ? '0' : '1' })}">${w.study ? 'Hide the suggested study time' : 'Show suggested study time on the timetable'}</a>${w.study && wk.studyLeft ? ` · ${wk.studyLeft} more hours don't fit between 08:00 and 17:00, so they go to evenings or weekends.` : ''}</p>
+  </section>
+
+  ${wk.clashes.length ? html`<section class="card plan-warnings" role="status"><h2>Clashes</h2><ul>${wk.clashes.map(([a, b]) => html`<li><strong>${a.day}:</strong> ${eventName(a)} (${a.start}–${a.end}) overlaps ${eventName(b)} (${b.start}–${b.end}).</li>`)}</ul></section>` : ''}
+
+  ${weekGrid(wk, colour)}
+  ${weekAgenda(wk)}
+
+  ${wk.choices.length ? html`<section class="card panel week-choices" aria-labelledby="choices-head">
+    <h2 id="choices-head">Pick your groups</h2>
+    <p class="meta">These run more than once a week and you go to one. Kwaai suggests one that fits; pick the group you're actually in.</p>
+    <ul class="plain">${wk.choices.map((ch) => html`<li>
+      <p><a href="/courses/${ch.code}" class="code">${ch.code}</a> ${KIND_LABEL[ch.kind].toLowerCase()}${ch.picked ? '' : html` <span class="meta">(suggested, not picked yet)</span>`}</p>
+      <div class="chips">${ch.options.map((o) => html`<a class="chip ${o.value === ch.chosen ? 'on' : ''}" href="${link({ pick: `${ch.code}.${ch.key}`, opt: o.value })}" ${o.value === ch.chosen ? 'aria-current="true"' : ''}>${o.label}</a>`)}</div>
+    </li>`)}</ul>
+  </section>` : ''}
+
+  ${wk.unplaced.length ? html`<section class="card panel week-unplaced" aria-labelledby="unplaced-head">
+    <h2 id="unplaced-head">Not on the timetable yet</h2>
+    <p class="meta">The handbook doesn't say when these happen. Add them once you know (your course site or first lecture will say).</p>
+    <ul class="plain">${wk.unplaced.map((u) => html`<li>
+      <p><a href="/courses/${u.code}" class="code">${u.code}</a> ${KIND_LABEL[u.kind].toLowerCase()}${u.text ? html` <span class="meta">Handbook: “${u.text}”</span>` : ''}</p>
+      ${placeForm(state, { label: `${u.code} ${u.kind === 'lecture' ? 'lecture' : KIND_LABEL[u.kind].toLowerCase()}`, start: '08:00', end: '08:45' })}
+    </li>`)}</ul>
+  </section>` : ''}`}
+
+  <section class="card panel week-own" aria-labelledby="own-head">
+    <h2 id="own-head">Your own blocks</h2>
+    <p class="meta">A job, sport, a society, travel time. They show on your timetable, and study time is planned around them.</p>
+    ${w.blocks.length ? html`<ul class="plain">${w.blocks.map((b, i) => html`<li>${b.label} · ${b.day} ${b.start}–${b.end} · <a href="${link({ rm_block: i })}" aria-label="Remove ${b.label} on ${b.day}">Remove</a></li>`)}</ul>` : ''}
+    ${placeForm(state)}
+  </section>
+
+  <section class="card panel week-calendar" id="calendar" aria-labelledby="cal-head">
+    <h2 id="cal-head">Put it in your phone's calendar</h2>
+    ${calendar ? html`
+      <p>Your calendar link follows the plan on this device: change your courses or groups here and your calendar catches up within a few hours.</p>
+      <p><a class="btn btn-ink" href="https://calendar.google.com/calendar/render?cid=${encodeURIComponent(webcal)}" target="_blank" rel="noopener">Add to Google Calendar</a>
+         <a class="btn btn-quiet" href="${webcal}">Add to Apple or Outlook calendar</a></p>
+      <label>Or copy the link into any calendar app <input type="text" readonly value="${calendar}" class="cal-link"></label>
+      <form method="post" action="/week/unsubscribe" class="inline" data-confirm="Delete this calendar link? Calendars using it will stop updating."><button class="link-btn">Delete this calendar link</button></form>`
+    : html`
+      <p>Get a calendar link that keeps itself up to date, or download the year as a file. Weekly classes repeat from the first day of each semester to the last, with the vacations left out.</p>
+      <form method="post" action="/week/subscribe" class="inline"><button class="btn btn-ink">Make my calendar link</button></form>
+      <a class="btn btn-quiet" href="/week.ics?${new URLSearchParams({ ...state })}">Download as a file (.ics)</a>`}
+    <p class="fine">The link holds your course codes and timetable choices under a random address, nothing else. Term dates are UCT's published ${wk.year} dates (<a href="https://uct.ac.za/students/calendar/terms" rel="noopener">source</a>); UCT doesn't publish a separate last day of lectures, so classes run to the end of each term. Times come from the 2026 handbooks: check your official timetable.</p>
+  </section>`);
 }
 
 function universities(ctx, { universities: list, liveCourses }) {
@@ -876,6 +1039,7 @@ function privacy(ctx) {
     <li><strong>Your @myuct.ac.za email</strong>, to check you're a UCT student, send sign-in codes and links, and enforce bans. It is never shown publicly. We also record when you confirmed you're 18 or older and agreed to the terms.</li>
     <li><strong>Your reviews and votes</strong> (ratings, tags, comment, kwaai-or-nah vote, tip, course, lecturer, year). They are published without your name or email.</li>
     <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), a short-lived one for on-screen messages, and one that remembers your semester plan for 180 days. The plan cookie holds the course codes you added and, if you filled them in, your faculty, majors, year of study and the courses you've passed. That information stays on your device and in the plan's link. We don't store it on our server. No advertising or tracking cookies.</li>
+    <li><strong>A calendar link</strong>, only if you make one on <a href="/week">Your week</a>: your course codes and timetable choices, stored under a random address so your calendar app can fetch them. No name, email or "about you" answers. Delete it there at any time; links nobody has used for 12 months are deleted automatically.</li>
     <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many sign-in attempts). It isn't written to our database.</li>
     <li><strong>Removal requests:</strong> the name, email and details you give us, used only to deal with that request.</li>
     <li><strong>Lecturers' names and job titles</strong> come from UCT's public 2026 handbooks: the convener of each course and each department's staff list. A lecturer is shown with a course only when the handbook names them as its convener or a student picks them in a review.</li>
@@ -1114,4 +1278,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log }) {
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };

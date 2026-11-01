@@ -16,6 +16,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Research essay / project. AFS4101FS GENDER AND VIOLENCE 24 NQF credits at NQF level 8 Convener: TBA",
       "examWeight": null
@@ -35,6 +36,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 50% pass for all assignments.",
       "assessment": "Literary review 15%; first draft proposal 15%; final proposal 30%; proposal presentation 20%; final presentation 20%.",
       "examWeight": null
@@ -54,6 +56,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes and completion of both short assignments",
       "assessment": "Course participation 10%; course assignment 20%; group presentations 25%; examination 45%. AFS4108FS GENDER, SEXUALITY AND ISLAM 24 NQF credits at NQF level 8 Convener: Dr M Osman",
       "examWeight": 45
@@ -71,6 +74,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Participation in prepared discussion (24 sessions) 25%; Assignment - paper in critical feminist research theory 10%; Assignment - paper in application of quantitative or qualitative analysis of research data 20%; Proposal process and production (8,000 words) 45%.",
       "examWeight": null
@@ -90,6 +94,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes and completion of both short assignments.",
       "assessment": "Participation in prepared discussion (8-12) 25%; Long paper (in consultation with the supervisor) (8,000 words) 75%. AFS5108FS GENDER, SEXUALITY AND ISLAM 24 NQF credits at NQF level 9 Convener: Dr M Osman",
       "examWeight": null
@@ -109,6 +114,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "On average the course work component counts 70% (this includes 50% from final examinations) and the research project counts 30%. A sub-minimum of 50% is required for the research project. These component parts of the course will be combined in a final overall mark which will be reflected against the course code AGE4000W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
       "examWeight": null
@@ -128,6 +134,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "On average the course work component counts 70% (this includes 50% from final examinations) and the research project counts 30%. A sub-minimum of 50% is required for the research project. These component parts of the course will be combined in a final overall mark which will be reflected against the course code AGE4001W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
       "examWeight": null
@@ -147,6 +154,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of chapter outline for research essay.",
       "assessment": "Research essay: 100%.",
       "examWeight": null
@@ -166,6 +174,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all prescribed assignments and satisfactory attendance and participation in coursework seminars by due dates.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -185,6 +194,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all prescribed assignments and satisfactory attendance and participation in coursework seminars.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -204,6 +214,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all prescribed assignments and satisfactory attendance and participation in coursework seminars.",
       "assessment": "Coursework 100%. ANS4404FS SPECIAL TOPICS IN ANTHROPOLOGY 24 NQF credits at NQF level 8 Convener: Professor F Nyamnjoh",
       "examWeight": null
@@ -223,6 +234,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all prescribed assignments and satisfactory attendance and participation in coursework seminars.",
       "assessment": "Coursework 100%. ANS4407FS MEDICAL ANTHROPOLOGIES: WELL-BEING IN A PRECARIOUS WORLD 24 NQF credits at NQF level 8 Convener: Professor F Ross",
       "examWeight": null
@@ -242,6 +254,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of work-in-progress.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -261,6 +274,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of work-in-progress.",
       "assessment": "Coursework 100%. ANS5405FS MEDICAL ANTHROPOLOGIES: CULTURE, HEALTH & ILLNESS 24 NQF credits at NQF level 9 Convener: Professor F Ross",
       "examWeight": null
@@ -280,6 +294,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all prescribed assignments; satisfactory attendance and participation in coursework seminars.",
       "assessment": "Two 5000-word essays (40% each); presentation (20%). ANS5409FS ETHNOGRAPHIC PROBLEMATIQUES 24 NQF credits at NQF level 9 Convener: Professor F Nyamnjoh",
       "examWeight": null
@@ -299,6 +314,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all prescribed assignments and satisfactory attendance and participation in coursework seminars.",
       "assessment": "Coursework 100%. ANS5414FS RESEARCHING THE ANTHROPOCENE 24 NQF credits at NQF level 9 Convener: Dr N Solomon",
       "examWeight": null
@@ -318,6 +334,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance of lectures and 100% completion of assignments.",
       "assessment": "By examination of an assignment (100%). ECONOMICS, SCHOOL OF",
       "examWeight": 100
@@ -337,6 +354,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Please refer to course outline for assessment information.",
       "examWeight": null
@@ -356,6 +374,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at seminars is compulsory, failing which students’ papers may not be marked.",
       "assessment": "Research/Essay Project.",
       "examWeight": null
@@ -375,6 +394,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at seminars is compulsory, failing which students’ papers may not be marked.",
       "assessment": "Two essays (25% each): 50%; research project: 50%.",
       "examWeight": null
@@ -394,6 +414,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at seminars is compulsory, failing which students’ papers may not be marked.",
       "assessment": "Two essays (25% each) 50%; major project 50%.",
       "examWeight": null
@@ -413,6 +434,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at seminars is compulsory, failing which students’ papers may not be marked.",
       "assessment": "Two essays (25% each) 50%; major project 50%.",
       "examWeight": null
@@ -432,6 +454,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work and attendance at all seminars.",
       "assessment": "One major project 100%.",
       "examWeight": null
@@ -451,6 +474,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at seminars is compulsory, failing which students’ papers may not be marked.",
       "assessment": "Class participation & presentation (10%); 3000-word research paper (35%); 5000word essay (55%). ASL4209FS LAND & AGRARIAN QUESTION 24 NQF credits at NQF level 8 Convener: Professor H Chitonge",
       "examWeight": null
@@ -470,6 +494,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Two essays (25% each): 50%; research project: 50%.",
       "examWeight": null
@@ -489,6 +514,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Research/essay project 100%. AFRICAN STUDIES AND LINGUISTICS 164",
       "examWeight": null
@@ -508,6 +534,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work and at least 75% attendance at seminars.",
       "assessment": "Two essays of 5,000 words each, counting 50%.",
       "examWeight": null
@@ -527,6 +554,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work and at least 75% attendance at seminars.",
       "assessment": "Two short essays of 3,000 words and a translation exercise, or three short essays of 2,000 words, each counting 33% of the final mark. ASL4318FS LANGUAGE CONTACT & GLOBALISATION 24 NQF credits at NQF level 8 Convener: Dr M Thompson",
       "examWeight": null
@@ -546,6 +574,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at seminars is compulsory, failing which students’ papers may not be marked.",
       "assessment": "Two essays (20% each) 40%; research proposal 10%; major project 50%. AFRICAN STUDIES AND LINGUISTICS 166",
       "examWeight": null
@@ -565,6 +594,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at seminars is compulsory, failing which students’ papers may not be marked.",
       "assessment": "One major project 100%. ASL5204FS LAND & AGRARIAN QUESTION 24 NQF credits at NQF level 9 Convener: Professor H Chitonge",
       "examWeight": null
@@ -584,6 +614,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Two essays: 25% each: Project: 50%. AFRICAN STUDIES AND LINGUISTICS 168",
       "examWeight": null
@@ -603,6 +634,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Major project: 50%, Research proposal: 10%, Additional material: 40%.",
       "examWeight": null
@@ -622,6 +654,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Two essays of 2,500 words each: 50%; One take-home exam essay of 5,000 words: 50%.",
       "examWeight": null
@@ -641,6 +674,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work and at least 75% attendance at seminars.",
       "assessment": "Two short essays of 4,000 words and a translation exercise of 3,000 words, or three short essays of 4,000 words, each counting 33% of the final mark.",
       "examWeight": null
@@ -660,6 +694,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work and at least 75% attendance at seminars.",
       "assessment": "One long essay of 5000 words, counting 60%, and two portfolio exercises weighted at 20% each. ASL5324FS LINGUISTICS AND DECOLONISATION 24 NQF credits at NQF level 9 Convener: J Brown",
       "examWeight": null
@@ -679,6 +714,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -698,6 +734,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%, Examination 50%. Note: A supplementary exam will only be offered for ECO4007F during the mid-year vacation.",
       "examWeight": 50
@@ -717,6 +754,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "4Coursework 30%, Examination 60%. Note: No supplementary exam is offered for this course.",
       "examWeight": 60
@@ -736,6 +774,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 60%; Examination 40%. Note: A supplementary exam will only be offered for ECO4016F during the mid-year vacation.",
       "examWeight": 40
@@ -755,6 +794,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework only consisting of 4 essays, each 20%; 20% on panel performance and class participation. Note: No supplementary exam is offered for this course.",
       "examWeight": null
@@ -774,6 +814,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "100% written work Note: Students that receive a subminimum of 40% for their research paper (ECO4021W), will be given one opportunity to revise and resubmit their paper before the start of the following academic year. The revised research paper will be eligible for a maximum grade of 50%. Any student who fails ECO4021W after re-submission fails the degree.",
       "examWeight": null
@@ -793,6 +834,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%; examination 50%. Note: No supplementary exam is offered for this course.",
       "examWeight": 50
@@ -812,6 +854,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 60%; Examination 40%. Note: No supplementary exam is offered for this course.",
       "examWeight": 40
@@ -831,6 +874,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 100%. Note: No supplementary exam is offered for this course. ECONOMICS, SCHOOL OF 186",
       "examWeight": null
@@ -850,6 +894,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework consisting of pre-class experiment (10%), class presentation (20%) and assignment (35%): 65%; examination 35%. Note: No supplementary exam is offered for this course.",
       "examWeight": 35
@@ -869,6 +914,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 100%. Note: No supplementary exam is offered for this course.",
       "examWeight": null
@@ -888,6 +934,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework (60%); final examination (40%). Note: No supplementary exam is offered for this course.",
       "examWeight": 40
@@ -907,6 +954,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%; Examination 50% Note: No supplementary exam is offered for this course.",
       "examWeight": null
@@ -926,6 +974,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%; Exam 50% Note: No supplementary exam is offered for this course. ECONOMICS, SCHOOL OF 188",
       "examWeight": null
@@ -945,6 +994,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%, Examination 60%.Note: Students who obtain less than 40% for ECO4112F will not be allowed to continue with the programme.",
       "examWeight": 60
@@ -964,6 +1014,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%; Examination 60%. Note: No supplementary exam is offered for this course..",
       "examWeight": 60
@@ -983,6 +1034,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -1002,6 +1054,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submitted homework assignments; Case study presentation",
       "assessment": "Coursework 40%; Examination 60%. Note: No supplementary exam is offered for this course.",
       "examWeight": 60
@@ -1021,6 +1074,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The classroom presentation will be compulsory. This will be a 10-15 minute presentation on a topic of the student's choosing where they investigate some aspect of economic inequality.",
       "assessment": "The course will have three assessment components.1. A mid-term essay (30%) 2. A classroom presentation (20%) 3. A final essay (50%) Note: No supplementary exam is offered for this course.",
       "examWeight": null
@@ -1040,6 +1094,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -1059,6 +1114,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 40%; examination 60%.",
       "examWeight": 60
@@ -1078,6 +1134,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%; examination 60%.",
       "examWeight": 60
@@ -1097,6 +1154,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 40%; examination 60%.",
       "examWeight": 60
@@ -1116,6 +1174,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 40%; examination 60%. ECONOMICS, SCHOOL OF 192",
       "examWeight": 60
@@ -1135,6 +1194,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 40%; examination 60%.",
       "examWeight": 60
@@ -1154,6 +1214,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%; examination 50%.",
       "examWeight": 50
@@ -1173,6 +1234,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 50%; examination 50%.",
       "examWeight": 50
@@ -1192,6 +1254,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 40%; examination 60%.",
       "examWeight": 60
@@ -1211,6 +1274,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 70%; examination 30%.",
       "examWeight": 30
@@ -1230,6 +1294,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Course presentations 10%; exams 60%; course paper 30%",
       "examWeight": 60
@@ -1249,6 +1314,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 50%; examination 50%.",
       "examWeight": 50
@@ -1268,6 +1334,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Tests 50%; Project 50%.",
       "examWeight": null
@@ -1287,6 +1354,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -1306,6 +1374,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -1325,6 +1394,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -1344,6 +1414,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Assignments (30%); Written commentaries on selected articles (30%); Final exam (40%)",
       "examWeight": 40
@@ -1363,6 +1434,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None ECONOMICS, SCHOOL OF 197",
       "assessment": "Coursework consists of 4 homework assignments (30%) and one presentation (10%); final examination (60%).",
       "examWeight": 60
@@ -1382,6 +1454,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Written work counts 100%. EDUCATION, SCHOOL OF",
       "examWeight": null
@@ -1401,6 +1474,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission and satisfactory completion of all assignments.",
       "assessment": "Assignments and tests count 100%.",
       "examWeight": null
@@ -1420,6 +1494,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory fulfilment of the requirements for the qualification; completion of a teaching practice journal; 80% attendance at tutorials; and submission and satisfactory completion of the portfolio.",
       "assessment": "Students are expected to satisfy the teaching practice supervisors appointed by the School of Education, the school in which they teach and the external examiner, who will visit schools during teaching practice. The assessment is based on the supervisors' reports, confidential reports by schools, a student report and the examiner's reports. Teaching practice (70%); teaching practice portfolio (30%).",
       "examWeight": null
@@ -1439,6 +1514,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Assessment will include an evaluation of the use of the language during teaching practice, and oral and written tests as appropriate to inform it.",
       "examWeight": null
@@ -1458,6 +1534,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Assessment will include an evaluation of the use of the language during teaching practice, and oral and written tests as appropriate to inform it.",
       "examWeight": null
@@ -1477,6 +1554,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1496,6 +1574,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1515,6 +1594,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1534,6 +1614,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1553,6 +1634,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1572,6 +1654,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1591,6 +1674,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1610,6 +1694,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects. EDUCATION, SCHOOL OF 205",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1629,6 +1714,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1648,6 +1734,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1667,6 +1754,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1686,6 +1774,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1705,6 +1794,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects. EDUCATION, SCHOOL OF 207",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1724,6 +1814,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1743,6 +1834,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1762,6 +1854,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1781,6 +1874,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1800,6 +1894,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1819,6 +1914,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1838,6 +1934,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "A course examination which counts for 50% is optional per course. Assignments and projects count for the remainder, or 100%.",
       "examWeight": 50
@@ -1857,6 +1954,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of an 8 000-word paper by due date.",
       "assessment": "Paper counts 100%.",
       "examWeight": null
@@ -1876,6 +1974,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and submission of all assessment tasks.",
       "assessment": "An assignment to conduct a contextually specific situational analysis of the use of technologies to respond to challenges in twenty-first Century education counts 100%.",
       "examWeight": null
@@ -1895,6 +1994,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and submission of all assessment tasks.",
       "assessment": "An evaluation of an online learning intervention counts 100%.",
       "examWeight": null
@@ -1914,6 +2014,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record plus submission of all assessment requirements.",
       "assessment": "An extended literature review constitutes 100%.",
       "examWeight": null
@@ -1933,6 +2034,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record plus submission of all assessment requirements.",
       "assessment": "A series of assignments, interrogating own practice in context and culminating in a reflective commentary on personal development during the course, as well as participation in class and on the LMS/ VULA will be assessed.",
       "examWeight": null
@@ -1952,6 +2054,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record plus submission of all assessment requirements.",
       "assessment": "One 1,000-word coursework assignment, plus two essay-type assignments of 2,500 words each. EDN4506FS SOUTH AFRICAN EDUCATION IN CONTEXT 30 NQF credits at NQF level 8 Convener: Professor A Badroodien",
       "examWeight": null
@@ -1971,6 +2074,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance at contact sessions and completed submission of assessment tasks",
       "assessment": "Coursework (100%). EDN4510FS HIGHER EDUCATION CURRICULUM & COURSE DESIGN 30 NQF credits at NQF level 8 Convener: Dr T Mayisela",
       "examWeight": null
@@ -1990,6 +2094,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2009,6 +2114,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2028,6 +2134,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2047,6 +2154,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2066,6 +2174,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2085,6 +2194,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2104,6 +2214,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2123,6 +2234,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2142,6 +2254,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2161,6 +2274,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of group activity and 80% attendance.",
       "assessment": "Group activity: (40%); Final individual assignment: (60%).",
       "examWeight": null
@@ -2180,6 +2294,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of individual weekly reflections, group task and 80% attendance.",
       "assessment": "Individual weekly reflections (20%); group task (30%); individual evaluative report (50%).",
       "examWeight": null
@@ -2199,6 +2314,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance at lectures and seminars and satisfactory completion and presentations of prescribed seminar papers, as well as satisfactory participation in lectures/seminars.",
       "assessment": "Exam Equivalent Assignment 8,000 words weighted 90% of total coursework. Lecture/Seminar participation and presentation weighted at 10% of the total coursework. EDUCATION, SCHOOL OF 219",
       "examWeight": null
@@ -2218,6 +2334,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance at lectures and seminars and satisfactory completion and presentations of prescribed seminar papers, as well as satisfactory participation in lectures/seminars.",
       "assessment": "Exam Equivalent Assignment 8,000 words weighted 85% of total coursework. Lecture/Seminar participation and presentation weighted at 15% of the total coursework.",
       "examWeight": null
@@ -2237,6 +2354,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "Academic essay (8,000 words). EDN5506FS CURRICULUM THEORY AND RESEARCH 30 NQF credits at NQF level 9 Convener: Professor U Hoadley",
       "examWeight": null
@@ -2256,6 +2374,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "Academic essay (8,000 words): 60%; seminars, group task, and reflections: 40%.",
       "examWeight": null
@@ -2275,6 +2394,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "Academic essay (8,000 words): 60%; seminars, group task, and reflections: 40%.",
       "examWeight": null
@@ -2294,6 +2414,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "Academic essay (8,000 words): 60%; seminars, group task, and reflections: 40%.",
       "examWeight": null
@@ -2313,6 +2434,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "Academic essay (6,000 words): 60%; Seminars: 10%; Group task: 20%; Reflections: 10%.",
       "examWeight": null
@@ -2332,6 +2454,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "Written reflections (10%), reflective paper (30%), final written essay (60%). EDN5514FS KNOWLEDGE & CURRICULUM IN HIGHER EDUCATION 30 NQF credits at NQF level 9 Convener: Associate Professor K Behari-Leak",
       "examWeight": null
@@ -2351,6 +2474,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "8,000-word essay or equivalent. EDUCATION, SCHOOL OF 224",
       "examWeight": null
@@ -2370,6 +2494,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "8,000-word essay or equivalent.",
       "examWeight": null
@@ -2389,6 +2514,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "8,000-word essay or equivalent.",
       "examWeight": null
@@ -2408,6 +2534,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "8,000-word essay or equivalent. EDUCATION, SCHOOL OF 225",
       "examWeight": null
@@ -2427,6 +2554,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "8,000-word essay or equivalent.",
       "examWeight": null
@@ -2446,6 +2574,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "8,000-word essay or equivalent. EDN5524FS EDUCATION DEVELOPMENT & REFORM 30 NQF credits at NQF level 9 Convener: Dr Y Omar",
       "examWeight": null
@@ -2465,6 +2594,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "8,000-word essay or equivalent.",
       "examWeight": null
@@ -2484,6 +2614,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "8,000-word essay or equivalent.",
       "examWeight": null
@@ -2503,6 +2634,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance record and completion of all tasks and assignments.",
       "assessment": "8,000-word essay or equivalent. EDUCATION, SCHOOL OF 227 EDN5532FS DIGITAL LITERACIES ACROSS THE LIFESPAN 30 NQF credits at NQF level 9 Convener: Professor D Ng’ambi",
       "examWeight": null
@@ -2522,6 +2654,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "In addition to achieving a composite pass at a pass on at least three of their elective courses, students must achieve a pass on their research project to pass the year.",
       "assessment": "Research project: (5% proposal presentation; 5% proposal submission; 10% final project presentation; 80% final project submission).",
       "examWeight": null
@@ -2541,6 +2674,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2560,6 +2694,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2579,6 +2714,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2598,6 +2734,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2617,6 +2754,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% of classes, and all assignments.",
       "assessment": "Coursework 75%; examination 25%",
       "examWeight": 25
@@ -2636,6 +2774,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% of classes, and all assignments.",
       "assessment": "Coursework 75%; examination 25%",
       "examWeight": 25
@@ -2656,6 +2795,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% of classes and all assignments",
       "assessment": "Coursework 80%; examination 20%",
       "examWeight": 20
@@ -2676,6 +2816,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% of classes and all assignments",
       "assessment": "Coursework 80%; examination 20%",
       "examWeight": 20
@@ -2695,6 +2836,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -2714,6 +2856,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -2733,6 +2876,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework. ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE 247",
       "examWeight": null
@@ -2752,6 +2896,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework. ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE 247",
       "examWeight": null
@@ -2771,6 +2916,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 75%; examination 25%.",
       "examWeight": 25
@@ -2790,6 +2936,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 75%; examination 25%.",
       "examWeight": 25
@@ -2809,6 +2956,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework",
       "examWeight": null
@@ -2828,6 +2976,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework",
       "examWeight": null
@@ -2847,6 +2996,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2866,6 +3016,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2885,6 +3036,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%. ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE 248",
       "examWeight": 40
@@ -2904,6 +3056,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%. ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE 248",
       "examWeight": 40
@@ -2923,6 +3076,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%.",
       "examWeight": 50
@@ -2942,6 +3096,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%.",
       "examWeight": 50
@@ -2961,6 +3116,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -2980,6 +3136,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -2999,6 +3156,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 70%; examination 30%. ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE 249",
       "examWeight": 30
@@ -3018,6 +3176,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 70%; examination 30%. ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE 249",
       "examWeight": 30
@@ -3037,6 +3196,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (3000-4000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
       "examWeight": 40
@@ -3056,6 +3216,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (3000-4000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
       "examWeight": 40
@@ -3075,6 +3236,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -3094,6 +3256,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -3113,6 +3276,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% class attendance and 40% minimum in assignments.",
       "assessment": "Assignments 60%; Examination 40%",
       "examWeight": 40
@@ -3132,6 +3296,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% class attendance and 40% minimum in assignments.",
       "assessment": "Assignments 60%; Examination 40%",
       "examWeight": 40
@@ -3151,6 +3316,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Assignments 50%, Final exam 50%",
       "examWeight": 50
@@ -3170,6 +3336,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Assignments 50%, Final exam 50%",
       "examWeight": 50
@@ -3189,6 +3356,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40% ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE 251",
       "examWeight": 40
@@ -3208,6 +3376,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40% ENVIRONMENTAL AND GEOGRAPHICAL SCIENCE 251",
       "examWeight": 40
@@ -3227,6 +3396,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces.",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
       "examWeight": 40
@@ -3246,6 +3416,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces.",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
       "examWeight": 40
@@ -3265,6 +3436,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
       "examWeight": 40
@@ -3284,6 +3456,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
       "examWeight": 40
@@ -3303,6 +3476,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Coursework 75%; Examination 25%",
       "examWeight": 25
@@ -3322,6 +3496,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (4000-5000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
       "examWeight": 40
@@ -3341,6 +3516,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (4000-5000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
       "examWeight": 40
@@ -3360,6 +3536,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40%",
       "examWeight": 40
@@ -3379,6 +3556,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40%",
       "examWeight": 40
@@ -3398,6 +3576,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces.",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
       "examWeight": 40
@@ -3417,6 +3596,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces.",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
       "examWeight": 40
@@ -3436,6 +3616,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%) FILM AND MEDIA STUDIES, CENTRE FOR",
       "examWeight": 40
@@ -3455,6 +3636,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%) FILM AND MEDIA STUDIES, CENTRE FOR",
       "examWeight": 40
@@ -3474,6 +3656,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and submission of all written work.",
       "assessment": "Assessments of 3,000 words per term (a total of 6,000 words for the course). ELL4062FS LITERARY CRITICISM & THE ARCHIVE 24 NQF credits at NQF level 8 Convener: Associate Professor P Moji",
       "examWeight": null
@@ -3491,6 +3674,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work and attendance at agreed upon meetings.",
       "assessment": "Written work of 8,000 words, at least 50% of which is devoted to a final essay and 50% devoted to shorter written assignments during the semester. ELL4066FS GENDER & LITERATURE 24 NQF credits at NQF level 8 Convener: Professor B Boswell",
       "examWeight": null
@@ -3511,6 +3695,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "75% attendance and all written work to be handed in.",
       "assessment": "Response papers: 30%; First essay: 30%; Second essay: 40% ELL4076FS CULTURAL CRITICISM, NON-FICTION AND THE ESSAY: WRITING WORKSHOP 24 NQF credits at NQF level 8 Convener: Professor H L Twidle",
       "examWeight": null
@@ -3530,6 +3715,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work and 80% attendance.",
       "assessment": "100% coursework, comprising a reflective essay of 1,000-1,500 words (30%), a scripted presentation or podcast of 8 minutes (30%), and a theoretically-informed critical essay of roughly 2,000 words (40%).",
       "examWeight": null
@@ -3549,6 +3735,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work and attendance at agreed upon meetings.",
       "assessment": "Written work of 8,000 words, at least 50% of which is devoted to a final essay and 50% devoted to shorter written assignments during the semester",
       "examWeight": null
@@ -3569,6 +3756,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work and at least 75% of seminar attendance.",
       "assessment": "4 written reflections in response to question sheets, each 1,000 words, total 50%; final essay (3,000-4,000 words) 50%.",
       "examWeight": null
@@ -3588,6 +3776,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work and 80% attendance.",
       "assessment": "100% coursework, comprising a reflective essay of 1,500-2,000 words (30%), a scripted presentation or podcast of 10 minutes (30%), and a theoretically-informed critical essay of 2,500-3,000 words (40%). ELL5043FS DEBATES IN WORLD LITERATURE: PERSPECTIVES FROM THE GLOBAL SOUTH 24 NQF credits at NQF level 9 Convener: Dr K B Highman",
       "examWeight": null
@@ -3608,6 +3797,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Full attendance and punctual submission of all classwork.",
       "assessment": "100% coursework: Assessment includes both individual and group marks (production team-based) throughout all phases of production. Pre-production deliverables (45%); production and post-production deliverables including a critical reflection assignment (55%).",
       "examWeight": null
@@ -3627,6 +3817,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all consultations with supervisor; punctual submission of drafts; punctual submission of final essay or screenplay.",
       "assessment": "Final essay 100%. FILM AND MEDIA STUDIES, CENTRE FOR 256",
       "examWeight": null
@@ -3647,6 +3838,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes. Punctual submission of all written work.",
       "assessment": "Class presentation (30%). Major assignment (40%) and minor assignment (30%).",
       "examWeight": null
@@ -3666,6 +3858,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of all written work.",
       "assessment": "Essay 25%, writer’s notebook 20%, writing exercise 15%, final journalism project 40%.",
       "examWeight": null
@@ -3686,6 +3879,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all sessions and submission of all assignments.",
       "assessment": "Short assignments including literature review and rationale of methods 50%; 6,000word research paper 50%. FILM AND MEDIA STUDIES, CENTRE FOR 257",
       "examWeight": null
@@ -3703,6 +3897,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all scheduled consultations; punctual submission of creative work.",
       "assessment": "A portfolio of written or other media work or video production (75%); 5,000-word scholarly rationale or short research paper to accompany creative production (25%).",
       "examWeight": null
@@ -3722,6 +3917,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of written work",
       "assessment": "Two research assignments of 4,000 words each. Each of these assignments count 45% of the final course work mark(s). The class presentation, based on one of the research assignments, counts for 10% of the final course work mark(s). FILM AND MEDIA STUDIES, CENTRE FOR 258",
       "examWeight": null
@@ -3741,6 +3937,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of written work.",
       "assessment": "One research assignment of 3,500 words (50%). One multimedia news story (15%). One multimedia feature (25%). A continuous blog (10%).",
       "examWeight": null
@@ -3760,6 +3957,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of written work.",
       "assessment": "Research assignment (100%).",
       "examWeight": null
@@ -3779,6 +3977,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Timeous submission of project pitch and Act 1.",
       "assessment": "One feature length screenplay (approximately 80-90 pages) or a screenplay for a different platform (streaming series, web series) of equivalent length. Creative exegesis of between 2,000 and 2,500 words.",
       "examWeight": null
@@ -3798,6 +3997,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of written work. FILM AND MEDIA STUDIES, CENTRE FOR 259",
       "assessment": "Seminar presentation (20%), 2 research essays (4,000 words each) or 1 research essay (4,000 words) and 1 (25-minute) adapted script (80%).",
       "examWeight": null
@@ -3817,6 +4017,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of written work.",
       "assessment": "Seminar presentation 10%; long paper (4,000 words) 40%; visual project 50%.",
       "examWeight": null
@@ -3836,6 +4037,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of all written work.",
       "assessment": "One class presentation of 2,000 words (20%); two essays of 4,000 words each (40% each).",
       "examWeight": null
@@ -3855,6 +4057,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all consultations; punctual submission of all written work.",
       "assessment": "One seminar presentation (20%); 2,500-word essay (30%); 5,000-word essay (50%). FILM AND MEDIA STUDIES, CENTRE FOR 260",
       "examWeight": null
@@ -3874,6 +4077,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of all written work.",
       "assessment": "100% coursework: Minor project with peer-to-peer engagement (20%); Short research essay (35%); Case study research essay (45%).",
       "examWeight": null
@@ -3893,6 +4097,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes, punctual submission of all written work.",
       "assessment": "Short story (The Moth exercise) (30%); analytical essay (30%); Action not words exercise (10%); Writing for camera exercise (10%); Step outline for feature script (20%).",
       "examWeight": null
@@ -3912,6 +4117,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Class attendance and timeous completion of all assignments. A DP warning will be issued if students miss two seminars without satisfactory explanation (e.g. medical certificates). Students will be denied a DP certificate if they then miss a third seminar.",
       "assessment": "Major assignment (3,000 words): 40%; minor assignment (2,000 words): 30%; seminar presentation and essay (2,000 words): 30% FILM AND MEDIA STUDIES, CENTRE FOR 261 FAM4042FS MEDIA, DEVELOPMENT AND THE ENVIRONMENT 24 NQF credits at NQF level 8 Convener: Professor T Bosch",
       "examWeight": null
@@ -3931,6 +4137,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Class attendance and timeous completion of all assignments. A DP warning will be issued if students miss two seminars without satisfactory explanation (e.g. medical certificates). Students will be denied a DP certificate if they then miss a third seminar.",
       "assessment": "Major assignment 40%, minor assignment 30%, seminar presentations 30%.",
       "examWeight": null
@@ -3950,6 +4157,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all scheduled consultations; punctual submission of all written work.",
       "assessment": "Project = 75%; Analytical essay = 25%. Note that students must pass both components.",
       "examWeight": null
@@ -3969,6 +4177,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of written work.",
       "assessment": "Seminar presentations (5%); One-page research proposal (10%); Final research proposal of 3,000 words (30%); Research elective (20%); Research report on pilot study of 5,000 words (35%). FAM5014FS MEDIA, DEVELOPMENT AND THE ENVIRONMENT 24 NQF credits at NQF level 9 Convener: Professor T Bosch",
       "examWeight": null
@@ -3988,6 +4197,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of written work.",
       "assessment": "Two research assignments of 3,500 words, each counting for (30%), political communication strategy (30%) and class presentation (10%).",
       "examWeight": null
@@ -4007,6 +4217,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of written work.",
       "assessment": "Research assignment (50%); advanced multimedia story/feature (40%); a continuous blog (10%). FAM5019FS MEDIA INTERNSHIP 24 NQF credits at NQF level 9 Convener: Dr R H Irwin",
       "examWeight": null
@@ -4026,6 +4237,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Timely hand-in of all papers and presentations to course convener.",
       "assessment": "Students will have to provide two papers of 2,500 words and 3,500 words, as well as present their research to the class. Students will also be encouraged to contact brand managers in the field.",
       "examWeight": null
@@ -4045,6 +4257,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of all assessment items is required for a DP.",
       "assessment": "Seminar presentation 20%; Research proposal 20%; Research paper 50%; Research presentation and press pack 10%.",
       "examWeight": null
@@ -4065,6 +4278,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of written work.",
       "assessment": "Weekly journal entries of 1,000 words each 20%; one seminar presentation of 2,000 words 10%; two 6,000-word essays 35% each.",
       "examWeight": null
@@ -4084,6 +4298,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of all written work.",
       "assessment": "100% coursework: Minor project with peer-to-peer engagement (20%); Short research essay (35%); Case study research essay (45%) FILM AND MEDIA STUDIES, CENTRE FOR 266",
       "examWeight": null
@@ -4103,6 +4318,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes; punctual submission of written work.",
       "assessment": "Seminar presentation 20%; short paper (2,500 words) 30%; long paper (4,000 words) and visual project 50%. FAM5047FS CONTEMPORARY MOVING IMAGE THEORIES 24 NQF credits at NQF level 9 Convener: Dr A Smit and Dr V Suparsad",
       "examWeight": null
@@ -4122,6 +4338,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Art Historical Studies -15,000-word essay, Curatorship – 15,000-word essay or project with 7,500 catalogue essay.",
       "examWeight": null
@@ -4141,6 +4358,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance of tutorials and lectures.",
       "assessment": "Completion of one assignment weighing 40% alongside three formative assessments counting 20% each.",
       "examWeight": null
@@ -4160,6 +4378,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Examined by combination of coursework (60%) and formal examination (40%).",
       "examWeight": 60
@@ -4179,6 +4398,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Examined by combination of coursework (60%) and formal examination (40%).",
       "examWeight": 60
@@ -4198,6 +4418,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Formal examination (100%).",
       "examWeight": 100
@@ -4217,6 +4438,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Formal examination (40%).",
       "examWeight": 40
@@ -4236,6 +4458,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Each student will be required to prepare a presentation for a seminar meeting. They are also required to write seminar assignments and reviews of selected exhibitions. The seminar presentation and written reviews are worth 50% of the final mark. Students will also be required to complete a long essay of approximately 3,000 words, worth 50% of their final mark.",
       "examWeight": null
@@ -4255,6 +4478,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and workshops and completion of all written work.",
       "assessment": "Weekly written reflections (20%); Object studies – each student, or a group of students, will research and document an object or collection of objects and participate in a group project of annotated objects (50%); Research essay of up to 2,000 words (30%).",
       "examWeight": null
@@ -4274,6 +4498,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all lectures and seminars. Presentation and completion of all assignments.",
       "assessment": "Each student will be required to submit the following assignments: a virtual curation using one or more digital platforms (80%), and an essay articulating the link between the original research project and its translation into the virtual domain (20%).",
       "examWeight": null
@@ -4293,6 +4518,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Each student is required to prepare reviews of selected exhibitions. Written reviews (30% of the final mark). One long essay of approximately 4,000 words (70% of their final mark).",
       "examWeight": null
@@ -4312,6 +4538,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "An essay/project of no more than 10,000 words in length. HST4021FS ADVANCED HISTORICAL METHODS AND APPROACHES 24 NQF credits at NQF level 8 Convener: Dr A Sen",
       "examWeight": null
@@ -4331,6 +4558,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Examined by a combination of coursework (50%) and a research paper (50%).",
       "examWeight": 50
@@ -4350,6 +4578,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Coursework (50%); research project (50%).",
       "examWeight": null
@@ -4369,6 +4598,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Coursework (50%); research project (50%). HST4041FS HISTORIES OF LAND AND LABOUR IN SOUTH AFRICA 24 NQF credits at NQF level 8 Convener: Dr C Naicker",
       "examWeight": null
@@ -4388,6 +4618,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Coursework (100%).",
       "examWeight": null
@@ -4407,6 +4638,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work",
       "assessment": "Coursework (15%), Minor Essay (25%), and Research Project (60%) HST5041FS HISTORIES OF LAND AND LABOUR IN SOUTH AFRICA 24 NQF credits at NQF level 9 Convener: Dr C Naicker",
       "examWeight": null
@@ -4426,6 +4658,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assignments.",
       "assessment": "Students are assessed throughout the course. A few practical assignments early in the course will be formative in nature as a means of orientation (15%). The formal assessment will consist of an examination project (in the form of a literature review) worth 25% and a substantial research proposal (externally examined) counting for 60%.",
       "examWeight": 25
@@ -4445,6 +4678,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assignments.",
       "assessment": "Students are assessed throughout the course. A few practical assignments early in the course will be formative in nature as a means of orientation (35%). The formal assessment will consist of an examination project (65%).",
       "examWeight": 65
@@ -4464,6 +4698,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assignments.",
       "assessment": "Students are assessed throughout the course. A few practical assignments early in the course will be formative in nature as a means of orientation. The formal assessment will consist of one major project worth 60%, assignments worth 20% and a Work Integrated Learning (WIL) report worth 20%.",
       "examWeight": null
@@ -4483,6 +4718,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assignments.",
       "assessment": "Students are assessed throughout the course. A few practical assignments early in the course will be formative in nature as a means of orientation. The formal assessment will consist of two practical assignments worth 40% and an examination project worth 60%.",
       "examWeight": 60
@@ -4502,6 +4738,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assignments.",
       "assessment": "Students are assessed throughout the course. A few practical assignments early in the course will be formative in nature as a means of orientation. The formal assessment will consist of two practical assignments worth 40% and an examination project worth 60%. LIS5025FS PRINCIPLES OF DIGITAL CURATION 48 NQF credits at NQF level 9 Convener: R Higgs",
       "examWeight": 60
@@ -4521,6 +4758,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance at practical lessons.",
       "assessment": "Performance to be examined by a panel approved by the Higher Degrees Committee (100%). MUSIC, SOUTH AFRICAN COLLEGE OF 320",
       "examWeight": 100
@@ -4540,6 +4778,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Western Classical concerto: viva voce on principles of form and instrumentation.",
       "assessment": "Performance to be examined by a panel approved by the Higher Degrees Committee (100%).",
       "examWeight": 100
@@ -4559,6 +4798,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance at practical lessons.",
       "assessment": "Performance to be examined by a panel approved by the Higher Degrees Committee (100%). MUSIC, SOUTH AFRICAN COLLEGE OF 321",
       "examWeight": 100
@@ -4578,6 +4818,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance at practical lessons.",
       "assessment": "Performance to be examined by a panel approved by the Higher Degrees Committee (100%).",
       "examWeight": 100
@@ -4597,6 +4838,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at meetings; due completion and submission of projects.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -4616,6 +4858,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at meetings as prescribed by the Convener.",
       "assessment": "Two temporarily bound copies, and/or an electronic version of the portfolio, in one PDF file (100%) must be submitted by 31 October. In exceptional circumstances, the Director of MUSIC, SOUTH AFRICAN COLLEGE OF 322 SACM may grant an extension beyond 31 October. An application for an extension must be supported by a letter from the supervisor.",
       "examWeight": null
@@ -4635,6 +4878,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Regular consultations as prescribed by the supervisor. Candidates in BMus Honours in Jazz Studies are required to attend a weekly Research Writing Seminar in the first semester.",
       "assessment": "15,000-word research essay or a project with a 7,500-word explication.",
       "examWeight": null
@@ -4654,6 +4898,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at meetings; due completion and submission of projects.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -4673,6 +4918,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance and completion of all coursework",
       "assessment": "Coursework 70%, final essay 30%. MUZ4038FS SELECTED TOPICS IN MUSICOLOGY C 24 NQF credits at NQF level 8 Convener: Associate Professor S Bruinders",
       "examWeight": null
@@ -4692,6 +4938,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance at practical lessons.",
       "assessment": "Performance to be examined by a panel appointed by the higher degrees committee (100%) who may, on the recommendation of the examiners, require a candidate to repeat once, any or all the performing requirements. NOTE: If the examiners’ reports for the Interim Major Recital do not indicate proficiency, the candidate may be refused permission to continue with the programme.",
       "examWeight": 100
@@ -4711,6 +4958,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance at practical lessons.",
       "assessment": "Performance to be examined by a panel appointed by the higher degrees committee (100%) who may, on the recommendation of the examiners, require a candidate to repeat once, any or all the performing requirements.",
       "examWeight": 100
@@ -4730,6 +4978,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance at practical lessons.",
       "assessment": "Performance to be examined by a panel appointed by the higher degrees committee (100%) who may, on the recommendation of the examiners, require a candidate to repeat once, any or all the performing requirements.",
       "examWeight": 100
@@ -4749,6 +4998,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance at practical lessons.",
       "assessment": "Performance to be examined by a panel appointed by the higher degrees committee (100%) who may, on the recommendation of the examiners, require a candidate to repeat once, any or all the performing requirements. MUZ4054FS SELECTED MUSICOLOGICAL TOPICS IN MUSIC TECHNOLOGY 24 NQF credits at NQF level 8 Convener: T Herbst",
       "examWeight": 100
@@ -4768,6 +5018,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance at practical lessons.",
       "assessment": "Performance to be examined by a panel appointed by the higher degrees committee (100%) who may, on the recommendation of the examiners, require a candidate to repeat once, any or all the performing requirements. NOTE: If the examiners’ reports for the Interim Major Recital do not indicate proficiency,the candidate may be refused permission to continue with the programme.",
       "examWeight": 100
@@ -4787,6 +5038,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance at practical lessons.",
       "assessment": "Performance to be examined by a panel appointed by the higher degrees committee (100%) who may, on the recommendation of the examiners, require a candidate to repeat once, any or all the performing requirements.",
       "examWeight": 100
@@ -4806,6 +5058,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance at practical lessons.",
       "assessment": "Performance to be examined by a panel appointed by the higher degrees committee (100%) who may, on the recommendation of the examiners, require a candidate to repeat once, any or all the performing requirements.",
       "examWeight": 100
@@ -4825,6 +5078,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The programme for all performances must be submitted to the Director of SACM for approval two months prior to the recital.",
       "assessment": "Performance to be examined by a panel appointed by the higher degrees committee (100%) who may, on the recommendation of the examiners, require a candidate to repeat once, any or all the performing requirements. MUZ5013W COMPOSITION 50% - MASTER’S 96 NQF credits at NQF level 9 Convener: TBA",
       "examWeight": 100
@@ -4844,6 +5098,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "100% attendance and completion of all coursework.",
       "assessment": "Mixed: assignments, essays, class participation, examinations. MUZ5064FS ADVANCED ANALYSIS OF ELECTROACOUSTIC MUSIC 24 NQF credits at NQF level 9 Convener: T Herbst",
       "examWeight": null
@@ -4863,6 +5118,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance at and participation in all scheduled course activities, completion of all written assignments by due dates and completion of the examination are required.",
       "assessment": "Coursework: 50%, Examination: 50%",
       "examWeight": 50
@@ -4882,6 +5138,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance at and participation in all scheduled course activities, completion of all written assignments by due dates and completion of the examination are required.",
       "assessment": "Coursework: 50%, Exam: 50%.",
       "examWeight": 50
@@ -4901,6 +5158,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance at and participation in all scheduled course activities, completion of all written assignments by due dates and completion of the examination are required.",
       "assessment": "Coursework: 50%, Exam: 50%.",
       "examWeight": 50
@@ -4920,6 +5178,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance at and participation in all scheduled course activities and completion of all written assignments.",
       "assessment": "Coursework: 50%, Exam: 50%. MUSIC, SOUTH AFRICAN COLLEGE OF",
       "examWeight": 50
@@ -4939,6 +5198,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance at seminars and submission of written work on time.",
       "assessment": "Two essays, weighted equally, (each about 3,000 words) on each of two philosophical texts. Essays must demonstrate knowledge of, engagement with and an understanding of the texts considered in the course. PHI4012FS PHILOSOPHY OF PSYCHOLOGY 24 NQF credits at NQF level 8 Convener: Associate Professor E Galgut",
       "examWeight": null
@@ -4958,6 +5218,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submissions of essay by due date.",
       "assessment": "10,000 words on an approved subject. PHI4021FS TOPICS IN RATIONAL DECISION MAKING 24 NQF credits at NQF level 8 Convener: TBA",
       "examWeight": null
@@ -4977,6 +5238,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance at seminars and submission of written work on time.",
       "assessment": "Twelve substantial research papers over the course of the year.",
       "examWeight": null
@@ -4994,6 +5256,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance at seminars and submission of written work on time.",
       "assessment": "Two essays, weighted equally, (each about 3,000 words) on each of two philosophical texts. Essays must demonstrate specialist knowledge that engages with and critiques the texts considered in the course. PHI5008FS MORAL PHILOSOPHY 24 NQF credits at NQF level 9 Convener: TBA",
       "examWeight": null
@@ -5013,6 +5276,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written coursework and satisfactory attendance of seminars.",
       "assessment": "Seminar participation (10%), short assignments (45%); final research essay (45%).",
       "examWeight": null
@@ -5032,6 +5296,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written coursework and satisfactory attendance of seminars.",
       "assessment": "This course is graded as Pass or Fail. The outcome will be determined by the convener/course lecturer after consultation with the organisation and assessment of written work.",
       "examWeight": null
@@ -5051,6 +5316,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written coursework and satisfactory attendance of seminars.",
       "assessment": "Coursework 70%; examination 30%. POL5007FS POLICY IMPLEMENTATION & EVALUATION 24 NQF credits at NQF level 9 Convener: Associate Professor V Naidoo",
       "examWeight": 30
@@ -5070,6 +5336,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written coursework and satisfactory attendance of seminars.",
       "assessment": "Each student will be required to complete three response papers (30%), one seminar presentation (20%) and a research essay of approx. 6,000 words (50%). POL5042FS INTERNATIONAL MEDIATION 24 NQF credits at NQF level 9 Convener: Associate Professor Z Jolobe",
       "examWeight": null
@@ -5089,6 +5356,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written coursework and satisfactory attendance of seminars.",
       "assessment": "Three response papers (15% each); Term paper (55%). POLITICAL STUDIES 346 POL5047FS ADVANCED FOREIGN POLICY ANALYSIS 24 NQF credits at NQF level 9 Convener: Associate Professor Z Jolobe",
       "examWeight": null
@@ -5108,6 +5376,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written coursework and satisfactory attendance of seminars.",
       "assessment": "Presentation (10%) and two long essays (45% each). POL5053FS COMPARATIVE LOCAL GOVERNMENT 24 NQF credits at NQF level 9 Convener: Dr T Zondi",
       "examWeight": null
@@ -5127,6 +5396,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written coursework and satisfactory attendance of seminars.",
       "assessment": "Two essays - 50%; Three response papers (10% each) - 30%; Group presentation 10%; Reflective journal and participation - 10%. POL5058FS TRANSNATIONAL FEMINISMS 24 NQF credits at NQF level 9 Convener: Dr G M Maluleke",
       "examWeight": null
@@ -5146,6 +5416,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of all written work by due dates specified; attendance at all seminars.",
       "assessment": "100% coursework; students will be assessed primarily via essay-style written work for each module.",
       "examWeight": null
@@ -5165,6 +5436,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "June and November exams – all psychometric reports must be completed and signed off within five weeks from final assessment administration session.",
       "assessment": "The candidate will be evaluated through: a) an assessment of clinical skills development (30% of final mark); b) written assignments (20%) and c) written and oral clinical examinations (50%).",
       "examWeight": 50
@@ -5184,6 +5456,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "The nature of the assessment is determined by each internship site and is on a pass/fail basis. Internships may also be extended at the discretion of the internship site.",
       "examWeight": null
@@ -5203,6 +5476,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Coursework 30%; Capstone assessment 70%.",
       "examWeight": null
@@ -5222,6 +5496,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Coursework 30%; Capstone assessment 70%.",
       "examWeight": null
@@ -5241,6 +5516,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars. PSYCHOLOGY 354",
       "assessment": "Adult continuous evaluation 15%; Paediatric continuous evaluation 15%; Neurorehabilitation 5%; Final practical examination 65%.",
       "examWeight": 65
@@ -5260,6 +5536,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of work-in-progress; oral presentation of final paper.",
       "assessment": "Approval of an appropriate research proposal which must satisfy the Department by explicitly addressing methodological and ethical concerns that might arise in the process of undertaking the research. Note: While this is not a credit-bearing course, it is a pre-requisite for PSY5019W.",
       "examWeight": null
@@ -5279,6 +5556,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Brain dissection after Block: A is compulsory. Full class attendance is compulsory.",
       "assessment": "Continuous assessment (class participation, weekly reports, assignments, research essay, etc.) counts 100%.",
       "examWeight": null
@@ -5298,6 +5576,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and completion of all written work.",
       "assessment": "Assessment will comprise 50% coursework and 50% capstone assessment at the end of the semester.",
       "examWeight": null
@@ -5317,6 +5596,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The student has to complete all coursework, including oral presentations where specified by individual course outlines.",
       "assessment": "Students will be assessed primarily via essay-style written work and tests (100%).",
       "examWeight": null
@@ -5336,6 +5616,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The student has to complete all coursework, including oral presentation where specified by individual course outlines.",
       "assessment": "Students will be assessed primarily via essay-style written work and tests (100%).",
       "examWeight": null
@@ -5355,6 +5636,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at internship sites with full engagement in training.",
       "assessment": "Ongoing individual performance is monitored at the sites. Result is Pass/Fail. Internships may be extended at the discretion of the internship site.",
       "examWeight": null
@@ -5374,6 +5656,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assignments and tests.",
       "assessment": "A tutorial assignment in each of the 12 weeks of the course (counting 40% of the final mark), and two tests during the course (counting 60% of the final mark). PSYCHOLOGY 357",
       "examWeight": null
@@ -5393,6 +5676,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all assignments and tests.",
       "assessment": "Essay (40%): A critical reflection on course themes, due mid-semester; Decolonial Feminist Research Proposal (60%): Students present (10%) and submit a final written proposal (50%) aligning decolonial feminist principles with a chosen research question, due end of semester. SOCIAL WORK AND SOCIAL DEVELOPMENT",
       "examWeight": null
@@ -5413,6 +5697,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all prescribed assignments by due dates. Regular attendance and participation in class.",
       "assessment": "Response papers (50%). Final essay of 4,000 words (50%). REL4011H RESEARCH PROJECT / ESSAY 30 NQF credits at NQF level 8 Convener: Dr L P Blond",
       "examWeight": null
@@ -5433,6 +5718,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all prescribed assignments by due dates. Regular attendance and participation in class.",
       "assessment": "Response papers (50%). Research project of 4,000 words (50%). REL4046FS BUDDHISM IN CONTEMPORARY SOCIETY 24 NQF credits at NQF level 8 Convener: Associate Professor E Porcu",
       "examWeight": null
@@ -5452,6 +5738,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments and projects.",
       "assessment": "Tests and assignments count 60%. The final exam counts 40%.",
       "examWeight": 40
@@ -5471,6 +5758,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of extended essay by deadline specified.",
       "assessment": "Extended essay.",
       "examWeight": null
@@ -5490,6 +5778,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all oral and written work, including one long essay of at least 6,000 words, counting 50%.",
       "assessment": "Coursework 100%. LANGUAGES AND LITERATURES, SCHOOL OF 298",
       "examWeight": null
@@ -5509,6 +5798,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all oral and written work, including one long essay of at least 6,000 words, counting 50%.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -5528,6 +5818,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all oral and written work, including one long essay of at least 6,000 words, counting 50%.",
       "assessment": "Coursework 100%.",
       "examWeight": null
@@ -5547,6 +5838,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all oral and written work, including one long essay of at least 6,000 words, counting 50%.",
       "assessment": "Coursework 100%. SLL4048FS TOPICS IN AFRIKAANS STUDIES I 24 NQF credits at NQF level 8 Convener: Dr B Burger",
       "examWeight": null
@@ -5566,6 +5858,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work.",
       "assessment": "Two essays, 35% each; and one test 30%. SLL4054FS TOPICS IN AFRIKAANS STUDIES 3 24 NQF credits at NQF level 8 Convener: Associate Professor S Loots",
       "examWeight": null
@@ -5585,6 +5878,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance required. Participation in all types of assessment.",
       "assessment": "Two essays (25% each); Class examination (25%); Oral presentation (25%).",
       "examWeight": 25
@@ -5604,6 +5898,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance required. Participation in all types of assessment.",
       "assessment": "Two essays (25% each); Class examination (25%); Oral presentation (25%).",
       "examWeight": 25
@@ -5623,6 +5918,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance required. Submission of all written assignments.",
       "assessment": "Theoretical and practical translation assignments to be completed by the due date (100%). SLL4064FS TOPICS IN GERMAN STUDIES I 24 NQF credits at NQF level 8 Convener: Associate Professor G Singer",
       "examWeight": null
@@ -5642,6 +5938,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance required. Participation in all types of assessment.",
       "assessment": "Two essays (25% each); Class examination (25%); Oral presentation (25%).",
       "examWeight": 25
@@ -5661,6 +5958,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 5,000 words, 100%.",
       "examWeight": null
@@ -5680,6 +5978,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 5,000 words, 100%.",
       "examWeight": null
@@ -5699,6 +5998,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 5,000 words, 100%.",
       "examWeight": null
@@ -5718,6 +6018,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 5,000 words: 100%.",
       "examWeight": null
@@ -5737,6 +6038,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 4,000 words 70%; one test 30%.",
       "examWeight": null
@@ -5756,6 +6058,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 4,000 words 70%; one test 30%.",
       "examWeight": null
@@ -5775,6 +6078,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 4,000 words 70%; one test 30%.",
       "examWeight": null
@@ -5794,6 +6098,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 4,000 words 70%; one test 30%.",
       "examWeight": null
@@ -5813,6 +6118,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 4,000 words 70%; one test 30%.",
       "examWeight": null
@@ -5832,6 +6138,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 4,000 words 70%; one test 30%.",
       "examWeight": null
@@ -5851,6 +6158,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 4,000 words 70%; one test 30%.",
       "examWeight": null
@@ -5870,6 +6178,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two essays of at least 4,000 words 70%; one test 30%.",
       "examWeight": null
@@ -5889,6 +6198,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must attend all sessions and complete all assignments by the due date.",
       "assessment": "Two 5,000-word essays. SLL4100FS TOPICS IN ARABIC LANGUAGE/LITERATURE 1 24 NQF credits at NQF level 8 Convener: E Moos",
       "examWeight": null
@@ -5908,6 +6218,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance required.",
       "assessment": "Two-hour written examination counts 50%; two essays (50% combined).",
       "examWeight": 50
@@ -5927,6 +6238,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance required.",
       "assessment": "Two-hour written examination counts 50%; two essays (50% combined).",
       "examWeight": 50
@@ -5946,6 +6258,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance required.",
       "assessment": "Two-hour written examination counts 50%; two essays (50% combined).",
       "examWeight": 50
@@ -5965,6 +6278,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance required.",
       "assessment": "Two-hour written examination counts 50%; two essays (50% combined).",
       "examWeight": 50
@@ -5984,6 +6298,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work.",
       "assessment": "Two essays of at least 5,000 words each.",
       "examWeight": null
@@ -6003,6 +6318,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work.",
       "assessment": "Two essays of at least 5,000 words each.",
       "examWeight": null
@@ -6022,6 +6338,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work. LANGUAGES AND LITERATURES, SCHOOL OF 309",
       "assessment": "Two essays of at least 5,000 words each.",
       "examWeight": null
@@ -6041,6 +6358,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work.",
       "assessment": "Two essays of at least 5,000 words each.",
       "examWeight": null
@@ -6060,6 +6378,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance at lectures and completion of all assignments.",
       "assessment": "Coursework (40%); 2 Essays (60%).",
       "examWeight": null
@@ -6079,6 +6398,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance at lectures and completion of all assignments.",
       "assessment": "Coursework (40%); 2 Essays (60%).",
       "examWeight": null
@@ -6098,6 +6418,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance at lectures and completion of all assignments.",
       "assessment": "Coursework (40%); 2 Essays (60%).",
       "examWeight": null
@@ -6117,6 +6438,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance at lectures and completion of all assignments.",
       "assessment": "One oral seminar (25%) and one research essay of 4,000 words (75%).",
       "examWeight": null
@@ -6136,6 +6458,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work.",
       "assessment": "Written work (50%) plus written examination (50%).",
       "examWeight": 50
@@ -6155,6 +6478,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work.",
       "assessment": "Portfolio (50%) and other submitted work (50%).",
       "examWeight": null
@@ -6174,6 +6498,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work.",
       "assessment": "Two essays (50%) and portfolio comprising 40 poems & an essay (50%) SLL5015FS DIRECTED READING IN THE SCHOOL OF LANGUAGES AND LITERATURES 24 NQF credits at NQF level 9 Convener: Professor I Coovadia",
       "examWeight": null
@@ -6193,6 +6518,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Regular consultation with supervisor as per a Memorandum of Understanding agreed and signed at time of first and each subsequent registration for the course.",
       "assessment": "Dissertation 100%. SLL5027FS CREATIVE WRITING WORKSHOP 24 NQF credits at NQF level 9 Convener: Professor I Coovadia",
       "examWeight": null
@@ -6212,6 +6538,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work.",
       "assessment": "Two essays (50% each).",
       "examWeight": null
@@ -6231,6 +6558,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work.",
       "assessment": "Two essays (50% each) SLL5083FS INTERNATIONAL CONTEMPORARY FICTION & PROSE 24 NQF credits at NQF level 9 Convener: Professor I Coovadia",
       "examWeight": null
@@ -6250,6 +6578,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Seminar presentation/s and submissions (20%); response paper (30%); long essay (50%).",
       "examWeight": null
@@ -6269,6 +6598,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Class participation, presentation and short report (35%); long essay of up to 7,000 words (65%).",
       "examWeight": null
@@ -6288,6 +6618,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Coursework (70%) and mini-exam (30%).",
       "examWeight": 30
@@ -6307,6 +6638,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "100% coursework.",
       "examWeight": null
@@ -6326,6 +6658,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Seminar participation (25%); short seminar assignments (10%); examination (65%). SOCIOLOGY 370",
       "examWeight": 65
@@ -6345,6 +6678,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Class participation, seminar presentations and submission of all weekly assignments.",
       "assessment": "Class participation (10%), presentation (10%), weekly hand-ins (30%), 3,000-word research paper (50%).",
       "examWeight": null
@@ -6364,6 +6698,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "One essay (50%), seminar presentation (30%) and class participation (20%).",
       "examWeight": null
@@ -6383,6 +6718,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Class attendance and the fulfilment of all course assignments is a requirement.",
       "assessment": "Seminar presentation, attendance, and participation – 30%; Long paper – 70%: a long paper of 3,000 words connecting their project work to their final paper. Their final paper will hence draw on both the course materials and their thesis work. SOCIOLOGY 371",
       "examWeight": null
@@ -6402,6 +6738,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Paper presentations (50%); thematic long essay (50%).",
       "examWeight": null
@@ -6421,6 +6758,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "100% Coursework: This might include weekly tasks, blogs and reviews of a given topic. Students will be assessed primarily via essay-style written work. Honours assignments should average 5,000 words.",
       "examWeight": null
@@ -6440,6 +6778,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Participants are required to attend all seminars and participate actively in discussion in class.",
       "assessment": "Attendance and participation (10%); Presentation and discussion facilitation (10%); Reflection Paper (1,000 words) (20%); Media Reaction paper (1,000 words) (20%); Argumentative long paper (3,000 words) (40%).",
       "examWeight": null
@@ -6459,6 +6798,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Essay (70%); seminar presentation and participation (30%). The following criteria for all graduate assessment: Accuracy; Relevance; Coherence; Cohesion. At Master's level, the final criteria of cohesion which requires the deepest level of analysis will be given the highest weighting in allocating the final mark.",
       "examWeight": null
@@ -6478,6 +6818,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all assignments.",
       "assessment": "Seminar presentation (30%); long paper (70%).",
       "examWeight": null
@@ -6497,6 +6838,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work, seminar preparation and presentation and tasks assigned in seminars.",
       "assessment": "Essay (70%); seminar presentation and participation (30%). The following criteria for all graduate assessment: Accuracy; Relevance; Coherence; Cohesion. At Master's level, the final criteria of cohesion which requires the deepest level of analysis will be given the highest weighting in allocating the final mark. SOCIOLOGY 373 SOC4060FS THEORISING JUSTICE FROM THE SOUTH 12 NQF credits at NQF level 8 Convener: Associate Professor R Chaturvedi",
       "examWeight": null
@@ -6516,6 +6858,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "50% take home exam (3,500 words); 20% seminar presentation; 20% weekly submissions (500-800 words); 10% class participation. SOCIOLOGY 374 SOC5003FS IDENTITY, SUBJECTIVITY AND DIFFERENCE 12 NQF credits at NQF level 9 Convener: Dr N Vally",
       "examWeight": 50
@@ -6535,6 +6878,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Two essays (40% each); class participation (20%)",
       "examWeight": null
@@ -6554,6 +6898,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Seminar presentation, attendance, and participation – 30%; Long paper – 70%: a long paper of 4,000 words drawing on course materials and other related materials focussing on major theoretical debates, and an annotated bibliography of the scholarship around their chosen topic.",
       "examWeight": null
@@ -6573,6 +6918,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "100% Coursework: This might include weekly tasks, blogs and reviews of a given topic. Students will be assessed primarily via essay-style written work. Masters assignments should average 6,500 words and the essay should be prepared in the style of a journal article.",
       "examWeight": null
@@ -6592,6 +6938,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Oral presentations (20%); draft project submission (30%); final project report, up to 5,000 words (50%).",
       "examWeight": null
@@ -6611,6 +6958,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of all written work, seminar preparation and presentation, and tasks assigned in seminars.",
       "assessment": "Essay (70%); seminar presentation and participation (30%).",
       "examWeight": null
@@ -6630,6 +6978,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all assignments.",
       "assessment": "Seminar presentation (20%); short papers (20%); long paper (60%).",
       "examWeight": null
@@ -6649,6 +6998,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of all written work, seminar preparation and presentation and tasks assigned in seminars.",
       "assessment": "Essay (70%); seminar presentation and participation (30%).",
       "examWeight": null
@@ -6668,6 +7018,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Participants are required to attend all seminars and participate actively in discussion in class.",
       "assessment": "Class participation (10%), three long essays (30%).",
       "examWeight": null
@@ -6687,6 +7038,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "50% take home exam (4,500 words); 20% seminar presentation; 15% weekly submissions (1,500 words); 15% class participation.",
       "examWeight": 50
@@ -6706,6 +7058,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Internship project evaluation report (30%); weekly contributions to seminars (10%); oral presentations (10%); two essays (50%).",
       "examWeight": null
@@ -6725,6 +7078,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students are required to do the reading for, attend and participate actively in all of the weekly seminar classes; to write short assignments for every seminar class; to write two short essays; and to complete the final assignment at the end of the course.",
       "assessment": "Coursework (40%); take-home exam (60%).",
       "examWeight": 60
@@ -6744,6 +7098,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Four essays (20% each); class participation (20%).",
       "examWeight": null
@@ -6763,6 +7118,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Presentation (10%), Assignment 1 (20%), Assignment 2 (20%), final research paper (50%).",
       "examWeight": null
@@ -6782,6 +7138,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Seminar presentation/s and submissions (15%); response paper (25%); long essay (60%).",
       "examWeight": null
@@ -6801,6 +7158,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of all seminars and submission of all written assignments.",
       "assessment": "Class attendance and participation (10%); presentation (25%); 6,000-words final essay (65%). Masters students should draw on at least 2 whole books and 4 articles for their final paper.",
       "examWeight": null
@@ -6820,6 +7178,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Class participation, seminar presentations and submission of all weekly assignments.",
       "assessment": "Class participation (10%), presentation (10%), weekly hand-ins of 2-page reflections on assigned readings (30%), 5,000-word research paper (50%). SOC5059FS THEORISING JUSTICE FROM THE SOUTH 12 NQF credits at NQF level 9 Convener: Associate Professor R Chaturvedi",
       "examWeight": null
@@ -6839,6 +7198,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of lectures/seminars and submission of all written work by the due date.",
       "assessment": "One group presentation (10%), quantitative test and reflection paper (15%); literature review (25%); one written examination (50%).",
       "examWeight": 50
@@ -6858,6 +7218,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of written work by due dates and attendance of workshops.",
       "assessment": "Final research report counts for 100%.",
       "examWeight": null
@@ -6877,6 +7238,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of lectures/seminars and submission of all written assignments by the due date.",
       "assessment": "Individual written assignment (30%); group presentation and document (10%); position paper 5%; class participation 5%; one written examination 50%.",
       "examWeight": 50
@@ -6896,6 +7258,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of lectures/seminars and submission of all written assignments by the due date.",
       "assessment": "Two assignment of 25% each; one written examination 50%.",
       "examWeight": 50
@@ -6915,6 +7278,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of lectures/seminars and submission of all written assignments by the due date. Site visits to projects in the field are required.",
       "assessment": "Group assignment 15%; individual assignment 30%; presentation 5%; one written examination 50%.",
       "examWeight": 50
@@ -6934,6 +7298,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of lectures/seminars and submission of all written assignments by the due date. Field visit to Parliament.",
       "assessment": "Individual assignment 25%; group assignment 25%; one written examination 50%.",
       "examWeight": 50
@@ -6953,6 +7318,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of lectures/seminars and submission of all written assignments by the due date.",
       "assessment": "Two assignments of 25% each; one written examination 50%.",
       "examWeight": 50
@@ -6972,6 +7338,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of internship and submission of written work.",
       "assessment": "Practice 40%; organisational report 10%; comprehensive report 30%; presentation 20%.",
       "examWeight": null
@@ -6991,6 +7358,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of the internship hours, submission of clinical reports and successfully passing an unseen exam and formal group psychotherapy presentation.",
       "assessment": "Psychotherapy with Individuals/Couples/Families 40%; Group Psychotherapy 45%; clinical unseen examination and oral presentation 15%.",
       "examWeight": 15
@@ -7010,6 +7378,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of internship and submission of written work.",
       "assessment": "Process reports, presentation and final report – 100%. SOCIAL WORK AND SOCIAL DEVELOPMENT 364",
       "examWeight": null
@@ -7029,6 +7398,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of lectures/seminars and submission of all written assignments by the due date. Field visits to development projects.",
       "assessment": "Assignment 20%; assignment 30%; one written examination 50%. SWK5052FS CONTEMPORARY ISSUES IN CRIMINAL JUSTICE SOCIAL WORK 24 NQF credits at NQF level 9 Convener: Dr S Hoosain",
       "examWeight": 50
@@ -7048,6 +7418,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of lectures/seminars and submission of all written assignments by the due date. SOCIAL WORK AND SOCIAL DEVELOPMENT 365",
       "assessment": "Two assignments of 25% each; one written examination 50%. SWK5054FS PROBATION PRACTICE 24 NQF credits at NQF level 9 Convener: Dr S Hoosain",
       "examWeight": 50
@@ -7067,6 +7438,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of lectures/seminars and submission of all written assignments by the due date.",
       "assessment": "Two assignments of 25% each; one written examination 50%. SOCIAL WORK AND SOCIAL DEVELOPMENT 366",
       "examWeight": 50
@@ -7086,6 +7458,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of lectures/seminars and submission of all written assignments by the due date.",
       "assessment": "Two assignments of 25% each; one written examination 50%.",
       "examWeight": 50
@@ -7103,6 +7476,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of at least 80% of lectures/seminars and submission of all written assignments by the due date.",
       "assessment": "Two assignments of 25% each; one written examination 50%. SOCIOLOGY",
       "examWeight": 50
@@ -7122,6 +7496,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "will be timetabled departmentally each year"
+        }
+      ],
       "dp": "Attendance at all designated seminars, workshops, lectures or tutorials. Completion of all oral or written assignments.",
       "assessment": "Research proposal, draft submissions and interaction with tutor counts 40%. Final Essay counts 60%.",
       "examWeight": null
@@ -7141,6 +7524,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Regular attendance at all seminars and other class meetings, as well as successful and timeous completion of all assignments and essays.",
       "assessment": "Formative written assignments and seminar presentations 50%. Written Examination and written assignment, 50%, externally examined.",
       "examWeight": null
@@ -7160,6 +7544,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars, practical workshops, and completion of all practical and written assignments.",
       "assessment": "Formative written and practical tasks 50%. Facilitation tasks and reflexive essay 50%, externally examined.",
       "examWeight": null
@@ -7179,6 +7564,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars, practical workshops, and completion of all practical and written assignments.",
       "assessment": "Formative written and practical tasks 40%. Director’s Book and Directing task 60%, externally examined.",
       "examWeight": null
@@ -7198,6 +7584,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Regular attendance at all seminars and other class meetings, as well as successful and timeous completion of all assignments and essays.",
       "assessment": "Formative written assignments and seminar presentations 50%. Written Examination and written assignment, 50%, externally examined.",
       "examWeight": null
@@ -7217,6 +7604,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars, practical workshops, and completion of all practical and written assignments.",
       "assessment": "Contribution to tutorials, readings and reports (15%); practical contribution and written explication of involvement in one production (35%). Examination task (production assignment, written explication, portfolio), externally examined (50%).",
       "examWeight": 50
@@ -7236,6 +7624,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes, performances and rehearsals. Completion of all projects.",
       "assessment": "Participation in studios, workshops and masterclasses, together with the final live presentation and portfolio count 100% of the final mark.",
       "examWeight": null
@@ -7253,6 +7642,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes, performances and rehearsals. Completion of all projects.",
       "assessment": "Assessments consisting of seminar presentations, the examination of the live art production and a written assignment will together count 100% of the final mark.",
       "examWeight": 100
@@ -7270,6 +7660,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes, performances and rehearsals. Completion of all projects.",
       "assessment": "Assessments including critiques of contemporary public art practice, several short practical public art interventions and engagements, seminars on international public art practice and the conceptualizing and production of a public art project for a specified public space will count 100% of the final mark.",
       "examWeight": null
@@ -7289,6 +7680,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of all projects, seminars and coursework.",
       "assessment": "The student will propose, undertake and present for: Theatre Making: A supervised minor project; a supervised medium project; a seminar paper; Theatre Practice - Directing: A directed scene or project of 20-30 minutes, one act play or equivalent thereof, a seminar paper; Theatre Practice - Theatre Voice: Two voice workshops and a one-on-one session of 20-30 minutes each OR a creative voice project of 20-30 minutes, a vocal coaching project OR a creative voice project of 60-90 minutes, a seminar…",
       "examWeight": null
@@ -7308,6 +7700,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "The candidate will abide by the supervision and submission arrangements as agreed between the candidate and supervisor in their memorandum of understanding at the start of the process of writing the minor dissertation.",
       "assessment": "By minor dissertation of 25,000 words, externally examined.",
       "examWeight": null
@@ -7327,6 +7720,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of all projects, seminars and coursework.",
       "assessment": "An independent research project; a one-person show; a seminar paper, which together with the result for TDP5003W will count 100%.",
       "examWeight": null
@@ -7346,6 +7740,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "As appropriate to the course requirements agreed upon between the course coordinator and the candidate at the commencement of this option.",
       "assessment": "The nature of the examination and coursework requirements for both DP and examination purposes will be finalised by the co-ordinator no later than by 30 June of the year of enrolment. Coursework and examination marks, arising out of classwork, projects, assignments or essays, will be collated to comprise the final assessment for this option. In cases where this is appropriate, the candidate will write a three-hour examination paper, or perform a final practical examination.",
       "examWeight": null
@@ -7365,6 +7760,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all classes, studio sessions, performances, project meetings etc. and submission of all assignments.",
       "assessment": "Staff assessment of student’s contribution to the studio and coursework assignments will comprise the coursework mark which will be up to 50% of the final mark. (i) A viva on the student's reflections on the studio and (ii) the minor project including the proposal will comprise the examination and will be no less than 50% of the final mark. THEATRE, DANCE AND PERFORMANCE STUDIES 388",
       "examWeight": 50
@@ -7384,6 +7780,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at meetings, project commitments, performances, etc., and submission of all assignments.",
       "assessment": "Research proposal for the fieldwork will comprise no less than 25% of the final mark. The fieldwork project itself will comprise no less than 50% of the final mark.",
       "examWeight": null
@@ -7403,6 +7800,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all seminars and punctual delivery of written assignments.",
       "assessment": "Contribution to the Applied Drama and Theatre Studies seminar series: 50%. Final seminar proposal, paper, delivery and defense: 50%.",
       "examWeight": null

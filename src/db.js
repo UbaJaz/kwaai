@@ -108,6 +108,14 @@ CREATE TABLE IF NOT EXISTS lecturer_suggestions (
   status TEXT NOT NULL DEFAULT 'open',
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+-- A subscribed week calendar: a random id in the URL that calendar apps fetch, and the plan's course codes and week
+-- settings (no names, emails or "about you" answers). Deleted after 12 months without a fetch.
+CREATE TABLE IF NOT EXISTS calendars (
+  id TEXT PRIMARY KEY,
+  query TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  fetched_at TEXT
+);
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,
@@ -134,6 +142,7 @@ const COURSE_DETAILS = {
   exam_weight: 'INTEGER',
   not_offered: 'INTEGER', // the year the handbook says it isn't offered, e.g. 2026
   table_only: 'INTEGER NOT NULL DEFAULT 0', // listed in a curriculum table, but no course description in any handbook
+  sessions: "TEXT NOT NULL DEFAULT ''", // tutorials and practicals as JSON, from sessionsOf() in scripts/import-handbook.js
 };
 
 // A sign-in email carries a link and a 6-digit code (for reading the email on your phone and signing in on a laptop).

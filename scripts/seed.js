@@ -48,7 +48,7 @@ function seed(db, { samples = true } = {}) {
   const addDept = db.prepare('INSERT INTO departments (code, name) VALUES (?, ?) ON CONFLICT(code) DO UPDATE SET name = excluded.name');
   // first handbook to list a course wins within a run; a later run with a newer handbook updates it
   const seen = new Set();
-  const DETAILS = ['outline', 'entry', 'corequisites', 'lectures', 'periods', 'period_choice', 'days', 'dp', 'assessment', 'exam_weight', 'not_offered', 'table_only'];
+  const DETAILS = ['outline', 'entry', 'corequisites', 'lectures', 'periods', 'period_choice', 'days', 'dp', 'assessment', 'exam_weight', 'not_offered', 'table_only', 'sessions'];
   const addCourse = db.prepare(`INSERT INTO courses (code, title, dept, credits, nqf, conveners, source, ${DETAILS.join(', ')})
     VALUES (?, ?, ?, ?, ?, ?, ?, ${DETAILS.map(() => '?').join(', ')})
     ON CONFLICT(code) DO UPDATE SET title = excluded.title, credits = excluded.credits, nqf = excluded.nqf, conveners = excluded.conveners, source = excluded.source,
@@ -63,7 +63,7 @@ function seed(db, { samples = true } = {}) {
       addDept.run(dept, DEPARTMENTS[dept] || dept);
       addCourse.run(c.code, c.title, dept, c.credits, c.nqf, c.conveners.join('|'), source,
         c.outline || '', c.entry || '', c.corequisites || '', c.lectures || '', (c.periods || []).join('|'), c.periodChoice ? 1 : 0,
-        (c.days || []).join('|'), c.dp || '', c.assessment || '', c.examWeight ?? null, c.notOffered ?? null, c.tableOnly ? 1 : 0);
+        (c.days || []).join('|'), c.dp || '', c.assessment || '', c.examWeight ?? null, c.notOffered ?? null, c.tableOnly ? 1 : 0, c.sessions?.length ? JSON.stringify(c.sessions) : '');
       for (const name of c.conveners) addLecturer.run(name, dept, 0);
     }
   }

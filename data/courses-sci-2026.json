@@ -16,6 +16,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "a double-period"
+        }
+      ],
       "dp": "75% course participation and a minimum of 38% for the April test.",
       "assessment": "One class test in April. One final exam as part of the June exam block. FINANCE AND TAX Head of Department: L Pitt, HDE Cape Town BCom (Hons) (Eco) Unisa BCom (Hons) (ES) UJ BB&A (Hons) MBA Stellenbosch MCom Cape Town DBL Unisa",
       "examWeight": null
@@ -42,6 +51,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "Attendance at lectures and tutorials and completion of assignments.",
       "assessment": "Assignments and class tests count 50% towards the final mark and one 3-hour examination written in November counts 50%. A sub-minimum of 40% is required for the examination.",
       "examWeight": 50
@@ -61,6 +71,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Class participation (workshops/tutorials and online discussions) 20%, online tests 20%, final exam 30%, final project 30%. NOTE: The allocation of 30% to the final exam breaks with the traditional 50% threshold. Given the format and intense interactive nature of the courses, the decision has been made that a large component of student assessment should be a course project which allows DEPARTMENTS IN THE FACULTY 59 them to engage with and reflect on their changing understanding of decolonisation…",
       "examWeight": 50
@@ -86,6 +97,15 @@
         "Tuesday",
         "Wednesday",
         "Thursday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One 2-hour"
+        }
       ],
       "dp": "Attendance at lectures and practicals and completion of assignments.",
       "assessment": "Assignments and tests count 50%; one 3-hour examination in October/November counts 50%. A sub-minimum of 40% is required for the examination.",
@@ -113,6 +133,15 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One 2-hour"
+        }
+      ],
       "dp": "Attendance at lectures and practicals, completion of assignments and participation in a one-day museum trip.",
       "assessment": "Assignments and practical tests count 50% towards the final mark and one 3-hour examination written in June counts 50%. A sub-minimum of 40% is required for the examination.",
       "examWeight": 50
@@ -130,6 +159,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion of assignments.",
       "assessment": "Assignments count 20%; a long paper counts 40%; one 3-hour examination in November counts 40%.",
       "examWeight": 40
@@ -156,6 +186,15 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One 2-hour"
+        }
+      ],
       "dp": "Attendance at lectures and practicals, completion of assignments.",
       "assessment": "Assignments and class tests count 50% towards the final mark and one 3-hour examination written in June counts 50%. A sub-minimum of 40% is required for the examination.",
       "examWeight": 50
@@ -181,6 +220,33 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "and"
+        },
+        {
+          "kind": "prac",
+          "count": 2,
+          "choice": false,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "12:00",
+              "end": "12:45"
+            },
+            {
+              "day": "Friday",
+              "start": "12:00",
+              "end": "12:45"
+            }
+          ],
+          "text": "Monday and Friday respectively, 5th period."
+        }
+      ],
       "dp": "Attendance at lectures and practicals, completion of assignments. DEPARTMENTS IN THE FACULTY 61",
       "assessment": "Assignments and class tests count 50% towards the final mark and one 3-hour exam written in November counts 50%. A sub-minimum of 40% is required for the examination.",
       "examWeight": 50
@@ -200,6 +266,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Participation in all field excursions and completion of all assignments.",
       "assessment": "Assignments 30%; Research paper 20%; Practical examination 25%; Theory examination 25%.",
       "examWeight": 25
@@ -219,6 +286,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "On average the course work component counts 70% (this includes 50% from final examinations) and the research project counts 30%. A sub-minimum of 50% is required for the research project. These component parts of the course will be combined in a final overall mark which will be reflected against the course code AGE4000W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
       "examWeight": null
@@ -238,6 +306,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "On average the course work component counts 70% (this includes 50% from final examinations) and the research project counts 30%. A sub-minimum of 50% is required for the research project. These component parts of the course will be combined in a final overall mark which will be reflected against the course code AGE4001W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
       "examWeight": null
@@ -264,6 +333,28 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One compulsory"
+        },
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "per week, Wednesday, 14h00 -17h00."
+        }
       ],
       "dp": "Satisfactory attendance at lectures and compulsory attendance at Wednesday afternoon sessions and submission of bi-weekly problem sets and poster project; class record of at least 35%.",
       "assessment": "Class record: 50%; final examination 2 hours: 50%. Sub-minimum: 40% for final examination.",
@@ -292,6 +383,28 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "10 Compulsory"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "over the year, Wednesday, 14h00 - 17h00."
+        }
+      ],
       "dp": "Satisfactory attendance at lectures and tutorials; satisfactory completion levels of quizzes, tests and assignments and class mark of at least 35%.",
       "assessment": "Three class tests count 25%; 4 compulsory tutorials/practicals count 20%. Regular quizzes count 5%. One 2-hour final examination in November counts for 50%; subminimum requirement of 40% for final examination.",
       "examWeight": 50
@@ -318,6 +431,28 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "Five over the year, Wednesday, 14h00 - 17h00, by arrangement"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "Evening observing"
+        }
       ],
       "dp": "Satisfactory attendance at lectures and tutorials. Attendance at all fieldwork practicals. Class record of at least 35%.",
       "assessment": "Two class tests 15%; 6 tutorials over the year in which students will learn astronomical data analysis and statistical techniques count 20%. Observing projects, practicals and quizzes together count 40%. One 2-hour theoretical examination counts 25%.",
@@ -346,6 +481,28 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One"
+        },
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "per week, Wednesday, 14h00 - 17h00."
+        }
+      ],
       "dp": "Satisfactory attendance at lectures and tutorials; class record of at least 35%.",
       "assessment": "Class record 50% (this includes two class tests, tutorials, weekly quizzes and practicals); one 2-hour final examination 50%; subminimum requirement of 40% for final examination. DEPARTMENTS IN THE FACULTY 67",
       "examWeight": 50
@@ -373,6 +530,22 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "/"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One"
+        }
+      ],
       "dp": "Class record of at least 35%. Calculated from all assessments completed within 4 weeks of deadline and lecture/tutorial attendance up until the date by which DP must be achieved. Attendance at practical observing session.",
       "assessment": "Class record 50% (this includes two class tests, assignment sheets, online quizzes, observing practical, Hot Topics assignment, attendance at lectures and tutorials); one 2-hour final examination 50%; subminimum requirement of 40% for final examination.",
       "examWeight": 50
@@ -390,6 +563,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory lecture attendance (minimum 50%); class record of at least 40%.",
       "assessment": "The assessment of the coursework is based on the class records and examinations for each of the modules. In general they are made up from tests, oral presentations, projects and a final examination. Examinations count 40%, class record 40% and research project 20% of the final result. The project component must be passed at 50%.",
       "examWeight": 40
@@ -407,6 +581,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "On average, examinations of individual modules count 60% of the final result, and marked practical work counts 40%. DEPARTMENTS IN THE FACULTY 69",
       "examWeight": 60
@@ -424,6 +599,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "50% average for the two projects.",
       "assessment": "Two projects: 25% each. Practical 'take-home' data science examination: 50%. A subminimum of 50% for each of the projects, and examination component will be required.",
       "examWeight": 50
@@ -450,6 +626,43 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One per week, by arrangement"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One afternoon per week, Monday, Tuesday, Wednesday or Thursday, 14h00 - 17h00"
+        }
       ],
       "dp": "Completion of at least 80% of deliverables (tests, practicals, tutorials), including at least one class test and at least one practical test, and attendance of practicals; minimum of 40% for the class record.",
       "assessment": "Class record counts 40% (two class tests count 27%; two practical tests count 5%; and a practical bookmark counts 8%). One 2-hour examination paper (Theory) written in June counts 40%; a subminimum of 40% is required for this paper. One 1.5-hour examination paper (Practical) in June counts 20%.",
@@ -478,6 +691,28 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One per week, by arrangement"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Friday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One afternoon per week, Friday, 14h00 - 17h00"
+        }
+      ],
       "dp": "Completion of at least 80% of deliverables (tests, practicals, tutorials), including at least one class test and at least one practical test; attendance of practicals; minimum of 40% for the class record.",
       "assessment": "Class record counts 40% (three class tests count 27%; two practical tests count 5%; and a practical bookmark counts 8%). One 2-hour examination paper (Theory) written in November counts 40%; a subminimum of 40% is required for this paper. One 1.5-hour examination paper (Practical) in November counts 20%.",
       "examWeight": 40
@@ -504,6 +739,22 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One per week, by arrangement"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "one"
+        }
       ],
       "dp": "Completion of at least 80% of deliverables (tests, practicals, tutorials, field trip report), including at least one class test, the practical test, and the field trip report; attendance of practicals and field trip; minimum average of 50% for practicals; minimum of 40% for the class record.",
       "assessment": "Coursework 40%. Theory test 1 (7%), theory test 2 (7%), practical test (10%), practicals (10%), field trip report (group mark, 6%). Examinations 60%. One 2-hour theory examination written in November counts 40% (subminimum of 40% applies); one 1.5-hour practical examination written in November counts 20%.",
@@ -532,6 +783,21 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One per week, Monday, 14h0017h00"
+        }
+      ],
       "dp": "Completion of at least 70% of deliverables (tests, practicals, field trip report), including at least one class test and the field trip report; attendance of practicals and field trip; minimum of 40% for the class record.",
       "assessment": "A 3-hour examination, written in June, with a subminimum of 40%, counts 50% of the course mark. The class record, which counts for the balance, is made up as follows: practicals count 15%, the field camp report counts 15% and two class tests count 20%.",
       "examWeight": null
@@ -558,6 +824,21 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One per week, Wednesday, 14h0017h00"
+        }
       ],
       "dp": "Completion of at least 70% of deliverables (tests, practicals, project report), including at least one class test and the project report; attendance of practicals; minimum of 40% for the class record",
       "assessment": "A 3-hour theory examination written in June, with subminimum of 40%, will count 50% of the course mark. Coursework marks will be allocated as follows: practical tests (three deliverables) count 15%, project report based on projects counts 15%, two class tests together count 20%.",
@@ -586,6 +867,21 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One per week, Wednesday, 14h0017h00"
+        }
+      ],
       "dp": "Completion of at least 70% of deliverables (tests, practicals, field trip report), including at least one class test and the field trip report; attendance of practicals and field trip; minimum of 40% for the class record.",
       "assessment": "A 3-hour examination, written in November, with a subminimum of 40%, counts for 50% of the course mark. Coursework marks will be allocated as follows: practicals count 15%, the field camp report counts 15% and two class tests count 20%.",
       "examWeight": null
@@ -612,6 +908,21 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Thursday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One per week, Thursday, 14h0017h00"
+        }
       ],
       "dp": "Completion of at least 70% of deliverables (tests, practicals, field trip report), including at least one class test and the field trip report; attendance of practicals and field trip; minimum of 40% for the class record.",
       "assessment": "A 3 hour examination written in November, with a subminimum of 40%, counts 50% of the course. Coursework marks will be allocated as follows: Practical classes count 20%, project based on field camp counts 10%, two class tests count 20%.",
@@ -640,6 +951,21 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One per week, Wednesday, 14h00 - 17h00"
+        }
+      ],
       "dp": "Completion of at least 70% of deliverables (tests, practicals, project report), including at least one class test and the project report; attendance of practicals and field trip; minimum of 40% for the class record.",
       "assessment": "A 3-hour examination written in June, with a sub-minimum of 40% will count for 50% of the course. Class mark will count 50% of the course mark (breakdown: 2 tests count 60% of the class mark, project write up 30% and the practicals 10%).",
       "examWeight": null
@@ -666,6 +992,21 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One per week, Monday, 14h00 - 17h00"
+        }
       ],
       "dp": "Completion of at least 70% of deliverables (tests, practicals, project report), including at least one class test and the project report; attendance of practicals; minimum of 40% for the class record.",
       "assessment": "A 3-hour examination written in June, with a sub-minimum of 40%, will count for 50% of the course. Coursework marks will be allocated as follows: Practical classes (assessed weekly) count 15%; research project counts 20%; class tests count 15%.",
@@ -694,6 +1035,28 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": ", by arrangement"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One per week, Monday, 14h00 - 17h00"
+        }
+      ],
       "dp": "Completion of at least 70% of deliverables (tests, practicals, project report), including at least one class test and the project report; attendance of practicals; minimum of 40% for the class record. DEPARTMENTS IN THE FACULTY 81",
       "assessment": "A 3-hour examination written in November, with a sub-minimum of 40%, will count for 50% of the course. Coursework marks will be allocated as follows: Practical classes (assessed weekly) count 20%; project work counts 15%; two class tests count 15%.",
       "examWeight": null
@@ -713,6 +1076,22 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "occur during a residential two-week field course occurring before the start of the first semester"
+        },
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "By arrangement in 5th period – typically one per"
+        }
+      ],
       "dp": "Completion of at least 70% of deliverables (tests, practicals, field trip seminar), including the class test and the field trip seminar; attendance of two-week field trip and subsequent practicals; minimum of 40% for the class record.",
       "assessment": "An examination, written in June, with a subminimum of 40%, counts for 50% of the course mark. The class record, which counts for the balance, is made up as follows: practicals 35%, seminar 5%, class test 10%.",
       "examWeight": null
@@ -739,6 +1118,28 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "By arrangement"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One per week, Tuesday, 14h00 - 17h00"
+        }
       ],
       "dp": "Completion of at least 70% of deliverables (tests, practicals, project report), including at least one class test and the project report; attendance of practicals; minimum of 40% for the class record.",
       "assessment": "A 3-hour examination written in November, with a subminimum of 40%, will count 50% of the course. The class record, which counts for the balance, is made up as follows: practicals and project work count 35%, two class tests count 15%.",
@@ -767,6 +1168,28 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "By arrangement"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Thursday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One per week, Thursday, 14h00 - 17h00"
+        }
+      ],
       "dp": "Completion of at least 80% of deliverables (tests, practical and project reports), including at least one class test and one project report is required. Attendance of practicals, and a minimum of 40% for the class record is required.",
       "assessment": "A 3-hour examination written in November, with a sub-minimum of 40%, will count for 50% of the course. Coursework marks will be allocated as follows: Practical classes count 10%; project work counts 20%; two class tests count 20%.",
       "examWeight": null
@@ -786,6 +1209,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of field camp and all lectures are required for the DP. The non-project component of the course carries a sub-minimum of 50% and the project component a sub-minimum of 50%.",
       "assessment": "Two 3-hour examinations written in November count 20%; project and research seminar count 40%; compulsory coursework counts 20%; elective coursework counts 20%. These component DEPARTMENTS IN THE FACULTY 83 parts of the course will be combined in a final overall mark which will be reflected against the course code BIO4000W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
       "examWeight": 20
@@ -805,6 +1229,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of field camp and all lectures are required for the DP. The non-project component of the course carries a sub-minimum of 50% and the project component a sub-minimum of 50%.",
       "assessment": "Two 3-hour examinations written in November count 20%; project and research seminar count 40%; compulsory coursework counts 20%; elective coursework counts 20%. These component parts of the course will be combined in a final overall mark which will be reflected against the course code BIO4001W, with PA (pass) entered against the coursework and project codes; each of these components must be passed separately for the award of the degree.",
       "examWeight": 20
@@ -824,6 +1249,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Each student receives a mark for each of the modules, and the modules are examined in two examinations.",
       "examWeight": null
@@ -844,6 +1270,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Students must pass all coursework components with a subminimum of 40% for the fundamental course BIO5013Z and the disciplinary courses (BIO5014Z and SEA5011Z); an aggregate coursework mark of 50% is required. A composite grade of the performance on the coursework component as a whole will be reflected against the assessment course code BIO5012W. The minor dissertation component is 50% of the degree.",
       "examWeight": null
@@ -864,6 +1291,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Every module is assessed independently either with a class test or individual project assignments. The syllabus and the relative weight for each module are described in a handbook that",
       "examWeight": null
@@ -883,6 +1311,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Every module is assessed independently either with a class test or individual project assignments. The syllabus and the relative weight for each module are described in a handbook that will be made available on the BIO5012W website (hosted by the Marine and Antarctic Research Centre for Innovation and Sustainability).",
       "examWeight": null
@@ -907,7 +1336,51 @@
       "days": [
         "Monday",
         "Tuesday",
-        "Wednesday"
+        "Wednesday",
+        "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Thursday",
+              "start": "09:00",
+              "end": "09:45"
+            },
+            {
+              "day": "Thursday",
+              "start": "11:00",
+              "end": "11:45"
+            }
+          ],
+          "text": "Thursday 2nd or 4th period"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Friday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "Tuesday, Thursday or Friday, 14h00 - 17h00."
+        }
       ],
       "dp": "Attendance and completion of practicals, tests and tutorial exercises, and at least 35% for the class record.",
       "assessment": "Class record (comprising tests, tutorials and practicals) counts 50%; one 3-hour examination written in November counts 50%. A subminimum of 40% is required in the final examination.",
@@ -934,6 +1407,39 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 2,
+          "choice": false,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "11:00",
+              "end": "11:45"
+            },
+            {
+              "day": "Tuesday",
+              "start": "11:00",
+              "end": "11:45"
+            }
+          ],
+          "text": "Monday and Tuesday, 4th period"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "Wednesday, 14h00 - 17h00."
+        }
+      ],
       "dp": "Attendance and completion of practicals, tests and tutorial exercises and at least 35% for the class record.",
       "assessment": "Class record (comprising tests, tutorials and practicals) counts 50%; one 2-hour examination written in November counts 50%. A subminimum of 50% is required in the final examination.",
       "examWeight": 50
@@ -957,7 +1463,30 @@
       "days": [
         "Monday",
         "Tuesday",
-        "Wednesday"
+        "Wednesday",
+        "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "Thursday, 4th"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "Wednesday, 14h00 - 17h00."
+        }
       ],
       "dp": "Attendance and completion of practicals, tests and tutorial exercises and at least 35% for the class record.",
       "assessment": "Class record (comprising tests, tutorials and practicals) counts 50%; one 2-hour examination written in November counts 50%. A subminimum of 40% is required in the final examination.",
@@ -986,6 +1515,43 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "and problem sheets by arrangement"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": ", EBE: Tuesday, 14h00 - 17h00; Science: Thursday, 14h00 - 17h00."
+        }
+      ],
       "dp": "Attendance and completion of practicals, tests and tutorial exercises; at least 40% average for practical exams.",
       "assessment": "The class record counts 50%; one 3-hour examination written in November counts 50%. The class record consists of class tests (20%), tutorials and problem sheets (10%), practical reports (10%) and practical exams (10%). A subminimum of 40% is required in the final examination.",
       "examWeight": 50
@@ -1013,6 +1579,26 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 2,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Friday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "Wednesday and Friday, 14h00 - 17h00."
+        }
+      ],
       "dp": "Attendance and completion of practicals, tests and tutorial exercises, and at least 50% for the class record and practical component, respectively.",
       "assessment": "Class record (comprising class tests [20%], tutorials [5%] and practicals [25%]) counts 50%; a 3-hour June examination counts 25%; and a 3-hour November examination counts 25% towards the final mark. A subminimum aggregate of 40% across the June and November examination paper, together with at least 50% overall is required to pass the course.",
       "examWeight": 50
@@ -1032,6 +1618,22 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "and"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "start at the end of January"
+        }
+      ],
       "dp": "",
       "assessment": "Examinations count 33%, coursework 26% and the Honours research project 41%. To pass the Honours course candidates must obtain an overall average of 50%, an average of 45% for the Core Course written examinations with a subminimum of 33% on each individual paper of the Core Course examinations.",
       "examWeight": 45
@@ -1059,6 +1661,28 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One per week, replacing one lecture"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Thursday",
+              "start": "14:00",
+              "end": "17:30"
+            }
+          ],
+          "text": "One per week, Thursday, 14h00 - 17h30"
+        }
+      ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Theory tests count 15%; practical tests and practical assignments count 25%; one 2-hour examination written in November counts 60%. Subminima: 45% for practicals, 45% on weighted average of theory tests and examination.",
       "examWeight": 60
@@ -1084,6 +1708,28 @@
         "Tuesday",
         "Wednesday",
         "Thursday"
+      ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One per week, replacing one lecture"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "16:00"
+            }
+          ],
+          "text": "One per week, Monday, 14h00 - 16h00"
+        }
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Theory tests count 25%; practical tests and practical assignments count 25%; one 2-hour examination written in November counts 50%. Subminima: 45% for practicals, 45% on weighted average of theory tests and examination.",
@@ -1113,6 +1759,63 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One per week, replacing one lecture"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "16:00"
+            },
+            {
+              "day": "Monday",
+              "start": "16:00",
+              "end": "18:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "16:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "16:00",
+              "end": "18:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "16:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "16:00",
+              "end": "18:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "14:00",
+              "end": "16:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "16:00",
+              "end": "18:00"
+            }
+          ],
+          "text": "One per week, Monday, Tuesday, Wednesday or Thursday 14h00 - 16h00 or 16h00 18h00"
+        }
+      ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Theory tests 15%; practical tests and practical assignments 25%; June examination 2 hours 60%. Subminima: 45% for practicals, 45% on weighted average of theory tests and examination.",
       "examWeight": 60
@@ -1140,6 +1843,63 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One per week, replacing one lecture"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "16:00"
+            },
+            {
+              "day": "Monday",
+              "start": "16:00",
+              "end": "18:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "16:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "16:00",
+              "end": "18:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "16:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "16:00",
+              "end": "18:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "14:00",
+              "end": "16:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "16:00",
+              "end": "18:00"
+            }
+          ],
+          "text": "One per week, Monday, Tuesday, Wednesday or Thursday 14h00 - 16h00 or 16h00 18h00"
+        }
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Theory tests 15%; practical tests and practical assignments 25%; June examination 2 hours 60%. Subminima: 45% for practicals, 45% on weighted average of theory tests and examination.",
@@ -1169,6 +1929,53 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One per week, replacing one lecture"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "16:00"
+            },
+            {
+              "day": "Monday",
+              "start": "16:00",
+              "end": "18:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "16:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "16:00",
+              "end": "18:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "16:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "16:00",
+              "end": "18:00"
+            }
+          ],
+          "text": "One per week, Monday, Tuesday or Wednesday, 14h00 - 16h00 or 16h00 - 18h00"
+        }
+      ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Theory tests count 15%; practical tests and practical assignments count 25%; one 2-hour exam written in November counts 60%. Subminima: 45% for practicals and 45% on weighted average of theory tests and examination.",
       "examWeight": 60
@@ -1195,6 +2002,15 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One 4-hour"
+        }
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Tests 20%; practicals and practical test 30%; exam 50%. Subminima: 45% on weighted average of theory tests and examination.",
@@ -1223,6 +2039,15 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One 4-hour"
+        }
+      ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Tests 20%; practicals and practical test 30%; exam 50%. Subminima: 45% on weighted average of theory tests and examination.",
       "examWeight": 50
@@ -1242,6 +2067,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Practical programming examination counts for 100%",
       "examWeight": 100
@@ -1261,6 +2087,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Proposal 20%, Final research report 80%",
       "examWeight": null
@@ -1280,6 +2107,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Proposal 20%, Final research report 80%",
       "examWeight": null
@@ -1306,6 +2134,15 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One 4-hour"
+        }
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Tests 25%; practicals and practical test 25%; examination 50%. Subminima: 45% on weighted average of theory tests and examination.",
@@ -1334,6 +2171,15 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One 4-hour"
+        }
+      ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Tests 25%; practicals and practical test 25%; examination 50%. Subminima: 45% on weighted average of theory tests and examination.",
       "examWeight": 50
@@ -1360,6 +2206,15 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "Two 4-hour"
+        }
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Tests 20%; 15% for practicals, 15% for practical tests; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examinations.",
@@ -1388,6 +2243,15 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "Two 4-hour"
+        }
+      ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Tests 20%; practical work and practical tests 30%; exams 50%. Subminima: 45% for practicals; 45% on weighted average of theory tests and examination; 35% for the advanced computing module (comprising Theory of Algorithms and Functional Programming) in the final examination.",
       "examWeight": 50
@@ -1415,6 +2279,15 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "Two 4-hour"
+        }
+      ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "20% tests; 30% practicals and practical tests; 50% final examination. Sub-minima: 45% practical work; 45% on weighted average of tests and final examination.",
       "examWeight": 50
@@ -1439,6 +2312,15 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One 4-hour"
+        }
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Tests 25%; practical work 25%; examinations 50%. Subminima: 45% for practicals, 45% weighted average of theory tests and examinations.",
@@ -1465,6 +2347,15 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One 4-hour"
+        }
+      ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Tests 25%; practical work 25%; examinations 50%. Subminima: 45% for practicals, 45% weighted average of theory tests and examinations.",
       "examWeight": 50
@@ -1489,6 +2380,15 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One 4-hour"
+        }
       ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Tests 25%; practical work 25%; examinations 50%. Subminima: 45% for practicals, 45% weighted average of theory tests and examinations.",
@@ -1515,6 +2415,15 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "One 4-hour"
+        }
+      ],
       "dp": "Minimum of 45% aggregate in practical work.",
       "assessment": "Tests 25%; practical work 25%; examinations 50%. Subminima: 45% for practicals, 45% weighted average of theory tests and examinations.",
       "examWeight": 50
@@ -1532,6 +2441,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -1549,6 +2459,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50% and Coursework: 50%",
       "examWeight": 50
@@ -1566,6 +2477,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50% and Coursework: 50%",
       "examWeight": 50
@@ -1585,6 +2497,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for assignment component. DEPARTMENTS IN THE FACULTY 109",
       "assessment": "Students will be assessed with assignments (50%) and an exam (50%). A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
       "examWeight": 50
@@ -1604,6 +2517,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "The practical aspects of the work will be evaluated through: a series of 4 NVP assignments (10%/15%/35%/40%), culminating in a business plan; a literature review for the project (35%) and the project proposal (40%). NVP and RM are equally weighted.",
       "examWeight": null
@@ -1623,6 +2537,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 50%; Practical assignments: 50%",
       "examWeight": 50
@@ -1642,6 +2557,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
       "examWeight": 60
@@ -1659,6 +2575,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
       "examWeight": 60
@@ -1676,6 +2593,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
       "examWeight": 60
@@ -1695,6 +2613,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None DEPARTMENTS IN THE FACULTY 111",
       "assessment": "Participation: 5% (measured by participation in user studies, in-class activities, in-class discussion/presentations, and pre-class quizzes online) Individual Practical Assessments: 15%. Group Project Assessments: 30% Final Exam: 50%",
       "examWeight": 50
@@ -1714,6 +2633,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
       "examWeight": 60
@@ -1733,6 +2653,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
       "examWeight": 60
@@ -1752,6 +2673,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
       "examWeight": 60
@@ -1771,6 +2693,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 50%; Coursework: 50%; Subminima of 45% for both exam and the assignments.",
       "examWeight": 50
@@ -1790,6 +2713,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% in the practical assignments for the course.",
       "assessment": "Assignment (40%), Exam (60%)",
       "examWeight": 60
@@ -1809,6 +2733,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: open book, 3 hours, 50%; Assignments: 50%.",
       "examWeight": null
@@ -1828,6 +2753,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "24-hour take-home exam, 50%; Assignments: 50%.",
       "examWeight": null
@@ -1847,6 +2773,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: 24 hour take-home exam, 50%; Assignments: 50%",
       "examWeight": null
@@ -1866,6 +2793,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: closed book, 2 hours, 60%; Practical assignment: 40%.",
       "examWeight": null
@@ -1885,6 +2813,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50%; Practical Work: 50%. DEPARTMENTS IN THE FACULTY 115 Master's specialising in Computer Science by Dissertation",
       "examWeight": 50
@@ -1904,6 +2833,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Final examination: 50%; Practical assignments: 50%. A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
       "examWeight": 50
@@ -1923,6 +2853,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Students will be assessed with assignments (50%) and an exam (50%). A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
       "examWeight": 50
@@ -1942,6 +2873,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Final examination: 50%; Practical assignments: 50%. A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
       "examWeight": 50
@@ -1959,6 +2891,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Final examination: 50%; Practical assignments: 50%. A sub-minimum of 40% will be required for each of the assignment and exam components of the course. DEPARTMENTS IN THE FACULTY 125",
       "examWeight": 50
@@ -1976,6 +2909,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Final examination: 50%; Practical assignments: 50%. A sub-minimum of 40% will be required for each of the assignment and exam components of the course.",
       "examWeight": 50
@@ -1995,6 +2929,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for assignment component.",
       "assessment": "Final examination: 50%; Practical assignments: 50%. A sub-minimum of 40% will be required for each of the assignment and exam components of the course. Master's specialising in Data Science For details of this course, refer to the Department of Statistical Sciences. The curriculum structure is outlined in the front section of this book.",
       "examWeight": 50
@@ -2014,6 +2949,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "A submitted literature review (50%) and research proposal (50%). DEPARTMENTS IN THE FACULTY 117",
       "examWeight": null
@@ -2033,6 +2969,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: open book, 2 hours, 40%. Practical assessments 50%; Final printed show piece, 10%",
       "examWeight": null
@@ -2052,6 +2989,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Final examination: 60%; Practical assignments: 40%",
       "examWeight": 60
@@ -2071,6 +3009,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50%; Practical assignments: 50%.",
       "examWeight": 50
@@ -2088,6 +3027,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam (take-home): 40%; Assignments: 40%; Class participation: 20%",
       "examWeight": 40
@@ -2107,6 +3047,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "2 hour open book exam: 50%, Practical assignments: 50%",
       "examWeight": 50
@@ -2126,6 +3067,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Practical assignments: 80%; Case Study Presentation: 10%; Class Participation: 10%",
       "examWeight": null
@@ -2145,6 +3087,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: open book, 3 hours, 50%; Assignments: 50%.",
       "examWeight": null
@@ -2162,6 +3105,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam (closed-book but with some material provided) - 50%, assignments - 50%.",
       "examWeight": 50
@@ -2181,6 +3125,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: Open Book; 2 hours. Class Record: Practical 60%, Review Questions 40%. Final Mark: Exam 40%, Class Record 60%.",
       "examWeight": 40
@@ -2200,6 +3145,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50% and Coursework: 50%",
       "examWeight": 50
@@ -2219,6 +3165,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50% and Coursework: 50%",
       "examWeight": 50
@@ -2238,6 +3185,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Assignments: 40%. Discussion sessions: 15%. Active Participation in Class: 5%. Final Exam: 40%",
       "examWeight": 40
@@ -2257,6 +3205,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Participation: 10% (measured by participation in user studies, in-class activities, in-class discussion/presentations, and pre-class quizzes on Vula) Individual Practical Assessments: 20%. Group Project Assessments: 40% Final Exam: 30%",
       "examWeight": 30
@@ -2276,6 +3225,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Practical work counts 50%; examination counts 50%.",
       "examWeight": 50
@@ -2295,6 +3245,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam (take-home): 50%; Assignments: 50%.",
       "examWeight": 50
@@ -2314,6 +3265,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: open book, 24 hours, 50%; Assignments: 50%.",
       "examWeight": null
@@ -2333,6 +3285,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: 50%; Practical Work: 50%. DEPARTMENTS IN THE FACULTY 123",
       "examWeight": 50
@@ -2352,6 +3305,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "24-hour take-home exam, 50%; Assignments: 50%.",
       "examWeight": null
@@ -2371,6 +3325,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Exam: 24-hour take-home exam, 60%; Assignments: 40%. Master's specialising in Information Technology by Coursework and Minor dissertation Programme Convener: Associate Professor G Nitschke",
       "examWeight": null
@@ -2390,6 +3345,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2407,6 +3363,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -2426,6 +3383,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
       "examWeight": null
@@ -2445,6 +3403,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. Departments in the Faculty of Health Sciences HUMAN BIOLOGY Associate Professor and Head: D Shamley, BSc (Medicine) BScHons(Physiotherapy) PhD Wits EMBA Cape Town",
       "examWeight": null
@@ -2471,6 +3430,38 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "/"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Thursday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One per every two weeks on Monday, Tuesday or Thursdays, 14h00 - 17h00."
+        }
       ],
       "dp": "Attendance of all, and satisfactory completion of all tutorial and practical assignments; students must attain an average mark of not less than 40% for the coursework component.",
       "assessment": "Essays, assignments and tutorial work count 60%; one 2-hour theory examination written in November counts 40% (subminimum of 40% required).",
@@ -2499,6 +3490,21 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Friday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One afternoon per week, Friday, 14h00 17h00, by arrangement."
+        }
+      ],
       "dp": "Submission of all practical assignments and essay, sub-minimum of 45%",
       "assessment": "Two essays (10% each), two class tests (5% each), two field-based exercises (5%) each, one two hour exam (60%). In order to pass the course, you are required to obtain an average mark of at least 50% across all submissions.",
       "examWeight": 60
@@ -2523,6 +3529,21 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One afternoon per week, Monday, 14h00 17h00, by arrangement."
+        }
       ],
       "dp": "Submission of all practical assignments and essay, sub-minimum of 45%",
       "assessment": "60% exam, 40% coursework. (2 essays - 10% each, two class tests – 5% each and two field-based exercises – 5% each). In order to pass the course, you are required to obtain an average mark of at least 50% across all submissions.",
@@ -2551,6 +3572,26 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One afternoon per week, Tuesday or Wednesday, 14h00 - 17h00."
+        }
+      ],
       "dp": "Satisfactory completion of practicals and all written assignments, including essays, project reports and class tests.",
       "assessment": "Essays and tests count 20%; project reports and practicals count 20%; one 3-hour examination in November counts 60% (subminimum of 40% required).",
       "examWeight": 60
@@ -2578,6 +3619,21 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One afternoon per week, Wednesday, 14h00 - 17h00."
+        }
+      ],
       "dp": "Attendance and satisfactory completion of practicals (including fieldwork), other assignments and tests; students must attain an average mark of not less than 40% for the coursework.",
       "assessment": "Practical reports (including fieldwork), class tests and other assignments count 60%; one 3-hour June examination counts 40% (subminimum of 40% required).",
       "examWeight": 40
@@ -2602,6 +3658,21 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Wednesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One afternoon per week, Wednesday, 14h00 - 17h00."
+        }
       ],
       "dp": "Satisfactory completion of essay and practical assignments and participation in tutorials; students must attain an average mark of not less than 40% for the coursework",
       "assessment": "Essay and other assignments count 70%; one 3-hour written examination in November count 30% (subminimum of 40% required).",
@@ -2630,6 +3701,21 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Thursday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "One afternoon per week, Thursdays, 14h00 - 17h00."
+        }
+      ],
       "dp": "Satisfactory completion of practicals and all written assignments, including fieldwork report, essays and class tests. Students must attain an average mark of not less than 40% for the coursework.",
       "assessment": "Field report, essays, class tests and practical assignments count 50%; one 3-hour examination written in June count 50% (sub-minimum of 40% required).",
       "examWeight": 50
@@ -2649,6 +3735,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must pass at least three of their coursework electives and achieve a composite pass on the coursework. Students must achieve a pass on their research project to proceed to graduation in the degree.",
       "assessment": "The examinations will follow the same structure as EGS4004W. Not all course options have formal examinations, and a significant portion of the total coursework mark may be based on set project tasks. Students must pass the project component in order to qualify.",
       "examWeight": null
@@ -2668,6 +3755,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Students must pass at least three of their coursework electives and achieve a composite pass on the coursework. Students must achieve a pass on their research project to proceed to graduation in the degree.",
       "assessment": "Courses will be examined at the end of each semester, and the marks combined with project, essay, fieldwork and seminar presentation marks. The combined module results count 75% and the research project counts 25% of the degree as a whole. Students must pass the project component in order to qualify.",
       "examWeight": null
@@ -2687,6 +3775,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2706,6 +3795,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2725,6 +3815,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2744,6 +3835,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2763,6 +3855,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% of classes, and all assignments.",
       "assessment": "Coursework 75%; examination 25%",
       "examWeight": 25
@@ -2782,6 +3875,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% of classes, and all assignments.",
       "assessment": "Coursework 75%; examination 25%",
       "examWeight": 25
@@ -2802,6 +3896,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% of classes and all assignments",
       "assessment": "Coursework 80%; examination 20%",
       "examWeight": 20
@@ -2822,6 +3917,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% of classes and all assignments",
       "assessment": "Coursework 80%; examination 20%",
       "examWeight": 20
@@ -2841,6 +3937,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -2860,6 +3957,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -2879,6 +3977,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2898,6 +3997,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -2917,6 +4017,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 75%; examination 25%.",
       "examWeight": 25
@@ -2936,6 +4037,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 75%; examination 25%.",
       "examWeight": 25
@@ -2955,6 +4057,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework",
       "examWeight": null
@@ -2974,6 +4077,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework",
       "examWeight": null
@@ -2993,6 +4097,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3012,6 +4117,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3031,6 +4137,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -3050,6 +4157,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -3069,6 +4177,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%.",
       "examWeight": 50
@@ -3088,6 +4197,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%.",
       "examWeight": 50
@@ -3107,6 +4217,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -3126,6 +4237,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -3145,6 +4257,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 70%; examination 30%.",
       "examWeight": 30
@@ -3164,6 +4277,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 70%; examination 30%.",
       "examWeight": 30
@@ -3183,6 +4297,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (3000-4000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
       "examWeight": 40
@@ -3202,6 +4317,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (3000-4000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
       "examWeight": 40
@@ -3221,6 +4337,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -3240,6 +4357,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -3259,6 +4377,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% class attendance and 40% minimum in assignments.",
       "assessment": "Assignments 60%; Examination 40%",
       "examWeight": 40
@@ -3278,6 +4397,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% class attendance and 40% minimum in assignments.",
       "assessment": "Assignments 60%; Examination 40%",
       "examWeight": 40
@@ -3297,6 +4417,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Assignments 50%, Final exam 50%",
       "examWeight": 50
@@ -3316,6 +4437,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Assignments 50%, Final exam 50%",
       "examWeight": 50
@@ -3335,6 +4457,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40%",
       "examWeight": 40
@@ -3354,6 +4477,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40%",
       "examWeight": 40
@@ -3373,6 +4497,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces. DEPARTMENTS IN THE FACULTY 141",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
       "examWeight": 40
@@ -3392,6 +4517,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces. DEPARTMENTS IN THE FACULTY 141",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
       "examWeight": 40
@@ -3411,6 +4537,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
       "examWeight": 40
@@ -3430,6 +4557,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
       "examWeight": 40
@@ -3449,6 +4577,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Assessment for the coursework modules includes both written examinations and coursework assignments such as essays, projects, practical assignments, etc. Examinations on average count 50% and coursework 50% for each module. The combined module results will be reflected as a final coursework result.",
       "examWeight": 50
@@ -3468,6 +4597,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "To qualify for the Master’s degree, students must pass all coursework with a subminimum of 33% for each core or elective course module; an aggregate coursework mark of 50% is required. A composite grade of the performance on the coursework component as a whole will be reflected against the assessment course EGS5012W. The choice of project for the minor dissertation will be determined by prior qualification.",
       "examWeight": null
@@ -3487,6 +4617,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3506,6 +4637,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "The minor dissertation must be presented for formal examination. The coursework and minor dissertation each count 50% towards the degree; each must be passed separately for the award of the degree.",
       "examWeight": null
@@ -3525,6 +4657,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3544,6 +4677,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3563,6 +4697,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3582,6 +4717,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Coursework 75%; Examination 25%",
       "examWeight": 25
@@ -3601,6 +4737,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Coursework 80%; Examination 20%.",
       "examWeight": 20
@@ -3620,6 +4757,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Coursework 80%; Examination 20%.",
       "examWeight": 20
@@ -3639,6 +4777,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3658,6 +4797,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3677,6 +4817,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 75%; examination 25%.",
       "examWeight": 25
@@ -3696,6 +4837,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 75%; examination 25%.",
       "examWeight": 25
@@ -3715,6 +4857,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3734,6 +4877,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3753,6 +4897,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3772,6 +4917,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "100% Coursework.",
       "examWeight": null
@@ -3791,6 +4937,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%.",
       "examWeight": 50
@@ -3810,6 +4957,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%.",
       "examWeight": 50
@@ -3829,6 +4977,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%. DEPARTMENTS IN THE FACULTY 147",
       "examWeight": 50
@@ -3848,6 +4997,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 50%; examination 50%. DEPARTMENTS IN THE FACULTY 147",
       "examWeight": 50
@@ -3867,6 +5017,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -3886,6 +5037,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -3905,6 +5057,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 70%; examination 30%.",
       "examWeight": 30
@@ -3924,6 +5077,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 70%; examination 30%.",
       "examWeight": 30
@@ -3943,6 +5097,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (4000-5000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
       "examWeight": 40
@@ -3962,6 +5117,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments",
       "assessment": "1 exam - 40%, 1 essay (4000-5000 words) - 30%, 1 seminar presentation - 15%, 1 critique (response to a particular article, policy or media piece) - 15%.",
       "examWeight": 40
@@ -3981,6 +5137,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -4000,6 +5157,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance record and submission of all assignments.",
       "assessment": "Assignments 60%; examination 40%.",
       "examWeight": 40
@@ -4019,6 +5177,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% class attendance and 40% minimum in assignments.",
       "assessment": "Literature review 10%, data analysis assignment and paper 35%, discussion piece 10%, project poster and presentation 15%, final capstone exam 30%.",
       "examWeight": 30
@@ -4038,6 +5197,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% class attendance and 40% minimum in assignments.",
       "assessment": "Literature review 10%, data analysis assignment and paper 35%, discussion piece 10%, project poster and presentation 15%, final capstone exam 30%.",
       "examWeight": 30
@@ -4057,6 +5217,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Assignments 50%, Final exam 50%",
       "examWeight": 50
@@ -4076,6 +5237,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40%",
       "examWeight": 40
@@ -4095,6 +5257,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance of all lectures and practicals, and mandatory field trips.",
       "assessment": "Practicals 30%, Group project 20%, Group presentations 10%, Final exam 40%",
       "examWeight": 40
@@ -4114,6 +5277,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces.",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
       "examWeight": 40
@@ -4133,6 +5297,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "80% attendance for class sessions. Final paper submitted, rapporteur session and 2 out of three of the reflection pieces.",
       "assessment": "Reading journal (15%), Class discussion (10%), Reflection piece (15%), Final essay (20%), Exam (40%)",
       "examWeight": 40
@@ -4152,6 +5317,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
       "examWeight": 40
@@ -4171,6 +5337,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 80% attendance and submission of all assignments.",
       "assessment": "Research paper (25%), Seminar presentation (20%), Poster (15%), Exam (40%)",
       "examWeight": 40
@@ -4188,6 +5355,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -4205,6 +5373,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -4232,6 +5401,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "An average of 30% in all marked classwork and tests. DEPARTMENTS IN THE FACULTY 153",
       "assessment": "Class tests count 35%; field reports count 15%; one 2-hour theory examination written in November counts 50%. A subminimum of 40% is required in the theory examination paper.",
       "examWeight": 50
@@ -4259,6 +5429,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "An average of 40% on all marked classwork and tests. Submission of 80% of weekly assignments in each of the four sections (i.e., GEO, AGE, SEA, EGS). Attendance of the field trip is compulsory for students majoring in Archaeology, EGS, Geology, or Oceanography.",
       "assessment": "Marked classwork, including class test/s, counts 50%, and a 3-hour written examination counts 50%. A subminimum of 40% in the class mark is required to write the theory examination paper. Supplementary examinations for GEO1009F will be offered in July.",
       "examWeight": 50
@@ -4286,6 +5457,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Attendance at 80% of practicals and an average of 30% in all marked class work and tests.",
       "assessment": "Marked class work, including tests, count 20%; one 2-hour practical examination in June counts 30%; one 2-hour theory examination in June counts 50%. Subminima of 40% are required in practical and theory examination papers.",
       "examWeight": 50
@@ -4313,6 +5485,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "An average of 30% in marked class work, and attendance at 80% of practicals.",
       "assessment": "Class tests and practicals count 25%; one 2-hour practical examination in November counts 30%; one 2-hour theory examination in November counts 45%. Subminima of 40% are required in practical and theory examination papers.",
       "examWeight": 45
@@ -4332,6 +5505,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance at all field camps",
       "assessment": "Maps and reports count 70%; three 2-hour practical examinations in June and November count for 30%.",
       "examWeight": 30
@@ -4359,6 +5533,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "An average of 30% in all marked class work and class tests. DEPARTMENTS IN THE FACULTY 155",
       "assessment": "Practicals and tests count 25%; one 3-hour theory examination written in November counts 45%; two 2-hour practical examinations written in November count 30%. Subminima of 40% required in practical and theory examination papers.",
       "examWeight": 45
@@ -4386,6 +5561,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Attendance at 80% of practicals and an average of 30% in all marked class work and tests.",
       "assessment": "Class work counts 20%; one 4-hour practical examination written in June counts 30%; one 3-hour theory examination written in June counts 50%. Subminima of 40% required in practical and theory examination papers.",
       "examWeight": 50
@@ -4405,6 +5581,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "The modules will be examined in mid-year and in October, and the latter examinations will include a 3 hour General Exam. Examinations will count 45%, practical and assignment work done during the year counts 30%, and the research project 25% towards the final grade. Subminima are required for the overall examination mark (40%) and for the research project (50%).",
       "examWeight": 45
@@ -4422,6 +5599,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -4442,6 +5620,26 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "Mondays or Tuesdays (14h0017h00)."
+        }
+      ],
       "dp": "Attendance at all practical sessions, 40% average in class tests and an average of 50% for all assignments.",
       "assessment": "The breakdown of course marks is as follows: Class tests 30%, practical write-up 15%, assignments or tutorials 5%. Final examinations (50%) as follows: Theory examination 30%, practical examination 20%. A subminimum of 40% is required for the theory and practical examination to pass this course. Supplementary examinations, in the form of written, practical or oral assessment, may be offered to students whose overall score is 45-49%.",
       "examWeight": 50
@@ -4461,6 +5659,26 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "17:00"
+            },
+            {
+              "day": "Tuesday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "Mondays or Tuesdays (14h0017h00)."
+        }
+      ],
       "dp": "Attendance at all practicals, 40% average in class tests and an average of 50% for all assignments.",
       "assessment": "The final mark comprises class tests (30%); practicals, assignments and tutorials (20%); and final examinations (50%), consisting of a written theory exam (30%) and a practical (20%). A subminimum of 40% is required for the theory and practical examination to pass this course.",
       "examWeight": 50
@@ -4480,6 +5698,22 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "/"
+        },
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "W or Th 14h00 – 17h00"
+        }
+      ],
       "dp": "Attendance at all practicals, (including tutorials and seminar presentations held during the “practical” time slot), 40% average in class tests and an average of 50% for all assignments.",
       "assessment": "The final mark comprises class tests (30%); practical and tutorial assignments (20%), and final examinations (50%). The final examinations consist of a written theory exam (30%) and a practical exam (20%). A subminimum of 40% is required for both the theory and practical examinations to pass this course. Supplementary examinations in the form of written, practical or oral assessment may be offered to students whose overall course mark is 45 - 49%.",
       "examWeight": 50
@@ -4507,6 +5741,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Attendance at all practicals, 40% average mark for class tests and an average of 50% for all assignments.",
       "assessment": "Class tests (30%); practicals including assignments/seminar presentation (20%) and examinations (written theory and practical theory) (50%). A subminimum of 40% is required for the theory and practical examinations to pass this course. A subminimum of 40% is required for the theory and practical examination to pass this course. Supplementary examinations in the form of written, practical or oral assessment, may be offered to students whose overall score is 45 - 49%.",
       "examWeight": 50
@@ -4524,6 +5759,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -4547,8 +5783,10 @@
       "days": [
         "Monday",
         "Tuesday",
-        "Wednesday"
+        "Wednesday",
+        "Friday"
       ],
+      "sessions": [],
       "dp": "80% Class attendance.",
       "assessment": "Note: Assessment requirements for both INF2006F and INF2007F need to be met in order to pass INF2008F.",
       "examWeight": null
@@ -4573,6 +5811,33 @@
         "Monday",
         "Tuesday",
         "Wednesday"
+      ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": ""
+        },
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Thursday",
+              "start": "10:00",
+              "end": "10:45"
+            },
+            {
+              "day": "Thursday",
+              "start": "11:00",
+              "end": "11:45"
+            }
+          ],
+          "text": "Thursday 3rd & 4th periods OR 4th & 5th OR 8th & 9th"
+        }
       ],
       "dp": "Submitted at least 80% of the coursework (80% of individual deliverables and 80% of group work). Subminimum of 45% course year-mark.",
       "assessment": "The final grade is derived from results of the Coursework (Formative",
@@ -4600,6 +5865,22 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "3rd to 4th OR 4th to 5th periods"
+        },
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": ""
+        }
+      ],
       "dp": "Submit 80% of workshops and quizzes. Year-mark of 45%. Submitted all project work.",
       "assessment": "The final grade is derived from the following deliverables: Coursework: 60%; Exam 40%. Subminimum 45% for the final exam.",
       "examWeight": 40
@@ -4619,6 +5900,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of required project work and a sub-minimum of 45% for the year mark prior to writing the final examination. In addition, students must have satisfactory attendance at tutorials and lectures.",
       "assessment": "Coursework counts 70%. Final examination counts 30%. Sub-minimum of 40% for the final examination.",
       "examWeight": 30
@@ -4638,6 +5920,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -4657,6 +5940,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Submission of tutorials, seminar, and project work as well as a subminimum of 45% for the year mark prior to writing the final examination.",
       "assessment": "Coursework 70%. Exam 30%. Subminimum of 40% for the final examination. Departments in the Faculty of Engineering and the Built Environment ELECTRICAL ENGINEERING Professor and Head of Department MA Khan, MSc(Eng) PhD Cape Town SMIEEE",
       "examWeight": 30
@@ -4676,6 +5960,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "In order to be permitted to sit the final exam a minimum average of 40% on the coursework must be obtained.",
       "assessment": "2 Assignments (50%) and an Exam (50%).",
       "examWeight": 50
@@ -4695,6 +5980,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "In order to be permitted to sit the final exam a minimum average of 40% on the coursework must be obtained.",
       "assessment": "2 Assignments (50%) and an Exam (50%).",
       "examWeight": 50
@@ -4714,6 +6000,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "In order to be permitted to sit the final exam a minimum average of 40% on the coursework must be obtained",
       "assessment": "2 Assignments (50%) and an Exam (50%).",
       "examWeight": 50
@@ -4741,6 +6028,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "A class record of 30% or more, satisfactory lecture and tutorial attendance.",
       "assessment": "Class tests and regular assignments determine a class record; one 3-hour examination makes up the balance of the final mark.",
       "examWeight": null
@@ -4766,6 +6054,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 30% in class tests, and at least 80% attendance at tutorials.",
       "assessment": "Year mark counts up to 40%; one 3-hour examination makes up the balance.",
       "examWeight": null
@@ -4794,6 +6083,26 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": true,
+          "options": [
+            {
+              "day": "Monday",
+              "start": "14:00",
+              "end": "14:45"
+            },
+            {
+              "day": "Monday",
+              "start": "15:00",
+              "end": "15:45"
+            }
+          ],
+          "text": "Monday, 6th and 7th period."
+        }
+      ],
       "dp": "Minimum of 35% for class record and very satisfactory attendance at all lectures, workshops and tutorials.",
       "assessment": "Year mark counts up to 50%; one 2-hour examination written in October/November makes up the balance.",
       "examWeight": null
@@ -4813,6 +6122,15 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [
+        {
+          "kind": "tut",
+          "count": 1,
+          "choice": false,
+          "options": [],
+          "text": "on Thursday in first period"
+        }
+      ],
       "dp": "Minimum of 35% in class tests and very satisfactory attendance at lectures and tutorials.",
       "assessment": "Year mark counts up to 40%; one 2-hour examination written in October/November makes up the balance.",
       "examWeight": null
@@ -4832,6 +6150,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Class Record of at least 30% and attendance at 10 or more (out of 12) tutorials.",
       "assessment": "Class Record counts 50% and Exam counts 50%.",
       "examWeight": 50
@@ -4859,6 +6178,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 30% in year mark and satisfactory tutorial attendance.",
       "assessment": "Year mark counts 30 - 40%; one 2-hour examination paper written in June/July and one in October/November equally make up the balance.",
       "examWeight": null
@@ -4887,6 +6207,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 30% for class tests, minimum 30% for weekly online tests, and 80% attendance at tutorial sessions.",
       "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%.",
       "examWeight": 67
@@ -4915,6 +6236,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 30% for class tests, minimum 30% for weekly online tests, and 80% attendance at tutorial sessions.",
       "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%.",
       "examWeight": 67
@@ -4943,6 +6265,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 30% for class tests, minimum 30% for weekly online tests, 80% attendance at tutorial sessions and 100% attendance at Mathematical Thinking workshops.",
       "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%.",
       "examWeight": 67
@@ -4971,6 +6294,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 30% for class tests, minimum 30% for weekly online tests, 80% attendance at tutorial sessions, and 100% attendance at Mathematical Thinking workshops.",
       "assessment": "Semester mark counts 33.3% and end-of-semester exam counts 66.6%. DEPARTMENTS IN THE FACULTY 169",
       "examWeight": 67
@@ -4998,6 +6322,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "A class record of 30% or more, satsifactory attendance at lectures and tutorials, and submission of all assigned work.",
       "assessment": "Class record counts 20 - 40%; one 3-hour examination written in October/November makes up the balance.",
       "examWeight": null
@@ -5025,6 +6350,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "A class record of 30% or more.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
       "examWeight": null
@@ -5049,6 +6375,7 @@
         "Tuesday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5073,6 +6400,7 @@
         "Monday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5097,6 +6425,7 @@
         "Tuesday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5121,6 +6450,7 @@
         "Tuesday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5146,6 +6476,7 @@
         "Monday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5173,6 +6504,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "A class record of 30% or more, satisfactory attendance at lectures and tutorials, and submission of all assigned work.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
       "examWeight": null
@@ -5200,6 +6532,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "A class record of 30% or more.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
       "examWeight": null
@@ -5227,6 +6560,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "A class record of 30% or more, satisfactory attendance at lectures and tutorials, and submission of all assigned work.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
       "examWeight": null
@@ -5254,6 +6588,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "A class record of 30% or more, satisfactory attendance at lectures and tutorials, and submission of all assigned work.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
       "examWeight": null
@@ -5273,6 +6608,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5297,6 +6633,7 @@
         "Tuesday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5321,6 +6658,7 @@
         "Monday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5348,6 +6686,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5372,6 +6711,7 @@
         "Tuesday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5396,6 +6736,7 @@
         "Monday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5420,6 +6761,7 @@
         "Tuesday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5447,6 +6789,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "A class record of 30% or more.",
       "assessment": "Class record counts up to 20%, while the balance is made up by the final examination.",
       "examWeight": null
@@ -5472,6 +6815,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "A class record of 30% or more.",
       "assessment": "Class record counts up to 50%, while the balance is given by the final examination.",
       "examWeight": null
@@ -5499,6 +6843,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "A class record of 30% or more, satisfactory attendance at lectures and tutorials, and submission of all assigned work.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
       "examWeight": null
@@ -5526,6 +6871,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "A class record of 30% or more.",
       "assessment": "Class record counts up to 50%, while the balance is given by the final examination.",
       "examWeight": null
@@ -5552,6 +6898,7 @@
         "Tuesday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "A class record 30% or more, and attendance of both 75% of all lectures and 75% of all tutorials.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
       "examWeight": null
@@ -5571,6 +6918,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5590,6 +6938,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "The project counts 25% of the final mark and must be passed (with 50%). On average, the examination counts at least 50% of the balance of the final mark for the course. Three core modules together count 37.5% of the final mark. The remaining 37.5% of the final mark is calculated using the student’s best marks in their other modules.",
       "examWeight": null
@@ -5609,6 +6958,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "The project and seminar together count 25% of the final mark and must be passed (with 50%). On average, the examination counts at least 50% of the balance of the final mark for the course. At least 37.5% of the final mark must come from the previously mentioned applied mathematics modules taught by MAM. The remaining 37.5% of the final mark is calculated using the student’s best marks in their other modules.",
       "examWeight": null
@@ -5628,6 +6978,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "As per MAM4000W DEPARTMENTS IN THE FACULTY 173",
       "examWeight": null
@@ -5647,6 +6998,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "As per MAM4001W",
       "examWeight": null
@@ -5666,6 +7018,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "As per MAM4000W",
       "examWeight": null
@@ -5685,6 +7038,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "As per MAM4001W",
       "examWeight": null
@@ -5702,6 +7056,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -5729,6 +7084,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests and assignments count 40%; practicals count 10%; one three-hour paper written in June counts 50%. A subminimum of 40% in the examination is required.",
       "examWeight": null
@@ -5756,6 +7112,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests and assignments count 40%; practicals count 10%; one three-hour paper written in June counts 50%. A subminimum of 40% in the examination is required.",
       "examWeight": null
@@ -5783,6 +7140,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests and assignments count 40%; practicals count 10%; one three-hour paper written in November counts 50%. A subminimum of 40% in the examination is required.",
       "examWeight": null
@@ -5810,6 +7168,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests and assignments count 40%; practicals count 10%; one three-hour paper written in November counts 50%. A subminimum of 40% in the examination is required.",
       "examWeight": null
@@ -5829,6 +7188,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Project counts 100%",
       "examWeight": null
@@ -5856,6 +7216,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "None",
       "assessment": "Tests count 40%; one 3-hour examination written in November counts 60%. A subminimum of 40% in the examination is required.",
       "examWeight": 60
@@ -5883,6 +7244,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "None",
       "assessment": "Tests count 40%; one 3-hour examination written in November counts 60%. A subminimum of 40% in the examination is required.",
       "examWeight": 60
@@ -5910,6 +7272,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests count 40%; practicals, tutorials essays and assignments count 10%; one 3-hour examination written in June counts 50%. A subminimum of 40% in the examination is required.",
       "examWeight": 50
@@ -5937,6 +7300,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "50% average for assignments and practical reports; attendance at all practicals and tutorials.",
       "assessment": "Tests count 40%; practicals, tutorials, essays and assignments count 10%; one 3-hour examination written in June counts 50%. A subminimum of 40% in the examination is required.",
       "examWeight": 50
@@ -5956,6 +7320,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Techniques examination must be passed at 50% to continue course.",
       "assessment": "Two 3-hour techniques examinations written in May, and the techniques course assignments, count 20%; essays count 15%; oral presentations count 20%; statistics module 1%, one 4-hour examination written in November counts 10%; project counts 34%. The research project must be passed at 50%.",
       "examWeight": 10
@@ -5983,6 +7348,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 40% in class record, including 50% in laboratory assessment.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2-hour examination in June counts 25%; one 2-hour examination in November counts 25%.",
       "examWeight": 50
@@ -6010,6 +7376,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 40% for the class record, including 50% in laboratory assessment.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2-hour written examination in November counts 50%.",
       "examWeight": 50
@@ -6037,6 +7404,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 40% for the class record; including 50% in laboratory assessment.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2-hour written examination in June counts 50%.",
       "examWeight": 50
@@ -6064,6 +7432,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 40% for the class record, including 50% in laboratory assessment.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2-hour written examination in November counts 50%.",
       "examWeight": 50
@@ -6091,6 +7460,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 40% for the class record; completion of all laboratory reports and 75% of tutorial work and problem sets; attendance at all tests.",
       "assessment": "Class record (tests, weekly problem sets and laboratory work) counts 50%; one 3-hour examination in June counts 25%; one 3-hour examination in November counts 25%. A subminimum of 40% is required in each of the two examinations.",
       "examWeight": 50
@@ -6118,6 +7488,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Minimum of 40% for the class record; attendance at all tests; completion of all laboratory reports; completion of the project and completion of 75% of tutorials and problem sets.",
       "assessment": "Class record (tests, weekly problem sets, laboratory work and project) counts 50%; two 2-hour examinations in June count 25%; two 2-hour examinations in November count 25%. A subminimum of 40% exists in the weighted average of the four examinations.",
       "examWeight": 50
@@ -6137,6 +7508,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "30% for class tests and problem sets, and suitable progress in the Research Project.",
       "assessment": "The pass mark is 50% and is based on an aggregation of the results of all modules, and is further subject to the subminimum criteria of obtaining a minimum mark of 50% in the Research Project, passing two thirds of all modules, and achieving a mark of at least 35% in all but one of the compulsory modules. The Research Project will count 25% of the final mark.",
       "examWeight": null
@@ -6156,6 +7528,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "50% average for the two projects.",
       "assessment": "Two projects: 25% each. Practical 'take-home' Computing examination: 50%. A subminimum of 50% for each of the project and examination components will be required.",
       "examWeight": 50
@@ -6184,6 +7557,21 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [
+        {
+          "kind": "prac",
+          "count": 1,
+          "choice": false,
+          "options": [
+            {
+              "day": "Friday",
+              "start": "14:00",
+              "end": "17:00"
+            }
+          ],
+          "text": "’s: Fridays (14h00-17h00)"
+        }
+      ],
       "dp": "Attendance of 75% practical and tutorial sessions, 40% average in weekly quizzes and an average of 50% for all assignments.",
       "assessment": "The breakdown of course marks is as follows: the class record counts 60% (consisting of practicals, quizzes and assignments), and one 3-hour final examination written in November (40%). The class record consists of weekly quizzes (20%), practical write-ups (20%) and assignments (20%). Supplementary examinations, in the form of a written assessment, may be offered to students whose overall score is 45-49%.",
       "examWeight": 40
@@ -6204,6 +7592,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% average in class tests or quizzes, and an average of 50% for assignments. Attendance at all practicals, field trips and tutorials. Submission of at least 80% of assignments.",
       "assessment": "The breakdown of course marks is as follows: the class record counts 60%; and one 3hour final examination written in June counts 40%. The class record consists of class tests and/or quizzes (20%), practical reports and tutorials (20%) and assignments (20%). Supplementary examinations, in the form of written assessment, may be offered to students whose overall score is 4549%.",
       "examWeight": 40
@@ -6229,6 +7618,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Attendance at practicals and a class mark of at least 40%.",
       "assessment": "Practicals and tests count 40%; one 3-hour examination written in June/July counts 40%. A subminimum of 40% in the examination is required.",
       "examWeight": 40
@@ -6256,6 +7646,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Attendance of lectures and practicals, and a class mark of at least 40%.",
       "assessment": "Practicals, tests, and in-class activities count 60%; a final examination written in October/November counts 40%. A subminimum of 40% in the examination is required.",
       "examWeight": 40
@@ -6283,6 +7674,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Attendance at tutorials and practicals, and a class mark of at least 40%.",
       "assessment": "Tutorials/practicals and tests count 50%; one 3-hour examination written in June/July counts 50%. A subminimum of 40% in the examination is required.",
       "examWeight": 50
@@ -6302,6 +7694,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Module assessment by submission of a research portfolio, which includes compulsory fieldtrip reports, skills examination and formal test results. A weighted average of the continuous assessment of reports and tests counts 65% of the final mark; the research project counts 35% of the final mark. The research project must be passed at 50%.",
       "examWeight": null
@@ -6321,6 +7714,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Every module is assessed independently either with a class test or individual project assignments. The syllabus and the relative weight for each module are described in a handbook that will be made available on the BIO5012W website (hosted by the Marine and Antarctic Research Centre for Innovation and Sustainability - MARIS).",
       "examWeight": null
@@ -6340,6 +7734,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6359,6 +7754,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance of tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6378,6 +7774,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance of tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6397,6 +7794,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6424,6 +7822,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 70
@@ -6451,6 +7850,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6478,6 +7878,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 70
@@ -6497,6 +7898,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -6516,6 +7918,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6535,6 +7938,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6554,6 +7958,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6573,6 +7978,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35% .",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6600,6 +8006,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures and lab practicals and the completion of class tests, mini practical lab tests, and practical tests as set out in course outline. Class record of at least 35% and at least 35% for Practical test.",
       "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6626,6 +8033,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures and lab practicals and the completion of class tests, mini practical lab tests, and practical tests as set out in course outline. Class record of at least 35% and at least 35% for Practical test.",
       "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6652,6 +8060,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 60
@@ -6678,6 +8087,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 70
@@ -6704,6 +8114,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 70
@@ -6730,6 +8141,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 70
@@ -6757,6 +8169,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. DEPARTMENTS IN THE FACULTY 207",
       "examWeight": 70
@@ -6784,6 +8197,7 @@
         "Thursday",
         "Friday"
       ],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 70
@@ -6803,6 +8217,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline.",
       "assessment": "A computer based exam.",
       "examWeight": null
@@ -6822,6 +8237,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or class exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 30% and a 3-hour exam counting 70%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
       "examWeight": 70
@@ -6842,6 +8258,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Attendance of 85% of departmental seminars.",
       "assessment": "Each coursework module comprises tests, assignments and a final examination. The weighting of coursework varies between 30% and 50%, while the final examination may contribute up to 70% of the module mark. The overall program mark is a weighted average of the final marks for all coursework modules, according to their credit values, together with the research project.",
       "examWeight": 70
@@ -6861,6 +8278,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory completion of assignments",
       "assessment": "Assignments, a Computer-based Exam and a Theory Exam",
       "examWeight": null
@@ -6880,6 +8298,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory completion of assignments",
       "assessment": "Assignments and Exam",
       "examWeight": null
@@ -6899,6 +8318,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Satisfactory completion of assignments",
       "assessment": "Assignments and Exam",
       "examWeight": null
@@ -6918,6 +8338,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Class record of at least 40%",
       "assessment": "Assignments, Class tests and Exam",
       "examWeight": null
@@ -6937,6 +8358,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "This component will be assessed through class assessments and examinations. A pass for this coursework requires an average of 50% over all modules, as well as a minimum of 50% for certain modules designated as core material.",
       "examWeight": null
@@ -6956,6 +8378,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Assignments and quizzes count 20%; one 2-hour examination in June or November counts 80%. A sub-minimum of 40% is required for the examination.",
       "examWeight": 80
@@ -6975,6 +8398,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Assignments and quizzes count 20%; one 2-hour examination in June or November counts 80%. A sub-minimum of 40% is required for the examination.",
       "examWeight": 80
@@ -6994,6 +8418,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Class assignments 50%; one 3-hour examination counts 50%. A sub-minimum of 40% is required for the examination and the class assignments. DEPARTMENTS IN THE FACULTY 213",
       "examWeight": 50
@@ -7013,6 +8438,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Class assignments 50%; one 3-hour examination counts 50%. A sub-minimum of 40% is required for the examination and the class assignments.",
       "examWeight": 50
@@ -7032,6 +8458,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Completion and submission of the assignment component at a satisfactory grade (40% minimum)",
       "assessment": "Assignments 35%. Written examination 65%. A subminimum of 40% in each of the assignments and examination is required.",
       "examWeight": 65
@@ -7051,6 +8478,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignments 40%. Written exam 60%. Sub-minimum of 40% in each of assignment and examination component.",
       "examWeight": 60
@@ -7070,6 +8498,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignments 50%. Written exam 50%. Sub-minimum of 40% in each of assignment and examination component.",
       "examWeight": 50
@@ -7089,6 +8518,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "100% Assignments",
       "examWeight": null
@@ -7106,6 +8536,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignment - 30%. Examination, 3 hours 70%. A subminimum of 40% in each of the assignment and examination components.",
       "examWeight": null
@@ -7125,6 +8556,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignments 40%. Written examination 60%. Sub-minimum of 40% for each of assignment and examination component.",
       "examWeight": 60
@@ -7144,6 +8576,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignments 50%. Written exam 50%. Sub-minimum of 40% in each of assignment and examination component.",
       "examWeight": 50
@@ -7163,6 +8596,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for assignment and project component",
       "assessment": "Assignments, making up the course mark, and two exams, one written and one computer-based exam. A subminimum of 40% is required for each component.",
       "examWeight": null
@@ -7182,6 +8616,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for assignment component",
       "assessment": "Project 45%, class exercises 5%, written examination (theory and practical) 50%. Subminimum of 40% in each of project and overall written examination.",
       "examWeight": 50
@@ -7201,6 +8636,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for project work components.",
       "assessment": "Problem Structuring section: project work (50%); written exam (50%). System Dynamics section: project work (40%); written exam (60%). The two sections count equally to the final grade. In each section a subminimum of 40% is required in both the project and written exam.",
       "examWeight": 60
@@ -7220,6 +8656,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for assignment component",
       "assessment": "Module is split into three sections. For each section, we have: Assignments: 50% Exam: 50%. A subminimum of 40% in each of the assignment and exam component is required.",
       "examWeight": 50
@@ -7239,6 +8676,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "40% for the assignment component",
       "assessment": "Assignments 50%. Written exam 50%. Sub-minimum of 40% in each of assignment and examination component. DEPARTMENTS IN THE FACULTY 217",
       "examWeight": 50
@@ -7258,6 +8696,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "At least 40% for the assignments section",
       "assessment": "Assignments: 50%. Examination: 50%. A sub-minimum of 40% for each of the assignment and examination component will be required.",
       "examWeight": 50
@@ -7277,6 +8716,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Assignments and Exam",
       "examWeight": null
@@ -7296,6 +8736,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Assignments and Exam.",
       "examWeight": null
@@ -7315,6 +8756,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "Six quizzes (25%) and a take-home exam on each of three sections (75%)",
       "examWeight": 75
@@ -7334,6 +8776,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Assignments and Exam.",
       "examWeight": null
@@ -7353,6 +8796,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "Class record of at least 40%",
       "assessment": "Assignments, Class Test and Exam.",
       "examWeight": null
@@ -7372,6 +8816,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Final examination counts 60% and the assignments count the remaining 40%",
       "examWeight": 60
@@ -7391,6 +8836,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "None",
       "assessment": "One examination counting 100% of the final mark",
       "examWeight": 100
@@ -7410,6 +8856,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "Assignments and/or Exam",
       "examWeight": null
@@ -7429,6 +8876,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "",
       "examWeight": null
@@ -7448,6 +8896,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "sessions": [],
       "dp": "",
       "assessment": "A take-home exam on each of the three sections",
       "examWeight": null

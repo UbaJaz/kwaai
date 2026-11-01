@@ -56,6 +56,7 @@ function parseHandbook(text) {
       corequisites: clip(parts['Co-requisites'], 200),
       lectures,
       ...lecturePeriods(lectures),
+      sessions: sessionsOf(String(parts['Lecture times'] || '').replace(PAGE_HEADER, '').slice(0, 600)),
       dp: clip(parts['DP requirements'], 400),
       assessment,
       examWeight: examWeight(assessment),
@@ -118,14 +119,58 @@ function lecturePeriods(lectures) {
   if (!group && !meridian) return { periods: [], periodChoice: false, days: [] };
   const periods = [...new Set([...(group?.[1] ?? '').matchAll(/(\d)(?:st|nd|rd|th)/g)].map((x) => Number(x[1])).concat(meridian ? [0] : []))];
   const choice = periods.length > 1 && /\bor\b/i.test(group && !meridian ? group[1] : lect);
-  const day = (d) => DAYS.findIndex((x) => x.slice(0, 3).toLowerCase() === d.slice(0, 3).toLowerCase());
-  const range = /\b(Mon|Tue|Wed|Thu|Fri)\w*\s*(?:-|–|to)\s*(Mon|Tue|Wed|Thu|Fri)\w*/i.exec(lect);
-  let days;
-  if (/daily|every day/i.test(lect)) days = DAYS;
-  else if (range) days = DAYS.slice(day(range[1]), day(range[2]) + 1);
-  // "Tuesdays, Fridays and some Wednesdays": the occasional day doesn't make a weekly clash
-  else days = DAYS.filter((d) => new RegExp(`(?<!some )\\b${d.slice(0, 3)}`, 'i').test(lect));
+  const days = /daily|every day/i.test(lect) ? DAYS : daysIn(lect);
   return { periods, periodChoice: choice, days: days.length ? days : DAYS };
+}
+
+// "Monday to Wednesday and Friday" -> Monday, Tuesday, Wednesday, Friday: a range plus any other named days.
+// "Tuesdays, Fridays and some Wednesdays": the occasional day doesn't make a weekly clash.
+function daysIn(text) {
+  const day = (d) => DAYS.findIndex((x) => x.slice(0, 3).toLowerCase() === d.slice(0, 3).toLowerCase());
+  const range = /\b(Mon|Tue|Wed|Thu|Fri)\w*\s*(?:-|–|to)\s*(Mon|Tue|Wed|Thu|Fri)\w*/i.exec(text);
+  const inRange = range ? DAYS.slice(day(range[1]), day(range[2]) + 1) : [];
+  return DAYS.filter((d) => inRange.includes(d) || new RegExp(`(?<!some )\\b${d.slice(0, 3)}`, 'i').test(text));
+}
+
+// Tutorials and practicals from the "Lecture times" text, for the week view:
+//   "Tutorials: Thursday 2nd or 4th period. Practicals: Tuesday, Thursday or Friday, 14h00 - 17h00."
+//   -> [{ kind: 'tut', count: 1, choice: true, options: [{ day: 'Thursday', start: '10:00', end: '10:45' }, ...] },
+//       { kind: 'prac', count: 1, choice: true, options: [{ day: 'Tuesday', start: '14:00', end: '17:00' }, ...] }]
+// "Tutorials: One per week" with no day or time gives a session with no options: the student places it themselves.
+// A period is 45 minutes from the hour (1st period 08:00, meridian 13:00).
+const SESSION_LABEL = /\b(Tutorials?|Tuts?|Practicals?|Pracs?|Laborator(?:y|ies)|Labs?|Workshops?|Seminars?)\b\s*(?:sessions?)?\s*:?/gi;
+const PERIOD_START = { 0: '13:00', 1: '08:00', 2: '09:00', 3: '10:00', 4: '11:00', 5: '12:00', 6: '14:00', 7: '15:00', 8: '16:00', 9: '17:00' };
+const COUNT_WORDS = { one: 1, once: 1, two: 2, twice: 2, three: 3, four: 4 };
+const pad = (h, m) => `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+function sessionsOf(text) {
+  const marks = [...String(text || '').matchAll(SESSION_LABEL)];
+  const out = [];
+  marks.forEach((m, i) => {
+    const seg = text.slice(m.index + m[0].length, marks[i + 1]?.index ?? text.length).split(/\.\s|Lecture/)[0];
+    const kind = /^(Prac|Lab)/i.test(m[1]) ? 'prac' : 'tut';
+    const days = /\bdaily\b/i.test(seg) ? DAYS : daysIn(seg);
+    // times: "14h00 - 17h00" / "14:00-16:00", or periods ("2nd or 4th period")
+    const times = [...seg.matchAll(/\b(\d{1,2})[h:](\d{2})\s*(?:-|–|to)?\s*(\d{1,2})[h:](\d{2})/g)].map((t) => ({ start: pad(t[1], t[2]), end: pad(t[3], t[4]) }));
+    if (!times.length) {
+      const group = /((?:\d(?:st|nd|rd|th)\s*(?:,|or|and|&|\/)?\s*)+)periods?\b/i.exec(seg);
+      for (const p of [...(group?.[1] ?? '').matchAll(/(\d)(?:st|nd|rd|th)/g)].map((x) => Number(x[1]))) {
+        if (PERIOD_START[p]) times.push({ start: PERIOD_START[p], end: `${PERIOD_START[p].slice(0, 2)}:45` });
+      }
+      if (/\bmeridian\b/i.test(seg)) times.push({ start: '13:00', end: '13:45' });
+    }
+    const n = /\b(one|once|two|twice|three|four|\d)\b\s*(?:\w+\s){0,2}?(?:per|a|each)\s+week/i.exec(seg);
+    const choice = /\bor\b/i.test(seg) || times.length > 1;
+    const options = days.length && times.length ? days.flatMap((day) => times.map((t) => ({ day, ...t }))) : [];
+    out.push({
+      kind,
+      count: n ? COUNT_WORDS[n[1].toLowerCase()] || Number(n[1]) : choice || !options.length ? 1 : options.length,
+      choice: choice && options.length > 1,
+      options,
+      text: seg.trim().replace(/[,;\s]+$/, '').slice(0, 160),
+    });
+  });
+  // "Tutorials: ... Tutorials: ..." twice in one text is the same session
+  return out.filter((s, i) => out.findIndex((x) => x.kind === s.kind) === i);
 }
 
 // The share of the final mark that comes from exams, e.g. "Class mark 40%, June examination 2 hours 60%" -> 60.
@@ -188,4 +233,4 @@ if (require.main === module) {
   console.log(`wrote ${courses.length} courses to ${out}`);
 }
 
-module.exports = { HEADING, parseHandbook, splitConveners, titleCase, expandCode, codesIn, lecturePeriods, examWeight };
+module.exports = { HEADING, parseHandbook, splitConveners, titleCase, expandCode, codesIn, lecturePeriods, examWeight, sessionsOf, PERIOD_START };

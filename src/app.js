@@ -4,6 +4,7 @@ const express = require('express');
 const views = require('./views');
 const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
 const { analysePlan, REPLACED, parseProfile, hasProfile, profileParams, majorNeeds, creditAdvice, programmeOptions, facultyOptions } = require('./planner');
+const { parseWeek, weekParams, buildWeek, icsFor, DAYS } = require('./week');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { UNIVERSITIES, CURRENT } = require('./universities');
 
@@ -232,38 +233,51 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   const COURSE_CODE = /^[A-Z]{3}\d{4}[A-Z]$/;
   const planCodes = (s) => [...new Set(String(s || '').toUpperCase().split(/[\s,]+/).filter((x) => COURSE_CODE.test(x)))].slice(0, PLAN_MAX);
   const keepCommas = (s) => encodeURIComponent(s).replace(/%2C/g, ',').replace(/%3A/g, ':');
-  const planQuery = (codes, profile = parseProfile()) => Object.entries({ ...(codes.length && { c: codes.join(',') }), ...profileParams(profile) })
+  // The week view's settings (semester, chosen groups, own blocks, study time) ride along in the same query string.
+  const planQuery = (codes, profile = parseProfile(), week = parseWeek()) => Object.entries({ ...(codes.length && { c: codes.join(',') }), ...profileParams(profile), ...weekParams(week) })
     .map(([k, v]) => `${k}=${keepCommas(String(v))}`).join('&');
-  const planUrl = (codes, profile) => {
-    const qs = planQuery(codes, profile);
-    return qs ? `/plan?${qs}` : '/plan';
+  const planUrl = (codes, profile, week, page = '/plan') => {
+    const qs = planQuery(codes, profile, week);
+    return qs ? `${page}?${qs}` : page;
   };
-  const savePlan = (res, codes, profile) => res.cookie('plan', planQuery(codes, profile), { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: 180 * 24 * 60 * 60 * 1000 });
-  const PLAN_KEYS = ['c', 'f', 'm', 'y', 'done'];
-
-  app.get('/plan', (req, res) => {
-    // the cookie holds the query string; older ones hold only the course codes
+  // A subscribed calendar follows the plan saved on this device: it holds the course codes and week settings only,
+  // never the "about you" answers.
+  const calendarQuery = (codes, week) => planQuery(codes, parseProfile(), week);
+  const savePlan = (req, res, codes, profile, week = parseWeek()) => {
+    res.cookie('plan', planQuery(codes, profile, week), { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: 180 * 24 * 60 * 60 * 1000 });
+    const cal = /(?:^|;\s*)cal=([A-Za-z0-9_-]{22})/.exec(req.headers.cookie || '')?.[1];
+    if (cal) q(`UPDATE calendars SET query = ? WHERE id = ?`).run(calendarQuery(codes, week), cal);
+  };
+  const PLAN_KEYS = ['c', 'f', 'm', 'y', 'done', 't', 'pk', 'bl', 'st'];
+  // the plan from the link if it has one, else from this device's cookie (which holds the query string; older ones
+  // hold only the course codes)
+  function readPlan(req) {
     let savedRaw = '';
     try { savedRaw = decodeURIComponent(/(?:^|;\s*)plan=([^;]*)/.exec(req.headers.cookie || '')?.[1] || ''); } catch { /* a mangled cookie is just an empty plan */ }
     const saved = savedRaw.includes('=') ? Object.fromEntries(new URLSearchParams(savedRaw)) : { c: savedRaw };
     const fromUrl = PLAN_KEYS.some((k) => req.query[k] != null);
     const state = fromUrl ? req.query : saved;
-    let codes = planCodes(state.c);
-    let profile = parseProfile(state);
+    return { fromUrl, codes: planCodes(state.c), profile: parseProfile(state), week: parseWeek(state) };
+  }
+
+  app.get('/plan', (req, res) => {
+    const saved = readPlan(req);
+    const { fromUrl, week } = saved;
+    let { codes, profile } = saved;
     // the "about you" form: majors come from two selects, passed courses from ticked boxes plus a free text box
     if (req.query.about != null) {
       profile = req.query.about === 'clear' ? parseProfile() : parseProfile({
         f: req.query.f, y: req.query.y, m: [req.query.m1, req.query.m2].filter(Boolean).join(','), done: [req.query.done ?? [], req.query.more ?? ''].flat().join(','),
       });
-      savePlan(res, codes, profile);
-      return res.redirect(303, planUrl(codes, profile));
+      savePlan(req, res, codes, profile, week);
+      return res.redirect(303, planUrl(codes, profile, week));
     }
     const remove = String(req.query.remove || '').toUpperCase();
     const add = String(req.query.add || '').trim().slice(0, 80);
     if (remove) {
       codes = codes.filter((x) => x !== remove);
-      savePlan(res, codes, profile);
-      return res.redirect(303, planUrl(codes, profile));
+      savePlan(req, res, codes, profile, week);
+      return res.redirect(303, planUrl(codes, profile, week));
     }
     let matches = null;
     if (add) {
@@ -272,23 +286,23 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       // an old code like MAM1000W adds the courses that replaced it
       const newer = REPLACED[squashed]?.filter((x) => !codes.includes(x));
       if (newer) {
-        if (codes.length + newer.length > PLAN_MAX) return flashRedirect(res, planUrl(codes, profile), 'error', `A plan can hold ${PLAN_MAX} courses. Remove one first.`);
+        if (codes.length + newer.length > PLAN_MAX) return flashRedirect(res, planUrl(codes, profile, week), 'error', `A plan can hold ${PLAN_MAX} courses. Remove one first.`);
         codes.push(...newer);
-        savePlan(res, codes, profile);
-        return flashRedirect(res, planUrl(codes, profile), 'ok', `${squashed} has been replaced by ${REPLACED[squashed].join(' and ')}, so ${newer.length ? 'those are in your plan now' : 'your plan already has it covered'}.`);
+        savePlan(req, res, codes, profile, week);
+        return flashRedirect(res, planUrl(codes, profile, week), 'ok', `${squashed} has been replaced by ${REPLACED[squashed].join(' and ')}, so ${newer.length ? 'those are in your plan now' : 'your plan already has it covered'}.`);
       }
       const byCode = /^[A-Z]{3}\d{1,4}[A-Z]?$/.test(squashed) ? q(`SELECT code FROM courses WHERE code LIKE ? ORDER BY code LIMIT 13`).all(`${squashed}%`) : [];
       const exact = getCourse(squashed) || (byCode.length === 1 ? getCourse(byCode[0].code) : null);
       if (exact) {
-        if (!codes.includes(exact.code) && codes.length >= PLAN_MAX) return flashRedirect(res, planUrl(codes, profile), 'error', `A plan can hold ${PLAN_MAX} courses. Remove one first.`);
+        if (!codes.includes(exact.code) && codes.length >= PLAN_MAX) return flashRedirect(res, planUrl(codes, profile, week), 'error', `A plan can hold ${PLAN_MAX} courses. Remove one first.`);
         if (!codes.includes(exact.code)) codes.push(exact.code);
-        savePlan(res, codes, profile);
-        return res.redirect(303, planUrl(codes, profile));
+        savePlan(req, res, codes, profile, week);
+        return res.redirect(303, planUrl(codes, profile, week));
       }
       matches = q(`SELECT code, title FROM courses WHERE code LIKE ? OR title LIKE ? ORDER BY (code LIKE ?) DESC, (nqf IS NULL OR nqf <= 7) DESC, code LIMIT 12`)
         .all(`%${squashed}%`, `%${add}%`, `${squashed}%`);
     }
-    if (!fromUrl && (codes.length || hasProfile(profile)) && !matches) return res.redirect(303, planUrl(codes, profile));
+    if (!fromUrl && (codes.length || hasProfile(profile)) && !matches) return res.redirect(303, planUrl(codes, profile, week));
     const rows = codes.length ? q(`SELECT c.code, c.title, c.credits, c.nqf, c.entry, c.corequisites, c.lectures, c.periods, c.period_choice, c.days, c.dp, c.assessment, c.exam_weight, c.not_offered,
       s.n, s.difficulty, s.workload, s.has_sample, v.votes, v.lekker, v.tips FROM courses c
       LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(difficulty) AS difficulty, AVG(workload) AS workload, MAX(is_sample) AS has_sample FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
@@ -310,8 +324,91 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.page(views.plan(req.ctx, {
       courses, plan, matches, add, codes: courses.map((c) => c.code),
       profile, needs, advice, known, expanded, passed, programmeOptions: programmeOptions(), facultyOptions: facultyOptions(),
-      state: Object.fromEntries(new URLSearchParams(planQuery(courses.map((c) => c.code), profile))),
+      state: Object.fromEntries(new URLSearchParams(planQuery(courses.map((c) => c.code), profile, week))),
     }));
+  });
+
+  // ---- the week view ----
+  // The plan as a Monday-to-Friday timetable. Choosing a tut group, adding a block or turning on study time works
+  // like the planner: plain links and forms that update the plan's link and this device's cookie.
+  const weekRows = (codes) => (codes.length ? q(`SELECT c.code, c.title, c.credits, c.periods, c.days, c.period_choice, c.sessions, c.lectures, s.workload FROM courses c
+    LEFT JOIN (SELECT course, AVG(workload) AS workload FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
+    WHERE c.code IN (${codes.map(() => '?').join(',')})`).all(...codes) : []);
+  const calCookie = (req) => /(?:^|;\s*)cal=([A-Za-z0-9_-]{22})/.exec(req.headers.cookie || '')?.[1];
+  const TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
+
+  app.get('/week', (req, res) => {
+    const { fromUrl, codes, profile, week } = readPlan(req);
+    const save = (msg) => {
+      savePlan(req, res, codes, profile, week);
+      const to = planUrl(codes, profile, week, '/week');
+      return msg ? flashRedirect(res, to, msg[0], msg[1]) : res.redirect(303, to);
+    };
+    if (req.query.term === 's1' || req.query.term === 's2') { week.t = req.query.term; return save(); }
+    if (req.query.study === '1' || req.query.study === '0') { week.study = req.query.study === '1'; return save(); }
+    const pick = /^([A-Z]{3}\d{4}[A-Z])\.([LTP])$/.exec(String(req.query.pick || ''));
+    if (pick && /^\d{1,2}$/.test(String(req.query.opt))) { week.picks[`${pick[1]}.${pick[2]}`] = Number(req.query.opt); return save(); }
+    if (req.query.rm_block != null) { week.blocks.splice(Number(req.query.rm_block) || 0, 1); return save(); }
+    if (req.query.add_block != null) {
+      const day = DAYS[Number(req.query.day)];
+      const start = String(req.query.start || '');
+      const end = String(req.query.end || '');
+      const label = String(req.query.label || '').replace(/[^A-Za-z0-9 &'.:-]/g, '').trim().slice(0, 30);
+      if (!day || !TIME.test(start) || !TIME.test(end) || end <= start) return save(['error', 'Pick a day, and an end time after the start time.']);
+      if (week.blocks.length >= 20) return save(['error', 'You can add up to 20 of your own blocks.']);
+      week.blocks.push({ day, start, end, label: label || 'Busy' });
+      return save();
+    }
+    if (!fromUrl && (codes.length || week.blocks.length)) return res.redirect(303, planUrl(codes, profile, week, '/week'));
+    const rows = weekRows(codes);
+    const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week);
+    const cal = calCookie(req);
+    const origin = baseUrl || `${req.protocol}://${req.get('host')}`;
+    res.page(views.week(req.ctx, {
+      wk, week, codes,
+      state: Object.fromEntries(new URLSearchParams(planQuery(codes, profile, week))),
+      calendar: cal && q(`SELECT id FROM calendars WHERE id = ?`).get(cal) ? `${origin}/cal/${cal}.ics` : null,
+    }));
+  });
+
+  // the whole year as a calendar file, from the link's plan
+  app.get('/week.ics', (req, res) => {
+    const { codes, week } = readPlan(req);
+    const rows = weekRows(codes);
+    res.set({ 'Content-Type': 'text/calendar; charset=utf-8', 'Content-Disposition': 'attachment; filename="kwaai-week.ics"' })
+      .send(icsFor(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { origin: baseUrl || '' }));
+  });
+
+  // A calendar that keeps itself up to date: Google, Apple or Outlook fetch /cal/<id>.ics every few hours, and it
+  // follows the plan saved on this device.
+  app.post('/week/subscribe', (req, res) => {
+    const { codes, week } = readPlan(req);
+    let id = calCookie(req);
+    if (!id || !q(`SELECT 1 FROM calendars WHERE id = ?`).get(id)) {
+      id = crypto.randomBytes(16).toString('base64url');
+      q(`INSERT INTO calendars (id, query) VALUES (?, ?)`).run(id, calendarQuery(codes, week));
+    }
+    res.cookie('cal', id, { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: 2 * 365 * 24 * 60 * 60 * 1000 });
+    flashRedirect(res, '/week#calendar', 'ok', 'Your calendar link is ready. Add it to your phone below.');
+  });
+
+  app.post('/week/unsubscribe', (req, res) => {
+    const id = calCookie(req);
+    if (id) q(`DELETE FROM calendars WHERE id = ?`).run(id);
+    res.clearCookie('cal');
+    flashRedirect(res, '/week', 'ok', 'Calendar link deleted. Calendars that used it will stop updating.');
+  });
+
+  app.get('/cal/:file', (req, res) => {
+    const id = /^([A-Za-z0-9_-]{22})\.ics$/.exec(req.params.file)?.[1];
+    const row = id && q(`SELECT query FROM calendars WHERE id = ?`).get(id);
+    if (!row) return res.status(404).type('text/plain').send('This calendar link was deleted or never existed.');
+    q(`UPDATE calendars SET fetched_at = CURRENT_TIMESTAMP WHERE id = ?`).run(id);
+    const state = Object.fromEntries(new URLSearchParams(row.query));
+    const codes = planCodes(state.c);
+    const rows = weekRows(codes);
+    res.set({ 'Content-Type': 'text/calendar; charset=utf-8', 'Cache-Control': 'no-cache' })
+      .send(icsFor(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), parseWeek(state), { origin: baseUrl || '' }));
   });
 
   app.get('/universities', (req, res) => {

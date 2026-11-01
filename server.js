@@ -36,7 +36,8 @@ const sweep = () => {
     DELETE FROM verdicts WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
     DELETE FROM takedowns WHERE status = 'closed' AND created_at < datetime('now', '-12 months');
     DELETE FROM lecturer_suggestions WHERE status != 'open' AND created_at < datetime('now', '-12 months');
-    DELETE FROM mod_log WHERE created_at < datetime('now', '-12 months');`);
+    DELETE FROM mod_log WHERE created_at < datetime('now', '-12 months');
+    DELETE FROM calendars WHERE IFNULL(fetched_at, created_at) < datetime('now', '-12 months');`);
 };
 sweep();
 setInterval(sweep, 60 * 60 * 1000).unref();
