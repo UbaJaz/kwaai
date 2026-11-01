@@ -758,18 +758,29 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, '/study/leaderboards', 'ok', before ? 'Saved.' : "You're on the leaderboards.");
   });
 
+  // minutes per leaderboard member over a span of days, each day capped like everywhere else; faculty narrows it
+  function boardRows(uni, from, to, faculty = null) {
+    return q(`SELECT p.*, SUM(x.m) AS minutes FROM profiles p JOIN (
+        SELECT user_id, day, MIN(SUM(credited_sec / 60), ${Study.DAY_CAP_MIN}) AS m FROM study_sessions
+        WHERE status = 'done' AND uni = ? AND day BETWEEN ? AND ? GROUP BY user_id, day
+      ) x ON x.user_id = p.user_id WHERE p.uni = ? ${faculty ? 'AND p.faculty = ?' : ''} GROUP BY p.user_id`)
+      .all(...[uni, from, to, uni, ...(faculty ? [faculty] : [])]);
+  }
+  // the student's rank over a span at their university and in their faculty, or null if they're not on the boards
+  function ranksFor(user, from, to) {
+    const me = profileOf(user.id);
+    if (!me) return null;
+    const rankIn = (rows) => { const b = Study.rankBoard(rows, user.id); return (b.rows.find((r) => r.user_id === user.id) || b.me)?.rank ?? null; };
+    return { uni: rankIn(boardRows(user.uni, from, to)), faculty: me.faculty ? rankIn(boardRows(user.uni, from, to, me.faculty)) : null, facultyName: FACULTIES[me.faculty]?.name ?? null };
+  }
+
   app.get('/study/leaderboards', requireUser, (req, res) => {
     const me = profileOf(req.user.id);
     const period = Study.PERIODS[req.query.period] ? req.query.period : 'week';
     const scope = req.query.scope === 'faculty' ? 'faculty' : 'uni';
     const faculty = FACULTIES[req.query.f] ? req.query.f : me?.faculty || 'sci';
     const [from, to] = Study.periodRange(period, Study.saDay(Date.now()));
-    // minutes per student over the period, each day capped like everywhere else
-    const rows = q(`SELECT p.*, SUM(x.m) AS minutes FROM profiles p JOIN (
-        SELECT user_id, day, MIN(SUM(credited_sec / 60), ${Study.DAY_CAP_MIN}) AS m FROM study_sessions
-        WHERE status = 'done' AND uni = ? AND day BETWEEN ? AND ? GROUP BY user_id, day
-      ) x ON x.user_id = p.user_id WHERE p.uni = ? ${scope === 'faculty' ? 'AND p.faculty = ?' : ''} GROUP BY p.user_id`)
-      .all(...[req.user.uni, from, to, req.user.uni, ...(scope === 'faculty' ? [faculty] : [])]);
+    const rows = boardRows(req.user.uni, from, to, scope === 'faculty' ? faculty : null);
     const board = Study.rankBoard(rows, req.user.id);
     const show = (r) => ({ rank: r.rank, minutes: r.minutes, name: boardName(r), you: r.user_id === req.user.id, id: r.user_id, reportable: !!(r.show_name && r.display_name && !r.name_held) && r.user_id !== req.user.id });
     res.set('Cache-Control', 'no-store').page(views.leaderboard(req.ctx, {
