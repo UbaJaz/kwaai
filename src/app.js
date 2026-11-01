@@ -648,7 +648,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.set('Cache-Control', 'no-store').page(views.study(req.ctx, {
       courses, pick: current?.course || (courses.some((c) => c.code === pick) ? pick : ''), current: current && sessionState(current),
       today: Study.dayTotals(sessions.filter((s) => s.status === 'done'))[0] || null, sessions: sessions.filter((s) => s.status === 'done'),
-      board: req.user ? studyBoard(req.user.id, codes, req.query.day) : null,
+      board: req.user ? studyBoard(req.user, codes, req.query.day) : null,
       studyingNow: liveStudents(`uni = ?`, req.user?.uni ?? CURRENT.slug),
     }));
   });
@@ -666,9 +666,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     return totals.length ? Study.streak(totals, today, TERMS.years) : null;
   }
 
-  function studyBoard(userId, codes, askedDay) {
+  function studyBoard(user, codes, askedDay) {
     const today = Study.saDay(Date.now());
-    const totals = studyTotals(userId, today);
+    const totals = studyTotals(user.id, today);
+    const recap = Study.weekRecap(totals, today);
+    if (recap) recap.ranks = ranksFor(user, recap.from, recap.to);
     const sum = Study.summary(totals, today);
     // this semester's courses from the plan (by date: from the second semester's start it's S courses), plus any
     // course studied this week
@@ -684,9 +686,28 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     return {
       today, weeks: Study.heatmap(totals, today), summary: sum, goals, general: sum.weekCourses[''] || 0, streak: Study.streak(totals, today, TERMS.years),
       dayDetail: day ? totals.find((t) => t.day === day) || { day, minutes: 0, courses: {} } : null,
-      days: totals.filter((t) => t.minutes > 0).reverse(),
+      days: totals.filter((t) => t.minutes > 0).reverse(), recap,
     };
   }
+
+  // Wrapped: a semester in numbers on one card, sized for a phone screenshot. Defaults to the semester running now,
+  // or the last one that started; ?year=2027&term=s1 picks another that has started.
+  const semestersSoFar = (today) => Object.keys(TERMS.years).sort().flatMap((y) => ['s1', 's2'].map((t) => ({ year: Number(y), term: t, ...termDates(y, t) })))
+    .filter((s) => s.start && s.start <= today);
+  app.get('/study/wrapped', requireUser, (req, res) => {
+    const today = Study.saDay(Date.now());
+    const all = semestersSoFar(today);
+    const sem = all.find((s) => String(s.year) === req.query.year && s.term === req.query.term) || all[all.length - 1];
+    if (!sem) return res.status(404).page(notFound(req));
+    const to = sem.end < today ? sem.end : today;
+    const w = Study.wrapped(studyTotals(req.user.id, today), sem.start, to, TERMS.years);
+    const codes = w.courses.map((c) => c.code).filter(Boolean);
+    const titles = codes.length ? Object.fromEntries(q(`SELECT code, title FROM courses WHERE code IN (${codes.map(() => '?').join(',')})`).all(...codes).map((c) => [c.code, c.title])) : {};
+    res.set('Cache-Control', 'no-store').page(views.wrapped(req.ctx, {
+      sem: { ...sem, to, running: sem.end >= today }, w: { ...w, courses: w.courses.slice(0, 3).map((c) => ({ ...c, title: titles[c.code] ?? '' })) },
+      ranks: ranksFor(req.user, sem.start, to), others: all.slice(-4).reverse(),
+    }));
+  });
 
   app.post('/study/start', requireUser, limits.study, (req, res) => {
     const parsed = Study.parseStart(req.body, courseExists);
@@ -758,18 +779,29 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, '/study/leaderboards', 'ok', before ? 'Saved.' : "You're on the leaderboards.");
   });
 
+  // minutes per leaderboard member over a span of days, each day capped like everywhere else; faculty narrows it
+  function boardRows(uni, from, to, faculty = null) {
+    return q(`SELECT p.*, SUM(x.m) AS minutes FROM profiles p JOIN (
+        SELECT user_id, day, MIN(SUM(credited_sec / 60), ${Study.DAY_CAP_MIN}) AS m FROM study_sessions
+        WHERE status = 'done' AND uni = ? AND day BETWEEN ? AND ? GROUP BY user_id, day
+      ) x ON x.user_id = p.user_id WHERE p.uni = ? ${faculty ? 'AND p.faculty = ?' : ''} GROUP BY p.user_id`)
+      .all(...[uni, from, to, uni, ...(faculty ? [faculty] : [])]);
+  }
+  // the student's rank over a span at their university and in their faculty, or null if they're not on the boards
+  function ranksFor(user, from, to) {
+    const me = profileOf(user.id);
+    if (!me) return null;
+    const rankIn = (rows) => { const b = Study.rankBoard(rows, user.id); return (b.rows.find((r) => r.user_id === user.id) || b.me)?.rank ?? null; };
+    return { uni: rankIn(boardRows(user.uni, from, to)), faculty: me.faculty ? rankIn(boardRows(user.uni, from, to, me.faculty)) : null, facultyName: FACULTIES[me.faculty]?.name ?? null };
+  }
+
   app.get('/study/leaderboards', requireUser, (req, res) => {
     const me = profileOf(req.user.id);
     const period = Study.PERIODS[req.query.period] ? req.query.period : 'week';
     const scope = req.query.scope === 'faculty' ? 'faculty' : 'uni';
     const faculty = FACULTIES[req.query.f] ? req.query.f : me?.faculty || 'sci';
     const [from, to] = Study.periodRange(period, Study.saDay(Date.now()));
-    // minutes per student over the period, each day capped like everywhere else
-    const rows = q(`SELECT p.*, SUM(x.m) AS minutes FROM profiles p JOIN (
-        SELECT user_id, day, MIN(SUM(credited_sec / 60), ${Study.DAY_CAP_MIN}) AS m FROM study_sessions
-        WHERE status = 'done' AND uni = ? AND day BETWEEN ? AND ? GROUP BY user_id, day
-      ) x ON x.user_id = p.user_id WHERE p.uni = ? ${scope === 'faculty' ? 'AND p.faculty = ?' : ''} GROUP BY p.user_id`)
-      .all(...[req.user.uni, from, to, req.user.uni, ...(scope === 'faculty' ? [faculty] : [])]);
+    const rows = boardRows(req.user.uni, from, to, scope === 'faculty' ? faculty : null);
     const board = Study.rankBoard(rows, req.user.id);
     const show = (r) => ({ rank: r.rank, minutes: r.minutes, name: boardName(r), you: r.user_id === req.user.id, id: r.user_id, reportable: !!(r.show_name && r.display_name && !r.name_held) && r.user_id !== req.user.id });
     res.set('Cache-Control', 'no-store').page(views.leaderboard(req.ctx, {
