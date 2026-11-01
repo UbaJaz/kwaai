@@ -139,6 +139,22 @@ CREATE TABLE IF NOT EXISTS calendars (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   fetched_at TEXT
 );
+-- Study timer sessions. The server records the start, and credited_sec only grows from the page's heartbeats, so
+-- leaderboards count timed study, never typed-in hours. day is the South African date the session started.
+CREATE TABLE IF NOT EXISTS study_sessions (
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  uni TEXT NOT NULL,
+  course TEXT NOT NULL DEFAULT '',
+  day TEXT NOT NULL,
+  started_at INTEGER NOT NULL,
+  last_beat INTEGER NOT NULL,
+  planned_min INTEGER NOT NULL,
+  credited_sec INTEGER NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'running' CHECK (status IN ('running', 'done'))
+);
+CREATE INDEX IF NOT EXISTS study_by_user ON study_sessions (user_id, day);
+CREATE INDEX IF NOT EXISTS study_by_day ON study_sessions (uni, day);
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,
@@ -184,7 +200,8 @@ const REPORT_DETAILS = { user_id: 'INTEGER' };
 const LECTURER_DETAILS = { role: "TEXT NOT NULL DEFAULT ''" };
 
 // When the student ticked "I'm 18 or older and agree to the terms" (shown on /account and in their data export).
-const USER_DETAILS = { agreed_at: 'TEXT' };
+// uni is the university the student's email belongs to (see uniForEmail in src/universities.js).
+const USER_DETAILS = { agreed_at: 'TEXT', uni: "TEXT NOT NULL DEFAULT 'uct'" };
 
 function addMissingColumns(db, table, columns) {
   const have = new Set(db.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name));

@@ -10,7 +10,7 @@ const Marks = require('../public/marks-math');
 const { revisionPlan, yearTimeline } = require('./year');
 const { parseFact, screenFact, groupFacts, weekTopics, crowdSlots } = require('./facts');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
-const { UNIVERSITIES, CURRENT } = require('./universities');
+const { UNIVERSITIES, CURRENT, uniForEmail } = require('./universities');
 
 const STUDENT_EMAIL = /^[a-z0-9._%+-]+@myuct\.ac\.za$/;
 // "a+1@myuct.ac.za" and "a+2@myuct.ac.za" reach the same inbox, so they must be the same account:
@@ -910,7 +910,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   function startSession(req, res, email, next) {
-    q(`INSERT INTO users (email) VALUES (?) ON CONFLICT(email) DO NOTHING`).run(email);
+    q(`INSERT INTO users (email, uni) VALUES (?, ?) ON CONFLICT(email) DO NOTHING`).run(email, (uniForEmail(email) || CURRENT).slug);
     // every sign-in starts at the form with the 18+ and terms box, so this records when the account first agreed
     q(`UPDATE users SET agreed_at = CURRENT_TIMESTAMP WHERE email = ? AND agreed_at IS NULL`).run(email);
     const user = q(`SELECT * FROM users WHERE email = ?`).get(email);
