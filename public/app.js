@@ -207,3 +207,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+// Installable app: the service worker keeps Today, the week, the year and Marks working offline (public/sw.js).
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { /* the site works without it */ }));
+}
+// signing out clears the pages saved for offline, so the next person on a shared phone doesn't see them
+document.querySelectorAll('form[action="/logout"]').forEach((form) => form.addEventListener('submit', () => {
+  if (window.caches) caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
+}));

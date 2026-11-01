@@ -11,6 +11,8 @@ const { titleCase, parseHandbook, expandCode, codesIn, lecturePeriods, examWeigh
 const { buildWeek, parseWeek, weekParams, icsFor } = require('../src/week');
 const { parseFact, weekTopics, draftTopics } = require('../src/facts');
 const Marks = require('../public/marks-math');
+const { revisionPlan, yearTimeline } = require('../src/year');
+const { planYear: planYearOf } = require('../src/week');
 const { UNIVERSITIES } = require('../src/universities');
 const { scan: scanTables } = require('../scripts/import-tables');
 const { parseProgrammes, tidyName } = require('../scripts/import-programmes');
@@ -1018,6 +1020,46 @@ test('marks and DP: handbook weights, what you need in the exam, subminimum, not
   await b.get('/plan?c=MAM1031F&add=CSC1016S');
   assert.match(await b.text('/'), /class="card today-strip" href="\/today"/);
   assert.doesNotMatch(await browser().text('/'), /today-strip/, 'no plan, no shortcut');
+});
+
+test('the year: revision plan from exam dates, month by month, in the calendar, and an installable app', async () => {
+  // 7 days as a base, +2 for a 70% exam, +5 when students rate the exams 5/5: start 14 days before
+  const [r] = revisionPlan([{ code: 'AAA1000F', date: '2027-06-01', title: 'Exam', type: 'exam' }], [{ code: 'AAA1000F', exam_weight: 70, difficulty: 5 }], '2027-05-01');
+  assert.deepEqual([r.days, r.start, r.countdown, r.startIn], [14, '2027-05-18', 31, 17]);
+  assert.match(r.reasons.join(), /70% of the mark,students rate its exams 5\/5/);
+  const [easy] = revisionPlan([{ code: 'B', date: '2027-06-01' }], [{ code: 'B', exam_weight: 40, difficulty: 1 }]);
+  assert.equal(easy.days, 5, 'never less than 5 days');
+  const months = yearTimeline(2027, [{ code: 'AAA1000F', type: 'exam', title: 'Exam', date: '2027-06-01', confirmed: true }], [r]);
+  assert.deepEqual(months.map((m) => m.key), ['2027-02', '2027-03', '2027-05', '2027-06', '2027-07', '2027-08', '2027-12']);
+  assert.ok(months.find((m) => m.key === '2027-05').items.some((i) => i.kind === 'revise'));
+
+  // end to end: two students add an exam date, and it reaches the year page and the calendar file with a revision day
+  const a = browser();
+  const b = browser();
+  await a.signIn('yr001@myuct.ac.za');
+  await b.signIn('yr002@myuct.ac.za');
+  const y = planYearOf();
+  const exam = { kind: 'event', type: 'exam', title: 'Final exam', date: `${y}-06-02`, time: '09:00' };
+  await a.post('/courses/MAM1031F/facts', exam);
+  await b.post('/courses/MAM1031F/facts', exam);
+  const page = await a.text('/year?c=MAM1031F,CSC1016S');
+  assert.match(page, new RegExp(`Your ${y}`));
+  assert.match(page, /MAM1031F<\/a> <strong>Final exam<\/strong>/);
+  assert.match(page, /Start revising on <strong>/);
+  assert.match(page, /No exam date yet for <a href="\/courses\/CSC1016S#course-week">CSC1016S/);
+  assert.match(page, /Month by month/);
+  const ics = await (await fetch(`${base}/week.ics?c=MAM1031F`)).text();
+  assert.match(ics, /SUMMARY:Start revising MAM1031F/);
+  assert.match(ics, /SUMMARY:MAM1031F Final exam\r\n/);
+  assert.match(await a.text('/week?c=MAM1031F'), /href="\/year\?c=MAM1031F">Whole year/);
+
+  // installable: a manifest and a service worker that's always checked for updates
+  assert.match(await a.text('/'), /<link rel="manifest" href="\/manifest\.webmanifest">/);
+  const manifest = await (await fetch(`${base}/manifest.webmanifest`)).json();
+  assert.equal(manifest.start_url, '/today');
+  const sw = await fetch(`${base}/sw.js`);
+  assert.equal(sw.headers.get('cache-control'), 'no-cache');
+  assert.match(await sw.text(), /NEVER = \/\^\\\/\(login\|auth/, 'sign-in and account pages are never cached');
 });
 
 test('a demo password keeps every page private until it is given', async (t) => {

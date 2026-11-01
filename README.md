@@ -23,6 +23,13 @@ Not affiliated with any university. "Kwaai" is South African slang that means bo
   - `/takedown` lets lecturers (no account needed) request removal, which hides the review straight away.
   - Students can suggest a missing lecturer. It only appears once a moderator approves it.
   - `/mod` lets moderators approve, remove, or remove and ban the author. Every decision goes into an audit log.
+- **Your semester, planned:**
+  - `/plan` checks a course list against the handbooks: clashes, entry requirements, credits and what your major still needs.
+  - `/week` turns it into a timetable with lectures, tut and prac groups, your own blocks and study time, plus a calendar link that follows your plan.
+  - `/year` shows both semesters, UCT's term dates, exams and when to start revising.
+- **Filled in by students:** each course page has "This course's week", where students add times, weekly topics and test and exam dates. A detail is confirmed once two students agree, and then reaches everyone's timetable and calendar.
+- **Marks and DP** (`/marks`): handbook weights, DP minimum and exam subminimum, then the exam mark you need to pass, get a 2:1 or a first. Marks stay in the student's browser. `/today` is the daily view, with today's classes, the next two weeks and DP alerts.
+- **Installable:** a web app manifest and service worker (`public/sw.js`) let students add Kwaai to their home screen. Today, the week, the year and Marks work offline. Sign-in, account and moderation pages are never cached.
 - **Your data, your call:** `/account` lists your reviews and lets you delete any of them or your whole account. `/privacy` is a POPIA notice and `/terms` the terms of use.
 - **Hardening:** CSRF tokens on every form, a strict Content-Security-Policy and other security headers, per-IP rate limits (sign-in, reviews, reports, takedowns, suggestions), at most 3 sign-in emails per address per 15 minutes, and sign-in links built from `BASE_URL`, never the request's Host header.
 
