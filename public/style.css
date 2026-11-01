@@ -440,6 +440,13 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .group-forms { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; align-items: start; }
 .group-forms h2 { font-size: 1.15rem; margin: 0; }
 .group-invite { max-width: 720px; margin: 18px 0; }
+/* "studying now": a small green dot that pulses unless the student prefers less motion */
+.live-note { display: flex; align-items: center; gap: 8px; font-size: .9rem; font-weight: 500; color: var(--good); margin: 6px 0 0; }
+.live-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #2f9a55; box-shadow: 0 0 0 0 rgba(47, 154, 85, .5); animation: live 2s infinite; margin-right: 6px; vertical-align: middle; }
+@keyframes live { 70% { box-shadow: 0 0 0 7px rgba(47, 154, 85, 0); } 100% { box-shadow: 0 0 0 0 rgba(47, 154, 85, 0); } }
+@media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+.group-live { max-width: 720px; margin: 0 0 18px; }
+.group-live h2 { font-size: 1.05rem; }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }

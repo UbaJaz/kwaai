@@ -458,7 +458,7 @@ function courseWeek(ctx, c, facts, topics) {
   </section>`;
 }
 
-function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked, conveners = [], staff = [], facts = { lecture: [], tut: [], prac: [], topic: [], event: [] }, weekTopics = [] }) {
+function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked, conveners = [], staff = [], facts = { lecture: [], tut: [], prac: [], topic: [], event: [] }, weekTopics = [], studyingNow = 0 }) {
   const cards = hideAfterFree(reviews, locked);
   const hidden = cards.filter((x) => x.hideBody).length + (locked ? Math.max(0, tips.length - FREE_COMMENTS) : 0);
   return layout({ ...ctx, title: `${c.code} ${c.title}`, description: courseSummary(c, stats, votes), path: `/courses/${c.code}` }, html`
@@ -468,6 +468,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
       <span class="code code-big">${c.code}</span>
       <h1>${c.title}</h1>
       <p class="meta">${c.dept_name}${c.credits ? ` · ${c.credits} NQF credits` : ''}${c.nqf ? ` · NQF level ${c.nqf}` : ''}</p>
+      ${studyingNow ? html`<p class="live-note"><i class="live-dot" aria-hidden="true"></i>${studyingNow} students are studying ${c.code} on Kwaai right now</p>` : ''}
       ${conveners.length ? html`<p class="meta">${conveners.length > 1 ? 'Conveners' : 'Convener'}: ${conveners.map((l, i) => html`${i ? ', ' : ''}${personLink(l)}`)} <span class="src">(source: ${c.source})</span></p>` : ''}
       ${staff.length ? html`<details class="dept-staff">
         <summary>Teaching staff in ${c.dept_name} (${staff.length})</summary>
@@ -477,6 +478,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
     </div>
     <div class="hero-actions">
       <a class="btn btn-quiet" href="/plan?add=${c.code}">Add to my semester plan</a>
+      <a class="btn btn-quiet" href="/study?course=${c.code}">Study this course</a>
       <a class="btn btn-quiet" href="${whatsappLink(c, votes, ctx.site.origin)}" target="_blank" rel="noopener">Share on WhatsApp</a>
       <a class="btn btn-quiet" href="/courses/${c.code}/review">Write a full review</a>
     </div>
@@ -1204,12 +1206,13 @@ function today(ctx, { today: t, weekLink, streak = null }) {
 const STUDY_PRESETS = [[25, '25 min', 'then a 5-minute break'], [50, '50 min', 'then a 10-minute break'], [90, '90 min', 'then a 15-minute break']];
 const clock = (ms) => new Date(ms + 2 * 60 * 60 * 1000).toISOString().slice(11, 16); // South African time
 
-function study(ctx, { courses, pick, current, today, sessions, board }) {
+function study(ctx, { courses, pick, current, today, sessions, board, studyingNow = 0 }) {
   const signedIn = !!ctx.user;
   const courseName = (code) => (code ? `${code} ${courses.find((c) => c.code === code)?.title ?? ''}`.trim() : 'General study');
   return layout({ ...ctx, title: 'Study', here: '/study', path: '/study', description: 'A study timer for your courses. Kwaai logs the time so you can see how much you studied each day and for which course.' }, html`
   <h1 class="page-title">Study</h1>
   <p class="lede small">Pick a course, start the timer and work until it rings. Kwaai logs the time against the course.</p>
+  ${studyingNow ? html`<p class="live-note"><i class="live-dot" aria-hidden="true"></i>${plural(studyingNow, `${ctx.uni.short} student`)} ${studyingNow === 1 ? 'is' : 'are'} studying on Kwaai right now</p>` : ''}
   ${signedIn ? '' : html`<p class="privacy-note">The timer works without an account. <a href="${loginHref('/study')}">Sign in with your UCT email</a> to keep your hours.</p>`}
   ${current ? html`
   <section class="card panel study-timer" aria-labelledby="study-now" data-study="${JSON.stringify(current)}">
@@ -1351,7 +1354,7 @@ function groupJoin(ctx, { group: g, members, me, error }) {
   </div>`);
 }
 
-function group(ctx, { group: g, owner, period, rows, idle, invite }) {
+function group(ctx, { group: g, owner, period, rows, idle, invite, live = [] }) {
   const share = `https://wa.me/?text=${encodeURIComponent(`Join my study group "${g.name}" on Kwaai: ${invite}`)}`;
   const row = (r) => html`<li class="board-row${r.you ? ' board-you' : ''}">
     <span class="board-rank">${r.rank ?? '–'}</span>
@@ -1362,6 +1365,11 @@ function group(ctx, { group: g, owner, period, rows, idle, invite }) {
   return layout({ ...ctx, title: g.name, here: '/study' }, html`
   <p class="crumbs"><a href="/groups">Study groups</a></p>
   <h1 class="page-title">${g.name}</h1>
+  ${live.length ? html`<section class="card panel group-live" aria-labelledby="live-head">
+    <h2 id="live-head"><i class="live-dot" aria-hidden="true"></i>Studying now</h2>
+    <ul class="plain">${live.map((s) => html`<li><strong>${s.name}</strong>${s.you ? ' (you)' : ''} · ${s.course ? html`<a class="code" href="/courses/${s.course}">${s.course}</a>` : 'general study'} · ${Study.hoursText(s.minutes)} in</li>`)}</ul>
+    <p class="meta"><a href="/study">Start a timer</a> and join them.</p>
+  </section>` : ''}
   <div class="toggle" role="group" aria-label="Period">${Object.entries(Study.PERIODS).map(([k, label]) => html`<a href="/g/${g.code}?period=${k}" class="${k === period ? 'on' : ''}" ${k === period ? html`aria-current="page"` : ''}>${label}</a>`)}</div>
   <ol class="board card">${rows.map(row)}${idle.map(row)}</ol>
   <section class="card panel group-invite" aria-labelledby="invite-head">
@@ -1531,9 +1539,9 @@ function privacy(ctx) {
     <li><strong>Course details you add</strong> (a class time, a week's topic, a test date). They're shown with a count of how many students agree, never with your name or email, and they're deleted with your account.</li>
     <li><strong>Marks you type on <a href="/marks">Marks and DP</a></strong> stay in your browser on your device. We never receive them. If you use the page without JavaScript, the numbers are sent once to work out the answer and aren't stored or logged.</li>
     <li><strong>Your study timer sessions</strong>, if you use the <a href="/study">study timer</a> while signed in: the course, the day, when the session started, how long you planned, and how many minutes counted. You see them on the Study page, they're in your data download, and they're deleted with your account. Nobody else sees them.</li>
-    <li><strong>Your study sessions</strong>, if you use the <a href="/study">study timer</a> while signed in: the course, the day, when you started, the length you picked and the minutes that counted. You see them on the Study page and in your data download. They're deleted with your account. Signed out, the timer runs on your device and sends us nothing.</li>
+    <li><strong>Your study sessions</strong>, if you use the <a href="/study">study timer</a> while signed in: the course, the day, when you started, the length you picked and the minutes that counted. You see them on the Study page and in your data download. They're deleted with your account. While your timer runs you're counted, without your name, in "students studying now" figures; a course page shows its figure only when 3 or more students are studying it. Signed out, the timer runs on your device and sends us nothing.</li>
     <li><strong>A leaderboard profile</strong>, only if you tick "Put me on the leaderboards" in <a href="/account/profile">leaderboard settings</a>: a display name (or none, if you appear anonymously), and the faculty, major and year you choose to give, with the date you joined. Other signed-in students at your university then see that name or an anonymous label like "2nd-year Computer Science student", next to your study minutes for the day, week and month. Students can report a name; reports record who reported which student, and a moderator sees the name and the report count. Untick the box to leave: your profile is deleted straight away and you disappear from the boards. Your email is never shown.</li>
-    <li><strong>Study groups</strong> you start or join: the group's name, its invite code, who started it, and the name you chose to be called in it. Members of a group see each other's group names and study minutes; people outside it see only the group's name and size when they open the invite link. Leave a group at any time; a group is deleted when its last member leaves or its owner deletes it.</li>
+    <li><strong>Study groups</strong> you start or join: the group's name, its invite code, who started it, and the name you chose to be called in it. Members of a group see each other's group names and study minutes, and while your timer runs they see that you're studying, which course and for how long; people outside it see only the group's name and size when they open the invite link. Leave a group at any time; a group is deleted when its last member leaves or its owner deletes it.</li>
     <li><strong>A calendar link</strong>, only if you make one on <a href="/week">Your week</a>: your course codes and timetable choices, stored under a random address so your calendar app can fetch them. No name, email or "about you" answers. Delete it there at any time; links nobody has used for 12 months are deleted automatically.</li>
     <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many sign-in attempts). It isn't written to our database.</li>
     <li><strong>Removal requests:</strong> the name, email and details you give us, used only to deal with that request.</li>
