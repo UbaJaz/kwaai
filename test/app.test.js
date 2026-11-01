@@ -1242,3 +1242,28 @@ test('Today and the week link to the study timer', async () => {
   assert.match(week, /href="\/study\?course=(CSC1015F|MAM1031F)">Start the timer/, 'suggested study blocks start a timer for their course');
   assert.match(await (await fetch(`${base}/study?course=MAM1031F`)).text(), /<option value="MAM1031F" selected>/);
 });
+
+test('study dashboard: totals, heatmap, a day\'s detail and this week by course', async () => {
+  const s = browser();
+  await s.signIn('board001@myuct.ac.za');
+  let page = await s.text('/study');
+  assert.match(page, /Your first session shows up here/, 'empty state');
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'board001@myuct.ac.za'`).get().id;
+  const today = Study.saDay(Date.now());
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', ?, ?, 0, 0, 50, ?, 'done')`);
+  add.run(uid, 'CSC1015F', today, 50 * 60);
+  add.run(uid, '', today, 10 * 60);
+  add.run(uid, 'MAM1031F', Study.addDay(today, -400), 3600); // older than a year: not on the heatmap
+  page = await s.text('/study?c=CSC1015F');
+  assert.match(page, /<dt>Today<\/dt><dd>1 h<\/dd>/);
+  assert.ok(page.includes(`class="h3 h-today" href="/study?day=${today}#day"`),'an hour today is the second-darkest shade');
+  assert.equal((page.match(/class="h\d/g) || []).length, (page.match(/<a class="h\d/g) || []).length + 5, 'every past day is a cell (plus 5 legend swatches)');
+  assert.match(page, /CSC1015F<\/a> Computer Science 1015[\s\S]*?1 h|50 min of about \d+ h/);
+  assert.match(page, /Plus 10 min of general study/);
+  assert.match(page, /Every day you studied, as a list/);
+  assert.doesNotMatch(page, /MAM1031F 1 h/, 'sessions older than a year stay off the dashboard');
+  page = await s.text(`/study?day=${today}`);
+  assert.match(page, /id="day"[\s\S]*?CSC1015F<\/a> · 50 min[\s\S]*?General study · 10 min/);
+  assert.match(await s.text('/study?day=nonsense'), /Your study/, 'a bad day is ignored');
+  assert.doesNotMatch(await browser().text('/study'), /Your study/, 'signed out: no dashboard');
+});

@@ -217,6 +217,9 @@ document.querySelectorAll('form[action="/logout"]').forEach((form) => form.addEv
   if (window.caches) caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
 }));
 
+// the study heatmap opens scrolled to this week, its right-hand end
+document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el.scrollWidth; });
+
 // Study timer (/study). The countdown runs here. The server only counts time from the heartbeats this page sends
 // about once a minute, so the page has to stay open (another tab is fine). Signed out, the timer runs on this device
 // only and nothing is sent.

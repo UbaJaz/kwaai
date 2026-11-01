@@ -416,6 +416,36 @@ legend { font: 600 1.05rem var(--display); padding: 0 8px 0 0; }
 .study-lengths { padding-top: 12px; }
 .study-clock { font: 800 clamp(3.5rem, 16vw, 5.5rem)/1 var(--display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; margin: 8px 0 12px; }
 .study-break { background: var(--lime-soft); padding: 10px 14px; border-radius: var(--radius-sm); font-size: .93rem; }
+/* the dashboard. Heatmap shades are one green, light to dark (more study = darker); no study is the neutral line colour */
+.study-board { margin: 0 0 18px; }
+.study-stats { display: flex; flex-wrap: wrap; gap: 8px 32px; margin: 0 0 18px; }
+.study-stats dt { font-size: .8rem; color: var(--muted); }
+.study-stats dd { margin: 0; font: 700 1.5rem/1.2 var(--display); }
+.study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
+.study-day h3 { font-size: 1rem; }
+.heatmap-scroll { overflow-x: auto; padding-bottom: 6px; }
+.heatmap-months, .heatmap { display: grid; grid-auto-flow: column; grid-auto-columns: 11px; gap: 2px; width: max-content; }
+.heatmap-months { font-size: .7rem; color: var(--muted); height: 16px; }
+.heatmap-months span { white-space: nowrap; overflow: visible; }
+.heatmap { grid-template-rows: repeat(7, 11px); }
+.heatmap a, .heatmap span, .heatmap-legend i { display: block; width: 11px; height: 11px; border-radius: 2px; }
+.h0 { background: var(--line); }
+.h1 { background: #c6e8cf; }
+.h2 { background: #8fd0a2; }
+.h3 { background: #3f9f5f; }
+.h4 { background: #1e6b37; }
+.heatmap .h-today { outline: 2px solid var(--ink); outline-offset: 1px; }
+.heatmap a:hover { outline: 2px solid var(--ink); }
+.heatmap-legend { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .78rem; color: var(--muted); }
+.heatmap-legend li { display: flex; align-items: center; gap: 6px; }
+.study-days { margin-top: 14px; font-size: .88rem; }
+.study-days summary { cursor: pointer; font-weight: 600; }
+.study-days table { border-collapse: collapse; margin-top: 8px; width: 100%; }
+.study-days th, .study-days td { text-align: left; padding: 4px 12px 4px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.study-goals li { display: grid; grid-template-columns: minmax(0, 1fr) 120px auto; gap: 4px 12px; align-items: center; }
+.goal-track { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.goal-track i { display: block; height: 100%; background: var(--ink); border-radius: 4px; }
+@media (max-width: 680px) { .study-goals li { grid-template-columns: 1fr auto; } .goal-track { grid-column: 1 / -1; grid-row: 2; } }
 /* ---------- course details from students ---------- */
 .course-week { margin: 8px 0 28px; }
 .course-week h3 { font-size: 1rem; margin: 18px 0 8px; }

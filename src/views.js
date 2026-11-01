@@ -1180,7 +1180,7 @@ function today(ctx, { today: t, weekLink }) {
 const STUDY_PRESETS = [[25, '25 min', 'then a 5-minute break'], [50, '50 min', 'then a 10-minute break'], [90, '90 min', 'then a 15-minute break']];
 const clock = (ms) => new Date(ms + 2 * 60 * 60 * 1000).toISOString().slice(11, 16); // South African time
 
-function study(ctx, { courses, pick, current, today, sessions }) {
+function study(ctx, { courses, pick, current, today, sessions, board }) {
   const signedIn = !!ctx.user;
   const courseName = (code) => (code ? `${code} ${courses.find((c) => c.code === code)?.title ?? ''}`.trim() : 'General study');
   return layout({ ...ctx, title: 'Study', here: '/study', path: '/study', description: 'A study timer for your courses. Kwaai logs the time so you can see how much you studied each day and for which course.' }, html`
@@ -1223,7 +1223,58 @@ function study(ctx, { courses, pick, current, today, sessions }) {
     <ul class="plain">${sessions.map((s) => html`<li>${clock(s.started_at)} · ${s.course ? html`<a class="code" href="/courses/${s.course}">${s.course}</a>` : 'General study'} · ${Study.hoursText(Math.floor(s.credited_sec / 60))}</li>`)}</ul>`
       : html`<p class="meta">Nothing logged yet today.</p>`}
   </section>` : ''}
+  ${board ? studyBoard(board) : ''}
   <p class="fine">How time counts: while the timer runs, this page checks in with Kwaai about once a minute. Time with the page closed or offline doesn't count, a session counts at most 5 minutes past its length, and a day counts at most 14 hours. There's no way to type hours in by hand, so everyone's numbers mean the same thing.</p>`);
+}
+
+// the signed-in dashboard: totals, a year of days as a heatmap (with the same days as a list), and this week by course
+const dayLabel = (d) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
+function studyBoard(b) {
+  const monthOf = (w) => w.find(Boolean).day.slice(0, 7);
+  const monthName = (ym) => new Date(`${ym}-15T12:00:00Z`).toLocaleDateString('en-ZA', { month: 'short', timeZone: 'UTC' });
+  const courseText = (courses) => Object.entries(courses).filter(([, m]) => m > 0).sort((x, y) => y[1] - x[1]).map(([c, m]) => `${c || 'General study'} ${Study.hoursText(m)}`).join(', ');
+  const studied = b.days.length;
+  return html`
+  <section class="card panel study-board" aria-labelledby="study-board">
+    <h2 id="study-board">Your study</h2>
+    <dl class="study-stats">
+      <div><dt>Today</dt><dd>${Study.hoursText(b.summary.today)}</dd></div>
+      <div><dt>This week</dt><dd>${Study.hoursText(b.summary.week)}</dd></div>
+      <div><dt>This month</dt><dd>${Study.hoursText(b.summary.month)}</dd></div>
+    </dl>
+    ${b.dayDetail ? html`<div class="study-day" id="day">
+      <h3>${dayLabel(b.dayDetail.day)}: ${Study.hoursText(b.dayDetail.minutes)}</h3>
+      ${b.dayDetail.minutes ? html`<ul class="plain">${Object.entries(b.dayDetail.courses).filter(([, m]) => m > 0).sort((x, y) => y[1] - x[1]).map(([c, m]) => html`<li>${c ? html`<a class="code" href="/courses/${c}">${c}</a>` : 'General study'} · ${Study.hoursText(m)}</li>`)}</ul>` : html`<p class="meta">No study logged that day.</p>`}
+    </div>` : ''}
+    <h3 class="label">The last 12 months</h3>
+    <div class="heatmap-scroll" data-heatmap>
+      <div class="heatmap-months" aria-hidden="true">${b.weeks.map((w, i) => html`<span>${i && monthOf(w) === monthOf(b.weeks[i - 1]) ? '' : monthName(monthOf(w))}</span>`)}</div>
+      <div class="heatmap" role="img" aria-label="${studied ? `Study time per day for the last 12 months: ${studied} ${studied === 1 ? 'day' : 'days'} with study. The list below has every day.` : 'Study time per day for the last 12 months. No study logged yet.'}">
+        ${b.weeks.map((w) => w.map((d) => (d
+          ? html`<a class="h${d.level}${d.day === b.today ? ' h-today' : ''}" href="/study?day=${d.day}#day" tabindex="-1" title="${dayLabel(d.day)}: ${d.minutes ? Study.hoursText(d.minutes) : 'no study'}"></a>`
+          : html`<span class="h-none"></span>`)))}
+      </div>
+    </div>
+    <ul class="heatmap-legend">${Study.LEVELS.map(([, label], i) => html`<li><i class="h${i}" aria-hidden="true"></i>${label}</li>`)}</ul>
+    ${studied ? html`<details class="study-days">
+      <summary>Every day you studied, as a list</summary>
+      <table>
+        <thead><tr><th scope="col">Day</th><th scope="col">Time</th><th scope="col">Courses</th></tr></thead>
+        <tbody>${b.days.map((d) => html`<tr><td><a href="/study?day=${d.day}#day">${dayLabel(d.day)} ${d.day.slice(0, 4)}</a></td><td>${Study.hoursText(d.minutes)}</td><td>${courseText(d.courses)}</td></tr>`)}</tbody>
+      </table>
+    </details>` : html`<p class="meta">Your first session shows up here. A day turns darker the longer you study.</p>`}
+  </section>
+  <section class="card panel study-board" aria-labelledby="study-goals">
+    <h2 id="study-goals">This week by course</h2>
+    ${b.goals.length ? html`<ul class="plain study-goals">${b.goals.map((g) => html`<li>
+      <span><a class="code" href="/courses/${g.code}">${g.code}</a> ${g.title}</span>
+      ${g.goal ? html`<span class="goal-track" aria-hidden="true"><i style="width:${Math.min(100, Math.round((g.minutes / (g.goal * 60)) * 100))}%"></i></span>` : ''}
+      <span class="meta">${Study.hoursText(g.minutes)}${g.goal ? ` of about ${g.goal} h` : ''}</span>
+    </li>`)}</ul>
+    <p class="fine">"About 11 h" is the course's credits turned into hours: one credit is 10 hours of work, spread over the semester's teaching weeks. Lectures, tuts and pracs count toward it, and the timer only sees the time you log, so treat it as a guide.</p>`
+      : html`<p class="meta"><a href="/plan">Add your courses to the planner</a> to see each one's hours this week.</p>`}
+    ${b.general ? html`<p class="meta">Plus ${Study.hoursText(b.general)} of general study.</p>` : ''}
+  </section>`;
 }
 
 function universities(ctx, { universities: list, liveCourses }) {
