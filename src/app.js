@@ -10,7 +10,8 @@ const Marks = require('../public/marks-math');
 const { revisionPlan, yearTimeline } = require('./year');
 const { parseFact, screenFact, groupFacts, weekTopics, crowdSlots } = require('./facts');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
-const { UNIVERSITIES, CURRENT } = require('./universities');
+const { UNIVERSITIES, CURRENT, uniForEmail } = require('./universities');
+const Study = require('./study');
 
 const STUDENT_EMAIL = /^[a-z0-9._%+-]+@myuct\.ac\.za$/;
 // "a+1@myuct.ac.za" and "a+2@myuct.ac.za" reach the same inbox, so they must be the same account:
@@ -127,6 +128,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     report: limit(30, 60 * MIN, byUser),
     takedown: limit(10, 60 * MIN),
     fact: limit(40, 60 * MIN, byUser),
+    study: limit(40, 60 * MIN, byUser),
+    studyBeat: limit(150, 60 * MIN, byUser), // one a minute while a timer runs, with room for reloads
   };
   const flashRedirect = (res, to, type, text) => {
     res.cookie('flash', JSON.stringify({ type, text }), { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: 60_000 });
@@ -593,12 +596,79 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const upcoming = datedFor(facts).filter((d) => d.date >= date && d.date <= soon);
     const todays = [...new Set(classes.map((e) => e.code).filter(Boolean))];
     const tip = todays.length ? q(`SELECT course, tip FROM verdicts WHERE status = 'published' AND tip != '' AND course IN (${todays.map(() => '?').join(',')}) ORDER BY RANDOM() LIMIT 1`).get(...todays) : null;
-    return { date, term, note, weekend: weekday === 0 || weekday === 6, dayName, classes, upcoming, tip, marks: marksCourses(wk.courses.map((c) => c.code)) };
+    return { date, term, note, weekend: weekday === 0 || weekday === 6, dayName, classes, upcoming, tip, marks: marksCourses(wk.courses.map((c) => c.code)),
+      // courses to start a study timer for: this term's, or the whole plan between terms
+      study: wk.courses.length ? wk.courses.map((c) => c.code) : codes };
   }
 
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
     res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week) : null, weekLink: planUrl(codes, profile, week, '/week') }));
+  });
+
+  // ---- study timer ----
+  // The rules (what a heartbeat earns, the caps) live in src/study.js. The page sends a heartbeat about once a minute
+  // while the timer runs; a session nobody is timing any more is closed with what it had earned.
+  const runningSession = (userId) => q(`SELECT * FROM study_sessions WHERE user_id = ? AND status = 'running'`).get(userId);
+  const closeStale = (userId, now = Date.now()) => {
+    const s = runningSession(userId);
+    if (s && Study.isStale(s, now)) q(`UPDATE study_sessions SET status = 'done' WHERE id = ?`).run(s.id);
+  };
+  const wantsJson = (req) => /json/.test(req.get('accept') || '');
+  const sessionState = (s) => (s ? { running: s.status === 'running', course: s.course, startedAt: s.started_at, plannedMin: s.planned_min, creditedSec: s.credited_sec, now: Date.now() } : { running: false });
+  const courseExists = (code) => !!q(`SELECT 1 FROM courses WHERE code = ?`).get(code);
+  const loggedText = (s) => `Logged ${Study.hoursText(Math.floor(s.credited_sec / 60))}${s.course ? ` of ${s.course}` : ''}.`;
+
+  app.get('/study', (req, res) => {
+    const { codes } = readPlan(req);
+    const pick = String(req.query.course || '').trim().toUpperCase();
+    let current = null;
+    let sessions = [];
+    if (req.user) {
+      closeStale(req.user.id);
+      current = runningSession(req.user.id);
+      sessions = q(`SELECT course, credited_sec, status, started_at, planned_min, day FROM study_sessions WHERE user_id = ? AND day = ? ORDER BY started_at`).all(req.user.id, Study.saDay(Date.now()));
+    }
+    // the plan's courses, plus the one asked for (?course=, from a course page or Today) and the one being timed
+    const wanted = [...new Set([...codes, ...[pick, current?.course].filter((c) => c && courseExists(c))])];
+    const courses = wanted.length ? q(`SELECT code, title FROM courses WHERE code IN (${wanted.map(() => '?').join(',')}) ORDER BY code`).all(...wanted) : [];
+    res.set('Cache-Control', 'no-store').page(views.study(req.ctx, {
+      courses, pick: current?.course || (courses.some((c) => c.code === pick) ? pick : ''), current: current && sessionState(current),
+      today: Study.dayTotals(sessions.filter((s) => s.status === 'done'))[0] || null, sessions: sessions.filter((s) => s.status === 'done'),
+    }));
+  });
+
+  app.post('/study/start', requireUser, limits.study, (req, res) => {
+    const parsed = Study.parseStart(req.body, courseExists);
+    const fail = (status, text) => (wantsJson(req) ? res.status(status).json({ error: text }) : flashRedirect(res, '/study', 'error', text));
+    if (parsed.error) return fail(400, parsed.error);
+    closeStale(req.user.id);
+    if (runningSession(req.user.id)) return fail(409, 'You already have a timer running. Stop it before starting another.');
+    const now = Date.now();
+    q(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min) VALUES (?, ?, ?, ?, ?, ?, ?)`)
+      .run(req.user.id, req.user.uni, parsed.course, Study.saDay(now), now, now, parsed.minutes);
+    if (wantsJson(req)) return res.json(sessionState(runningSession(req.user.id)));
+    res.redirect(303, '/study');
+  });
+
+  // credits the time since the last heartbeat, and closes the session once it's past its planned length plus grace
+  app.post('/study/beat', requireUser, limits.studyBeat, (req, res) => {
+    const s = runningSession(req.user.id);
+    if (!s) return res.json({ running: false });
+    const now = Date.now();
+    const next = { ...s, ...Study.beat(s, now) };
+    next.status = Study.isStale(next, now) ? 'done' : 'running';
+    q(`UPDATE study_sessions SET credited_sec = ?, last_beat = ?, status = ? WHERE id = ?`).run(next.credited_sec, next.last_beat, next.status, s.id);
+    res.json(sessionState(next));
+  });
+
+  app.post('/study/stop', requireUser, limits.study, (req, res) => {
+    const s = runningSession(req.user.id);
+    if (!s) return wantsJson(req) ? res.json({ running: false }) : res.redirect(303, '/study');
+    const done = { ...s, ...Study.beat(s, Date.now()), status: 'done' };
+    q(`UPDATE study_sessions SET credited_sec = ?, last_beat = ?, status = 'done' WHERE id = ?`).run(done.credited_sec, done.last_beat, s.id);
+    if (wantsJson(req)) return res.json({ ...sessionState(done), message: loggedText(done) });
+    flashRedirect(res, '/study', 'ok', loggedText(done));
   });
 
   // ---- the year ----
@@ -655,6 +725,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       reports_you_made: q(`SELECT review_id, reason, details, created_at FROM reports WHERE user_id = ? ORDER BY created_at`).all(id),
       tips_you_reported: q(`SELECT verdict_id FROM verdict_reports WHERE user_id = ?`).all(id),
       lecturer_suggestions: q(`SELECT name, course, status, created_at FROM lecturer_suggestions WHERE user_id = ? ORDER BY created_at`).all(id),
+      study_sessions: q(`SELECT course, day, started_at, planned_min, credited_sec, status FROM study_sessions WHERE user_id = ? ORDER BY started_at`).all(id),
       course_details_you_added: q(`SELECT course, kind, data, status, created_at FROM course_facts WHERE user_id = ? ORDER BY created_at`).all(id).map((f) => ({ ...f, data: JSON.parse(f.data) })),
       note: 'Your semester plan and "about you" answers are kept only in a cookie on your device and in the plan link, not on our server. Sign-in codes, links and sessions are stored as one-way hashes and deleted when they expire.',
     };
@@ -670,6 +741,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM reviews WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdicts WHERE user_id = ?`).run(id);
       q(`DELETE FROM course_facts WHERE user_id = ?`).run(id);
+      q(`DELETE FROM study_sessions WHERE user_id = ?`).run(id);
       q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
       q(`UPDATE reports SET user_id = NULL WHERE user_id = ?`).run(id);
@@ -910,7 +982,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   function startSession(req, res, email, next) {
-    q(`INSERT INTO users (email) VALUES (?) ON CONFLICT(email) DO NOTHING`).run(email);
+    q(`INSERT INTO users (email, uni) VALUES (?, ?) ON CONFLICT(email) DO NOTHING`).run(email, (uniForEmail(email) || CURRENT).slug);
     // every sign-in starts at the form with the 18+ and terms box, so this records when the account first agreed
     q(`UPDATE users SET agreed_at = CURRENT_TIMESTAMP WHERE email = ? AND agreed_at IS NULL`).run(email);
     const user = q(`SELECT * FROM users WHERE email = ?`).get(email);

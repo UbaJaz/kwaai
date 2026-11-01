@@ -216,3 +216,118 @@ if ('serviceWorker' in navigator) {
 document.querySelectorAll('form[action="/logout"]').forEach((form) => form.addEventListener('submit', () => {
   if (window.caches) caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
 }));
+
+// Study timer (/study). The countdown runs here. The server only counts time from the heartbeats this page sends
+// about once a minute, so the page has to stay open (another tab is fine). Signed out, the timer runs on this device
+// only and nothing is sent.
+(() => {
+  const BREAK_KEY = 'kwaai.studyBreak';
+  const baseTitle = document.title;
+  const fmt = (sec) => { const s = Math.max(0, Math.ceil(sec)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+  const breakFor = (min) => ({ 25: 5, 50: 10, 90: 15 }[min] ?? Math.max(5, Math.round(min / 6)));
+  const chime = () => {
+    navigator.vibrate?.([200, 100, 200]);
+    try {
+      const ctx = new AudioContext();
+      [0, 0.35].forEach((at) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.frequency.value = 660;
+        gain.gain.setValueAtTime(0.15, ctx.currentTime + at);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + at + 0.6);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(ctx.currentTime + at);
+        osc.stop(ctx.currentTime + at + 0.6);
+      });
+    } catch { /* no sound: the title and the page still say it's done */ }
+  };
+  // counts down to endAt (this device's clock) once a second, in the element and the tab title
+  const countdown = (el, endAt, label, onDone) => {
+    let done = false;
+    const render = () => {
+      const left = (endAt - Date.now()) / 1000;
+      el.textContent = fmt(left);
+      document.title = `${fmt(left)} ${label} · ${baseTitle}`;
+      if (left <= 0 && !done) { done = true; clearInterval(timer); document.title = baseTitle; onDone(); }
+    };
+    const timer = setInterval(render, 1000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
+    render();
+    return () => { done = true; clearInterval(timer); document.title = baseTitle; };
+  };
+  const saveBreak = (min) => { try { sessionStorage.setItem(BREAK_KEY, String(Date.now() + min * 60_000)); } catch { /* private mode */ } };
+
+  // a break after a finished session, kept across the reload that shows the logged time
+  const breakNote = document.querySelector('[data-break]');
+  if (breakNote) {
+    let end = 0;
+    try { end = Number(sessionStorage.getItem(BREAK_KEY)) || 0; } catch { /* private mode */ }
+    if (end > Date.now()) {
+      breakNote.hidden = false;
+      breakNote.innerHTML = 'Break: <strong></strong> left. Stand up, drink some water.';
+      countdown(breakNote.querySelector('strong'), end, 'break', () => {
+        chime();
+        breakNote.textContent = 'Break over. Ready for the next one?';
+        try { sessionStorage.removeItem(BREAK_KEY); } catch { /* private mode */ }
+      });
+    }
+  }
+
+  // a session the server is timing
+  const box = document.querySelector('[data-study]');
+  if (box) {
+    const st = JSON.parse(box.dataset.study);
+    const skew = st.now - Date.now(); // the server's clock minus this device's
+    const form = box.querySelector('[data-study-stop]');
+    const csrf = form.elements.namedItem('_csrf').value;
+    const post = (path) => fetch(path, { method: 'POST', headers: { accept: 'application/json' }, body: new URLSearchParams({ _csrf: csrf }) })
+      .then((r) => (r.ok && /json/.test(r.headers.get('content-type') || '') ? r.json() : null))
+      .catch(() => null); // offline: this minute won't count, the next heartbeat tries again
+    let over = false;
+    const beat = () => post('/study/beat').then((r) => { if (r && !r.running && !over) { over = true; window.location.reload(); } });
+    const heartbeat = setInterval(beat, 60_000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && !over) beat(); });
+    countdown(box.querySelector('[data-clock]'), st.startedAt + st.plannedMin * 60_000 - skew, 'studying', () => {
+      over = true;
+      clearInterval(heartbeat);
+      chime();
+      saveBreak(breakFor(st.plannedMin));
+      box.querySelector('[data-study-status]').textContent = 'Done. Logging your time...';
+      post('/study/stop').then(() => setTimeout(() => window.location.reload(), 1200));
+    });
+  }
+
+  // signed out: the same timer, on this device only
+  const local = document.querySelector('form[data-study-local]');
+  if (local) {
+    local.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const minutes = Number(new FormData(local).get('minutes')) || 25;
+      const course = local.elements.namedItem('course');
+      const name = course.options[course.selectedIndex].text;
+      const panel = local.closest('section');
+      const heading = panel.querySelector('h2');
+      heading.textContent = `Studying ${name}`;
+      const clock = document.createElement('p');
+      clock.className = 'study-clock';
+      clock.setAttribute('role', 'timer');
+      const note = document.createElement('p');
+      note.className = 'meta';
+      note.textContent = `${minutes} minutes on this device only. Sign in to keep your hours.`;
+      const stop = document.createElement('button');
+      stop.type = 'button';
+      stop.className = 'btn btn-big btn-ink';
+      stop.textContent = 'Stop';
+      local.replaceWith(clock, note, stop);
+      stop.focus();
+      const cancel = countdown(clock, Date.now() + minutes * 60_000, 'studying', () => {
+        chime();
+        saveBreak(breakFor(minutes));
+        heading.textContent = `Done: ${minutes} minutes of ${name}`;
+        note.textContent = 'Take a break, then start the next one. Sign in next time and Kwaai keeps your hours.';
+        stop.textContent = 'Start another';
+      });
+      stop.addEventListener('click', () => { cancel(); window.location.reload(); });
+    });
+  }
+})();

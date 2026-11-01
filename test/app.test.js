@@ -14,6 +14,7 @@ const Marks = require('../public/marks-math');
 const { revisionPlan, yearTimeline } = require('../src/year');
 const { planYear: planYearOf } = require('../src/week');
 const { UNIVERSITIES } = require('../src/universities');
+const Study = require('../src/study');
 const { scan: scanTables } = require('../scripts/import-tables');
 const { parseProgrammes, tidyName } = require('../scripts/import-programmes');
 const { parseStaff } = require('../scripts/import-staff');
@@ -250,12 +251,49 @@ test('week view: tuts and pracs from the handbook, picks, own blocks, study time
   assert.equal((ics.match(/BEGIN:VEVENT/g) || []).length, 5);
 });
 
+test('study timer: heartbeats credit time, gaps and caps stop padding', () => {
+  const known = (c) => c === 'CSC1015F';
+  assert.deepEqual(Study.parseStart({ course: 'csc1015f', minutes: '25' }, known), { course: 'CSC1015F', minutes: 25 });
+  assert.deepEqual(Study.parseStart({ course: '', minutes: '50' }, known), { course: '', minutes: 50 });
+  assert.ok(Study.parseStart({ course: 'XYZ9999F', minutes: '25' }, known).error);
+  assert.ok(Study.parseStart({ minutes: '121' }, known).error);
+  assert.ok(Study.parseStart({ minutes: '2' }, known).error);
+  assert.ok(Study.parseStart({ minutes: '25.5' }, known).error);
+
+  const t0 = Date.parse('2027-03-01T08:00:00Z');
+  let s = { started_at: t0, last_beat: t0, planned_min: 25, credited_sec: 0 };
+  s = { ...s, ...Study.beat(s, t0 + 60_000) };
+  assert.equal(s.credited_sec, 60);
+  s = { ...s, ...Study.beat(s, t0 + 60_000 + 10 * 60_000) };
+  assert.equal(s.credited_sec, 60, 'a 10-minute gap (tab closed) earns nothing');
+  for (let m = 12; m <= 40; m++) s = { ...s, ...Study.beat(s, t0 + m * 60_000) };
+  assert.equal(s.credited_sec, 30 * 60, 'never more than the planned 25 minutes plus 5 of grace');
+  assert.equal(Study.beat(s, t0).last_beat, s.last_beat, 'a heartbeat from the past changes nothing');
+
+  assert.equal(Study.isStale({ started_at: t0, last_beat: t0, planned_min: 25 }, t0 + 4 * 60_000), false);
+  assert.equal(Study.isStale({ started_at: t0, last_beat: t0, planned_min: 25 }, t0 + 6 * 60_000), true, 'no heartbeat for over 5 minutes');
+  assert.equal(Study.isStale({ started_at: t0, last_beat: t0 + 31 * 60_000, planned_min: 25 }, t0 + 31 * 60_000), true, 'past planned length plus grace');
+
+  assert.equal(Study.saDay(Date.parse('2027-03-01T21:59:00Z')), '2027-03-01');
+  assert.equal(Study.saDay(Date.parse('2027-03-01T22:00:00Z')), '2027-03-02', 'midnight in South Africa is 22:00 UTC');
+  const days = Study.dayTotals([
+    { day: '2027-03-01', course: 'CSC1015F', credited_sec: 25 * 60 + 59 },
+    { day: '2027-03-01', course: '', credited_sec: 600 },
+    { day: '2027-03-02', course: 'CSC1015F', credited_sec: 20 * 3600 },
+  ]);
+  assert.deepEqual(days[0], { day: '2027-03-01', minutes: 35, courses: { CSC1015F: 25, '': 10 } });
+  assert.equal(days[1].minutes, 14 * 60, 'a day counts 14 hours at most');
+  assert.equal(Study.hoursText(65), '1 h 5 min');
+  assert.equal(Study.hoursText(45), '45 min');
+});
+
 // ---- end to end: sign in, review, report, moderate ----
 
 let server;
 let base;
+let db; // the app's database, so tests can move a timer's clock back instead of waiting
 before(async () => {
-  const db = openDb(':memory:');
+  db = openDb(':memory:');
   seed(db, { samples: true });
   server = createApp(db, { moderators: new Set(['mod001@myuct.ac.za', 'mod002@myuct.ac.za']), devMode: true }).listen(0);
   await new Promise((r) => server.once('listening', r));
@@ -1130,4 +1168,57 @@ test('re-seeding after a handbook update keeps students\' reviews and votes', ()
   assert.equal(n(`SELECT COUNT(*) AS n FROM reviews WHERE is_sample = 0`), 1);
   assert.equal(n(`SELECT COUNT(*) AS n FROM reviews WHERE body = 'A real review that must survive.'`), 1);
   assert.equal(n(`SELECT COUNT(*) AS n FROM reviews WHERE is_sample = 1`), 0, 'a production re-seed drops the samples');
+});
+
+test('study timer: start, heartbeats, stop, one at a time, and account deletion', async () => {
+  const anon = browser();
+  assert.match(await anon.text('/study'), /Start without saving/, 'signed out, the timer still works on the device');
+  assert.match((await anon.post('/study/start', { course: '', minutes: '25' })).headers.get('location'), /^\/login/);
+
+  const s = browser();
+  await s.signIn('study001@myuct.ac.za');
+  const json = { headers: { accept: 'application/json' } };
+  assert.equal((await s.post('/study/start', { course: 'NOPE1234F', minutes: '25' }, json)).status, 400);
+  const started = await (await s.post('/study/start', { course: 'CSC1015F', minutes: '25' }, json)).json();
+  assert.equal(started.running, true);
+  assert.equal(started.plannedMin, 25);
+  assert.equal((await s.post('/study/start', { course: '', minutes: '50' }, json)).status, 409, 'one timer at a time');
+  assert.match(await s.text('/study?course=CSC1015F'), /Studying CSC1015F/);
+
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'study001@myuct.ac.za'`).get().id;
+  const back = (sql, ...args) => db.prepare(`UPDATE study_sessions SET ${sql} WHERE user_id = ? AND status = 'running'`).run(...args, uid);
+  back('started_at = started_at - 120000, last_beat = last_beat - 120000');
+  let beat = await (await s.post('/study/beat', {}, json)).json();
+  assert.ok(beat.creditedSec >= 119 && beat.creditedSec <= 122, `two minutes since the start, got ${beat.creditedSec}`);
+  back('last_beat = last_beat - 240000, started_at = started_at - 240000');
+  beat = await (await s.post('/study/beat', {}, json)).json();
+  assert.ok(beat.creditedSec >= 359, 'a four-minute gap (phone locked) still counts');
+  const stop = await s.post('/study/stop', {});
+  assert.equal(stop.status, 303);
+  assert.match(await s.text('/study'), /Logged 6 min of CSC1015F./);
+
+  // a padded session: started 40 minutes ago, heartbeats all along, still only 25 + 5 minutes
+  await s.post('/study/start', { course: '', minutes: '25' }, json);
+  back('started_at = started_at - 2400000, last_beat = last_beat - 60000, credited_sec = 1770');
+  beat = await (await s.post('/study/beat', {}, json)).json();
+  assert.equal(beat.creditedSec, 1800);
+  assert.equal(beat.running, false, 'closed once past its length plus grace');
+  // a tab left closed: the next visit closes the session with what it had
+  await s.post('/study/start', { course: '', minutes: '25' }, json);
+  back('last_beat = last_beat - 900000');
+  assert.match(await s.text('/study'), /Start the timer/);
+
+  const data = await (await s.get('/account/data')).json();
+  assert.equal(data.study_sessions.length, 3);
+  assert.equal(data.study_sessions.filter((x) => x.status === 'running').length, 0);
+  await s.post('/account/delete', {});
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM study_sessions WHERE user_id = ?').get(uid).n, 0, 'deleting the account deletes the study log');
+});
+
+test('Today and the week link to the study timer', async () => {
+  const today = await (await fetch(`${base}/today?c=CSC1015F,MAM1031F`)).text();
+  assert.match(today, /href="\/study\?course=CSC1015F"/);
+  const week = await (await fetch(`${base}/week?c=CSC1015F,MAM1031F&st=1`)).text();
+  assert.match(week, /href="\/study\?course=(CSC1015F|MAM1031F)">Start the timer/, 'suggested study blocks start a timer for their course');
+  assert.match(await (await fetch(`${base}/study?course=MAM1031F`)).text(), /<option value="MAM1031F" selected>/);
 });
