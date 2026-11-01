@@ -16,7 +16,7 @@ const DEFAULT_DESCRIPTION = 'Course ratings, workload scores and tips from South
 // Sign-in links remember the page you were on, so you land back there afterwards.
 const loginHref = (back) => (back && back !== '/' && !back.startsWith('/login') && !back.startsWith('/auth') ? `/login?next=${encodeURIComponent(back)}` : '/login');
 
-const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/week', 'My week'], ['/marks', 'Marks'], ['/rankings', 'Rankings']];
+const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/study', 'Study'], ['/week', 'My week'], ['/marks', 'Marks'], ['/rankings', 'Rankings']];
 
 // description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
 // uni sets the accent colour for the university being browsed; the Kwaai brand colours never change.

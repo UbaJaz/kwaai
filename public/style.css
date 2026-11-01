@@ -534,7 +534,10 @@ label > .meta { display: block; font-weight: 400; margin-top: 4px; }
   .wrap { padding: 0 18px; }
   .pulse { display: none; }
   .header-row { flex-wrap: wrap; gap: 6px 16px; padding-top: 10px; min-height: 0; }
-  .nav { order: 3; width: 100%; gap: 16px; overflow-x: auto; padding-bottom: 2px; }
+  /* every link stays visible: the nav wraps to a second line instead of hiding links off the side, and the header
+     scrolls away with the page so the taller header doesn't eat the screen */
+  .site-header { position: static; }
+  .nav { order: 3; width: 100%; flex-wrap: wrap; gap: 0 16px; padding-bottom: 2px; }
   .nav a { padding: 8px 0 10px; white-space: nowrap; }
   .form-row.two { grid-template-columns: 1fr; }
   .form { padding: 18px; }
