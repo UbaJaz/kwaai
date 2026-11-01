@@ -620,8 +620,6 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.get('/study', (req, res) => {
     const { codes } = readPlan(req);
     const pick = String(req.query.course || '').trim().toUpperCase();
-    const wanted = [...new Set([...codes, ...(pick && courseExists(pick) ? [pick] : [])])];
-    const courses = wanted.length ? q(`SELECT code, title FROM courses WHERE code IN (${wanted.map(() => '?').join(',')}) ORDER BY code`).all(...wanted) : [];
     let current = null;
     let sessions = [];
     if (req.user) {
@@ -629,6 +627,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       current = runningSession(req.user.id);
       sessions = q(`SELECT course, credited_sec, status, started_at, planned_min, day FROM study_sessions WHERE user_id = ? AND day = ? ORDER BY started_at`).all(req.user.id, Study.saDay(Date.now()));
     }
+    // the plan's courses, plus the one asked for (?course=, from a course page or Today) and the one being timed
+    const wanted = [...new Set([...codes, ...[pick, current?.course].filter((c) => c && courseExists(c))])];
+    const courses = wanted.length ? q(`SELECT code, title FROM courses WHERE code IN (${wanted.map(() => '?').join(',')}) ORDER BY code`).all(...wanted) : [];
     res.set('Cache-Control', 'no-store').page(views.study(req.ctx, {
       courses, pick: current?.course || (courses.some((c) => c.code === pick) ? pick : ''), current: current && sessionState(current),
       today: Study.dayTotals(sessions.filter((s) => s.status === 'done'))[0] || null, sessions: sessions.filter((s) => s.status === 'done'),

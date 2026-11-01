@@ -1194,7 +1194,7 @@ function study(ctx, { courses, pick, current, today, sessions }) {
   <section class="card panel study-timer" aria-labelledby="study-start">
     <h2 id="study-start">Start a session</h2>
     <p class="study-break" data-break hidden></p>
-    <form method="post" action="/study/start" class="form study-form" ${signedIn ? '' : html`data-study-local`}>
+    <form method="post" action="/study/start" class="study-form" ${signedIn ? '' : html`data-study-local`}>
       <label>Course
         <select name="course">
           <option value="">General study</option>
@@ -1212,7 +1212,7 @@ function study(ctx, { courses, pick, current, today, sessions }) {
     </form>
   </section>`}
   ${signedIn ? html`
-  <section class="card panel" aria-labelledby="study-today">
+  <section class="card panel study-timer" aria-labelledby="study-today">
     <h2 id="study-today">Today</h2>
     ${today ? html`<p><strong>${Study.hoursText(today.minutes)}</strong> studied today.</p>
     <ul class="plain">${sessions.map((s) => html`<li>${clock(s.started_at)} · ${s.course ? html`<a class="code" href="/courses/${s.course}">${s.course}</a>` : 'General study'} · ${Study.hoursText(Math.floor(s.credited_sec / 60))}</li>`)}</ul>`
