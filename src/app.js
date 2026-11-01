@@ -130,6 +130,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     fact: limit(40, 60 * MIN, byUser),
     study: limit(40, 60 * MIN, byUser),
     profile: limit(20, 60 * MIN, byUser),
+    group: limit(30, 60 * MIN, byUser),
     studyBeat: limit(150, 60 * MIN, byUser), // one a minute while a timer runs, with room for reloads
   };
   const flashRedirect = (res, to, type, text) => {
@@ -775,6 +776,102 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, back, 'ok', 'Thanks. A moderator will look at that name.');
   });
 
+  // ---- study groups ----
+  // Friends, a residence, a tut group: anyone with the join code can join, and members see each other's group name
+  // and study minutes. The owner can remove members or delete the group.
+  const groupByCode = (code) => {
+    const c = String(code || '').trim().toUpperCase();
+    return /^[A-HJ-NP-Z2-9]{8}$/.test(c) ? q(`SELECT * FROM study_groups WHERE code = ?`).get(c) || null : null;
+  };
+  const memberOf = (groupId, userId) => q(`SELECT * FROM group_members WHERE group_id = ? AND user_id = ?`).get(groupId, userId) || null;
+  const memberCount = (groupId) => q(`SELECT COUNT(*) AS n FROM group_members WHERE group_id = ?`).get(groupId).n;
+  const groupsOf = (userId) => q(`SELECT g.*, m.name AS my_name, (SELECT COUNT(*) FROM group_members x WHERE x.group_id = g.id) AS members
+    FROM study_groups g JOIN group_members m ON m.group_id = g.id WHERE m.user_id = ? ORDER BY g.name`).all(userId);
+  // the group goes with its last member; if the owner leaves, the longest-standing member takes over
+  function leaveGroup(g, userId) {
+    q(`DELETE FROM group_members WHERE group_id = ? AND user_id = ?`).run(g.id, userId);
+    const next = q(`SELECT user_id FROM group_members WHERE group_id = ? ORDER BY joined_at, user_id LIMIT 1`).get(g.id);
+    if (!next) q(`DELETE FROM study_groups WHERE id = ?`).run(g.id);
+    else if (g.owner_id === userId) q(`UPDATE study_groups SET owner_id = ? WHERE id = ?`).run(next.user_id, g.id);
+  }
+  const nameSuggestion = (userId) => profileOf(userId)?.display_name || '';
+  const groupsPage = (req, extra = {}) => views.groups(req.ctx, { groups: groupsOf(req.user.id), me: nameSuggestion(req.user.id), ...extra });
+
+  app.get('/groups', requireUser, (req, res) => res.page(groupsPage(req)));
+
+  app.post('/groups', requireUser, limits.group, (req, res) => {
+    const name = Study.cleanName(req.body.name, 40, screenComment);
+    const me = Study.cleanName(req.body.me, 30, screenComment);
+    const fail = (error) => res.status(400).page(groupsPage(req, { me: req.body.me, groupName: req.body.name, error }));
+    if (name.error) return fail(`Group name: ${name.error}`);
+    if (me.error) return fail(`Your name in the group: ${me.error}`);
+    if (groupsOf(req.user.id).length >= Study.MAX_GROUPS) return fail(`You can be in ${Study.MAX_GROUPS} groups at most. Leave one first.`);
+    let code;
+    do code = Study.groupCode(crypto.randomBytes(8)); while (q(`SELECT 1 FROM study_groups WHERE code = ?`).get(code));
+    const { lastInsertRowid } = q(`INSERT INTO study_groups (uni, name, code, owner_id) VALUES (?, ?, ?, ?)`).run(req.user.uni, name.name, code, req.user.id);
+    q(`INSERT INTO group_members (group_id, user_id, name) VALUES (?, ?, ?)`).run(lastInsertRowid, req.user.id, me.name);
+    flashRedirect(res, `/g/${code}`, 'ok', 'Group made. Send the invite link to the people you study with.');
+  });
+
+  // the "join with a code" box on /groups
+  app.get('/groups/join', requireUser, (req, res) => {
+    const g = groupByCode(req.query.code);
+    if (!g) return flashRedirect(res, '/groups', 'error', 'No group has that code. Check it and try again.');
+    res.redirect(303, `/g/${g.code}`);
+  });
+
+  app.get('/g/:code', requireUser, (req, res) => {
+    const g = groupByCode(req.params.code);
+    if (!g) return res.status(404).page(notFound(req));
+    if (!memberOf(g.id, req.user.id)) return res.page(views.groupJoin(req.ctx, { group: g, members: memberCount(g.id), me: nameSuggestion(req.user.id) }));
+    const period = Study.PERIODS[req.query.period] ? req.query.period : 'week';
+    const [from, to] = Study.periodRange(period, Study.saDay(Date.now()));
+    const rows = q(`SELECT m.user_id, m.name, COALESCE(SUM(x.m), 0) AS minutes FROM group_members m LEFT JOIN (
+        SELECT user_id, day, MIN(SUM(credited_sec / 60), ${Study.DAY_CAP_MIN}) AS m FROM study_sessions
+        WHERE status = 'done' AND day BETWEEN ? AND ? GROUP BY user_id, day
+      ) x ON x.user_id = m.user_id WHERE m.group_id = ? GROUP BY m.user_id ORDER BY m.name`).all(from, to, g.id);
+    const show = (r) => ({ id: r.user_id, name: r.name, minutes: r.minutes, rank: r.rank, you: r.user_id === req.user.id });
+    res.set('Cache-Control', 'no-store').page(views.group(req.ctx, {
+      group: g, owner: g.owner_id === req.user.id, period, invite: `${req.ctx.site.origin}/g/${g.code}`,
+      rows: Study.rankBoard(rows, req.user.id, Study.MAX_MEMBERS).rows.map(show), idle: rows.filter((r) => !r.minutes).map(show),
+    }));
+  });
+
+  app.post('/g/:code/join', requireUser, limits.group, (req, res) => {
+    const g = groupByCode(req.params.code);
+    if (!g) return res.status(404).page(notFound(req));
+    if (memberOf(g.id, req.user.id)) return res.redirect(303, `/g/${g.code}`);
+    const me = Study.cleanName(req.body.me, 30, screenComment);
+    const fail = (error) => res.status(400).page(views.groupJoin(req.ctx, { group: g, members: memberCount(g.id), me: req.body.me, error }));
+    if (me.error) return fail(`Your name in the group: ${me.error}`);
+    if (memberCount(g.id) >= Study.MAX_MEMBERS) return fail(`This group is full (${Study.MAX_MEMBERS} members).`);
+    if (groupsOf(req.user.id).length >= Study.MAX_GROUPS) return fail(`You can be in ${Study.MAX_GROUPS} groups at most. Leave one first.`);
+    q(`INSERT INTO group_members (group_id, user_id, name) VALUES (?, ?, ?)`).run(g.id, req.user.id, me.name);
+    flashRedirect(res, `/g/${g.code}`, 'ok', `You're in ${g.name}.`);
+  });
+
+  app.post('/g/:code/leave', requireUser, (req, res) => {
+    const g = groupByCode(req.params.code);
+    if (!g || !memberOf(g.id, req.user.id)) return res.status(404).page(notFound(req));
+    leaveGroup(g, req.user.id);
+    flashRedirect(res, '/groups', 'ok', `You've left ${g.name}.`);
+  });
+
+  app.post('/g/:code/remove', requireUser, (req, res) => {
+    const g = groupByCode(req.params.code);
+    const who = Number(req.body.user);
+    if (!g || g.owner_id !== req.user.id || who === req.user.id || !memberOf(g.id, who)) return res.status(404).page(notFound(req));
+    leaveGroup(g, who);
+    flashRedirect(res, `/g/${g.code}`, 'ok', 'Removed from the group.');
+  });
+
+  app.post('/g/:code/delete', requireUser, (req, res) => {
+    const g = groupByCode(req.params.code);
+    if (!g || g.owner_id !== req.user.id) return res.status(404).page(notFound(req));
+    q(`DELETE FROM study_groups WHERE id = ?`).run(g.id);
+    flashRedirect(res, '/groups', 'ok', `${g.name} is deleted.`);
+  });
+
   // ---- the year ----
   // Both semesters side by side with their load, UCT's term dates, the tests and exams students added, and when to
   // start revising for each exam.
@@ -829,6 +926,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       reports_you_made: q(`SELECT review_id, reason, details, created_at FROM reports WHERE user_id = ? ORDER BY created_at`).all(id),
       tips_you_reported: q(`SELECT verdict_id FROM verdict_reports WHERE user_id = ?`).all(id),
       lecturer_suggestions: q(`SELECT name, course, status, created_at FROM lecturer_suggestions WHERE user_id = ? ORDER BY created_at`).all(id),
+      study_groups: q(`SELECT g.name, m.name AS your_name_there, m.joined_at, g.owner_id = ? AS you_own_it FROM group_members m JOIN study_groups g ON g.id = m.group_id WHERE m.user_id = ?`).all(id, id),
       leaderboard_profile: q(`SELECT display_name, show_name, faculty, major, year, boards_agreed_at FROM profiles WHERE user_id = ?`).get(id) || null,
       study_sessions: q(`SELECT course, day, started_at, planned_min, credited_sec, status FROM study_sessions WHERE user_id = ? ORDER BY started_at`).all(id),
       course_details_you_added: q(`SELECT course, kind, data, status, created_at FROM course_facts WHERE user_id = ? ORDER BY created_at`).all(id).map((f) => ({ ...f, data: JSON.parse(f.data) })),
@@ -849,6 +947,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM study_sessions WHERE user_id = ?`).run(id);
       q(`DELETE FROM name_reports WHERE user_id = ? OR target_id = ?`).run(id, id);
       q(`DELETE FROM profiles WHERE user_id = ?`).run(id);
+      for (const g of q(`SELECT g.* FROM study_groups g JOIN group_members m ON m.group_id = g.id WHERE m.user_id = ?`).all(id)) leaveGroup(g, id);
       q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
       q(`UPDATE reports SET user_id = NULL WHERE user_id = ?`).run(id);

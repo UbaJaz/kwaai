@@ -140,11 +140,11 @@ function periodRange(period, today) {
 
 // rows: [{ user_id, minutes }]. Ranks by minutes, and students on the same minutes share a rank (1, 2, 2, 4). The top
 // BOARD_SIZE are listed; `me` is the viewer's own row when it's further down.
-function rankBoard(rows, meId) {
+function rankBoard(rows, meId, size = BOARD_SIZE) {
   const sorted = rows.filter((r) => r.minutes > 0).sort((a, b) => b.minutes - a.minutes || a.user_id - b.user_id);
   let rank = 0;
   const ranked = sorted.map((r, i) => ({ ...r, rank: i && r.minutes === sorted[i - 1].minutes ? rank : (rank = i + 1) }));
-  const top = ranked.slice(0, BOARD_SIZE);
+  const top = ranked.slice(0, size);
   return { rows: top, me: top.some((r) => r.user_id === meId) ? null : ranked.find((r) => r.user_id === meId) || null, total: ranked.length };
 }
 
