@@ -1,3 +1,6 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const crypto = require('node:crypto');
 const { openDb } = require('./src/db');
 const { createApp } = require('./src/app');
 const { senderFromEnv } = require('./src/email');
@@ -23,9 +26,18 @@ if ((env.BREVO_API_KEY || env.RESEND_API_KEY) && (!env.EMAIL_FROM || !env.BASE_U
 }
 
 const db = openDb();
-if (!db.prepare('SELECT COUNT(*) AS n FROM courses').get().n) {
-  console.log('Empty database, seeding…', require('./scripts/seed').seed(db, { samples: devMode }));
+// Seed an empty database, and re-seed (upserts only, no sample reviews) whenever the handbook data files change, so a
+// redeploy with new courses or staff reaches a database that already holds students' reviews.
+const dataDir = path.join(__dirname, 'data');
+const hasher = crypto.createHash('sha1');
+for (const f of fs.readdirSync(dataDir).sort()) hasher.update(f).update(fs.readFileSync(path.join(dataDir, f)));
+const dataHash = hasher.digest('hex');
+const seenHash = db.prepare("SELECT value FROM meta WHERE key = 'data_hash'").get()?.value;
+const empty = !db.prepare('SELECT COUNT(*) AS n FROM courses').get().n;
+if (empty || seenHash !== dataHash) {
+  console.log(empty ? 'Empty database, seeding…' : 'Handbook data changed, updating courses…', require('./scripts/seed').seed(db, { samples: devMode }));
 }
+db.prepare("INSERT INTO meta (key, value) VALUES ('data_hash', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(dataHash);
 // Hourly clean-up: expired sign-in links and sessions, plus the 12-month retention promised in /privacy.
 const sweep = () => {
   db.prepare('DELETE FROM login_tokens WHERE expires < ?').run(Date.now());
