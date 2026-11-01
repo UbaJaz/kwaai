@@ -1460,3 +1460,34 @@ test('study groups: start, invite, join, the group board, owner powers, leaving 
   await friend.post('/account/delete', {});
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM study_groups WHERE code = ?').get(code).n, 0, 'the last member leaving deletes the group');
 });
+
+test('studying now: course pages from 3 students, the university count, and group members', async () => {
+  const users = [];
+  for (const n of [1, 2, 3, 4]) {
+    const b = browser();
+    await b.signIn(`live00${n}@myuct.ac.za`);
+    users.push({ b, id: db.prepare('SELECT id FROM users WHERE email = ?').get(`live00${n}@myuct.ac.za`).id });
+  }
+  const now = Date.now();
+  const run = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, status) VALUES (?, 'uct', ?, ?, ?, ?, 50, 'running')`);
+  run.run(users[0].id, 'STA1000F', Study.saDay(now), now - 20 * 60_000, now - 30_000);
+  run.run(users[1].id, 'STA1000F', Study.saDay(now), now - 5 * 60_000, now - 10_000);
+  run.run(users[3].id, 'STA1000F', Study.saDay(now), now - 30 * 60_000, now - 3 * 60_000); // stale: no heartbeat for 3 minutes
+  const anon = browser();
+  assert.doesNotMatch(await anon.text('/courses/STA1000F'), /studying STA1000F/, 'two students are too few to show');
+  run.run(users[2].id, 'STA1000F', Study.saDay(now), now - 60_000, now - 5_000);
+  assert.match(await anon.text('/courses/STA1000F'), /3 students are studying STA1000F on Kwaai right now/, 'the stale one is not counted');
+  assert.match(await anon.text('/study'), /\d+ UCT students? (is|are) studying on Kwaai right now/);
+  assert.match(await anon.text('/courses/STA1000F'), /href="\/study\?course=STA1000F">Study this course/);
+
+  // a group sees which members are studying, what, and for how long
+  const made = await users[0].b.post('/groups', { name: 'Stats crew', me: 'Ama' });
+  const code = made.headers.get('location').slice(3);
+  await users[1].b.post(`/g/${code}/join`, { me: 'Bo' });
+  await users[3].b.post(`/g/${code}/join`, { me: 'Dee' });
+  const page = await users[1].b.text(`/g/${code}`);
+  assert.match(page, /Studying now[\s\S]*?<strong>Ama<\/strong> · <a class="code" href="\/courses\/STA1000F">STA1000F<\/a> · 20 min in/);
+  assert.match(page, /<strong>Bo<\/strong> \(you\)/);
+  assert.doesNotMatch(page, /<strong>Dee<\/strong>/, 'a stale timer is not "studying now"');
+  db.prepare(`DELETE FROM study_sessions WHERE course = 'STA1000F' AND status = 'running'`).run();
+});
