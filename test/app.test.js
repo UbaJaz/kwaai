@@ -1290,3 +1290,20 @@ test('study dashboard: totals, heatmap, a day\'s detail and this week by course'
   assert.match(await s.text('/study?day=nonsense'), /Your study/, 'a bad day is ignored');
   assert.doesNotMatch(await browser().text('/study'), /Your study/, 'signed out: no dashboard');
 });
+
+test('the streak shows on Study, Today and the home page once a student has studied', async () => {
+  const s = browser();
+  await s.signIn('streak001@myuct.ac.za');
+  assert.doesNotMatch(await s.text('/'), /study streak/, 'nothing to show before the first session');
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'streak001@myuct.ac.za'`).get().id;
+  const today = Study.saDay(Date.now());
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 50, ?, 'done')`);
+  add.run(uid, Study.addDay(today, -1), 40 * 60);
+  add.run(uid, today, 10 * 60);
+  for (const p of ['/', '/today']) assert.match(await s.text(p), /1 day study streak/, p);
+  const study = await s.text('/study');
+  assert.match(study, /<dt>Streak<\/dt><dd>1 day<\/dd>/);
+  assert.match(study, /Study 20 more minutes today to keep it going|the vacation/);
+  add.run(uid, today, 25 * 60);
+  assert.match(await s.text('/study'), /<dt>Streak<\/dt><dd>2 days<\/dd>[\s\S]*?Today counts\./);
+});

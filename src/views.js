@@ -276,7 +276,14 @@ function homePaths(ctx, ratingSeason) {
   return ratingSeason ? [rate, planner] : [planner, rate];
 }
 
-function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null }) {
+// the streak in a sentence: whether today counts yet, or how many minutes would keep it
+function streakNote(s) {
+  if (s.todayDone) return `Today counts.${s.best > s.current ? ` Your best is ${plural(s.best, 'day')}.` : ''}`;
+  if (s.vacation) return "It's the vacation, so your streak is paused. Studying today still adds a day.";
+  return `Study ${s.needed} more minutes today to ${s.current ? 'keep it going' : 'start one'}.`;
+}
+
+function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null }) {
   const { uni } = ctx;
   const n = (v) => v.toLocaleString('en-ZA');
   return layout({ ...ctx, path: '/' }, html`
@@ -284,6 +291,11 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
     <strong>Today</strong>
     <span>${t.weekend ? `Weekend. Monday: ${t.classes ? `${t.classes} ${t.classes === 1 ? 'class' : 'classes'}` : 'no classes'}` : t.next ? `Next: ${t.next.code || t.next.label} at ${t.next.start}` : t.classes ? `${`${t.classes} ${t.classes === 1 ? 'class' : 'classes'}`} on your timetable` : 'No classes today'}${t.soon ? ` · ${t.soon.code} ${t.soon.title} on ${fmtDate(t.soon.date)}` : ''}</span>
     <span class="meta">Your day, deadlines and DP →</span>
+  </a>` : ''}
+  ${streak ? html`<a class="card today-strip" href="/study">
+    <strong>${plural(streak.current, 'day')} study streak</strong>
+    <span>${streakNote(streak)}</span>
+    <span class="meta">Start studying →</span>
   </a>` : ''}
   <section class="hero">
     <div class="hero-main">
@@ -1141,10 +1153,11 @@ function marks(ctx, { courses, planLink, hasPlan }) {
 }
 
 // ---------- today ----------
-function today(ctx, { today: t, weekLink }) {
+function today(ctx, { today: t, weekLink, streak = null }) {
   const dayDate = t ? new Date(`${t.date}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
   return layout({ ...ctx, title: 'Today', here: '/today', path: '/today' }, html`
   <h1 class="page-title">Today</h1>
+  ${streak ? html`<a class="card today-strip" href="/study"><strong>${plural(streak.current, 'day')} study streak</strong><span>${streakNote(streak)}</span><span class="meta">Start studying →</span></a>` : ''}
   ${!t ? html`<div class="card panel"><p><strong>Nothing planned yet.</strong> Add your courses in the <a href="/plan">planner</a>, and this page shows your classes for the day, tests coming up and your DP status.</p></div>` : html`
   <p class="lede small">${dayDate}${t.note ? html` · ${t.note}` : ''}</p>
   <div class="today-grid">
@@ -1241,7 +1254,9 @@ function studyBoard(b) {
       <div><dt>Today</dt><dd>${Study.hoursText(b.summary.today)}</dd></div>
       <div><dt>This week</dt><dd>${Study.hoursText(b.summary.week)}</dd></div>
       <div><dt>This month</dt><dd>${Study.hoursText(b.summary.month)}</dd></div>
+      <div><dt>Streak</dt><dd>${plural(b.streak.current, 'day')}</dd></div>
     </dl>
+    <p class="study-streak">${streakNote(b.streak)} A day counts from ${Study.STREAK_MIN} minutes. Vacations pause the streak, so missing a vacation day never ends it.</p>
     ${b.dayDetail ? html`<div class="study-day" id="day">
       <h3>${dayLabel(b.dayDetail.day)}: ${Study.hoursText(b.dayDetail.minutes)}</h3>
       ${b.dayDetail.minutes ? html`<ul class="plain">${Object.entries(b.dayDetail.courses).filter(([, m]) => m > 0).sort((x, y) => y[1] - x[1]).map(([c, m]) => html`<li>${c ? html`<a class="code" href="/courses/${c}">${c}</a>` : 'General study'} · ${Study.hoursText(m)}</li>`)}</ul>` : html`<p class="meta">No study logged that day.</p>`}
