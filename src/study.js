@@ -33,6 +33,12 @@ function beat(s, now) {
 // a running session nobody is timing any more: no heartbeat for a while, or past its planned length plus grace
 const isStale = (s, now) => now - s.last_beat > MAX_GAP_SEC * 1000 || now - s.started_at > capSec(s) * 1000;
 
+// "studying now": a running session whose page checked in within the last two minutes (heartbeats come every minute)
+const LIVE_MS = 2 * 60 * 1000;
+const liveSince = (now) => now - LIVE_MS;
+// how many students a course page shows as studying it now: nothing below 3, so nobody can be picked out
+const MIN_LIVE_SHOWN = 3;
+
 // minutes per South African day, and per course within the day, each day capped at DAY_CAP_MIN
 function dayTotals(sessions) {
   const days = new Map();
@@ -178,4 +184,4 @@ function cleanName(text, max, screen) {
 // 8 characters from random bytes; 256 is a multiple of 32, so every character is equally likely
 const groupCode = (bytes) => [...bytes].slice(0, 8).map((b) => CODE_CHARS[b % CODE_CHARS.length]).join('');
 
-module.exports = { MAX_GROUPS, MAX_MEMBERS, CODE_CHARS, cleanName, groupCode, PERIODS, BOARD_SIZE, periodRange, rankBoard, parseProfileForm, PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
+module.exports = { LIVE_MS, liveSince, MIN_LIVE_SHOWN, MAX_GROUPS, MAX_MEMBERS, CODE_CHARS, cleanName, groupCode, PERIODS, BOARD_SIZE, periodRange, rankBoard, parseProfileForm, PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
