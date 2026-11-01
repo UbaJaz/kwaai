@@ -1165,7 +1165,10 @@ test('the year: revision plan from exam dates, month by month, in the calendar, 
   assert.equal(manifest.start_url, '/today');
   const sw = await fetch(`${base}/sw.js`);
   assert.equal(sw.headers.get('cache-control'), 'no-cache');
-  assert.match(await sw.text(), /NEVER = \/\^\\\/\(login\|auth/, 'sign-in and account pages are never cached');
+  const swText = await sw.text();
+  assert.match(swText, /NEVER = \/\^\\\/\(login\|auth/, 'sign-in and account pages are never cached');
+  assert.doesNotMatch(swText, /VERSION = 'kwaai-v1'/, 'v1 served old styles forever; installed apps must drop it');
+  assert.match(swText, /cache\.put\(req, res\.clone\(\)\)/, 'styles and scripts are refreshed behind the saved copy');
 });
 
 test('a demo password keeps every page private until it is given', async (t) => {
