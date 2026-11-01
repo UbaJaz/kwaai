@@ -42,6 +42,8 @@ ${path && site.origin ? html`<meta property="og:url" content="${site.origin}${pa
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/kwaai-icon.svg" type="image/svg+xml">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/kwaai-icon.svg">
 <script src="/app.js" defer></script>
 </head>
 <body${uni ? html` style="--uni:${uni.accent};--uni-soft:${uni.soft}"` : ''}>
@@ -993,6 +995,7 @@ function week(ctx, { wk, week: w, codes, state, calendar, upcoming = [] }) {
   <nav class="chips" aria-label="Semester">
     <a class="chip ${wk.term === 's1' ? 'on' : ''}" href="${link({ term: 's1' })}" ${wk.term === 's1' ? 'aria-current="page"' : ''}>Semester 1</a>
     <a class="chip ${wk.term === 's2' ? 'on' : ''}" href="${link({ term: 's2' })}" ${wk.term === 's2' ? 'aria-current="page"' : ''}>Semester 2</a>
+    <a class="chip" href="/year?${new URLSearchParams({ ...state })}">Whole year</a>
   </nav>
 
   ${!codes.length ? html`<div class="card panel"><p><strong>Your plan is empty.</strong> Add your courses in the <a href="/plan">semester planner</a> and your week builds itself: lectures, tutorials, practicals and time to study.</p></div>`
@@ -1050,6 +1053,47 @@ function week(ctx, { wk, week: w, codes, state, calendar, upcoming = [] }) {
       <a class="btn btn-quiet" href="/week.ics?${new URLSearchParams({ ...state })}">Download as a file (.ics)</a>`}
     <p class="fine">The link holds your course codes and timetable choices under a random address, nothing else. Term dates are UCT's published ${wk.year} dates (<a href="https://uct.ac.za/students/calendar/terms" rel="noopener">source</a>); UCT doesn't publish a separate last day of lectures, so classes run to the end of each term. Times come from the 2026 handbooks: check your official timetable.</p>
   </section>`);
+}
+
+// ---------- the year ----------
+const monthName = (key) => new Date(`${key}-15T12:00:00Z`).toLocaleDateString('en-ZA', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+function year(ctx, { year: y, today: now, semesters, revision, noExamDate, months, codes, state }) {
+  const link = (path) => `${path}?${new URLSearchParams({ ...state })}`;
+  return layout({ ...ctx, title: `Your ${y}`, here: '/week', path: '/year', description: 'Your UCT year: both semesters, term dates, tests, exams and when to start revising.' }, html`
+  <h1 class="page-title">Your ${y}</h1>
+  <p class="lede small">Both semesters from <a href="${link('/plan')}">your plan</a>, UCT's term dates, the tests and exams students have added for your courses, and when to start revising.</p>
+  <nav class="chips" aria-label="View">
+    <a class="chip" href="${link('/week')}&term=s1">Semester 1 week</a>
+    <a class="chip" href="${link('/week')}&term=s2">Semester 2 week</a>
+    <a class="chip on" href="${link('/year')}" aria-current="page">Whole year</a>
+  </nav>
+  ${!codes.length ? html`<div class="card panel"><p><strong>Your plan is empty.</strong> Add your courses in the <a href="/plan">planner</a> to see your year.</p></div>` : html`
+  <div class="year-semesters">${semesters.map((s) => html`<section class="card panel" aria-labelledby="ys-${s.term}">
+    <h2 id="ys-${s.term}">${s.term === 's1' ? 'Semester 1' : 'Semester 2'}</h2>
+    ${s.dates ? html`<p class="meta">${fmtDate(s.dates.start)} to ${fmtDate(s.dates.end)} · ${s.dates.breaks.map(([a, b]) => `vacation ${fmtDate(a)} to ${fmtDate(b)}`).join(' · ')}</p>` : ''}
+    ${s.courses.length ? html`<p><strong>${s.credits} credits</strong>, about ${s.hours} hours of work a week.</p>
+      <ul class="plain">${s.courses.map((c) => html`<li><a href="/courses/${c.code}" class="code">${c.code}</a> ${c.title}${/[WH]$/.test(c.code) ? html` <span class="meta">(whole year)</span>` : ''}</li>`)}</ul>`
+      : html`<p class="meta">No courses planned for this semester.</p>`}
+  </section>`)}</div>
+
+  <section class="card panel year-revision" aria-labelledby="revise-head">
+    <h2 id="revise-head">Exams and when to start revising</h2>
+    ${revision.length ? html`<ul class="plain">${revision.map((r) => html`<li>
+      <p><a href="/courses/${r.code}" class="code">${r.code}</a> <strong>${r.title}</strong> on ${fmtDate(r.date)}${r.time ? ` at ${r.time}` : ''}${r.countdown != null && r.countdown >= 0 ? html` <span class="meta">${r.countdown === 0 ? 'today' : `in ${r.countdown} days`}</span>` : ''}${r.confirmed ? '' : html` <span class="meta">(date not confirmed yet)</span>`}</p>
+      <p class="meta">Start revising on <strong>${fmtDate(r.start)}</strong>, ${r.days} days before${r.startIn != null && r.startIn > 0 ? ` (${r.startIn} days from now)` : r.startIn != null && r.startIn <= 0 && r.countdown >= 0 ? ' (that\'s now)' : ''}. Why: ${r.reasons.join('; ')}.</p>
+    </li>`)}</ul>` : html`<p class="meta">No exam dates for your courses yet.</p>`}
+    ${noExamDate.length ? html`<p class="meta">No exam date yet for ${noExamDate.map((c, i) => html`${i ? ', ' : ''}<a href="/courses/${c.code}#course-week">${c.code}</a>`)}. When UCT publishes the exam timetable, add the date on the course page and it shows up here and in your calendar for everyone in the course.</p>` : ''}
+    <p class="fine">The revision start is a rule of thumb: a week as a base, more when the exam is a big share of the mark, more when students rate the exams as hard. Make your calendar link on <a href="${link('/week')}">Your week</a> and these dates go into your phone's calendar too.</p>
+  </section>
+
+  <section class="year-timeline" aria-labelledby="timeline-head">
+    <h2 class="section-title" id="timeline-head">Month by month</h2>
+    ${months.map((m) => html`<div class="year-month">
+      <h3>${monthName(m.key)}</h3>
+      <ul class="plain">${m.items.map((it) => html`<li class="ym-${it.kind}${it.date < now ? ' ym-past' : ''}"><span class="agenda-time">${fmtDate(it.date).replace(/ \d{4}$/, '')}</span> ${it.text}</li>`)}</ul>
+    </div>`)}
+  </section>
+  <p class="fine">Term dates are UCT's published ${y} dates (<a href="https://uct.ac.za/students/calendar/terms" rel="noopener">source</a>), which UCT may change. Tests and exams are added by students in each course.</p>`}`);
 }
 
 // ---------- marks and DP tracker ----------
@@ -1471,4 +1515,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [] 
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, marks, today, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, year, marks, today, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };

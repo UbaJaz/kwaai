@@ -379,6 +379,18 @@ legend { font: 600 1.05rem var(--display); padding: 0 8px 0 0; }
 .handbook { font-size: .86rem; }
 .plan-share { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 24px 0 0; }
 .plan-remove { flex: none; font-size: .8rem; color: var(--muted); }
+/* ---------- the year ---------- */
+.year-semesters { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin: 0 0 16px; align-items: start; }
+.year-semesters h2, .year-revision h2 { font-size: 1.1rem; margin: 0 0 8px; }
+.year-revision { margin: 0 0 20px; }
+.year-revision li p { margin: 2px 0; }
+.year-revision li { padding: 8px 0; border-top: 1px solid var(--line); }
+.year-month h3 { font-size: .95rem; margin: 16px 0 6px; }
+.year-month li { display: flex; gap: 10px; align-items: baseline; }
+.ym-exam { font-weight: 600; color: var(--low); }
+.ym-revise { color: var(--good); }
+.ym-break, .ym-term { color: var(--muted); }
+.ym-past { opacity: .55; }
 /* ---------- marks and DP, today ---------- */
 .privacy-note { background: var(--good-soft); color: var(--good); padding: 10px 14px; border-radius: var(--radius-sm); font-size: .9rem; max-width: 760px; }
 .marks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; align-items: start; margin: 16px 0; }

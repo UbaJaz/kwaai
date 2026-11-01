@@ -205,7 +205,8 @@ function fold(line) {
 }
 const KIND_NAME = { lecture: 'lecture', tut: 'tutorial', prac: 'practical', set: '', own: '', study: 'study' };
 // dated: tests, assignments and exams students added for these courses ({ code, type, title, date, time, confirmed })
-function icsFor(courses, week, { year = planYear(), origin = '', crowd = {}, dated = [] } = {}) {
+// revision: "start revising" days before exams (src/year.js revisionPlan)
+function icsFor(courses, week, { year = planYear(), origin = '', crowd = {}, dated = [], revision = [] } = {}) {
   const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Kwaai//Week planner//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', `X-WR-CALNAME:Kwaai ${year}`, 'X-WR-TIMEZONE:Africa/Johannesburg'];
   const stamp = utc(new Date().toISOString().slice(0, 10), '00:00');
   for (const term of ['s1', 's2']) {
@@ -238,6 +239,13 @@ function icsFor(courses, week, { year = planYear(), origin = '', crowd = {}, dat
     lines.push('BEGIN:VEVENT', `UID:${uid}@kwaai`, `DTSTAMP:${stamp}`, ...when,
       `SUMMARY:${escapeText(`${d.code} ${d.title}${d.confirmed ? '' : ' (unconfirmed)'}`)}`,
       `DESCRIPTION:${escapeText(`Added by students on Kwaai${d.confirmed ? ` and confirmed by ${d.n}` : ', not confirmed yet'}. Check your course site.${origin ? `\n${origin}/courses/${d.code}` : ''}`)}`,
+      'END:VEVENT');
+  }
+  for (const r of revision) {
+    const uid = crypto.createHash('sha1').update(['revise', r.code, r.date].join('|')).digest('hex').slice(0, 20);
+    lines.push('BEGIN:VEVENT', `UID:${uid}@kwaai`, `DTSTAMP:${stamp}`, `DTSTART;VALUE=DATE:${r.start.replace(/-/g, '')}`, `DTEND;VALUE=DATE:${addDays(r.start, 1).replace(/-/g, '')}`,
+      `SUMMARY:${escapeText(`Start revising ${r.code}`)}`,
+      `DESCRIPTION:${escapeText(`${r.code} exam on ${r.date}, ${r.days} days away. Why this much time: ${r.reasons.join('; ')}.${origin ? `\n${origin}/year` : ''}`)}`,
       'END:VEVENT');
   }
   lines.push('END:VCALENDAR');

@@ -5,8 +5,9 @@ const express = require('express');
 const views = require('./views');
 const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
 const { analysePlan, REPLACED, parseProfile, hasProfile, profileParams, majorNeeds, creditAdvice, programmeOptions, facultyOptions } = require('./planner');
-const { parseWeek, weekParams, buildWeek, icsFor, DAYS, termDates } = require('./week');
+const { parseWeek, weekParams, buildWeek, icsFor, DAYS, termDates, planYear } = require('./week');
 const Marks = require('../public/marks-math');
+const { revisionPlan, yearTimeline } = require('./year');
 const { parseFact, screenFact, groupFacts, weekTopics, crowdSlots } = require('./facts');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { UNIVERSITIES, CURRENT } = require('./universities');
@@ -47,7 +48,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     next();
   });
   // an hour of caching: the files aren't fingerprinted, so a longer cache would show old styles after a deploy
-  app.use(express.static(path.join(__dirname, '..', 'public'), { maxAge: '1h' }));
+  // the service worker is checked on every visit so an update reaches installed copies straight away
+  app.use(express.static(path.join(__dirname, '..', 'public'), { maxAge: '1h', setHeaders: (res, file) => { if (file.endsWith('sw.js')) res.setHeader('Cache-Control', 'no-cache'); } }));
   app.use(express.urlencoded({ extended: false, limit: '20kb' }));
   app.use((req, res, next) => { req.body ??= {}; next(); }); // Express 5 leaves it undefined for empty POSTs
 
@@ -394,9 +396,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       WHERE status = 'published' AND course IN (${codes.map(() => '?').join(',')}) GROUP BY course, key`).all(userId || 0, ...codes));
   }
   const datedFor = (facts) => Object.entries(facts).flatMap(([code, f]) => f.event.map((e) => ({ code, ...e }))).sort((a, b) => a.date.localeCompare(b.date) || (a.time || '').localeCompare(b.time || ''));
+  // for calendar files: student times, dated events, and a "start revising" day before each exam
   const crowdFor = (codes) => {
     const facts = factsFor(codes);
-    return { crowd: crowdSlots(facts), dated: datedFor(facts) };
+    const dated = datedFor(facts);
+    return { crowd: crowdSlots(facts), dated, revision: revisionPlan(dated.filter((d) => d.type === 'exam'), weekRows(codes)) };
   };
   const backTo = (code) => `/courses/${code}#course-week`;
 
@@ -435,8 +439,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // ---- the week view ----
   // The plan as a Monday-to-Friday timetable. Choosing a tut group, adding a block or turning on study time works
   // like the planner: plain links and forms that update the plan's link and this device's cookie.
-  const weekRows = (codes) => (codes.length ? q(`SELECT c.code, c.title, c.credits, c.periods, c.days, c.period_choice, c.sessions, c.lectures, s.workload FROM courses c
-    LEFT JOIN (SELECT course, AVG(workload) AS workload FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
+  const weekRows = (codes) => (codes.length ? q(`SELECT c.code, c.title, c.credits, c.periods, c.days, c.period_choice, c.sessions, c.lectures, c.exam_weight, s.workload, s.difficulty FROM courses c
+    LEFT JOIN (SELECT course, AVG(workload) AS workload, AVG(difficulty) AS difficulty FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
     WHERE c.code IN (${codes.map(() => '?').join(',')})`).all(...codes) : []);
   const calCookie = (req) => /(?:^|;\s*)cal=([A-Za-z0-9_-]{22})/.exec(req.headers.cookie || '')?.[1];
   const TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
@@ -595,6 +599,32 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
     res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week) : null, weekLink: planUrl(codes, profile, week, '/week') }));
+  });
+
+  // ---- the year ----
+  // Both semesters side by side with their load, UCT's term dates, the tests and exams students added, and when to
+  // start revising for each exam.
+  app.get('/year', (req, res) => {
+    const { fromUrl, codes, profile, week } = readPlan(req);
+    if (!fromUrl && codes.length) return res.redirect(303, planUrl(codes, profile, week, '/year'));
+    const rows = weekRows(codes);
+    const list = codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean);
+    const facts = factsFor(codes);
+    const dated = datedFor(facts);
+    const year = planYear();
+    const today = saDate();
+    const semesters = ['s1', 's2'].map((t) => {
+      const wk = buildWeek(list, { ...week, t }, { year, crowd: crowdSlots(facts) });
+      const credits = Math.round(wk.courses.reduce((s, c) => s + (c.credits || 0) / (/[WH]$/.test(c.code) ? 2 : 1), 0));
+      return { term: t, dates: wk.dates, courses: wk.courses, credits, hours: wk.hours.total, weeks: wk.hours.weeks };
+    });
+    const exams = dated.filter((d) => d.type === 'exam' && d.date.startsWith(String(year)));
+    const revision = revisionPlan(exams, list, today);
+    const noExamDate = list.filter((c) => c.exam_weight !== 0 && !exams.some((e) => e.code === c.code));
+    res.page(views.year(req.ctx, {
+      year, today, semesters, revision, noExamDate, months: yearTimeline(year, dated, revision), codes,
+      state: Object.fromEntries(new URLSearchParams(planQuery(codes, profile, week))),
+    }));
   });
 
   app.get('/universities', (req, res) => {
