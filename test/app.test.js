@@ -9,6 +9,7 @@ const { analysePlan, termsOf, parseProfile, majorNeeds, creditAdvice } = require
 const { html } = require('../src/html');
 const { titleCase, parseHandbook, expandCode, codesIn, lecturePeriods, examWeight, sessionsOf } = require('../scripts/import-handbook');
 const { buildWeek, parseWeek, weekParams, icsFor } = require('../src/week');
+const { parseFact, weekTopics, draftTopics } = require('../src/facts');
 const { UNIVERSITIES } = require('../src/universities');
 const { scan: scanTables } = require('../scripts/import-tables');
 const { parseProgrammes, tidyName } = require('../scripts/import-programmes');
@@ -253,7 +254,7 @@ let base;
 before(async () => {
   const db = openDb(':memory:');
   seed(db, { samples: true });
-  server = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true }).listen(0);
+  server = createApp(db, { moderators: new Set(['mod001@myuct.ac.za', 'mod002@myuct.ac.za']), devMode: true }).listen(0);
   await new Promise((r) => server.once('listening', r));
   base = `http://localhost:${server.address().port}`;
 });
@@ -902,6 +903,72 @@ test('week view end to end: pick a group, add a block, subscribe, the calendar f
   const ics = await fetch(`${base}/week.ics?c=MAM1031F`);
   assert.match(ics.headers.get('content-type'), /text\/calendar/);
   assert.match(await b.text('/week?c='), /Your plan is empty/);
+});
+
+test('course details from students: two agree before it reaches timetables, reports hide it, moderators decide', async () => {
+  // the rules on their own
+  assert.deepEqual(parseFact({ kind: 'lecture', day: 'Tuesday', start: '10:00', end: '10:45' }).key, 'lecture|Tuesday|10:00|10:45');
+  assert.match(parseFact({ kind: 'tut', day: 'Tuesday', start: '11:00', end: '10:00' }).error, /end time after/);
+  assert.match(parseFact({ kind: 'event', type: 'test', date: '1999-01-01' }, { year: 2027 }).error, /date this year/);
+  assert.equal(parseFact({ kind: 'event', type: 'test', title: '', date: '2027-03-15' }, { year: 2027 }).data.title, 'Class test');
+  assert.deepEqual(weekTopics([{ week: 1, text: 'Limits' }, { week: 2, text: 'Derivatives' }], [{ week: 2, text: 'Chain rule', n: 2, confirmed: true, key: 'k' }]).map((t) => [t.week, t.text, t.source]),
+    [[1, 'Limits', 'handbook'], [2, 'Chain rule', 'students']]);
+  assert.equal(draftTopics('This course introduces calculus and its uses in science.').length, 0, 'prose is not split into fake weekly topics');
+
+  const a = browser();
+  const b = browser();
+  await a.signIn('fct001@myuct.ac.za');
+  await b.signIn('fct002@myuct.ac.za');
+  const slot = { kind: 'lecture', day: 'Tuesday', start: '10:00', end: '10:45' };
+  // STA1000F's handbook entry has no lecture period: one student isn't enough to put it on timetables
+  await a.post('/courses/STA1000F/facts', slot);
+  let page = await a.text('/courses/STA1000F');
+  assert.match(page, /Lecture Tuesday 10:00–10:45 <span class="meta">1 student so far, needs one more to confirm/);
+  let week = await a.text('/week?c=STA1000F');
+  assert.match(week, /Use Tue 10:00–10:45/, 'an unconfirmed time is offered, not placed');
+  await b.post('/courses/STA1000F/facts', slot); // a second student confirms
+  assert.match(await b.text('/courses/STA1000F'), /2 students confirmed/);
+  week = await b.text('/week?c=STA1000F');
+  assert.match(week, /STA1000F<\/strong>\s*<span>Lecture/, 'confirmed: on the timetable');
+  assert.doesNotMatch(week, /Not on the timetable yet[^]*STA1000F<\/a> lecture/);
+
+  // a test date shows on the week page and in the calendar file, marked unconfirmed until a second student agrees
+  const test1 = { kind: 'event', type: 'test', title: 'Test 1', date: `${new Date().getFullYear() + 1}-03-15`, time: '17:30' };
+  assert.equal((await a.post('/courses/STA1000F/facts', test1)).status, 303);
+  assert.match(await a.text('/week?c=STA1000F'), /Coming up in your courses[^]*Test 1/);
+  let ics = await (await fetch(`${base}/week.ics?c=STA1000F`)).text();
+  assert.match(ics, /SUMMARY:STA1000F Test 1 \(unconfirmed\)/);
+  await b.post('/courses/STA1000F/facts', test1);
+  ics = await (await fetch(`${base}/week.ics?c=STA1000F`)).text();
+  assert.match(ics, /SUMMARY:STA1000F Test 1\r\n/);
+
+  // weekly topics: the handbook draft, then what students say
+  page = await a.text('/courses/STA1006S');
+  assert.match(page, /Week 1<\/strong> Types of data variables <span class="meta">rough guide from the handbook/);
+  await a.post('/courses/STA1006S/facts', { kind: 'topic', week: '1', text: 'Data types and graphs' });
+  assert.match(await a.text('/courses/STA1006S'), /Week 1<\/strong> Data types and graphs/);
+  // text is screened like comments: a phone number never goes up
+  await a.post('/courses/STA1006S/facts', { kind: 'topic', week: '2', text: 'WhatsApp me on 082 555 1234' });
+  assert.doesNotMatch(await a.text('/courses/STA1006S'), /082 555 1234/);
+
+  // two reports hide it until a moderator approves
+  const c = browser();
+  await c.signIn('fct003@myuct.ac.za');
+  await b.post('/courses/STA1006S/facts/report', { key: 'topic|1|data types and graphs' });
+  await c.post('/courses/STA1006S/facts/report', { key: 'topic|1|data types and graphs' });
+  assert.doesNotMatch(await a.text('/courses/STA1006S'), /Data types and graphs/);
+  const mod = browser();
+  await mod.signIn('mod002@myuct.ac.za'); // a second moderator: mod001 has used up its sign-in requests in other tests
+  assert.match(await mod.text('/mod'), /Week 1: Data types and graphs/);
+  assert.equal((await mod.post('/mod/facts/approve', { course: 'STA1006S', key: 'topic|1|data types and graphs' })).status, 303);
+  assert.match(await a.text('/courses/STA1006S'), /Data types and graphs/);
+
+  // signed out: read only; deleting the account takes the student's details with it
+  assert.match(await browser().text('/courses/STA1000F'), /Sign in with your UCT email<\/a> to add or confirm details/);
+  assert.equal((await browser().post('/courses/STA1000F/facts', slot)).status, 303);
+  assert.ok((await (await a.get('/account/data')).json()).course_details_you_added.length >= 3);
+  await a.post('/account/delete', {});
+  assert.match(await b.text('/courses/STA1000F'), /1 student so far/, 'only the other student\'s time is left');
 });
 
 test('a demo password keeps every page private until it is given', async (t) => {

@@ -16,6 +16,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -44,6 +45,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Weighted average mark of 40% for all class tests (excluding objective tests) AND Attendance at and submission of a minimum of 75% of tutorials and assignments.",
       "assessment": "Invigilated tests (40%) and one final exam (60%), no projects.",
@@ -68,6 +70,7 @@
       "days": [
         "Tuesday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -88,6 +91,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -108,6 +112,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 74",
@@ -134,6 +139,7 @@
         "Wednesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at and completion of all practicals and tutorials; all class tests must be written.",
       "assessment": "Tests count 20%, practicals and tutorials count 30%, mid-year examination of 1 ½ hours counts 25%, end of year examination of 1 ½ hours counts 25% (subminimum 40% on the average of mid-year and end of year examinations).",
@@ -154,6 +160,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -174,6 +181,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -194,6 +202,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory completion determined from the following submissions: a daily diary of work signed by student and employer, copies of observations and calculations as specified in the course materials and a signed letter from the employer on a company letterhead.",
       "assessment": "Pass/fail determined according to whether tasks have been duly performed.",
@@ -214,6 +223,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at and completion of all assignments with a minimum average of 40%, a minimum class test average of 40%.",
       "assessment": "Tests count 25%, practical assignments count 25%, examination of 3 hours counts 50% (sub-minimum 40%).",
@@ -234,6 +244,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at and completion of all tests",
       "assessment": "Class tests will count 52% each and exam will count 50%",
@@ -254,6 +265,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -274,6 +286,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -292,6 +305,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -319,6 +333,36 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Introduction to error theory and error propagation"
+        },
+        {
+          "week": 2,
+          "text": "Method of least squares - parametric case"
+        },
+        {
+          "week": 4,
+          "text": "Two-dimensional coordinate systems"
+        },
+        {
+          "week": 6,
+          "text": "Motions of the Earth"
+        },
+        {
+          "week": 7,
+          "text": "Time"
+        },
+        {
+          "week": 9,
+          "text": "Satellite orbits"
+        },
+        {
+          "week": 11,
+          "text": "Three-dimensional co-ordinate systems and spherical trigonometry"
+        }
       ],
       "sessions": [
         {
@@ -362,6 +406,36 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "GIS concepts"
+        },
+        {
+          "week": 2,
+          "text": "Cartographic concepts and GIS map production"
+        },
+        {
+          "week": 4,
+          "text": "Map Projections and their application in GIS"
+        },
+        {
+          "week": 6,
+          "text": "GIS data structures and their analysis"
+        },
+        {
+          "week": 7,
+          "text": "Spatial databases"
+        },
+        {
+          "week": 9,
+          "text": "GIS data input with special emphasis on Remote Sensing"
+        },
+        {
+          "week": 11,
+          "text": "GIS analysis and its application"
+        }
+      ],
       "sessions": [
         {
           "kind": "prac",
@@ -396,6 +470,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory completion determined from the following submissions: a daily diary of work signed by student and employer, copies of observations and calculations as specified in the course materials and a signed letter from the employer on a company letterhead.",
       "assessment": "Pass/Fail determined according to whether the tasks have been duly performed.",
@@ -414,6 +489,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -441,6 +517,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -482,6 +559,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -514,6 +592,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -534,6 +613,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -554,6 +634,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%; all class tests must be written.",
       "assessment": "Tests count 15%, practical assignments count 30%, examination of 3 hours counts 55% (sub-minimum 40%).",
@@ -574,6 +655,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at and completion of all tutorials with a minimum average of 50%.",
       "assessment": "Tutorials count 40%, Survey camp counts 30%, and the GISc project counts 30%. There is no exam. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 81",
@@ -592,6 +674,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% attendance and 100% submission of all assignments",
       "assessment": "100% on the portfolio exam",
@@ -610,6 +693,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% attendance and 100% submission of all assignments",
       "assessment": "100% on the portfolio exam",
@@ -628,6 +712,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% attendance and100% submission of all assignments",
       "assessment": "100% on the exam",
@@ -656,6 +741,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -698,6 +784,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -740,6 +827,20 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "The history of surveying in southern Africa is self-taught through reading and assessed by essay"
+        },
+        {
+          "week": 5,
+          "text": "Some additional surveying instrumentation/methods not mentioned in pre-requisite courses are introduced"
+        },
+        {
+          "week": 9,
+          "text": "Surveying with the global navigation satellite systems is covered in detail and consists of 80% of the course"
+        }
+      ],
       "sessions": [],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%, a minimum class test average of 35%.",
       "assessment": "Tests count 20%, practical assignments count 20%, examination of 1 ½ hours counts 60% (sub-minimum 40%). DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 83",
@@ -768,6 +869,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%, a minimum class test average of 35%.",
       "assessment": "Tests count 20%, practical assignments count 20%, examination of 1 ½ hours counts 60% (sub-minimum 40%).",
@@ -788,6 +890,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -812,6 +915,7 @@
       "days": [
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at and completion of all assignments.",
       "assessment": "Projects and assignments count 100%.",
@@ -830,6 +934,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -850,6 +955,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -870,6 +976,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -902,6 +1009,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% attendance and100% submission of all assignments",
       "assessment": "100% on the portfolio exam",
@@ -920,6 +1028,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -940,6 +1049,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 86",
@@ -960,6 +1070,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -980,6 +1091,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% attendance at all sessions and 50% class test average.",
       "assessment": "Tests and assignments count 40%, Oral presentation counts 30% and written examination of 3 hours counts 30%.",
@@ -1008,6 +1120,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -1050,6 +1163,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -1082,6 +1196,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "80% attendance and100% submission of all assignments",
       "assessment": "100% on the portfolio exam",
@@ -1109,6 +1224,28 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Introduction to geodesy"
+        },
+        {
+          "week": 3,
+          "text": "Satellite positioning in geodesy"
+        },
+        {
+          "week": 5,
+          "text": "Geodetic networks"
+        },
+        {
+          "week": 8,
+          "text": "Datum transformations"
+        },
+        {
+          "week": 10,
+          "text": "Earth gravity field"
+        }
       ],
       "sessions": [
         {
@@ -1144,6 +1281,36 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Historical and theoretical bases of land use planning, hierarchy of land use plans, land use control and management"
+        },
+        {
+          "week": 2,
+          "text": "Sub-division and township layouts"
+        },
+        {
+          "week": 4,
+          "text": "Site analysis"
+        },
+        {
+          "week": 6,
+          "text": "Social considerations"
+        },
+        {
+          "week": 7,
+          "text": "Financial and economic considerations, institutional framework"
+        },
+        {
+          "week": 9,
+          "text": "Property development"
+        },
+        {
+          "week": 11,
+          "text": "Current development issues"
+        }
+      ],
       "sessions": [],
       "dp": "Attendance at and completion of all assignments with a minimum average of 50%, a minimum class test average of 35%.",
       "assessment": "Tests count 15%, practical assignments count 55%, examination of 3 hours counts 30%.",
@@ -1164,6 +1331,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None.",
       "assessment": "Project proposal count 5%, final project presentation count 10%, final written project report count 85%.",
@@ -1191,6 +1359,20 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Statistical analysis, deformation and subsidence surveys"
+        },
+        {
+          "week": 5,
+          "text": "Instrumentation and methods of precise engineering surveying"
+        },
+        {
+          "week": 9,
+          "text": "Kalman filters, engineering and industrial metrology, deformation analysis methods, case studies"
+        }
       ],
       "sessions": [
         {
@@ -1226,6 +1408,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at and completion of all assignments. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 89",
       "assessment": "Pass/Fail based on achieving the learning outcomes of the course.",
@@ -1254,6 +1437,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -1293,6 +1477,16 @@
       "days": [
         "Thursday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "The Access to Information Act, copyright"
+        },
+        {
+          "week": 7,
+          "text": "ISO, role of international associations/societies in Geomatics and social responsibility will also be covered"
+        }
+      ],
       "sessions": [],
       "dp": "Attendance at and completion of all assignments with a minimum average of 40%.",
       "assessment": "Assignments count 40%, examination of 3 hours counts 60% (sub-minimum 40%). DEPARTMENTS IN THE FACULTY AND COURSES OFFERED",
@@ -1321,6 +1515,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1385,6 +1580,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1434,6 +1630,7 @@
         "Wednesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1504,6 +1701,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -1560,6 +1758,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1580,6 +1779,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1600,6 +1800,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 95",
@@ -1620,6 +1821,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1640,6 +1842,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Energy Balances and Thermodynamic Properties of Substances: ideal gas"
+        },
+        {
+          "week": 2,
+          "text": "Phase diagrams"
+        },
+        {
+          "week": 3,
+          "text": "Energy balance elements and influence of T and P"
+        },
+        {
+          "week": 4,
+          "text": "Bernouilli equation"
+        },
+        {
+          "week": 5,
+          "text": "Simultaneous mass and energy balances"
+        },
+        {
+          "week": 6,
+          "text": "Mollier diagrams"
+        },
+        {
+          "week": 7,
+          "text": "Cyclic systems"
+        },
+        {
+          "week": 8,
+          "text": "Entropy"
+        },
+        {
+          "week": 9,
+          "text": "Reaction Systems: heats of formation/reaction/combustion"
+        },
+        {
+          "week": 10,
+          "text": "Mass and energy balances with reaction"
+        },
+        {
+          "week": 11,
+          "text": "Chemical equilibrium"
+        },
+        {
+          "week": 12,
+          "text": "Reactor mole balances"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1660,6 +1912,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1680,6 +1933,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1700,6 +1954,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 97",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1720,6 +1975,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1740,6 +1996,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 98",
@@ -1760,6 +2017,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1780,6 +2038,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1800,6 +2059,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 99",
@@ -1820,6 +2080,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1840,6 +2101,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1860,6 +2122,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 100",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1880,6 +2143,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1900,6 +2164,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1920,6 +2185,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1940,6 +2206,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -1960,6 +2227,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 102",
@@ -1980,6 +2248,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2000,6 +2269,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2020,6 +2290,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. CIVIL ENGINEERING The Department offers the following undergraduate degree programme: BSc (Eng) in Civil Engineering The Department of Civil Engineering is housed in the New Engineering Building, situated on the top terrace of the Upper Campus. This facility is shared with the Department of Chemical Engineering and the Faculty Office.",
@@ -2040,6 +2311,16 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Corrosion of metals"
+        },
+        {
+          "week": 7,
+          "text": "Thermal, acoustic and fire properties of building components"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 106",
@@ -2060,6 +2341,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2080,6 +2362,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2100,6 +2383,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -2120,6 +2404,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2140,6 +2425,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2160,6 +2446,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2180,6 +2467,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2200,6 +2488,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2220,6 +2509,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2240,6 +2530,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 109",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2260,6 +2551,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2280,6 +2572,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -2300,6 +2593,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2320,6 +2614,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2340,6 +2635,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2360,6 +2656,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2380,6 +2677,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -2400,6 +2698,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -2421,6 +2720,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2441,6 +2741,16 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Objectives, processes and systems"
+        },
+        {
+          "week": 7,
+          "text": "PH control"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2461,6 +2771,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -2481,6 +2792,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2501,6 +2813,24 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Properties of structural concrete"
+        },
+        {
+          "week": 4,
+          "text": "Properties of reinforcing and prestressing steel"
+        },
+        {
+          "week": 7,
+          "text": "Properties of structural steel, elastic and plastic behaviour of reinforced concrete structures and steel structures"
+        },
+        {
+          "week": 10,
+          "text": "Serviceability limitstate design and ultimate limit-state design of reinforced concrete elements (beams and slabs) and steel structures"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2522,6 +2852,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2543,6 +2874,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2563,6 +2895,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course..",
@@ -2583,6 +2916,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -2603,6 +2937,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. CONSTRUCTION ECONOMICS AND MANAGEMENT The Department is housed on Level 5 of the Snape Building, opposite Engineering Mall, off Madiba Circle, Upper Campus.",
@@ -2623,6 +2958,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Coursework is compulsory. If the student does not submit hand-ins or write a test the student will receive a mark of 0 for that assessment (unless granted an exemption). But the student will be able to write the exam.",
       "assessment": "Coursework 40%; final examination 60%",
@@ -2641,6 +2977,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Writing the test is compulsory. If a student does not write the test and does not get an exemption then the student will be marked absent and awarded 0 for the test. But the student will be able to write the exam.",
       "assessment": "Test 40%; final examination 60%. Departments and Units Established in the Faculty of Science BIOLOGICAL SCIENCES Associate Professor and Head of Department: A M Muasya, MPhil Moi PhD Reading",
@@ -2661,6 +2998,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Coursework is compulsory. If the student does not submit hand-ins or write a test the student will receive a mark of 0 for that assessment (unless granted an exemption). But the student will be able to write the exam.",
       "assessment": "Coursework 40%; final examination 60%.",
@@ -2681,6 +3019,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Completion of assignment and class test is compulsory. If the student does not submit the assignment or write the test the student will receive 0 for that assessment (unless granted an exemption). But the student will be able to write the exam.",
       "assessment": "Assignment (20%), Class test (20%), Exam (60%) SUMMER TERM SERVICE COURSES Admission Criteria: The following courses will be limited to a maximum of 75 students. Once this number has been reached, no further students will be registered for the course. Note: A first year student may not do a law course during Summer Term.",
@@ -2701,6 +3040,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2721,6 +3061,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2739,6 +3080,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 117",
@@ -2759,6 +3101,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2779,6 +3122,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2799,6 +3143,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 118",
@@ -2819,6 +3164,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2837,6 +3183,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2857,6 +3204,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2877,6 +3225,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2897,6 +3246,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2917,6 +3267,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2935,6 +3286,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2955,6 +3307,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2975,6 +3328,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -2995,6 +3349,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3013,6 +3368,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3033,6 +3389,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3053,6 +3410,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3073,6 +3431,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3091,6 +3450,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3111,6 +3471,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3129,6 +3490,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3149,6 +3511,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3169,6 +3532,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3187,6 +3551,44 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Consideration of client/developer motivation and needs"
+        },
+        {
+          "week": 2,
+          "text": "The client briefing process"
+        },
+        {
+          "week": 3,
+          "text": "The theory of construction cost planning and cost control"
+        },
+        {
+          "week": 5,
+          "text": "Design economics, elemental cost analyses of buildings"
+        },
+        {
+          "week": 6,
+          "text": "Cost studies/cost comparisons"
+        },
+        {
+          "week": 7,
+          "text": "Consideration of cost and price indices"
+        },
+        {
+          "week": 9,
+          "text": "Techniques for cost planning and cost control, and the preparation of approximate estimates"
+        },
+        {
+          "week": 10,
+          "text": "Communication applied to the cost planning and control environment"
+        },
+        {
+          "week": 11,
+          "text": "Consideration of current research being conducted on the practice of cost planning and cost control in South Africa"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3207,6 +3609,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3227,6 +3630,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3247,6 +3651,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3267,6 +3672,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3287,6 +3693,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3307,6 +3714,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3327,6 +3735,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3347,6 +3756,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. ELECTRICAL ENGINEERING The Department of Electrical Engineering is located on the 4th floor of the Menzies Building, Library Road, Upper Campus, Rondebosch.",
@@ -3376,6 +3786,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -3461,6 +3872,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -3546,6 +3958,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -3612,6 +4025,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Basic syntax, variables, operators, comments, expressions, strings, input and output"
+        },
+        {
+          "week": 2,
+          "text": "Conditional statements, if, nested ifs, if-else ladders"
+        },
+        {
+          "week": 3,
+          "text": "Boolean expressions"
+        },
+        {
+          "week": 4,
+          "text": "Loops, for and while, nested loops"
+        },
+        {
+          "week": 5,
+          "text": "Functions, parameters, return values"
+        },
+        {
+          "week": 6,
+          "text": "Testing and debugging"
+        },
+        {
+          "week": 7,
+          "text": "Arrays and lists, multidimensional arrays"
+        },
+        {
+          "week": 8,
+          "text": "Sorting and searching"
+        },
+        {
+          "week": 9,
+          "text": "Text files"
+        },
+        {
+          "week": 10,
+          "text": "Number systems"
+        },
+        {
+          "week": 11,
+          "text": "The course is offered in a blended-learning format"
+        },
+        {
+          "week": 12,
+          "text": "Students are provided with a set of video lectures that they can watch multiple times"
+        }
+      ],
       "sessions": [],
       "dp": "45% weighted average for practical work.",
       "assessment": "Theory tests count for 20%, practicals count for 20%, practical tests count for 10%, June examination counts for 50% of the course mark. Subminima: 45% weighted average for practical work, 45% weighted average of tests and exams.",
@@ -3632,6 +4095,32 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Basic syntax, variables, operators, comments, expressions, strings, input and output"
+        },
+        {
+          "week": 3,
+          "text": "Conditional statements, if, nested ifs, if-else ladders"
+        },
+        {
+          "week": 5,
+          "text": "Boolean expressions"
+        },
+        {
+          "week": 7,
+          "text": "Loops, for and while, nested loops"
+        },
+        {
+          "week": 9,
+          "text": "Functions, parameters, return values"
+        },
+        {
+          "week": 11,
+          "text": "Arrays and lists, multidimensional arrays and text files"
+        }
+      ],
       "sessions": [],
       "dp": "45% weighted average for practical work.",
       "assessment": "Theory tests count for 20%, practicals count for 20%, practical tests count for 10%, June examination counts for 50% of the course mark. Subminima: 45% weighted average for practical work, 45% weighted average of tests and exams.",
@@ -3660,6 +4149,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -3696,6 +4186,24 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Concurrent and parallel computing (including practical work in Java)"
+        },
+        {
+          "week": 4,
+          "text": "Computer architecture"
+        },
+        {
+          "week": 7,
+          "text": "An introduction to Society"
+        },
+        {
+          "week": 10,
+          "text": "Theory of Computing (including Turing Machines and the limits of computation)"
+        }
+      ],
       "sessions": [
         {
           "kind": "prac",
@@ -3724,6 +4232,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "None",
       "assessment": "Practical programming examination counts for 100% DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 171",
@@ -3752,6 +4261,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -3788,6 +4298,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -3824,6 +4335,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -3852,6 +4364,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "All assessments (including tests and essay) to be completed.",
       "assessment": "Coursework: 45%; Exam: 55%. The course outline will provide more detail on the breakdown for submission weightings and variation for exemptions and absences.",
@@ -3872,6 +4385,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "All tests/assignments/essays/projects/tutorial attendandance/submissions to be completed for DP purposes (details will be provided in the course documentation). If your yearmark is below 40% you will not be permitted to write the final examination.",
       "assessment": "Coursework (50%) and final exam (50%). The course documentation will detail the breakdown for assessment weightings and variation for exemptions and absences. Note: The ECO1008F supplementary/deferred exam will be scheduled during the last week of the mid-year vacation. If students do not write this exam they will be marked as AB and will have to retake the course.",
@@ -3892,6 +4406,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "All tests/assignments/essays/projects/tutorial attendandance/submissions to be completed for DP purposes (details will be provided in the course documentation). If your yearmark is below 40% you will not be permitted to write the final examination.",
       "assessment": "Coursework (50%) and final exam (50%). The course documentation will detail the breakdown for assessment weightings and variation for exemptions and absences. Note: The ECO1008F supplementary/deferred exam will be scheduled during the last week of the mid-year vacation. If students do not write this exam they will be marked as AB and will have to retake the course.",
@@ -3912,6 +4427,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "All tests/assignments/essays/projects/tutorial attendandance/submissions to be completed for DP purposes (details will be provided in the course documentation). If your yearmark is below 40% you will not be permitted to write the final examination. Note: The ECO1009S supplementary/deferred exam will be scheduled during the last week of the mid-year vacation.",
       "assessment": "Coursework (50%) and final exam (50%). The course documentation will detail the breakdown for assessment weightings and variation for exemptions and absences. Departments Established in the Faculty of Health Sciences HUMAN BIOLOGY Associate Professor and Head of Department: M R Collins, BSc(Hons) Stell PhD Cape Town FECSS The programme in Biomedical Engineering is offered in the Faculty of Health Sciences Its activities are concentrated at postgraduate level and students may pursue the…",
@@ -3932,6 +4448,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "All tests/assignments/essays/projects/tutorial attendandance/submissions to be completed for DP purposes (details will be provided in the course documentation). If your yearmark is below 40% you will not be permitted to write the final examination. Note: The ECO1009S supplementary/deferred exam will be scheduled during the last week of the mid-year vacation.",
       "assessment": "Coursework (50%) and final exam (50%). The course documentation will detail the breakdown for assessment weightings and variation for exemptions and absences. Departments Established in the Faculty of Health Sciences HUMAN BIOLOGY Associate Professor and Head of Department: M R Collins, BSc(Hons) Stell PhD Cape Town FECSS The programme in Biomedical Engineering is offered in the Faculty of Health Sciences Its activities are concentrated at postgraduate level and students may pursue the…",
@@ -3952,6 +4469,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3972,6 +4490,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -3992,6 +4511,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4012,6 +4532,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -4032,6 +4553,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -4052,6 +4574,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4072,6 +4595,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Diodes: Basic Diode Concepts"
+        },
+        {
+          "week": 2,
+          "text": "Load-Line Analysis of Diode Circuits"
+        },
+        {
+          "week": 3,
+          "text": "Zener-Diode Voltage-Regulator Circuits"
+        },
+        {
+          "week": 4,
+          "text": "Ideal-Diode Model"
+        },
+        {
+          "week": 5,
+          "text": "Piecewise-Linear Diode Models"
+        },
+        {
+          "week": 6,
+          "text": "Rectifier Circuits"
+        },
+        {
+          "week": 7,
+          "text": "Wave-Shaping Circuits"
+        },
+        {
+          "week": 8,
+          "text": "Linear Small-Signal Equivalent Circuits Bipolar Junction Transistors: Current and Voltage Relationships (Ebers-Moll model)"
+        },
+        {
+          "week": 9,
+          "text": "Common-Emitter Characteristics"
+        },
+        {
+          "week": 10,
+          "text": "Load-Line Analysis of a Common-Emitter Amplifier"
+        },
+        {
+          "week": 11,
+          "text": "Pnp-Bipolar Junction Transistors"
+        },
+        {
+          "week": 12,
+          "text": "Large-Signal DC Circuit Models"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4092,6 +4665,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 132",
@@ -4112,6 +4686,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4132,6 +4707,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course",
@@ -4152,6 +4728,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4172,6 +4749,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4192,6 +4770,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4212,6 +4791,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4232,6 +4812,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4252,6 +4833,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4272,6 +4854,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 135",
@@ -4292,6 +4875,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4312,6 +4896,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4332,6 +4917,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -4352,6 +4938,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4372,6 +4959,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4392,6 +4980,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4412,6 +5001,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4432,6 +5022,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 138",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4452,6 +5043,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4472,6 +5064,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4492,6 +5085,32 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Discrete time signals and systems"
+        },
+        {
+          "week": 3,
+          "text": "The discrete Fourier transform properties and fast algorithms"
+        },
+        {
+          "week": 5,
+          "text": "The ztransform"
+        },
+        {
+          "week": 7,
+          "text": "Frequency response from z-plane"
+        },
+        {
+          "week": 9,
+          "text": "FIR and IIR filter design and structures for digital filters"
+        },
+        {
+          "week": 11,
+          "text": "A specialist component in an applied or advanced signal processing application area"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4512,6 +5131,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4532,6 +5152,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "The industrial automation hierarchy"
+        },
+        {
+          "week": 2,
+          "text": "Automation drawings – P&ID diagrams"
+        },
+        {
+          "week": 3,
+          "text": "Programmable Logic Controllers"
+        },
+        {
+          "week": 4,
+          "text": "Supervisory Control and Data Acquisition"
+        },
+        {
+          "week": 5,
+          "text": "Distributed Control Systems"
+        },
+        {
+          "week": 6,
+          "text": "Sensing and Measurement Techniques"
+        },
+        {
+          "week": 7,
+          "text": "Batch Processes"
+        },
+        {
+          "week": 8,
+          "text": "Automation Networks"
+        },
+        {
+          "week": 9,
+          "text": "Safety Systems"
+        },
+        {
+          "week": 10,
+          "text": "A selection of Advanced Control topics such as Nonlinear"
+        },
+        {
+          "week": 11,
+          "text": "Quantitative Feedback Theory"
+        },
+        {
+          "week": 12,
+          "text": "H-infinity and Model Predictive Control"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 140",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4552,6 +5222,52 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Multibody Kinematics (2D&3D)"
+        },
+        {
+          "week": 2,
+          "text": "Inverse Kinematics"
+        },
+        {
+          "week": 3,
+          "text": "Euler-Lagrange Mechanics"
+        },
+        {
+          "week": 4,
+          "text": "Numerical Simulation"
+        },
+        {
+          "week": 5,
+          "text": "Friction modelling and a selection of nonlinear control topics from: Feedback Linearisation"
+        },
+        {
+          "week": 6,
+          "text": "Lyapunov Stability"
+        },
+        {
+          "week": 7,
+          "text": "Sliding Control"
+        },
+        {
+          "week": 8,
+          "text": "Gain Scheduling"
+        },
+        {
+          "week": 9,
+          "text": "Manipulator control and Trajectory Optimisation"
+        },
+        {
+          "week": 10,
+          "text": "Applications of techniques will be tailored towards terrestrial, sea, air as well as industrial robotic systems"
+        },
+        {
+          "week": 11,
+          "text": "The course aims to develop knowledge, skills and values through a balanced integration of lectures, laboratory and project work"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4572,6 +5288,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4592,6 +5309,48 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Wireless Network Fundamentals"
+        },
+        {
+          "week": 2,
+          "text": "Wireless and Wireline Access Technologies"
+        },
+        {
+          "week": 3,
+          "text": "Radio Resource Management"
+        },
+        {
+          "week": 4,
+          "text": "Mobility Management"
+        },
+        {
+          "week": 5,
+          "text": "Traffic and Congestion Control"
+        },
+        {
+          "week": 7,
+          "text": "QOS in Packet Network"
+        },
+        {
+          "week": 8,
+          "text": "IP Traffic DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 141 Engineering"
+        },
+        {
+          "week": 9,
+          "text": "Network Convergence"
+        },
+        {
+          "week": 10,
+          "text": "Network Services and Applications Requirements"
+        },
+        {
+          "week": 11,
+          "text": "Data Plane and Control Plane Technologies, and Performance modelling and simulation"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4612,6 +5371,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4630,6 +5390,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -4650,6 +5411,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -4670,6 +5432,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "A class test, practical assignments and field report count 50%; one 2-hour examination written in June count 50% (sub-minimum of 40% required).",
@@ -4698,6 +5461,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -4757,6 +5521,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -4797,6 +5562,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -4838,6 +5604,32 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Atmospheric energy balance, thermodynamics, dynamics, and general circulation"
+        },
+        {
+          "week": 3,
+          "text": "Tropical and mid-latitude weather producing systems"
+        },
+        {
+          "week": 5,
+          "text": "Weather and climate extreme events (e.g"
+        },
+        {
+          "week": 7,
+          "text": "Heat-waves, drought, and floods) in Africa"
+        },
+        {
+          "week": 9,
+          "text": "Climate variability and change"
+        },
+        {
+          "week": 11,
+          "text": "Atmospheric boundary layer turbulence, chemistry, and pollution"
+        }
       ],
       "sessions": [
         {
@@ -4886,6 +5678,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -4926,6 +5719,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -4968,6 +5762,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "prac",
@@ -5000,6 +5795,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -5018,6 +5814,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -5038,6 +5835,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "A 90% attendance at the in-person and online classes and 100% submission of assignments is required. Please refer to the official course handout document for additional information for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -5058,6 +5856,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Minimum 40% for coursework. This includes completion of all required submissions, tests and attendance of 9 out of 10 tutorials.",
       "assessment": "Students will be required to write two tests during the semester, each with a weight of 20%, and a final exam of 60%. SCHOOL OF ECONOMICS Director of the School: L Edwards, BA Cape Town BA(Hons) Rhodes MA MSc LSE PhD Cape Town",
@@ -5078,6 +5877,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance of at least 80% of the practicals.",
       "assessment": "June examination 3 hours 60%, year mark 40%.",
@@ -5106,6 +5906,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "An average of 40% on all marked classwork and tests. Submission of 80% of weekly assignments in each of the four sections (i.e., GEO, AGE, SEA, EGS). Attendance of the field trip is compulsory for students majoring in Archaeology, EGS, Geology, or Oceanography.",
       "assessment": "Marked classwork, including class test/s, counts 50%, and a 3-hour written examination counts 50%. A subminimum of 40% in the class mark is required to write the theory examination paper. Supplementary examinations for GEO1009F will be offered in July. DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 177",
@@ -5134,6 +5935,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "An average of 40% on all marked classwork and tests. Submission of 80% of weekly assignments in each of the 3 complusory sections: GEO, AGE, EGS. Attendance of the field trip is only compulsory for students majoring in Archaeology, EGS, Geology, or Oceanography.",
       "assessment": "Final mark: Class record counting 50% and one final exam counting 50%.Class record: Weekly assignments (some face-to-face, some online) that are deadline-bound in each of the three taught sections of the course.Theory test:One face-to-face, invigilated on Upper Campus in week 5 of Term 1.Final exam: A 2-hour written, face-to-face examination covers all material presented in the course (lectures, readings, practical assignments).",
@@ -5162,6 +5964,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Attendance at 80% of practicals and an average of 30% in all marked class work and tests.",
       "assessment": "Coursework: 30%. Exam: 70%. One 2-hour theory exam counts 40%, one 2-hour practical exam counts 30%. Subminima of 40% are required for both the theory and practical exams.",
@@ -5182,6 +5985,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "(a) Participation in all formative assessments on each module, (b) Attendance: 80% class attendance, (c) Achieving a weighted average mark of 40% on two in-class tests.",
       "assessment": "(a) Two written in-class tests (40%) and the final examination (60%), (b) If the combined final mark is between 45% and 49% the student may be awarded a supplementary exam. HUB4049F Introduction to Medical Imaging & Image Processing 16 NQF credits at NQF level 8 Convener: Dr F Robertson",
@@ -5210,6 +6014,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Minimum of 30% in class tests and full attendance at workshops.",
       "assessment": "Semester mark up to 40%. June examination 1 x 2 hour paper",
@@ -5239,6 +6044,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Minimum of 30% in class tests and full attendance at workshops.",
       "assessment": "Semester up to 40% November examination 1 x 2 hour paper",
@@ -5267,6 +6073,56 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Functions, limits and continuity"
+        },
+        {
+          "week": 2,
+          "text": "Rational functions, the natural exponential and logarithm functions"
+        },
+        {
+          "week": 3,
+          "text": "Radian measure and the Trigonometric functions"
+        },
+        {
+          "week": 4,
+          "text": "The rules of differentiation"
+        },
+        {
+          "week": 5,
+          "text": "DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 179 Curve sketching"
+        },
+        {
+          "week": 6,
+          "text": "Applications of the mean value theorem"
+        },
+        {
+          "week": 7,
+          "text": "Rates of change and optimization involving functions of a single variable"
+        },
+        {
+          "week": 8,
+          "text": "L'Hospital's rules, indeterminate forms and the squeeze theorem"
+        },
+        {
+          "week": 9,
+          "text": "Antidifferentiation"
+        },
+        {
+          "week": 10,
+          "text": "Finite series, permutations, combinations and the binomial theorem"
+        },
+        {
+          "week": 11,
+          "text": "The definite integral and the fundamental theorem of calculus"
+        },
+        {
+          "week": 12,
+          "text": "The substitution rule"
+        }
       ],
       "sessions": [
         {
@@ -5303,6 +6159,56 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Functions, limits and continuity"
+        },
+        {
+          "week": 2,
+          "text": "Rational functions, the natural exponential and logarithm functions"
+        },
+        {
+          "week": 3,
+          "text": "Radian measure and the Trigonometric functions"
+        },
+        {
+          "week": 4,
+          "text": "The rules of differentiation"
+        },
+        {
+          "week": 5,
+          "text": "Curve sketching"
+        },
+        {
+          "week": 6,
+          "text": "Applications of the mean value theorem"
+        },
+        {
+          "week": 7,
+          "text": "Rates of change and optimization involving functions of a single variable"
+        },
+        {
+          "week": 8,
+          "text": "L'Hospital's rules, indeterminate forms and the squeeze theorem"
+        },
+        {
+          "week": 9,
+          "text": "Antidifferentiation"
+        },
+        {
+          "week": 10,
+          "text": "Finite series, permutations, combinations and the binomial theorem"
+        },
+        {
+          "week": 11,
+          "text": "The definite integral and the fundamental theorem of calculus"
+        },
+        {
+          "week": 12,
+          "text": "The substitution rule"
+        }
+      ],
       "sessions": [],
       "dp": "30% For class record, high tutorial attendance.",
       "assessment": "Examination, not longer than 3 hours in June or November: Class record up to 40%.",
@@ -5332,6 +6238,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -5369,6 +6276,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -5406,6 +6314,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -5449,6 +6358,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -5491,6 +6401,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -5527,6 +6438,7 @@
         "Wednesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -5569,6 +6481,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record will be created through the compulsory submission of a written assignment and tests. A minimum of 40% for the class record and a minimum of 75% attendance will be required for a DP for admission to the examination.",
       "assessment": "Class record: 50%; Exam: 50%.",
@@ -5597,6 +6510,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record will be created through the compulsory submission of a written assignment and tests. A minimum of 40% for the class record and a minimum of 75% attendance will be required for a DP for admission to the examination.",
       "assessment": "Class record: 50%; Exam: 50%.",
@@ -5617,6 +6531,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "35% class record and satisfactory tutorial attendance.",
       "assessment": "One paper written in June or November no longer than 2.5 hours: up to 80%, year mark: up to 40%.",
@@ -5637,6 +6552,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "35% class record and satisfactory tutorial attendance.",
       "assessment": "One paper written in June or November no longer than 2.5 hours: up to 80%, year mark: up to 40%.",
@@ -5657,6 +6573,32 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "First order ordinary differential equations"
+        },
+        {
+          "week": 3,
+          "text": "Systems of linear equations, linear combinations, linear dependence, linear subspaces and basis"
+        },
+        {
+          "week": 5,
+          "text": "Determinants"
+        },
+        {
+          "week": 7,
+          "text": "Eigenvalues and eigenvectors, diagonalization, applications to systems of linear differential equations and finding principal axes"
+        },
+        {
+          "week": 9,
+          "text": "Solution of n-th order linear differential equations"
+        },
+        {
+          "week": 11,
+          "text": "The Laplace transform"
+        }
+      ],
       "sessions": [
         {
           "kind": "tut",
@@ -5683,6 +6625,32 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "First order ordinary differential equations"
+        },
+        {
+          "week": 3,
+          "text": "Systems of linear equations, linear combinations, linear dependence, linear subspaces and basis"
+        },
+        {
+          "week": 5,
+          "text": "Determinants"
+        },
+        {
+          "week": 7,
+          "text": "Eigenvalues and eigenvectors, diagonalization, applications to systems of linear differential equations and finding principal axes"
+        },
+        {
+          "week": 9,
+          "text": "Solution of n-th order linear differential equations"
+        },
+        {
+          "week": 11,
+          "text": "The Laplace transform"
+        }
+      ],
       "sessions": [
         {
           "kind": "tut",
@@ -5718,6 +6686,52 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Differentiation of vector valued functions, space curves and surfaces"
+        },
+        {
+          "week": 2,
+          "text": "Partial derivatives, chain rule, maxima and minima"
+        },
+        {
+          "week": 3,
+          "text": "Lagrange multipliers"
+        },
+        {
+          "week": 4,
+          "text": "Gradient, divergence and curl"
+        },
+        {
+          "week": 5,
+          "text": "Taylor's theorem for one and several DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 184 variables"
+        },
+        {
+          "week": 6,
+          "text": "Jacobians"
+        },
+        {
+          "week": 7,
+          "text": "Newton's method for several variables"
+        },
+        {
+          "week": 8,
+          "text": "Multiple integrals and change of variable"
+        },
+        {
+          "week": 9,
+          "text": "Surface integrals"
+        },
+        {
+          "week": 10,
+          "text": "Line integrals, work done by a force, potentials"
+        },
+        {
+          "week": 11,
+          "text": "Green's theorem, divergence theorem, and Stokes' theorem"
+        }
       ],
       "sessions": [
         {
@@ -5755,6 +6769,52 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Differentiation of vector valued functions, space curves and surfaces"
+        },
+        {
+          "week": 2,
+          "text": "Partial derivatives, chain rule, maxima and minima"
+        },
+        {
+          "week": 3,
+          "text": "Lagrange multipliers"
+        },
+        {
+          "week": 4,
+          "text": "Gradient, divergence and curl"
+        },
+        {
+          "week": 5,
+          "text": "Taylor's theorem for one and several variables"
+        },
+        {
+          "week": 6,
+          "text": "Jacobians"
+        },
+        {
+          "week": 7,
+          "text": "Newton's method for several variables"
+        },
+        {
+          "week": 8,
+          "text": "Multiple integrals and change of variable"
+        },
+        {
+          "week": 9,
+          "text": "Surface integrals"
+        },
+        {
+          "week": 10,
+          "text": "Line integrals, work done by a force, potentials"
+        },
+        {
+          "week": 11,
+          "text": "Green's theorem, divergence theorem, and Stokes' theorem"
+        }
+      ],
       "sessions": [
         {
           "kind": "tut",
@@ -5788,6 +6848,7 @@
         "Tuesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -5812,6 +6873,44 @@
       "days": [
         "Monday",
         "Thursday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Lagrange’s Theorem"
+        },
+        {
+          "week": 2,
+          "text": "Isomorphism Theorems"
+        },
+        {
+          "week": 3,
+          "text": "Correspondence Theorem"
+        },
+        {
+          "week": 5,
+          "text": "P-Groups"
+        },
+        {
+          "week": 6,
+          "text": "Cauchy’s Theorem"
+        },
+        {
+          "week": 7,
+          "text": "Sylow Theorems"
+        },
+        {
+          "week": 9,
+          "text": "Direct Product of groups"
+        },
+        {
+          "week": 10,
+          "text": "Finitely generated Abelian Groups"
+        },
+        {
+          "week": 11,
+          "text": "Jordan-Holder Theorem"
+        }
       ],
       "sessions": [],
       "dp": "",
@@ -5841,6 +6940,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -5865,6 +6965,20 @@
       "days": [
         "Tuesday",
         "Friday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Definition of a ring, examples, main properties"
+        },
+        {
+          "week": 5,
+          "text": "The field of fraction of an integral domain"
+        },
+        {
+          "week": 9,
+          "text": "Polynomial rings"
+        }
       ],
       "sessions": [],
       "dp": "",
@@ -5891,6 +7005,7 @@
         "Monday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -5916,6 +7031,7 @@
         "Tuesday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -5944,6 +7060,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record of 30% or more.",
       "assessment": "Class record counts up to 20%, while the balance is made up by the final examination.",
@@ -5972,6 +7089,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record of 30% or more, satisfactory attendance at lectures and tutorials, and submission of all assigned work.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination.",
@@ -6000,6 +7118,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record of 30% or more.",
       "assessment": "Class record counts up to 50%, while the balance is given by the final examination. DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 187",
@@ -6027,6 +7146,7 @@
         "Tuesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "A class record 30% or more, and attendance of both 75% of all lectures and 75% of all tutorials.",
       "assessment": "Class record counts up to 50%, while the balance is made up by the final examination. PHYSICS Professor and Head of Department: A Buffler, MSc PhD HDE Cape Town Refer also to the Science Faculty Handbook.",
@@ -6047,6 +7167,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6067,6 +7188,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6095,6 +7217,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6123,6 +7246,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6151,6 +7275,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6179,6 +7304,16 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Detailed drawings, interpretation of drawings"
+        },
+        {
+          "week": 7,
+          "text": "Assembly design"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6199,6 +7334,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6219,6 +7355,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6239,6 +7376,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6259,6 +7397,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6279,6 +7418,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6307,6 +7447,36 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Elastic behaviour"
+        },
+        {
+          "week": 2,
+          "text": "Plastic and work-hardening behaviour of ductile materials"
+        },
+        {
+          "week": 4,
+          "text": "Recovery and recrystallisation of deformed metals"
+        },
+        {
+          "week": 6,
+          "text": "Microstructure, heat treatment and properties of steels"
+        },
+        {
+          "week": 7,
+          "text": "Optimisation and limitations of ceramic materials"
+        },
+        {
+          "week": 9,
+          "text": "Processing and manufacture of polymeric and composite materials"
+        },
+        {
+          "week": 11,
+          "text": "Influence of environmental effects on the deterioration of materials"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6327,6 +7497,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6347,6 +7518,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6375,6 +7547,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6403,6 +7576,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6431,6 +7605,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6459,6 +7634,40 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Measurement parameters and their associated considerations"
+        },
+        {
+          "week": 2,
+          "text": "Electrical measurement techniques"
+        },
+        {
+          "week": 4,
+          "text": "Signal conditioning"
+        },
+        {
+          "week": 5,
+          "text": "Digital sampling"
+        },
+        {
+          "week": 7,
+          "text": "Common transducers covering measurement of force, inertial motion, temperature, rotation, non-contact sensing"
+        },
+        {
+          "week": 8,
+          "text": "Rotational actuators including, brushed and brushless DC motors"
+        },
+        {
+          "week": 10,
+          "text": "AC motors, servo motors and stepper motors"
+        },
+        {
+          "week": 11,
+          "text": "Linear actuators including solenoids, hydraulic systems, and pneumatic systems"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6479,6 +7688,24 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Basic computer architecture, number systems and computation, propagation of numerical error, text file manipulation"
+        },
+        {
+          "week": 4,
+          "text": "Newton's method for single and multivariate problems"
+        },
+        {
+          "week": 7,
+          "text": "Central Differnece"
+        },
+        {
+          "week": 10,
+          "text": "Newmark methods)"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6499,6 +7726,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6519,6 +7747,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6547,6 +7776,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6567,6 +7797,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Mathematical modelling of systems in the time-domain and frequency-domain"
+        },
+        {
+          "week": 2,
+          "text": "Laplace and inverse Laplace transforms"
+        },
+        {
+          "week": 3,
+          "text": "Block diagrams and block diagram algebra"
+        },
+        {
+          "week": 4,
+          "text": "Open-loop and closed-loop configurations"
+        },
+        {
+          "week": 5,
+          "text": "Analysis methods to assess system stability, sensitivity, and performance"
+        },
+        {
+          "week": 6,
+          "text": "Frequency-domain design techniques"
+        },
+        {
+          "week": 7,
+          "text": "Archetypal control schemes"
+        },
+        {
+          "week": 8,
+          "text": "Digital control principles"
+        },
+        {
+          "week": 9,
+          "text": "Considerations for controller implementation"
+        },
+        {
+          "week": 10,
+          "text": "The course will additionally cover a subset of the following topics: system identification methods"
+        },
+        {
+          "week": 11,
+          "text": "State space modelling"
+        },
+        {
+          "week": 12,
+          "text": "Introduction to linear state estimation"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6587,6 +7867,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6607,6 +7888,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6627,6 +7909,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6655,6 +7938,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6683,6 +7967,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6711,6 +7996,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6739,6 +8025,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [
         {
           "kind": "tut",
@@ -6767,6 +8054,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6787,6 +8075,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -6807,6 +8096,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6827,6 +8117,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Industrial control practices, systems, and networks"
+        },
+        {
+          "week": 2,
+          "text": "Programmable logic controllers and associated programming languages"
+        },
+        {
+          "week": 3,
+          "text": "Industrial diagrams and automation drawings"
+        },
+        {
+          "week": 4,
+          "text": "Industrial safety systems"
+        },
+        {
+          "week": 5,
+          "text": "Mechatronics design philosophies and architectures"
+        },
+        {
+          "week": 6,
+          "text": "Project specifications"
+        },
+        {
+          "week": 7,
+          "text": "Testing and simulation of mechatronic systems"
+        },
+        {
+          "week": 8,
+          "text": "System identification methods"
+        },
+        {
+          "week": 9,
+          "text": "Forward and inverse kinematics of robotic platforms"
+        },
+        {
+          "week": 10,
+          "text": "Path planning and trajectory generation"
+        },
+        {
+          "week": 11,
+          "text": "Nonlinear control techniques"
+        },
+        {
+          "week": 12,
+          "text": "Constrained optimisation"
+        }
+      ],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course. DEPARTMENTS IN THE FACULTY AND COURSES OFFERED 157",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course.",
@@ -6848,6 +8188,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Please refer to the official course handout document for detailed information regarding the DP requirements for this course.",
       "assessment": "Please refer to the official course handout document regarding the assessment criteria for this course. OTHER COURSES IN THE FACULTY OF ENGINEERING & THE BUILT ENVIRONMENT Other courses in the Faculty of Engineering & the Built Environment Course Outlines",
@@ -6868,6 +8209,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "An average of at least 40% for class record, including 50% for laboratories.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2-hour examination counts 50%. Although a supplementary examination is usually granted for a final grade in the range 45-49%, a supplementary examination may also be granted for certain key courses in the range 40-44% under conditions agreed to by the Deans of EBE and Science, normally involving a mandatory pre-supp tutoring and revision programme.",
@@ -6888,6 +8230,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "An average of at least 40% for class record, including 50% for laboratories.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2-hour examination counts 50%. Although a supplementary examination is usually granted for a final grade in the range 45-49%, a supplementary examination may also be granted for certain key courses in the range 40-44% under conditions agreed to by the Deans of EBE and Science, normally involving a mandatory pre-supp tutoring and revision programme.",
@@ -6908,6 +8251,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "An average of at least 40% for class record, including 50% for laboratories.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2hour examination counts 50%. Although a supplementary examination is usually granted for a final grade in the range 45-49%, a supplementary examination may also be granted for certain key courses in the range 40-44% under conditions agreed to by the Deans of EBE and Science, normally involving a mandatory pre-supp tutoring and revision programme.",
@@ -6928,6 +8272,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "An average of at least 40% for class record, including 50% for laboratories.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2hour examination counts 50%. Although a supplementary examination is usually granted for a final DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 189 grade in the range 45-49%, a supplementary examination may also be granted for certain key courses in the range 40-44% under conditions agreed to by the Deans of EBE and Science, normally involving a mandatory pre-supp tutoring and revision programme.",
@@ -6948,6 +8293,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "An average of at least 40% for the class record.",
       "assessment": "Class record (tests, tutorials, workshops and laboratory record) counts 50%; one 2-hour examination counts 50%. Although a supplementary examination is usually granted for a final grade in the range 45-49%, a supplementary examination may also be granted for certain key courses in the range 40-44% under conditions agreed to by the Deans of EBE and Science, normally involving a mandatory pre-supp tutoring and revision programme.",
@@ -6968,6 +8314,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "An average of at least 40% for the class record.",
       "assessment": "Class record (tests, tutorials, workshops and laboratory record) counts 50%; one 2-hour examination counts 50%. Although a supplementary examination is usually granted for a final grade in the range 45-49%, a supplementary examination may also be granted for certain key courses in the range 40-44% under conditions agreed to by the Deans of EBE and Science, normally involving a mandatory pre-supp tutoring and revision programme.",
@@ -6988,6 +8335,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "An average of at least 40% for the class record.",
       "assessment": "Class record (tests, tutorials, workshop and laboratory record) counts 50%; one 2-hour examination counts 50%. Although a supplementary examination is usually granted for a final grade in the range 45-49%, a supplementary examination may also be granted for certain key courses in the range 40-44% under conditions agreed to by the Deans of EBE and Science, normally involving a mandatory pre-supp tutoring and revision programme.",
@@ -7008,6 +8356,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "An average of at least 40% for the class record.",
       "assessment": "Class record (tests, tutorials, workshop and laboratory record) counts 50%; one 2-hour examination counts 50%. Although a supplementary examination is usually granted for a final grade in the range 45-49%, a supplementary examination may also be granted for certain key courses in the range 40-44% under conditions agreed to by the Deans of EBE and Science, normally involving a mandatory pre-supp tutoring and revision programme.",
@@ -7036,6 +8385,7 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Minimum of 40% for the class record; including 50% in laboratory assessment.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2-hour written examination in June counts 50%. DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 191",
@@ -7064,6 +8414,40 @@
         "Thursday",
         "Friday"
       ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Electricity and magnetism: electric charge, electric field"
+        },
+        {
+          "week": 2,
+          "text": "Gauss’ law, electric potential, capacitance, current, current density, emf, resistance, resistivity, networks, magnetic field"
+        },
+        {
+          "week": 4,
+          "text": "Biot Savart law"
+        },
+        {
+          "week": 5,
+          "text": "Ampere’s law, electromagnetic induction, inductance, alternating currents"
+        },
+        {
+          "week": 7,
+          "text": "Thermal physics: temperature, heat, kinetic theory of gases, first and second laws of thermodynamics"
+        },
+        {
+          "week": 8,
+          "text": "Optics: Geometrical optics, polarization, electromagnetic waves, interference, diffraction"
+        },
+        {
+          "week": 10,
+          "text": "Modern physics: atomic structure, quantum physical phenomena, waveparticle duality"
+        },
+        {
+          "week": 11,
+          "text": "X-rays, elementary nuclear physics, radioactivity"
+        }
+      ],
       "sessions": [],
       "dp": "Minimum of 40% for the class record, including 50% in laboratory assessment.",
       "assessment": "Class record (weekly problem sets, class tests and laboratory record) counts 50%; one 2-hour written examination in November counts 50%.",
@@ -7084,6 +8468,40 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Semiconductors, energy bands in solids, charge carriers in semiconductors, diodes and transistors"
+        },
+        {
+          "week": 2,
+          "text": "Coulomb's Law"
+        },
+        {
+          "week": 4,
+          "text": "Gauss' Law"
+        },
+        {
+          "week": 5,
+          "text": "The vector differential operator"
+        },
+        {
+          "week": 7,
+          "text": "Div, grad, curl"
+        },
+        {
+          "week": 8,
+          "text": "Poisson and Laplace's equations, the magnetic field"
+        },
+        {
+          "week": 10,
+          "text": "Biot-Savart Law"
+        },
+        {
+          "week": 11,
+          "text": "Ampere's Law, electric and magnetic fields in materials, and propagation in optical fibres"
+        }
+      ],
       "sessions": [],
       "dp": "Minimum of 40% for the class record; completion of all laboratory reports and 75% of tutorial work and problem sets; attendance at all tests.",
       "assessment": "Class record (tests, weekly problem sets and laboratory work) counts 50%; 2-hour examination in November counts 50%. There is a subminimum of 40% required for the final examination.",
@@ -7104,6 +8522,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Exploratory data analysis and summary statistics"
+        },
+        {
+          "week": 2,
+          "text": "Probability theory"
+        },
+        {
+          "week": 3,
+          "text": "Random variables"
+        },
+        {
+          "week": 4,
+          "text": "Probability mass and density functions"
+        },
+        {
+          "week": 5,
+          "text": "Binomial"
+        },
+        {
+          "week": 6,
+          "text": "Poisson"
+        },
+        {
+          "week": 7,
+          "text": "Exponential"
+        },
+        {
+          "week": 8,
+          "text": "Normal and Uniform distributions"
+        },
+        {
+          "week": 9,
+          "text": "Sampling distributions"
+        },
+        {
+          "week": 10,
+          "text": "Confidence intervals"
+        },
+        {
+          "week": 11,
+          "text": "Introduction to hypothesis testing (including tests on means"
+        },
+        {
+          "week": 12,
+          "text": "Tabular data and bivariate data)"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7124,6 +8592,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Exploratory data analysis and summary statistics"
+        },
+        {
+          "week": 2,
+          "text": "Probability theory"
+        },
+        {
+          "week": 3,
+          "text": "Random variables"
+        },
+        {
+          "week": 4,
+          "text": "Probability mass and density functions"
+        },
+        {
+          "week": 5,
+          "text": "Binomial"
+        },
+        {
+          "week": 6,
+          "text": "Poisson"
+        },
+        {
+          "week": 7,
+          "text": "Exponential"
+        },
+        {
+          "week": 8,
+          "text": "Normal and Uniform distributions"
+        },
+        {
+          "week": 9,
+          "text": "Sampling distributions"
+        },
+        {
+          "week": 10,
+          "text": "Confidence intervals"
+        },
+        {
+          "week": 11,
+          "text": "Introduction to hypothesis testing (including tests on means, tabular data and bivariate data)"
+        },
+        {
+          "week": 12,
+          "text": "Determining sample sizes"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7144,6 +8662,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Exploratory data analysis and summary statistics"
+        },
+        {
+          "week": 2,
+          "text": "Probability theory"
+        },
+        {
+          "week": 3,
+          "text": "Random variables"
+        },
+        {
+          "week": 4,
+          "text": "Probability mass and density functions"
+        },
+        {
+          "week": 5,
+          "text": "Binomial"
+        },
+        {
+          "week": 6,
+          "text": "Poisson"
+        },
+        {
+          "week": 7,
+          "text": "Exponential"
+        },
+        {
+          "week": 8,
+          "text": "Normal and Uniform distributions"
+        },
+        {
+          "week": 9,
+          "text": "Sampling distributions"
+        },
+        {
+          "week": 10,
+          "text": "Confidence intervals"
+        },
+        {
+          "week": 11,
+          "text": "Introduction to hypothesis testing (including tests on means, tabular data and bivariate data)"
+        },
+        {
+          "week": 12,
+          "text": "Determining sample sizes"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7164,6 +8732,56 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Exploratory data analysis and summary statistics"
+        },
+        {
+          "week": 2,
+          "text": "Probability theory"
+        },
+        {
+          "week": 3,
+          "text": "Random variables"
+        },
+        {
+          "week": 4,
+          "text": "Probability mass and density functions"
+        },
+        {
+          "week": 5,
+          "text": "Binomial"
+        },
+        {
+          "week": 6,
+          "text": "Poisson"
+        },
+        {
+          "week": 7,
+          "text": "Exponential"
+        },
+        {
+          "week": 8,
+          "text": "Normal and Uniform distributions"
+        },
+        {
+          "week": 9,
+          "text": "Sampling distributions"
+        },
+        {
+          "week": 10,
+          "text": "Confidence intervals"
+        },
+        {
+          "week": 11,
+          "text": "Introduction to hypothesis testing (including tests on means, tabular data and bivariate data)"
+        },
+        {
+          "week": 12,
+          "text": "Determining sample sizes"
+        }
+      ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures, tutorials, practicals and tests and completion of assignments and/or exercises as set out in course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7184,6 +8802,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "",
       "assessment": "",
@@ -7204,6 +8823,7 @@
       "periods": [],
       "periodChoice": false,
       "days": [],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory attendance of workshops and tests and completion of online quizzes as set out in the course outline. Class record of at least 35%.",
       "assessment": "Class record 40% and a 2-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline.",
@@ -7232,6 +8852,7 @@
         "Wednesday",
         "Thursday"
       ],
+      "topics": [],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures and lab practicals and the completion of class tests, mini practical lab tests, and practical tests as set out in course outline. Class record of at least 35% and at least 35% for Practical test.",
       "assessment": "Class record 40% and a 3-hour exam counting 60%. Weights will be adjusted in the case of missed assessments, as detailed in the course outline. DEPARTMENTS IN OTHER FACULTIES AND COURSES OFFERED 195",
@@ -7258,6 +8879,36 @@
         "Tuesday",
         "Wednesday",
         "Thursday"
+      ],
+      "topics": [
+        {
+          "week": 1,
+          "text": "Analysis of variance and experimental design"
+        },
+        {
+          "week": 2,
+          "text": "Revision and extension of simple linear regression"
+        },
+        {
+          "week": 4,
+          "text": "Multiple regression"
+        },
+        {
+          "week": 6,
+          "text": "Logistic regression"
+        },
+        {
+          "week": 7,
+          "text": "Time series analysis"
+        },
+        {
+          "week": 9,
+          "text": "Non-parametric statistics"
+        },
+        {
+          "week": 11,
+          "text": "Students will analyse data using R"
+        }
       ],
       "sessions": [],
       "dp": "Satisfactory attendance of lectures and lab practicals and the completion of class tests, mini practical lab tests, and practical tests as set out in course outline. Class record of at least 35% and at least 35% for Practical test.",

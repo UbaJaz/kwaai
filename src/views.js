@@ -363,7 +363,81 @@ function courses(ctx, { mode, list, q, years, dept, deptName, faculty, facultyNa
 
 const personLink = (l) => (l.id ? html`<a href="/lecturers/${l.id}">${l.name}</a>` : l.name);
 
-function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked, conveners = [], staff = [] }) {
+// ---------- course details from students (src/facts.js) ----------
+const FACT_KIND = { lecture: 'Lecture', tut: 'Tutorial', prac: 'Practical' };
+const EVENT_TYPE = { test: 'Class test', assignment: 'Assignment due', prac: 'Prac or lab due', exam: 'Exam', other: 'Other' };
+function factLabel(kind, d) {
+  if (FACT_KIND[kind]) return `${FACT_KIND[kind]} ${d.day} ${d.start}–${d.end}`;
+  if (kind === 'topic') return `Week ${d.week}: ${d.text}`;
+  return `${d.title} on ${fmtDate(d.date)}${d.time ? ` at ${d.time}` : ''}`;
+}
+const agreeText = (f) => (f.confirmed ? `${f.n} students confirmed` : `${f.n} student${f.n === 1 ? '' : 's'} so far, needs one more to confirm`);
+
+// The buttons next to a fact: confirm it (send the same fact) or take yours back, and report it.
+function factActions(ctx, c, kind, data, f) {
+  if (!ctx.user) return '';
+  const hidden = html`<input type="hidden" name="kind" value="${kind}">${Object.entries(data).map(([k, v]) => html`<input type="hidden" name="${k}" value="${v}">`)}`;
+  return html`<span class="fact-actions">
+    ${f.mine
+      ? html`<form method="post" action="/courses/${c.code}/facts/withdraw" class="inline"><input type="hidden" name="key" value="${f.key}"><button class="link-btn">Remove mine</button></form>`
+      : html`<form method="post" action="/courses/${c.code}/facts" class="inline">${hidden}<button class="btn btn-small btn-quiet">That's right</button></form>`}
+    <form method="post" action="/courses/${c.code}/facts/report" class="inline"><input type="hidden" name="key" value="${f.key}"><button class="link-btn" aria-label="Report this as wrong or abusive">Report</button></form>
+  </span>`;
+}
+
+const dayOptions = () => html`${WEEK_DAYS.map((d) => html`<option>${d}</option>`)}`;
+function courseWeek(ctx, c, facts, topics) {
+  const slots = ['lecture', 'tut', 'prac'].flatMap((k) => facts[k].map((f) => ({ kind: k, f })));
+  const today = new Date().toISOString().slice(0, 10);
+  const events = facts.event.filter((e) => e.date >= today);
+  const signIn = html`<p class="meta"><a href="${loginHref(`/courses/${c.code}`)}">Sign in with your UCT email</a> to add or confirm details.</p>`;
+  return html`<section class="course-week" id="course-week" aria-labelledby="course-week-head">
+    <h2 class="section-title" id="course-week-head">This course's week</h2>
+    <p class="meta">What the handbook leaves out, filled in by students taking ${c.code}. A detail counts as confirmed once two students agree, and only then does it go on other students' timetables.</p>
+
+    <h3>When it happens</h3>
+    ${slots.length ? html`<ul class="plain fact-list">${slots.map(({ kind, f }) => html`<li>
+      <span>${factLabel(kind, f)} <span class="meta">${agreeText(f)}</span></span>${factActions(ctx, c, kind, { day: f.day, start: f.start, end: f.end }, f)}</li>`)}</ul>`
+      : html`<p class="meta">${c.lectures ? `The handbook says: “${c.lectures}”.` : "The handbook doesn't give times."} No times from students yet.</p>`}
+    ${ctx.user ? html`<details class="fact-add"><summary>Add a time</summary>
+      <form method="post" action="/courses/${c.code}/facts" class="place-form">
+        <label>What <select name="kind"><option value="lecture">Lecture</option><option value="tut">Tutorial</option><option value="prac">Practical</option></select></label>
+        <label>Day <select name="day">${dayOptions()}</select></label>
+        <label>From <select name="start">${timeOptions('14:00')}</select></label>
+        <label>To <select name="end">${timeOptions('15:00')}</select></label>
+        <button class="btn btn-small">Add</button>
+      </form></details>` : ''}
+
+    <h3>Week by week</h3>
+    ${topics.length ? html`<ol class="plain topic-list">${topics.map((t) => html`<li>
+      <span><strong>Week ${t.week}</strong> ${t.text} <span class="meta">${t.source === 'handbook' ? 'rough guide from the handbook' : agreeText(t)}</span></span>
+      ${t.source === 'students' ? factActions(ctx, c, 'topic', { week: t.week, text: t.text }, t) : ''}</li>`)}</ol>`
+      : html`<p class="meta">No weekly topics yet.</p>`}
+    ${ctx.user ? html`<details class="fact-add"><summary>Add or correct a week's topic</summary>
+      <form method="post" action="/courses/${c.code}/facts" class="place-form">
+        <input type="hidden" name="kind" value="topic">
+        <label>Week <select name="week">${Array.from({ length: 14 }, (_, i) => html`<option>${i + 1}</option>`)}</select></label>
+        <label>What it covers <input type="text" name="text" maxlength="80" required placeholder="e.g. Limits and continuity"></label>
+        <button class="btn btn-small">Save</button>
+      </form></details>` : ''}
+
+    <h3>Coming up</h3>
+    ${events.length ? html`<ul class="plain fact-list">${events.map((e) => html`<li>
+      <span><strong>${factLabel('event', e)}</strong> <span class="meta">${agreeText(e)}</span></span>${factActions(ctx, c, 'event', { type: e.type, title: e.title, date: e.date, time: e.time }, e)}</li>`)}</ul>`
+      : html`<p class="meta">No tests or deadlines added yet.</p>`}
+    ${ctx.user ? html`<details class="fact-add"><summary>Add a test, deadline or exam</summary>
+      <form method="post" action="/courses/${c.code}/facts" class="place-form">
+        <input type="hidden" name="kind" value="event">
+        <label>What <select name="type">${Object.entries(EVENT_TYPE).map(([k, v]) => html`<option value="${k}">${v}</option>`)}</select></label>
+        <label>Name <input type="text" name="title" maxlength="60" placeholder="e.g. Test 1"></label>
+        <label>Date <input type="date" name="date" required></label>
+        <label>Time (optional) <input type="time" name="time"></label>
+        <button class="btn btn-small">Add</button>
+      </form></details>` : signIn}
+  </section>`;
+}
+
+function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked, conveners = [], staff = [], facts = { lecture: [], tut: [], prac: [], topic: [], event: [] }, weekTopics = [] }) {
   const cards = hideAfterFree(reviews, locked);
   const hidden = cards.filter((x) => x.hideBody).length + (locked ? Math.max(0, tips.length - FREE_COMMENTS) : 0);
   return layout({ ...ctx, title: `${c.code} ${c.title}`, description: courseSummary(c, stats, votes), path: `/courses/${c.code}` }, html`
@@ -407,6 +481,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
     <div class="reviews">
       ${gateNotice(ctx, hidden)}
       ${tips.length ? html`<h2 class="section-title" id="tips">Tips from students who took it</h2>${tipList(tips, locked)}` : ''}
+      ${courseWeek(ctx, c, facts, weekTopics)}
       <h2 class="section-title">Reviews</h2>
       ${reviews.length ? cards.map(({ r, hideBody }) => reviewCard(r, { ...ctx, hideBody })) : html`<p class="empty">Nothing here yet. Took ${c.code}? Tell the next class what it's really like.</p>`}
     </div>
@@ -889,7 +964,16 @@ function placeForm(state, { label = '', start = '14:00', end = '15:00', button =
   </form>`;
 }
 
-function week(ctx, { wk, week: w, codes, state, calendar }) {
+function upcomingList(upcoming) {
+  if (!upcoming.length) return '';
+  return html`<section class="card panel week-upcoming" aria-labelledby="upcoming-head">
+    <h2 id="upcoming-head">Coming up in your courses</h2>
+    <ul class="plain">${upcoming.map((e) => html`<li><a href="/courses/${e.code}#course-week" class="code">${e.code}</a> <strong>${e.title}</strong> · ${fmtDate(e.date)}${e.time ? ` at ${e.time}` : ''} <span class="meta">${e.confirmed ? `confirmed by ${e.n} students` : 'not confirmed yet'}</span></li>`)}</ul>
+    <p class="fine">Added by students in each course. Missing one? Add it on the course page, and it shows up in everyone's calendar.</p>
+  </section>`;
+}
+
+function week(ctx, { wk, week: w, codes, state, calendar, upcoming = [] }) {
   const link = (o) => `/week?${new URLSearchParams({ ...state, ...o })}`;
   const palette = ['#2f6fdf', '#c2410c', '#0f8a5f', '#8b3fd1', '#b8860b', '#d1365a', '#0e7490', '#6b7a1f'];
   const colour = (code) => palette[Math.max(0, wk.courses.findIndex((c) => c.code === code)) % palette.length];
@@ -916,6 +1000,7 @@ function week(ctx, { wk, week: w, codes, state, calendar }) {
 
   ${wk.clashes.length ? html`<section class="card plan-warnings" role="status"><h2>Clashes</h2><ul>${wk.clashes.map(([a, b]) => html`<li><strong>${a.day}:</strong> ${eventName(a)} (${a.start}–${a.end}) overlaps ${eventName(b)} (${b.start}–${b.end}).</li>`)}</ul></section>` : ''}
 
+  ${upcomingList(upcoming)}
   ${weekGrid(wk, colour)}
   ${weekAgenda(wk)}
 
@@ -933,6 +1018,7 @@ function week(ctx, { wk, week: w, codes, state, calendar }) {
     <p class="meta">The handbook doesn't say when these happen. Add them once you know (your course site or first lecture will say).</p>
     <ul class="plain">${wk.unplaced.map((u) => html`<li>
       <p><a href="/courses/${u.code}" class="code">${u.code}</a> ${KIND_LABEL[u.kind].toLowerCase()}${u.text ? html` <span class="meta">Handbook: “${u.text}”</span>` : ''}</p>
+      ${u.hints?.length ? html`<div class="chips">${u.hints.map((h) => html`<a class="chip" href="${link({ add_block: 1, day: WEEK_DAYS.indexOf(h.day), start: h.start, end: h.end, label: `${u.code} ${u.kind === 'lecture' ? 'lecture' : KIND_LABEL[u.kind].toLowerCase()}` })}">Use ${h.day.slice(0, 3)} ${h.start}–${h.end} <span class="meta">(${h.n} student${h.n === 1 ? '' : 's'} said)</span></a>`)}</div>` : ''}
       ${placeForm(state, { label: `${u.code} ${u.kind === 'lecture' ? 'lecture' : KIND_LABEL[u.kind].toLowerCase()}`, start: '08:00', end: '08:45' })}
     </li>`)}</ul>
   </section>` : ''}`}
@@ -1057,6 +1143,7 @@ function privacy(ctx) {
     <li><strong>Your @myuct.ac.za email</strong>, to check you're a UCT student, send sign-in codes and links, and enforce bans. It is never shown publicly. We also record when you confirmed you're 18 or older and agreed to the terms.</li>
     <li><strong>Your reviews and votes</strong> (ratings, tags, comment, kwaai-or-nah vote, tip, course, lecturer, year). They are published without your name or email.</li>
     <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), a short-lived one for on-screen messages, and one that remembers your semester plan for 180 days. The plan cookie holds the course codes you added and, if you filled them in, your faculty, majors, year of study and the courses you've passed. That information stays on your device and in the plan's link. We don't store it on our server. No advertising or tracking cookies.</li>
+    <li><strong>Course details you add</strong> (a class time, a week's topic, a test date). They're shown with a count of how many students agree, never with your name or email, and they're deleted with your account.</li>
     <li><strong>A calendar link</strong>, only if you make one on <a href="/week">Your week</a>: your course codes and timetable choices, stored under a random address so your calendar app can fetch them. No name, email or "about you" answers. Delete it there at any time; links nobody has used for 12 months are deleted automatically.</li>
     <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many sign-in attempts). It isn't written to our database.</li>
     <li><strong>Removal requests:</strong> the name, email and details you give us, used only to deal with that request.</li>
@@ -1243,10 +1330,17 @@ function suggestLecturer(ctx, { c, error, values = {} }) {
   </section>`);
 }
 
-function mod(ctx, { held, heldTips, takedowns, suggestions, log }) {
+function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [] }) {
   return layout({ ...ctx, title: 'Moderation' }, html`
   <h1 class="page-title">Moderation</h1>
   <p class="lede small">Hidden reviews wait here. <strong>Approve</strong> puts a review back up and clears its reports. <strong>Remove</strong> takes it down for good.</p>
+
+  <h2 class="section-title">Course details <span class="count">${heldFacts.length}</span></h2>
+  ${heldFacts.length ? heldFacts.map((f) => html`<div class="card mod-item">
+    <div class="mod-meta"><a href="/courses/${f.course}#course-week"><span class="code">${f.course}</span></a> · ${factLabel(f.kind, f.data)} · added by ${plural(f.n, 'student')} · ${plural(f.reports, 'report')}</div>
+    <form method="post" action="/mod/facts/approve" class="inline"><input type="hidden" name="course" value="${f.course}"><input type="hidden" name="key" value="${f.key}"><button class="btn btn-small btn-ok">Approve</button></form>
+    <form method="post" action="/mod/facts/remove" class="inline"><input type="hidden" name="course" value="${f.course}"><input type="hidden" name="key" value="${f.key}"><button class="btn btn-small btn-quiet">Remove</button></form>
+  </div>`) : html`<p class="empty">No course details waiting.</p>`}
 
   <h2 class="section-title">Removal requests <span class="count">${takedowns.length}</span></h2>
   ${takedowns.length ? takedowns.map((t) => html`<div class="card mod-item">

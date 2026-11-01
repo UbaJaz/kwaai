@@ -6,6 +6,7 @@ const views = require('./views');
 const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
 const { analysePlan, REPLACED, parseProfile, hasProfile, profileParams, majorNeeds, creditAdvice, programmeOptions, facultyOptions } = require('./planner');
 const { parseWeek, weekParams, buildWeek, icsFor, DAYS } = require('./week');
+const { parseFact, screenFact, groupFacts, weekTopics, crowdSlots } = require('./facts');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { UNIVERSITIES, CURRENT } = require('./universities');
 
@@ -114,13 +115,15 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     // and across all IPs: with only the newest code valid, that's 20 guesses an hour at one in a million. Going over
     // only pauses codes for that address; the link in the email still works, so nobody can be locked out.
     loginCodeEmail: limit(20, 60 * MIN, (req) => `code:${normEmail(req.body.email)}`, 'Too many codes have been tried for this address. Use the "Sign in to Kwaai" button in the email instead, or try a code again in an hour.'),
-    // sign-in emails per IP, kept high enough for a computer lab or residence Wi-Fi
-    loginSend: limit(30, 60 * MIN, (req) => `send:${req.ip}`),
+    // sign-in emails per IP, kept high enough for a computer lab or residence Wi-Fi. It guards the email quota and
+    // inboxes, so it only counts when an email really goes out (not when dev mode shows the code on screen).
+    loginSend: ((sends) => (req, res, next) => (sendLoginEmail ? sends(req, res, next) : next()))(limit(30, 60 * MIN, (req) => `send:${req.ip}`)),
     review: limit(10, 60 * MIN, byUser),
     verdict: limit(30, 60 * MIN, byUser),
     suggest: limit(5, 60 * MIN, byUser),
     report: limit(30, 60 * MIN, byUser),
     takedown: limit(10, 60 * MIN),
+    fact: limit(40, 60 * MIN, byUser),
   };
   const flashRedirect = (res, to, type, text) => {
     res.cookie('flash', JSON.stringify({ type, text }), { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: 60_000 });
@@ -248,7 +251,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const conveners = convNames.map((name) => inDept.find((l) => l.name === name) || { name });
     const RANK = { Professor: 1, 'Associate Professor': 2, 'Senior Lecturer': 3, Lecturer: 4 };
     const staff = inDept.filter((l) => l.role && !convNames.includes(l.name)).sort((a, b) => (RANK[a.role] || 9) - (RANK[b.role] || 9) || a.name.localeCompare(b.name));
-    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff })));
+    const facts = factsFor([c.code], req.user?.id)[c.code] || { lecture: [], tut: [], prac: [], topic: [], event: [] };
+    let draft = [];
+    try { draft = c.topics ? JSON.parse(c.topics) : []; } catch { draft = []; }
+    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic) })));
   });
 
   app.get('/lecturers/:id', (req, res) => {
@@ -372,6 +378,52 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }));
   });
 
+  // ---- course details from students (src/facts.js) ----
+  // Grouped facts per course: each distinct fact with how many students added it, and whether this student did.
+  function factsFor(codes, userId = 0) {
+    if (!codes.length) return {};
+    return groupFacts(q(`SELECT course, kind, key, MIN(data) AS data, COUNT(DISTINCT user_id) AS n, MAX(user_id = ?) AS mine FROM course_facts
+      WHERE status = 'published' AND course IN (${codes.map(() => '?').join(',')}) GROUP BY course, key`).all(userId || 0, ...codes));
+  }
+  const datedFor = (facts) => Object.entries(facts).flatMap(([code, f]) => f.event.map((e) => ({ code, ...e }))).sort((a, b) => a.date.localeCompare(b.date) || (a.time || '').localeCompare(b.time || ''));
+  const crowdFor = (codes) => {
+    const facts = factsFor(codes);
+    return { crowd: crowdSlots(facts), dated: datedFor(facts) };
+  };
+  const backTo = (code) => `/courses/${code}#course-week`;
+
+  // add a fact, or confirm one by sending the same fact
+  app.post('/courses/:code/facts', requireUser, limits.fact, (req, res) => {
+    const c = getCourse(req.params.code);
+    if (!c) return res.status(404).page(notFound(req));
+    const fact = parseFact(req.body);
+    if (fact.error) return flashRedirect(res, backTo(c.code), 'error', fact.error);
+    const screen = screenFact(fact);
+    if (screen.action === 'reject') return flashRedirect(res, backTo(c.code), 'error', `That can't go up: ${screen.reasons.join(', ')}.`);
+    // one topic per student per week: a new one replaces their old one
+    if (fact.kind === 'topic') q(`DELETE FROM course_facts WHERE course = ? AND user_id = ? AND kind = 'topic' AND key LIKE ?`).run(c.code, req.user.id, `topic|${fact.data.week}|%`);
+    const status = screen.action === 'hold' || q(`SELECT 1 FROM course_facts WHERE course = ? AND key = ? AND status != 'published'`).get(c.code, fact.key) ? 'held' : 'published';
+    q(`INSERT OR IGNORE INTO course_facts (course, kind, key, data, user_id, status) VALUES (?, ?, ?, ?, ?, ?)`).run(c.code, fact.kind, fact.key, JSON.stringify(fact.data), req.user.id, status);
+    flashRedirect(res, backTo(c.code), 'ok', status === 'held' ? 'Thanks. A moderator will check it before it shows.' : 'Thanks, that helps everyone in this course.');
+  });
+
+  app.post('/courses/:code/facts/withdraw', requireUser, (req, res) => {
+    const code = String(req.params.code).toUpperCase();
+    q(`DELETE FROM course_facts WHERE course = ? AND key = ? AND user_id = ?`).run(code, String(req.body.key || ''), req.user.id);
+    flashRedirect(res, backTo(code), 'ok', 'Removed.');
+  });
+
+  // two reports from different students hide a fact until a moderator looks
+  app.post('/courses/:code/facts/report', requireUser, limits.report, (req, res) => {
+    const code = String(req.params.code).toUpperCase();
+    const key = String(req.body.key || '').slice(0, 200);
+    if (!q(`SELECT 1 FROM course_facts WHERE course = ? AND key = ?`).get(code, key)) return res.status(404).page(notFound(req));
+    q(`INSERT OR IGNORE INTO fact_reports (course, key, user_id) VALUES (?, ?, ?)`).run(code, key, req.user.id);
+    const n = q(`SELECT COUNT(*) AS n FROM fact_reports WHERE course = ? AND key = ?`).get(code, key).n;
+    if (n >= HIDE_AFTER_REPORTS) q(`UPDATE course_facts SET status = 'held' WHERE course = ? AND key = ? AND status = 'published'`).run(code, key);
+    flashRedirect(res, backTo(code), 'ok', n >= HIDE_AFTER_REPORTS ? 'Thanks. It\'s hidden until a moderator checks it.' : 'Thanks. A moderator will take a look.');
+  });
+
   // ---- the week view ----
   // The plan as a Monday-to-Friday timetable. Choosing a tut group, adding a block or turning on study time works
   // like the planner: plain links and forms that update the plan's link and this device's cookie.
@@ -405,11 +457,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     if (!fromUrl && (codes.length || week.blocks.length)) return res.redirect(303, planUrl(codes, profile, week, '/week'));
     const rows = weekRows(codes);
-    const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week);
+    const facts = factsFor(codes);
+    const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { crowd: crowdSlots(facts) });
+    const upcoming = datedFor(facts).filter((d) => d.date >= new Date().toISOString().slice(0, 10)).slice(0, 12);
     const cal = calCookie(req);
     const origin = baseUrl || `${req.protocol}://${req.get('host')}`;
     res.page(views.week(req.ctx, {
-      wk, week, codes,
+      wk, week, codes, upcoming,
       state: Object.fromEntries(new URLSearchParams(planQuery(codes, profile, week))),
       calendar: cal && q(`SELECT id FROM calendars WHERE id = ?`).get(cal) ? `${origin}/cal/${cal}.ics` : null,
     }));
@@ -420,7 +474,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const { codes, week } = readPlan(req);
     const rows = weekRows(codes);
     res.set({ 'Content-Type': 'text/calendar; charset=utf-8', 'Content-Disposition': 'attachment; filename="kwaai-week.ics"' })
-      .send(icsFor(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { origin: baseUrl || '' }));
+      .send(icsFor(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { origin: baseUrl || '', ...crowdFor(codes) }));
   });
 
   // A calendar that keeps itself up to date: Google, Apple or Outlook fetch /cal/<id>.ics every few hours, and it
@@ -452,7 +506,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const codes = planCodes(state.c);
     const rows = weekRows(codes);
     res.set({ 'Content-Type': 'text/calendar; charset=utf-8', 'Cache-Control': 'no-cache' })
-      .send(icsFor(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), parseWeek(state), { origin: baseUrl || '' }));
+      .send(icsFor(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), parseWeek(state), { origin: baseUrl || '', ...crowdFor(codes) }));
   });
 
   app.get('/universities', (req, res) => {
@@ -483,6 +537,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       reports_you_made: q(`SELECT review_id, reason, details, created_at FROM reports WHERE user_id = ? ORDER BY created_at`).all(id),
       tips_you_reported: q(`SELECT verdict_id FROM verdict_reports WHERE user_id = ?`).all(id),
       lecturer_suggestions: q(`SELECT name, course, status, created_at FROM lecturer_suggestions WHERE user_id = ? ORDER BY created_at`).all(id),
+      course_details_you_added: q(`SELECT course, kind, data, status, created_at FROM course_facts WHERE user_id = ? ORDER BY created_at`).all(id).map((f) => ({ ...f, data: JSON.parse(f.data) })),
       note: 'Your semester plan and "about you" answers are kept only in a cookie on your device and in the plan link, not on our server. Sign-in codes, links and sessions are stored as one-way hashes and deleted when they expire.',
     };
     res.set({ 'Content-Disposition': 'attachment; filename="kwaai-my-data.json"', 'Cache-Control': 'no-store' }).json(data);
@@ -496,6 +551,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE user_id = ?)`).run(id);
       q(`DELETE FROM reviews WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdicts WHERE user_id = ?`).run(id);
+      q(`DELETE FROM course_facts WHERE user_id = ?`).run(id);
+      q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
       q(`UPDATE reports SET user_id = NULL WHERE user_id = ?`).run(id);
       q(`UPDATE lecturer_suggestions SET user_id = NULL WHERE user_id = ?`).run(id);
@@ -794,7 +851,21 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const suggestions = q(`SELECT s.*, d.name AS dept_name FROM lecturer_suggestions s JOIN departments d ON d.code = s.dept WHERE s.status = 'open' ORDER BY s.created_at`).all();
     const heldTips = q(`SELECT * FROM verdicts WHERE status = 'held' ORDER BY created_at`).all();
     const log = q(`SELECT * FROM mod_log ORDER BY id DESC LIMIT 30`).all();
-    res.page(views.mod(req.ctx, { held, heldTips, takedowns, suggestions, log }));
+    const heldFacts = q(`SELECT course, kind, key, MIN(data) AS data, COUNT(DISTINCT user_id) AS n, (SELECT COUNT(*) FROM fact_reports r WHERE r.course = f.course AND r.key = f.key) AS reports
+      FROM course_facts f WHERE status = 'held' GROUP BY course, key ORDER BY MIN(created_at)`).all().map((f) => ({ ...f, data: JSON.parse(f.data) }));
+    res.page(views.mod(req.ctx, { held, heldTips, takedowns, suggestions, log, heldFacts }));
+  });
+
+  // a held course detail: approve puts it back and clears its reports; remove takes it down for good
+  app.post('/mod/facts/:action', requireUser, requireMod, (req, res) => {
+    const { action } = req.params;
+    const course = String(req.body.course || '').toUpperCase();
+    const key = String(req.body.key || '');
+    if (!['approve', 'remove'].includes(action) || !q(`SELECT 1 FROM course_facts WHERE course = ? AND key = ?`).get(course, key)) return res.status(404).page(notFound(req));
+    q(`UPDATE course_facts SET status = ? WHERE course = ? AND key = ?`).run(action === 'approve' ? 'published' : 'removed', course, key);
+    q(`DELETE FROM fact_reports WHERE course = ? AND key = ?`).run(course, key);
+    q(`INSERT INTO mod_log (action, note, moderator) VALUES (?, ?, ?)`).run(`${action} course detail`, `${course} ${key.split('|')[0]}`, req.user.email);
+    flashRedirect(res, '/mod', 'ok', `${course}: ${action === 'approve' ? 'back up' : 'removed'}.`);
   });
 
   app.post('/mod/reviews/:id/:action', requireUser, requireMod, (req, res) => {

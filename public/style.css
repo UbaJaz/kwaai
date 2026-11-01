@@ -379,6 +379,15 @@ legend { font: 600 1.05rem var(--display); padding: 0 8px 0 0; }
 .handbook { font-size: .86rem; }
 .plan-share { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 24px 0 0; }
 .plan-remove { flex: none; font-size: .8rem; color: var(--muted); }
+/* ---------- course details from students ---------- */
+.course-week { margin: 8px 0 28px; }
+.course-week h3 { font-size: 1rem; margin: 18px 0 8px; }
+.fact-list li, .topic-list li { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; justify-content: space-between; padding: 6px 0; border-top: 1px solid var(--line); }
+.fact-actions { display: inline-flex; gap: 10px; align-items: center; }
+.fact-add { margin: 8px 0 0; font-size: .9rem; }
+.fact-add summary { cursor: pointer; font-weight: 600; }
+.week-upcoming { margin: 0 0 16px; }
+.week-upcoming h2 { font-size: 1.1rem; margin: 0 0 8px; }
 /* ---------- week view ---------- */
 .week-hours, .week-choices, .week-unplaced, .week-own, .week-calendar { margin: 0 0 16px; }
 .week-hours h2, .week-choices h2, .week-unplaced h2, .week-own h2, .week-calendar h2 { font-size: 1.1rem; margin: 0 0 8px; }
