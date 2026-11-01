@@ -335,6 +335,21 @@ test('leaderboards: periods, shared ranks, and the opt-in profile form', () => {
   assert.deepEqual(ok, { display_name: 'Thandi M', show_name: 1, faculty: '', major: '', year: null }, 'unknown faculty, major and year are dropped');
 });
 
+test('real hours per course: the median week of students who track it, from 5 students', () => {
+  const today = '2027-04-30';
+  // started 28 days ago (4 weeks), each with a different habit: 4, 6, 7, 8 and 20 hours a week
+  const rows = [4, 6, 7, 8, 20].flatMap((h, i) => [
+    { user_id: i + 1, day: '2027-04-03', minutes: h * 60 },
+    { user_id: i + 1, day: '2027-04-20', minutes: h * 3 * 60 },
+  ]);
+  assert.deepEqual(Study.courseHours(rows, today), { students: 5, hours: 7 }, 'the median, so one 20-hour student barely moves it');
+  const newcomer = { user_id: 9, day: '2027-04-25', minutes: 600 };
+  assert.deepEqual(Study.courseHours([...rows, newcomer], today), { students: 5, hours: 7 }, 'under two weeks of tracking is left out');
+  assert.equal(Study.courseHours(rows.filter((r) => r.user_id !== 5), today), null, 'four students are too few to show');
+  const six = [...rows, { user_id: 6, day: '2027-04-03', minutes: 9 * 4 * 60 }];
+  assert.equal(Study.courseHours(six, today).hours, 7.5, 'an even count averages the middle two, to the half hour');
+});
+
 test('groups: names and join codes', () => {
   assert.deepEqual(Study.cleanName('  Res  study   squad ', 40, screenComment), { name: 'Res study squad' });
   assert.ok(Study.cleanName('x', 40, screenComment).error);
@@ -1490,4 +1505,22 @@ test('studying now: course pages from 3 students, the university count, and grou
   assert.match(page, /<strong>Bo<\/strong> \(you\)/);
   assert.doesNotMatch(page, /<strong>Dee<\/strong>/, 'a stale timer is not "studying now"');
   db.prepare(`DELETE FROM study_sessions WHERE course = 'STA1000F' AND status = 'running'`).run();
+});
+
+test('course pages show real weekly hours once 5 students have timed the course', async () => {
+  const today = Study.saDay(Date.now());
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', 'PHY1012F', ?, 0, 0, 90, ?, 'done')`);
+  const student = (n) => {
+    db.prepare(`INSERT INTO users (email) VALUES (?) ON CONFLICT DO NOTHING`).run(`hours00${n}@myuct.ac.za`);
+    return db.prepare('SELECT id FROM users WHERE email = ?').get(`hours00${n}@myuct.ac.za`).id;
+  };
+  // each started 27 days ago (4 weeks including today) and logged 4 hours a week in total
+  for (const n of [1, 2, 3, 4]) add.run(student(n), Study.addDay(today, -27), 16 * 3600);
+  let page = await (await fetch(`${base}/courses/PHY1012F`)).text();
+  assert.match(page, /No timed study figure yet/);
+  assert.match(page, /Its 18 credits suggest about \d+ h a week in total/);
+  add.run(student(5), Study.addDay(today, -27), 16 * 3600);
+  page = await (await fetch(`${base}/courses/PHY1012F`)).text();
+  assert.match(page, /About 4 h a week<\/strong> of timed study, from 5 students who track PHY1012F/);
+  db.prepare(`DELETE FROM study_sessions WHERE course = 'PHY1012F'`).run();
 });

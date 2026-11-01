@@ -155,6 +155,7 @@ CREATE TABLE IF NOT EXISTS study_sessions (
 );
 CREATE INDEX IF NOT EXISTS study_by_user ON study_sessions (user_id, day);
 CREATE INDEX IF NOT EXISTS study_by_day ON study_sessions (uni, day);
+CREATE INDEX IF NOT EXISTS study_by_course ON study_sessions (course, day);
 CREATE UNIQUE INDEX IF NOT EXISTS one_running_timer ON study_sessions (user_id) WHERE status = 'running';
 -- Leaderboard profiles. A row exists only while the student has chosen to be on the leaderboards (boards_agreed_at
 -- records when). show_name = 0 shows the anonymous label ("2nd-year Computer Science student") instead of the name.

@@ -271,7 +271,12 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     let draft = [];
     try { draft = c.topics ? JSON.parse(c.topics) : []; } catch { draft = []; }
     const studying = liveStudents(`course = ?`, c.code);
-    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0 })));
+    // real study time from students who time this course, next to what its credits suggest
+    const today = Study.saDay(Date.now());
+    const realHours = Study.courseHours(q(`SELECT user_id, day, SUM(credited_sec / 60) AS minutes FROM study_sessions
+      WHERE course = ? AND status = 'done' AND day >= ? GROUP BY user_id, day`).all(c.code, Study.addDay(today, -Study.HOURS_WINDOW_DAYS)), today);
+    const creditHours = Study.weeklyGoal(c, (t) => semesterWeeks(planYear(), t));
+    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0, realHours, creditHours })));
   });
 
   app.get('/lecturers/:id', (req, res) => {

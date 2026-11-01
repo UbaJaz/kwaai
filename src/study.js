@@ -168,6 +168,35 @@ function parseProfileForm(body, known, screen) {
   return { profile: { display_name: name.slice(0, 30), show_name: showName ? 1 : 0, faculty, major, year: Number.isInteger(year) && year >= 1 && year <= 6 ? year : null } };
 }
 
+// ---- real hours per course ----
+// How long students who track a course really spend on it. For each student who started timing the course at least
+// two weeks ago (within the last 16 weeks): their minutes on it divided by the weeks since their first session. The
+// course shows the median, and only once HOURS_MIN_STUDENTS students qualify, so no one student's habits show.
+const HOURS_WINDOW_DAYS = 16 * 7;
+const HOURS_MIN_STUDENTS = 5;
+const HOURS_MIN_DAYS = 14;
+
+// rows: [{ user_id, day, minutes }] for one course since addDay(today, -HOURS_WINDOW_DAYS)
+function courseHours(rows, today) {
+  const byUser = new Map();
+  for (const r of rows) {
+    const u = byUser.get(r.user_id) || { first: r.day, minutes: 0 };
+    u.first = r.day < u.first ? r.day : u.first;
+    u.minutes += r.minutes;
+    byUser.set(r.user_id, u);
+  }
+  const perWeek = [];
+  for (const u of byUser.values()) {
+    const days = (Date.parse(`${today}T00:00:00Z`) - Date.parse(`${u.first}T00:00:00Z`)) / DAY + 1;
+    if (days >= HOURS_MIN_DAYS) perWeek.push(u.minutes / 60 / (days / 7));
+  }
+  if (perWeek.length < HOURS_MIN_STUDENTS) return null;
+  perWeek.sort((a, b) => a - b);
+  const mid = perWeek.length >> 1;
+  const median = perWeek.length % 2 ? perWeek[mid] : (perWeek[mid - 1] + perWeek[mid]) / 2;
+  return { students: perWeek.length, hours: Math.round(median * 2) / 2 }; // to the nearest half hour
+}
+
 // ---- groups ----
 const MAX_GROUPS = 20; // groups one student can be in
 const MAX_MEMBERS = 200;
@@ -184,4 +213,4 @@ function cleanName(text, max, screen) {
 // 8 characters from random bytes; 256 is a multiple of 32, so every character is equally likely
 const groupCode = (bytes) => [...bytes].slice(0, 8).map((b) => CODE_CHARS[b % CODE_CHARS.length]).join('');
 
-module.exports = { LIVE_MS, liveSince, MIN_LIVE_SHOWN, MAX_GROUPS, MAX_MEMBERS, CODE_CHARS, cleanName, groupCode, PERIODS, BOARD_SIZE, periodRange, rankBoard, parseProfileForm, PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
+module.exports = { HOURS_WINDOW_DAYS, HOURS_MIN_STUDENTS, courseHours, LIVE_MS, liveSince, MIN_LIVE_SHOWN, MAX_GROUPS, MAX_MEMBERS, CODE_CHARS, cleanName, groupCode, PERIODS, BOARD_SIZE, periodRange, rankBoard, parseProfileForm, PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
