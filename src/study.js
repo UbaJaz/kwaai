@@ -162,4 +162,20 @@ function parseProfileForm(body, known, screen) {
   return { profile: { display_name: name.slice(0, 30), show_name: showName ? 1 : 0, faculty, major, year: Number.isInteger(year) && year >= 1 && year <= 6 ? year : null } };
 }
 
-module.exports = { PERIODS, BOARD_SIZE, periodRange, rankBoard, parseProfileForm, PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
+// ---- groups ----
+const MAX_GROUPS = 20; // groups one student can be in
+const MAX_MEMBERS = 200;
+const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 32 characters, without 0/O and 1/I, which get mixed up when read out
+
+// a group's name, or what a member is called in it: spaces tidied, a length check, and the comment screen
+function cleanName(text, max, screen) {
+  const name = String(text || '').replace(/\s+/g, ' ').trim();
+  if (name.length < 2 || name.length > max) return { error: `Use 2 to ${max} characters.` };
+  if (screen(name).action !== 'publish') return { error: "That name can't be used: no contact details, insults or anyone else's name." };
+  return { name };
+}
+
+// 8 characters from random bytes; 256 is a multiple of 32, so every character is equally likely
+const groupCode = (bytes) => [...bytes].slice(0, 8).map((b) => CODE_CHARS[b % CODE_CHARS.length]).join('');
+
+module.exports = { MAX_GROUPS, MAX_MEMBERS, CODE_CHARS, cleanName, groupCode, PERIODS, BOARD_SIZE, periodRange, rankBoard, parseProfileForm, PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };

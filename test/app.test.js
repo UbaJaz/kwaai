@@ -335,6 +335,16 @@ test('leaderboards: periods, shared ranks, and the opt-in profile form', () => {
   assert.deepEqual(ok, { display_name: 'Thandi M', show_name: 1, faculty: '', major: '', year: null }, 'unknown faculty, major and year are dropped');
 });
 
+test('groups: names and join codes', () => {
+  assert.deepEqual(Study.cleanName('  Res  study   squad ', 40, screenComment), { name: 'Res study squad' });
+  assert.ok(Study.cleanName('x', 40, screenComment).error);
+  assert.ok(Study.cleanName('y'.repeat(41), 40, screenComment).error);
+  assert.ok(Study.cleanName('whatsapp 082 123 4567', 40, screenComment).error);
+  const code = Study.groupCode(Buffer.from([0, 31, 32, 255, 100, 7, 8, 9, 10]));
+  assert.equal(code, 'A9A9EHJK');
+  assert.match(Study.groupCode(require('node:crypto').randomBytes(8)), /^[A-HJ-NP-Z2-9]{8}$/, 'no 0, O, 1 or I');
+});
+
 test('study dashboard: heatmap weeks, totals and weekly goals', () => {
   assert.deepEqual([0, 1, 29, 30, 59, 60, 119, 120, 600].map(Study.levelOf), [0, 1, 1, 2, 2, 3, 3, 4, 4]);
   const totals = Study.dayTotals([
