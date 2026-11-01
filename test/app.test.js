@@ -287,6 +287,29 @@ test('study timer: heartbeats credit time, gaps and caps stop padding', () => {
   assert.equal(Study.hoursText(45), '45 min');
 });
 
+test('study streaks: 30 minutes a day, paused over vacations', () => {
+  const terms = require('../data/terms.json').years;
+  assert.equal(Study.isVacation('2027-01-10', terms), true, 'before the first term');
+  assert.equal(Study.isVacation('2027-06-20', terms), true, 'between the semesters');
+  assert.equal(Study.isVacation('2027-03-25', terms), true, 'the March break');
+  assert.equal(Study.isVacation('2027-04-01', terms), false);
+  assert.equal(Study.isVacation('2027-12-24', terms), true, 'after the year ends');
+  assert.equal(Study.isVacation('2030-01-05', terms), false, 'a year with no term dates has no vacations');
+
+  const day = (d, min) => ({ day: d, course: 'CSC1015F', credited_sec: min * 60 });
+  const totals = Study.dayTotals([
+    day('2027-03-10', 45), day('2027-03-11', 45), // a run of 2, broken by the 12th (a term day, no study)
+    day('2027-03-15', 40), day('2027-03-16', 40), day('2027-03-17', 40), day('2027-03-18', 40), day('2027-03-19', 40),
+    day('2027-03-25', 30), // studied in the vacation: still counts
+    day('2027-03-30', 31),
+    day('2027-03-31', 10), // today, not there yet
+  ]);
+  assert.deepEqual(Study.streak(totals, '2027-03-31', terms), { current: 7, best: 7, todayDone: false, needed: 20, vacation: false });
+  assert.equal(Study.streak(totals, '2027-04-01', terms).current, 0, 'a term day with under 30 minutes ends it');
+  assert.equal(Study.streak(totals, '2027-03-26', terms).current, 6, 'skipping vacation days pauses it');
+  assert.deepEqual(Study.streak([], '2027-03-31', terms), { current: 0, best: 0, todayDone: false, needed: 30, vacation: false });
+});
+
 test('study dashboard: heatmap weeks, totals and weekly goals', () => {
   assert.deepEqual([0, 1, 29, 30, 59, 60, 119, 120, 600].map(Study.levelOf), [0, 1, 1, 2, 2, 3, 3, 4, 4]);
   const totals = Study.dayTotals([
@@ -1266,4 +1289,34 @@ test('study dashboard: totals, heatmap, a day\'s detail and this week by course'
   assert.match(page, /id="day"[\s\S]*?CSC1015F<\/a> · 50 min[\s\S]*?General study · 10 min/);
   assert.match(await s.text('/study?day=nonsense'), /Your study/, 'a bad day is ignored');
   assert.doesNotMatch(await browser().text('/study'), /Your study/, 'signed out: no dashboard');
+});
+
+test('the streak shows on Study, Today and the home page once a student has studied', async () => {
+  const s = browser();
+  await s.signIn('streak001@myuct.ac.za');
+  assert.doesNotMatch(await s.text('/'), /study streak/, 'nothing to show before the first session');
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'streak001@myuct.ac.za'`).get().id;
+  const today = Study.saDay(Date.now());
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 50, ?, 'done')`);
+  add.run(uid, Study.addDay(today, -1), 40 * 60);
+  add.run(uid, today, 10 * 60);
+  for (const p of ['/', '/today']) assert.match(await s.text(p), /1 day study streak/, p);
+  const study = await s.text('/study');
+  assert.match(study, /<dt>Streak<\/dt><dd>1 day<\/dd>/);
+  assert.match(study, /Study 20 more minutes today to keep it going|the vacation/);
+  add.run(uid, today, 25 * 60);
+  assert.match(await s.text('/study'), /<dt>Streak<\/dt><dd>2 days<\/dd>[\s\S]*?Today counts\./);
+});
+
+test('a daily study reminder can go in the calendar', async () => {
+  assert.equal(parseWeek({ sr: '2000' }).reminder, '20:00');
+  assert.equal(parseWeek({ sr: '2500' }).reminder, '', 'not a time');
+  assert.deepEqual(weekParams(parseWeek({ sr: '0700', st: '1' })), { st: '1', sr: '0700' });
+  const ics = icsFor([], parseWeek({ sr: '2000' }), { year: 2027 });
+  assert.match(ics, /DTSTART:20270208T180000Z\r\nDTEND:20270208T183000Z\r\nRRULE:FREQ=DAILY;UNTIL=20271217T215900Z/, '20:00 South African time every day of the year\'s terms');
+  assert.match(ics, /SUMMARY:Study for 30 minutes[\s\S]*BEGIN:VALARM/);
+  assert.doesNotMatch(icsFor([], parseWeek({}), { year: 2027 }), /Study for 30 minutes/, 'off unless asked for');
+  const page = await (await fetch(`${base}/week?c=CSC1015F&sr=2000`)).text();
+  assert.match(page, /<option value="2000" selected>20:00<\/option>/);
+  assert.match(await (await fetch(`${base}/week.ics?c=CSC1015F&sr=2000`)).text(), /Study for 30 minutes/);
 });
