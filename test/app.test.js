@@ -310,6 +310,31 @@ test('study streaks: 30 minutes a day, paused over vacations', () => {
   assert.deepEqual(Study.streak([], '2027-03-31', terms), { current: 0, best: 0, todayDone: false, needed: 30, vacation: false });
 });
 
+test('leaderboards: periods, shared ranks, and the opt-in profile form', () => {
+  assert.deepEqual(Study.periodRange('day', '2027-03-03'), ['2027-03-03', '2027-03-03']);
+  assert.deepEqual(Study.periodRange('week', '2027-03-03'), ['2027-03-01', '2027-03-03'], 'Monday to today');
+  assert.deepEqual(Study.periodRange('month', '2027-03-03'), ['2027-03-01', '2027-03-03']);
+
+  const rows = [{ user_id: 1, minutes: 50 }, { user_id: 2, minutes: 90 }, { user_id: 3, minutes: 50 }, { user_id: 4, minutes: 10 }, { user_id: 5, minutes: 0 }];
+  const board = Study.rankBoard(rows, 4);
+  assert.deepEqual(board.rows.map((r) => [r.user_id, r.rank]), [[2, 1], [1, 2], [3, 2], [4, 4]], 'ties share a rank; nobody with 0 minutes');
+  assert.equal(board.me, null, 'the viewer is already in the list');
+  const many = Array.from({ length: 60 }, (_, i) => ({ user_id: i + 1, minutes: 100 - i }));
+  const far = Study.rankBoard(many, 58);
+  assert.equal(far.rows.length, 50);
+  assert.deepEqual([far.me.rank, far.total], [58, 60], 'the viewer sees their own rank below the top 50');
+
+  const known = { faculty: (f) => f === 'sci', major: (f, m) => f === 'sci' && m === 'CSC05' };
+  assert.deepEqual(Study.parseProfileForm({}, known, screenComment), { leave: true }, 'unticked means not on the boards');
+  assert.deepEqual(Study.parseProfileForm({ join: '1', show: 'anon', faculty: 'sci', major: 'CSC05', year: '2' }, known, screenComment).profile,
+    { display_name: '', show_name: 0, faculty: 'sci', major: 'CSC05', year: 2 });
+  assert.ok(Study.parseProfileForm({ join: '1', show: 'name', display_name: 'A' }, known, screenComment).error, 'too short');
+  assert.ok(Study.parseProfileForm({ join: '1', show: 'name', display_name: 'call 082 123 4567' }, known, screenComment).error, 'contact details');
+  assert.ok(Study.parseProfileForm({ join: '1', show: 'name', display_name: 'kak lecturer' }, known, screenComment).error, 'insults');
+  const ok = Study.parseProfileForm({ join: '1', show: 'name', display_name: '  Thandi   M ', faculty: 'law', major: 'CSC05', year: '9' }, known, screenComment).profile;
+  assert.deepEqual(ok, { display_name: 'Thandi M', show_name: 1, faculty: '', major: '', year: null }, 'unknown faculty, major and year are dropped');
+});
+
 test('study dashboard: heatmap weeks, totals and weekly goals', () => {
   assert.deepEqual([0, 1, 29, 30, 59, 60, 119, 120, 600].map(Study.levelOf), [0, 1, 1, 2, 2, 3, 3, 4, 4]);
   const totals = Study.dayTotals([
@@ -1140,7 +1165,10 @@ test('the year: revision plan from exam dates, month by month, in the calendar, 
   assert.equal(manifest.start_url, '/today');
   const sw = await fetch(`${base}/sw.js`);
   assert.equal(sw.headers.get('cache-control'), 'no-cache');
-  assert.match(await sw.text(), /NEVER = \/\^\\\/\(login\|auth/, 'sign-in and account pages are never cached');
+  const swText = await sw.text();
+  assert.match(swText, /NEVER = \/\^\\\/\(login\|auth/, 'sign-in and account pages are never cached');
+  assert.doesNotMatch(swText, /VERSION = 'kwaai-v1'/, 'v1 served old styles forever; installed apps must drop it');
+  assert.match(swText, /cache\.put\(req, res\.clone\(\)\)/, 'styles and scripts are refreshed behind the saved copy');
 });
 
 test('a demo password keeps every page private until it is given', async (t) => {
@@ -1319,4 +1347,60 @@ test('a daily study reminder can go in the calendar', async () => {
   const page = await (await fetch(`${base}/week?c=CSC1015F&sr=2000`)).text();
   assert.match(page, /<option value="2000" selected>20:00<\/option>/);
   assert.match(await (await fetch(`${base}/week.ics?c=CSC1015F&sr=2000`)).text(), /Study for 30 minutes/);
+});
+
+test('leaderboards: opt in, named or anonymous, faculty boards, reports and leaving', async () => {
+  assert.match((await browser().get('/study/leaderboards')).headers.get('location'), /^\/login/, 'signed-in students only');
+  const [a, b, c] = [browser(), browser(), browser()];
+  await a.signIn('board101@myuct.ac.za');
+  await b.signIn('board102@myuct.ac.za');
+  await c.signIn('board103@myuct.ac.za');
+  const id = (e) => db.prepare('SELECT id FROM users WHERE email = ?').get(e).id;
+  const today = Study.saDay(Date.now());
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 90, ?, 'done')`);
+  add.run(id('board101@myuct.ac.za'), today, 60 * 60);
+  add.run(id('board102@myuct.ac.za'), today, 90 * 60);
+  add.run(id('board103@myuct.ac.za'), today, 120 * 60); // studied most, but never joined
+
+  const form = await a.text('/account/profile');
+  assert.match(form, /<input type="checkbox" name="join" value="1" >/, 'the box starts unticked');
+  assert.match(form, /<option value="CSC05" >Computer Science<\/option>/, 'the major menu sends the code the server checks');
+  assert.equal((await a.post('/account/profile', { join: '1', show: 'name', display_name: 'call me on 082 123 4567' })).status, 400);
+  assert.equal((await a.post('/account/profile', { join: '1', show: 'name', display_name: 'Thandi M', faculty: 'sci', major: 'CSC05', year: '2' })).status, 303);
+  assert.match(await a.text('/account/profile'), /<option value="CSC05" selected>Computer Science<\/option>/, 'and shows it chosen next time');
+  await b.post('/account/profile', { join: '1', show: 'anon', display_name: 'Secret Name', faculty: 'sci', major: 'CSC05', year: '1' });
+
+  let page = await a.text('/study/leaderboards?period=day');
+  assert.match(page, /board-rank">1<\/span>\s*<span class="board-name">1st-year Computer Science student/);
+  assert.match(page, /board-rank">2<\/span>\s*<span class="board-name">Thandi M <span class="badge">You/);
+  assert.doesNotMatch(page, /Secret Name/, 'an anonymous student\'s name never shows');
+  assert.doesNotMatch(page, /2 h/, 'a student who never joined is not on the board');
+  assert.match(page, /2 students on this board/);
+  assert.match(await c.text('/study/leaderboards?period=week'), /You're not on the leaderboards/);
+  assert.doesNotMatch(await a.text('/study/leaderboards?period=day&scope=faculty&f=hum'), /Thandi M/, 'other faculties\' boards');
+  assert.match(await a.text('/study/leaderboards?period=day&scope=faculty&f=sci'), /Thandi M/);
+
+  // two reports hide the name until a moderator decides
+  const aid = id('board101@myuct.ac.za');
+  assert.equal((await a.post('/study/report-name', { user: aid })).status, 404, 'no reporting yourself');
+  await b.post('/study/report-name', { user: aid });
+  assert.match(await c.text('/study/leaderboards?period=day'), /Thandi M/, 'one report hides nothing');
+  await c.post('/study/report-name', { user: aid });
+  page = await c.text('/study/leaderboards?period=day');
+  assert.doesNotMatch(page, /Thandi M/);
+  assert.match(page, /2nd-year Computer Science student/);
+  const mod = browser();
+  await mod.signIn('mod002@myuct.ac.za');
+  assert.match(await mod.text('/mod'), /Student #\d+ · 2 reports[\s\S]*?Thandi M/);
+  await mod.post(`/mod/names/${aid}/allow`, {});
+  assert.match(await c.text('/study/leaderboards?period=day'), /Thandi M/);
+
+  // leaving, and deleting the account
+  assert.ok((await (await a.get('/account/data')).json()).leaderboard_profile.display_name === 'Thandi M');
+  await a.post('/account/profile', {});
+  assert.doesNotMatch(await b.text('/study/leaderboards?period=day'), /Thandi M|2nd-year/);
+  const bid = id('board102@myuct.ac.za');
+  await b.post('/account/delete', {});
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM profiles WHERE user_id = ?').get(bid).n, 0, 'deleting the account removes the profile');
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM name_reports WHERE user_id = ?').get(bid).n, 0, 'and the reports it made');
 });

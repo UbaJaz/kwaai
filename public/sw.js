@@ -1,13 +1,16 @@
 // Kwaai's service worker: lets the installed app open Today, the week, the year and Marks without a connection.
-// Pages are fetched fresh when online and the last copy is kept for offline; styles and scripts come from the cache
-// first. Sign-in, account, moderation, API and calendar requests always go to the network and are never cached.
-const VERSION = 'kwaai-v1';
+// Pages are fetched fresh when online and the last copy is kept for offline. Styles and scripts come from the cache
+// straight away while a fresh copy is fetched behind them for next time, so a new deploy reaches installed apps.
+// Sign-in, account, moderation, API and calendar requests always go to the network and are never cached.
+// Change VERSION when a deploy must replace every saved file at once (v1 kept styles forever).
+const VERSION = 'kwaai-v2';
 const STATIC = ['/style.css', '/app.js', '/marks-math.js', '/kwaai-icon.svg', '/manifest.webmanifest'];
 const OFFLINE_PAGES = ['/today', '/week', '/year', '/marks', '/plan'];
 const NEVER = /^\/(login|auth|logout|account|mod|api|cal|week\.ics|takedown)\b/;
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(VERSION).then((cache) => cache.addAll(STATIC)).then(() => self.skipWaiting()));
+  // cache: 'reload' skips the browser's own hour-long cache, so the first saved copy is the current one
+  event.waitUntil(caches.open(VERSION).then((cache) => cache.addAll(STATIC.map((u) => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (event) => {
@@ -21,7 +24,15 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (req.method !== 'GET' || url.origin !== self.location.origin || NEVER.test(url.pathname)) return;
   if (STATIC.includes(url.pathname)) {
-    event.respondWith(caches.match(req).then((hit) => hit || fetch(req)));
+    event.respondWith(caches.open(VERSION).then((cache) => cache.match(req).then((hit) => {
+      const fresh = fetch(req, { cache: 'no-cache' }).then((res) => {
+        if (res.ok) cache.put(req, res.clone());
+        return res;
+      });
+      if (!hit) return fresh;
+      event.waitUntil(fresh.catch(() => { /* offline: the saved copy is all there is */ }));
+      return hit;
+    })));
     return;
   }
   if (req.mode === 'navigate' && OFFLINE_PAGES.includes(url.pathname)) {

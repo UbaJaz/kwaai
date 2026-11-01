@@ -156,6 +156,26 @@ CREATE TABLE IF NOT EXISTS study_sessions (
 CREATE INDEX IF NOT EXISTS study_by_user ON study_sessions (user_id, day);
 CREATE INDEX IF NOT EXISTS study_by_day ON study_sessions (uni, day);
 CREATE UNIQUE INDEX IF NOT EXISTS one_running_timer ON study_sessions (user_id) WHERE status = 'running';
+-- Leaderboard profiles. A row exists only while the student has chosen to be on the leaderboards (boards_agreed_at
+-- records when). show_name = 0 shows the anonymous label ("2nd-year Computer Science student") instead of the name.
+-- name_held = 1 after enough reports: the name is hidden until a moderator looks at it.
+CREATE TABLE IF NOT EXISTS profiles (
+  user_id INTEGER PRIMARY KEY REFERENCES users(id),
+  uni TEXT NOT NULL,
+  display_name TEXT NOT NULL DEFAULT '',
+  show_name INTEGER NOT NULL DEFAULT 0,
+  faculty TEXT NOT NULL DEFAULT '',
+  major TEXT NOT NULL DEFAULT '',
+  year INTEGER,
+  name_held INTEGER NOT NULL DEFAULT 0,
+  boards_agreed_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS name_reports (
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  target_id INTEGER NOT NULL REFERENCES users(id),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, target_id)
+);
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,
