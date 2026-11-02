@@ -1221,6 +1221,9 @@ function today(ctx, { today: t, weekLink, streak = null }) {
 }
 
 // ---------- study timer ----------
+// the progress ring around the countdown: public/app.js sets --p (0 to 1) as time passes, and the check mark draws in
+// when the session ends. The same markup is built in public/app.js for the signed-out timer.
+const TIMER_RING = html`<svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-track" cx="60" cy="60" r="54"></circle><circle class="ring-fill" cx="60" cy="60" r="54" pathLength="100"></circle><path class="ring-check" d="M40 61 l14 14 l27 -29" pathLength="100"></path></svg>`;
 const STUDY_PRESETS = [[25, '25 min', 'then a 5-minute break'], [50, '50 min', 'then a 10-minute break'], [90, '90 min', 'then a 15-minute break']];
 const clock = (ms) => new Date(ms + 2 * 60 * 60 * 1000).toISOString().slice(11, 16); // South African time
 
@@ -1235,7 +1238,10 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
   ${current ? html`
   <section class="card panel study-timer" aria-labelledby="study-now" data-study="${JSON.stringify(current)}">
     <h2 id="study-now">Studying ${courseName(current.course)}</h2>
-    <p class="study-clock" role="timer" aria-live="off" data-clock>${current.plannedMin}:00</p>
+    <div class="timer-ring" data-ring data-total="${current.plannedMin * 60}">
+      ${TIMER_RING}
+      <p class="study-clock" role="timer" aria-live="off" data-clock>${current.plannedMin}:00</p>
+    </div>
     <p class="meta" data-study-status>Started at ${clock(current.startedAt)} for ${current.plannedMin} minutes. Keep this page open (another tab is fine) so the time counts.</p>
     <form method="post" action="/study/stop" class="form-actions" data-study-stop>
       <button class="btn btn-big btn-ink">Stop and log it</button>
@@ -1244,6 +1250,7 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
   <section class="card panel study-timer" aria-labelledby="study-start">
     <h2 id="study-start">Start a session</h2>
     <p class="study-break" data-break hidden></p>
+    ${signedIn ? '' : html`<template data-ring-svg>${TIMER_RING}</template>`}
     <form method="post" action="/study/start" class="study-form" ${signedIn ? '' : html`data-study-local`}>
       <label>Course
         <select name="course">
