@@ -61,9 +61,11 @@ h2, h3 { font-weight: 600; }
 .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; font: 800 1.45rem/1 var(--display); letter-spacing: -.035em; color: var(--paper); }
 .logo img { display: block; border-radius: 7px; }
 .nav { display: flex; align-items: center; gap: 20px; font-size: .93rem; font-weight: 500; }
-.nav a { text-decoration: none; color: color-mix(in srgb, var(--paper) 78%, transparent); padding: 6px 0; }
+.nav a { text-decoration: none; color: color-mix(in srgb, var(--paper) 78%, transparent); padding: 6px 0; background: linear-gradient(var(--lime), var(--lime)) no-repeat 0 100% / 0 2px; transition: background-size .25s ease-out, color .15s; }
 .nav a:hover { color: var(--paper); }
-.nav a[aria-current="page"] { color: var(--paper); box-shadow: inset 0 -2px var(--lime); }
+.nav a[aria-current="page"] { color: var(--paper); background-size: 100% 2px; }
+.nav a:hover { background-size: 100% 2px; }
+@media (prefers-reduced-motion: reduce) { .nav a { transition: none; } }
 .nav-mod { color: #c9b8ff !important; }
 .header-end { margin-left: auto; display: flex; align-items: center; gap: 12px; }
 .header-end .link-btn { color: color-mix(in srgb, var(--paper) 80%, transparent); font-size: .9rem; }
