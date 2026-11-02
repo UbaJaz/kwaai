@@ -1619,3 +1619,35 @@ test('admin sign-in: off without a hash, password checked, moderator powers, rat
     srv.close();
   }
 });
+
+test('test accounts stay out of everything students see, and show for an admin', async () => {
+  const now = Date.now();
+  const today = Study.saDay(now);
+  const ids = [1, 2, 3, 4, 5, 6].map((n) => {
+    db.prepare(`INSERT INTO users (email, is_test) VALUES (?, 1) ON CONFLICT DO NOTHING`).run(`testonly${n}@kwaai.invalid`);
+    return db.prepare('SELECT id FROM users WHERE email = ?').get(`testonly${n}@kwaai.invalid`).id;
+  });
+  db.prepare(`INSERT OR REPLACE INTO profiles (user_id, uni, display_name, show_name, faculty) VALUES (?, 'uct', 'Testy McTest', 1, 'sci')`).run(ids[0]);
+  const done = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', 'BIO1000F', ?, 0, 0, 90, ?, 'done')`);
+  done.run(ids[0], today, 5 * 3600);
+  for (const id of ids.slice(1)) done.run(id, Study.addDay(today, -27), 16 * 3600); // five test students' course hours
+  const running = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, status) VALUES (?, 'uct', 'BIO1000F', ?, ?, ?, 50, 'running')`);
+  for (const id of ids.slice(0, 3)) running.run(id, today, now - 600_000, now - 5_000);
+
+  const student = browser();
+  await student.signIn('realone01@myuct.ac.za');
+  await student.post('/account/profile', { join: '1', show: 'anon' });
+  assert.doesNotMatch(await student.text('/study/leaderboards?period=day'), /Testy McTest/);
+  const course = await student.text('/courses/BIO1000F');
+  assert.doesNotMatch(course, /studying BIO1000F/);
+  assert.match(course, /No timed study figure yet/);
+
+  const admin = browser();
+  await admin.signIn('realadmin01@myuct.ac.za');
+  db.prepare(`UPDATE users SET is_admin = 1 WHERE email = 'realadmin01@myuct.ac.za'`).run();
+  assert.match(await admin.text('/study/leaderboards?period=day'), /Testy McTest/);
+  const seen = await admin.text('/courses/BIO1000F');
+  assert.match(seen, /3 students are studying BIO1000F/);
+  assert.match(seen, /About 4 h a week<\/strong> of timed study, from 5 students/);
+  db.prepare(`DELETE FROM study_sessions WHERE course = 'BIO1000F'`).run();
+});

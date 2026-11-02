@@ -271,11 +271,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const facts = factsFor([c.code], req.user?.id)[c.code] || { lecture: [], tut: [], prac: [], topic: [], event: [] };
     let draft = [];
     try { draft = c.topics ? JSON.parse(c.topics) : []; } catch { draft = []; }
-    const studying = liveStudents(`course = ?`, c.code);
+    const studying = liveStudents(req.user, `course = ?`, c.code);
     // real study time from students who time this course, next to what its credits suggest
     const today = Study.saDay(Date.now());
     const realHours = Study.courseHours(q(`SELECT user_id, day, SUM(credited_sec / 60) AS minutes FROM study_sessions
-      WHERE course = ? AND status = 'done' AND day >= ? GROUP BY user_id, day`).all(c.code, Study.addDay(today, -Study.HOURS_WINDOW_DAYS)), today);
+      WHERE course = ? AND status = 'done' AND day >= ? ${realOnly(req.user)} GROUP BY user_id, day`).all(c.code, Study.addDay(today, -Study.HOURS_WINDOW_DAYS)), today);
     const creditHours = Study.weeklyGoal(c, (t) => semesterWeeks(planYear(), t));
     res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0, realHours, creditHours })));
   });
@@ -619,9 +619,12 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // ---- study timer ----
   // The rules (what a heartbeat earns, the caps) live in src/study.js. The page sends a heartbeat about once a minute
   // while the timer runs; a session nobody is timing any more is closed with what it had earned.
+  // Test accounts (the admin and the test tools' fake students) are left out of every figure students see. An admin
+  // sees them, so the boards and counts can be tested. Goes in a WHERE on a table with a user_id column.
+  const realOnly = (viewer) => (viewer?.is_admin ? '' : 'AND user_id NOT IN (SELECT id FROM users WHERE is_test = 1)');
   // students with a timer running right now (a heartbeat in the last two minutes), counted over a filter
-  function liveStudents(where, ...args) {
-    return q(`SELECT COUNT(DISTINCT user_id) AS n FROM study_sessions WHERE status = 'running' AND last_beat >= ? AND ${where}`).get(Study.liveSince(Date.now()), ...args).n;
+  function liveStudents(viewer, where, ...args) {
+    return q(`SELECT COUNT(DISTINCT user_id) AS n FROM study_sessions WHERE status = 'running' AND last_beat >= ? AND ${where} ${realOnly(viewer)}`).get(Study.liveSince(Date.now()), ...args).n;
   }
   const runningSession = (userId) => q(`SELECT * FROM study_sessions WHERE user_id = ? AND status = 'running'`).get(userId);
   const closeStale = (userId, now = Date.now()) => {
@@ -650,7 +653,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       courses, pick: current?.course || (courses.some((c) => c.code === pick) ? pick : ''), current: current && sessionState(current),
       today: Study.dayTotals(sessions.filter((s) => s.status === 'done'))[0] || null, sessions: sessions.filter((s) => s.status === 'done'),
       board: req.user ? studyBoard(req.user, codes, req.query.day) : null,
-      studyingNow: liveStudents(`uni = ?`, req.user?.uni ?? CURRENT.slug),
+      studyingNow: liveStudents(req.user, `uni = ?`, req.user?.uni ?? CURRENT.slug),
     }));
   });
 
@@ -781,10 +784,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   // minutes per leaderboard member over a span of days, each day capped like everywhere else; faculty narrows it
-  function boardRows(uni, from, to, faculty = null) {
+  function boardRows(uni, from, to, faculty = null, viewer = null) {
     return q(`SELECT p.*, SUM(x.m) AS minutes FROM profiles p JOIN (
         SELECT user_id, day, MIN(SUM(credited_sec / 60), ${Study.DAY_CAP_MIN}) AS m FROM study_sessions
-        WHERE status = 'done' AND uni = ? AND day BETWEEN ? AND ? GROUP BY user_id, day
+        WHERE status = 'done' AND uni = ? AND day BETWEEN ? AND ? ${realOnly(viewer)} GROUP BY user_id, day
       ) x ON x.user_id = p.user_id WHERE p.uni = ? ${faculty ? 'AND p.faculty = ?' : ''} GROUP BY p.user_id`)
       .all(...[uni, from, to, uni, ...(faculty ? [faculty] : [])]);
   }
@@ -793,7 +796,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const me = profileOf(user.id);
     if (!me) return null;
     const rankIn = (rows) => { const b = Study.rankBoard(rows, user.id); return (b.rows.find((r) => r.user_id === user.id) || b.me)?.rank ?? null; };
-    return { uni: rankIn(boardRows(user.uni, from, to)), faculty: me.faculty ? rankIn(boardRows(user.uni, from, to, me.faculty)) : null, facultyName: FACULTIES[me.faculty]?.name ?? null };
+    return { uni: rankIn(boardRows(user.uni, from, to, null, user)), faculty: me.faculty ? rankIn(boardRows(user.uni, from, to, me.faculty, user)) : null, facultyName: FACULTIES[me.faculty]?.name ?? null };
   }
 
   app.get('/study/leaderboards', requireUser, (req, res) => {
@@ -802,7 +805,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const scope = req.query.scope === 'faculty' ? 'faculty' : 'uni';
     const faculty = FACULTIES[req.query.f] ? req.query.f : me?.faculty || 'sci';
     const [from, to] = Study.periodRange(period, Study.saDay(Date.now()));
-    const rows = boardRows(req.user.uni, from, to, scope === 'faculty' ? faculty : null);
+    const rows = boardRows(req.user.uni, from, to, scope === 'faculty' ? faculty : null, req.user);
     const board = Study.rankBoard(rows, req.user.id);
     const show = (r) => ({ rank: r.rank, minutes: r.minutes, name: boardName(r), you: r.user_id === req.user.id, id: r.user_id, reportable: !!(r.show_name && r.display_name && !r.name_held) && r.user_id !== req.user.id });
     res.set('Cache-Control', 'no-store').page(views.leaderboard(req.ctx, {
