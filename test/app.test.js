@@ -363,6 +363,24 @@ test('admin password: only a scrypt hash is stored, and checking it is all-or-no
   for (const bad of ['', 'plain-text-password', 'scrypt$zz$zz', `scrypt$${'a'.repeat(32)}$short`]) assert.equal(Admin.checkPassword('x', bad), false, bad);
 });
 
+test('test data: a streak of n days, six months of history, and session rows', () => {
+  const TD = require('../src/testdata');
+  const streak = TD.streakDays(5, '2027-03-10', TD.seeded(7));
+  assert.deepEqual(streak.map((d) => d.day), ['2027-03-06', '2027-03-07', '2027-03-08', '2027-03-09', '2027-03-10']);
+  assert.ok(streak.every((d) => d.minutes >= 30 && d.minutes <= 95), 'every day counts for the streak');
+  const terms = require('../data/terms.json').years;
+  const totals = Study.dayTotals(streak.map((d) => ({ day: d.day, course: '', credited_sec: d.minutes * 60 })));
+  assert.equal(Study.streak(totals, '2027-03-10', terms).current, 5);
+
+  const history = TD.historyDays('2027-03-10', 182, TD.seeded(3));
+  assert.deepEqual(history, TD.historyDays('2027-03-10', 182, TD.seeded(3)), 'the same seed gives the same history');
+  assert.ok(history.length > 100 && history.length < 160, `${history.length} days with study`);
+  assert.equal(history[history.length - 1].day <= '2027-03-10', true);
+
+  const row = TD.sessionRow(4, 'uct', 'CSC1015F', '2027-03-10', 200);
+  assert.deepEqual([row.credited_sec, row.planned_min, Study.saDay(row.started_at)], [12000, 120, '2027-03-10']);
+});
+
 test('recaps: last week against the week before, and a semester for Wrapped', () => {
   const terms = require('../data/terms.json').years;
   const s = (day, course, min) => ({ day, course, credited_sec: min * 60 });
