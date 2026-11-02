@@ -224,6 +224,55 @@ document.querySelectorAll('[data-share]').forEach((btn) => {
   btn.addEventListener('click', () => navigator.share({ title: 'My semester on Kwaai', text: btn.dataset.shareText, url: btn.dataset.shareUrl }).catch(() => { /* closed the share sheet */ }));
 });
 
+// The streak celebration: once a day per device, the first time a page shows that today counts. The number ticks up,
+// the flame flares, and a milestone (7 days, 30 days...) gets confetti and its own line. Nothing moves for people who
+// prefer less motion; the milestone line still shows.
+(() => {
+  const KEY = 'kwaai.celebrated';
+  document.querySelectorAll('[data-replay-celebration]').forEach((btn) => btn.addEventListener('click', () => {
+    try { localStorage.removeItem(KEY); } catch { /* private mode */ }
+    btn.textContent = 'Done: open Study to see it';
+  }));
+  const el = document.querySelector('[data-celebrate]');
+  if (!el) return;
+  try {
+    if (localStorage.getItem(KEY) === el.dataset.celebrate) return;
+    localStorage.setItem(KEY, el.dataset.celebrate);
+  } catch { /* private mode: celebrate every time, no harm */ }
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const n = el.querySelector('.streak-n');
+  const to = Number(el.dataset.streak);
+  if (!calm && to > 1) {
+    n.textContent = String(to - 1);
+    setTimeout(() => { n.textContent = String(to); el.classList.add('celebrate'); }, 400);
+  } else el.classList.add('celebrate');
+  if (!el.dataset.milestone) return;
+  const note = document.createElement('p');
+  note.className = 'milestone-note';
+  note.setAttribute('role', 'status');
+  note.textContent = el.dataset.milestone;
+  (el.closest('dl, a') || el).insertAdjacentElement('afterend', note);
+  if (calm) return;
+  const box = el.getBoundingClientRect();
+  const layer = document.createElement('div');
+  layer.className = 'confetti';
+  layer.setAttribute('aria-hidden', 'true');
+  const colours = ['#c8f169', '#151d2b', '#2f9a55', '#f2b134', getComputedStyle(document.body).getPropertyValue('--uni').trim() || '#0b3c5d'];
+  for (let i = 0; i < 40; i++) {
+    const bit = document.createElement('i');
+    bit.style.left = `${box.left + box.width / 2}px`;
+    bit.style.top = `${box.top + box.height / 2}px`;
+    bit.style.setProperty('--c', colours[i % colours.length]);
+    bit.style.setProperty('--dx', `${Math.round((Math.random() - 0.5) * 520)}px`);
+    bit.style.setProperty('--dy', `${-Math.round(120 + Math.random() * 260)}px`);
+    bit.style.setProperty('--r', `${Math.round((Math.random() - 0.5) * 1080)}deg`);
+    bit.style.animationDelay = `${Math.round(Math.random() * 120) + 350}ms`;
+    layer.append(bit);
+  }
+  document.body.append(layer);
+  setTimeout(() => layer.remove(), 2600);
+})();
+
 // the study heatmap opens scrolled to this week, its right-hand end
 document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el.scrollWidth; });
 
