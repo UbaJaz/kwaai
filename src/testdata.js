@@ -32,4 +32,25 @@ function sessionRow(userId, uni, course, day, minutes) {
   return { user_id: userId, uni, course, day, started_at: startedAt, last_beat: startedAt + minutes * 60_000, planned_min: Math.max(5, Math.min(120, minutes)), credited_sec: minutes * 60 };
 }
 
-module.exports = { seeded, streakDays, historyDays, sessionRow };
+// The test tools' made-up students: a mix of faculties and years, some named, some anonymous. Their accounts are
+// test-student-N@kwaai.invalid, an address that can't receive mail, and flagged as test accounts.
+const FAKE_STUDENTS = [
+  { name: 'Thandi M', faculty: 'sci', major: 'CSC05', year: 2 },
+  { name: '', faculty: 'sci', major: 'STA01', year: 1 },
+  { name: 'Sipho K', faculty: 'ebe', major: '', year: 3 },
+  { name: 'Aisha', faculty: 'com', major: 'CB004STA13', year: 2 },
+  { name: '', faculty: 'hum', major: 'HB027', year: 1 },
+  { name: 'Pieter vd M', faculty: 'law', major: '', year: 4 },
+  { name: 'Lerato', faculty: 'fhs', major: 'MZ010', year: 3 },
+  { name: '', faculty: 'sci', major: 'MAM01', year: 3 },
+  { name: 'Naledi', faculty: 'com', major: '', year: 1 },
+  { name: 'Kyle', faculty: 'sci', major: 'CSC05', year: 1 },
+  { name: '', faculty: 'ebe', major: '', year: 2 },
+  { name: 'Zanele', faculty: 'hum', major: '', year: 2 },
+  { name: 'Yusuf', faculty: 'sci', major: 'STA01', year: 2 },
+  { name: '', faculty: 'com', major: 'CB003BUS01', year: 3 },
+  { name: 'Mia', faculty: 'sci', major: 'CSC05', year: 2 },
+];
+const fakeEmail = (i) => `test-student-${i + 1}@kwaai.invalid`;
+
+module.exports = { seeded, streakDays, historyDays, sessionRow, FAKE_STUDENTS, fakeEmail };

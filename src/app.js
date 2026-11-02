@@ -1317,6 +1317,78 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, '/admin/tools', 'ok', 'Your study data is cleared.');
   });
 
+  // the fake students' accounts, made the first time they're needed
+  function fakeStudentIds(uni) {
+    return TestData.FAKE_STUDENTS.map((_, i) => {
+      q(`INSERT INTO users (email, uni, is_test, agreed_at) VALUES (?, ?, 1, CURRENT_TIMESTAMP) ON CONFLICT(email) DO UPDATE SET is_test = 1`).run(TestData.fakeEmail(i), uni);
+      return q(`SELECT id FROM users WHERE email = ?`).get(TestData.fakeEmail(i)).id;
+    });
+  }
+
+  // 15 students on the boards with study this week and the three before, a "Test group" with the admin and eight of
+  // them, and four of them "studying now" for the next two hours
+  app.post('/admin/tools/students', requireUser, requireTools, (req, res) => {
+    const today = Study.saDay(Date.now());
+    const ids = fakeStudentIds(req.user.uni);
+    const now = Date.now();
+    ids.forEach((id, i) => {
+      const s = TestData.FAKE_STUDENTS[i];
+      q(`INSERT OR REPLACE INTO profiles (user_id, uni, display_name, show_name, faculty, major, year) VALUES (?, ?, ?, ?, ?, ?, ?)`)
+        .run(id, req.user.uni, s.name, s.name ? 1 : 0, s.faculty, s.major, s.year);
+      q(`DELETE FROM study_sessions WHERE user_id = ?`).run(id);
+      addSessions(id, req.user.uni, TestData.historyDays(today, 28), pickCourse);
+      if (i < 4) {
+        q(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, status) VALUES (?, ?, ?, ?, ?, ?, 120, 'running')`)
+          .run(id, req.user.uni, TOOL_COURSES[i % TOOL_COURSES.length], today, now - (i + 1) * 9 * 60_000, now + 2 * 60 * 60_000); // keeps beating for two hours
+      }
+    });
+    let g = q(`SELECT * FROM study_groups WHERE owner_id = ? AND name = 'Test group'`).get(req.user.id);
+    if (!g) {
+      let code;
+      do code = Study.groupCode(crypto.randomBytes(8)); while (q(`SELECT 1 FROM study_groups WHERE code = ?`).get(code));
+      q(`INSERT INTO study_groups (uni, name, code, owner_id) VALUES (?, 'Test group', ?, ?)`).run(req.user.uni, code, req.user.id);
+      g = q(`SELECT * FROM study_groups WHERE code = ?`).get(code);
+    }
+    q(`INSERT OR IGNORE INTO group_members (group_id, user_id, name) VALUES (?, ?, 'You')`).run(g.id, req.user.id);
+    ids.slice(0, 8).forEach((id, i) => q(`INSERT OR IGNORE INTO group_members (group_id, user_id, name) VALUES (?, ?, ?)`).run(g.id, id, TestData.FAKE_STUDENTS[i].name || `Student ${i + 1}`));
+    flashRedirect(res, `/g/${g.code}`, 'ok', '15 test students are on the boards, 8 are in this group, and 4 are studying now.');
+  });
+
+  // six of the fake students timing one course over the last four weeks, so its page shows "Time it takes"
+  app.post('/admin/tools/course-hours', requireUser, requireTools, (req, res) => {
+    const course = String(req.body.course || '').trim().toUpperCase();
+    if (!courseExists(course)) return flashRedirect(res, '/admin/tools', 'error', 'Pick a course code that is in Kwaai.');
+    const today = Study.saDay(Date.now());
+    fakeStudentIds(req.user.uni).slice(0, 6).forEach((id) => {
+      q(`DELETE FROM study_sessions WHERE user_id = ? AND course = ?`).run(id, course);
+      addSessions(id, req.user.uni, TestData.historyDays(today, 28).filter((d) => d.minutes <= 120), () => course);
+    });
+    flashRedirect(res, `/courses/${course}`, 'ok', `Six test students have timed ${course} for four weeks.`);
+  });
+
+  // everything the test tools made: the fake students and all they own, test groups, and the admin's study data
+  app.post('/admin/tools/clear-all', requireUser, requireTools, (req, res) => {
+    const fakes = q(`SELECT id FROM users WHERE is_test = 1 AND is_admin = 0`).all().map((u) => u.id);
+    const testOwned = `IN (SELECT id FROM users WHERE is_test = 1)`;
+    db.exec('BEGIN');
+    try {
+      q(`DELETE FROM study_groups WHERE owner_id ${testOwned}`).run();
+      q(`DELETE FROM group_members WHERE user_id ${testOwned}`).run();
+      q(`DELETE FROM study_sessions WHERE user_id ${testOwned}`).run();
+      q(`DELETE FROM name_reports WHERE user_id ${testOwned} OR target_id ${testOwned}`).run();
+      q(`DELETE FROM profiles WHERE user_id ${testOwned}`).run();
+      for (const id of fakes) {
+        q(`DELETE FROM sessions WHERE user_id = ?`).run(id);
+        q(`DELETE FROM users WHERE id = ?`).run(id);
+      }
+      db.exec('COMMIT');
+    } catch (e) {
+      db.exec('ROLLBACK');
+      throw e;
+    }
+    flashRedirect(res, '/admin/tools', 'ok', `Cleared: ${fakes.length} test students, their groups, and all test study data.`);
+  });
+
   function startSession(req, res, email, next) {
     q(`INSERT INTO users (email, uni) VALUES (?, ?) ON CONFLICT(email) DO NOTHING`).run(email, (uniForEmail(email) || CURRENT).slug);
     // every sign-in starts at the form with the 18+ and terms box, so this records when the account first agreed

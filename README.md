@@ -169,7 +169,7 @@ One username-and-password account for testing the study features and moderating,
 
 The account is `admin@kwaai.invalid`: it can use `/mod`, and as a test account it never appears in leaderboards, "studying now" counts or course hours that students see. Signed in as the admin you see test accounts in those figures too, so you can check them.
 
-With `TEST_TOOLS=1` the admin also gets `/admin/tools` (linked in the header): set a streak of any length ending today or yesterday, add study time on any day in the last year, fill six months of history for the heatmap, or clear it all. Leave `TEST_TOOLS` unset in production. Sign-in allows 5 tries per 15 minutes per address and 20 a day in total. Without `ADMIN_PASSWORD_HASH` the page doesn't exist.
+With `TEST_TOOLS=1` the admin also gets `/admin/tools` (linked in the header): set a streak of any length ending today or yesterday, add study time on any day in the last year, fill six months of history for the heatmap, add 15 test students (on the boards, 8 in a "Test group" with you, 4 studying now), give a course six students' worth of timed hours, or clear all test data. Real students never see any of it. Leave `TEST_TOOLS` unset in production. Sign-in allows 5 tries per 15 minutes per address and 20 a day in total. Without `ADMIN_PASSWORD_HASH` the page doesn't exist.
 
 ### Backups
 

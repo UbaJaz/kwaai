@@ -1732,6 +1732,22 @@ function adminTools(ctx, { today, streak, days, minutes }) {
       <p class="meta">Deletes all of your own study sessions.</p>
       <div class="form-actions"><button class="btn btn-danger">Clear my study data</button></div>
     </form>
+    <form method="post" action="/admin/tools/students" class="card panel study-form">
+      <h2>Fill the leaderboards</h2>
+      <p class="meta">15 test students with a month of study, some named and some anonymous, across faculties. 8 join a "Test group" with you, and 4 are "studying now" for the next two hours. Running it again refreshes them.</p>
+      <div class="form-actions"><button class="btn">Add test students</button></div>
+    </form>
+    <form method="post" action="/admin/tools/course-hours" class="card panel study-form">
+      <h2>Course hours</h2>
+      <label>Course code <input type="text" name="course" value="CSC1015F" required autocapitalize="characters"></label>
+      <p class="meta">Six test students time this course for four weeks, so its page shows "Time it takes".</p>
+      <div class="form-actions"><button class="btn">Add course hours</button></div>
+    </form>
+    <form method="post" action="/admin/tools/clear-all" class="card panel study-form" data-confirm="Delete every test student, test group and all test study data?">
+      <h2>Clear all test data</h2>
+      <p class="meta">Deletes the test students and everything they own, test groups, and your own study data. Real students' data is never touched.</p>
+      <div class="form-actions"><button class="btn btn-danger">Clear all test data</button></div>
+    </form>
   </div>`);
 }
 
