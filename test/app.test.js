@@ -1796,3 +1796,11 @@ test('test tools: fake students fill the boards and a group, course hours, and c
   assert.equal(count(`SELECT COUNT(*) AS n FROM users WHERE email = 'realstudent@myuct.ac.za'`), 1, 'real students untouched');
   assert.equal((await admin.get('/admin/tools')).status, 200, 'the admin is still signed in');
 }));
+
+test('the streak celebration plays once a day and stays still for people who prefer less motion', async () => {
+  const css = await (await fetch(`${base}/style.css`)).text();
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{ \.streak\.is-lit \.flame, \.streak\.celebrate \.flame, \.streak\.celebrate \.streak-n, \.milestone-note \{ animation: none; \} \.confetti \{ display: none; \} \}/);
+  const js = await (await fetch(`${base}/app.js`)).text();
+  assert.match(js, /const KEY = 'kwaai\.celebrated';/, 'remembered per device');
+  assert.match(js, /prefers-reduced-motion: reduce/);
+});

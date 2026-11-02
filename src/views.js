@@ -1720,6 +1720,7 @@ function adminTools(ctx, { today, streak, days, minutes }) {
       <label class="radio"><input type="radio" name="ends" value="today" checked> Ending today (today already counts)</label>
       <label class="radio"><input type="radio" name="ends" value="yesterday"> Ending yesterday (today still needs 30 minutes)</label>
       <p class="meta">Rebuilds your study from that run onwards. Try 7 or 30 to see a milestone.</p>
+      <p class="meta">The celebration plays once a day per browser. <button type="button" class="link-btn" data-replay-celebration>Let it play again</button></p>
       <div class="form-actions"><button class="btn">Set the streak</button></div>
     </form>
     <form method="post" action="/admin/tools/study" class="card panel study-form">
