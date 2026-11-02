@@ -1804,3 +1804,15 @@ test('the streak celebration plays once a day and stays still for people who pre
   assert.match(js, /const KEY = 'kwaai\.celebrated';/, 'remembered per device');
   assert.match(js, /prefers-reduced-motion: reduce/);
 });
+
+test('the running timer sits in a progress ring, and the signed-out timer gets the same ring', () => withAdminServer({}, async ({ admin, browser: newBrowser }) => {
+  const anon = await newBrowser().text('/study');
+  assert.match(anon, /<template data-ring-svg><svg class="ring"[\s\S]*?class="ring-check"/);
+  await admin.post('/study/start', { course: 'CSC1015F', minutes: '25' });
+  const page = await admin.text('/study');
+  assert.match(page, /<div class="timer-ring" data-ring data-total="1500">\s*<svg class="ring"[\s\S]*?<p class="study-clock" role="timer"/);
+  assert.doesNotMatch(page, /data-ring-svg/, 'signed in, the ring is already on the page');
+  const css = await (await fetch(`${base}/style.css`)).text();
+  assert.match(css, /\.timer-ring\.done \.ring-check \{ opacity: 1;/, 'the check mark appears when the session ends');
+  assert.match(css, /prefers-reduced-motion: reduce\) \{ \.ring-fill \{ transition: none; \}/);
+}));
