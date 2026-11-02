@@ -277,6 +277,13 @@ function homePaths(ctx, ratingSeason) {
   return ratingSeason ? [rate, planner] : [planner, rate];
 }
 
+// The streak count with its flame. The flame is lit once today counts. data-celebrate (today's date) tells
+// public/app.js to play the once-a-day celebration, bigger on a milestone; it plays once per device per day.
+function streakBadge(s) {
+  const today = Study.saDay(Date.now());
+  return html`<span class="streak${s.todayDone ? ' is-lit' : ''}" data-streak="${s.current}" ${s.todayDone ? html`data-celebrate="${today}" data-milestone="${Study.milestone(s.current) || ''}"` : ''}><span class="flame" aria-hidden="true">🔥</span><span class="streak-n">${s.current}</span> ${s.current === 1 ? 'day' : 'days'}</span>`;
+}
+
 // the streak in a sentence: whether today counts yet, or how many minutes would keep it
 function streakNote(s) {
   if (s.todayDone) return `Today counts.${s.best > s.current ? ` Your best is ${plural(s.best, 'day')}.` : ''}`;
@@ -294,7 +301,7 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
     <span class="meta">Your day, deadlines and DP →</span>
   </a>` : ''}
   ${streak ? html`<a class="card today-strip" href="/study">
-    <strong>${plural(streak.current, 'day')} study streak</strong>
+    <strong>${streakBadge(streak)} study streak</strong>
     <span>${streakNote(streak)}</span>
     <span class="meta">Start studying →</span>
   </a>` : ''}
@@ -1181,7 +1188,7 @@ function today(ctx, { today: t, weekLink, streak = null }) {
   const dayDate = t ? new Date(`${t.date}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
   return layout({ ...ctx, title: 'Today', here: '/today', path: '/today' }, html`
   <h1 class="page-title">Today</h1>
-  ${streak ? html`<a class="card today-strip" href="/study"><strong>${plural(streak.current, 'day')} study streak</strong><span>${streakNote(streak)}</span><span class="meta">Start studying →</span></a>` : ''}
+  ${streak ? html`<a class="card today-strip" href="/study"><strong>${streakBadge(streak)} study streak</strong><span>${streakNote(streak)}</span><span class="meta">Start studying →</span></a>` : ''}
   ${!t ? html`<div class="card panel"><p><strong>Nothing planned yet.</strong> Add your courses in the <a href="/plan">planner</a>, and this page shows your classes for the day, tests coming up and your DP status.</p></div>` : html`
   <p class="lede small">${dayDate}${t.note ? html` · ${t.note}` : ''}</p>
   <div class="today-grid">
@@ -1456,7 +1463,7 @@ function studyBoard(b, uniShort) {
       <div><dt>Today</dt><dd>${Study.hoursText(b.summary.today)}</dd></div>
       <div><dt>This week</dt><dd>${Study.hoursText(b.summary.week)}</dd></div>
       <div><dt>This month</dt><dd>${Study.hoursText(b.summary.month)}</dd></div>
-      <div><dt>Streak</dt><dd>${plural(b.streak.current, 'day')}</dd></div>
+      <div><dt>Streak</dt><dd>${streakBadge(b.streak)}</dd></div>
     </dl>
     <p class="study-streak">${streakNote(b.streak)} A day counts from ${Study.STREAK_MIN} minutes. Vacations pause the streak, so missing a vacation day never ends it.</p>
     <p class="meta"><a href="/study/leaderboards">See the leaderboards</a> for UCT and your faculty, or <a href="/groups">your study groups</a>.</p>
@@ -1713,6 +1720,7 @@ function adminTools(ctx, { today, streak, days, minutes }) {
       <label class="radio"><input type="radio" name="ends" value="today" checked> Ending today (today already counts)</label>
       <label class="radio"><input type="radio" name="ends" value="yesterday"> Ending yesterday (today still needs 30 minutes)</label>
       <p class="meta">Rebuilds your study from that run onwards. Try 7 or 30 to see a milestone.</p>
+      <p class="meta">The celebration plays once a day per browser. <button type="button" class="link-btn" data-replay-celebration>Let it play again</button></p>
       <div class="form-actions"><button class="btn">Set the streak</button></div>
     </form>
     <form method="post" action="/admin/tools/study" class="card panel study-form">
