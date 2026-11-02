@@ -301,13 +301,21 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
     } catch { /* no sound: the title and the page still say it's done */ }
   };
   // counts down to endAt (this device's clock) once a second, in the element and the tab title
+  // when the clock sits in a progress ring ([data-ring] with data-total seconds), the ring fills as time passes,
+  // pulses in the last minute, and shows a check mark at the end
   const countdown = (el, endAt, label, onDone) => {
     let done = false;
+    const ring = el.closest('[data-ring]');
+    const total = Number(ring?.dataset.total) || 0;
     const render = () => {
       const left = (endAt - Date.now()) / 1000;
       el.textContent = fmt(left);
       document.title = `${fmt(left)} ${label} · ${baseTitle}`;
-      if (left <= 0 && !done) { done = true; clearInterval(timer); document.title = baseTitle; onDone(); }
+      if (ring && total) {
+        ring.style.setProperty('--p', Math.min(1, Math.max(0, 1 - left / total)).toFixed(4));
+        ring.classList.toggle('last-minute', left > 0 && left <= 60);
+      }
+      if (left <= 0 && !done) { done = true; clearInterval(timer); document.title = baseTitle; ring?.classList.add('done'); onDone(); }
     };
     const timer = setInterval(render, 1000);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
@@ -367,9 +375,15 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
       const panel = local.closest('section');
       const heading = panel.querySelector('h2');
       heading.textContent = `Studying ${name}`;
+      const ring = document.createElement('div');
+      ring.className = 'timer-ring';
+      ring.dataset.ring = '';
+      ring.dataset.total = String(minutes * 60);
+      ring.innerHTML = document.querySelector('template[data-ring-svg]')?.innerHTML ?? '';
       const clock = document.createElement('p');
       clock.className = 'study-clock';
       clock.setAttribute('role', 'timer');
+      ring.append(clock);
       const note = document.createElement('p');
       note.className = 'meta';
       note.textContent = `${minutes} minutes on this device only. Sign in to keep your hours.`;
@@ -377,7 +391,7 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
       stop.type = 'button';
       stop.className = 'btn btn-big btn-ink';
       stop.textContent = 'Stop';
-      local.replaceWith(clock, note, stop);
+      local.replaceWith(ring, note, stop);
       stop.focus();
       const cancel = countdown(clock, Date.now() + minutes * 60_000, 'studying', () => {
         chime();
