@@ -1735,3 +1735,53 @@ test('test tools: only for the admin, only with TEST_TOOLS, and each one writes 
     srv.close();
   }
 });
+
+// A fresh server and database for one test, with the admin set up and signed in. The shared server is used by every
+// test, so its per-address sign-in limit runs out; these start clean.
+async function withAdminServer(options, fn) {
+  const sdb = openDb(':memory:');
+  seed(sdb, { samples: false });
+  const srv = createApp(sdb, { devMode: true, adminPasswordHash: Admin.hashPassword('test-only-password-123'), ...options }).listen(0);
+  await new Promise((r) => srv.once('listening', r));
+  const root = () => `http://localhost:${srv.address().port}`;
+  try {
+    const admin = browser(root);
+    await admin.post('/admin/login', { username: 'kwaai', password: 'test-only-password-123' });
+    await fn({ db: sdb, admin, browser: () => browser(root) });
+  } finally {
+    srv.close();
+  }
+}
+
+test('test tools: fake students fill the boards and a group, course hours, and clearing all test data', () => withAdminServer({ testTools: true }, async ({ db: sdb, admin, browser: newBrowser }) => {
+  const made = await admin.post('/admin/tools/students', {});
+  const groupPage = made.headers.get('location');
+  assert.match(groupPage, /^\/g\/[A-HJ-NP-Z2-9]{8}$/);
+  const group = await admin.text(groupPage);
+  assert.match(group, /Test group/);
+  assert.match(group, /Studying now[\s\S]*?Thandi M/, 'four are studying now');
+  assert.equal((group.match(/class="board-row/g) || []).length, 9, 'you and eight test students');
+  const board = await admin.text('/study/leaderboards?period=month');
+  assert.match(board, /Thandi M/);
+  assert.match(board, /2nd-year Computer Science student|1st-year Applied Statistics student/, 'anonymous ones by year and major');
+  assert.match(await admin.text('/study'), /[4-9]\d* UCT students are studying on Kwaai right now|\b4 UCT students/, 'live count for the admin');
+
+  const student = newBrowser();
+  await student.signIn('realstudent@myuct.ac.za');
+  assert.doesNotMatch(await student.text('/study/leaderboards?period=month'), /Thandi M/, 'students never see test students');
+
+  assert.match((await admin.post('/admin/tools/course-hours', { course: 'nope' })).headers.get('location'), /\/admin\/tools$/);
+  const hours = await admin.post('/admin/tools/course-hours', { course: 'csc1015f' });
+  assert.equal(hours.headers.get('location'), '/courses/CSC1015F');
+  // at least the six from this tool (the test students' general history can include CSC1015F too)
+  assert.match(await admin.text('/courses/CSC1015F'), /h a week<\/strong> of timed study, from ([6-9]|1\d) students/);
+  assert.match(await student.text('/courses/CSC1015F'), /No timed study figure yet/, 'students see no test hours');
+
+  await admin.post('/admin/tools/clear-all', {});
+  const count = (sql) => sdb.prepare(sql).get().n;
+  assert.equal(count(`SELECT COUNT(*) AS n FROM users WHERE is_test = 1 AND is_admin = 0`), 0, 'test students deleted');
+  assert.equal(count(`SELECT COUNT(*) AS n FROM study_groups`), 0);
+  assert.equal(count(`SELECT COUNT(*) AS n FROM study_sessions WHERE user_id IN (SELECT id FROM users WHERE is_test = 1)`), 0);
+  assert.equal(count(`SELECT COUNT(*) AS n FROM users WHERE email = 'realstudent@myuct.ac.za'`), 1, 'real students untouched');
+  assert.equal((await admin.get('/admin/tools')).status, 200, 'the admin is still signed in');
+}));
