@@ -1669,3 +1669,62 @@ test('test accounts stay out of everything students see, and show for an admin',
   assert.match(seen, /About 4 h a week<\/strong> of timed study, from 5 students/);
   db.prepare(`DELETE FROM study_sessions WHERE course = 'BIO1000F'`).run();
 });
+
+test('test tools: only for the admin, only with TEST_TOOLS, and each one writes test data', async () => {
+  // its own small servers: the shared one has used up its sign-ins for this 15 minutes
+  const odb = openDb(':memory:');
+  seed(odb, { samples: false });
+  const offSrv = createApp(odb, { devMode: true, adminPasswordHash: Admin.hashPassword('test-only-password-123') }).listen(0);
+  await new Promise((r) => offSrv.once('listening', r));
+  try {
+    const off = browser(() => `http://localhost:${offSrv.address().port}`);
+    await off.post('/admin/login', { username: 'kwaai', password: 'test-only-password-123' });
+    assert.equal((await off.get('/mod')).status, 200, 'signed in as the admin');
+    assert.equal((await off.get('/admin/tools')).status, 404, 'no TEST_TOOLS, no tools, even for an admin');
+    assert.doesNotMatch(await off.text('/study'), />Test tools</);
+  } finally {
+    offSrv.close();
+  }
+
+  const tdb = openDb(':memory:');
+  seed(tdb, { samples: false });
+  const srv = createApp(tdb, { devMode: true, testTools: true, adminPasswordHash: Admin.hashPassword('test-only-password-123') }).listen(0);
+  await new Promise((r) => srv.once('listening', r));
+  const root = `http://localhost:${srv.address().port}`;
+  try {
+    const student = browser(() => root);
+    await student.signIn('toolsstudent@myuct.ac.za');
+    assert.equal((await student.get('/admin/tools')).status, 404, 'students never get the tools');
+    assert.equal((await student.post('/admin/tools/history', {})).status, 404);
+
+    const a = browser(() => root);
+    await a.post('/admin/login', { username: 'kwaai', password: 'test-only-password-123' });
+    assert.match(await a.text('/admin/tools'), /Set a streak/);
+    assert.match(await a.text('/study'), /href="\/admin\/tools"[^>]*>Test tools/, 'a header link while the tools are on');
+    const aid = tdb.prepare(`SELECT id FROM users WHERE email = 'admin@kwaai.invalid'`).get().id;
+    const sessions = () => tdb.prepare('SELECT COUNT(*) AS n FROM study_sessions WHERE user_id = ?').get(aid).n;
+    const streakOn = async () => Number(/<dt>Streak<\/dt><dd>(\d+) days?<\/dd>/.exec(await a.text('/study'))[1]);
+
+    await a.post('/admin/tools/streak', { days: '7', ends: 'today' });
+    assert.ok((await streakOn()) >= 7, 'a 7-day streak (more only if the day before was a vacation)');
+    assert.match(await a.text('/study'), /Today counts\./);
+    await a.post('/admin/tools/streak', { days: '3', ends: 'yesterday' });
+    assert.match(await a.text('/study'), /Study \d+ more minutes today to keep it going|the vacation/);
+
+    const today = Study.saDay(Date.now());
+    assert.equal((await a.post('/admin/tools/study', { day: today, course: 'NOPE1234X', minutes: '45' })).status, 303);
+    assert.equal((await a.post('/admin/tools/study', { day: '2001-01-01', course: '', minutes: '45' })).status, 303);
+    const before = sessions();
+    await a.post('/admin/tools/study', { day: today, course: 'csc1015f', minutes: '45' });
+    assert.equal(sessions(), before + 1, 'only the valid one was added');
+    assert.match(await a.text(`/study?day=${today}`), /CSC1015F<\/a> · \d+ (h|min)/);
+
+    await a.post('/admin/tools/history', {});
+    assert.ok(sessions() > 100, 'six months of history');
+    await a.post('/admin/tools/clear-mine', {});
+    assert.equal(sessions(), 0);
+    assert.equal(tdb.prepare(`SELECT is_test FROM users WHERE id = ?`).get(aid).is_test, 1, 'everything made here belongs to a test account');
+  } finally {
+    srv.close();
+  }
+});
