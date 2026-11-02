@@ -20,7 +20,7 @@ const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/study', 'Study'],
 
 // description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
 // uni sets the accent colour for the university being browsed; the Kwaai brand colours never change.
-function layout({ title, user, isMod, flash, site = {}, uni, here = '', description = DEFAULT_DESCRIPTION, path }, body) {
+function layout({ title, user, isMod, isAdmin, testTools, flash, site = {}, uni, here = '', description = DEFAULT_DESCRIPTION, path }, body) {
   const fullTitle = title ? `${title} · Kwaai` : 'Kwaai: find out if a course is kwaai before you register';
   const on = (href) => (here === href || here.startsWith(`${href}/`) ? 'page' : null);
   return html`<!doctype html>
@@ -57,6 +57,7 @@ ${path && site.origin ? html`<meta property="og:url" content="${site.origin}${pa
       ${NAV.map(([href, label]) => html`<a href="${href}" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}
       ${user ? html`<a href="/account" ${on('/account') ? html`aria-current="page"` : ''}>My reviews</a>` : ''}
       ${isMod ? html`<a href="/mod" class="nav-mod">Moderation</a>` : ''}
+      ${isAdmin && testTools ? html`<a href="/admin/tools" class="nav-mod">Test tools</a>` : ''}
     </nav>
     <div class="header-end">
       ${uni ? html`<a class="uni-chip" href="/universities" aria-label="${uni.name}. Change university"><i aria-hidden="true"></i>${uni.short}</a>` : ''}
@@ -1699,6 +1700,41 @@ function login(ctx, { error, email = '', next = '/' } = {}) {
   </section>`);
 }
 
+// the admin's test tools: buttons that write made-up study data for the admin's own account
+function adminTools(ctx, { today, streak, days, minutes }) {
+  return layout({ ...ctx, title: 'Test tools', here: '/admin/tools' }, html`
+  <h1 class="page-title">Test tools</h1>
+  <p class="lede small">Made-up study data for trying the heatmap, streaks and leaderboards. It all belongs to test accounts, so students never see it. These tools only exist while <code>TEST_TOOLS=1</code> is set: turn it off before launch.</p>
+  <p class="meta">Your account now: ${Study.hoursText(minutes)} over ${plural(days, 'day')} in the last year, a ${plural(streak.current, 'day')} streak${streak.todayDone ? ' (today counts)' : ''}. <a href="/study">Open Study</a></p>
+  <div class="tool-grid">
+    <form method="post" action="/admin/tools/streak" class="card panel study-form">
+      <h2>Set a streak</h2>
+      <label>Days in a row <input type="number" name="days" min="1" max="365" value="7" required></label>
+      <label class="radio"><input type="radio" name="ends" value="today" checked> Ending today (today already counts)</label>
+      <label class="radio"><input type="radio" name="ends" value="yesterday"> Ending yesterday (today still needs 30 minutes)</label>
+      <p class="meta">Rebuilds your study from that run onwards. Try 7 or 30 to see a milestone.</p>
+      <div class="form-actions"><button class="btn">Set the streak</button></div>
+    </form>
+    <form method="post" action="/admin/tools/study" class="card panel study-form">
+      <h2>Add study time</h2>
+      <label>Day <input type="date" name="day" value="${today}" max="${today}" required></label>
+      <label>Course code <input type="text" name="course" placeholder="e.g. CSC1015F, or empty for general" autocapitalize="characters"></label>
+      <label>Minutes <input type="number" name="minutes" min="1" max="${Study.DAY_CAP_MIN}" value="45" required></label>
+      <div class="form-actions"><button class="btn">Add it</button></div>
+    </form>
+    <form method="post" action="/admin/tools/history" class="card panel study-form">
+      <h2>Fill the heatmap</h2>
+      <p class="meta">Adds about six months of made-up study, most days some, a few long ones.</p>
+      <div class="form-actions"><button class="btn">Add six months</button></div>
+    </form>
+    <form method="post" action="/admin/tools/clear-mine" class="card panel study-form" data-confirm="Delete all of your own study data?">
+      <h2>Start again</h2>
+      <p class="meta">Deletes all of your own study sessions.</p>
+      <div class="form-actions"><button class="btn btn-danger">Clear my study data</button></div>
+    </form>
+  </div>`);
+}
+
 function adminLogin(ctx, { error } = {}) {
   return layout({ ...ctx, title: 'Admin sign-in' }, html`
   <section class="narrow">
@@ -1866,4 +1902,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, adminLogin, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, adminLogin, adminTools, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
