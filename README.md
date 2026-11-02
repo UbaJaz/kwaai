@@ -152,9 +152,22 @@ Backups: `fly ssh console -C "npm run backup"`, then `fly ssh sftp get /data/bac
 | `INFORMATION_OFFICER` | before launch | The one person named as POPIA information officer. Defaults to `OPERATOR`. |
 | `EMAIL_DAILY_CAP` | no | Sign-in emails per day before the site pauses sending. Defaults to 280, under Brevo's free 300. |
 | `TRUST_PROXY` | set by Dockerfile | `1` = trust one proxy hop, so rate limits see the real client IP. Set it to `0` only if nothing sits in front of the app. |
+| `ADMIN_PASSWORD_HASH` | no | Turns on the admin sign-in at `/admin/login`. Make it with `npm run admin-hash` (see below). Never put the password itself here. |
+| `ADMIN_USERNAME` | no | The admin's username. Defaults to `kwaai`. |
+| `TEST_TOOLS` | no, and off at launch | `1` shows `/admin/tools` to the admin: fake study days, streaks and students for testing. |
 | `DB_FILE`, `BACKUP_DIR`, `PORT` | no | Paths and port. |
 
 The server refuses to start in production if a required variable is missing.
+
+### The admin account
+
+One username-and-password account for testing the study features and moderating, separate from student sign-in.
+
+1. Run `npm run admin-hash` and type a password of at least 10 characters (nothing shows while you type). It prints a line starting `ADMIN_PASSWORD_HASH=scrypt$...`.
+2. Put that line in `.env` on your laptop, or add it as an environment variable on Render. The password itself is never stored.
+3. Open `/admin/login`, sign in with `kwaai` (or your `ADMIN_USERNAME`) and the password.
+
+The account is `admin@kwaai.invalid`: it can use `/mod`, and as a test account it never appears in leaderboards, "studying now" counts or course hours that students see. Sign-in allows 5 tries per 15 minutes per address and 20 a day in total. Without `ADMIN_PASSWORD_HASH` the page doesn't exist.
 
 ### Backups
 
