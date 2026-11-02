@@ -167,7 +167,9 @@ One username-and-password account for testing the study features and moderating,
 2. Put that line in `.env` on your laptop, or add it as an environment variable on Render. The password itself is never stored.
 3. Open `/admin/login`, sign in with `kwaai` (or your `ADMIN_USERNAME`) and the password.
 
-The account is `admin@kwaai.invalid`: it can use `/mod`, and as a test account it never appears in leaderboards, "studying now" counts or course hours that students see. Signed in as the admin you see test accounts in those figures too, so you can check them. Sign-in allows 5 tries per 15 minutes per address and 20 a day in total. Without `ADMIN_PASSWORD_HASH` the page doesn't exist.
+The account is `admin@kwaai.invalid`: it can use `/mod`, and as a test account it never appears in leaderboards, "studying now" counts or course hours that students see. Signed in as the admin you see test accounts in those figures too, so you can check them.
+
+With `TEST_TOOLS=1` the admin also gets `/admin/tools` (linked in the header): set a streak of any length ending today or yesterday, add study time on any day in the last year, fill six months of history for the heatmap, or clear it all. Leave `TEST_TOOLS` unset in production. Sign-in allows 5 tries per 15 minutes per address and 20 a day in total. Without `ADMIN_PASSWORD_HASH` the page doesn't exist.
 
 ### Backups
 

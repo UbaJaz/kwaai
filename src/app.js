@@ -13,6 +13,7 @@ const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderat
 const { UNIVERSITIES, CURRENT, uniForEmail } = require('./universities');
 const Study = require('./study');
 const Admin = require('./admin');
+const TestData = require('./testdata');
 
 const STUDENT_EMAIL = /^[a-z0-9._%+-]+@myuct\.ac\.za$/;
 // "a+1@myuct.ac.za" and "a+2@myuct.ac.za" reach the same inbox, so they must be the same account:
@@ -1255,6 +1256,65 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!userOk || !passOk) return res.status(401).page(views.adminLogin(req.ctx, { error: "That username and password don't match." }));
     q(`INSERT INTO users (email, uni, is_admin, is_test, agreed_at) VALUES (?, ?, 1, 1, CURRENT_TIMESTAMP) ON CONFLICT(email) DO UPDATE SET is_admin = 1, is_test = 1`).run(ADMIN_EMAIL, CURRENT.slug);
     startSession(req, res, ADMIN_EMAIL, '/study');
+  });
+
+  // ---- test tools (admin only, and only with TEST_TOOLS=1) ----
+  // Fake study data for trying the heatmap, streaks, boards and groups. Everything they make belongs to test accounts,
+  // which students never see (realOnly). Turn TEST_TOOLS off at launch and the pages are gone.
+  const requireTools = (req, res, next) => (testTools && req.user?.is_admin ? next() : res.status(404).page(notFound(req)));
+  const addSessions = (userId, uni, days, course = () => '') => {
+    const insert = q(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'done')`);
+    for (const d of days) {
+      const r = TestData.sessionRow(userId, uni, course(d), d.day, d.minutes);
+      insert.run(r.user_id, r.uni, r.course, r.day, r.started_at, r.last_beat, r.planned_min, r.credited_sec);
+    }
+  };
+  const TOOL_COURSES = ['CSC1015F', 'MAM1031F', 'STA1006S', ''];
+  const pickCourse = () => TOOL_COURSES[Math.floor(Math.random() * TOOL_COURSES.length)];
+
+  app.get('/admin/tools', requireUser, requireTools, (req, res) => {
+    const today = Study.saDay(Date.now());
+    const totals = studyTotals(req.user.id, today);
+    res.set('Cache-Control', 'no-store').page(views.adminTools(req.ctx, {
+      today, streak: Study.streak(totals, today, TERMS.years), days: totals.filter((t) => t.minutes > 0).length, minutes: totals.reduce((s, t) => s + t.minutes, 0),
+    }));
+  });
+
+  // one finished session on any day in the last year
+  app.post('/admin/tools/study', requireUser, requireTools, (req, res) => {
+    const today = Study.saDay(Date.now());
+    const day = /^\d{4}-\d{2}-\d{2}$/.test(String(req.body.day || '')) ? req.body.day : today;
+    const minutes = Math.round(Number(req.body.minutes));
+    const course = String(req.body.course || '').trim().toUpperCase();
+    if (day > today || day < Study.addDay(today, -365)) return flashRedirect(res, '/admin/tools', 'error', 'Pick a day in the last year, up to today.');
+    if (!(minutes >= 1 && minutes <= Study.DAY_CAP_MIN)) return flashRedirect(res, '/admin/tools', 'error', `Minutes must be 1 to ${Study.DAY_CAP_MIN}.`);
+    if (course && !courseExists(course)) return flashRedirect(res, '/admin/tools', 'error', `${course} isn't a course in Kwaai.`);
+    addSessions(req.user.id, req.user.uni, [{ day, minutes }], () => course);
+    flashRedirect(res, '/admin/tools', 'ok', `Added ${Study.hoursText(minutes)}${course ? ` of ${course}` : ''} on ${day}.`);
+  });
+
+  // a streak of n days ending today (shows "today counts") or yesterday (shows "study 30 more minutes to keep it"):
+  // the run is rebuilt from scratch with an empty day before it. If that day falls in a vacation, older study can
+  // still join on, as it would for a student.
+  app.post('/admin/tools/streak', requireUser, requireTools, (req, res) => {
+    const n = Math.round(Number(req.body.days));
+    if (!(n >= 1 && n <= 365)) return flashRedirect(res, '/admin/tools', 'error', 'Pick 1 to 365 days.');
+    const today = Study.saDay(Date.now());
+    const end = req.body.ends === 'yesterday' ? Study.addDay(today, -1) : today;
+    const days = TestData.streakDays(n, end);
+    q(`DELETE FROM study_sessions WHERE user_id = ? AND day >= ?`).run(req.user.id, Study.addDay(days[0].day, -1));
+    addSessions(req.user.id, req.user.uni, days, pickCourse);
+    flashRedirect(res, '/study', 'ok', `Added ${n} ${n === 1 ? 'day' : 'days'} of study in a row, ending ${end === today ? 'today' : 'yesterday'}.`);
+  });
+
+  app.post('/admin/tools/history', requireUser, requireTools, (req, res) => {
+    addSessions(req.user.id, req.user.uni, TestData.historyDays(Study.saDay(Date.now())), pickCourse);
+    flashRedirect(res, '/study', 'ok', 'Added about six months of study history.');
+  });
+
+  app.post('/admin/tools/clear-mine', requireUser, requireTools, (req, res) => {
+    q(`DELETE FROM study_sessions WHERE user_id = ?`).run(req.user.id);
+    flashRedirect(res, '/admin/tools', 'ok', 'Your study data is cleared.');
   });
 
   function startSession(req, res, email, next) {
