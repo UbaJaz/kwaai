@@ -377,6 +377,13 @@ test('test data: a streak of n days, six months of history, and session rows', (
   assert.ok(history.length > 100 && history.length < 160, `${history.length} days with study`);
   assert.equal(history[history.length - 1].day <= '2027-03-10', true);
 
+  const { PROGRAMMES, FACULTIES } = require('../src/planner');
+  for (const s of TD.FAKE_STUDENTS) {
+    assert.ok(FACULTIES[s.faculty], `${s.faculty} is a faculty`);
+    assert.ok(!s.major || PROGRAMMES.has(`${s.faculty}:${s.major}`), `${s.faculty}:${s.major} is a programme`);
+    assert.equal(screenComment(s.name || 'ok name').action, 'publish', s.name);
+  }
+  assert.match(TD.fakeEmail(0), /^test-student-1@kwaai\.invalid$/);
   const row = TD.sessionRow(4, 'uct', 'CSC1015F', '2027-03-10', 200);
   assert.deepEqual([row.credited_sec, row.planned_min, Study.saDay(row.started_at)], [12000, 120, '2027-03-10']);
 });
