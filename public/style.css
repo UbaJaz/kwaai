@@ -208,11 +208,15 @@ legend { font: 600 1.05rem var(--display); padding: 0 8px 0 0; }
 .rank-name .badge { margin-left: 4px; }
 .rank-name .meta { display: block; font-weight: 400; margin-top: 2px; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
-.chip { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line-strong); background: var(--surface); font-size: .85rem; font-weight: 500; text-decoration: none; }
+.chip { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line-strong); background: var(--surface); font-size: .85rem; font-weight: 500; text-decoration: none; transition: background .15s, color .15s, border-color .15s; }
 .chip.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .chip:hover:not(.on) { border-color: var(--ink); }
 .toggle { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 8px; padding: 3px; margin: 0 0 14px; background: var(--surface); }
-.toggle a { padding: 6px 14px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: .9rem; }
+.toggle a { padding: 6px 14px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: .9rem; transition: background .15s, color .15s; }
+/* each page settles in */
+main#main { animation: page-in .3s ease-out; }
+@keyframes page-in { from { opacity: 0; transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) { .chip, .toggle a { transition: none; } main#main { animation: none; } }
 .toggle a.on { background: var(--ink); color: var(--paper); }
 .dept-filter { max-width: 360px; margin: 0 0 18px; display: flex; gap: 8px; align-items: end; }
 .dept-filter label { flex: 1; }
