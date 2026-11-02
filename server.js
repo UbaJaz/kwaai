@@ -5,6 +5,9 @@ const { openDb } = require('./src/db');
 const { createApp } = require('./src/app');
 const { senderFromEnv } = require('./src/email');
 
+// a .env file next to this one, when there is one (on a laptop); variables the host already set are kept
+if (fs.existsSync(path.join(__dirname, '.env'))) process.loadEnvFile(path.join(__dirname, '.env'));
+
 const env = process.env;
 const devMode = env.NODE_ENV !== 'production';
 const moderators = new Set((env.MODERATORS || '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean));
