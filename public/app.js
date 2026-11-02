@@ -273,6 +273,39 @@ document.querySelectorAll('[data-share]').forEach((btn) => {
   setTimeout(() => layer.remove(), 2600);
 })();
 
+// Numbers count up from zero the first time they come into view: study minutes (data-count, written like the server
+// writes them, "1 h 5 min") and Wrapped's hours (data-unit="hours", "62.9 h"). Each one ends on exactly the server's
+// text. The heatmap's days fade in week by week. Nothing moves for people who prefer less motion.
+(() => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+  const minutes = (m) => (m >= 60 ? `${Math.floor(m / 60)} h${m % 60 ? ` ${m % 60} min` : ''}` : `${m} min`);
+  const countUp = (el) => {
+    const end = Number(el.dataset.count);
+    const final = el.textContent;
+    const hours = el.dataset.unit === 'hours';
+    const start = performance.now();
+    const step = (now) => {
+      const k = Math.min(1, (now - start) / 700);
+      const v = end * (1 - (1 - k) ** 3); // eases out
+      el.textContent = k < 1 ? (hours ? `${Math.round(v / 6) / 10} h` : minutes(Math.round(v))) : final;
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  const seen = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    seen.unobserve(e.target);
+    if (e.target.dataset.count) countUp(e.target);
+    else e.target.classList.add('reveal');
+  }), { threshold: 0.2 });
+  document.querySelectorAll('[data-count]').forEach((el) => { if (Number(el.dataset.count) > 0) seen.observe(el); });
+  document.querySelectorAll('[data-reveal]').forEach((grid) => {
+    [...grid.children].forEach((cell, i) => { cell.style.transitionDelay = `${Math.floor(i / 7) * 12}ms`; }); // one week a beat
+    grid.classList.add('pre-reveal');
+    seen.observe(grid);
+  });
+})();
+
 // the study heatmap opens scrolled to this week, its right-hand end
 document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el.scrollWidth; });
 

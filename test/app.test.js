@@ -1394,7 +1394,7 @@ test('study dashboard: totals, heatmap, a day\'s detail and this week by course'
   add.run(uid, '', today, 10 * 60);
   add.run(uid, 'MAM1031F', Study.addDay(today, -400), 3600); // older than a year: not on the heatmap
   page = await s.text('/study?c=CSC1015F');
-  assert.match(page, /<dt>Today<\/dt><dd>1 h<\/dd>/);
+  assert.match(page, /<dt>Today<\/dt><dd data-count="60">1 h<\/dd>/);
   assert.ok(page.includes(`class="h3 h-today" href="/study?day=${today}#day"`),'an hour today is the second-darkest shade');
   assert.equal((page.match(/class="h\d/g) || []).length, (page.match(/<a class="h\d/g) || []).length + 5, 'every past day is a cell (plus 5 legend swatches)');
   assert.match(page, /CSC1015F<\/a> Computer Science 1015[\s\S]*?1 h|50 min of about \d+ h/);
@@ -1524,8 +1524,8 @@ test('study groups: start, invite, join, the group board, owner powers, leaving 
   const today = Study.saDay(Date.now());
   db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 50, 2700, 'done')`).run(id('group002@myuct.ac.za'), today);
   page = await owner.text(`/g/${code}?period=day`);
-  assert.match(page, /board-rank">1<\/span>\s*<span class="board-name">Lindi<\/span>\s*<span class="board-time">45 min/);
-  assert.match(page, /<span class="board-name">Sam <span class="badge">You<\/span><\/span>\s*<span class="board-time">No study yet/);
+  assert.match(page, /board-rank">1<\/span>\s*<span class="board-name">Lindi<\/span>\s*<span class="board-time" data-count="45">45 min/);
+  assert.match(page, /<span class="board-name">Sam <span class="badge">You<\/span><\/span>\s*<span class="board-time" >No study yet/);
   assert.doesNotMatch(await friend.text(`/g/${code}`), /action="\/g\/[A-Z0-9]+\/remove"/, 'only the owner can remove people');
 
   // the owner removes the stranger after they join; the owner leaving hands the group to the next member
@@ -1616,7 +1616,7 @@ test('the weekly recap on /study and the Wrapped card', async () => {
     page = await s.text(`/study/wrapped?year=${sem.year}&term=${sem.term}`);
     const inSem = [[Study.addDay(monday, -6), 90], [Study.addDay(monday, -5), 60], [Study.addDay(monday, -12), 50]].filter(([d]) => d >= sem.start && d <= sem.end);
     const hours = Math.round(inSem.reduce((n, [, m]) => n + m, 0) / 6) / 10;
-    assert.ok(page.includes(`class="wrapped-big">${hours} h</p>`), `${hours} h of timed study in the semester`);
+    assert.ok(page.includes(`class="wrapped-big" data-count="${inSem.reduce((n, [, m]) => n + m, 0)}" data-unit="hours">${hours} h</p>`), `${hours} h of timed study in the semester`);
     assert.match(page, /<b>CSC1015F<\/b> Computer Science 1015/);
     assert.match(page, /Longest streak<\/dt><dd>2 days/);
     assert.doesNotMatch(/<article class="wrapped-card"[\s\S]*?<\/article>/.exec(page)[0], /wrap001/, 'no email on the card');
@@ -1815,4 +1815,16 @@ test('the running timer sits in a progress ring, and the signed-out timer gets t
   const css = await (await fetch(`${base}/style.css`)).text();
   assert.match(css, /\.timer-ring\.done \.ring-check \{ opacity: 1;/, 'the check mark appears when the session ends');
   assert.match(css, /prefers-reduced-motion: reduce\) \{ \.ring-fill \{ transition: none; \}/);
+}));
+
+test('numbers count up, the heatmap fills in and rows slide in, all still under reduced motion', () => withAdminServer({}, async ({ db: sdb, admin }) => {
+  const id = sdb.prepare(`SELECT id FROM users WHERE email = 'admin@kwaai.invalid'`).get().id;
+  sdb.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 90, 4500, 'done')`).run(id, Study.saDay(Date.now()));
+  const page = await admin.text('/study');
+  assert.match(page, /<dd data-count="75">1 h 15 min<\/dd>/, 'the server writes the final text; the count-up only animates towards it');
+  assert.match(page, /<div class="heatmap" data-reveal role="img"/);
+  const css = await (await fetch(`${base}/style.css`)).text();
+  assert.match(css, /prefers-reduced-motion: reduce\) \{ \.heatmap\.pre-reveal > \* \{ opacity: 1; transform: none; transition: none; \} \.goal-track i, \.board-row, \.board-row\.board-you \{ animation: none; \} \}/);
+  const js = await (await fetch(`${base}/app.js`)).text();
+  assert.match(js, /if \(window\.matchMedia\('\(prefers-reduced-motion: reduce\)'\)\.matches \|\| !\('IntersectionObserver' in window\)\) return;/, 'no motion, or an old browser: numbers just show');
 }));

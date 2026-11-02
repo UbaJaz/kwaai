@@ -1318,10 +1318,10 @@ function leaderboard(ctx, { joined, period, scope, faculty, faculties, rows, me,
   const link = (o) => `/study/leaderboards?${new URLSearchParams({ period, scope, ...(scope === 'faculty' ? { f: faculty } : {}), ...o })}`;
   const here = link({});
   const facultyName = faculties.find((f) => f.key === faculty)?.name ?? '';
-  const row = (r) => html`<li class="board-row${r.you ? ' board-you' : ''}">
+  const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
     <span class="board-rank">${r.rank}</span>
     <span class="board-name">${r.name}${r.you ? html` <span class="badge">You</span>` : ''}</span>
-    <span class="board-time">${Study.hoursText(r.minutes)}</span>
+    <span class="board-time" data-count="${r.minutes}">${Study.hoursText(r.minutes)}</span>
     ${r.reportable ? html`<form method="post" action="/study/report-name" class="inline board-report" data-confirm="Report this name to a moderator?"><input type="hidden" name="user" value="${r.id}"><input type="hidden" name="back" value="${here}"><button class="link-btn">Report name</button></form>` : ''}
   </li>`;
   return layout({ ...ctx, title: 'Study leaderboards', here: '/study', path: '/study/leaderboards' }, html`
@@ -1381,10 +1381,10 @@ function groupJoin(ctx, { group: g, members, me, error }) {
 
 function group(ctx, { group: g, owner, period, rows, idle, invite, live = [] }) {
   const share = `https://wa.me/?text=${encodeURIComponent(`Join my study group "${g.name}" on Kwaai: ${invite}`)}`;
-  const row = (r) => html`<li class="board-row${r.you ? ' board-you' : ''}">
+  const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
     <span class="board-rank">${r.rank ?? '–'}</span>
     <span class="board-name">${r.name}${r.you ? html` <span class="badge">You</span>` : ''}</span>
-    <span class="board-time">${r.minutes ? Study.hoursText(r.minutes) : 'No study yet'}</span>
+    <span class="board-time" ${r.minutes ? html`data-count="${r.minutes}"` : ''}>${r.minutes ? Study.hoursText(r.minutes) : 'No study yet'}</span>
     ${owner && !r.you ? html`<form method="post" action="/g/${g.code}/remove" class="inline board-report" data-confirm="Remove ${r.name} from the group?"><input type="hidden" name="user" value="${r.id}"><button class="link-btn">Remove</button></form>` : ''}
   </li>`;
   return layout({ ...ctx, title: g.name, here: '/study' }, html`
@@ -1433,7 +1433,7 @@ function wrapped(ctx, { sem, w, ranks, others }) {
       <p class="wrapped-kicker">kwaai · ${ctx.uni.short}</p>
       <h1 id="wrapped-title">${title}</h1>
       ${w.minutes ? html`
-      <p class="wrapped-big">${Math.round(w.minutes / 6) / 10} h</p>
+      <p class="wrapped-big" data-count="${w.minutes}" data-unit="hours">${Math.round(w.minutes / 6) / 10} h</p>
       <p class="wrapped-sub">of timed study</p>
       <dl class="wrapped-stats">
         <div><dt>Days studied</dt><dd>${w.days}</dd></div>
@@ -1467,9 +1467,9 @@ function studyBoard(b, uniShort) {
     <h2 id="study-board">Your study</h2>
     ${b.recap ? weekRecapCard(b.recap, uniShort) : ''}
     <dl class="study-stats">
-      <div><dt>Today</dt><dd>${Study.hoursText(b.summary.today)}</dd></div>
-      <div><dt>This week</dt><dd>${Study.hoursText(b.summary.week)}</dd></div>
-      <div><dt>This month</dt><dd>${Study.hoursText(b.summary.month)}</dd></div>
+      <div><dt>Today</dt><dd data-count="${b.summary.today}">${Study.hoursText(b.summary.today)}</dd></div>
+      <div><dt>This week</dt><dd data-count="${b.summary.week}">${Study.hoursText(b.summary.week)}</dd></div>
+      <div><dt>This month</dt><dd data-count="${b.summary.month}">${Study.hoursText(b.summary.month)}</dd></div>
       <div><dt>Streak</dt><dd>${streakBadge(b.streak)}</dd></div>
     </dl>
     <p class="study-streak">${streakNote(b.streak)} A day counts from ${Study.STREAK_MIN} minutes. Vacations pause the streak, so missing a vacation day never ends it.</p>
@@ -1481,7 +1481,7 @@ function studyBoard(b, uniShort) {
     <h3 class="label">The last 12 months</h3>
     <div class="heatmap-scroll" data-heatmap>
       <div class="heatmap-months" aria-hidden="true">${b.weeks.map((w, i) => html`<span>${i && monthOf(w) === monthOf(b.weeks[i - 1]) ? '' : monthName(monthOf(w))}</span>`)}</div>
-      <div class="heatmap" role="img" aria-label="${studied ? `Study time per day for the last 12 months: ${studied} ${studied === 1 ? 'day' : 'days'} with study. The list below has every day.` : 'Study time per day for the last 12 months. No study logged yet.'}">
+      <div class="heatmap" data-reveal role="img" aria-label="${studied ? `Study time per day for the last 12 months: ${studied} ${studied === 1 ? 'day' : 'days'} with study. The list below has every day.` : 'Study time per day for the last 12 months. No study logged yet.'}">
         ${b.weeks.map((w) => w.map((d) => (d
           ? html`<a class="h${d.level}${d.day === b.today ? ' h-today' : ''}" href="/study?day=${d.day}#day" tabindex="-1" title="${dayLabel(d.day)}: ${d.minutes ? Study.hoursText(d.minutes) : 'no study'}"></a>`
           : html`<span class="h-none"></span>`)))}
