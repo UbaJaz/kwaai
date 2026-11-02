@@ -1828,3 +1828,11 @@ test('numbers count up, the heatmap fills in and rows slide in, all still under 
   const js = await (await fetch(`${base}/app.js`)).text();
   assert.match(js, /if \(window\.matchMedia\('\(prefers-reduced-motion: reduce\)'\)\.matches \|\| !\('IntersectionObserver' in window\)\) return;/, 'no motion, or an old browser: numbers just show');
 }));
+
+test('every bit of site-wide motion has a reduced-motion rule', async () => {
+  const css = await (await fetch(`${base}/style.css`)).text();
+  const calm = [...css.matchAll(/@media \(prefers-reduced-motion: reduce\) \{([^@]*?)\}\s*\}/g)].map((m) => m[1]).join(' ');
+  for (const selector of ['.nav a', '.btn', '.path', 'a.card.today-strip', '.flash', '.chip', 'main#main', '.board-row', '.goal-track i', '.confetti', '.ring-fill', '.live-dot']) {
+    assert.ok(calm.includes(selector), `${selector} stops moving under reduced motion`);
+  }
+});
