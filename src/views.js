@@ -1699,6 +1699,20 @@ function login(ctx, { error, email = '', next = '/' } = {}) {
   </section>`);
 }
 
+function adminLogin(ctx, { error } = {}) {
+  return layout({ ...ctx, title: 'Admin sign-in' }, html`
+  <section class="narrow">
+    <h1 class="page-title">Admin sign-in</h1>
+    <p class="lede small">For the Kwaai team. Students sign in with their <a href="/login">university email</a>.</p>
+    ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
+    <form method="post" action="/admin/login" class="card form">
+      <label>Username <input type="text" name="username" required autocomplete="username" autocapitalize="none" spellcheck="false"></label>
+      <label>Password <input type="password" name="password" required autocomplete="current-password"></label>
+      <button class="btn btn-big">Sign in</button>
+    </form>
+  </section>`);
+}
+
 function checkEmail(ctx, { email, devLink, devCode, error }) {
   return layout({ ...ctx, title: 'Enter your code' }, html`
   <section class="narrow">
@@ -1852,4 +1866,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, adminLogin, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };

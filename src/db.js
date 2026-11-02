@@ -241,7 +241,9 @@ const LECTURER_DETAILS = { role: "TEXT NOT NULL DEFAULT ''" };
 
 // When the student ticked "I'm 18 or older and agree to the terms" (shown on /account and in their data export).
 // uni is the university the student's email belongs to (see uniForEmail in src/universities.js).
-const USER_DETAILS = { agreed_at: 'TEXT', uni: "TEXT NOT NULL DEFAULT 'uct'" };
+// is_admin: the password-only admin account (see src/admin.js). is_test: accounts used for testing (the admin and the
+// fake students the test tools make); they're left out of every figure other students see.
+const USER_DETAILS = { agreed_at: 'TEXT', uni: "TEXT NOT NULL DEFAULT 'uct'", is_admin: 'INTEGER NOT NULL DEFAULT 0', is_test: 'INTEGER NOT NULL DEFAULT 0' };
 
 function addMissingColumns(db, table, columns) {
   const have = new Set(db.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name));

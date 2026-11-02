@@ -15,6 +15,7 @@ const { revisionPlan, yearTimeline } = require('../src/year');
 const { planYear: planYearOf } = require('../src/week');
 const { UNIVERSITIES } = require('../src/universities');
 const Study = require('../src/study');
+const Admin = require('../src/admin');
 const { scan: scanTables } = require('../scripts/import-tables');
 const { parseProgrammes, tidyName } = require('../scripts/import-programmes');
 const { parseStaff } = require('../scripts/import-staff');
@@ -348,6 +349,18 @@ test('real hours per course: the median week of students who track it, from 5 st
   assert.equal(Study.courseHours(rows.filter((r) => r.user_id !== 5), today), null, 'four students are too few to show');
   const six = [...rows, { user_id: 6, day: '2027-04-03', minutes: 9 * 4 * 60 }];
   assert.equal(Study.courseHours(six, today).hours, 7.5, 'an even count averages the middle two, to the half hour');
+});
+
+test('admin password: only a scrypt hash is stored, and checking it is all-or-nothing', () => {
+  const stored = Admin.hashPassword('correct horse battery staple');
+  assert.ok(Admin.isValidHash(stored));
+  assert.match(stored, /^scrypt\$[0-9a-f]{32}\$[0-9a-f]{128}$/);
+  assert.doesNotMatch(stored, /horse/, 'the password itself is never in the stored value');
+  assert.equal(Admin.checkPassword('correct horse battery staple', stored), true);
+  assert.equal(Admin.checkPassword('correct horse battery stapl', stored), false);
+  assert.equal(Admin.checkPassword('', stored), false);
+  assert.notEqual(Admin.hashPassword('same'), Admin.hashPassword('same'), 'a new salt every time');
+  for (const bad of ['', 'plain-text-password', 'scrypt$zz$zz', `scrypt$${'a'.repeat(32)}$short`]) assert.equal(Admin.checkPassword('x', bad), false, bad);
 });
 
 test('recaps: last week against the week before, and a semester for Wrapped', () => {
@@ -1576,4 +1589,33 @@ test('the weekly recap on /study and the Wrapped card', async () => {
   }
   assert.equal((await s.get('/study/wrapped?year=1999&term=s1')).status, 200, 'an unknown semester falls back to the latest');
   assert.match((await browser().get('/study/wrapped')).headers.get('location'), /^\/login/);
+});
+
+test('admin sign-in: off without a hash, password checked, moderator powers, rate limited', async () => {
+  assert.equal((await fetch(`${base}/admin/login`)).status, 404, 'no ADMIN_PASSWORD_HASH, no admin sign-in');
+  const adb = openDb(':memory:');
+  seed(adb, { samples: false });
+  const srv = createApp(adb, { devMode: true, adminPasswordHash: Admin.hashPassword('test-only-password-123') }).listen(0);
+  await new Promise((r) => srv.once('listening', r));
+  const root = `http://localhost:${srv.address().port}`;
+  try {
+    const b = browser(() => root);
+    assert.match(await b.text('/admin/login'), /Admin sign-in/);
+    assert.equal((await b.post('/admin/login', { username: 'kwaai', password: 'wrong-password' })).status, 401);
+    assert.equal((await b.post('/admin/login', { username: 'someone', password: 'test-only-password-123' })).status, 401);
+    const ok = await b.post('/admin/login', { username: 'Kwaai ', password: 'test-only-password-123' });
+    assert.equal(ok.status, 303);
+    assert.equal(ok.headers.get('location'), '/study');
+    const admin = adb.prepare(`SELECT * FROM users WHERE email = 'admin@kwaai.invalid'`).get();
+    assert.deepEqual([admin.is_admin, admin.is_test], [1, 1]);
+    assert.equal((await b.get('/mod')).status, 200, 'the admin can moderate');
+    assert.match(await b.text('/study'), /Your study/, 'and sees the study dashboard');
+    assert.equal((await browser(() => root).post('/login', { email: 'admin@kwaai.invalid' })).status, 400, 'the email sign-in can never reach it');
+    // 5 tries per 15 minutes from one address (three used above), then even the right password waits
+    assert.equal((await b.post('/admin/login', { username: 'kwaai', password: 'nope-nope-nope' })).status, 401);
+    assert.equal((await b.post('/admin/login', { username: 'kwaai', password: 'nope-nope-nope' })).status, 401);
+    assert.equal((await b.post('/admin/login', { username: 'kwaai', password: 'test-only-password-123' })).status, 429);
+  } finally {
+    srv.close();
+  }
 });

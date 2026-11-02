@@ -12,6 +12,7 @@ const { parseFact, screenFact, groupFacts, weekTopics, crowdSlots } = require('.
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { UNIVERSITIES, CURRENT, uniForEmail } = require('./universities');
 const Study = require('./study');
+const Admin = require('./admin');
 
 const STUDENT_EMAIL = /^[a-z0-9._%+-]+@myuct\.ac\.za$/;
 // "a+1@myuct.ac.za" and "a+2@myuct.ac.za" reach the same inbox, so they must be the same account:
@@ -27,7 +28,7 @@ const STATS = `COUNT(*) AS n, AVG(overall) AS overall, AVG(teaching) AS teaching
 const REVIEW_COLS = `r.*, l.name AS lecturer_name`;
 const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; form-action 'self'; frame-ancestors 'none'; base-uri 'none'";
 
-function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'Ubayd Hattas and Jaswin Chinthala', informationOfficer = operator, demoPassword, emailDailyCap = 280 } = {}) {
+function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'Ubayd Hattas and Jaswin Chinthala', informationOfficer = operator, demoPassword, emailDailyCap = 280, adminUsername = 'kwaai', adminPasswordHash, testTools = false } = {}) {
   const app = express();
   const mods = new Set([...moderators].map(normEmail));
   app.disable('x-powered-by');
@@ -65,7 +66,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     const flash = /(?:^|;\s*)flash=([^;]+)/.exec(req.headers.cookie || '')?.[1];
     if (flash) res.clearCookie('flash');
-    req.ctx = { user: req.user, isMod: !!req.user && mods.has(req.user.email), flash: parseFlash(flash), uni: CURRENT, here: req.path,
+    req.ctx = { user: req.user, isMod: !!req.user && (mods.has(req.user.email) || !!req.user.is_admin), isAdmin: !!req.user?.is_admin, testTools, flash: parseFlash(flash), uni: CURRENT, here: req.path,
       // origin for share links and link previews; production always has BASE_URL
       site: { contactEmail, operator, informationOfficer, origin: baseUrl || `${req.protocol}://${req.get('host')}` } };
     // CSRF: double-submit token, added to every POST form on its way out
@@ -1233,6 +1234,24 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     // without an email service (local dev, or a demo with no key) the code and link are shown on screen instead
     const shown = !sendLoginEmail && devMode;
     res.page(views.checkEmail(req.ctx, { email, devLink: shown ? link : null, devCode: shown ? code : null }));
+  });
+
+  // ---- the admin account ----
+  // One password-only account for testing and moderating, on only when ADMIN_PASSWORD_HASH holds a valid hash (see
+  // src/admin.js). It signs in as admin@kwaai.invalid, an address that can't receive mail, so the email sign-in can
+  // never reach it. It's a test account: left out of every figure other students see.
+  const ADMIN_EMAIL = 'admin@kwaai.invalid';
+  const adminOn = Admin.isValidHash(adminPasswordHash);
+  const adminLimits = [limit(5, 15 * MIN), limit(20, 24 * 60 * MIN, () => 'admin-login', 'Admin sign-in is paused for today after too many tries.')];
+  app.get('/admin/login', (req, res) => (adminOn ? res.page(views.adminLogin(req.ctx, {})) : res.status(404).page(notFound(req))));
+  app.post('/admin/login', ...adminLimits, (req, res) => {
+    if (!adminOn) return res.status(404).page(notFound(req));
+    const sent = Buffer.from(sha(String(req.body.username || '').trim().toLowerCase()));
+    const userOk = crypto.timingSafeEqual(sent, Buffer.from(sha(adminUsername.toLowerCase())));
+    const passOk = Admin.checkPassword(String(req.body.password || ''), adminPasswordHash); // checked either way, so timing says nothing
+    if (!userOk || !passOk) return res.status(401).page(views.adminLogin(req.ctx, { error: "That username and password don't match." }));
+    q(`INSERT INTO users (email, uni, is_admin, is_test, agreed_at) VALUES (?, ?, 1, 1, CURRENT_TIMESTAMP) ON CONFLICT(email) DO UPDATE SET is_admin = 1, is_test = 1`).run(ADMIN_EMAIL, CURRENT.slug);
+    startSession(req, res, ADMIN_EMAIL, '/study');
   });
 
   function startSession(req, res, email, next) {
