@@ -363,6 +363,12 @@ test('admin password: only a scrypt hash is stored, and checking it is all-or-no
   for (const bad of ['', 'plain-text-password', 'scrypt$zz$zz', `scrypt$${'a'.repeat(32)}$short`]) assert.equal(Admin.checkPassword('x', bad), false, bad);
 });
 
+test('streak milestones', () => {
+  assert.equal(Study.milestone(7), '7 days. A full week.');
+  assert.equal(Study.milestone(8), null);
+  assert.deepEqual(Object.keys(Study.MILESTONES).map(Number), [3, 7, 14, 30, 50, 100, 200, 365]);
+});
+
 test('test data: a streak of n days, six months of history, and session rows', () => {
   const TD = require('../src/testdata');
   const streak = TD.streakDays(5, '2027-03-10', TD.seeded(7));
@@ -1410,12 +1416,15 @@ test('the streak shows on Study, Today and the home page once a student has stud
   const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 50, ?, 'done')`);
   add.run(uid, Study.addDay(today, -1), 40 * 60);
   add.run(uid, today, 10 * 60);
-  for (const p of ['/', '/today']) assert.match(await s.text(p), /1 day study streak/, p);
+  const badge = (n, unit) => new RegExp(`<span class="streak-n">${n}</span> ${unit}</span>`);
+  for (const p of ['/', '/today']) assert.match(await s.text(p), new RegExp(`${badge(1, 'day').source} study streak`), p);
   const study = await s.text('/study');
-  assert.match(study, /<dt>Streak<\/dt><dd>1 day<\/dd>/);
+  assert.match(study, new RegExp(`<dt>Streak</dt><dd><span class="streak" data-streak="1" >`), 'not lit yet: today has only 10 minutes');
   assert.match(study, /Study 20 more minutes today to keep it going|the vacation/);
   add.run(uid, today, 25 * 60);
-  assert.match(await s.text('/study'), /<dt>Streak<\/dt><dd>2 days<\/dd>[\s\S]*?Today counts\./);
+  const lit = await s.text('/study');
+  assert.match(lit, new RegExp(`<dt>Streak</dt><dd><span class="streak is-lit" data-streak="2" data-celebrate="${today}" data-milestone="">`), 'lit, and celebrated once today');
+  assert.match(lit, new RegExp(`${badge(2, 'days').source}[\\s\\S]*?Today counts\\.`));
 });
 
 test('a daily study reminder can go in the calendar', async () => {
@@ -1710,10 +1719,12 @@ test('test tools: only for the admin, only with TEST_TOOLS, and each one writes 
     assert.match(await a.text('/study'), /href="\/admin\/tools"[^>]*>Test tools/, 'a header link while the tools are on');
     const aid = tdb.prepare(`SELECT id FROM users WHERE email = 'admin@kwaai.invalid'`).get().id;
     const sessions = () => tdb.prepare('SELECT COUNT(*) AS n FROM study_sessions WHERE user_id = ?').get(aid).n;
-    const streakOn = async () => Number(/<dt>Streak<\/dt><dd>(\d+) days?<\/dd>/.exec(await a.text('/study'))[1]);
+    const streakOn = async () => Number(/<dt>Streak<\/dt><dd><span class="streak[^"]*" data-streak="(\d+)"/.exec(await a.text('/study'))[1]);
 
     await a.post('/admin/tools/streak', { days: '7', ends: 'today' });
-    assert.ok((await streakOn()) >= 7, 'a 7-day streak (more only if the day before was a vacation)');
+    const seven = await streakOn();
+    assert.ok(seven >= 7, 'a 7-day streak (more only if the day before was a vacation)');
+    if (seven === 7) assert.match(await a.text('/study'), /data-milestone="7 days\. A full week\."/, 'a milestone gets its line');
     assert.match(await a.text('/study'), /Today counts\./);
     await a.post('/admin/tools/streak', { days: '3', ends: 'yesterday' });
     assert.match(await a.text('/study'), /Study \d+ more minutes today to keep it going|the vacation/);
