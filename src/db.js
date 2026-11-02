@@ -260,6 +260,7 @@ function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker
   addMissingColumns(db, 'lecturers', LECTURER_DETAILS);
   addMissingColumns(db, 'users', USER_DETAILS);
   db.exec('CREATE UNIQUE INDEX IF NOT EXISTS one_report_each ON reports (review_id, user_id)');
+  db.exec('CREATE INDEX IF NOT EXISTS test_users ON users (id) WHERE is_test = 1'); // the few test accounts, for leaving them out of figures
   return db;
 }
 
