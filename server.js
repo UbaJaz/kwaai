@@ -66,7 +66,12 @@ createApp(db, {
   informationOfficer: env.INFORMATION_OFFICER || undefined,
   emailDailyCap: Number(env.EMAIL_DAILY_CAP) || undefined,
   demoPassword: env.DEMO_PASSWORD || undefined,
+  adminUsername: env.ADMIN_USERNAME || undefined,
+  adminPasswordHash: env.ADMIN_PASSWORD_HASH || undefined,
+  testTools: env.TEST_TOOLS === '1',
 }).listen(port, () => {
   console.log(`Kwaai running on http://localhost:${port}${devMode ? ' (dev mode)' : ''}`);
   if (!moderators.size) console.log('Tip: set MODERATORS=you@myuct.ac.za to get access to /mod');
+  if (env.ADMIN_PASSWORD_HASH && !require('./src/admin').isValidHash(env.ADMIN_PASSWORD_HASH)) console.log('ADMIN_PASSWORD_HASH is not a hash from `npm run admin-hash`, so admin sign-in is off.');
+  if (env.TEST_TOOLS === '1') console.log('Test tools are on (/admin/tools). Turn TEST_TOOLS off before launch.');
 });
