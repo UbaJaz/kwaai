@@ -102,6 +102,19 @@ function weeklyGoal(course, weeksOf) {
 // no term dates have no vacations, so every day counts.
 const STREAK_MIN = 30;
 
+// streak lengths that get a bigger celebration, and what the page says when a student reaches one
+const MILESTONES = {
+  3: '3 days in a row. That\'s a habit starting.',
+  7: '7 days. A full week.',
+  14: 'Two weeks straight.',
+  30: '30 days. A month of showing up.',
+  50: '50 days. Half way to 100.',
+  100: '100 days. That\'s rare.',
+  200: '200 days.',
+  365: 'A whole year.',
+};
+const milestone = (n) => MILESTONES[n] || null;
+
 // terms: { 2027: { s1: { start, end, breaks: [[from, to]] }, s2: {...} } }, as in data/terms.json
 function isVacation(day, terms) {
   const t = terms[day.slice(0, 4)];
@@ -242,4 +255,4 @@ function cleanName(text, max, screen) {
 // 8 characters from random bytes; 256 is a multiple of 32, so every character is equally likely
 const groupCode = (bytes) => [...bytes].slice(0, 8).map((b) => CODE_CHARS[b % CODE_CHARS.length]).join('');
 
-module.exports = { spanStats, weekRecap, wrapped, HOURS_WINDOW_DAYS, HOURS_MIN_STUDENTS, courseHours, LIVE_MS, liveSince, MIN_LIVE_SHOWN, MAX_GROUPS, MAX_MEMBERS, CODE_CHARS, cleanName, groupCode, PERIODS, BOARD_SIZE, periodRange, rankBoard, parseProfileForm, PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
+module.exports = { MILESTONES, milestone, spanStats, weekRecap, wrapped, HOURS_WINDOW_DAYS, HOURS_MIN_STUDENTS, courseHours, LIVE_MS, liveSince, MIN_LIVE_SHOWN, MAX_GROUPS, MAX_MEMBERS, CODE_CHARS, cleanName, groupCode, PERIODS, BOARD_SIZE, periodRange, rankBoard, parseProfileForm, PRESETS, MIN_SESSION_MIN, MAX_SESSION_MIN, GRACE_MIN, MAX_GAP_SEC, DAY_CAP_MIN, STREAK_MIN, saDay, parseStart, beat, isStale, dayTotals, hoursText, addDay, weekdayOf, LEVELS, levelOf, heatmap, summary, weeklyGoal, isVacation, streak };
