@@ -31,6 +31,8 @@
 }
 
 * { box-sizing: border-box; }
+/* the hidden attribute always hides, even on elements whose class sets a display (like .btn) */
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 15.5px/1.6 var(--body); font-feature-settings: 'cv11', 'ss01'; }
 a { color: inherit; text-decoration-color: var(--line-strong); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
