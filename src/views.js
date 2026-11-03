@@ -36,7 +36,8 @@ function layout({ title, user, isMod, isAdmin, testTools, flash, site = {}, uni,
 <meta property="og:title" content="${fullTitle}">
 <meta property="og:description" content="${description}">
 ${path && site.origin ? html`<meta property="og:url" content="${site.origin}${path}"><link rel="canonical" href="${site.origin}${path}">` : ''}
-<meta name="twitter:card" content="summary">
+${site.origin ? html`<meta property="og:image" content="${site.origin}/og-card.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Kwaai: is your course kwaai or nah?">` : ''}
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#151d2b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,7 +45,7 @@ ${path && site.origin ? html`<meta property="og:url" content="${site.origin}${pa
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/kwaai-icon.svg" type="image/svg+xml">
 <link rel="manifest" href="/manifest.webmanifest">
-<link rel="apple-touch-icon" href="/kwaai-icon.svg">
+<link rel="apple-touch-icon" href="/kwaai-icon-180.png">
 <script src="/app.js" defer></script>
 </head>
 <body${uni ? html` style="--uni:${uni.accent};--uni-soft:${uni.soft}"` : ''}>

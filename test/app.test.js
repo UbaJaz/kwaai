@@ -915,6 +915,10 @@ test('course pages carry a link preview and a WhatsApp share link', async () => 
   assert.match(page, /<meta property="og:title" content="EEE3099S [^"]+ · Kwaai">/);
   assert.match(page, /<meta property="og:description" content="EEE3099S [^"]*Workload \d\.\d\/5[^"]*">/);
   assert.match(page, new RegExp(`<meta property="og:url" content="${base}/courses/EEE3099S">`));
+  // WhatsApp needs an absolute PNG to show a picture with the link
+  assert.match(page, new RegExp(`<meta property="og:image" content="${base}/og-card.png">`));
+  assert.match(page, /<meta name="twitter:card" content="summary_large_image">/);
+  assert.equal((await fetch(`${base}/og-card.png`)).headers.get('content-type'), 'image/png');
   assert.match(page, /href="https:\/\/wa\.me\/\?text=Is%20EEE3099S%20kwaai%20or%20nah%3F/);
   assert.match(await (await fetch(`${base}/rules`)).text(), /<meta property="og:description" content="Course ratings, workload scores/);
 });
@@ -1251,6 +1255,9 @@ test('the year: revision plan from exam dates, month by month, in the calendar, 
   assert.match(await a.text('/'), /<link rel="manifest" href="\/manifest\.webmanifest">/);
   const manifest = await (await fetch(`${base}/manifest.webmanifest`)).json();
   assert.equal(manifest.start_url, '/today');
+  // iOS and some Android launchers ignore SVG icons
+  for (const icon of manifest.icons.filter((i) => i.type === 'image/png')) assert.equal((await fetch(`${base}${icon.src}`)).status, 200);
+  assert.match(await a.text('/'), /<link rel="apple-touch-icon" href="\/kwaai-icon-180\.png">/);
   const sw = await fetch(`${base}/sw.js`);
   assert.equal(sw.headers.get('cache-control'), 'no-cache');
   const swText = await sw.text();
