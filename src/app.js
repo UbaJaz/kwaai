@@ -349,6 +349,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const saved = readPlan(req);
     const { fromUrl, week } = saved;
     let { codes, profile } = saved;
+    // "Make this my plan" on a plan someone shared: save it on this device, so Week, Today and Study use it
+    if (req.query.adopt != null) {
+      savePlan(req, res, codes, profile, week);
+      return flashRedirect(res, planUrl(codes, profile, week), 'ok', 'This is your plan now. Your week, Today and Study use it.');
+    }
     // the "about you" form: majors come from two selects, passed courses from ticked boxes plus a free text box
     if (req.query.about != null) {
       profile = req.query.about === 'clear' ? parseProfile() : parseProfile({
@@ -407,7 +412,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     for (const list of Object.values(expanded)) for (const c of list) known.set(c.code, c);
     const advice = creditAdvice(profile, plan, courses, passed, needs);
     res.page(views.plan(req.ctx, {
-      courses, plan, matches, add, codes: courses.map((c) => c.code),
+      courses, plan, matches, add, codes: courses.map((c) => c.code), shared: saved.shared,
       profile, needs, advice, known, expanded, passed, programmeOptions: programmeOptions(), facultyOptions: facultyOptions(),
       state: Object.fromEntries(new URLSearchParams(planQuery(courses.map((c) => c.code), profile, week))),
     }));
