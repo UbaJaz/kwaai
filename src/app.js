@@ -1,3 +1,4 @@
+const fs = require('node:fs');
 const crypto = require('node:crypto');
 const path = require('node:path');
 const zlib = require('node:zlib');
@@ -49,6 +50,25 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.set({ 'Content-Security-Policy': CSP, 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'same-origin', 'X-Frame-Options': 'DENY' });
     if (!devMode) res.set('Strict-Transport-Security', 'max-age=31536000');
     next();
+  });
+  // Our own CSS and JS, gzipped (a fifth of the size on mobile data). Each file is compressed once and kept until it
+  // changes on disk. Everything else, and browsers that don't take gzip, fall through to the static server below.
+  const GZIP_TYPES = { '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.webmanifest': 'application/manifest+json' };
+  const gzipped = new Map();
+  app.use((req, res, next) => {
+    const type = GZIP_TYPES[path.extname(req.path)];
+    if (req.method !== 'GET' || !type || req.path.includes('..') || !/gzip/.test(req.headers['accept-encoding'] || '')) return next();
+    const publicDir = path.join(__dirname, '..', 'public');
+    const file = path.join(publicDir, req.path);
+    if (!file.startsWith(publicDir + path.sep)) return next();
+    let stat;
+    try { stat = fs.statSync(file); } catch { return next(); }
+    const tag = `"${stat.size.toString(36)}-${stat.mtimeMs.toString(36)}-gz"`;
+    let hit = gzipped.get(file);
+    if (!hit || hit.tag !== tag) gzipped.set(file, (hit = { tag, body: zlib.gzipSync(fs.readFileSync(file)) }));
+    res.set({ 'Content-Type': type, 'Content-Encoding': 'gzip', Vary: 'Accept-Encoding', ETag: tag, 'Cache-Control': req.path === '/sw.js' ? 'no-cache' : 'public, max-age=3600' });
+    if (req.headers['if-none-match'] === tag) return res.status(304).end();
+    res.send(hit.body);
   });
   // an hour of caching: the files aren't fingerprinted, so a longer cache would show old styles after a deploy
   // the service worker is checked on every visit so an update reaches installed copies straight away
