@@ -813,12 +813,13 @@ test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can b
   assert.equal((await voters[0].post('/courses/CSC2001F/verdict', { lekker: '0', year, tip: 'Tutorials are where it clicks' })).status, 303, 'voting again changes the vote');
   let page = await anon.text('/courses/CSC2001F');
   assert.match(page, /1 vote so far/, 'one student, one vote');
-  assert.doesNotMatch(page, /say kwaai/, 'no percentage from a single vote');
+  assert.doesNotMatch(page, /say kwaai|verdict-bar/, 'no percentage from a single vote');
 
   await voters[1].post('/courses/CSC2001F/verdict', { lekker: '1', year });
   await voters[2].post('/courses/CSC2001F/verdict', { lekker: '1', year });
   page = await anon.text('/courses/CSC2001F');
   assert.match(page, /67%<\/strong> say kwaai/);
+  assert.match(page, /width:67%.*67% kwaai.*33% nah/s, 'the split shows as a bar once there are enough votes');
   assert.match(page, /Tutorials are where it clicks/);
 
   const id = /\/verdicts\/(\d+)\/report/.exec(page)[1];

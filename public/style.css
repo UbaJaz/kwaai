@@ -278,6 +278,9 @@ main#main { animation: page-in .3s ease-out; }
 .verdict-head h2 { font-size: 1.4rem; margin: 0; letter-spacing: -.025em; }
 .verdict-result { margin: 0; font-size: 1rem; }
 .verdict-result strong { font: 800 1.5rem var(--display); background: var(--lime); padding: 0 6px; border-radius: 4px; }
+.verdict-bar { display: flex; height: 10px; margin-top: 8px; min-width: 220px; border: 1px solid var(--ink); border-radius: 999px; overflow: hidden; background: var(--surface); }
+.verdict-bar i { background: var(--lime); border-right: 1px solid var(--ink); }
+.verdict-split { display: flex; justify-content: space-between; margin-top: 4px; }
 .verdict-form { display: grid; gap: 14px; margin-top: 16px; }
 .verdict-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
 .verdict-form .verdict-buttons { margin-top: 0; }

@@ -181,7 +181,9 @@ function verdictBox(ctx, { c, votes, myVerdict, years }) {
     <div class="verdict-head">
       <h2>Took ${c.code}? Kwaai or nah?</h2>
       ${pct != null
-        ? html`<p class="verdict-result"><strong>${pct}%</strong> say kwaai <span class="meta">from ${plural(votes.n, 'vote')}</span></p>`
+        ? html`<div><p class="verdict-result"><strong>${pct}%</strong> say kwaai <span class="meta">from ${plural(votes.n, 'vote')}</span></p>
+          <div class="verdict-bar" aria-hidden="true"><i style="width:${pct}%"></i></div>
+          <p class="verdict-split fine"><span>${pct}% kwaai</span><span>${100 - pct}% nah</span></p></div>`
         : html`<p class="meta">${votes.n ? `${plural(votes.n, 'vote')} so far. The result shows from ${MIN_FOR_RANKING} votes.` : 'No votes yet.'}</p>`}
     </div>
     ${ctx.user
