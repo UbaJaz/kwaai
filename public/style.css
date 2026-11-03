@@ -629,6 +629,7 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 }
 /* the vote box: the optional tip and year fold away; on phones Kwaai and Nah sit side by side */
 .verdict-extra summary { cursor: pointer; font-weight: 600; font-size: .95rem; }
+.verdict-extra summary .hint { display: inline; margin-left: 6px; }
 .verdict-extra[open] summary { margin-bottom: 12px; }
 @media (max-width: 680px) {
   .hero-actions { display: grid; grid-template-columns: 1fr 1fr; }
