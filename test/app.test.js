@@ -1937,3 +1937,11 @@ test('marks rows carry labels for the phone layout, and phone fields are big eno
   assert.match(css, /\.marks-table td\[data-label\]::before \{ content: attr\(data-label\);/);
   assert.match(css, /@media \(max-width: 680px\) \{\s*input, select, textarea,[^}]*\{ font-size: 16px; \}/, 'no zoom on iPhones');
 });
+
+test('the vote box folds the optional tip away, and opens it once you have one', () => withAdminServer({}, async ({ admin }) => {
+  assert.match(await admin.text('/courses/CSC1015F'), /<details class="verdict-extra" >\s*<summary>Add a tip for next year/);
+  await admin.post('/courses/CSC1015F/verdict', { lekker: '1', year: String(new Date().getFullYear()), tip: 'Do every past paper' });
+  const page = await admin.text('/courses/CSC1015F');
+  assert.match(page, /<details class="verdict-extra" open>/);
+  assert.match(page, /value="Do every past paper"/);
+}));
