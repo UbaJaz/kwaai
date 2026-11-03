@@ -179,6 +179,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       })(),
       streak: req.user ? streakFor(req.user.id) : null,
       studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0,
+      // only each course's newest tip, in the course page's order, so it's always one of the free ones there
+      recentTips: q(`SELECT t.id, t.course, t.lekker, t.tip, c.title FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY course ORDER BY created_at DESC, id DESC) AS k
+        FROM verdicts WHERE status = 'published' AND tip != '') t JOIN courses c ON c.code = t.course WHERE t.k = 1 ORDER BY t.created_at DESC, t.id DESC LIMIT 4`).all(),
     })));
   });
 

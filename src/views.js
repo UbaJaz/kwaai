@@ -181,7 +181,9 @@ function verdictBox(ctx, { c, votes, myVerdict, years }) {
     <div class="verdict-head">
       <h2>Took ${c.code}? Kwaai or nah?</h2>
       ${pct != null
-        ? html`<p class="verdict-result"><strong>${pct}%</strong> say kwaai <span class="meta">from ${plural(votes.n, 'vote')}</span></p>`
+        ? html`<div><p class="verdict-result"><strong>${pct}%</strong> say kwaai <span class="meta">from ${plural(votes.n, 'vote')}</span></p>
+          <div class="verdict-bar" aria-hidden="true"><i style="width:${pct}%"></i></div>
+          <p class="verdict-split fine"><span>${pct}% kwaai</span><span>${100 - pct}% nah</span></p></div>`
         : html`<p class="meta">${votes.n ? `${plural(votes.n, 'vote')} so far. The result shows from ${MIN_FOR_RANKING} votes.` : 'No votes yet.'}</p>`}
     </div>
     ${ctx.user
@@ -294,7 +296,7 @@ function streakNote(s) {
   return `Study ${s.needed} more minutes today to ${s.current ? 'keep it going' : 'start one'}.`;
 }
 
-function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null, studyingNow = 0 }) {
+function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null, studyingNow = 0, recentTips = [] }) {
   const { uni } = ctx;
   const n = (v) => v.toLocaleString('en-ZA');
   return layout({ ...ctx, path: '/' }, html`
@@ -351,6 +353,14 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
       <a class="more" href="/rankings?cat=workload&kind=course">All rankings →</a>
     </div>
   </section>
+
+  ${recentTips.length ? html`<section class="recent-tips">
+    <h2 class="label">Fresh tips from students</h2>
+    <ul class="tips">${recentTips.map((t) => html`<li class="card tip">
+      <span class="tip-verdict ${t.lekker ? 'yes' : 'no'}">${t.lekker ? 'Kwaai' : 'Nah'}</span>
+      <div><p class="tip-text">${t.tip}</p><a class="meta" href="/courses/${t.course}#tip-${t.id}">${t.course} ${t.title} →</a></div>
+    </li>`)}</ul>
+  </section>` : ''}
 
   <p class="browse-all"><a class="btn btn-quiet" href="/courses">Browse all ${n(counts.courses)} courses by department</a></p>
 
@@ -498,6 +508,11 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
   </section>
 
   ${verdictBox(ctx, { c, votes, myVerdict, years })}
+  ${!reviews.length && !votes.n ? html`<section class="card first-rate">
+    <h2>Be the first to rate ${c.code}</h2>
+    <p>Next year's class is choosing courses with no one to ask. Took it? Tap kwaai or nah above. Didn't? Ask someone who did.</p>
+    <a class="btn btn-quiet" href="${whatsappLink(c, votes, ctx.site.origin)}" target="_blank" rel="noopener">Ask a classmate on WhatsApp</a>
+  </section>` : ''}
 
   ${myHeld ? html`<div class="flash flash-info">Your review for this course is waiting for a moderator. We check comments that might break the rules before they go live.</div>` : ''}
 

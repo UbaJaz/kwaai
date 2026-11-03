@@ -809,16 +809,19 @@ test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can b
     voters.push(b);
   }
   const anon = fresh();
+  assert.match(await anon.text('/courses/CSC2001F'), /Be the first to rate CSC2001F/, 'an unrated course asks for the first vote');
   assert.equal((await voters[0].post('/courses/CSC2001F/verdict', { lekker: '1', year, tip: 'Tutorials are where it clicks' })).status, 303);
   assert.equal((await voters[0].post('/courses/CSC2001F/verdict', { lekker: '0', year, tip: 'Tutorials are where it clicks' })).status, 303, 'voting again changes the vote');
   let page = await anon.text('/courses/CSC2001F');
+  assert.doesNotMatch(page, /Be the first to rate/, 'not once someone has voted');
   assert.match(page, /1 vote so far/, 'one student, one vote');
-  assert.doesNotMatch(page, /say kwaai/, 'no percentage from a single vote');
+  assert.doesNotMatch(page, /say kwaai|verdict-bar/, 'no percentage from a single vote');
 
   await voters[1].post('/courses/CSC2001F/verdict', { lekker: '1', year });
   await voters[2].post('/courses/CSC2001F/verdict', { lekker: '1', year });
   page = await anon.text('/courses/CSC2001F');
   assert.match(page, /67%<\/strong> say kwaai/);
+  assert.match(page, /width:67%.*67% kwaai.*33% nah/s, 'the split shows as a bar once there are enough votes');
   assert.match(page, /Tutorials are where it clicks/);
 
   const id = /\/verdicts\/(\d+)\/report/.exec(page)[1];
@@ -835,6 +838,15 @@ test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can b
   assert.match(await mod.text('/mod'), /Tutorials are where it clicks/);
   assert.equal((await mod.post(`/mod/verdicts/${id}/approve`, {})).status, 303);
   assert.match(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/);
+
+  // home shows each course's newest tip only, which the course page never locks
+  await voters[1].post('/courses/CSC2001F/verdict', { lekker: '1', year, tip: 'Second tip here' });
+  await voters[2].post('/courses/CSC2001F/verdict', { lekker: '1', year, tip: 'Newest tip here' });
+  const home = await anon.text('/');
+  assert.match(home, /Newest tip here/);
+  assert.doesNotMatch(home, /Second tip here|Tutorials are where it clicks/, 'one tip per course on home');
+  page = await anon.text('/courses/CSC2001F');
+  assert.match(page, new RegExp(`id="${/#(tip-\d+)/.exec(home)[1]}"`), 'the home link lands on a readable tip');
 });
 
 test('rule-breaking tips are held, contact details rejected, votes deleted with the account', async () => {

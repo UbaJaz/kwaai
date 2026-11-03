@@ -191,6 +191,8 @@ legend { font: 600 1.05rem var(--display); padding: 0 8px 0 0; }
 .path-go { margin-top: auto; align-self: flex-start; font-weight: 600; font-size: .92rem; padding: 8px 14px; border-radius: 8px; background: var(--paper); }
 .browse-all { margin: 0; }
 .lists { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; padding: 8px 0 32px; }
+.recent-tips { padding: 0 0 32px; }
+.recent-tips .tip a { display: inline-block; margin-top: 4px; }
 .dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); border-top: 1px solid var(--line); }
 .dept { display: grid; grid-template-columns: 52px 1fr; column-gap: 10px; padding: 12px 8px 12px 0; text-decoration: none; border-bottom: 1px solid var(--line); }
 .dept:hover .dept-name { text-decoration: underline; }
@@ -276,6 +278,9 @@ main#main { animation: page-in .3s ease-out; }
 .verdict-head h2 { font-size: 1.4rem; margin: 0; letter-spacing: -.025em; }
 .verdict-result { margin: 0; font-size: 1rem; }
 .verdict-result strong { font: 800 1.5rem var(--display); background: var(--lime); padding: 0 6px; border-radius: 4px; }
+.verdict-bar { display: flex; height: 10px; margin-top: 8px; min-width: 220px; border: 1px solid var(--ink); border-radius: 999px; overflow: hidden; background: var(--surface); }
+.verdict-bar i { background: var(--lime); border-right: 1px solid var(--ink); }
+.verdict-split { display: flex; justify-content: space-between; margin-top: 4px; }
 .verdict-form { display: grid; gap: 14px; margin-top: 16px; }
 .verdict-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
 .verdict-form .verdict-buttons { margin-top: 0; }
@@ -327,6 +332,9 @@ main#main { animation: page-in .3s ease-out; }
 .gate { padding: 18px 20px; margin: 0 0 28px; background: var(--lime-soft); border-color: color-mix(in srgb, var(--lime) 60%, var(--line)); }
 .gate p { margin: 0 0 12px; }
 .gate .btn { background: var(--ink); color: var(--paper); }
+.first-rate { padding: 20px 24px; margin: -24px 0 40px; }
+.first-rate h2 { margin: 0 0 6px; font-size: 1.2rem; }
+.first-rate p { margin: 0 0 14px; color: var(--muted); }
 
 /* ---------- review form ---------- */
 .review-form { max-width: 760px; }
