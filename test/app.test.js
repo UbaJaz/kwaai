@@ -1871,3 +1871,18 @@ test('a link that changes one setting keeps the courses saved on this device', a
   assert.match(week, /CSC1015S/);
   assert.match(await b.text('/week?c=MAM1032S&t=s2'), /MAM1032S/, 'a link with its own courses still shows those');
 });
+
+test('a friend\'s plan link offers to become your plan', async () => {
+  const b = browser();
+  await b.get('/plan?add=STA1000S');
+  let page = await b.text('/plan?c=CSC1015S,MAM1032S');
+  assert.match(page, /This plan came from a link/);
+  const adopt = /href="(\/plan\?[^"]*adopt=1[^"]*)"/.exec(page)[1].replace(/&amp;/g, '&');
+  const res = await b.get(adopt);
+  assert.equal(res.status, 303);
+  page = await b.text(res.headers.get('location'));
+  assert.match(page, /This is your plan now/);
+  assert.doesNotMatch(page, /This plan came from a link/);
+  assert.match(await b.text('/today'), /CSC1015S|MAM1032S/, 'Today uses the adopted plan');
+  assert.doesNotMatch(await b.text('/plan?add=PHY1013S').then(() => b.text('/plan')), /This plan came from a link/, 'your own plan never shows the banner');
+});
