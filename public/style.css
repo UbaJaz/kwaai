@@ -591,6 +591,11 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .pick:hover span { border-color: var(--ink); }
 @media (max-width: 680px) { .btn-start { width: 100%; } .pick-length { flex: 1 1 0; } .pick-length span { min-width: 0; } }
 @media (prefers-reduced-motion: reduce) { .pick span { transition: none; } }
+/* custom timer fields: shown only while the Custom chip is picked (no script needed) */
+.custom-timer { display: none; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; border: 0; margin: 0; padding: 14px; background: var(--paper); border-radius: 12px; }
+.study-form:has(input[name="minutes"][value="custom"]:checked) .custom-timer { display: grid; }
+.custom-timer .check, .custom-timer .meta { grid-column: 1 / -1; margin: 0; }
+.custom-timer input[type="number"] { font-size: 1.1rem; }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
