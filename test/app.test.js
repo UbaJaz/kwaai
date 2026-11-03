@@ -809,9 +809,11 @@ test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can b
     voters.push(b);
   }
   const anon = fresh();
+  assert.match(await anon.text('/courses/CSC2001F'), /Be the first to rate CSC2001F/, 'an unrated course asks for the first vote');
   assert.equal((await voters[0].post('/courses/CSC2001F/verdict', { lekker: '1', year, tip: 'Tutorials are where it clicks' })).status, 303);
   assert.equal((await voters[0].post('/courses/CSC2001F/verdict', { lekker: '0', year, tip: 'Tutorials are where it clicks' })).status, 303, 'voting again changes the vote');
   let page = await anon.text('/courses/CSC2001F');
+  assert.doesNotMatch(page, /Be the first to rate/, 'not once someone has voted');
   assert.match(page, /1 vote so far/, 'one student, one vote');
   assert.doesNotMatch(page, /say kwaai|verdict-bar/, 'no percentage from a single vote');
 

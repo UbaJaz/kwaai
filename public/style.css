@@ -332,6 +332,9 @@ main#main { animation: page-in .3s ease-out; }
 .gate { padding: 18px 20px; margin: 0 0 28px; background: var(--lime-soft); border-color: color-mix(in srgb, var(--lime) 60%, var(--line)); }
 .gate p { margin: 0 0 12px; }
 .gate .btn { background: var(--ink); color: var(--paper); }
+.first-rate { padding: 20px 24px; margin: -24px 0 40px; }
+.first-rate h2 { margin: 0 0 6px; font-size: 1.2rem; }
+.first-rate p { margin: 0 0 14px; color: var(--muted); }
 
 /* ---------- review form ---------- */
 .review-form { max-width: 760px; }

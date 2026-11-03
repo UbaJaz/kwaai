@@ -508,6 +508,11 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
   </section>
 
   ${verdictBox(ctx, { c, votes, myVerdict, years })}
+  ${!reviews.length && !votes.n ? html`<section class="card first-rate">
+    <h2>Be the first to rate ${c.code}</h2>
+    <p>Next year's class is choosing courses with no one to ask. Took it? Tap kwaai or nah above. Didn't? Ask someone who did.</p>
+    <a class="btn btn-quiet" href="${whatsappLink(c, votes, ctx.site.origin)}" target="_blank" rel="noopener">Ask a classmate on WhatsApp</a>
+  </section>` : ''}
 
   ${myHeld ? html`<div class="flash flash-info">Your review for this course is waiting for a moderator. We check comments that might break the rules before they go live.</div>` : ''}
 
