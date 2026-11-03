@@ -596,6 +596,8 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .study-form:has(input[name="minutes"][value="custom"]:checked) .custom-timer { display: grid; }
 .custom-timer .check, .custom-timer .meta { grid-column: 1 / -1; margin: 0; }
 .custom-timer input[type="number"] { font-size: 1.1rem; }
+.break-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.break-actions:empty { display: none; }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
