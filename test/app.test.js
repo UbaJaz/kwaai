@@ -1918,3 +1918,14 @@ test('custom timer: the fields are on the page and a custom length starts a sess
   const css = await (await fetch(`${base}/style.css`)).text();
   assert.match(css, /\.study-form:has\(input\[name="minutes"\]\[value="custom"\]:checked\) \.custom-timer \{ display: grid; \}/, 'the fields show only while Custom is picked, no script needed');
 }));
+
+test('timer sounds: the settings are on /study and the sound file is served and saved for offline', async () => {
+  const page = await (await fetch(`${base}/study`)).text();
+  assert.match(page, /<details class="card panel sound-settings" data-sound-settings>/);
+  assert.match(page, /<select name="focus"><option value="bell" selected>Bell<\/option><option value="birds" >Birdsong<\/option>/);
+  assert.match(page, /<select name="break">[\s\S]*?<option value="birds" selected>Birdsong<\/option>/);
+  assert.match(page, /<script src="\/sounds\.js" defer><\/script>/);
+  const js = await (await fetch(`${base}/sounds.js`)).text();
+  for (const name of ['bell', 'birds', 'chime', 'marimba', 'beep']) assert.ok(js.includes(`    ${name}: (c, out) =>`), name);
+  assert.match(await (await fetch(`${base}/sw.js`)).text(), /'\/sounds\.js'/);
+});
