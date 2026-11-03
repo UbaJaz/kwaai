@@ -335,14 +335,25 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     try { savedRaw = decodeURIComponent(/(?:^|;\s*)plan=([^;]*)/.exec(req.headers.cookie || '')?.[1] || ''); } catch { /* a mangled cookie is just an empty plan */ }
     const saved = savedRaw.includes('=') ? Object.fromEntries(new URLSearchParams(savedRaw)) : { c: savedRaw };
     const fromUrl = PLAN_KEYS.some((k) => query[k] != null);
-    const state = fromUrl ? query : saved;
-    return { fromUrl, codes: planCodes(state.c), profile: parseProfile(state), week: parseWeek(state) };
+    // A link with courses in it (c) is a whole plan: your own or a friend's. A link without them (a semester tab, one
+    // setting) is a change to this device's plan, so the saved courses carry over.
+    const state = !fromUrl ? saved : query.c != null ? query : { ...saved, ...query };
+    const codes = planCodes(state.c);
+    const savedCodes = planCodes(saved.c);
+    // a plan link whose courses aren't this device's saved plan: the planner offers to make it yours
+    const shared = fromUrl && query.c != null && codes.join() !== savedCodes.join();
+    return { fromUrl, shared, codes, profile: parseProfile(state), week: parseWeek(state) };
   }
 
   app.get('/plan', (req, res) => {
     const saved = readPlan(req);
     const { fromUrl, week } = saved;
     let { codes, profile } = saved;
+    // "Make this my plan" on a plan someone shared: save it on this device, so Week, Today and Study use it
+    if (req.query.adopt != null) {
+      savePlan(req, res, codes, profile, week);
+      return flashRedirect(res, planUrl(codes, profile, week), 'ok', 'This is your plan now. Your week, Today and Study use it.');
+    }
     // the "about you" form: majors come from two selects, passed courses from ticked boxes plus a free text box
     if (req.query.about != null) {
       profile = req.query.about === 'clear' ? parseProfile() : parseProfile({
@@ -401,7 +412,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     for (const list of Object.values(expanded)) for (const c of list) known.set(c.code, c);
     const advice = creditAdvice(profile, plan, courses, passed, needs);
     res.page(views.plan(req.ctx, {
-      courses, plan, matches, add, codes: courses.map((c) => c.code),
+      courses, plan, matches, add, codes: courses.map((c) => c.code), shared: saved.shared,
       profile, needs, advice, known, expanded, passed, programmeOptions: programmeOptions(), facultyOptions: facultyOptions(),
       state: Object.fromEntries(new URLSearchParams(planQuery(courses.map((c) => c.code), profile, week))),
     }));
