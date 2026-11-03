@@ -625,7 +625,7 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 }
 /* iPhones zoom the page into any form field with text under 16px, so on phones every field gets at least that */
 @media (max-width: 680px) {
-  input, select, textarea, .marks-table input[type=text], .marks-table input[type=number], .marks-rules input, .sound-row select { font-size: 16px; }
+  input, select, textarea, .marks-table input[type=text], .marks-table input[type=number], .marks-rules input, .sound-row select, .place-form select, .place-form input[type=text], .mod-actions input { font-size: 16px; }
 }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
