@@ -545,6 +545,20 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .shared-plan { border-color: var(--ink); margin: 0 0 18px; max-width: 760px; }
 .shared-plan p { margin: 0 0 10px; }
 .shared-plan p:last-child { margin: 0; }
+/* ---------- the phone tab bar (shown under 680px) ---------- */
+.tabbar { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; grid-template-columns: repeat(5, 1fr); background: var(--ink); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); border-top: 1px solid color-mix(in srgb, var(--paper) 12%, transparent); }
+.tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 50px; color: color-mix(in srgb, var(--paper) 72%, transparent); font-size: .7rem; font-weight: 600; text-decoration: none; }
+.tab-icon { width: 24px; height: 24px; padding: 3px 14px; box-sizing: content-box; border-radius: 99px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: background .2s, color .2s; }
+.tab-more .tab-icon circle { fill: currentColor; stroke: none; }
+.tab[aria-current="page"], .tab-more summary[aria-current="page"], .tab-more[open] summary { color: var(--paper); }
+.tab[aria-current="page"] .tab-icon, .tab-more summary[aria-current="page"] .tab-icon, .tab-more[open] summary .tab-icon { background: var(--lime); color: var(--ink); }
+.tab-more summary { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 50px; width: 100%; list-style: none; cursor: pointer; }
+.tab-more summary::-webkit-details-marker { display: none; }
+.more-sheet { position: fixed; left: 10px; right: 10px; bottom: calc(72px + env(safe-area-inset-bottom)); display: grid; padding: 8px; background: var(--surface); color: var(--ink); border-radius: 16px; box-shadow: 0 12px 40px rgb(21 29 43 / 28%); animation: sheet-up .2s ease-out; }
+.more-sheet a { padding: 12px 14px; border-radius: 10px; text-decoration: none; font-weight: 500; font-size: .95rem; }
+.more-sheet a:hover, .more-sheet a[aria-current="page"] { background: var(--lime-soft); }
+@keyframes sheet-up { from { opacity: 0; transform: translateY(12px); } }
+@media (prefers-reduced-motion: reduce) { .more-sheet { animation: none; } .tab-icon { transition: none; } }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
@@ -691,11 +705,10 @@ label > .meta { display: block; font-weight: 400; margin-top: 4px; }
   .wrap { padding: 0 18px; }
   .pulse { display: none; }
   .header-row { flex-wrap: wrap; gap: 6px 16px; padding-top: 10px; min-height: 0; }
-  /* every link stays visible: the nav wraps to a second line instead of hiding links off the side, and the header
-     scrolls away with the page so the taller header doesn't eat the screen */
-  .site-header { position: static; }
-  .nav { order: 3; width: 100%; flex-wrap: wrap; gap: 0 16px; padding-bottom: 2px; }
-  .nav a { padding: 8px 0 10px; white-space: nowrap; }
+  /* phones: the tab bar at the bottom takes over from the top nav, so the header is one slim row */
+  .nav { display: none; }
+  .tabbar { display: grid; }
+  body { padding-bottom: calc(66px + env(safe-area-inset-bottom)); }
   .form-row.two { grid-template-columns: 1fr; }
   .form { padding: 18px; }
   .hero { padding: 36px 0 24px; }

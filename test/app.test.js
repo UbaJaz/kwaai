@@ -1886,3 +1886,18 @@ test('a friend\'s plan link offers to become your plan', async () => {
   assert.match(await b.text('/today'), /CSC1015S|MAM1032S/, 'Today uses the adopted plan');
   assert.doesNotMatch(await b.text('/plan?add=PHY1013S').then(() => b.text('/plan')), /This plan came from a link/, 'your own plan never shows the banner');
 });
+
+test('phones get a tab bar: four tabs, a More sheet, and the right one lit', async () => {
+  const study = await (await fetch(`${base}/study`)).text();
+  const bar = /<nav class="tabbar" aria-label="App">[\s\S]*?<\/nav>/.exec(study)[0];
+  assert.deepEqual([...bar.matchAll(/<a href="(\/[a-z]+)" class="tab"/g)].map((m) => m[1]), ['/today', '/study', '/week', '/courses']);
+  assert.match(bar, /<a href="\/study" class="tab" aria-current="page">/);
+  assert.match(bar, /<details class="tab tab-more" data-tab-more>\s*<summary >/, 'More is not lit on a tab page');
+  for (const href of ['/plan', '/marks', '/study/leaderboards', '/groups', '/rankings']) assert.match(bar, new RegExp(`<a href="${href}" role="menuitem"`));
+  assert.doesNotMatch(bar, /\/mod|\/admin\/tools/, 'no admin links for visitors');
+  const marks = await (await fetch(`${base}/marks`)).text();
+  assert.match(marks, /<summary aria-current="page">/, 'a More page lights More');
+  assert.match(marks, /<a href="\/marks" role="menuitem" aria-current="page">/);
+  assert.doesNotMatch(/<nav class="tabbar"[\s\S]*?<\/nav>/.exec(marks)[0], /class="tab" aria-current/, 'and no tab with it');
+  assert.match(study, /viewport-fit=cover/, 'room for the home bar on phones with no button');
+});
