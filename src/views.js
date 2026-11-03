@@ -36,7 +36,8 @@ function layout({ title, user, isMod, isAdmin, testTools, flash, site = {}, uni,
 <meta property="og:title" content="${fullTitle}">
 <meta property="og:description" content="${description}">
 ${path && site.origin ? html`<meta property="og:url" content="${site.origin}${path}"><link rel="canonical" href="${site.origin}${path}">` : ''}
-<meta name="twitter:card" content="summary">
+${site.origin ? html`<meta property="og:image" content="${site.origin}/og-card.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Kwaai: is your course kwaai or nah?">` : ''}
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#151d2b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,7 +45,7 @@ ${path && site.origin ? html`<meta property="og:url" content="${site.origin}${pa
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/kwaai-icon.svg" type="image/svg+xml">
 <link rel="manifest" href="/manifest.webmanifest">
-<link rel="apple-touch-icon" href="/kwaai-icon.svg">
+<link rel="apple-touch-icon" href="/kwaai-icon-180.png">
 <script src="/app.js" defer></script>
 </head>
 <body${uni ? html` style="--uni:${uni.accent};--uni-soft:${uni.soft}"` : ''}>
@@ -291,7 +292,7 @@ function streakNote(s) {
   return `Study ${s.needed} more minutes today to ${s.current ? 'keep it going' : 'start one'}.`;
 }
 
-function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null }) {
+function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null, studyingNow = 0 }) {
   const { uni } = ctx;
   const n = (v) => v.toLocaleString('en-ZA');
   return layout({ ...ctx, path: '/' }, html`
@@ -314,6 +315,7 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
         <input type="search" name="q" placeholder="Code or name, e.g. CSC1015F" aria-label="Search courses" autocomplete="off" data-suggest="go">
         <button class="btn btn-ink">Search</button>
       </form>
+      ${studyingNow ? html`<p class="live-note"><i class="live-dot" aria-hidden="true"></i>${studyingNow} ${uni.short} students are studying on Kwaai right now. <a href="/study">Join them →</a></p>` : ''}
     </div>
     <aside class="pulse" aria-labelledby="pulse-title">
       <h2 class="label" id="pulse-title">So far at ${uni.short}</h2>

@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- Source for public/og-card.png, the 1200x630 picture WhatsApp and other apps show with a shared Kwaai link.
+     Regenerate with headless Chrome (WhatsApp won't show SVG, so it has to be a PNG):
+     chrome --headless=new --hide-scrollbars --window-size=1200,630 --screenshot=public/og-card.png scripts/og-card.html -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Inter:wght@500;600&display=swap">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body { background: #151d2b; color: #f7f7f2; font-family: Inter, sans-serif; position: relative; }
+  .in { position: absolute; inset: 72px 80px; display: flex; flex-direction: column; }
+  .logo { display: flex; align-items: center; gap: 18px; font: 800 52px/1 'Bricolage Grotesque'; letter-spacing: -.035em; }
+  .logo svg { width: 64px; height: 64px; }
+  h1 { font: 800 92px/1.02 'Bricolage Grotesque'; letter-spacing: -.035em; margin: auto 0 28px; max-width: 900px; }
+  .hl { background: #c8f169; color: #151d2b; padding: 0 14px; border-radius: 12px; }
+  p { font-size: 30px; color: rgba(247,247,242,.72); margin: 0; }
+  .pills { position: absolute; right: 80px; top: 72px; display: flex; gap: 12px; }
+  .pill { font: 600 24px/1 Inter; padding: 14px 22px; border-radius: 999px; }
+  .k { background: #c8f169; color: #151d2b; }
+  .n { border: 2px solid rgba(247,247,242,.4); }
+  .band { position: absolute; left: 0; right: 0; bottom: 0; height: 14px; background: #c8f169; }
+</style></head>
+<body>
+  <div class="in">
+    <div class="logo"><svg viewBox="0 0 220 220"><rect width="220" height="220" rx="42" fill="#C8F169"/><rect x="48" y="35" width="32" height="150" rx="5" fill="#151D2B"/><path d="M145 43 L89 110 L145 177 L166 177 L110 110 L166 43 Z" fill="#151D2B"/></svg>kwaai</div>
+    <h1>Is your course <span class="hl">kwaai</span> or nah?</h1>
+    <p>Ratings, workload and tips from UCT students who already took it.</p>
+  </div>
+  <div class="pills"><span class="pill k">Kwaai</span><span class="pill n">Nah</span></div>
+  <div class="band"></div>
+</body></html>
