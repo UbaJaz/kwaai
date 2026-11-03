@@ -91,7 +91,9 @@ const segs = (n) => {
   const v = Math.round(n * 2) / 2;
   return html`<span class="seg" aria-hidden="true">${[1, 2, 3, 4, 5].map((i) => html`<i class="${v >= i ? 'f' : v >= i - 0.5 ? 'h' : ''}"></i>`)}</span>`;
 };
-const chip = (n, big) => html`<span class="score ${big ? 'score-big' : ''}" role="img" aria-label="${n == null ? 'No rating yet' : `${fmt(n)} out of 5`}"><b>${fmt(n)}</b>${n == null ? '' : segs(n)}</span>`;
+// toned colours the number by how good it is; off for scores where high isn't better (workload, exam difficulty)
+const tone = (n) => (n >= 3.8 ? 'score-good' : n >= 2.8 ? 'score-mid' : 'score-low');
+const chip = (n, big, toned = true) => html`<span class="score ${big ? 'score-big' : ''} ${toned && n != null ? tone(n) : ''}" role="img" aria-label="${n == null ? 'No rating yet' : `${fmt(n)} out of 5`}"><b>${fmt(n)}</b>${n == null ? '' : segs(n)}</span>`;
 const sampleBadge = (on) => (on ? html`<span class="badge sample" title="Demo data, not a real student's review">Sample</span>` : '');
 
 function bars(stats) {
@@ -241,7 +243,7 @@ function gateNotice(ctx, hidden) {
   </div>`;
 }
 
-function rankList(rows, kind) {
+function rankList(rows, kind, toned = true) {
   if (!rows.length) return html`<p class="empty">Not enough reviews yet. Things need at least ${MIN_FOR_RANKING} reviews to be ranked.</p>`;
   return html`<ol class="rank-list">
     ${rows.map((r, i) => html`<li>
@@ -251,7 +253,7 @@ function rankList(rows, kind) {
         ${sampleBadge(r.is_sample)}
         <span class="meta">${r.dept_name} · ${plural(r.n, 'review')}</span>
       </a>
-      <span class="rank-score">${chip(r.score)}</span>
+      <span class="rank-score">${chip(r.score, false, toned)}</span>
     </li>`)}
   </ol>`;
 }
@@ -345,7 +347,7 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
     </div>
     <div>
       <h2 class="label">Heaviest workload</h2>
-      ${rankList(heaviest, 'course')}
+      ${rankList(heaviest, 'course', false)}
       <a class="more" href="/rankings?cat=workload&kind=course">All rankings →</a>
     </div>
   </section>
@@ -365,7 +367,7 @@ const courseRow = (c) => html`<li><a class="course-row" href="/courses/${c.code}
   </a></li>`;
 
 // Courses are browsed one layer at a time: faculty, then department, then year folders that open to show courses.
-function courses(ctx, { mode, list, q, years, dept, deptName, faculty, facultyName, total }) {
+function courses(ctx, { mode, list, q, years, dept, deptName, faculty, facultyName, total, popular = [] }) {
   const search = html`<form class="search search-inline course-filter" action="/courses" role="search">
     <input type="search" name="q" value="${q || ''}" placeholder="Search code or name" aria-label="Search courses" autocomplete="off" data-suggest="go">
     <button class="btn">Search</button>
@@ -377,7 +379,8 @@ function courses(ctx, { mode, list, q, years, dept, deptName, faculty, facultyNa
       ${list.length ? html`<div class="course-grid">${list.map(courseCard)}</div>` : html`<p class="empty">No courses found. Try the course code from your handbook, like CSC1015F, or part of the name.</p>`}`;
   } else if (mode === 'faculties') {
     body = html`<p class="meta">Pick a faculty, then a department, then a year. Or search above.</p>
-      <div class="layer-grid">${list.map((f) => html`<a class="card layer-card" href="/courses?faculty=${f.key}"><strong>${f.name}</strong><span class="meta">${plural(f.depts, 'department')} · ${plural(f.courses, 'course')}</span></a>`)}</div>`;
+      <div class="layer-grid">${list.map((f) => html`<a class="card layer-card" href="/courses?faculty=${f.key}"><strong>${f.name}</strong><span class="meta">${plural(f.depts, 'department')} · ${plural(f.courses, 'course')}</span></a>`)}</div>
+      ${popular.length ? html`<h2 class="label browse-popular">Most reviewed</h2><div class="course-grid">${popular.map(courseCard)}</div>` : ''}`;
   } else if (mode === 'faculty') {
     body = html`<h2 class="layer-title">${facultyName}</h2><div class="layer-grid">${list.map((d) => html`<a class="card layer-card" href="/courses?faculty=${faculty}&dept=${d.code}"><strong>${d.name}</strong><span class="meta">${d.code} · ${plural(d.courses, 'course')}</span></a>`)}</div>`;
   } else {
@@ -659,7 +662,7 @@ function rankings(ctx, { rows, depts, dept, rank, kind }) {
   </form>
   <div class="card panel">
     <h2>${rank.label} · ${kind === 'course' ? 'Courses' : 'Lecturers'}${dept ? ` · ${depts.find((d) => d.code === dept)?.name || dept}` : ''}</h2>
-    ${rankList(rows, kind)}
+    ${rankList(rows, kind, !['difficulty', 'workload'].includes(rank.column))}
   </div>`);
 }
 
@@ -1237,6 +1240,7 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
   <p class="lede small">Pick a course, start the timer and work until it rings. Kwaai logs the time against the course.</p>
   ${studyingNow ? html`<p class="live-note"><i class="live-dot" aria-hidden="true"></i>${plural(studyingNow, `${ctx.uni.short} student`)} ${studyingNow === 1 ? 'is' : 'are'} studying on Kwaai right now</p>` : ''}
   ${signedIn ? '' : html`<p class="privacy-note">The timer works without an account. <a href="${loginHref('/study')}">Sign in with your UCT email</a> to keep your hours.</p>`}
+  ${signedIn ? '' : html`<div class="study-pair">`}
   ${current ? html`
   <section class="card panel study-timer" aria-labelledby="study-now" data-study="${JSON.stringify(current)}">
     <h2 id="study-now">Studying ${courseName(current.course)}</h2>
@@ -1270,6 +1274,17 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
       </div>
     </form>
   </section>`}
+  ${signedIn ? '' : html`<section class="card panel study-perks" aria-labelledby="study-perks">
+    <h2 id="study-perks">Sign in and your hours add up</h2>
+    <ul class="plain">
+      <li><span aria-hidden="true">🔥</span> A streak that grows every day you study 30 minutes</li>
+      <li><span aria-hidden="true">🟩</span> A heatmap of your whole year, day by day</li>
+      <li><span aria-hidden="true">🏆</span> Leaderboards for ${ctx.uni.short} and your faculty, if you want in</li>
+      <li><span aria-hidden="true">👥</span> Study groups with friends, your res or your tut</li>
+      <li><span aria-hidden="true">📱</span> A semester Wrapped card to share</li>
+    </ul>
+    <a class="btn btn-ink" href="${loginHref('/study')}">Sign in with your student email</a>
+  </section></div>`}
   ${signedIn ? html`
   <section class="card panel study-timer" aria-labelledby="study-today">
     <h2 id="study-today">Today</h2>

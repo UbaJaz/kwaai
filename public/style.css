@@ -142,6 +142,9 @@ legend { font: 600 1.05rem var(--display); padding: 0 8px 0 0; }
 .seg i { height: 12px; border-radius: 2px; background: var(--line); }
 .seg i.f { background: var(--ink); }
 .seg i.h { background: linear-gradient(90deg, var(--ink) 50%, var(--line) 50%); }
+.score-good b { color: var(--good); } .score-good .seg i.f { background: var(--good); } .score-good .seg i.h { background: linear-gradient(90deg, var(--good) 50%, var(--line) 50%); }
+.score-mid b { color: var(--mid); } .score-mid .seg i.f { background: var(--mid); } .score-mid .seg i.h { background: linear-gradient(90deg, var(--mid) 50%, var(--line) 50%); }
+.score-low b { color: var(--low); } .score-low .seg i.f { background: var(--low); } .score-low .seg i.h { background: linear-gradient(90deg, var(--low) 50%, var(--line) 50%); }
 .score-big { gap: 12px; }
 .score-big b { font-size: 2.6rem; }
 .score-big .seg { grid-template-columns: repeat(5, 11px); gap: 3px; }
@@ -427,6 +430,11 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .today-strip .meta { margin-left: auto; }
 /* ---------- study timer ---------- */
 .study-timer { max-width: 560px; margin: 0 0 18px; }
+.study-pair { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); gap: 18px; align-items: start; margin-bottom: 18px; }
+.study-pair .study-timer { margin: 0; }
+.study-perks ul { margin: 0 0 18px; }
+.study-perks li { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+@media (max-width: 900px) { .study-pair { grid-template-columns: 1fr; } }
 .study-form { display: grid; gap: 14px; }
 .study-lengths { padding-top: 12px; }
 .study-clock { font: 800 clamp(3.5rem, 16vw, 5.5rem)/1 var(--display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; margin: 8px 0 12px; }
@@ -644,6 +652,7 @@ label > .meta { display: block; font-weight: 400; margin-top: 4px; }
 /* ---------- layered browse: faculty > department > year ---------- */
 .layer-title { font-size: 1.3rem; margin: 20px 0 4px; }
 .layer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; margin-top: 16px; }
+.browse-popular { margin-top: 36px; }
 .layer-card { display: grid; gap: 4px; padding: 16px 18px; text-decoration: none; align-content: start; }
 .layer-card:hover { border-color: var(--ink); }
 .year-folder { border-bottom: 1px solid var(--line); }

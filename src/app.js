@@ -227,7 +227,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       return res.page(views.courses(req.ctx, { mode: 'faculty', faculty, facultyName: names[faculty], list }));
     }
     const list = facultyOptions().filter((f) => browse[f.key]).map((f) => ({ ...f, depts: Object.keys(browse[f.key]).length, courses: Object.values(browse[f.key]).flat().length }));
-    res.page(views.courses(req.ctx, { mode: 'faculties', list }));
+    res.page(views.courses(req.ctx, { mode: 'faculties', list, popular: courseList('WHERE s.n > 0', [], 's.n DESC, c.code', 6) }));
   });
 
   // Suggestions as you type in a course search box (public/app.js). Codes that start with what you typed come

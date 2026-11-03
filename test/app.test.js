@@ -978,7 +978,12 @@ test('semester planner: add by code or search, remove, and shared links do not o
   // layered browse: faculties, then departments, then year folders
   const top = await b.text('/courses');
   assert.match(top, /layer-card/);
-  assert.doesNotMatch(top, /course-card|year-folder/, 'the first layer lists faculties, not courses');
+  assert.doesNotMatch(top.match(/<div class="layer-grid">[\s\S]*?<\/div>/)[0], /course-card|year-folder/, 'the first layer lists faculties, not courses');
+  assert.doesNotMatch(top, /year-folder/);
+  assert.ok((top.match(/class="card course-card"/g) || []).length <= 6, 'only a short most-reviewed row sits under the faculties');
+  // ratings are coloured by how good they are; workload and exam difficulty aren't good or bad, so they stay ink
+  assert.match(await b.text('/rankings?cat=best&kind=course'), /class="score  score-(good|mid|low)"/);
+  assert.doesNotMatch(await b.text('/rankings?cat=workload&kind=course'), /score-(good|mid|low)/);
   assert.match(await b.text('/courses?faculty=ebe'), /href="\/courses\?faculty=ebe&dept=EEE"/);
   const eee = await b.text('/courses?faculty=ebe&dept=EEE');
   assert.match(eee, /<details class="year-folder" open>/);
@@ -1339,6 +1344,7 @@ test('re-seeding after a handbook update keeps students\' reviews and votes', ()
 test('study timer: start, heartbeats, stop, one at a time, and account deletion', async () => {
   const anon = browser();
   assert.match(await anon.text('/study'), /Start without saving/, 'signed out, the timer still works on the device');
+  assert.match(await anon.text('/study'), /class="card panel study-perks"[\s\S]*?href="\/login\?next=%2Fstudy"/, 'signed out, Study shows what signing in adds');
   assert.match((await anon.post('/study/start', { course: '', minutes: '25' })).headers.get('location'), /^\/login/);
 
   const s = browser();
