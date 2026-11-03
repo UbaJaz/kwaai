@@ -16,6 +16,40 @@ const DEFAULT_DESCRIPTION = 'Course ratings, workload scores and tips from South
 // Sign-in links remember the page you were on, so you land back there afterwards.
 const loginHref = (back) => (back && back !== '/' && !back.startsWith('/login') && !back.startsWith('/auth') ? `/login?next=${encodeURIComponent(back)}` : '/login');
 
+// Phones get an app-style tab bar at the bottom instead of the top nav: four tabs for the daily things and a More
+// sheet for the rest. Icons are 24px line drawings in the text colour.
+const TAB_ICONS = {
+  today: html`<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><circle cx="12" cy="15.5" r="1.6"/>`,
+  study: html`<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/>`,
+  week: html`<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M9 9v12M15 9v12"/>`,
+  courses: html`<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19"/>`,
+  more: html`<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>`,
+};
+const TABS = [['/today', 'Today', 'today'], ['/study', 'Study', 'study'], ['/week', 'Week', 'week'], ['/courses', 'Courses', 'courses']];
+const icon = (name) => html`<svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">${TAB_ICONS[name]}</svg>`;
+
+function tabBar({ user, isMod, isAdmin, testTools, here }) {
+  const on = (href) => here === href || here.startsWith(`${href}/`);
+  const more = [
+    ['/plan', 'Semester planner'], ['/marks', 'Marks and DP'], ['/year', 'Your year'], ['/study/leaderboards', 'Study leaderboards'],
+    ['/groups', 'Study groups'], ['/rankings', 'Course rankings'],
+    ...(user ? [['/account', 'My reviews'], ['/account/profile', 'Leaderboard settings']] : []),
+    ...(isMod ? [['/mod', 'Moderation']] : []), ...(isAdmin && testTools ? [['/admin/tools', 'Test tools']] : []),
+    ['/about', 'About Kwaai'],
+  ];
+  // a page in the More list (like /study/leaderboards) lights More, not the tab its path starts with
+  const moreOn = more.some(([href]) => on(href));
+  return html`<nav class="tabbar" aria-label="App">
+    ${TABS.map(([href, label, name]) => html`<a href="${href}" class="tab" ${on(href) && !moreOn ? html`aria-current="page"` : ''}>${icon(name)}<span>${label}</span></a>`)}
+    <details class="tab tab-more" data-tab-more>
+      <summary ${moreOn ? html`aria-current="page"` : ''}>${icon('more')}<span>More</span></summary>
+      <div class="more-sheet" role="menu">
+        ${more.map(([href, label]) => html`<a href="${href}" role="menuitem" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}
+      </div>
+    </details>
+  </nav>`;
+}
+
 const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/study', 'Study'], ['/week', 'My week'], ['/marks', 'Marks'], ['/rankings', 'Rankings']];
 
 // description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
@@ -27,7 +61,7 @@ function layout({ title, user, isMod, isAdmin, testTools, flash, site = {}, uni,
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${fullTitle}</title>
 <meta name="description" content="${description}">
 <meta property="og:site_name" content="Kwaai">
@@ -80,6 +114,7 @@ ${body}
     <p><a href="/about">About us</a> · <a href="/universities">Universities</a> · <a href="/rules">House rules</a> · <a href="/takedown">Report or request removal</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
   </div>
 </footer>
+${tabBar({ user, isMod, isAdmin, testTools, here })}
 </body>
 </html>`;
 }
