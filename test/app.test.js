@@ -1929,3 +1929,11 @@ test('timer sounds: the settings are on /study and the sound file is served and 
   for (const name of ['bell', 'birds', 'chime', 'marimba', 'beep']) assert.ok(js.includes(`    ${name}: (c, out) =>`), name);
   assert.match(await (await fetch(`${base}/sw.js`)).text(), /'\/sounds\.js'/);
 });
+
+test('marks rows carry labels for the phone layout, and phone fields are big enough not to zoom', async () => {
+  const page = await (await fetch(`${base}/marks`)).text();
+  for (const label of ['Part', 'Weight (%)', 'Final exam', 'Your mark (%)']) assert.ok(page.includes(`<td data-label="${label}"`), label);
+  const css = await (await fetch(`${base}/style.css`)).text();
+  assert.match(css, /\.marks-table td\[data-label\]::before \{ content: attr\(data-label\);/);
+  assert.match(css, /@media \(max-width: 680px\) \{\s*input, select, textarea,[^}]*\{ font-size: 16px; \}/, 'no zoom on iPhones');
+});

@@ -1229,10 +1229,10 @@ function marksCard(c) {
     <table class="marks-table">
       <thead><tr><th scope="col">Part</th><th scope="col">Weight (%)</th><th scope="col">Exam</th><th scope="col">Your mark (%)</th></tr></thead>
       <tbody>${rows.map((it, i) => html`<tr>
-        <td><input type="text" name="n${i}" value="${it.name}" maxlength="40" aria-label="Part ${i + 1} name" placeholder="e.g. Test 2"></td>
-        <td><input type="number" name="w${i}" value="${it.weight}" min="0" max="100" step="0.1" inputmode="decimal" aria-label="Part ${i + 1} weight"></td>
-        <td><input type="checkbox" name="e${i}" value="1" ${it.exam ? 'checked' : ''} aria-label="Part ${i + 1} is a final exam"></td>
-        <td><input type="number" name="m${i}" value="${c.marks?.[i] ?? ''}" min="0" max="100" step="0.1" inputmode="decimal" aria-label="Your mark for part ${i + 1}" placeholder="${it.exam ? 'later' : ''}"></td>
+        <td data-label="Part"><input type="text" name="n${i}" value="${it.name}" maxlength="40" aria-label="Part ${i + 1} name" placeholder="e.g. Test 2"></td>
+        <td data-label="Weight (%)"><input type="number" name="w${i}" value="${it.weight}" min="0" max="100" step="0.1" inputmode="decimal" aria-label="Part ${i + 1} weight"></td>
+        <td data-label="Final exam" class="marks-exam"><input type="checkbox" name="e${i}" value="1" ${it.exam ? 'checked' : ''} aria-label="Part ${i + 1} is a final exam"></td>
+        <td data-label="Your mark (%)"><input type="number" name="m${i}" value="${c.marks?.[i] ?? ''}" min="0" max="100" step="0.1" inputmode="decimal" aria-label="Your mark for part ${i + 1}" placeholder="${it.exam ? 'later' : ''}"></td>
       </tr>`)}</tbody>
     </table>
     <div class="marks-rules">
