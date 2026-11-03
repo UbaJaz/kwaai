@@ -208,6 +208,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// The phone tab bar's More sheet: a tap outside it or Escape closes it (it opens and closes without this script too)
+document.querySelectorAll('[data-tab-more]').forEach((more) => {
+  document.addEventListener('click', (e) => { if (more.open && !more.contains(e.target)) more.open = false; });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && more.open) { more.open = false; more.querySelector('summary').focus(); }
+  });
+});
+
 // Installable app: the service worker keeps Today, the week, the year and Marks working offline (public/sw.js).
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { /* the site works without it */ }));
