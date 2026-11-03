@@ -1297,6 +1297,26 @@ function today(ctx, { today: t, weekLink, streak = null }) {
 }
 
 // ---------- study timer ----------
+// Timer sounds (public/sounds.js): one for when focus ends, one for when a break ends, a volume, and vibration.
+// Saved on the device by public/app.js; the defaults here are what a first visit gets.
+const SOUND_CHOICES = [['bell', 'Bell'], ['birds', 'Birdsong'], ['chime', 'Chime'], ['marimba', 'Marimba'], ['beep', 'Soft beep'], ['none', 'No sound']];
+function soundSettings() {
+  const select = (name, label, chosen) => html`<label>${label}
+    <span class="sound-row"><select name="${name}">${SOUND_CHOICES.map(([key, text]) => html`<option value="${key}" ${key === chosen ? 'selected' : ''}>${text}</option>`)}</select>
+    <button type="button" class="btn btn-small btn-quiet" data-sound-preview="${name}">Play</button></span></label>`;
+  return html`<details class="card panel sound-settings" data-sound-settings>
+    <summary>Timer sounds</summary>
+    <div class="sound-fields">
+      ${select('focus', 'When focus ends', 'bell')}
+      ${select('break', 'When a break ends', 'birds')}
+      <label>Volume <input type="range" name="volume" min="0" max="100" value="70"></label>
+      <label class="check"><input type="checkbox" name="vibrate" value="1" checked> Vibrate too (on phones that can)</label>
+      <p class="meta">Saved on this device. Sounds are made by your browser, so nothing extra downloads.</p>
+    </div>
+  </details>
+  <script src="/sounds.js" defer></script>`;
+}
+
 // the progress ring around the countdown: public/app.js sets --p (0 to 1) as time passes, and the check mark draws in
 // when the session ends. The same markup is built in public/app.js for the signed-out timer.
 const TIMER_RING = html`<svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-track" cx="60" cy="60" r="54"></circle><circle class="ring-fill" cx="60" cy="60" r="54" pathLength="100"></circle><path class="ring-check" d="M40 61 l14 14 l27 -29" pathLength="100"></path></svg>`;
@@ -1319,6 +1339,7 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
       ${TIMER_RING}
       <p class="study-clock" role="timer" aria-live="off" data-clock>${current.plannedMin}:00</p>
     </div>
+    <p class="sound-hint" data-sound-hint hidden>Tap anywhere on this page once so the timer can ring when it's done.</p>
     <p class="meta" data-study-status>Started at ${clock(current.startedAt)} for ${current.plannedMin} minutes. Keep this page open (another tab is fine) so the time counts.</p>
     <form method="post" action="/study/stop" class="form-actions" data-study-stop>
       <button class="btn btn-big btn-ink">Stop and log it</button>
@@ -1358,6 +1379,7 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
       </div>
     </form>
   </section>`}
+  ${soundSettings()}
   ${signedIn ? '' : html`<section class="card panel study-perks" aria-labelledby="study-perks">
     <h2 id="study-perks">Sign in and your hours add up</h2>
     <ul class="plain">

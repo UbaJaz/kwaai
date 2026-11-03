@@ -337,22 +337,40 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
     set: (key, value, where = sessionStorage) => { try { where.setItem(key, JSON.stringify(value)); } catch { /* private mode */ } },
     drop: (key, where = sessionStorage) => { try { where.removeItem(key); } catch { /* private mode */ } },
   };
-  const chime = () => {
-    navigator.vibrate?.([200, 100, 200]);
-    try {
-      const ctx = new AudioContext();
-      [0, 0.35].forEach((at) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.frequency.value = 660;
-        gain.gain.setValueAtTime(0.15, ctx.currentTime + at);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + at + 0.6);
-        osc.connect(gain).connect(ctx.destination);
-        osc.start(ctx.currentTime + at);
-        osc.stop(ctx.currentTime + at + 0.6);
-      });
-    } catch { /* no sound: the title and the page still say it's done */ }
+  // Sounds (public/sounds.js) and vibration, as picked under "Timer sounds" and saved on this device.
+  // kind is 'focus' (a focus block ended) or 'break' (a break ended).
+  const SOUND_KEY = 'kwaai.sound.v1';
+  const sound = () => ({ focus: 'bell', break: 'birds', volume: 70, vibrate: true, ...(store.get(SOUND_KEY, localStorage) || {}) });
+  const chime = (kind = 'focus') => {
+    const s = sound();
+    if (s.vibrate) navigator.vibrate?.(kind === 'focus' ? [200, 100, 200] : [120]);
+    window.KwaaiSounds?.play(s[kind], s.volume / 100);
   };
+  // browsers keep sound blocked until the person taps the page, so the first tap unlocks it
+  ['pointerdown', 'keydown'].forEach((type) => document.addEventListener(type, () => window.KwaaiSounds?.unlock(), { once: true, capture: true }));
+  const soundPanel = document.querySelector('[data-sound-settings]');
+  if (soundPanel) {
+    const field = (name) => soundPanel.querySelector(`[name=${name}]`);
+    const s = sound();
+    field('focus').value = s.focus;
+    field('break').value = s.break;
+    field('volume').value = s.volume;
+    field('vibrate').checked = s.vibrate;
+    soundPanel.addEventListener('change', () => store.set(SOUND_KEY, { focus: field('focus').value, break: field('break').value, volume: Number(field('volume').value), vibrate: field('vibrate').checked }, localStorage));
+    soundPanel.querySelectorAll('[data-sound-preview]').forEach((button) => button.addEventListener('click', () => {
+      window.KwaaiSounds?.unlock();
+      window.KwaaiSounds?.play(field(button.dataset.soundPreview).value, Number(field('volume').value) / 100);
+    }));
+  }
+  // a running timer on a freshly loaded page can't ring until a tap: say so, until there is one
+  const soundHint = document.querySelector('[data-sound-hint]');
+  if (soundHint) {
+    setTimeout(() => {
+      if (window.KwaaiSounds?.ready() || sound().focus === 'none') return;
+      soundHint.hidden = false;
+      document.addEventListener('pointerdown', () => { soundHint.hidden = true; }, { once: true });
+    }, 1500);
+  }
   // counts down to endAt (this device's clock) once a second, in the element and the tab title
   // when the clock sits in a progress ring ([data-ring] with data-total seconds), the ring fills as time passes,
   // pulses in the last minute, and shows a check mark at the end
@@ -447,7 +465,7 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
           button('End the rounds', () => { store.drop(CYCLE_KEY); breakNote.hidden = true; }, true);
         }
         countdown(text.querySelector('strong'), cycle.breakEnd, 'break', () => {
-          chime();
+          chime('break');
           if (more && cycle.auto) startRound();
           else ready();
         });
@@ -542,7 +560,7 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
         phase(breakAfter(plan, round) * 60);
         if (more) { next.hidden = false; next.textContent = `Start round ${round + 1} now`; next.onclick = () => { cancel(); focus(round + 1); }; }
         cancel = countdown(clock, Date.now() + breakAfter(plan, round) * 60_000, 'break', () => {
-          chime();
+          chime('break');
           if (more && plan.auto) return focus(round + 1);
           heading.textContent = more ? `Break over. Round ${round + 1} is next.` : `Done: ${minutesText(plan.focus)} of ${name}`;
           if (!more) { note.textContent = 'Take a break, then start the next one. Sign in next time and Kwaai keeps your hours.'; stop.textContent = 'Start another'; }
