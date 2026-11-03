@@ -1329,19 +1329,22 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
     <p class="study-break" data-break hidden></p>
     ${signedIn ? '' : html`<template data-ring-svg>${TIMER_RING}</template>`}
     <form method="post" action="/study/start" class="study-form" ${signedIn ? '' : html`data-study-local`}>
-      <label>Course
-        <select name="course">
-          <option value="">General study</option>
-          ${courses.map((c) => html`<option value="${c.code}" ${c.code === pick ? 'selected' : ''}>${c.code} ${c.title}</option>`)}
-        </select>
-      </label>
-      ${courses.length ? '' : html`<p class="meta">Your courses show here once you <a href="/plan">add them to the planner</a>.</p>`}
-      <fieldset class="study-lengths">
-        <legend>How long</legend>
-        ${STUDY_PRESETS.map(([min, label, note], i) => html`<label class="radio"><input type="radio" name="minutes" value="${min}" ${i === 0 ? 'checked' : ''}> <strong>${label}</strong> <span class="meta">${note}</span></label>`)}
+      <fieldset class="pick-group">
+        <legend>What are you studying?</legend>
+        <div class="picks">
+          <label class="pick"><input type="radio" name="course" value="" ${pick ? '' : 'checked'}><span>General study</span></label>
+          ${courses.map((c) => html`<label class="pick" title="${c.title}"><input type="radio" name="course" value="${c.code}" ${c.code === pick ? 'checked' : ''}><span>${c.code}</span></label>`)}
+        </div>
+        ${courses.length ? '' : html`<p class="meta">Your courses show here once you <a href="/plan">add them to the planner</a>.</p>`}
+      </fieldset>
+      <fieldset class="pick-group">
+        <legend>How long?</legend>
+        <div class="picks">
+          ${STUDY_PRESETS.map(([min, label, note], i) => html`<label class="pick pick-length"><input type="radio" name="minutes" value="${min}" ${i === 0 ? 'checked' : ''}><span><strong>${label}</strong><small>${note.replace('then a ', '')}</small></span></label>`)}
+        </div>
       </fieldset>
       <div class="form-actions">
-        <button class="btn btn-big">${signedIn ? 'Start the timer' : 'Start without saving'}</button>
+        <button class="btn btn-big btn-start">${signedIn ? 'Start the timer' : 'Start without saving'}</button>
       </div>
     </form>
   </section>`}

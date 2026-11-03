@@ -471,7 +471,7 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .group-forms h2 { font-size: 1.15rem; margin: 0; }
 .group-invite { max-width: 720px; margin: 18px 0; }
 /* "studying now": a small green dot that pulses unless the student prefers less motion */
-.live-note { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: .9rem; font-weight: 500; color: var(--good); margin: 6px 0 0; }
+.live-note { display: block; font-size: .9rem; font-weight: 500; color: var(--good); margin: 6px 0 0; }
 .live-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #2f9a55; box-shadow: 0 0 0 0 rgba(47, 154, 85, .5); animation: live 2s infinite; margin-right: 6px; vertical-align: middle; }
 @keyframes live { 70% { box-shadow: 0 0 0 7px rgba(47, 154, 85, 0); } 100% { box-shadow: 0 0 0 0 rgba(47, 154, 85, 0); } }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
@@ -576,6 +576,21 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .day-list { margin: 18px 0 10px; padding-top: 14px; border-top: 1px solid var(--line); font-size: .95rem; }
 .hero-again { font-size: 1.35rem; margin: 0 0 12px; }
 .hero-back { padding-top: 28px; }
+/* the study start form: course and length as big chips (radio buttons underneath, so it works without JS) */
+.pick-group { border: 0; padding: 0; margin: 0; }
+.pick-group legend { font: 600 1rem var(--display); padding: 0; margin: 0 0 8px; }
+.picks { display: flex; flex-wrap: wrap; gap: 8px; }
+.pick { position: relative; display: block; font-weight: 500; }
+.pick input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.pick span { display: grid; place-items: center; min-height: 44px; padding: 8px 16px; border: 1.5px solid var(--line-strong); border-radius: 12px; background: var(--surface); font-size: .95rem; transition: background .15s, border-color .15s, color .15s; }
+.pick-length span { min-width: 92px; gap: 1px; }
+.pick-length small { font-size: .72rem; color: var(--muted); font-weight: 500; }
+.pick input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.pick input:checked + span small { color: color-mix(in srgb, var(--paper) 75%, transparent); }
+.pick input:focus-visible + span { outline: 3px solid var(--ink); outline-offset: 2px; }
+.pick:hover span { border-color: var(--ink); }
+@media (max-width: 680px) { .btn-start { width: 100%; } .pick-length { flex: 1 1 0; } .pick-length span { min-width: 0; } }
+@media (prefers-reduced-motion: reduce) { .pick span { transition: none; } }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }

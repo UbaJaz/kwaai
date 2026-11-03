@@ -1408,7 +1408,7 @@ test('Today and the week link to the study timer', async () => {
   assert.match(today, /href="\/study\?course=CSC1015F"/);
   const week = await (await fetch(`${base}/week?c=CSC1015F,MAM1031F&st=1`)).text();
   assert.match(week, /href="\/study\?course=(CSC1015F|MAM1031F)">Start the timer/, 'suggested study blocks start a timer for their course');
-  assert.match(await (await fetch(`${base}/study?course=MAM1031F`)).text(), /<option value="MAM1031F" selected>/);
+  assert.match(await (await fetch(`${base}/study?course=MAM1031F`)).text(), /<input type="radio" name="course" value="MAM1031F" checked>/, 'the course asked for is picked');
 });
 
 test('study dashboard: totals, heatmap, a day\'s detail and this week by course', async () => {
