@@ -1908,3 +1908,13 @@ test('phones get a tab bar: four tabs, a More sheet, and the right one lit', asy
   assert.doesNotMatch(/<nav class="tabbar"[\s\S]*?<\/nav>/.exec(marks)[0], /class="tab" aria-current/, 'and no tab with it');
   assert.match(study, /viewport-fit=cover/, 'room for the home bar on phones with no button');
 });
+
+test('custom timer: the fields are on the page and a custom length starts a session', () => withAdminServer({}, async ({ admin }) => {
+  const page = await admin.text('/study');
+  assert.match(page, /<input type="radio" name="minutes" value="custom">/);
+  for (const name of ['focus', 'break', 'rounds', 'long', 'auto']) assert.match(page, new RegExp(`name="${name}"`), name);
+  const started = await (await admin.post('/study/start', { minutes: 'custom', focus: '40', course: '' }, { headers: { accept: 'application/json' } })).json();
+  assert.equal(started.plannedMin, 40);
+  const css = await (await fetch(`${base}/style.css`)).text();
+  assert.match(css, /\.study-form:has\(input\[name="minutes"\]\[value="custom"\]:checked\) \.custom-timer \{ display: grid; \}/, 'the fields show only while Custom is picked, no script needed');
+}));
