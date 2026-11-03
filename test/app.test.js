@@ -260,6 +260,9 @@ test('study timer: heartbeats credit time, gaps and caps stop padding', () => {
   assert.ok(Study.parseStart({ minutes: '121' }, known).error);
   assert.ok(Study.parseStart({ minutes: '2' }, known).error);
   assert.ok(Study.parseStart({ minutes: '25.5' }, known).error);
+  assert.deepEqual(Study.parseStart({ minutes: 'custom', focus: '40' }, known), { course: '', minutes: 40 }, 'custom length from the focus field');
+  assert.ok(Study.parseStart({ minutes: 'custom', focus: '200' }, known).error, 'custom still has the same limits');
+  assert.ok(Study.parseStart({ minutes: 'custom' }, known).error);
 
   const t0 = Date.parse('2027-03-01T08:00:00Z');
   let s = { started_at: t0, last_beat: t0, planned_min: 25, credited_sec: 0 };
@@ -1905,3 +1908,13 @@ test('phones get a tab bar: four tabs, a More sheet, and the right one lit', asy
   assert.doesNotMatch(/<nav class="tabbar"[\s\S]*?<\/nav>/.exec(marks)[0], /class="tab" aria-current/, 'and no tab with it');
   assert.match(study, /viewport-fit=cover/, 'room for the home bar on phones with no button');
 });
+
+test('custom timer: the fields are on the page and a custom length starts a session', () => withAdminServer({}, async ({ admin }) => {
+  const page = await admin.text('/study');
+  assert.match(page, /<input type="radio" name="minutes" value="custom">/);
+  for (const name of ['focus', 'break', 'rounds', 'long', 'auto']) assert.match(page, new RegExp(`name="${name}"`), name);
+  const started = await (await admin.post('/study/start', { minutes: 'custom', focus: '40', course: '' }, { headers: { accept: 'application/json' } })).json();
+  assert.equal(started.plannedMin, 40);
+  const css = await (await fetch(`${base}/style.css`)).text();
+  assert.match(css, /\.study-form:has\(input\[name="minutes"\]\[value="custom"\]:checked\) \.custom-timer \{ display: grid; \}/, 'the fields show only while Custom is picked, no script needed');
+}));

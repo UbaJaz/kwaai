@@ -320,11 +320,23 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
 // Study timer (/study). The countdown runs here. The server only counts time from the heartbeats this page sends
 // about once a minute, so the page has to stay open (another tab is fine). Signed out, the timer runs on this device
 // only and nothing is sent.
+//
+// Rounds: a preset (25, 50, 90 min) is one focus block and then a break. Custom sets the focus and break lengths,
+// how many rounds, a longer break every 4th round, and whether the next round starts by itself. Signed in, each focus
+// round is its own logged session, so the plan for the rounds waits in sessionStorage across the reload after each.
 (() => {
-  const BREAK_KEY = 'kwaai.studyBreak';
+  const CYCLE_KEY = 'kwaai.cycle';
+  const SETTINGS_KEY = 'kwaai.timer.v1';
+  const LONG_EVERY = 4;
   const baseTitle = document.title;
   const fmt = (sec) => { const s = Math.max(0, Math.ceil(sec)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
   const breakFor = (min) => ({ 25: 5, 50: 10, 90: 15 }[min] ?? Math.max(5, Math.round(min / 6)));
+  const minutesText = (m) => (m >= 60 ? `${Math.floor(m / 60)} h${m % 60 ? ` ${m % 60} min` : ''}` : `${m} min`);
+  const store = {
+    get: (key, where = sessionStorage) => { try { return JSON.parse(where.getItem(key)); } catch { return null; } },
+    set: (key, value, where = sessionStorage) => { try { where.setItem(key, JSON.stringify(value)); } catch { /* private mode */ } },
+    drop: (key, where = sessionStorage) => { try { where.removeItem(key); } catch { /* private mode */ } },
+  };
   const chime = () => {
     navigator.vibrate?.([200, 100, 200]);
     try {
@@ -363,34 +375,99 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
     render();
     return () => { done = true; clearInterval(timer); document.title = baseTitle; };
   };
-  const saveBreak = (min) => { try { sessionStorage.setItem(BREAK_KEY, String(Date.now() + min * 60_000)); } catch { /* private mode */ } };
+  // the break after round n: a long one every 4th round of a custom plan
+  const breakAfter = (plan, round) => (round % LONG_EVERY === 0 ? plan.long : plan.short);
 
-  // a break after a finished session, kept across the reload that shows the logged time
+  // The start form: remember the custom settings, and turn the choice into a plan for the rounds.
+  const form = document.querySelector('form[action="/study/start"]');
+  const planFrom = (f) => {
+    const d = new FormData(f);
+    const num = (key, lo, hi, fallback) => Math.min(hi, Math.max(lo, Math.round(Number(d.get(key))) || fallback));
+    const course = String(d.get('course') || '');
+    if (d.get('minutes') !== 'custom') {
+      const focus = Number(d.get('minutes')) || 25;
+      return { course, focus, short: breakFor(focus), long: breakFor(focus), rounds: 1, auto: false };
+    }
+    return { course, focus: num('focus', 5, 120, 45), short: num('break', 1, 30, 10), long: num('long', 1, 45, 20), rounds: num('rounds', 1, 8, 4), auto: d.get('auto') === '1' };
+  };
+  if (form) {
+    const saved = store.get(SETTINGS_KEY, localStorage);
+    if (saved) {
+      for (const key of ['focus', 'break', 'rounds', 'long']) if (saved[key] != null && form.elements.namedItem(key)) form.elements.namedItem(key).value = saved[key];
+      if (form.elements.namedItem('auto')) form.elements.namedItem('auto').checked = saved.auto !== false;
+      if (saved.custom) form.querySelector('input[name=minutes][value=custom]')?.click();
+    }
+    form.addEventListener('submit', () => {
+      const d = new FormData(form);
+      store.set(SETTINGS_KEY, { focus: d.get('focus'), break: d.get('break'), rounds: d.get('rounds'), long: d.get('long'), auto: d.get('auto') === '1', custom: d.get('minutes') === 'custom' }, localStorage);
+      if (!form.hasAttribute('data-study-local')) store.set(CYCLE_KEY, { ...planFrom(form), round: 1, phase: 'focus' });
+    });
+  }
+
+  // Between rounds (signed in): the break counts down here, then the next round starts by itself or with a tap.
   const breakNote = document.querySelector('[data-break]');
-  if (breakNote) {
-    let end = 0;
-    try { end = Number(sessionStorage.getItem(BREAK_KEY)) || 0; } catch { /* private mode */ }
-    if (end > Date.now()) {
-      breakNote.hidden = false;
-      breakNote.innerHTML = 'Break: <strong></strong> left. Stand up, drink some water.';
-      countdown(breakNote.querySelector('strong'), end, 'break', () => {
-        chime();
-        breakNote.textContent = 'Break over. Ready for the next one?';
-        try { sessionStorage.removeItem(BREAK_KEY); } catch { /* private mode */ }
-      });
+  const cycle = store.get(CYCLE_KEY);
+  if (breakNote && cycle && !document.querySelector('[data-study]')) {
+    const csrf = form?.elements.namedItem('_csrf')?.value;
+    const more = cycle.round < cycle.rounds;
+    const startRound = () => {
+      const body = new URLSearchParams({ _csrf: csrf, course: cycle.course, minutes: 'custom', focus: String(cycle.focus) });
+      fetch('/study/start', { method: 'POST', headers: { accept: 'application/json' }, body })
+        .then((r) => (r.ok ? r.json() : Promise.reject(r)))
+        .then(() => { store.set(CYCLE_KEY, { ...cycle, round: cycle.round + 1, phase: 'focus' }); window.location.reload(); })
+        .catch(() => { breakNote.querySelector('[data-break-text]').textContent = "Couldn't start the next round. Check your connection and tap again."; });
+    };
+    breakNote.hidden = false;
+    breakNote.innerHTML = '<span data-break-text></span> <span class="break-actions"></span>';
+    const text = breakNote.querySelector('[data-break-text]');
+    const actions = breakNote.querySelector('.break-actions');
+    const button = (label, onClick, quiet) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = `btn btn-small${quiet ? ' btn-quiet' : ''}`;
+      b.textContent = label;
+      b.addEventListener('click', onClick);
+      actions.append(b);
+    };
+    if (cycle.phase === 'done') {
+      text.textContent = `All ${cycle.rounds} rounds done: ${minutesText(cycle.rounds * cycle.focus)} of focus, each one logged.`;
+      store.drop(CYCLE_KEY);
+    } else if (cycle.phase === 'break') {
+      const ready = () => {
+        if (!more) { text.textContent = 'Break over. Ready for the next one?'; store.drop(CYCLE_KEY); return; }
+        text.textContent = `Break over. Round ${cycle.round + 1} of ${cycle.rounds} is next.`;
+        actions.replaceChildren();
+        button(`Start round ${cycle.round + 1}`, startRound);
+        button('End the rounds', () => { store.drop(CYCLE_KEY); breakNote.hidden = true; }, true);
+      };
+      if (cycle.breakEnd > Date.now()) {
+        text.innerHTML = `${more ? `Break after round ${cycle.round} of ${cycle.rounds}` : 'Break'}: <strong></strong> left. Stand up, drink some water.`;
+        if (more) {
+          button(`Start round ${cycle.round + 1} now`, startRound);
+          button('End the rounds', () => { store.drop(CYCLE_KEY); breakNote.hidden = true; }, true);
+        }
+        countdown(text.querySelector('strong'), cycle.breakEnd, 'break', () => {
+          chime();
+          if (more && cycle.auto) startRound();
+          else ready();
+        });
+      } else ready();
     }
   }
 
-  // a session the server is timing
+  // A session the server is timing.
   const box = document.querySelector('[data-study]');
   if (box) {
     const st = JSON.parse(box.dataset.study);
     const skew = st.now - Date.now(); // the server's clock minus this device's
-    const form = box.querySelector('[data-study-stop]');
-    const csrf = form.elements.namedItem('_csrf').value;
+    const stopForm = box.querySelector('[data-study-stop]');
+    const csrf = stopForm.elements.namedItem('_csrf').value;
     const post = (path) => fetch(path, { method: 'POST', headers: { accept: 'application/json' }, body: new URLSearchParams({ _csrf: csrf }) })
       .then((r) => (r.ok && /json/.test(r.headers.get('content-type') || '') ? r.json() : null))
       .catch(() => null); // offline: this minute won't count, the next heartbeat tries again
+    const plan = store.get(CYCLE_KEY);
+    if (plan?.phase === 'focus' && plan.rounds > 1) box.querySelector('h2').append(` · round ${plan.round} of ${plan.rounds}`);
+    stopForm.addEventListener('submit', () => store.drop(CYCLE_KEY)); // stopping early ends the rounds
     let over = false;
     const beat = () => post('/study/beat').then((r) => { if (r && !r.running && !over) { over = true; window.location.reload(); } });
     const heartbeat = setInterval(beat, 60_000);
@@ -399,26 +476,26 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
       over = true;
       clearInterval(heartbeat);
       chime();
-      saveBreak(breakFor(st.plannedMin));
+      const c = plan?.phase === 'focus' ? plan : { course: st.course, focus: st.plannedMin, short: breakFor(st.plannedMin), long: breakFor(st.plannedMin), rounds: 1, auto: false, round: 1 };
+      const last = c.rounds > 1 && c.round >= c.rounds;
+      store.set(CYCLE_KEY, last ? { ...c, phase: 'done' } : { ...c, phase: 'break', breakEnd: Date.now() + breakAfter(c, c.round) * 60_000 });
       box.querySelector('[data-study-status]').textContent = 'Done. Logging your time...';
       post('/study/stop').then(() => setTimeout(() => window.location.reload(), 1200));
     });
   }
 
-  // signed out: the same timer, on this device only
+  // Signed out: the same timer and rounds, on this device only.
   const local = document.querySelector('form[data-study-local]');
   if (local) {
     local.addEventListener('submit', (e) => {
       e.preventDefault();
-      const minutes = Number(new FormData(local).get('minutes')) || 25;
-      const name = local.querySelector('input[name=course]:checked')?.value || 'General study';
+      const plan = planFrom(local);
+      const name = plan.course || 'General study';
       const panel = local.closest('section');
       const heading = panel.querySelector('h2');
-      heading.textContent = `Studying ${name}`;
       const ring = document.createElement('div');
       ring.className = 'timer-ring';
       ring.dataset.ring = '';
-      ring.dataset.total = String(minutes * 60);
       ring.innerHTML = document.querySelector('template[data-ring-svg]')?.innerHTML ?? '';
       const clock = document.createElement('p');
       clock.className = 'study-clock';
@@ -426,21 +503,53 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
       ring.append(clock);
       const note = document.createElement('p');
       note.className = 'meta';
-      note.textContent = `${minutes} minutes on this device only. Sign in to keep your hours.`;
+      note.textContent = 'On this device only. Sign in to keep your hours.';
       const stop = document.createElement('button');
       stop.type = 'button';
       stop.className = 'btn btn-big btn-ink';
       stop.textContent = 'Stop';
-      local.replaceWith(ring, note, stop);
+      const next = document.createElement('button');
+      next.type = 'button';
+      next.className = 'btn btn-big';
+      next.hidden = true;
+      local.replaceWith(ring, note, next, stop);
       stop.focus();
-      const cancel = countdown(clock, Date.now() + minutes * 60_000, 'studying', () => {
-        chime();
-        saveBreak(breakFor(minutes));
-        heading.textContent = `Done: ${minutes} minutes of ${name}`;
-        note.textContent = 'Take a break, then start the next one. Sign in next time and Kwaai keeps your hours.';
-        stop.textContent = 'Start another';
-      });
+      let cancel = () => {};
+      const roundText = (round) => (plan.rounds > 1 ? ` · round ${round} of ${plan.rounds}` : '');
+      const phase = (seconds) => {
+        ring.classList.remove('done', 'last-minute');
+        ring.dataset.total = String(seconds);
+        ring.style.setProperty('--p', '0');
+      };
+      const focus = (round) => {
+        next.hidden = true;
+        heading.textContent = `Studying ${name}${roundText(round)}`;
+        phase(plan.focus * 60);
+        cancel = countdown(clock, Date.now() + plan.focus * 60_000, 'studying', () => {
+          chime();
+          if (plan.rounds > 1 && round >= plan.rounds) {
+            heading.textContent = `Done: ${plan.rounds} rounds, ${minutesText(plan.rounds * plan.focus)} of ${name}`;
+            note.textContent = 'Sign in next time and Kwaai keeps your hours.';
+            stop.textContent = 'Start another';
+            return;
+          }
+          rest(round);
+        });
+      };
+      const rest = (round) => {
+        const more = round < plan.rounds;
+        heading.textContent = `Break${more ? ` after round ${round} of ${plan.rounds}` : ''}`;
+        phase(breakAfter(plan, round) * 60);
+        if (more) { next.hidden = false; next.textContent = `Start round ${round + 1} now`; next.onclick = () => { cancel(); focus(round + 1); }; }
+        cancel = countdown(clock, Date.now() + breakAfter(plan, round) * 60_000, 'break', () => {
+          chime();
+          if (more && plan.auto) return focus(round + 1);
+          heading.textContent = more ? `Break over. Round ${round + 1} is next.` : `Done: ${minutesText(plan.focus)} of ${name}`;
+          if (!more) { note.textContent = 'Take a break, then start the next one. Sign in next time and Kwaai keeps your hours.'; stop.textContent = 'Start another'; }
+        });
+      };
       stop.addEventListener('click', () => { cancel(); window.location.reload(); });
+      focus(1);
     });
   }
 })();

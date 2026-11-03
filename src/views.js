@@ -1341,7 +1341,17 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
         <legend>How long?</legend>
         <div class="picks">
           ${STUDY_PRESETS.map(([min, label, note], i) => html`<label class="pick pick-length"><input type="radio" name="minutes" value="${min}" ${i === 0 ? 'checked' : ''}><span><strong>${label}</strong><small>${note.replace('then a ', '')}</small></span></label>`)}
+          <label class="pick pick-length"><input type="radio" name="minutes" value="custom"><span><strong>Custom</strong><small>rounds and breaks</small></span></label>
         </div>
+      </fieldset>
+      <fieldset class="custom-timer" data-custom-timer>
+        <legend class="sr-only">Custom timer</legend>
+        <label>Focus <span class="hint">minutes</span><input type="number" name="focus" min="${Study.MIN_SESSION_MIN}" max="${Study.MAX_SESSION_MIN}" value="45" inputmode="numeric"></label>
+        <label>Break <span class="hint">minutes</span><input type="number" name="break" min="1" max="30" value="10" inputmode="numeric"></label>
+        <label>Rounds<input type="number" name="rounds" min="1" max="8" value="4" inputmode="numeric"></label>
+        <label>Long break <span class="hint">every 4th round</span><input type="number" name="long" min="1" max="45" value="20" inputmode="numeric"></label>
+        <label class="check"><input type="checkbox" name="auto" value="1" checked> Start the next round by itself when a break ends</label>
+        <p class="meta">Each focus round is logged on its own. Your settings are remembered on this device.</p>
       </fieldset>
       <div class="form-actions">
         <button class="btn btn-big btn-start">${signedIn ? 'Start the timer' : 'Start without saving'}</button>
