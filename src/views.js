@@ -331,25 +331,45 @@ function streakNote(s) {
   return `Study ${s.needed} more minutes today to ${s.current ? 'keep it going' : 'start one'}.`;
 }
 
+// The top of the home page for a student who's back: a greeting, today's progress towards the 30 minutes that keep
+// a streak, the streak, one big way to start studying, the next class and the next test.
+function yourDay(t, streak) {
+  const now = new Date(Date.now() + 2 * 3_600_000); // South African time
+  const hour = now.getUTCHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const date = now.toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
+  const todayMin = streak ? (streak.todayDone ? Study.STREAK_MIN : Study.STREAK_MIN - streak.needed) : 0;
+  const next = t && (t.weekend ? null : t.next);
+  return html`<section class="card your-day" aria-labelledby="your-day">
+    <p class="eyebrow">${date}</p>
+    <h1 id="your-day">${greeting}.</h1>
+    <div class="day-row">
+      ${streak ? html`<div class="day-goal" style="--p:${(todayMin / Study.STREAK_MIN).toFixed(3)}" role="img" aria-label="${todayMin} of ${Study.STREAK_MIN} minutes studied today"><span>${todayMin}<small>/${Study.STREAK_MIN} min</small></span></div>` : ''}
+      <div class="day-text">
+        ${streak ? html`<p class="day-streak">${streakBadge(streak)} study streak</p><p class="meta">${streakNote(streak)}</p>` : html`<p class="meta">Study 30 minutes a day to start a streak.</p>`}
+        <a class="btn btn-big" href="/study">Start studying</a>
+      </div>
+    </div>
+    ${t ? html`<ul class="plain day-list">
+      <li>${next ? html`<strong>Next class:</strong> ${next.code || next.label} at ${next.start}` : t.weekend ? `It's the weekend: ${t.classes ? `${`${t.classes} ${t.classes === 1 ? 'class' : 'classes'}`} on Monday` : 'no classes on Monday'}.` : t.classes ? `${`${t.classes} ${t.classes === 1 ? 'class' : 'classes'}`} on your timetable today, all done.` : 'No classes today.'}</li>
+      ${t.soon ? html`<li><strong>Coming up:</strong> ${t.soon.code} ${t.soon.title}, ${fmtDate(t.soon.date)}</li>` : ''}
+    </ul>` : ''}
+    <p class="meta"><a href="/today">Your day, deadlines and DP →</a></p>
+  </section>`;
+}
+
 function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null, studyingNow = 0, recentTips = [] }) {
   const { uni } = ctx;
   const n = (v) => v.toLocaleString('en-ZA');
+  // back again (a plan on this device or a streak): the page opens on your day, and the pitch makes way
+  const back = !!(t || streak);
   return layout({ ...ctx, path: '/' }, html`
-  ${t ? html`<a class="card today-strip" href="/today">
-    <strong>Today</strong>
-    <span>${t.weekend ? `Weekend. Monday: ${t.classes ? `${t.classes} ${t.classes === 1 ? 'class' : 'classes'}` : 'no classes'}` : t.next ? `Next: ${t.next.code || t.next.label} at ${t.next.start}` : t.classes ? `${`${t.classes} ${t.classes === 1 ? 'class' : 'classes'}`} on your timetable` : 'No classes today'}${t.soon ? ` · ${t.soon.code} ${t.soon.title} on ${fmtDate(t.soon.date)}` : ''}</span>
-    <span class="meta">Your day, deadlines and DP →</span>
-  </a>` : ''}
-  ${streak ? html`<a class="card today-strip" href="/study">
-    <strong>${streakBadge(streak)} study streak</strong>
-    <span>${streakNote(streak)}</span>
-    <span class="meta">Start studying →</span>
-  </a>` : ''}
-  <section class="hero">
+  ${back ? yourDay(t, streak) : ''}
+  <section class="hero${back ? ' hero-back' : ''}">
     <div class="hero-main">
       <p class="eyebrow"><b>${uni.name}</b> · ${plural(counts.courses, 'course')}</p>
-      <h1>Find out if a course is <em class="hl">kwaai</em> before you register.</h1>
-      <p class="lede">Ratings, workload scores and one-line tips from students who already took it, plus a planner that checks your semester against the handbook.</p>
+      ${back ? html`<h2 class="hero-again">Look up a course</h2>` : html`<h1>Find out if a course is <em class="hl">kwaai</em> before you register.</h1>
+      <p class="lede">Ratings, workload scores and one-line tips from students who already took it, plus a planner that checks your semester against the handbook.</p>`}
       <form class="search" action="/courses" role="search">
         <input type="search" name="q" placeholder="Code or name, e.g. CSC1015F" aria-label="Search courses" autocomplete="off" data-suggest="go">
         <button class="btn btn-ink">Search</button>
