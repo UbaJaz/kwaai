@@ -1233,8 +1233,12 @@ test('marks and DP: handbook weights, what you need in the exam, subminimum, not
   assert.match(today, /data-dp-alerts data-courses="\[/);
   assert.match(today, /Next two weeks/);
   await b.get('/plan?c=MAM1031F&add=CSC1016S');
-  assert.match(await b.text('/'), /class="card today-strip" href="\/today"/);
-  assert.doesNotMatch(await browser().text('/'), /today-strip/, 'no plan, no shortcut');
+  const home = await b.text('/');
+  assert.match(home, /<section class="card your-day" aria-labelledby="your-day">[\s\S]*?href="\/today">Your day, deadlines and DP/, 'a plan on this device opens home on your day');
+  assert.match(home, /<h2 class="hero-again">Look up a course<\/h2>/);
+  const fresh = await browser().text('/');
+  assert.doesNotMatch(fresh, /your-day/, 'no plan, no day card');
+  assert.match(fresh, /<h1>Find out if a course is <em class="hl">kwaai<\/em> before you register\.<\/h1>/, 'new visitors get the pitch');
 });
 
 test('the year: revision plan from exam dates, month by month, in the calendar, and an installable app', async () => {
