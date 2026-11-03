@@ -351,7 +351,7 @@ function yourDay(t, streak) {
       </div>
     </div>
     ${t ? html`<ul class="plain day-list">
-      <li>${next ? html`<strong>Next class:</strong> ${next.code || next.label} at ${next.start}` : t.weekend ? `It's the weekend: ${t.classes ? `${plural(t.classes, 'class')} on Monday` : 'no classes on Monday'}.` : t.classes ? `${plural(t.classes, 'class')} on your timetable today, all done.` : 'No classes today.'}</li>
+      <li>${next ? html`<strong>Next class:</strong> ${next.code || next.label} at ${next.start}` : t.weekend ? `It's the weekend: ${t.classes ? `${`${t.classes} ${t.classes === 1 ? 'class' : 'classes'}`} on Monday` : 'no classes on Monday'}.` : t.classes ? `${`${t.classes} ${t.classes === 1 ? 'class' : 'classes'}`} on your timetable today, all done.` : 'No classes today.'}</li>
       ${t.soon ? html`<li><strong>Coming up:</strong> ${t.soon.code} ${t.soon.title}, ${fmtDate(t.soon.date)}</li>` : ''}
     </ul>` : ''}
     <p class="meta"><a href="/today">Your day, deadlines and DP →</a></p>
