@@ -638,6 +638,14 @@ main > .today-strip:first-of-type { margin-top: 20px; }
   .verdict-head h2 { font-size: 1.25rem; }
   .verdict-buttons .btn { flex: 1 1 0; min-height: 52px; }
 }
+/* "Add Kwaai to your home screen": a card in the bottom corner, above the tab bar on phones (public/app.js shows it) */
+.install-banner { position: fixed; right: 16px; bottom: 16px; z-index: 45; width: min(380px, calc(100% - 32px)); display: grid; grid-template-columns: auto 1fr; gap: 10px 12px; align-items: center; padding: 14px 16px; border-color: var(--ink); box-shadow: 0 12px 40px rgb(21 29 43 / 20%); animation: sheet-up .25s ease-out; }
+.install-banner[hidden] { display: none; }
+.install-banner img { border-radius: 10px; }
+.install-banner p { margin: 2px 0 0; }
+.install-actions { grid-column: 1 / -1; display: flex; gap: 8px; justify-content: flex-end; }
+@media (max-width: 680px) { .install-banner { left: 10px; right: 10px; width: auto; bottom: calc(76px + env(safe-area-inset-bottom)); } }
+@media (prefers-reduced-motion: reduce) { .install-banner { animation: none; } }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
