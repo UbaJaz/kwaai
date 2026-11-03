@@ -220,6 +220,35 @@ document.querySelectorAll('[data-tab-more]').forEach((more) => {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { /* the site works without it */ }));
 }
+// "Add Kwaai to your home screen": shown from a student's second day of using Kwaai, never inside the installed app,
+// and "Not now" hides it for 30 days. Android browsers give us an install prompt; on iPhones it says how instead.
+(() => {
+  const box = document.querySelector('[data-install]');
+  if (!box || window.matchMedia('(display-mode: standalone)').matches || navigator.standalone) return;
+  const KEY = 'kwaai.install';
+  let s = {};
+  try { s = JSON.parse(localStorage.getItem(KEY)) || {}; } catch { /* private mode */ }
+  const today = new Date().toISOString().slice(0, 10);
+  if (s.lastDay !== today) s = { ...s, days: (s.days || 0) + 1, lastDay: today };
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch { /* private mode */ } };
+  save();
+  if (s.days < 2 || (s.dismissed && Date.now() - s.dismissed < 30 * 86_400_000)) return;
+  const add = box.querySelector('[data-install-add]');
+  const close = () => { s.dismissed = Date.now(); save(); box.hidden = true; };
+  box.querySelector('[data-install-later]').addEventListener('click', close);
+  if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+    box.querySelector('[data-install-text]').textContent = 'On iPhone: tap the Share button at the bottom of Safari, then "Add to Home Screen".';
+    add.hidden = true;
+    box.hidden = false;
+    return;
+  }
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    box.hidden = false;
+    add.onclick = () => { e.prompt(); e.userChoice.finally(close); };
+  });
+})();
+
 // signing out clears the pages saved for offline, so the next person on a shared phone doesn't see them
 document.querySelectorAll('form[action="/logout"]').forEach((form) => form.addEventListener('submit', () => {
   if (window.caches) caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
@@ -502,11 +531,15 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
     });
   }
 
-  // Signed out: the same timer and rounds, on this device only.
-  const local = document.querySelector('form[data-study-local]');
+  // Signed out, or offline: the same timer and rounds, on this device only. Signed in but offline, the start can't
+  // reach Kwaai, so the round runs here and isn't logged (the page says so).
+  const local = form;
   if (local) {
     local.addEventListener('submit', (e) => {
+      const offline = !local.hasAttribute('data-study-local');
+      if (offline && navigator.onLine !== false) return; // online and signed in: the server times it
       e.preventDefault();
+      if (offline) store.drop(CYCLE_KEY);
       const plan = planFrom(local);
       const name = plan.course || 'General study';
       const panel = local.closest('section');
@@ -521,7 +554,7 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
       ring.append(clock);
       const note = document.createElement('p');
       note.className = 'meta';
-      note.textContent = 'On this device only. Sign in to keep your hours.';
+      note.textContent = offline ? "You're offline, so this runs on this device only and won't be logged." : 'On this device only. Sign in to keep your hours.';
       const stop = document.createElement('button');
       stop.type = 'button';
       stop.className = 'btn btn-big btn-ink';

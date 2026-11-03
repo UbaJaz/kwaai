@@ -1,11 +1,12 @@
-// Kwaai's service worker: lets the installed app open Today, the week, the year and Marks without a connection.
+// Kwaai's service worker: lets the installed app open Today, the week, the year, Marks and the study timer without a
+// connection.
 // Pages are fetched fresh when online and the last copy is kept for offline. Styles and scripts come from the cache
 // straight away while a fresh copy is fetched behind them for next time, so a new deploy reaches installed apps.
 // Sign-in, account, moderation, API and calendar requests always go to the network and are never cached.
 // Change VERSION when a deploy must replace every saved file at once (v1 kept styles forever).
 const VERSION = 'kwaai-v2';
 const STATIC = ['/style.css', '/app.js', '/marks-math.js', '/sounds.js', '/kwaai-icon.svg', '/manifest.webmanifest'];
-const OFFLINE_PAGES = ['/today', '/week', '/year', '/marks', '/plan'];
+const OFFLINE_PAGES = ['/today', '/week', '/year', '/marks', '/plan', '/study'];
 const NEVER = /^\/(login|auth|logout|account|mod|api|cal|week\.ics|takedown)\b/;
 
 self.addEventListener('install', (event) => {

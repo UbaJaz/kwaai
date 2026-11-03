@@ -1945,3 +1945,16 @@ test('the vote box folds the optional tip away, and opens it once you have one',
   assert.match(page, /<details class="verdict-extra" open>/);
   assert.match(page, /value="Do every past paper"/);
 }));
+
+test('getting onto home screens: shortcuts, the install banner, and the study timer offline', async () => {
+  const manifest = await (await fetch(`${base}/manifest.webmanifest`)).json();
+  assert.equal(manifest.shortcuts[0].url, '/study', 'Start studying is the first shortcut');
+  assert.equal(manifest.display, 'standalone');
+  const page = await (await fetch(`${base}/today`)).text();
+  assert.match(page, /<aside class="install-banner card" data-install hidden aria-label="Add Kwaai to your home screen">/, 'hidden until the script decides');
+  const sw = await (await fetch(`${base}/sw.js`)).text();
+  assert.match(sw, /const OFFLINE_PAGES = \[[^\]]*'\/study'/, 'the study page is saved for offline');
+  const js = await (await fetch(`${base}/app.js`)).text();
+  assert.match(js, /if \(offline && navigator\.onLine !== false\) return;/, 'online and signed in, the server times it');
+  assert.match(js, /if \(s\.days < 2 \|\|/, 'the banner waits for a second day');
+});

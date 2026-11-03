@@ -114,6 +114,11 @@ ${body}
     <p><a href="/about">About us</a> · <a href="/universities">Universities</a> · <a href="/rules">House rules</a> · <a href="/takedown">Report or request removal</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
   </div>
 </footer>
+<aside class="install-banner card" data-install hidden aria-label="Add Kwaai to your home screen">
+  <img src="/kwaai-icon-192.png" alt="" width="44" height="44">
+  <div><strong>Add Kwaai to your home screen</strong><p class="meta" data-install-text>It opens like an app, and Today and your week work without a connection.</p></div>
+  <div class="install-actions"><button type="button" class="btn btn-small" data-install-add>Add</button><button type="button" class="btn btn-small btn-quiet" data-install-later>Not now</button></div>
+</aside>
 ${tabBar({ user, isMod, isAdmin, testTools, here })}
 </body>
 </html>`;
@@ -1351,7 +1356,7 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
   <section class="card panel study-timer" aria-labelledby="study-start">
     <h2 id="study-start">Start a session</h2>
     <p class="study-break" data-break hidden></p>
-    ${signedIn ? '' : html`<template data-ring-svg>${TIMER_RING}</template>`}
+    <template data-ring-svg>${TIMER_RING}</template>
     <form method="post" action="/study/start" class="study-form" ${signedIn ? '' : html`data-study-local`}>
       <fieldset class="pick-group">
         <legend>What are you studying?</legend>
