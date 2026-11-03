@@ -260,6 +260,9 @@ test('study timer: heartbeats credit time, gaps and caps stop padding', () => {
   assert.ok(Study.parseStart({ minutes: '121' }, known).error);
   assert.ok(Study.parseStart({ minutes: '2' }, known).error);
   assert.ok(Study.parseStart({ minutes: '25.5' }, known).error);
+  assert.deepEqual(Study.parseStart({ minutes: 'custom', focus: '40' }, known), { course: '', minutes: 40 }, 'custom length from the focus field');
+  assert.ok(Study.parseStart({ minutes: 'custom', focus: '200' }, known).error, 'custom still has the same limits');
+  assert.ok(Study.parseStart({ minutes: 'custom' }, known).error);
 
   const t0 = Date.parse('2027-03-01T08:00:00Z');
   let s = { started_at: t0, last_beat: t0, planned_min: 25, credited_sec: 0 };

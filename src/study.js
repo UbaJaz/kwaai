@@ -13,9 +13,10 @@ const SA_OFFSET = 2 * 60 * 60 * 1000; // South Africa is UTC+2 all year
 const saDay = (ms) => new Date(ms + SA_OFFSET).toISOString().slice(0, 10);
 
 // the start form: a course code from the plan (or '' for general study) and a length in minutes
+// minutes is a preset (25, 50, 90) or "custom", in which case the focus field holds the length
 function parseStart(body, knownCourse) {
   const course = String(body.course || '').trim().toUpperCase();
-  const minutes = Number(body.minutes);
+  const minutes = Number(body.minutes === 'custom' ? body.focus : body.minutes);
   if (course && !knownCourse(course)) return { error: "That course isn't in Kwaai. Pick one from the list." };
   if (!Number.isInteger(minutes) || minutes < MIN_SESSION_MIN || minutes > MAX_SESSION_MIN) return { error: `Pick a length between ${MIN_SESSION_MIN} and ${MAX_SESSION_MIN} minutes.` };
   return { course, minutes };
