@@ -1566,6 +1566,7 @@ test('studying now: course pages from 3 students, the university count, and grou
   run.run(users[2].id, 'STA1000F', Study.saDay(now), now - 60_000, now - 5_000);
   assert.match(await anon.text('/courses/STA1000F'), /3 students are studying STA1000F on Kwaai right now/, 'the stale one is not counted');
   assert.match(await anon.text('/study'), /\d+ UCT students? (is|are) studying on Kwaai right now/);
+  assert.match(await anon.text('/'), /\d+ UCT students are studying on Kwaai right now\. <a href="\/study">Join them/, 'the home page shows the live count too');
   assert.match(await anon.text('/courses/STA1000F'), /href="\/study\?course=STA1000F">Study this course/);
 
   // a group sees which members are studying, what, and for how long

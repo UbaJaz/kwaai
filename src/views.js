@@ -292,7 +292,7 @@ function streakNote(s) {
   return `Study ${s.needed} more minutes today to ${s.current ? 'keep it going' : 'start one'}.`;
 }
 
-function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null }) {
+function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null, studyingNow = 0 }) {
   const { uni } = ctx;
   const n = (v) => v.toLocaleString('en-ZA');
   return layout({ ...ctx, path: '/' }, html`
@@ -315,6 +315,7 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
         <input type="search" name="q" placeholder="Code or name, e.g. CSC1015F" aria-label="Search courses" autocomplete="off" data-suggest="go">
         <button class="btn btn-ink">Search</button>
       </form>
+      ${studyingNow ? html`<p class="live-note"><i class="live-dot" aria-hidden="true"></i>${studyingNow} ${uni.short} students are studying on Kwaai right now. <a href="/study">Join them →</a></p>` : ''}
     </div>
     <aside class="pulse" aria-labelledby="pulse-title">
       <h2 class="label" id="pulse-title">So far at ${uni.short}</h2>

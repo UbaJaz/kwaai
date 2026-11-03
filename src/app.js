@@ -163,6 +163,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const counts = q(`SELECT (SELECT COUNT(*) FROM courses) AS courses, (SELECT COUNT(*) FROM reviews WHERE status = 'published') AS reviews,
       (SELECT COUNT(*) FROM verdicts WHERE status = 'published') AS votes, (SELECT COUNT(*) FROM verdicts WHERE status = 'published' AND tip != '') AS tips`).get();
     const byKey = (key) => RANKINGS.find((r) => r.key === key);
+    const studying = liveStudents(req.user, `uni = ?`, req.user?.uni ?? CURRENT.slug);
     res.page((views.home(req.ctx, {
       counts,
       topCourses: ranking('course', byKey('best'), null, 5),
@@ -177,6 +178,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
         return { classes: t.classes.length, next: t.classes.find((e) => e.start >= new Date(Date.now() + 2 * 3_600_000).toISOString().slice(11, 16)), soon: t.upcoming[0], weekend: t.weekend };
       })(),
       streak: req.user ? streakFor(req.user.id) : null,
+      studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0,
     })));
   });
 
