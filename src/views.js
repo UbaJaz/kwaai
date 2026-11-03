@@ -558,7 +558,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
       </details>` : ''}
     </div>
     <div class="hero-actions">
-      <a class="btn btn-quiet" href="/plan?add=${c.code}">Add to my semester plan</a>
+      <a class="btn btn-quiet" href="/plan?add=${c.code}">Add to my plan</a>
       <a class="btn btn-quiet" href="/study?course=${c.code}">Study this course</a>
       <a class="btn btn-quiet" href="${whatsappLink(c, votes, ctx.site.origin)}" target="_blank" rel="noopener">Share on WhatsApp</a>
       <a class="btn btn-quiet" href="/courses/${c.code}/review">Write a full review</a>
