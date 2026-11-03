@@ -471,7 +471,7 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .group-forms h2 { font-size: 1.15rem; margin: 0; }
 .group-invite { max-width: 720px; margin: 18px 0; }
 /* "studying now": a small green dot that pulses unless the student prefers less motion */
-.live-note { display: flex; align-items: center; gap: 8px; font-size: .9rem; font-weight: 500; color: var(--good); margin: 6px 0 0; }
+.live-note { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: .9rem; font-weight: 500; color: var(--good); margin: 6px 0 0; }
 .live-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #2f9a55; box-shadow: 0 0 0 0 rgba(47, 154, 85, .5); animation: live 2s infinite; margin-right: 6px; vertical-align: middle; }
 @keyframes live { 70% { box-shadow: 0 0 0 7px rgba(47, 154, 85, 0); } 100% { box-shadow: 0 0 0 0 rgba(47, 154, 85, 0); } }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
@@ -560,6 +560,7 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 @keyframes sheet-up { from { opacity: 0; transform: translateY(12px); } }
 @media (prefers-reduced-motion: reduce) { .more-sheet { animation: none; } .tab-icon { transition: none; } }
 /* ---------- home: your day (for students who are back) ---------- */
+.live-note a { white-space: nowrap; }
 .your-day { margin: 22px 0 8px; padding: 22px 24px; border-color: var(--ink); }
 .your-day h1 { font-size: clamp(1.8rem, 6vw, 2.4rem); margin: 0 0 16px; }
 .your-day .eyebrow { margin: 0 0 6px; }
