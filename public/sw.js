@@ -5,7 +5,7 @@
 // Sign-in, account, moderation, API and calendar requests always go to the network and are never cached.
 // Change VERSION when a deploy must replace every saved file at once (v1 kept styles forever).
 const VERSION = 'kwaai-v2';
-const STATIC = ['/style.css', '/app.js', '/marks-math.js', '/sounds.js', '/kwaai-icon.svg', '/manifest.webmanifest'];
+const STATIC = ['/style.css', '/app.js', '/marks-math.js', '/sounds.js', '/fonts/inter-latin.woff2', '/fonts/bricolage-grotesque-latin.woff2', '/kwaai-icon.svg', '/manifest.webmanifest'];
 const OFFLINE_PAGES = ['/today', '/week', '/year', '/marks', '/plan', '/study'];
 const NEVER = /^\/(login|auth|logout|account|mod|api|cal|week\.ics|takedown)\b/;
 
