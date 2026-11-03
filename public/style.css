@@ -559,6 +559,22 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .more-sheet a:hover, .more-sheet a[aria-current="page"] { background: var(--lime-soft); }
 @keyframes sheet-up { from { opacity: 0; transform: translateY(12px); } }
 @media (prefers-reduced-motion: reduce) { .more-sheet { animation: none; } .tab-icon { transition: none; } }
+/* ---------- home: your day (for students who are back) ---------- */
+.your-day { margin: 22px 0 8px; padding: 22px 24px; border-color: var(--ink); }
+.your-day h1 { font-size: clamp(1.8rem, 6vw, 2.4rem); margin: 0 0 16px; }
+.your-day .eyebrow { margin: 0 0 6px; }
+.day-row { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
+.day-goal { --p: 0; flex: none; width: 104px; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--good) calc(var(--p) * 1turn), var(--line) 0); position: relative; }
+.day-goal::before { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: var(--surface); }
+.day-goal span { position: relative; font: 800 1.6rem/1 var(--display); text-align: center; }
+.day-goal small { display: block; font: 500 .72rem var(--body); color: var(--muted); margin-top: 3px; }
+.day-text { display: grid; gap: 6px; justify-items: start; flex: 1 1 200px; }
+.day-text p { margin: 0; }
+.day-streak { font-weight: 600; }
+.day-text .btn { margin-top: 6px; }
+.day-list { margin: 18px 0 10px; padding-top: 14px; border-top: 1px solid var(--line); font-size: .95rem; }
+.hero-again { font-size: 1.35rem; margin: 0 0 12px; }
+.hero-back { padding-top: 28px; }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
