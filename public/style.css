@@ -426,7 +426,7 @@ main#main { animation: page-in .3s ease-out; }
 .marks-table td { padding: 3px 4px; }
 .marks-table input[type=text] { width: 100%; padding: 6px 8px; font-size: .86rem; }
 .marks-table input[type=number] { width: 5.5em; padding: 6px 8px; font-size: .86rem; }
-.marks-rules { display: flex; flex-wrap: wrap; gap: 12px; margin: 6px 0 10px; }
+.marks-rules { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin: 6px 0 10px; }
 .marks-rules label { font-size: .8rem; }
 .marks-rules input { width: 5.5em; padding: 6px 8px; }
 .marks-result { margin: 12px 0 4px; gap: 6px; font-size: .92rem; }
