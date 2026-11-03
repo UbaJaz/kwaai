@@ -294,7 +294,7 @@ function streakNote(s) {
   return `Study ${s.needed} more minutes today to ${s.current ? 'keep it going' : 'start one'}.`;
 }
 
-function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null, studyingNow = 0 }) {
+function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null, studyingNow = 0, recentTips = [] }) {
   const { uni } = ctx;
   const n = (v) => v.toLocaleString('en-ZA');
   return layout({ ...ctx, path: '/' }, html`
@@ -351,6 +351,14 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
       <a class="more" href="/rankings?cat=workload&kind=course">All rankings →</a>
     </div>
   </section>
+
+  ${recentTips.length ? html`<section class="recent-tips">
+    <h2 class="label">Fresh tips from students</h2>
+    <ul class="tips">${recentTips.map((t) => html`<li class="card tip">
+      <span class="tip-verdict ${t.lekker ? 'yes' : 'no'}">${t.lekker ? 'Kwaai' : 'Nah'}</span>
+      <div><p class="tip-text">${t.tip}</p><a class="meta" href="/courses/${t.course}#tip-${t.id}">${t.course} ${t.title} →</a></div>
+    </li>`)}</ul>
+  </section>` : ''}
 
   <p class="browse-all"><a class="btn btn-quiet" href="/courses">Browse all ${n(counts.courses)} courses by department</a></p>
 

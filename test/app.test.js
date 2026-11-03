@@ -835,6 +835,15 @@ test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can b
   assert.match(await mod.text('/mod'), /Tutorials are where it clicks/);
   assert.equal((await mod.post(`/mod/verdicts/${id}/approve`, {})).status, 303);
   assert.match(await anon.text('/courses/CSC2001F'), /Tutorials are where it clicks/);
+
+  // home shows each course's newest tip only, which the course page never locks
+  await voters[1].post('/courses/CSC2001F/verdict', { lekker: '1', year, tip: 'Second tip here' });
+  await voters[2].post('/courses/CSC2001F/verdict', { lekker: '1', year, tip: 'Newest tip here' });
+  const home = await anon.text('/');
+  assert.match(home, /Newest tip here/);
+  assert.doesNotMatch(home, /Second tip here|Tutorials are where it clicks/, 'one tip per course on home');
+  page = await anon.text('/courses/CSC2001F');
+  assert.match(page, new RegExp(`id="${/#(tip-\d+)/.exec(home)[1]}"`), 'the home link lands on a readable tip');
 });
 
 test('rule-breaking tips are held, contact details rejected, votes deleted with the account', async () => {

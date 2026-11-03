@@ -191,6 +191,8 @@ legend { font: 600 1.05rem var(--display); padding: 0 8px 0 0; }
 .path-go { margin-top: auto; align-self: flex-start; font-weight: 600; font-size: .92rem; padding: 8px 14px; border-radius: 8px; background: var(--paper); }
 .browse-all { margin: 0; }
 .lists { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; padding: 8px 0 32px; }
+.recent-tips { padding: 0 0 32px; }
+.recent-tips .tip a { display: inline-block; margin-top: 4px; }
 .dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); border-top: 1px solid var(--line); }
 .dept { display: grid; grid-template-columns: 52px 1fr; column-gap: 10px; padding: 12px 8px 12px 0; text-decoration: none; border-bottom: 1px solid var(--line); }
 .dept:hover .dept-name { text-decoration: underline; }
