@@ -531,11 +531,15 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
     });
   }
 
-  // Signed out: the same timer and rounds, on this device only.
-  const local = document.querySelector('form[data-study-local]');
+  // Signed out, or offline: the same timer and rounds, on this device only. Signed in but offline, the start can't
+  // reach Kwaai, so the round runs here and isn't logged (the page says so).
+  const local = form;
   if (local) {
     local.addEventListener('submit', (e) => {
+      const offline = !local.hasAttribute('data-study-local');
+      if (offline && navigator.onLine !== false) return; // online and signed in: the server times it
       e.preventDefault();
+      if (offline) store.drop(CYCLE_KEY);
       const plan = planFrom(local);
       const name = plan.course || 'General study';
       const panel = local.closest('section');
@@ -550,7 +554,7 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
       ring.append(clock);
       const note = document.createElement('p');
       note.className = 'meta';
-      note.textContent = 'On this device only. Sign in to keep your hours.';
+      note.textContent = offline ? "You're offline, so this runs on this device only and won't be logged." : 'On this device only. Sign in to keep your hours.';
       const stop = document.createElement('button');
       stop.type = 'button';
       stop.className = 'btn btn-big btn-ink';

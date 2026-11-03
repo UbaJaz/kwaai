@@ -1356,7 +1356,7 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
   <section class="card panel study-timer" aria-labelledby="study-start">
     <h2 id="study-start">Start a session</h2>
     <p class="study-break" data-break hidden></p>
-    ${signedIn ? '' : html`<template data-ring-svg>${TIMER_RING}</template>`}
+    <template data-ring-svg>${TIMER_RING}</template>
     <form method="post" action="/study/start" class="study-form" ${signedIn ? '' : html`data-study-local`}>
       <fieldset class="pick-group">
         <legend>What are you studying?</legend>
