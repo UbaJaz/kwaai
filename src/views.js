@@ -224,14 +224,17 @@ function verdictBox(ctx, { c, votes, myVerdict, years }) {
     ${ctx.user
       ? html`${mine ? html`<p class="meta">You voted <strong>${mine.lekker ? 'kwaai' : 'nah'}</strong> (${mine.year}).${mine.status === 'held' ? ' It counts once a moderator has checked your tip.' : ''} Vote again to change it.</p>` : ''}
         <form method="post" action="/courses/${c.code}/verdict" class="verdict-form">
-          <div class="form-row two">
-            <label>Tip for next year's class <span class="hint">Optional, max ${MAX_TIP} characters</span>
-              <input name="tip" maxlength="${MAX_TIP}" value="${mine?.tip ?? ''}" placeholder="e.g. Start the assignments the day they come out">
-            </label>
-            <label>Year you took it
-              <select name="year">${years.map((y) => html`<option ${String(mine?.year ?? years[0]) === String(y) ? 'selected' : ''}>${y}</option>`)}</select>
-            </label>
-          </div>
+          <details class="verdict-extra" ${mine?.tip ? 'open' : ''}>
+            <summary>Add a tip for next year <span class="hint">optional</span></summary>
+            <div class="form-row two">
+              <label>Tip for next year's class <span class="hint">Max ${MAX_TIP} characters</span>
+                <input name="tip" maxlength="${MAX_TIP}" value="${mine?.tip ?? ''}" placeholder="e.g. Start the assignments the day they come out">
+              </label>
+              <label>Year you took it
+                <select name="year">${years.map((y) => html`<option ${String(mine?.year ?? years[0]) === String(y) ? 'selected' : ''}>${y}</option>`)}</select>
+              </label>
+            </div>
+          </details>
           <div class="verdict-buttons">
             <button class="btn btn-big btn-kwaai" name="lekker" value="1">Kwaai</button>
             <button class="btn btn-big btn-nah" name="lekker" value="0">Nah</button>
@@ -555,7 +558,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
       </details>` : ''}
     </div>
     <div class="hero-actions">
-      <a class="btn btn-quiet" href="/plan?add=${c.code}">Add to my semester plan</a>
+      <a class="btn btn-quiet" href="/plan?add=${c.code}">Add to my plan</a>
       <a class="btn btn-quiet" href="/study?course=${c.code}">Study this course</a>
       <a class="btn btn-quiet" href="${whatsappLink(c, votes, ctx.site.origin)}" target="_blank" rel="noopener">Share on WhatsApp</a>
       <a class="btn btn-quiet" href="/courses/${c.code}/review">Write a full review</a>

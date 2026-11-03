@@ -627,6 +627,17 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 @media (max-width: 680px) {
   input, select, textarea, .marks-table input[type=text], .marks-table input[type=number], .marks-rules input, .sound-row select, .place-form select, .place-form input[type=text], .mod-actions input { font-size: 16px; }
 }
+/* the vote box: the optional tip and year fold away; on phones Kwaai and Nah sit side by side */
+.verdict-extra summary { cursor: pointer; font-weight: 600; font-size: .95rem; }
+.verdict-extra summary .hint { display: inline; margin-left: 6px; }
+.verdict-extra[open] summary { margin-bottom: 12px; }
+@media (max-width: 680px) {
+  .hero-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .hero-actions .btn { width: 100%; padding: 11px 10px; }
+  .verdict-box { padding: 18px; }
+  .verdict-head h2 { font-size: 1.25rem; }
+  .verdict-buttons .btn { flex: 1 1 0; min-height: 52px; }
+}
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
