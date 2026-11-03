@@ -1958,3 +1958,17 @@ test('getting onto home screens: shortcuts, the install banner, and the study ti
   assert.match(js, /if \(offline && navigator\.onLine !== false\) return;/, 'online and signed in, the server times it');
   assert.match(js, /if \(s\.days < 2 \|\|/, 'the banner waits for a second day');
 });
+
+test('fonts come from Kwaai itself: no other site, preloaded, allowed by the CSP and saved for offline', async () => {
+  const res = await fetch(`${base}/`);
+  const page = await res.text();
+  assert.doesNotMatch(page, /fonts\.googleapis|fonts\.gstatic/);
+  assert.match(page, /<link rel="preload" href="\/fonts\/inter-latin\.woff2" as="font" type="font\/woff2" crossorigin>/);
+  assert.match(res.headers.get('content-security-policy'), /font-src 'self';/);
+  for (const file of ['inter-latin.woff2', 'bricolage-grotesque-latin.woff2']) {
+    const font = await fetch(`${base}/fonts/${file}`);
+    assert.equal(font.status, 200, file);
+    assert.equal(Buffer.from(await font.arrayBuffer()).subarray(0, 4).toString(), 'wOF2', `${file} is a WOFF2 font`);
+  }
+  assert.match(await (await fetch(`${base}/sw.js`)).text(), /'\/fonts\/inter-latin\.woff2'/);
+});
