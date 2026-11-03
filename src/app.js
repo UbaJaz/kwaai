@@ -1352,7 +1352,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`INSERT OR REPLACE INTO profiles (user_id, uni, display_name, show_name, faculty, major, year) VALUES (?, ?, ?, ?, ?, ?, ?)`)
         .run(id, req.user.uni, s.name, s.name ? 1 : 0, s.faculty, s.major, s.year);
       q(`DELETE FROM study_sessions WHERE user_id = ?`).run(id);
-      addSessions(id, req.user.uni, TestData.historyDays(today, 28), pickCourse);
+      // four weeks of history, plus some study today so every board (today, this week, this month) has them
+      addSessions(id, req.user.uni, [...TestData.historyDays(today, 28).filter((d) => d.day !== today), { day: today, minutes: 20 + ((i * 37) % 130) }], pickCourse);
       if (i < 4) {
         q(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, status) VALUES (?, ?, ?, ?, ?, ?, 120, 'running')`)
           .run(id, req.user.uni, TOOL_COURSES[i % TOOL_COURSES.length], today, now - (i + 1) * 9 * 60_000, now + 2 * 60 * 60_000); // keeps beating for two hours
