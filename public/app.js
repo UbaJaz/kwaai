@@ -411,8 +411,7 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
     local.addEventListener('submit', (e) => {
       e.preventDefault();
       const minutes = Number(new FormData(local).get('minutes')) || 25;
-      const course = local.elements.namedItem('course');
-      const name = course.options[course.selectedIndex].text;
+      const name = local.querySelector('input[name=course]:checked')?.value || 'General study';
       const panel = local.closest('section');
       const heading = panel.querySelector('h2');
       heading.textContent = `Studying ${name}`;
