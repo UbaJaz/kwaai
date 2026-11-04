@@ -663,6 +663,12 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .class-consent h2 { font-size: 1.05rem; margin: 6px 0 0; }
 .consent-list li { color: var(--good); }
 .consent-list.no li { color: var(--muted); }
+.class-goal { margin: 0 0 22px; }
+.class-goal h2 { font-size: 1.2rem; margin: 0 0 12px; }
+.class-today { margin: 0 0 18px; }
+.class-today h2 { font-size: 1.05rem; }
+.class-today li { display: grid; grid-template-columns: minmax(0, 1fr) 110px auto; gap: 6px 12px; align-items: center; }
+.badge-rep { background: var(--uni-soft); color: var(--uni); }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }

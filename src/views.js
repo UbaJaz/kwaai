@@ -1267,11 +1267,17 @@ function marks(ctx, { courses, planLink, hasPlan }) {
 }
 
 // ---------- today ----------
-function today(ctx, { today: t, weekLink, streak = null }) {
+function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = [] }) {
   const dayDate = t ? new Date(`${t.date}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
   return layout({ ...ctx, title: 'Today', here: '/today', path: '/today' }, html`
   <h1 class="page-title">Today</h1>
   ${streak ? html`<a class="card today-strip" href="/study"><strong>${streakBadge(streak)} study streak</strong><span>${streakNote(streak)}</span><span class="meta">Start studying →</span></a>` : ''}
+  ${myClasses.length ? html`<section class="card panel class-today" aria-labelledby="today-classes-goal">
+    <h2 id="today-classes-goal">Your classes this week</h2>
+    <ul class="plain">${myClasses.map((c) => html`<li><a href="/c/${c.code}"><strong>${c.name}</strong></a>
+      <span class="goal-track" aria-hidden="true"><i style="width:${Math.min(100, Math.round((c.weekMin / c.goal_week_min) * 100))}%"></i></span>
+      <span class="meta">${Study.hoursText(c.weekMin)} of ${Study.hoursText(c.goal_week_min)}</span></li>`)}</ul>
+  </section>` : ''}
   ${!t ? html`<div class="card panel"><p><strong>Nothing planned yet.</strong> Add your courses in the <a href="/plan">planner</a>, and this page shows your classes for the day, tests coming up and your DP status.</p></div>` : html`
   <p class="lede small">${dayDate}${t.note ? html` · ${t.note}` : ''}</p>
   <div class="today-grid">
@@ -1553,15 +1559,36 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
   </div>`);
 }
 
-// a class from a member's side (the ranking, goal and dates come with the next steps)
-function classPage(ctx, { cls, me, course, lecturer, canRun }) {
+// a class from a member's side: this week against the class goal, the class ranking, and how to start studying
+function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle }) {
+  const student = me.role === 'student' || me.role === 'rep';
+  const p = Math.min(1, weekMin / cls.goal_week_min);
+  const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
+    <span class="board-rank">${r.rank}</span>
+    <span class="board-name">${r.name}${r.you ? html` <span class="badge">You</span>` : ''}${r.role === 'rep' ? html` <span class="badge badge-rep">Class rep</span>` : ''}</span>
+    <span class="board-time" data-count="${r.minutes}">${Study.hoursText(r.minutes)}</span>
+  </li>`;
   return layout({ ...ctx, title: cls.name, here: '/classes' }, html`
   <p class="crumbs"><a href="/classes">Classes</a></p>
   <h1 class="page-title">${cls.name}</h1>
   <p class="lede small"><a class="code" href="/courses/${cls.course}">${cls.course}</a> ${course?.title ?? ''} · ${cls.year} · with ${lecturer}</p>
   ${canRun ? html`<p><a class="btn btn-small btn-quiet" href="/classes/${cls.id}">Lecturer view</a></p>` : ''}
-  <p class="meta">You're in this class as <strong>${me.anonymous ? 'Anonymous' : me.name}</strong>${me.role !== 'student' ? ` (${CLASS_ROLE[me.role].toLowerCase()})` : ''}.</p>
-  <p><a class="btn" href="/study?course=${cls.course}">Start studying ${cls.course}</a></p>
+  ${student ? html`<section class="card your-day class-goal" aria-labelledby="class-goal">
+    <h2 id="class-goal">This week</h2>
+    <div class="day-row">
+      <div class="day-goal" style="--p:${p.toFixed(3)}" role="img" aria-label="${weekMin} of ${cls.goal_week_min} minutes this week"><span>${Math.round(p * 100)}%<small>of the goal</small></span></div>
+      <div class="day-text">
+        <p><strong>${Study.hoursText(weekMin)}</strong> of ${cls.course} this week, of a ${Study.hoursText(cls.goal_week_min)} goal.</p>
+        <p class="meta">Only time on the study timer for ${cls.course} counts.</p>
+        <a class="btn btn-big" href="/study?course=${cls.course}">Start studying ${cls.course}</a>
+      </div>
+    </div>
+  </section>` : ''}
+  <h2 class="section-title">Class ranking</h2>
+  <div class="toggle" role="group" aria-label="Period">${Object.entries(Study.PERIODS).map(([k, label]) => html`<a href="/c/${cls.code}?period=${k}" class="${k === period ? 'on' : ''}" ${k === period ? html`aria-current="page"` : ''}>${label}</a>`)}</div>
+  ${ranking.length ? html`<ol class="board card">${ranking.map(row)}</ol>` : html`<p class="meta">Nobody has timed ${cls.course} ${period === 'day' ? 'today' : period === 'week' ? 'this week' : 'this month'} yet.</p>`}
+  ${idle ? html`<p class="meta">${idle === 1 ? '1 classmate hasn't' : `${idle} classmates haven't`} timed any ${cls.course} study ${period === 'day' ? 'today' : period === 'week' ? 'this week' : 'this month'}.</p>` : ''}
+  <p class="meta">You're in this class as <strong>${me.anonymous ? 'Anonymous' : me.name}</strong>${me.role !== 'student' ? ` (${CLASS_ROLE[me.role].toLowerCase()})` : ''}. Classmates never see your student number.</p>
   ${me.role === 'lecturer' ? '' : html`<form method="post" action="/c/${cls.code}/leave" class="inline" data-confirm="Leave ${cls.name}? Your lecturer will no longer see you in it."><button class="btn btn-small btn-quiet">Leave the class</button></form>`}`);
 }
 
