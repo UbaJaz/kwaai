@@ -1548,13 +1548,13 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
       <th scope="col">${sortLink('last', 'Last studied')}</th><th scope="col">Days (last 14)</th>${manage ? html`<th scope="col"><span class="sr-only">Actions</span></th>` : ''}
     </tr></thead>
     <tbody>${shown.map((r) => html`<tr class="${r.nudge ? 'dash-nudge' : ''}">
-      <td class="code">${r.number}</td>
-      <td>${r.name}${r.anonymous ? html` <span class="meta">(anonymous to classmates)</span>` : ''}${r.role === 'rep' ? html` <span class="badge badge-rep">Class rep</span>` : ''}</td>
-      <td>${Study.hoursText(r.week)}</td>
-      <td><span class="goal-track" aria-hidden="true"><i style="width:${Math.min(100, r.pct)}%"></i></span> ${r.pct}%</td>
-      <td>${Study.hoursText(r.month)}</td>
-      <td>${r.last ? fmtDate(r.last) : html`<span class="meta">Not yet</span>`}</td>
-      <td>${r.days14}</td>
+      <td class="code" data-label="Student number">${r.number}</td>
+      <td class="dash-name" data-label="Name">${r.name}${r.anonymous ? html` <span class="meta">(anonymous to classmates)</span>` : ''}${r.role === 'rep' ? html` <span class="badge badge-rep">Class rep</span>` : ''}</td>
+      <td data-label="This week">${Study.hoursText(r.week)}</td>
+      <td data-label="Goal"><span class="goal-track" aria-hidden="true"><i style="width:${Math.min(100, r.pct)}%"></i></span> ${r.pct}%</td>
+      <td data-label="This month">${Study.hoursText(r.month)}</td>
+      <td data-label="Last studied">${r.last ? fmtDate(r.last) : html`<span class="meta">Not yet</span>`}</td>
+      <td data-label="Days (last 14)">${r.days14}</td>
       ${manage ? html`<td><form method="post" action="/classes/${cls.id}/remove" class="inline" data-confirm="Remove ${r.name} (${r.number}) from the class?"><input type="hidden" name="user" value="${r.id}"><button class="link-btn meta">Remove</button></form></td>` : ''}
     </tr>`)}</tbody>
   </table></div>` : html`<p class="meta">${rows.length ? 'Nobody needs a nudge right now.' : 'No students yet. Share the link or QR code above.'}</p>`}
