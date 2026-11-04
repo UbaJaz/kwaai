@@ -723,6 +723,16 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .make-rep summary { cursor: pointer; display: inline; }
 .make-rep form { margin-top: 8px; min-width: 220px; white-space: normal; }
 .rep-note { background: var(--uni-soft); color: var(--uni); padding: 10px 14px; border-radius: var(--radius-sm); }
+.class-announce { margin: 0 0 18px; max-width: 720px; }
+.announce-list { display: grid; gap: 10px; }
+.announce { padding: 12px 16px; }
+.announce-body { white-space: pre-line; margin: 0 0 6px; overflow-wrap: anywhere; }
+.announce .meta { margin: 0; }
+.class-announce textarea { width: 100%; }
+.announce-today { margin: 0 0 18px; border-left: 4px solid var(--uni); }
+.announce-today h2 { font-size: 1.05rem; }
+.announce-today li + li { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 10px; }
+.announce-today .meta { margin: 0 0 6px; }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }

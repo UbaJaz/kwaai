@@ -1268,11 +1268,19 @@ function marks(ctx, { courses, planLink, hasPlan }) {
 }
 
 // ---------- today ----------
-function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = [] }) {
+function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = [], announcements = [] }) {
   const dayDate = t ? new Date(`${t.date}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
   return layout({ ...ctx, title: 'Today', here: '/today', path: '/today' }, html`
   <h1 class="page-title">Today</h1>
   ${streak ? html`<a class="card today-strip" href="/study"><strong>${streakBadge(streak)} study streak</strong><span>${streakNote(streak)}</span><span class="meta">Start studying →</span></a>` : ''}
+  ${announcements.length ? html`<section class="card panel announce-today" aria-labelledby="today-announce">
+    <h2 id="today-announce">From your classes</h2>
+    <ul class="plain">${announcements.map((a) => html`<li>
+      <p class="announce-body">${a.body}</p>
+      <p class="meta"><a href="/c/${a.code}#announcements">${a.class_name}</a> · ${a.poster_name} · ${CLASS_ROLE[a.poster_role]} · ${fmtDate(Study.saDay(a.created_at))}</p>
+      <form method="post" action="/announcements/${a.id}/read" class="inline"><button class="btn btn-small btn-quiet">Got it</button></form>
+    </li>`)}</ul>
+  </section>` : ''}
   ${myClasses.length ? html`<section class="card panel class-today" aria-labelledby="today-classes-goal">
     <h2 id="today-classes-goal">Your classes this week</h2>
     <ul class="plain">${myClasses.map((c) => html`<li><a href="/c/${c.code}"><strong>${c.name}</strong></a>
@@ -1632,7 +1640,7 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
 }
 
 // a class from a member's side: this week against the class goal, the class ranking, and how to start studying
-function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '', attendance = [] }) {
+function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '', attendance = [], announcements = [], canAnnounce = false }) {
   const student = me.role === 'student' || me.role === 'rep';
   const p = Math.min(1, weekMin / cls.goal_week_min);
   const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
@@ -1645,6 +1653,23 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
   <h1 class="page-title">${cls.name}</h1>
   <p class="lede small"><a class="code" href="/courses/${cls.course}">${cls.course}</a> ${course?.title ?? ''} · ${cls.year} · with ${lecturer}</p>
   ${canRun ? html`<p><a class="btn btn-small btn-quiet" href="/classes/${cls.id}">Lecturer view</a></p>` : ''}
+  ${announcements.length || canAnnounce ? html`<section aria-labelledby="announcements" class="class-announce">
+    <h2 class="section-title" id="announcements">Announcements</h2>
+    ${announcements.length ? html`<ul class="plain announce-list">${announcements.map((a) => html`<li class="card announce">
+      <p class="announce-body">${a.body}</p>
+      <p class="meta">${a.poster_name} · ${CLASS_ROLE[a.poster_role]} · ${fmtDate(Study.saDay(a.created_at))}
+        ${a.posted_by === ctx.user.id || canManage
+          ? html`<form method="post" action="/c/${cls.code}/announcements/${a.id}/delete" class="inline" data-confirm="Delete this announcement?"><button class="link-btn meta">Delete</button></form>`
+          : html`<form method="post" action="/announcements/${a.id}/report" class="inline" data-confirm="Report this announcement? It's hidden once two classmates report it, until a moderator checks it."><button class="link-btn meta">⚑ Report</button></form>`}</p>
+    </li>`)}</ul>` : html`<p class="meta">No announcements yet.</p>`}
+    ${canAnnounce ? html`<details class="fact-add" ${announcements.length ? '' : 'open'}><summary>Post an announcement</summary>
+      <form method="post" action="/c/${cls.code}/announcements" class="study-form">
+        <label>Announcement <textarea name="body" rows="3" maxlength="280" required placeholder="e.g. Prac 3 moved to Thursday"></textarea></label>
+        <p class="meta">Up to 280 characters. Members see it here and on their Today page for a week, with your name and role. No links, phone numbers or email addresses.</p>
+        <div class="form-actions"><button class="btn">Post it</button></div>
+      </form>
+    </details>` : ''}
+  </section>` : ''}
   ${student ? html`<section class="card your-day class-goal" aria-labelledby="class-goal">
     <h2 id="class-goal">This week</h2>
     <div class="day-row">
@@ -2254,7 +2279,7 @@ function suggestLecturer(ctx, { c, error, values = {} }) {
   </section>`);
 }
 
-function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [], heldNames = [] }) {
+function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [], heldNames = [], heldAnnouncements = [] }) {
   return layout({ ...ctx, title: 'Moderation' }, html`
   <h1 class="page-title">Moderation</h1>
   <p class="lede small">Hidden reviews wait here. <strong>Approve</strong> puts a review back up and clears its reports. <strong>Remove</strong> takes it down for good.</p>
@@ -2313,6 +2338,16 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
       <form method="post" action="/mod/verdicts/${v.id}/approve" class="inline"><button class="btn btn-small btn-ok">Approve</button></form>
       <form method="post" action="/mod/verdicts/${v.id}/remove" class="inline"><button class="btn btn-small btn-danger">Remove</button></form>
       <form method="post" action="/mod/verdicts/${v.id}/ban" class="inline" data-confirm="Remove this tip and ban its author?"><button class="btn btn-small btn-quiet">Remove + ban author</button></form>
+    </div>
+  </div>`) : html`<p class="empty">Nothing waiting. 🎉</p>`}
+
+  <h2 class="section-title">Hidden class announcements <span class="count">${heldAnnouncements.length}</span></h2>
+  ${heldAnnouncements.length ? heldAnnouncements.map((a) => html`<div class="card mod-item">
+    <div class="mod-meta">${a.class_name} (${a.code}) · ${a.poster_name}, ${CLASS_ROLE[a.poster_role]} · ${a.reports} reports · announcement #${a.id}</div>
+    <p class="review-body">“${a.body}”</p>
+    <div class="mod-actions">
+      <form method="post" action="/mod/announcements/${a.id}/allow" class="inline"><button class="btn btn-small btn-ok">Put it back</button></form>
+      <form method="post" action="/mod/announcements/${a.id}/remove" class="inline"><button class="btn btn-small btn-danger">Remove</button></form>
     </div>
   </div>`) : html`<p class="empty">Nothing waiting. 🎉</p>`}
 
