@@ -92,6 +92,23 @@ function parseAnnouncement(body, screen) {
   return { text };
 }
 
+// Pulse checks: a question of 5 to 120 characters with 2 to 4 different answers of up to 40 characters each, all
+// screened like comments. They close by themselves after PULSE_DAYS. PULSE_PRESET fills the form the first time.
+const PULSE_DAYS = 7;
+const PULSE_PRESET = { question: "How's the pace this week?", options: ['Too slow', 'About right', 'Too fast'] };
+function parsePulse(body, screen) {
+  const tidy = (s) => String(s || '').replace(/\s+/g, ' ').trim();
+  const question = tidy(body.question);
+  if (question.length < 5 || question.length > 120) return { error: 'Ask a question of 5 to 120 characters.' };
+  const options = [1, 2, 3, 4].map((n) => tidy(body[`option${n}`])).filter(Boolean);
+  if (options.length < 2) return { error: 'Give at least two answers to pick from.' };
+  if (options.some((o) => o.length > 40)) return { error: 'Keep each answer to 40 characters.' };
+  if (new Set(options.map((o) => o.toLowerCase())).size < options.length) return { error: 'Make each answer different.' };
+  const s = screen([question, ...options].join('\n'));
+  if (s.action !== 'publish') return { error: `Reword it and ask again: ${s.reasons.join(', ').toLowerCase()}.` };
+  return { question, options };
+}
+
 // Attendance QR codes. The code in the QR changes every SLOT_MS: it is an HMAC of the session and the time slot,
 // so a photo of it stops working within a minute. A scan is accepted for the current slot and the two before it
 // (up to about a minute), which covers a slow phone and the tap to confirm.
@@ -108,4 +125,4 @@ function keyIsCurrent(secret, sessionId, key, now) {
   return false;
 }
 
-module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
+module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };

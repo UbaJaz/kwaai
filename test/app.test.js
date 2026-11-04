@@ -347,6 +347,18 @@ test('announcements: up to 280 characters, tidied, and screened like comments', 
   assert.match(C.parseAnnouncement('This test was stupid', screenComment).error, /^Reword it/, 'what the screen would hold is refused, not held');
 });
 
+test('pulse checks: a question and 2 to 4 different answers, screened', () => {
+  const C = require('../src/classes');
+  assert.deepEqual(C.parsePulse({ question: "  How's the   pace? ", option1: 'Too slow', option2: '', option3: 'About right', option4: ' ' }, screenComment),
+    { question: "How's the pace?", options: ['Too slow', 'About right'] }, 'empty answers are skipped');
+  assert.match(C.parsePulse({ question: 'Pace?', option1: 'Fine' }, screenComment).error, /two answers/);
+  assert.match(C.parsePulse({ question: 'Hi', option1: 'a', option2: 'b' }, screenComment).error, /5 to 120/);
+  assert.match(C.parsePulse({ question: 'How was it?', option1: 'Fine', option2: 'fine' }, screenComment).error, /different/);
+  assert.match(C.parsePulse({ question: 'How was it?', option1: 'x'.repeat(41), option2: 'b' }, screenComment).error, /40 characters/);
+  assert.match(C.parsePulse({ question: 'Was the prac useless?', option1: 'Yes', option2: 'No' }, screenComment).error, /^Reword it/);
+  assert.ok(C.parsePulse({ question: C.PULSE_PRESET.question, option1: C.PULSE_PRESET.options[0], option2: C.PULSE_PRESET.options[1], option3: C.PULSE_PRESET.options[2] }, screenComment).options, 'the preset passes its own rules');
+});
+
 test('attendance keys: change every 20 seconds and are accepted for about a minute', () => {
   const C = require('../src/classes');
   const now = 1_800_000_000_000;
