@@ -664,7 +664,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
-    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [] }));
+    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [] }));
   });
 
   // ---- study timer ----
@@ -1030,6 +1030,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       tips_you_reported: q(`SELECT verdict_id FROM verdict_reports WHERE user_id = ?`).all(id),
       lecturer_suggestions: q(`SELECT name, course, status, created_at FROM lecturer_suggestions WHERE user_id = ? ORDER BY created_at`).all(id),
       classes: q(`SELECT c.course, c.year, c.name, m.role, m.name AS your_name_there, m.anonymous, m.consent_at, m.joined_at FROM class_members m JOIN classes c ON c.id = m.class_id WHERE m.user_id = ?`).all(id),
+      class_announcements_you_posted: q(`SELECT c.course, c.name AS class, a.body, a.poster_name, a.poster_role, a.created_at FROM class_announcements a JOIN classes c ON c.id = a.class_id WHERE a.posted_by = ? ORDER BY a.created_at`).all(id),
       study_groups: q(`SELECT g.name, m.name AS your_name_there, m.joined_at, g.owner_id = ? AS you_own_it FROM group_members m JOIN study_groups g ON g.id = m.group_id WHERE m.user_id = ?`).all(id, id),
       leaderboard_profile: q(`SELECT display_name, show_name, faculty, major, year, boards_agreed_at FROM profiles WHERE user_id = ?`).get(id) || null,
       study_sessions: q(`SELECT course, day, started_at, planned_min, credited_sec, status FROM study_sessions WHERE user_id = ? ORDER BY started_at`).all(id),
@@ -1052,6 +1053,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM name_reports WHERE user_id = ? OR target_id = ?`).run(id, id);
       q(`DELETE FROM profiles WHERE user_id = ?`).run(id);
       for (const g of q(`SELECT g.* FROM study_groups g JOIN group_members m ON m.group_id = g.id WHERE m.user_id = ?`).all(id)) leaveGroup(g, id);
+      q(`DELETE FROM class_announcements WHERE posted_by = ?`).run(id);
+      q(`DELETE FROM announcement_reads WHERE user_id = ?`).run(id);
+      q(`DELETE FROM announcement_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM classes WHERE owner_id = ?`).run(id); // a lecturer's own classes go with them (members cascade)
       q(`DELETE FROM class_members WHERE user_id = ?`).run(id);
       q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
@@ -1371,6 +1375,14 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       .map((c) => ({ ...c, weekMin: classMinutes(c, from, to).find((r) => r.user_id === user.id)?.minutes || 0 }));
   }
 
+  // Today's announcements: from your classes in the last ANNOUNCE_DAYS days, not yours, and not yet read
+  function announcementsFor(user) {
+    const since = Date.now() - Classes.ANNOUNCE_DAYS * 24 * 60 * MIN;
+    return q(`SELECT a.*, c.code, c.name AS class_name FROM class_announcements a JOIN class_members m ON m.class_id = a.class_id AND m.user_id = ?
+      JOIN classes c ON c.id = a.class_id WHERE a.hidden = 0 AND a.created_at > ? AND a.posted_by IS NOT ?
+      AND NOT EXISTS (SELECT 1 FROM announcement_reads r WHERE r.announcement_id = a.id AND r.user_id = ?) ORDER BY a.created_at DESC LIMIT 5`).all(user.id, since, user.id, user.id);
+  }
+
   app.get('/c/:code', requireUser, (req, res) => {
     const cls = classByCode(req.params.code);
     if (!cls) return res.status(404).page(notFound(req));
@@ -1381,11 +1393,14 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const shown = (r) => ({ id: r.user_id, rank: r.rank, minutes: r.minutes, you: r.user_id === req.user.id, role: r.role, name: r.anonymous && r.user_id !== req.user.id ? 'Anonymous' : r.name || 'Anonymous' });
     const rows = classMinutes(cls, from, to);
     const weekMin = classMinutes(cls, ...Study.periodRange('week', Study.saDay(Date.now()))).find((r) => r.user_id === req.user.id)?.minutes || 0;
+    const announcements = q(`SELECT * FROM class_announcements WHERE class_id = ? AND hidden = 0 ORDER BY created_at DESC LIMIT 20`).all(cls.id);
+    q(`INSERT OR IGNORE INTO announcement_reads (announcement_id, user_id) SELECT id, ? FROM class_announcements WHERE class_id = ? AND hidden = 0`).run(req.user.id, cls.id);
     res.set('Cache-Control', 'no-store').page(views.classPage(req.ctx, {
       cls, me, course: getCourse(cls.course), lecturer: classLecturer(cls), canRun: Classes.can(me, 'dashboard'), period, weekMin,
       ranking: Study.rankBoard(rows, req.user.id, 500).rows.map(shown), idle: rows.filter((r) => !r.minutes).length,
       dates: q(`SELECT d.*, m.name AS by_name FROM class_dates d LEFT JOIN class_members m ON m.class_id = d.class_id AND m.user_id = d.added_by WHERE d.class_id = ? AND d.date >= ? ORDER BY d.date, d.time`).all(cls.id, Study.saDay(Date.now())),
       canDates: Classes.can(me, 'dates'), canManage: Classes.can(me, 'manage'), today: Study.saDay(Date.now()),
+      announcements, canAnnounce: Classes.can(me, 'announce'),
       attendance: q(`SELECT s.label, s.started_at, a.marked_at FROM attendance_sessions s LEFT JOIN attendance a ON a.session_id = s.id AND a.user_id = ? WHERE s.class_id = ? ORDER BY s.started_at DESC`).all(req.user.id, cls.id),
     }));
   });
@@ -1423,6 +1438,47 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!d || !Classes.can(me, 'dates') || (d.added_by !== req.user.id && !Classes.can(me, 'manage'))) return res.status(404).page(notFound(req));
     q(`DELETE FROM class_dates WHERE id = ?`).run(d.id);
     flashRedirect(res, `/c/${cls.code}#dates`, 'ok', 'Removed.');
+  });
+
+  // ---- class announcements ----
+  // The lecturer, tutors and reps post them. The poster or the lecturer can delete one. Any other member can report
+  // one, and HIDE_AFTER_REPORTS reports from different members hide it until a moderator looks.
+  app.post('/c/:code/announcements', requireUser, limits.classes, (req, res) => {
+    const cls = classByCode(req.params.code);
+    const me = cls && classMember(cls.id, req.user.id);
+    if (!Classes.can(me, 'announce')) return res.status(404).page(notFound(req));
+    const parsed = Classes.parseAnnouncement(req.body.body, screenComment);
+    if (parsed.error) return flashRedirect(res, `/c/${cls.code}#announcements`, 'error', parsed.error);
+    q(`INSERT INTO class_announcements (class_id, body, posted_by, poster_name, poster_role, created_at) VALUES (?, ?, ?, ?, ?, ?)`).run(cls.id, parsed.text, req.user.id, me.name || Classes.ROLE_NAMES[me.role], me.role, Date.now());
+    flashRedirect(res, `/c/${cls.code}#announcements`, 'ok', `Posted. Members see it here and on their Today page for ${Classes.ANNOUNCE_DAYS} days.`);
+  });
+
+  app.post('/c/:code/announcements/:id/delete', requireUser, limits.classes, (req, res) => {
+    const cls = classByCode(req.params.code);
+    const me = cls && classMember(cls.id, req.user.id);
+    const a = me && q(`SELECT * FROM class_announcements WHERE id = ? AND class_id = ?`).get(Number(req.params.id) || 0, cls.id);
+    if (!a || (a.posted_by !== req.user.id && !Classes.can(me, 'manage'))) return res.status(404).page(notFound(req));
+    q(`DELETE FROM class_announcements WHERE id = ?`).run(a.id);
+    flashRedirect(res, `/c/${cls.code}#announcements`, 'ok', 'Announcement deleted.');
+  });
+
+  // "Got it" on Today: the announcement leaves your Today (opening the class page does the same)
+  app.post('/announcements/:id/read', requireUser, (req, res) => {
+    const a = q(`SELECT * FROM class_announcements WHERE id = ?`).get(Number(req.params.id) || 0);
+    if (!a || !classMember(a.class_id, req.user.id)) return res.status(404).page(notFound(req));
+    q(`INSERT OR IGNORE INTO announcement_reads (announcement_id, user_id) VALUES (?, ?)`).run(a.id, req.user.id);
+    res.redirect(303, '/today');
+  });
+
+  app.post('/announcements/:id/report', requireUser, limits.report, (req, res) => {
+    const a = q(`SELECT a.*, c.code FROM class_announcements a JOIN classes c ON c.id = a.class_id WHERE a.id = ? AND a.hidden = 0`).get(Number(req.params.id) || 0);
+    if (!a || !classMember(a.class_id, req.user.id)) return res.status(404).page(notFound(req));
+    const back = `/c/${a.code}#announcements`;
+    if (a.posted_by === req.user.id) return flashRedirect(res, back, 'error', "That's your own announcement. You can delete it instead.");
+    q(`INSERT OR IGNORE INTO announcement_reports (announcement_id, user_id) VALUES (?, ?)`).run(a.id, req.user.id);
+    const n = q(`SELECT COUNT(*) AS n FROM announcement_reports WHERE announcement_id = ?`).get(a.id).n;
+    if (n >= HIDE_AFTER_REPORTS) q(`UPDATE class_announcements SET hidden = 1 WHERE id = ?`).run(a.id);
+    flashRedirect(res, back, 'ok', n >= HIDE_AFTER_REPORTS ? 'Thanks. That announcement is hidden until a moderator checks it.' : 'Thanks. A moderator will take a look.');
   });
 
   app.post('/c/:code/leave', requireUser, (req, res) => {
@@ -1839,7 +1895,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const heldFacts = q(`SELECT course, kind, key, MIN(data) AS data, COUNT(DISTINCT user_id) AS n, (SELECT COUNT(*) FROM fact_reports r WHERE r.course = f.course AND r.key = f.key) AS reports
       FROM course_facts f WHERE status = 'held' GROUP BY course, key ORDER BY MIN(created_at)`).all().map((f) => ({ ...f, data: JSON.parse(f.data) }));
     const heldNames = q(`SELECT p.user_id, p.display_name, (SELECT COUNT(*) FROM name_reports r WHERE r.target_id = p.user_id) AS reports FROM profiles p WHERE p.name_held = 1 ORDER BY p.user_id`).all();
-    res.page(views.mod(req.ctx, { held, heldTips, takedowns, suggestions, log, heldFacts, heldNames }));
+    const heldAnnouncements = q(`SELECT a.*, c.code, c.name AS class_name, (SELECT COUNT(*) FROM announcement_reports r WHERE r.announcement_id = a.id) AS reports
+      FROM class_announcements a JOIN classes c ON c.id = a.class_id WHERE a.hidden = 1 ORDER BY a.created_at`).all();
+    res.page(views.mod(req.ctx, { held, heldTips, takedowns, suggestions, log, heldFacts, heldNames, heldAnnouncements }));
   });
 
   // a held course detail: approve puts it back and clears its reports; remove takes it down for good
@@ -1864,6 +1922,19 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     q(`DELETE FROM name_reports WHERE target_id = ?`).run(p.user_id);
     q(`INSERT INTO mod_log (action, note, moderator) VALUES (?, ?, ?)`).run(`${action} leaderboard name`, `student #${p.user_id}`, req.user.email);
     flashRedirect(res, '/mod', 'ok', action === 'allow' ? 'Name back up.' : 'Name removed.');
+  });
+
+  // a reported class announcement: allow puts it back and clears its reports; remove deletes it
+  app.post('/mod/announcements/:id/:action', requireUser, requireMod, (req, res) => {
+    const { action } = req.params;
+    const a = q(`SELECT * FROM class_announcements WHERE id = ?`).get(Number(req.params.id) || 0);
+    if (!['allow', 'remove'].includes(action) || !a) return res.status(404).page(notFound(req));
+    if (action === 'allow') {
+      q(`UPDATE class_announcements SET hidden = 0 WHERE id = ?`).run(a.id);
+      q(`DELETE FROM announcement_reports WHERE announcement_id = ?`).run(a.id);
+    } else q(`DELETE FROM class_announcements WHERE id = ?`).run(a.id);
+    q(`INSERT INTO mod_log (action, note, moderator) VALUES (?, ?, ?)`).run(`${action} class announcement`, `announcement #${a.id}`, req.user.email);
+    flashRedirect(res, '/mod', 'ok', action === 'allow' ? 'Announcement back up.' : 'Announcement removed.');
   });
 
   app.post('/mod/reviews/:id/:action', requireUser, requireMod, (req, res) => {

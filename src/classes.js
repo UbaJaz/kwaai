@@ -78,6 +78,20 @@ function parseClassDate(body, today, { cleanName, screen }) {
   return { date: { type, date, time, title: title.name } };
 }
 
+// Announcements: up to ANNOUNCE_MAX characters, screened like review comments (no contact details, links, insults or
+// allegations). Anything the screen would hold for a moderator is refused instead, with the reason, so the poster can
+// reword it: an announcement is only useful if it goes out now. They stay on members' Today for ANNOUNCE_DAYS.
+const ANNOUNCE_MAX = 280;
+const ANNOUNCE_DAYS = 7;
+function parseAnnouncement(body, screen) {
+  const text = String(body || '').replace(/\r\n?/g, '\n').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+  if (text.length < 3) return { error: 'Write the announcement first.' };
+  if (text.length > ANNOUNCE_MAX) return { error: `Keep it to ${ANNOUNCE_MAX} characters. That one is ${text.length}.` };
+  const s = screen(text);
+  if (s.action !== 'publish') return { error: `Reword it and post again: ${s.reasons.join(', ').toLowerCase()}.` };
+  return { text };
+}
+
 // Attendance QR codes. The code in the QR changes every SLOT_MS: it is an HMAC of the session and the time slot,
 // so a photo of it stops working within a minute. A scan is accepted for the current slot and the two before it
 // (up to about a minute), which covers a slow phone and the tap to confirm.
@@ -94,4 +108,4 @@ function keyIsCurrent(secret, sessionId, key, now) {
   return false;
 }
 
-module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
+module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };

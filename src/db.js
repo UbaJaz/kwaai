@@ -252,6 +252,30 @@ CREATE TABLE IF NOT EXISTS attendance (
   how TEXT NOT NULL CHECK (how IN ('qr', 'tutor')),
   PRIMARY KEY (session_id, user_id)
 );
+-- Short notes from a class's lecturer, tutors or reps, like "Prac 3 moved to Thursday". poster_name is the name shown
+-- with it, kept as it was when posted. hidden = 1 once enough members report it, until a moderator looks.
+CREATE TABLE IF NOT EXISTS class_announcements (
+  id INTEGER PRIMARY KEY,
+  class_id INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
+  body TEXT NOT NULL,
+  posted_by INTEGER REFERENCES users(id),
+  poster_name TEXT NOT NULL,
+  poster_role TEXT NOT NULL,
+  hidden INTEGER NOT NULL DEFAULT 0,
+  created_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS class_announcements_by_class ON class_announcements (class_id, created_at);
+-- who has seen an announcement (it leaves their Today), and who reported one (each member counts once)
+CREATE TABLE IF NOT EXISTS announcement_reads (
+  announcement_id INTEGER NOT NULL REFERENCES class_announcements(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  PRIMARY KEY (announcement_id, user_id)
+);
+CREATE TABLE IF NOT EXISTS announcement_reports (
+  announcement_id INTEGER NOT NULL REFERENCES class_announcements(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  PRIMARY KEY (announcement_id, user_id)
+);
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,
