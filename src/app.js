@@ -11,12 +11,13 @@ const Marks = require('../public/marks-math');
 const { revisionPlan, yearTimeline } = require('./year');
 const { parseFact, screenFact, groupFacts, weekTopics, crowdSlots } = require('./facts');
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
-const { UNIVERSITIES, CURRENT, uniForEmail } = require('./universities');
+const { UNIVERSITIES, CURRENT, accountFor } = require('./universities');
 const Study = require('./study');
 const Admin = require('./admin');
 const TestData = require('./testdata');
 
-const STUDENT_EMAIL = /^[a-z0-9._%+-]+@myuct\.ac\.za$/;
+// a plain address; accountFor then decides whether it's a UCT student (@myuct.ac.za) or staff (@uct.ac.za) one
+const EMAIL_SHAPE = /^[a-z0-9._%+-]+@[a-z0-9.-]+$/;
 // "a+1@myuct.ac.za" and "a+2@myuct.ac.za" reach the same inbox, so they must be the same account:
 // otherwise one student gets many votes and a banned one comes back.
 const normEmail = (s) => String(s || '').trim().toLowerCase().replace(/\+[^@]*(?=@)/, '');
@@ -1243,7 +1244,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.post('/login', limits.login, limits.loginEmail, limits.loginSend, async (req, res) => {
     const email = normEmail(req.body.email);
     const next = safeNext(req.body.next);
-    if (!STUDENT_EMAIL.test(email)) return res.status(400).page(views.login(req.ctx, { email, next, error: 'That isn\'t a student email. Use your @myuct.ac.za address.' }));
+    if (!EMAIL_SHAPE.test(email) || !accountFor(email)) return res.status(400).page(views.login(req.ctx, { email, next, error: 'That isn\'t a UCT email. Students use their @myuct.ac.za address, staff their @uct.ac.za one.' }));
     // POPIA: children's information needs a guardian's consent, so accounts are for students 18 and older
     if (req.body.agree !== '1') return res.status(400).page(views.login(req.ctx, { email, next, error: 'Tick the box to confirm you\'re 18 or older and agree to the terms, house rules and privacy notice.' }));
     if (q(`SELECT 1 FROM users WHERE email = ? AND banned = 1`).get(email)) return res.status(403).page(views.login(req.ctx, { email, next, error: 'This account has been suspended for breaking the house rules.' }));
@@ -1427,7 +1428,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   function startSession(req, res, email, next) {
-    q(`INSERT INTO users (email, uni) VALUES (?, ?) ON CONFLICT(email) DO NOTHING`).run(email, (uniForEmail(email) || CURRENT).slug);
+    const account = accountFor(email);
+    q(`INSERT INTO users (email, uni, role) VALUES (?, ?, ?) ON CONFLICT(email) DO NOTHING`).run(email, (account?.uni || CURRENT).slug, account?.role || 'student');
     // every sign-in starts at the form with the 18+ and terms box, so this records when the account first agreed
     q(`UPDATE users SET agreed_at = CURRENT_TIMESTAMP WHERE email = ? AND agreed_at IS NULL`).run(email);
     const user = q(`SELECT * FROM users WHERE email = ?`).get(email);
