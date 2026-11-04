@@ -2195,3 +2195,28 @@ test('the lecturer dashboard: student numbers, progress, a nudge filter, CSV, ed
   assert.doesNotMatch(await lecturer.text(adminPath), /DASH003/);
   assert.equal((await lecturer.post(adminPath + '/remove', { user: String(id('jane.smith@uct.ac.za')) })).status, 404, 'the lecturer cannot remove themselves');
 }));
+
+test('class dates: the lecturer adds a test date and it reaches the class, Today, the course page and calendars', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code } = await makeClass(newBrowser);
+  const member = newBrowser();
+  await member.signIn('memb001@myuct.ac.za');
+  await member.post('/c/' + code + '/join', { show: 'name', name: 'Member One' });
+  const soon = Study.addDay(Study.saDay(Date.now()), 5);
+
+  assert.equal((await member.post('/c/' + code + '/dates', { type: 'test', date: soon, title: 'Fake test' })).status, 404, 'students cannot add dates');
+  assert.match((await lecturer.post('/c/' + code + '/dates', { type: 'party', date: soon })).headers.get('location'), /#dates$/);
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_dates').get().n, 0, 'a bad type is refused');
+  await lecturer.post('/c/' + code + '/dates', { type: 'test', date: soon, time: '14:00', title: 'Test 1' });
+
+  assert.match(await member.text('/c/' + code), /<strong>Test 1<\/strong>[^<]*14:00 <span class="meta">from Dr J Smith<\/span>/);
+  assert.match(await member.text('/today'), /Test 1[\s\S]{0,200}From the lecturer/, 'members see it on Today');
+  const outsider = newBrowser();
+  await outsider.get('/plan?add=CSC1015F');
+  assert.match(await outsider.text('/courses/CSC1015F'), /<strong>Test 1<\/strong>[^<]*14:00 <span class="badge badge-official">From the lecturer<\/span>/, 'the course page shows it to anyone');
+  assert.match(await outsider.text('/week.ics?c=CSC1015F'), /SUMMARY:CSC1015F Test 1/, 'and it goes into calendars');
+
+  const id = sdb.prepare('SELECT id FROM class_dates').get().id;
+  assert.equal((await member.post('/c/' + code + '/dates/' + id + '/delete', {})).status, 404);
+  await lecturer.post('/c/' + code + '/dates/' + id + '/delete', {});
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_dates').get().n, 0);
+}));
