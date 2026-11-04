@@ -653,7 +653,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
-    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null }));
+    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [] }));
   });
 
   // ---- study timer ----
@@ -1346,12 +1346,34 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     number: Classes.studentNumber(req.user.email), name: profileOf(req.user.id)?.display_name || '', ...extra,
   });
 
+  // minutes each student (and rep) timed for the class's course over a span, each day capped as everywhere else
+  function classMinutes(cls, from, to) {
+    return q(`SELECT m.user_id, m.name, m.anonymous, m.role, COALESCE(SUM(x.m), 0) AS minutes FROM class_members m LEFT JOIN (
+        SELECT user_id, day, MIN(SUM(credited_sec / 60), ${Study.DAY_CAP_MIN}) AS m FROM study_sessions
+        WHERE status = 'done' AND course = ? AND day BETWEEN ? AND ? GROUP BY user_id, day
+      ) x ON x.user_id = m.user_id WHERE m.class_id = ? AND m.role IN ('student', 'rep') GROUP BY m.user_id`).all(cls.course, from, to, cls.id);
+  }
+  // Today's "Your classes": each class you're in as a student or rep, with this week's minutes against its goal
+  function myClasses(user) {
+    const [from, to] = Study.periodRange('week', Study.saDay(Date.now()));
+    return q(`SELECT c.* FROM classes c JOIN class_members m ON m.class_id = c.id WHERE m.user_id = ? AND m.role IN ('student', 'rep') ORDER BY c.course`).all(user.id)
+      .map((c) => ({ ...c, weekMin: classMinutes(c, from, to).find((r) => r.user_id === user.id)?.minutes || 0 }));
+  }
+
   app.get('/c/:code', requireUser, (req, res) => {
     const cls = classByCode(req.params.code);
     if (!cls) return res.status(404).page(notFound(req));
     const me = classMember(cls.id, req.user.id);
     if (!me) return res.page(classJoinPage(req, cls));
-    res.set('Cache-Control', 'no-store').page(views.classPage(req.ctx, { cls, me, course: getCourse(cls.course), lecturer: classLecturer(cls), canRun: Classes.can(me, 'dashboard') }));
+    const period = Study.PERIODS[req.query.period] ? req.query.period : 'week';
+    const [from, to] = Study.periodRange(period, Study.saDay(Date.now()));
+    const shown = (r) => ({ id: r.user_id, rank: r.rank, minutes: r.minutes, you: r.user_id === req.user.id, role: r.role, name: r.anonymous && r.user_id !== req.user.id ? 'Anonymous' : r.name || 'Anonymous' });
+    const rows = classMinutes(cls, from, to);
+    const weekMin = classMinutes(cls, ...Study.periodRange('week', Study.saDay(Date.now()))).find((r) => r.user_id === req.user.id)?.minutes || 0;
+    res.set('Cache-Control', 'no-store').page(views.classPage(req.ctx, {
+      cls, me, course: getCourse(cls.course), lecturer: classLecturer(cls), canRun: Classes.can(me, 'dashboard'), period, weekMin,
+      ranking: Study.rankBoard(rows, req.user.id, 500).rows.map(shown), idle: rows.filter((r) => !r.minutes).length,
+    }));
   });
 
   app.post('/c/:code/join', requireUser, limits.classes, (req, res) => {
