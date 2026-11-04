@@ -2145,3 +2145,42 @@ test('the class page: this week against the goal, a ranking of only that course,
   const todayPage = await a.text('/today');
   assert.match(todayPage, /Your classes this week[\s\S]*?CSC1015F 2027[\s\S]*?1 h 30 min of 6 h/);
 }));
+
+test('the lecturer dashboard: student numbers, progress, a nudge filter, CSV, editing and removing', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code, adminPath } = await makeClass(newBrowser); // goal 6 h
+  const join = async (email, body) => { const b = newBrowser(); await b.signIn(email); await b.post('/c/' + code + '/join', body); return b; };
+  const keen = await join('keen001@myuct.ac.za', { show: 'name', name: 'Keen Kid' });
+  await join('quiet002@myuct.ac.za', { show: 'anon', name: 'Quiet Kid' });
+  await join('dash003@myuct.ac.za', { show: 'name', name: '-Dash Kid' });
+  const id = (e) => sdb.prepare('SELECT id FROM users WHERE email = ?').get(e).id;
+  const today = Study.saDay(Date.now());
+  sdb.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', 'CSC1015F', ?, 0, 0, 120, ?, 'done')`)
+    .run(id('keen001@myuct.ac.za'), today, 6 * 3600);
+
+  const page = await lecturer.text(adminPath);
+  assert.match(page, /<td class="code">KEEN001<\/td>\s*<td>Keen Kid<\/td>\s*<td>6 h<\/td>/, 'the lecturer sees student numbers and progress, top of the default sort');
+  assert.match(page, /QUIET002<\/td>\s*<td>Quiet Kid <span class="meta">\(anonymous to classmates\)<\/span>/, 'and who chose to be anonymous to classmates');
+  assert.match(page, /<dt>Students<\/dt><dd>3<\/dd>/);
+  assert.match(page, /<dt>Need a nudge<\/dt><dd>2<\/dd>/, 'the two who have not studied the course');
+  const nudge = await lecturer.text(adminPath + '?filter=nudge');
+  assert.doesNotMatch(nudge, /KEEN001/);
+  assert.match(nudge, /QUIET002/);
+  assert.match(await lecturer.text(adminPath + '?sort=name'), /-Dash Kid[\s\S]*Keen Kid[\s\S]*Quiet Kid/);
+
+  const csv = await lecturer.get(adminPath + '/students.csv');
+  assert.match(csv.headers.get('content-disposition'), /attachment; filename="CSC1015F-2027-students\.csv"/);
+  const text = await csv.text();
+  assert.match(text, /^student_number,name,anonymous_to_classmates,role,minutes_this_week/);
+  assert.match(text, /\r\nDASH003,'-Dash Kid,no,student,0,/, 'a name that looks like a formula gets a leading quote');
+  assert.match(text, /\r\nKEEN001,Keen Kid,no,student,360,360,100,/);
+
+  assert.equal((await keen.get(adminPath)).status, 404, 'students never get the dashboard');
+  assert.equal((await keen.get(adminPath + '/students.csv')).status, 404);
+  assert.equal((await keen.post(adminPath + '/edit', { name: 'Hacked', goal: '1' })).status, 404);
+
+  await lecturer.post(adminPath + '/edit', { name: 'CSC1015F Group A', goal: '8' });
+  assert.deepEqual(Object.values(sdb.prepare('SELECT name, goal_week_min FROM classes').get()), ['CSC1015F Group A', 480]);
+  await lecturer.post(adminPath + '/remove', { user: String(id('dash003@myuct.ac.za')) });
+  assert.doesNotMatch(await lecturer.text(adminPath), /DASH003/);
+  assert.equal((await lecturer.post(adminPath + '/remove', { user: String(id('jane.smith@uct.ac.za')) })).status, 404, 'the lecturer cannot remove themselves');
+}));
