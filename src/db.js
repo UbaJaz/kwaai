@@ -276,6 +276,26 @@ CREATE TABLE IF NOT EXISTS announcement_reports (
   user_id INTEGER NOT NULL REFERENCES users(id),
   PRIMARY KEY (announcement_id, user_id)
 );
+-- Pulse checks: a one-tap question to the class. Answers are anonymous to everyone, the lecturer included: the row
+-- keeps only a count per option (counts is a JSON array in the same order as options), and pulse_answered records
+-- that a member answered, never what they chose. A pulse closes when closed_at is set or closes_at passes.
+CREATE TABLE IF NOT EXISTS class_pulses (
+  id INTEGER PRIMARY KEY,
+  class_id INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
+  question TEXT NOT NULL,
+  options TEXT NOT NULL,
+  counts TEXT NOT NULL,
+  asked_by INTEGER REFERENCES users(id),
+  asked_at INTEGER NOT NULL,
+  closes_at INTEGER NOT NULL,
+  closed_at INTEGER
+);
+CREATE INDEX IF NOT EXISTS class_pulses_by_class ON class_pulses (class_id, asked_at);
+CREATE TABLE IF NOT EXISTS pulse_answered (
+  pulse_id INTEGER NOT NULL REFERENCES class_pulses(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  PRIMARY KEY (pulse_id, user_id)
+);
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,

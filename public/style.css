@@ -733,6 +733,19 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .announce-today h2 { font-size: 1.05rem; }
 .announce-today li + li { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 10px; }
 .announce-today .meta { margin: 0 0 6px; }
+.pulse-form fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.pulse-form legend { font-weight: 700; margin-bottom: 10px; padding: 0; }
+.pulse-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.pulse-options .btn { min-height: 44px; }
+.pulse-form .meta { margin: 8px 0 0; }
+.pulse-ask, .pulse-today { max-width: 720px; border-left: 4px solid var(--uni); }
+.pulse-today { margin: 0 0 18px; }
+.pulse-today h2, .pulse-ask h2 { font-size: 1.05rem; }
+.pulse-item + .pulse-item { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+.pulse-item > .meta { margin: 0 0 4px; }
+.pulse-list > li + li { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+.pulse-bar { display: grid; grid-template-columns: minmax(0, 9em) minmax(0, 1fr) 6em; gap: 10px; align-items: center; padding: 4px 0; }
+.pulse-bar .meta { text-align: right; }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
