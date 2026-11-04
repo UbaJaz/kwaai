@@ -62,4 +62,19 @@ const csvRow = (cells) => cells.map((v) => {
   return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }).join(',');
 
-module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow };
+// A class date: a type, a title, a day within a year either side of today, and an optional time.
+const DATE_TYPES = { test: 'Test', prac: 'Prac', assignment: 'Assignment due', exam: 'Exam' };
+function parseClassDate(body, today, { cleanName, screen }) {
+  const type = DATE_TYPES[body.type] ? body.type : null;
+  if (!type) return { error: 'Pick what it is: a test, prac, assignment or exam.' };
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(String(body.date || '')) && !Number.isNaN(Date.parse(body.date)) ? body.date : null;
+  const yearOff = (d, n) => `${Number(d.slice(0, 4)) + n}${d.slice(4)}`;
+  if (!date || date < yearOff(today, -1) || date > yearOff(today, 1)) return { error: 'Pick a date within a year of today.' };
+  const time = String(body.time || '').trim();
+  if (time && !/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) return { error: 'Give the time like 14:00, or leave it empty.' };
+  const title = cleanName(body.title || DATE_TYPES[type], 60, screen);
+  if (title.error) return { error: `Title: ${title.error}` };
+  return { date: { type, date, time, title: title.name } };
+}
+
+module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate };

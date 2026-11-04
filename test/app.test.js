@@ -326,6 +326,17 @@ test('the lecturer dashboard rules: the goal so far, who needs a nudge, and safe
   for (const evil of ['=HYPERLINK("x")', '+1', '-2', '@SUM(A1)']) assert.ok(C.csvRow([evil]).replace(/^"/, '').startsWith("'"), evil);
 });
 
+test('class dates: a type, a date near today, an optional time and a title', () => {
+  const C = require('../src/classes');
+  const deps = { cleanName: Study.cleanName, screen: screenComment };
+  assert.deepEqual(C.parseClassDate({ type: 'test', date: '2027-03-15', time: '14:00', title: 'Test 1' }, '2027-03-01', deps).date, { type: 'test', date: '2027-03-15', time: '14:00', title: 'Test 1' });
+  assert.equal(C.parseClassDate({ type: 'prac', date: '2027-03-15', title: '' }, '2027-03-01', deps).date.title, 'Prac', 'an empty title takes the type');
+  assert.ok(C.parseClassDate({ type: 'party', date: '2027-03-15' }, '2027-03-01', deps).error);
+  assert.ok(C.parseClassDate({ type: 'test', date: '2029-03-15' }, '2027-03-01', deps).error, 'too far ahead');
+  assert.ok(C.parseClassDate({ type: 'test', date: '2027-13-45' }, '2027-03-01', deps).error, 'not a real date');
+  assert.ok(C.parseClassDate({ type: 'test', date: '2027-03-15', time: '25:00' }, '2027-03-01', deps).error);
+});
+
 test('student and staff emails: the domain decides the role', () => {
   const { accountFor } = require('../src/universities');
   assert.deepEqual([accountFor('abcxyz001@myuct.ac.za').role, accountFor('abcxyz001@myuct.ac.za').uni.slug], ['student', 'uct']);
