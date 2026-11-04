@@ -291,6 +291,13 @@ test('study timer: heartbeats credit time, gaps and caps stop padding', () => {
   assert.equal(Study.hoursText(45), '45 min');
 });
 
+test('student and staff emails: the domain decides the role', () => {
+  const { accountFor } = require('../src/universities');
+  assert.deepEqual([accountFor('abcxyz001@myuct.ac.za').role, accountFor('abcxyz001@myuct.ac.za').uni.slug], ['student', 'uct']);
+  assert.equal(accountFor('jane.smith@uct.ac.za').role, 'staff');
+  for (const other of ['x@gmail.com', 'x@evil.uct.ac.za', 'x@uct.ac.za.evil.com', 'x@MYUCT.ac.za.co']) assert.equal(accountFor(other), null, other);
+});
+
 test('study streaks: 30 minutes a day, paused over vacations', () => {
   const terms = require('../data/terms.json').years;
   assert.equal(Study.isVacation('2027-01-10', terms), true, 'before the first term');
