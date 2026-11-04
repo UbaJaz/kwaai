@@ -2158,8 +2158,8 @@ test('the lecturer dashboard: student numbers, progress, a nudge filter, CSV, ed
     .run(id('keen001@myuct.ac.za'), today, 6 * 3600);
 
   const page = await lecturer.text(adminPath);
-  assert.match(page, /<td class="code">KEEN001<\/td>\s*<td>Keen Kid<\/td>\s*<td>6 h<\/td>/, 'the lecturer sees student numbers and progress, top of the default sort');
-  assert.match(page, /QUIET002<\/td>\s*<td>Quiet Kid <span class="meta">\(anonymous to classmates\)<\/span>/, 'and who chose to be anonymous to classmates');
+  assert.match(page, /<td class="code" data-label="Student number">KEEN001<\/td>\s*<td class="dash-name" data-label="Name">Keen Kid<\/td>\s*<td data-label="This week">6 h<\/td>/, 'the lecturer sees student numbers and progress, top of the default sort');
+  assert.match(page, /QUIET002<\/td>\s*<td class="dash-name" data-label="Name">Quiet Kid <span class="meta">\(anonymous to classmates\)<\/span>/, 'and who chose to be anonymous to classmates');
   assert.match(page, /<dt>Students<\/dt><dd>3<\/dd>/);
   assert.match(page, /<dt>Need a nudge<\/dt><dd>2<\/dd>/, 'the two who have not studied the course');
   const nudge = await lecturer.text(adminPath + '?filter=nudge');
