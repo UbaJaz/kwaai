@@ -660,6 +660,9 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .class-join-row > div:last-child { flex: 1 1 260px; }
 .class-qr { flex: none; width: 200px; aspect-ratio: 1; background: #fff; border: 1px solid var(--line); border-radius: 10px; }
 .class-qr svg { display: block; width: 100%; height: 100%; }
+.class-consent h2 { font-size: 1.05rem; margin: 6px 0 0; }
+.consent-list li { color: var(--good); }
+.consent-list.no li { color: var(--muted); }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }

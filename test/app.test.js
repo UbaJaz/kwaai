@@ -2056,3 +2056,54 @@ test('lecturers make classes: join link and QR, and nobody else sees the class p
   await other.signIn('other.lecturer@uct.ac.za');
   assert.equal((await other.get(path)).status, 404, 'another lecturer neither');
 }));
+
+// a lecturer with a CSC1015F class on a fresh server; returns its code
+async function makeClass(newBrowser, email = 'jane.smith@uct.ac.za') {
+  const lecturer = newBrowser();
+  await lecturer.signIn(email);
+  const made = await lecturer.post('/classes', { course: 'CSC1015F', year: '2027', goal: '6', name: '', me: 'Dr J Smith' });
+  const page = await lecturer.text(made.headers.get('location'));
+  return { lecturer, code: /\/c\/([A-HJ-NP-Z2-9]{8})/.exec(page)[1], adminPath: made.headers.get('location') };
+}
+
+test('students join a class: they see what is shared first, choose a name or anonymous, and can leave', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { code } = await makeClass(newBrowser);
+  assert.match((await newBrowser().get('/c/' + code)).headers.get('location'), /^\/login\?next=%2Fc%2F/, 'sign in first, then back here');
+  const s = newBrowser();
+  await s.signIn('abcxyz001@myuct.ac.za');
+  const join = await s.text('/c/' + code.toLowerCase());
+  assert.match(join, /Join CSC1015F 2027/);
+  assert.match(join, /Your student number: <strong>ABCXYZ001<\/strong>/, 'the number the lecturer will see, shown before joining');
+  assert.match(join, /with Dr J Smith/);
+  assert.equal((await s.post('/c/' + code + '/join', { show: 'name', name: 'x' })).status, 400, 'a shown name needs 2 characters');
+  assert.equal((await s.post('/c/' + code + '/join', { show: 'anon', name: '' })).status, 303);
+  const m = sdb.prepare('SELECT * FROM class_members WHERE role = ?').get('student');
+  assert.equal(m.anonymous, 1);
+  assert.ok(m.consent_at, 'joining records consent');
+  const page = await s.text('/c/' + code);
+  assert.match(page, /You're in this class as <strong>Anonymous<\/strong>/);
+  assert.match(await s.text('/today'), /CSC1015F/, 'the course went into the plan');
+  assert.equal((await s.get('/classes/' + sdb.prepare('SELECT id FROM classes').get().id)).status, 404, 'a student never gets the lecturer page');
+
+  const staff = newBrowser();
+  await staff.signIn('another.staff@uct.ac.za');
+  assert.match(await staff.text('/c/' + code), /Classes are for students to join/);
+  assert.equal((await staff.post('/c/' + code + '/join', { show: 'name', name: 'Prof X' })).status, 403);
+
+  assert.equal((await s.get('/account/data').then((r) => r.json())).classes[0].course, 'CSC1015F');
+  await s.post('/c/' + code + '/leave', {});
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_members WHERE role = 'student'`).get().n, 0, 'leaving removes you');
+  assert.match(await s.text('/c/' + code), /Join CSC1015F 2027/, 'and you are back outside');
+  assert.equal((await newBrowser().get('/c/ZZZZZZZZ')).status, 303);
+}));
+
+test('deleting a lecturer account deletes their classes; deleting a student removes their memberships', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code } = await makeClass(newBrowser);
+  const s = newBrowser();
+  await s.signIn('abcxyz002@myuct.ac.za');
+  await s.post('/c/' + code + '/join', { show: 'name', name: 'Thandi M' });
+  await s.post('/account/delete', {});
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_members WHERE role = 'student'`).get().n, 0);
+  assert.equal((await lecturer.post('/account/delete', {})).status, 303, 'no foreign key gets in the way');
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM classes').get().n, 0);
+}));
