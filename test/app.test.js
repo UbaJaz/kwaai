@@ -2285,3 +2285,23 @@ test('QR attendance: tutors, a rotating code, confirm to check in, no double mar
   const late = await join('late001@myuct.ac.za');
   assert.match(await late.text(`/a/${sid}?k=${key()}`), /This attendance session has closed/);
 }));
+
+test('attendance shows up for the student, on the dashboard and in the CSV', () => withAdminServer({}, async ({ browser: newBrowser }) => {
+  const { lecturer, code, adminPath } = await makeClass(newBrowser);
+  const s = newBrowser();
+  await s.signIn('attd001@myuct.ac.za');
+  await s.post('/c/' + code + '/join', { show: 'name', name: 'Att Student' });
+  const first = (await lecturer.post(adminPath + '/attendance', { label: 'Tut 1' })).headers.get('location');
+  await lecturer.post(first + '/add', { number: 'ATTD001' });
+  await lecturer.post(first + '/end', {});
+  const second = (await lecturer.post(adminPath + '/attendance', { label: 'Tut 2' })).headers.get('location');
+  await lecturer.post(second + '/end', {});
+
+  const page = await s.text('/c/' + code);
+  assert.match(page, /Your attendance: 1 of 2/);
+  assert.match(page, /<span>Tut 2<\/span> <span class="meta">Not marked<\/span>[\s\S]*<span>Tut 1<\/span> <span class="ok-text">Present<\/span>/);
+  assert.match(await lecturer.text(adminPath), /<td data-label="Attendance">1 of 2<\/td>/);
+  const csv = await (await lecturer.get(adminPath + '/students.csv')).text();
+  assert.match(csv, /needs_a_nudge,sessions_attended,sessions_held\r\n/);
+  assert.match(csv, /\r\nATTD001,Att Student,no,student,.*,1,2\r\n/);
+}));
