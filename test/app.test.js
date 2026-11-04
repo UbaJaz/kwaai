@@ -1992,3 +1992,19 @@ test('our CSS and JS go out gzipped, with an ETag, and nothing outside public is
   assert.notEqual((await fetch(`${base}/..%2Fsrc%2Fapp.js`)).status, 200);
   assert.notEqual((await fetch(`${base}/%2e%2e/src/app.js`)).status, 200);
 });
+
+test('staff sign in with @uct.ac.za, and can read but not rate', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const staff = newBrowser();
+  await staff.signIn('jane.lecturer@uct.ac.za');
+  assert.equal(sdb.prepare(`SELECT role FROM users WHERE email = 'jane.lecturer@uct.ac.za'`).get().role, 'staff');
+  assert.match(await staff.text('/courses/CSC1015F'), /Computer Science 1015/, 'staff can read course pages');
+  assert.equal((await staff.get('/courses/CSC1015F/review')).status, 403);
+  assert.equal((await staff.post('/courses/CSC1015F/verdict', { lekker: '1', year: String(new Date().getFullYear()) })).status, 403, 'no votes from staff');
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM verdicts`).get().n, 0);
+  const student = newBrowser();
+  await student.signIn('stud001@myuct.ac.za');
+  assert.equal(sdb.prepare(`SELECT role FROM users WHERE email = 'stud001@myuct.ac.za'`).get().role, 'student');
+  assert.equal((await student.get('/courses/CSC1015F/review')).status, 200, 'students still can');
+  assert.equal((await newBrowser().post('/login', { email: 'someone@gmail.com' })).status, 400);
+  assert.ok((await newBrowser().text('/login')).includes(String.raw`pattern="[A-Za-z0-9._%+\-]+@(myuct\.)?uct\.ac\.za"`), 'the form takes both addresses');
+}));
