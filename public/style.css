@@ -700,6 +700,8 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 }
 .class-edit { max-width: 560px; margin: 0 0 18px; }
 .class-edit summary { cursor: pointer; font-weight: 600; }
+.badge-official { background: var(--lime-soft); color: var(--good); }
+.official-dates { margin-bottom: 10px; }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
