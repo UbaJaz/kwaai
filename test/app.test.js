@@ -291,6 +291,27 @@ test('study timer: heartbeats credit time, gaps and caps stop padding', () => {
   assert.equal(Study.hoursText(45), '45 min');
 });
 
+test('classes: who may do what, student numbers, QR codes and the new-class form', () => {
+  const Classes = require('../src/classes');
+  const table = Object.fromEntries(['lecturer', 'tutor', 'rep', 'student'].map((role) => [role, Object.keys(Classes.PERMISSIONS).filter((a) => Classes.can({ role }, a))]));
+  assert.deepEqual(table, {
+    lecturer: ['dashboard', 'attendance', 'pulse', 'dates', 'announce', 'manage'],
+    tutor: ['dashboard', 'attendance', 'pulse', 'dates', 'announce'],
+    rep: ['dates', 'announce'],
+    student: [],
+  });
+  assert.equal(Classes.can(null, 'dates'), false, 'not a member, nothing');
+  assert.equal(Classes.studentNumber('abcxyz001@myuct.ac.za'), 'ABCXYZ001');
+  assert.equal(Classes.studentNumber('jane.smith@uct.ac.za'), '', 'staff have no student number');
+  assert.match(Classes.qrSvg('https://kwaai.example/c/ABCDEFGH'), /^<svg[^>]*viewBox="0 0 \d+ \d+"/);
+  const known = { course: (c) => c === 'CSC1015F', cleanName: Study.cleanName, screen: screenComment, goalFor: () => 9, thisYear: 2027 };
+  assert.deepEqual(Classes.parseClassForm({ course: 'csc 1015f', year: '2027', name: '', goal: '' }, known).cls, { course: 'CSC1015F', year: 2027, name: 'CSC1015F 2027', goalWeekMin: 540 }, 'name and goal fill themselves in');
+  assert.equal(Classes.parseClassForm({ course: 'CSC1015F', year: '2027', name: 'Group A', goal: '6.5' }, known).cls.goalWeekMin, 390);
+  assert.ok(Classes.parseClassForm({ course: 'NOPE1234X' }, known).error);
+  assert.ok(Classes.parseClassForm({ course: 'CSC1015F', year: '2031' }, known).error);
+  assert.ok(Classes.parseClassForm({ course: 'CSC1015F', goal: '90' }, known).error);
+});
+
 test('student and staff emails: the domain decides the role', () => {
   const { accountFor } = require('../src/universities');
   assert.deepEqual([accountFor('abcxyz001@myuct.ac.za').role, accountFor('abcxyz001@myuct.ac.za').uni.slug], ['student', 'uct']);
