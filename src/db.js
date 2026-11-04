@@ -235,6 +235,23 @@ CREATE TABLE IF NOT EXISTS class_dates (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS class_dates_by_course ON class_dates (course, date);
+-- Tut and prac attendance: a tutor or the lecturer opens a session and shows a QR code; students scan it and confirm.
+-- how is 'qr' (they scanned) or 'tutor' (added by student number, for someone without a phone).
+CREATE TABLE IF NOT EXISTS attendance_sessions (
+  id INTEGER PRIMARY KEY,
+  class_id INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
+  label TEXT NOT NULL,
+  started_by INTEGER REFERENCES users(id),
+  started_at INTEGER NOT NULL,
+  ended_at INTEGER
+);
+CREATE TABLE IF NOT EXISTS attendance (
+  session_id INTEGER NOT NULL REFERENCES attendance_sessions(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  marked_at INTEGER NOT NULL,
+  how TEXT NOT NULL CHECK (how IN ('qr', 'tutor')),
+  PRIMARY KEY (session_id, user_id)
+);
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,
