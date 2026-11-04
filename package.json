@@ -16,6 +16,7 @@
     "node": ">=22.13"
   },
   "dependencies": {
-    "express": "^5.3.0"
+    "express": "^5.3.0",
+    "qrcode-generator": "2.0.4"
   }
 }
