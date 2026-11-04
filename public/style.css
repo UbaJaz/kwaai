@@ -718,6 +718,11 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .attend-done { text-align: center; }
 .attend-tick { font: 800 3.4rem/1 var(--display); color: var(--good); margin: 0; }
 .attend-confirm { text-align: center; display: grid; gap: 12px; justify-items: center; }
+.dash-actions { white-space: nowrap; }
+.make-rep { display: inline-block; margin-right: 10px; }
+.make-rep summary { cursor: pointer; display: inline; }
+.make-rep form { margin-top: 8px; min-width: 220px; white-space: normal; }
+.rep-note { background: var(--uni-soft); color: var(--uni); padding: 10px 14px; border-radius: var(--radius-sm); }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }

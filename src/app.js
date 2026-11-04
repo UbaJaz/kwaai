@@ -1507,6 +1507,23 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, `/classes/${cls.id}`, 'ok', 'Saved.');
   });
 
+  // A class rep shows their full name with a badge, can post announcements and add dates, but never sees student
+  // numbers or the dashboard. The lecturer appoints them with their full name, which turns anonymous off in this class.
+  app.post('/classes/:id/rep', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'manage');
+    const who = found && classMember(found.cls.id, Number(req.body.user));
+    if (!who || !['student', 'rep'].includes(who.role)) return res.status(404).page(notFound(req));
+    const back = (type, text) => flashRedirect(res, `/classes/${found.cls.id}`, type, text);
+    if (req.body.make !== '1') {
+      q(`UPDATE class_members SET role = 'student' WHERE class_id = ? AND user_id = ?`).run(found.cls.id, who.user_id);
+      return back('ok', `${who.name} is no longer the class rep.`);
+    }
+    const name = Study.cleanName(req.body.name, 60, screenComment);
+    if (name.error || name.name.split(' ').length < 2) return back('error', 'A class rep shows their full name: give a first name and a surname.');
+    q(`UPDATE class_members SET role = 'rep', name = ?, anonymous = 0 WHERE class_id = ? AND user_id = ?`).run(name.name, found.cls.id, who.user_id);
+    back('ok', `${name.name} is the class rep now.`);
+  });
+
   app.post('/classes/:id/remove', requireUser, limits.classes, (req, res) => {
     const found = classForRunners(req, 'manage');
     const who = found && classMember(found.cls.id, Number(req.body.user));

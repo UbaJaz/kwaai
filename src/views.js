@@ -1559,7 +1559,10 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
       <td data-label="Last studied">${r.last ? fmtDate(r.last) : html`<span class="meta">Not yet</span>`}</td>
       <td data-label="Days (last 14)">${r.days14}</td>
       <td data-label="Attendance">${r.sessions ? `${r.attended} of ${r.sessions}` : html`<span class="meta">No sessions yet</span>`}</td>
-      ${manage ? html`<td><form method="post" action="/classes/${cls.id}/remove" class="inline" data-confirm="Remove ${r.name} (${r.number}) from the class?"><input type="hidden" name="user" value="${r.id}"><button class="link-btn meta">Remove</button></form></td>` : ''}
+      ${manage ? html`<td class="dash-actions">${r.role === 'rep'
+        ? html`<form method="post" action="/classes/${cls.id}/rep" class="inline"><input type="hidden" name="user" value="${r.id}"><button class="link-btn meta">No longer rep</button></form>`
+        : html`<details class="make-rep"><summary class="meta">Make class rep</summary><form method="post" action="/classes/${cls.id}/rep" class="study-form"><input type="hidden" name="user" value="${r.id}"><input type="hidden" name="make" value="1"><label>Their full name <input type="text" name="name" required maxlength="60" value="${r.anonymous ? '' : r.name}"></label><button class="btn btn-small">Make rep</button></form></details>`}
+        <form method="post" action="/classes/${cls.id}/remove" class="inline" data-confirm="Remove ${r.name} (${r.number}) from the class?"><input type="hidden" name="user" value="${r.id}"><button class="link-btn meta">Remove</button></form></td>` : ''}
     </tr>`)}</tbody>
   </table></div>` : html`<p class="meta">${rows.length ? 'Nobody needs a nudge right now.' : 'No students yet. Share the link or QR code above.'}</p>`}
   ${rows.length ? joinSection : ''}
@@ -1681,6 +1684,7 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
   <div class="toggle" role="group" aria-label="Period">${Object.entries(Study.PERIODS).map(([k, label]) => html`<a href="/c/${cls.code}?period=${k}" class="${k === period ? 'on' : ''}" ${k === period ? html`aria-current="page"` : ''}>${label}</a>`)}</div>
   ${ranking.length ? html`<ol class="board card">${ranking.map(row)}</ol>` : html`<p class="meta">Nobody has timed ${cls.course} ${period === 'day' ? 'today' : period === 'week' ? 'this week' : 'this month'} yet.</p>`}
   ${idle ? html`<p class="meta">${idle === 1 ? "1 classmate hasn't" : `${idle} classmates haven't`} timed any ${cls.course} study ${period === 'day' ? 'today' : period === 'week' ? 'this week' : 'this month'}.</p>` : ''}
+  ${me.role === 'rep' ? html`<p class="rep-note"><strong>You're the class rep.</strong> Classmates see your full name, ${me.name}, with a Class rep badge. You can add test dates above and post announcements. You don't see anyone's student number.</p>` : ''}
   <p class="meta">You're in this class as <strong>${me.anonymous ? 'Anonymous' : me.name}</strong>${me.role !== 'student' ? ` (${CLASS_ROLE[me.role].toLowerCase()})` : ''}. Classmates never see your student number.</p>
   ${me.role === 'lecturer' ? '' : html`<form method="post" action="/c/${cls.code}/leave" class="inline" data-confirm="Leave ${cls.name}? Your lecturer will no longer see you in it."><button class="btn btn-small btn-quiet">Leave the class</button></form>`}`);
 }
