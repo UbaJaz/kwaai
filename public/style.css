@@ -652,6 +652,14 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .install-actions { grid-column: 1 / -1; display: flex; gap: 8px; justify-content: flex-end; }
 @media (max-width: 680px) { .install-banner { left: 10px; right: 10px; width: auto; bottom: calc(76px + env(safe-area-inset-bottom)); } }
 @media (prefers-reduced-motion: reduce) { .install-banner { animation: none; } }
+/* classes */
+.class-form { max-width: 640px; margin-top: 18px; }
+.class-form h2 { font-size: 1.15rem; margin: 0; }
+.class-join { max-width: 820px; margin: 0 0 18px; }
+.class-join-row { display: flex; gap: 22px; align-items: flex-start; flex-wrap: wrap; }
+.class-join-row > div:last-child { flex: 1 1 260px; }
+.class-qr { flex: none; width: 200px; aspect-ratio: 1; background: #fff; border: 1px solid var(--line); border-radius: 10px; }
+.class-qr svg { display: block; width: 100%; height: 100%; }
 .profile-form { max-width: 640px; display: grid; gap: 12px; }
 .study-streak { margin: -6px 0 18px; font-size: .9rem; }
 .study-day { background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 18px; }
