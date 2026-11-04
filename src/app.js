@@ -1386,6 +1386,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       ranking: Study.rankBoard(rows, req.user.id, 500).rows.map(shown), idle: rows.filter((r) => !r.minutes).length,
       dates: q(`SELECT d.*, m.name AS by_name FROM class_dates d LEFT JOIN class_members m ON m.class_id = d.class_id AND m.user_id = d.added_by WHERE d.class_id = ? AND d.date >= ? ORDER BY d.date, d.time`).all(cls.id, Study.saDay(Date.now())),
       canDates: Classes.can(me, 'dates'), canManage: Classes.can(me, 'manage'), today: Study.saDay(Date.now()),
+      attendance: q(`SELECT s.label, s.started_at, a.marked_at FROM attendance_sessions s LEFT JOIN attendance a ON a.session_id = s.id AND a.user_id = ? WHERE s.class_id = ? ORDER BY s.started_at DESC`).all(req.user.id, cls.id),
     }));
   });
 
@@ -1449,17 +1450,20 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       WHERE status = 'done' AND course = ? AND credited_sec >= 60 AND user_id IN (SELECT user_id FROM class_members WHERE class_id = ?) GROUP BY user_id`)
       .all(Study.addDay(today, -13), cls.course, cls.id).map((r) => [r.user_id, r]));
     const dow = Study.weekdayOf(today);
+    const sessionsHeld = q(`SELECT COUNT(*) AS n FROM attendance_sessions WHERE class_id = ?`).get(cls.id).n;
+    const attended = new Map(q(`SELECT a.user_id, COUNT(*) AS n FROM attendance a JOIN attendance_sessions s ON s.id = a.session_id WHERE s.class_id = ? GROUP BY a.user_id`).all(cls.id).map((r) => [r.user_id, r.n]));
     const rows = q(`SELECT m.*, u.email FROM class_members m JOIN users u ON u.id = m.user_id WHERE m.class_id = ? AND m.role IN ('student', 'rep')`).all(cls.id)
       .map((m) => {
         const r = { id: m.user_id, number: Classes.studentNumber(m.email), name: m.name || '(no name)', anonymous: !!m.anonymous, role: m.role,
-          week: week.get(m.user_id) || 0, month: month.get(m.user_id) || 0, last: activity.get(m.user_id)?.last || null, days14: activity.get(m.user_id)?.days14 || 0 };
+          week: week.get(m.user_id) || 0, month: month.get(m.user_id) || 0, last: activity.get(m.user_id)?.last || null, days14: activity.get(m.user_id)?.days14 || 0,
+          attended: attended.get(m.user_id) || 0, sessions: sessionsHeld };
         return { ...r, pct: Math.round((r.week / cls.goal_week_min) * 100), nudge: Classes.needsNudge({ weekMin: r.week, lastDay: r.last }, cls.goal_week_min, dow, today) };
       })
       .sort(DASH_SORTS[sort] || DASH_SORTS.week);
     const weeks = rows.map((r) => r.week).sort((a, b) => a - b);
     const median = weeks.length ? (weeks.length % 2 ? weeks[weeks.length >> 1] : Math.round((weeks[weeks.length / 2 - 1] + weeks[weeks.length / 2]) / 2)) : 0;
     const soFar = Classes.goalSoFar(cls.goal_week_min, dow);
-    return { rows, totals: { students: rows.length, median, onTrack: rows.filter((r) => r.week >= soFar).length, nudge: rows.filter((r) => r.nudge).length, soFar } };
+    return { rows, totals: { sessions: sessionsHeld, students: rows.length, median, onTrack: rows.filter((r) => r.week >= soFar).length, nudge: rows.filter((r) => r.nudge).length, soFar } };
   }
   const classForRunners = (req, action = 'dashboard') => {
     const cls = classById(req.params.id);
@@ -1486,8 +1490,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!found) return res.status(404).page(notFound(req));
     const { cls } = found;
     const { rows } = classDashboard(cls, 'number');
-    const lines = [Classes.csvRow(['student_number', 'name', 'anonymous_to_classmates', 'role', 'minutes_this_week', 'minutes_this_month', 'goal_percent_this_week', 'last_studied', 'days_studied_last_14', 'needs_a_nudge'])]
-      .concat(rows.map((r) => Classes.csvRow([r.number, r.name, r.anonymous ? 'yes' : 'no', r.role, r.week, r.month, r.pct, r.last || '', r.days14, r.nudge ? 'yes' : 'no'])));
+    const lines = [Classes.csvRow(['student_number', 'name', 'anonymous_to_classmates', 'role', 'minutes_this_week', 'minutes_this_month', 'goal_percent_this_week', 'last_studied', 'days_studied_last_14', 'needs_a_nudge', 'sessions_attended', 'sessions_held'])]
+      .concat(rows.map((r) => Classes.csvRow([r.number, r.name, r.anonymous ? 'yes' : 'no', r.role, r.week, r.month, r.pct, r.last || '', r.days14, r.nudge ? 'yes' : 'no', r.attended, r.sessions])));
     res.set({ 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="${cls.course}-${cls.year}-students.csv"`, 'Cache-Control': 'no-store' }).send(lines.join('\r\n') + '\r\n');
   });
 

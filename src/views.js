@@ -1548,7 +1548,7 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
     <thead><tr>
       <th scope="col">${sortLink('number', 'Student number')}</th><th scope="col">${sortLink('name', 'Name')}</th>
       <th scope="col">${sortLink('week', 'This week')}</th><th scope="col">Goal</th><th scope="col">This month</th>
-      <th scope="col">${sortLink('last', 'Last studied')}</th><th scope="col">Days (last 14)</th>${manage ? html`<th scope="col"><span class="sr-only">Actions</span></th>` : ''}
+      <th scope="col">${sortLink('last', 'Last studied')}</th><th scope="col">Days (last 14)</th><th scope="col">Attendance</th>${manage ? html`<th scope="col"><span class="sr-only">Actions</span></th>` : ''}
     </tr></thead>
     <tbody>${shown.map((r) => html`<tr class="${r.nudge ? 'dash-nudge' : ''}">
       <td class="code" data-label="Student number">${r.number}</td>
@@ -1558,6 +1558,7 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
       <td data-label="This month">${Study.hoursText(r.month)}</td>
       <td data-label="Last studied">${r.last ? fmtDate(r.last) : html`<span class="meta">Not yet</span>`}</td>
       <td data-label="Days (last 14)">${r.days14}</td>
+      <td data-label="Attendance">${r.sessions ? `${r.attended} of ${r.sessions}` : html`<span class="meta">No sessions yet</span>`}</td>
       ${manage ? html`<td><form method="post" action="/classes/${cls.id}/remove" class="inline" data-confirm="Remove ${r.name} (${r.number}) from the class?"><input type="hidden" name="user" value="${r.id}"><button class="link-btn meta">Remove</button></form></td>` : ''}
     </tr>`)}</tbody>
   </table></div>` : html`<p class="meta">${rows.length ? 'Nobody needs a nudge right now.' : 'No students yet. Share the link or QR code above.'}</p>`}
@@ -1628,7 +1629,7 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
 }
 
 // a class from a member's side: this week against the class goal, the class ranking, and how to start studying
-function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '' }) {
+function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '', attendance = [] }) {
   const student = me.role === 'student' || me.role === 'rep';
   const p = Math.min(1, weekMin / cls.goal_week_min);
   const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
@@ -1672,6 +1673,10 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
       </form>
     </details>` : ''}
   </section>
+  ${(me.role === 'student' || me.role === 'rep') && attendance.length ? html`<section class="card panel class-section" aria-labelledby="my-att">
+    <h2 id="my-att">Your attendance: ${attendance.filter((x) => x.marked_at).length} of ${attendance.length}</h2>
+    <ul class="plain fact-list">${attendance.map((x) => html`<li><span>${x.label}</span> <span class="${x.marked_at ? 'ok-text' : 'meta'}">${x.marked_at ? 'Present' : 'Not marked'}</span></li>`)}</ul>
+  </section>` : ''}
   <h2 class="section-title">Class ranking</h2>
   <div class="toggle" role="group" aria-label="Period">${Object.entries(Study.PERIODS).map(([k, label]) => html`<a href="/c/${cls.code}?period=${k}" class="${k === period ? 'on' : ''}" ${k === period ? html`aria-current="page"` : ''}>${label}</a>`)}</div>
   ${ranking.length ? html`<ol class="board card">${ranking.map(row)}</ol>` : html`<p class="meta">Nobody has timed ${cls.course} ${period === 'day' ? 'today' : period === 'week' ? 'this week' : 'this month'} yet.</p>`}
