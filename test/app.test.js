@@ -2107,3 +2107,27 @@ test('deleting a lecturer account deletes their classes; deleting a student remo
   assert.equal((await lecturer.post('/account/delete', {})).status, 303, 'no foreign key gets in the way');
   assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM classes').get().n, 0);
 }));
+
+test('the class page: this week against the goal, a ranking of only that course, anonymous names, and Today', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { code } = await makeClass(newBrowser); // goal 6 h
+  const join = async (email, body) => { const b = newBrowser(); await b.signIn(email); await b.post('/c/' + code + '/join', body); return b; };
+  const a = await join('aaa001@myuct.ac.za', { show: 'name', name: 'Thandi M' });
+  await join('bbb002@myuct.ac.za', { show: 'anon', name: 'Secret Person' });
+  await join('ccc003@myuct.ac.za', { show: 'name', name: 'Sipho K' });
+  const id = (e) => sdb.prepare('SELECT id FROM users WHERE email = ?').get(e).id;
+  const today = Study.saDay(Date.now());
+  const add = sdb.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', ?, ?, 0, 0, 120, ?, 'done')`);
+  add.run(id('aaa001@myuct.ac.za'), 'CSC1015F', today, 90 * 60);
+  add.run(id('bbb002@myuct.ac.za'), 'CSC1015F', today, 120 * 60);
+  add.run(id('ccc003@myuct.ac.za'), 'MAM1031F', today, 300 * 60); // another course: doesn't count here
+  const page = await a.text('/c/' + code + '?period=day');
+  assert.match(page, /board-rank">1<\/span>\s*<span class="board-name">Anonymous<\/span>/, 'anonymous classmates stay anonymous');
+  assert.doesNotMatch(page, /Secret Person|BBB002|AAA001/, 'no hidden names or student numbers');
+  assert.match(page, /board-rank">2<\/span>\s*<span class="board-name">Thandi M <span class="badge">You<\/span>/);
+  assert.doesNotMatch(page, /Sipho K<\/span>\s*<span class="board-time" data-count="300"/, 'other courses never count');
+  assert.match(page, /1 classmate hasn't timed any CSC1015F study today/);
+  assert.match(page, /<strong>1 h 30 min<\/strong> of CSC1015F this week, of a 6 h goal/);
+  assert.match(page, /aria-label="90 of 360 minutes this week"/);
+  const todayPage = await a.text('/today');
+  assert.match(todayPage, /Your classes this week[\s\S]*?CSC1015F 2027[\s\S]*?1 h 30 min of 6 h/);
+}));
