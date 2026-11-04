@@ -312,6 +312,20 @@ test('classes: who may do what, student numbers, QR codes and the new-class form
   assert.ok(Classes.parseClassForm({ course: 'CSC1015F', goal: '90' }, known).error);
 });
 
+test('the lecturer dashboard rules: the goal so far, who needs a nudge, and safe CSV', () => {
+  const C = require('../src/classes');
+  assert.equal(C.goalSoFar(540, 0), 77, 'Monday: a seventh of the week');
+  assert.equal(C.goalSoFar(540, 6), 540, 'Sunday: all of it');
+  const today = '2027-03-03'; // a Wednesday (day 2)
+  assert.equal(C.needsNudge({ weekMin: 100, lastDay: '2027-03-02' }, 540, 2, today), false, 'on track');
+  assert.equal(C.needsNudge({ weekMin: 10, lastDay: '2027-03-02' }, 540, 2, today), true, 'under a quarter of the goal so far');
+  assert.equal(C.needsNudge({ weekMin: 0, lastDay: null }, 540, 0, '2027-03-01'), true, 'never studied the course');
+  assert.equal(C.needsNudge({ weekMin: 500, lastDay: '2027-02-24' }, 540, 2, today), true, 'nothing for 7 days');
+  assert.equal(C.needsNudge({ weekMin: 30, lastDay: '2027-03-01' }, 540, 0, '2027-03-01'), false, 'a fair start on a Monday');
+  assert.equal(C.csvRow(['ABC001', 'Thandi, M', 'He said "hi"', null, 5]), 'ABC001,"Thandi, M","He said ""hi""",,5');
+  for (const evil of ['=HYPERLINK("x")', '+1', '-2', '@SUM(A1)']) assert.ok(C.csvRow([evil]).replace(/^"/, '').startsWith("'"), evil);
+});
+
 test('student and staff emails: the domain decides the role', () => {
   const { accountFor } = require('../src/universities');
   assert.deepEqual([accountFor('abcxyz001@myuct.ac.za').role, accountFor('abcxyz001@myuct.ac.za').uni.slug], ['student', 'uct']);

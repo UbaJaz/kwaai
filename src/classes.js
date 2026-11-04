@@ -43,4 +43,23 @@ function parseClassForm(body, { course: courseExists, cleanName, screen, goalFor
   return { cls: { course, year, name: name.name, goalWeekMin: Math.round(hours * 60) } };
 }
 
-module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm };
+// The goal so far this week: the weekly goal spread over the days gone, Monday counting as one day.
+const goalSoFar = (goalWeekMin, dayOfWeek) => Math.round((goalWeekMin * (dayOfWeek + 1)) / 7);
+
+// "Needs a nudge": well behind this week (under a quarter of the goal so far) or no study of the course for 7 days.
+// dayOfWeek is 0 on Monday; lastDay is the last day they studied the course, or null; today is a South African date.
+function needsNudge({ weekMin, lastDay }, goalWeekMin, dayOfWeek, today) {
+  if (!lastDay) return true;
+  const idle = Math.round((Date.parse(today) - Date.parse(lastDay)) / 86_400_000);
+  return idle >= 7 || weekMin < goalSoFar(goalWeekMin, dayOfWeek) / 4;
+}
+
+// One CSV line. Quotes where needed, and a value a spreadsheet would run as a formula (=, +, -, @) gets a leading '
+// so a student's name can't become a formula in the lecturer's Excel.
+const csvRow = (cells) => cells.map((v) => {
+  let s = v == null ? '' : String(v);
+  if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
+  return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}).join(',');
+
+module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow };
