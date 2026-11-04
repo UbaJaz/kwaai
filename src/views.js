@@ -1506,13 +1506,11 @@ function classes(ctx, { classes: list, staff, thisYear, error, form = {} }) {
 }
 
 // the page for the people running a class: how students join (the dashboard is added to this page later)
-function classAdmin(ctx, { cls, me, course, link, qr }) {
+function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, rows, totals }) {
   const share = `https://wa.me/?text=${encodeURIComponent(`Join ${cls.name} on Kwaai: ${link}`)}`;
-  return layout({ ...ctx, title: cls.name, here: '/classes' }, html`
-  <p class="crumbs"><a href="/classes">Classes</a></p>
-  <h1 class="page-title">${cls.name}</h1>
-  <p class="lede small"><a class="code" href="/courses/${cls.course}">${cls.course}</a> ${course?.title ?? ''} · ${cls.year} · weekly goal ${Study.hoursText(cls.goal_week_min)} · you're the ${CLASS_ROLE[me.role].toLowerCase()}</p>
-  <section class="card panel class-join" aria-labelledby="join-head">
+  const shown = onlyNudge ? rows.filter((r) => r.nudge) : rows;
+  const sortLink = (key, label) => html`<a href="/classes/${cls.id}?sort=${key}${onlyNudge ? '&filter=nudge' : ''}" ${sort === key ? html`aria-current="true"` : ''}>${label}</a>`;
+  const joinSection = html`<section class="card panel class-join" aria-labelledby="join-head">
     <h2 id="join-head">How students join</h2>
     <div class="class-join-row">
       <div class="class-qr" role="img" aria-label="QR code for ${link}">${raw(qr)}</div>
@@ -1523,7 +1521,52 @@ function classAdmin(ctx, { cls, me, course, link, qr }) {
         <p><a class="btn btn-small" href="${share}" target="_blank" rel="noopener">Share on WhatsApp</a></p>
       </div>
     </div>
-  </section>`);
+  </section>`;
+  return layout({ ...ctx, title: cls.name, here: '/classes' }, html`
+  <p class="crumbs"><a href="/classes">Classes</a></p>
+  <h1 class="page-title">${cls.name}</h1>
+  <p class="lede small"><a class="code" href="/courses/${cls.course}">${cls.course}</a> ${course?.title ?? ''} · ${cls.year} · weekly goal ${Study.hoursText(cls.goal_week_min)} · you're the ${CLASS_ROLE[me.role].toLowerCase()}</p>
+  ${rows.length ? '' : joinSection}
+  <dl class="dash-totals">
+    <div><dt>Students</dt><dd>${totals.students}</dd></div>
+    <div><dt>Median this week</dt><dd>${Study.hoursText(totals.median)}</dd></div>
+    <div><dt>On track</dt><dd>${totals.onTrack}<small> of ${totals.students}</small></dd></div>
+    <div class="${totals.nudge ? 'dash-warn' : ''}"><dt>Need a nudge</dt><dd>${totals.nudge}</dd></div>
+  </dl>
+  <p class="meta">On track means at least ${Study.hoursText(totals.soFar)} of ${cls.course} so far this week (the ${Study.hoursText(cls.goal_week_min)} goal spread over the days gone). A nudge means under a quarter of that, or no ${cls.course} study for 7 days.</p>
+  <div class="dash-tools">
+    <div class="toggle" role="group" aria-label="Which students">
+      <a href="/classes/${cls.id}?sort=${sort}" class="${onlyNudge ? '' : 'on'}" ${onlyNudge ? '' : html`aria-current="page"`}>Everyone</a>
+      <a href="/classes/${cls.id}?sort=${sort}&filter=nudge" class="${onlyNudge ? 'on' : ''}" ${onlyNudge ? html`aria-current="page"` : ''}>Needs a nudge (${totals.nudge})</a>
+    </div>
+    <a class="btn btn-small btn-quiet" href="/classes/${cls.id}/students.csv" download>Download CSV</a>
+  </div>
+  ${shown.length ? html`<div class="table-scroll card"><table class="dash-table">
+    <thead><tr>
+      <th scope="col">${sortLink('number', 'Student number')}</th><th scope="col">${sortLink('name', 'Name')}</th>
+      <th scope="col">${sortLink('week', 'This week')}</th><th scope="col">Goal</th><th scope="col">This month</th>
+      <th scope="col">${sortLink('last', 'Last studied')}</th><th scope="col">Days (last 14)</th>${manage ? html`<th scope="col"><span class="sr-only">Actions</span></th>` : ''}
+    </tr></thead>
+    <tbody>${shown.map((r) => html`<tr class="${r.nudge ? 'dash-nudge' : ''}">
+      <td class="code" data-label="Student number">${r.number}</td>
+      <td class="dash-name" data-label="Name">${r.name}${r.anonymous ? html` <span class="meta">(anonymous to classmates)</span>` : ''}${r.role === 'rep' ? html` <span class="badge badge-rep">Class rep</span>` : ''}</td>
+      <td data-label="This week">${Study.hoursText(r.week)}</td>
+      <td data-label="Goal"><span class="goal-track" aria-hidden="true"><i style="width:${Math.min(100, r.pct)}%"></i></span> ${r.pct}%</td>
+      <td data-label="This month">${Study.hoursText(r.month)}</td>
+      <td data-label="Last studied">${r.last ? fmtDate(r.last) : html`<span class="meta">Not yet</span>`}</td>
+      <td data-label="Days (last 14)">${r.days14}</td>
+      ${manage ? html`<td><form method="post" action="/classes/${cls.id}/remove" class="inline" data-confirm="Remove ${r.name} (${r.number}) from the class?"><input type="hidden" name="user" value="${r.id}"><button class="link-btn meta">Remove</button></form></td>` : ''}
+    </tr>`)}</tbody>
+  </table></div>` : html`<p class="meta">${rows.length ? 'Nobody needs a nudge right now.' : 'No students yet. Share the link or QR code above.'}</p>`}
+  ${rows.length ? joinSection : ''}
+  ${manage ? html`<details class="card panel class-edit">
+    <summary>Edit the class</summary>
+    <form method="post" action="/classes/${cls.id}/edit" class="study-form">
+      <label>Class name <input type="text" name="name" maxlength="60" value="${cls.name}" required></label>
+      <label>Weekly study goal <span class="hint">hours</span><input type="number" name="goal" min="1" max="40" step="0.5" value="${cls.goal_week_min / 60}" required inputmode="decimal"></label>
+      <div class="form-actions"><button class="btn">Save</button></div>
+    </form>
+  </details>` : ''}`);
 }
 
 // The join screen: exactly what the lecturer and tutors will see, and how classmates see you. Joining is consent.
