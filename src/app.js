@@ -1398,13 +1398,81 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, '/classes', 'ok', `You've left ${cls.name}. Your lecturer no longer sees you in it.`);
   });
 
-  // the class's page for the people who run it: the join link and QR code (the dashboard comes with it later)
-  app.get('/classes/:id', requireUser, (req, res) => {
+  // Every student (and rep) in a class with their progress on the course: minutes this week and month, the goal %,
+  // when they last studied it, how many of the last 14 days, and whether they need a nudge. Only that course counts.
+  const DASH_SORTS = {
+    week: (a, b) => b.week - a.week,
+    name: (a, b) => a.name.localeCompare(b.name),
+    number: (a, b) => a.number.localeCompare(b.number),
+    last: (a, b) => (b.last || '').localeCompare(a.last || ''),
+  };
+  function classDashboard(cls, sort = 'week') {
+    const today = Study.saDay(Date.now());
+    const minutesIn = (period) => new Map(classMinutes(cls, ...Study.periodRange(period, today)).map((r) => [r.user_id, r.minutes]));
+    const week = minutesIn('week');
+    const month = minutesIn('month');
+    const activity = new Map(q(`SELECT user_id, MAX(day) AS last, COUNT(DISTINCT CASE WHEN day >= ? THEN day END) AS days14 FROM study_sessions
+      WHERE status = 'done' AND course = ? AND credited_sec >= 60 AND user_id IN (SELECT user_id FROM class_members WHERE class_id = ?) GROUP BY user_id`)
+      .all(Study.addDay(today, -13), cls.course, cls.id).map((r) => [r.user_id, r]));
+    const dow = Study.weekdayOf(today);
+    const rows = q(`SELECT m.*, u.email FROM class_members m JOIN users u ON u.id = m.user_id WHERE m.class_id = ? AND m.role IN ('student', 'rep')`).all(cls.id)
+      .map((m) => {
+        const r = { id: m.user_id, number: Classes.studentNumber(m.email), name: m.name || '(no name)', anonymous: !!m.anonymous, role: m.role,
+          week: week.get(m.user_id) || 0, month: month.get(m.user_id) || 0, last: activity.get(m.user_id)?.last || null, days14: activity.get(m.user_id)?.days14 || 0 };
+        return { ...r, pct: Math.round((r.week / cls.goal_week_min) * 100), nudge: Classes.needsNudge({ weekMin: r.week, lastDay: r.last }, cls.goal_week_min, dow, today) };
+      })
+      .sort(DASH_SORTS[sort] || DASH_SORTS.week);
+    const weeks = rows.map((r) => r.week).sort((a, b) => a - b);
+    const median = weeks.length ? (weeks.length % 2 ? weeks[weeks.length >> 1] : Math.round((weeks[weeks.length / 2 - 1] + weeks[weeks.length / 2]) / 2)) : 0;
+    const soFar = Classes.goalSoFar(cls.goal_week_min, dow);
+    return { rows, totals: { students: rows.length, median, onTrack: rows.filter((r) => r.week >= soFar).length, nudge: rows.filter((r) => r.nudge).length, soFar } };
+  }
+  const classForRunners = (req, action = 'dashboard') => {
     const cls = classById(req.params.id);
     const me = cls && classMember(cls.id, req.user.id);
-    if (!Classes.can(me, 'dashboard')) return res.status(404).page(notFound(req));
+    return Classes.can(me, action) ? { cls, me } : null;
+  };
+
+  // the class's page for the people who run it: how students join, and the dashboard
+  app.get('/classes/:id', requireUser, (req, res) => {
+    const found = classForRunners(req);
+    if (!found) return res.status(404).page(notFound(req));
+    const { cls, me } = found;
     const link = joinUrl(req, cls);
-    res.set('Cache-Control', 'no-store').page(views.classAdmin(req.ctx, { cls, me, course: getCourse(cls.course), link, qr: Classes.qrSvg(link) }));
+    const sort = DASH_SORTS[req.query.sort] ? req.query.sort : 'week';
+    res.set('Cache-Control', 'no-store').page(views.classAdmin(req.ctx, {
+      cls, me, course: getCourse(cls.course), link, qr: Classes.qrSvg(link), sort, onlyNudge: req.query.filter === 'nudge', manage: Classes.can(me, 'manage'), ...classDashboard(cls, sort),
+    }));
+  });
+
+  app.get('/classes/:id/students.csv', requireUser, (req, res) => {
+    const found = classForRunners(req);
+    if (!found) return res.status(404).page(notFound(req));
+    const { cls } = found;
+    const { rows } = classDashboard(cls, 'number');
+    const lines = [Classes.csvRow(['student_number', 'name', 'anonymous_to_classmates', 'role', 'minutes_this_week', 'minutes_this_month', 'goal_percent_this_week', 'last_studied', 'days_studied_last_14', 'needs_a_nudge'])]
+      .concat(rows.map((r) => Classes.csvRow([r.number, r.name, r.anonymous ? 'yes' : 'no', r.role, r.week, r.month, r.pct, r.last || '', r.days14, r.nudge ? 'yes' : 'no'])));
+    res.set({ 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="${cls.course}-${cls.year}-students.csv"`, 'Cache-Control': 'no-store' }).send(lines.join('\r\n') + '\r\n');
+  });
+
+  app.post('/classes/:id/edit', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'manage');
+    if (!found) return res.status(404).page(notFound(req));
+    const { cls } = found;
+    const name = Study.cleanName(req.body.name, 60, screenComment);
+    const hours = Number(req.body.goal);
+    if (name.error) return flashRedirect(res, `/classes/${cls.id}`, 'error', `Class name: ${name.error}`);
+    if (!(hours >= 1 && hours <= 40)) return flashRedirect(res, `/classes/${cls.id}`, 'error', 'Set a weekly goal of 1 to 40 hours.');
+    q(`UPDATE classes SET name = ?, goal_week_min = ? WHERE id = ?`).run(name.name, Math.round(hours * 60), cls.id);
+    flashRedirect(res, `/classes/${cls.id}`, 'ok', 'Saved.');
+  });
+
+  app.post('/classes/:id/remove', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'manage');
+    const who = found && classMember(found.cls.id, Number(req.body.user));
+    if (!who || who.role === 'lecturer') return res.status(404).page(notFound(req));
+    q(`DELETE FROM class_members WHERE class_id = ? AND user_id = ?`).run(found.cls.id, who.user_id);
+    flashRedirect(res, `/classes/${found.cls.id}`, 'ok', 'Removed from the class.');
   });
 
   // ---- test tools (admin only, and only with TEST_TOOLS=1) ----
