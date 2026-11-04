@@ -217,6 +217,25 @@ document.querySelectorAll('[data-tab-more]').forEach((more) => {
   });
 });
 
+/// The tutor's attendance screen: every 4 seconds, a fresh QR code (it changes every 20 seconds), the count and the
+// newest names. Without this script the page still works; it just needs a refresh for a new code.
+document.querySelectorAll('[data-attend-live]').forEach((screen) => {
+  const qr = screen.querySelector('[data-attend-qr]');
+  const count = screen.querySelector('[data-attend-count]');
+  const recent = screen.querySelector('[data-attend-recent]');
+  const tick = () => fetch(screen.dataset.attendLive, { headers: { accept: 'application/json' } })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => {
+      if (!d) return;
+      if (!d.open) { window.location.reload(); return; }
+      qr.innerHTML = d.qr; // our own server's SVG
+      count.textContent = String(d.count);
+      recent.replaceChildren(...d.recent.map((name) => { const li = document.createElement('li'); li.textContent = name; return li; }));
+    })
+    .catch(() => { /* offline for a moment: the next tick tries again */ });
+  setInterval(tick, 4000);
+});
+
 // Installable app: the service worker keeps Today, the week, the year and Marks working offline (public/sw.js).
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => { /* the site works without it */ }));

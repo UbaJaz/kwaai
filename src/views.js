@@ -1508,7 +1508,7 @@ function classes(ctx, { classes: list, staff, thisYear, error, form = {} }) {
 }
 
 // the page for the people running a class: how students join (the dashboard is added to this page later)
-function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, rows, totals }) {
+function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, rows, totals, tutors = [], sessions = [] }) {
   const share = `https://wa.me/?text=${encodeURIComponent(`Join ${cls.name} on Kwaai: ${link}`)}`;
   const shown = onlyNudge ? rows.filter((r) => r.nudge) : rows;
   const sortLink = (key, label) => html`<a href="/classes/${cls.id}?sort=${key}${onlyNudge ? '&filter=nudge' : ''}" ${sort === key ? html`aria-current="true"` : ''}>${label}</a>`;
@@ -1562,6 +1562,28 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
     </tr>`)}</tbody>
   </table></div>` : html`<p class="meta">${rows.length ? 'Nobody needs a nudge right now.' : 'No students yet. Share the link or QR code above.'}</p>`}
   ${rows.length ? joinSection : ''}
+  <section class="card panel class-section" id="attendance" aria-labelledby="att-head">
+    <h2 id="att-head">Tut and prac attendance</h2>
+    <form method="post" action="/classes/${cls.id}/attendance" class="study-form attend-start">
+      <label>Session name <input type="text" name="label" maxlength="60" placeholder="e.g. Tut 3, Wednesday"></label>
+      <div class="form-actions"><button class="btn">Start attendance</button></div>
+    </form>
+    <p class="meta">Your screen shows a QR code. Students scan it with their phone camera and tap to confirm. Keep the screen where the room can see it.</p>
+    ${sessions.length ? html`<ul class="plain fact-list">${sessions.map((x) => html`<li><a href="/attend/${x.id}">${x.label}</a> <span class="meta">${plural(x.present, 'student')} present${x.ended_at ? '' : ' · open'}</span></li>`)}</ul>` : ''}
+  </section>
+  ${manage ? html`<section class="card panel class-section" id="tutors" aria-labelledby="tutor-head">
+    <h2 id="tutor-head">Tutors</h2>
+    <p class="meta">Tutors see this dashboard and take attendance. They need to have signed in to Kwaai once.</p>
+    ${tutors.length ? html`<ul class="plain fact-list">${tutors.map((t) => html`<li>${t.name} <span class="meta">${t.email}</span>
+      <form method="post" action="/classes/${cls.id}/tutors/remove" class="inline" data-confirm="Remove ${t.name} as a tutor?"><input type="hidden" name="user" value="${t.user_id}"><button class="link-btn meta">Remove</button></form></li>`)}</ul>` : ''}
+    <form method="post" action="/classes/${cls.id}/tutors" class="study-form">
+      <div class="form-row two">
+        <label>Their UCT email <input type="email" name="email" required placeholder="abcxyz001@myuct.ac.za"></label>
+        <label>Their name <input type="text" name="name" required maxlength="60" placeholder="e.g. Sam Tutor"></label>
+      </div>
+      <div class="form-actions"><button class="btn btn-small">Add tutor</button></div>
+    </form>
+  </section>` : ''}
   ${manage ? html`<details class="card panel class-edit">
     <summary>Edit the class</summary>
     <form method="post" action="/classes/${cls.id}/edit" class="study-form">
@@ -1656,6 +1678,47 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
   ${idle ? html`<p class="meta">${idle === 1 ? "1 classmate hasn't" : `${idle} classmates haven't`} timed any ${cls.course} study ${period === 'day' ? 'today' : period === 'week' ? 'this week' : 'this month'}.</p>` : ''}
   <p class="meta">You're in this class as <strong>${me.anonymous ? 'Anonymous' : me.name}</strong>${me.role !== 'student' ? ` (${CLASS_ROLE[me.role].toLowerCase()})` : ''}. Classmates never see your student number.</p>
   ${me.role === 'lecturer' ? '' : html`<form method="post" action="/c/${cls.code}/leave" class="inline" data-confirm="Leave ${cls.name}? Your lecturer will no longer see you in it."><button class="btn btn-small btn-quiet">Leave the class</button></form>`}`);
+}
+
+/// ---------- attendance ----------
+// The tutor's screen: a big QR code that public/app.js refreshes every few seconds, the count so far, the newest names,
+// add by student number for someone without a phone, and End.
+function attendanceScreen(ctx, { s, qr, count, recent }) {
+  return layout({ ...ctx, title: `Attendance: ${s.label}`, here: '/classes' }, html`
+  <p class="crumbs"><a href="/classes/${s.class_id}#attendance">${s.class_name}</a></p>
+  <h1 class="page-title">${s.label}</h1>
+  ${s.ended_at ? html`<div class="card panel"><p><strong>This session is closed.</strong> ${plural(count, 'student')} marked present.</p></div>` : html`
+  <section class="attend-screen" data-attend-live="/attend/${s.id}/live" aria-labelledby="attend-head">
+    <h2 id="attend-head" class="sr-only">Scan to check in</h2>
+    <div class="attend-qr" role="img" aria-label="Attendance QR code. It changes every 20 seconds." data-attend-qr>${raw(qr)}</div>
+    <p class="attend-help">Point your phone camera at the code, open the link, and tap <strong>Mark me present</strong>. It changes every 20 seconds.</p>
+    <p class="attend-count"><strong data-attend-count>${count}</strong> present</p>
+    <ul class="plain attend-recent" data-attend-recent>${recent.map((r) => html`<li>${r.name || 'A student'}</li>`)}</ul>
+  </section>
+  <form method="post" action="/attend/${s.id}/add" class="card panel study-form attend-add">
+    <label>No phone? Add by student number <input type="text" name="number" required placeholder="e.g. ABCXYZ001" autocapitalize="characters" autocomplete="off" spellcheck="false"></label>
+    <div class="form-actions"><button class="btn btn-small btn-quiet">Mark present</button></div>
+  </form>
+  <form method="post" action="/attend/${s.id}/end" class="form-actions" data-confirm="Close ${s.label}? Nobody else can check in after this.">
+    <button class="btn btn-big btn-ink">End attendance</button>
+  </form>`}`);
+}
+
+// The student's side of a scan: confirm, done, or what went wrong (closed, expired, or not in the class yet)
+function attendanceCheckIn(ctx, { s, problem, key, already, done }) {
+  return layout({ ...ctx, title: 'Check in', here: '/classes' }, html`
+  <div class="narrow attend-check">
+    <h1 class="page-title">${s.label}</h1>
+    <p class="lede small">${s.class_name}</p>
+    ${done || already ? html`<div class="card panel attend-done" role="status"><p class="attend-tick" aria-hidden="true">✓</p><p><strong>You're marked present.</strong></p><p class="meta"><a href="/c/${s.code}">Back to the class</a></p></div>`
+      : problem === 'join' ? html`<div class="card panel"><p><strong>You're not in this class on Kwaai yet.</strong> Join it, then scan the code again.</p><p><a class="btn" href="/c/${s.code}">Join ${s.course}</a></p></div>`
+      : problem ? html`<div class="card panel"><p><strong>${problem}</strong></p></div>`
+      : html`<form method="post" action="/a/${s.id}" class="card panel attend-confirm">
+          <input type="hidden" name="k" value="${key}">
+          <p>Checking in as yourself for <strong>${s.label}</strong>.</p>
+          <button class="btn btn-big">Mark me present</button>
+        </form>`}
+  </div>`);
 }
 
 // ---------- study groups ----------
@@ -2250,4 +2313,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, adminLogin, adminTools, classes, classAdmin, classJoin, classPage, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, adminLogin, adminTools, classes, classAdmin, classJoin, classPage, attendanceScreen, attendanceCheckIn, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
