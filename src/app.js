@@ -1063,13 +1063,18 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     return { c, conveners: inDept.filter((l) => conv.has(l.name)), others: inDept.filter((l) => !conv.has(l.name)), years: years() };
   }
 
-  app.get('/courses/:code/review', requireUser, (req, res) => {
+  // Ratings, votes and tips are students' voice, so staff accounts can read them but not post them.
+  const requireStudent = (req, res, next) => (req.user.role === 'staff'
+    ? res.status(403).page(views.message(req.ctx, { title: 'Ratings are for students', emoji: '🎓', text: 'Staff accounts can read every review and tip, but only students can rate courses and vote. Lecturers can set up a class for their course instead.', link: { href: '/classes', label: 'Your classes' } }))
+    : next());
+
+  app.get('/courses/:code/review', requireUser, requireStudent, (req, res) => {
     const c = getCourse(req.params.code);
     if (!c) return res.status(404).page((notFound(req)));
     res.page((views.reviewForm(req.ctx, formData(c))));
   });
 
-  app.post('/courses/:code/review', requireUser, limits.review, (req, res) => {
+  app.post('/courses/:code/review', requireUser, requireStudent, limits.review, (req, res) => {
     const c = getCourse(req.params.code);
     if (!c) return res.status(404).page((notFound(req)));
     const fail = (error) => res.status(400).page((views.reviewForm(req.ctx, { ...formData(c), values: req.body, error })));
@@ -1096,7 +1101,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       status === 'held' ? 'Thanks! A moderator will check your comment before it goes live.' : 'Thanks! Your review is live. 🤙');
   });
 
-  app.post('/courses/:code/verdict', requireUser, limits.verdict, (req, res) => {
+  app.post('/courses/:code/verdict', requireUser, requireStudent, limits.verdict, (req, res) => {
     const c = getCourse(req.params.code);
     if (!c) return res.status(404).page(notFound(req));
     const back = `/courses/${c.code}#verdict`;
