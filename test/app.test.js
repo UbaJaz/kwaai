@@ -2305,3 +2305,35 @@ test('attendance shows up for the student, on the dashboard and in the CSV', () 
   assert.match(csv, /needs_a_nudge,sessions_attended,sessions_held\r\n/);
   assert.match(csv, /\r\nATTD001,Att Student,no,student,.*,1,2\r\n/);
 }));
+
+test('class reps: full name and badge, can add dates, never the dashboard or student numbers', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code, adminPath } = await makeClass(newBrowser);
+  const rep = newBrowser();
+  await rep.signIn('repp001@myuct.ac.za');
+  await rep.post('/c/' + code + '/join', { show: 'anon', name: '' });
+  const other = newBrowser();
+  await other.signIn('othr002@myuct.ac.za');
+  await other.post('/c/' + code + '/join', { show: 'name', name: 'Other Student' });
+  const repId = sdb.prepare(`SELECT id FROM users WHERE email = 'repp001@myuct.ac.za'`).get().id;
+
+  assert.equal((await rep.post(adminPath + '/rep', { user: String(repId), make: '1', name: 'Self Promoted' })).status, 404, 'only the lecturer appoints reps');
+  await lecturer.post(adminPath + '/rep', { user: String(repId), make: '1', name: 'Thandi' });
+  assert.equal(sdb.prepare('SELECT role FROM class_members WHERE user_id = ?').get(repId).role, 'student', 'a full name needs a surname');
+  await lecturer.post(adminPath + '/rep', { user: String(repId), make: '1', name: 'Thandi Mokoena' });
+  const m = sdb.prepare('SELECT role, name, anonymous FROM class_members WHERE user_id = ?').get(repId);
+  assert.deepEqual([m.role, m.name, m.anonymous], ['rep', 'Thandi Mokoena', 0], 'a rep is never anonymous');
+
+  const today = Study.saDay(Date.now());
+  sdb.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', 'CSC1015F', ?, 0, 0, 60, 1800, 'done')`).run(repId, today);
+  assert.match(await other.text('/c/' + code + '?period=day'), /Thandi Mokoena <span class="badge badge-rep">Class rep<\/span>/, 'classmates see the full name and badge');
+  const repPage = await rep.text('/c/' + code);
+  assert.match(repPage, /You're the class rep\./);
+  assert.match(repPage, /Add a test, prac or deadline/, 'reps can add dates');
+  assert.doesNotMatch(repPage, /OTHR002|REPP001/, 'and never see student numbers');
+  assert.equal((await rep.get(adminPath)).status, 404, 'or the dashboard');
+  await rep.post('/c/' + code + '/dates', { type: 'prac', date: Study.addDay(today, 3), title: 'Prac 2' });
+  assert.match(await other.text('/c/' + code), /Prac 2[\s\S]{0,120}from Thandi Mokoena \(class rep\)/);
+
+  await lecturer.post(adminPath + '/rep', { user: String(repId) });
+  assert.equal(sdb.prepare('SELECT role FROM class_members WHERE user_id = ?').get(repId).role, 'student');
+}));
