@@ -664,7 +664,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
-    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [] }));
+    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [] }));
   });
 
   // ---- study timer ----
@@ -1030,6 +1030,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       tips_you_reported: q(`SELECT verdict_id FROM verdict_reports WHERE user_id = ?`).all(id),
       lecturer_suggestions: q(`SELECT name, course, status, created_at FROM lecturer_suggestions WHERE user_id = ? ORDER BY created_at`).all(id),
       classes: q(`SELECT c.course, c.year, c.name, m.role, m.name AS your_name_there, m.anonymous, m.consent_at, m.joined_at FROM class_members m JOIN classes c ON c.id = m.class_id WHERE m.user_id = ?`).all(id),
+      pulse_checks_you_answered: q(`SELECT c.name AS class, p.question FROM pulse_answered a JOIN class_pulses p ON p.id = a.pulse_id JOIN classes c ON c.id = p.class_id WHERE a.user_id = ?`).all(id),
       class_announcements_you_posted: q(`SELECT c.course, c.name AS class, a.body, a.poster_name, a.poster_role, a.created_at FROM class_announcements a JOIN classes c ON c.id = a.class_id WHERE a.posted_by = ? ORDER BY a.created_at`).all(id),
       study_groups: q(`SELECT g.name, m.name AS your_name_there, m.joined_at, g.owner_id = ? AS you_own_it FROM group_members m JOIN study_groups g ON g.id = m.group_id WHERE m.user_id = ?`).all(id, id),
       leaderboard_profile: q(`SELECT display_name, show_name, faculty, major, year, boards_agreed_at FROM profiles WHERE user_id = ?`).get(id) || null,
@@ -1053,6 +1054,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM name_reports WHERE user_id = ? OR target_id = ?`).run(id, id);
       q(`DELETE FROM profiles WHERE user_id = ?`).run(id);
       for (const g of q(`SELECT g.* FROM study_groups g JOIN group_members m ON m.group_id = g.id WHERE m.user_id = ?`).all(id)) leaveGroup(g, id);
+      q(`DELETE FROM pulse_answered WHERE user_id = ?`).run(id); // the counts stay: they were never linked to anyone
+      q(`UPDATE class_pulses SET asked_by = NULL WHERE asked_by = ?`).run(id);
       q(`DELETE FROM class_announcements WHERE posted_by = ?`).run(id);
       q(`DELETE FROM announcement_reads WHERE user_id = ?`).run(id);
       q(`DELETE FROM announcement_reports WHERE user_id = ?`).run(id);
@@ -1383,6 +1386,16 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       AND NOT EXISTS (SELECT 1 FROM announcement_reads r WHERE r.announcement_id = a.id AND r.user_id = ?) ORDER BY a.created_at DESC LIMIT 5`).all(user.id, since, user.id, user.id);
   }
 
+  // pulse checks are open until closed or Classes.PULSE_DAYS have passed; options and counts are stored as JSON
+  const pulseOpen = (p, now) => !p.closed_at && p.closes_at > now;
+  const pulseView = (p, now = Date.now()) => ({ ...p, options: JSON.parse(p.options), counts: JSON.parse(p.counts), open: pulseOpen(p, now) });
+  // Today's questions: open, in classes you're in as a student or rep, and not answered yet
+  function pulsesFor(user) {
+    return q(`SELECT p.*, c.code, c.name AS class_name FROM class_pulses p JOIN class_members m ON m.class_id = p.class_id AND m.user_id = ? AND m.role IN ('student', 'rep')
+      JOIN classes c ON c.id = p.class_id WHERE p.closed_at IS NULL AND p.closes_at > ?
+      AND NOT EXISTS (SELECT 1 FROM pulse_answered a WHERE a.pulse_id = p.id AND a.user_id = ?) ORDER BY p.asked_at DESC LIMIT 3`).all(user.id, Date.now(), user.id).map((p) => pulseView(p));
+  }
+
   app.get('/c/:code', requireUser, (req, res) => {
     const cls = classByCode(req.params.code);
     if (!cls) return res.status(404).page(notFound(req));
@@ -1401,6 +1414,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       dates: q(`SELECT d.*, m.name AS by_name FROM class_dates d LEFT JOIN class_members m ON m.class_id = d.class_id AND m.user_id = d.added_by WHERE d.class_id = ? AND d.date >= ? ORDER BY d.date, d.time`).all(cls.id, Study.saDay(Date.now())),
       canDates: Classes.can(me, 'dates'), canManage: Classes.can(me, 'manage'), today: Study.saDay(Date.now()),
       announcements, canAnnounce: Classes.can(me, 'announce'),
+      pulses: q(`SELECT p.*, EXISTS (SELECT 1 FROM pulse_answered a WHERE a.pulse_id = p.id AND a.user_id = ?) AS answered FROM class_pulses p
+        WHERE p.class_id = ? AND p.closed_at IS NULL AND p.closes_at > ? ORDER BY p.asked_at DESC`).all(req.user.id, cls.id, Date.now()).map((p) => pulseView(p)),
       attendance: q(`SELECT s.label, s.started_at, a.marked_at FROM attendance_sessions s LEFT JOIN attendance a ON a.session_id = s.id AND a.user_id = ? WHERE s.class_id = ? ORDER BY s.started_at DESC`).all(req.user.id, cls.id),
     }));
   });
@@ -1438,6 +1453,54 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!d || !Classes.can(me, 'dates') || (d.added_by !== req.user.id && !Classes.can(me, 'manage'))) return res.status(404).page(notFound(req));
     q(`DELETE FROM class_dates WHERE id = ?`).run(d.id);
     flashRedirect(res, `/c/${cls.code}#dates`, 'ok', 'Removed.');
+  });
+
+  // ---- pulse checks ----
+  // The lecturer or a tutor asks; students and reps answer once each. Only the counts are kept, so nobody (the
+  // lecturer included) can see who chose what. A pulse closes when they close it or after Classes.PULSE_DAYS.
+  app.post('/classes/:id/pulse', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'pulse');
+    if (!found) return res.status(404).page(notFound(req));
+    const back = (type, text) => flashRedirect(res, `/classes/${found.cls.id}#pulse`, type, text);
+    const parsed = Classes.parsePulse(req.body, screenComment);
+    if (parsed.error) return back('error', parsed.error);
+    const now = Date.now();
+    q(`INSERT INTO class_pulses (class_id, question, options, counts, asked_by, asked_at, closes_at) VALUES (?, ?, ?, ?, ?, ?, ?)`)
+      .run(found.cls.id, parsed.question, JSON.stringify(parsed.options), JSON.stringify(parsed.options.map(() => 0)), req.user.id, now, now + Classes.PULSE_DAYS * 24 * 60 * MIN);
+    back('ok', `Asked. Students see it on the class page and on Today. It closes by itself in ${Classes.PULSE_DAYS} days.`);
+  });
+
+  app.post('/classes/:id/pulse/:pid/close', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'pulse');
+    const p = found && q(`SELECT * FROM class_pulses WHERE id = ? AND class_id = ?`).get(Number(req.params.pid) || 0, found.cls.id);
+    if (!p) return res.status(404).page(notFound(req));
+    q(`UPDATE class_pulses SET closed_at = COALESCE(closed_at, ?) WHERE id = ?`).run(Date.now(), p.id);
+    flashRedirect(res, `/classes/${found.cls.id}#pulse`, 'ok', 'Closed. The results stay here.');
+  });
+
+  app.post('/c/:code/pulse/:pid', requireUser, limits.classes, (req, res) => {
+    const cls = classByCode(req.params.code);
+    const me = cls && classMember(cls.id, req.user.id);
+    const p = me && ['student', 'rep'].includes(me.role) && q(`SELECT * FROM class_pulses WHERE id = ? AND class_id = ?`).get(Number(req.params.pid) || 0, cls.id);
+    if (!p) return res.status(404).page(notFound(req));
+    const back = req.body.back === 'today' ? '/today' : `/c/${cls.code}#pulse`;
+    const counts = JSON.parse(p.counts);
+    const choice = Number(req.body.choice);
+    if (!Number.isInteger(choice) || choice < 0 || choice >= counts.length) return flashRedirect(res, back, 'error', 'Pick one of the answers.');
+    if (!pulseOpen(p, Date.now())) return flashRedirect(res, back, 'error', 'That question has closed.');
+    db.exec('BEGIN');
+    try {
+      const { changes } = q(`INSERT OR IGNORE INTO pulse_answered (pulse_id, user_id) VALUES (?, ?)`).run(p.id, req.user.id);
+      if (changes) {
+        counts[choice] += 1;
+        q(`UPDATE class_pulses SET counts = ? WHERE id = ?`).run(JSON.stringify(counts), p.id);
+      }
+      db.exec('COMMIT');
+    } catch (err) {
+      db.exec('ROLLBACK');
+      throw err;
+    }
+    flashRedirect(res, back, 'ok', 'Thanks. Your answer is counted, and nobody can see which one you picked.');
   });
 
   // ---- class announcements ----
@@ -1538,6 +1601,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       cls, me, course: getCourse(cls.course), link, qr: Classes.qrSvg(link), sort, onlyNudge: req.query.filter === 'nudge', manage: Classes.can(me, 'manage'), ...classDashboard(cls, sort),
       tutors: q(`SELECT m.user_id, m.name, u.email FROM class_members m JOIN users u ON u.id = m.user_id WHERE m.class_id = ? AND m.role = 'tutor' ORDER BY m.name`).all(cls.id),
       sessions: q(`SELECT s.*, (SELECT COUNT(*) FROM attendance a WHERE a.session_id = s.id) AS present FROM attendance_sessions s WHERE s.class_id = ? ORDER BY s.started_at DESC LIMIT 12`).all(cls.id),
+      canPulse: Classes.can(me, 'pulse'), pulsePreset: Classes.PULSE_PRESET,
+      pulses: q(`SELECT * FROM class_pulses WHERE class_id = ? ORDER BY asked_at DESC LIMIT 10`).all(cls.id).map((p) => pulseView(p)),
     }));
   });
 
