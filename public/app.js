@@ -69,6 +69,7 @@ document.querySelectorAll('input[data-suggest]').forEach((input, n) => {
   };
   const choose = (c) => {
     if (input.dataset.suggest === 'go') return void (window.location.href = `/courses/${c.code}`);
+    if (input.dataset.suggest === 'pick') { input.value = c.code; close(); return; } // fill the box, the person submits
     input.value = c.code;
     close();
     form.requestSubmit ? form.requestSubmit() : form.submit();
