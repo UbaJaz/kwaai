@@ -1018,6 +1018,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       reports_you_made: q(`SELECT review_id, reason, details, created_at FROM reports WHERE user_id = ? ORDER BY created_at`).all(id),
       tips_you_reported: q(`SELECT verdict_id FROM verdict_reports WHERE user_id = ?`).all(id),
       lecturer_suggestions: q(`SELECT name, course, status, created_at FROM lecturer_suggestions WHERE user_id = ? ORDER BY created_at`).all(id),
+      classes: q(`SELECT c.course, c.year, c.name, m.role, m.name AS your_name_there, m.anonymous, m.consent_at, m.joined_at FROM class_members m JOIN classes c ON c.id = m.class_id WHERE m.user_id = ?`).all(id),
       study_groups: q(`SELECT g.name, m.name AS your_name_there, m.joined_at, g.owner_id = ? AS you_own_it FROM group_members m JOIN study_groups g ON g.id = m.group_id WHERE m.user_id = ?`).all(id, id),
       leaderboard_profile: q(`SELECT display_name, show_name, faculty, major, year, boards_agreed_at FROM profiles WHERE user_id = ?`).get(id) || null,
       study_sessions: q(`SELECT course, day, started_at, planned_min, credited_sec, status FROM study_sessions WHERE user_id = ? ORDER BY started_at`).all(id),
@@ -1040,6 +1041,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM name_reports WHERE user_id = ? OR target_id = ?`).run(id, id);
       q(`DELETE FROM profiles WHERE user_id = ?`).run(id);
       for (const g of q(`SELECT g.* FROM study_groups g JOIN group_members m ON m.group_id = g.id WHERE m.user_id = ?`).all(id)) leaveGroup(g, id);
+      q(`DELETE FROM classes WHERE owner_id = ?`).run(id); // a lecturer's own classes go with them (members cascade)
+      q(`DELETE FROM class_members WHERE user_id = ?`).run(id);
       q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
       q(`UPDATE reports SET user_id = NULL WHERE user_id = ?`).run(id);
@@ -1332,6 +1335,45 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const { lastInsertRowid: id } = q(`INSERT INTO classes (uni, course, year, name, code, owner_id, goal_week_min) VALUES (?, ?, ?, ?, ?, ?, ?)`).run(req.user.uni, c.course, c.year, c.name, code, req.user.id, c.goalWeekMin);
     q(`INSERT INTO class_members (class_id, user_id, role, name, consent_at) VALUES (?, ?, 'lecturer', ?, CURRENT_TIMESTAMP)`).run(id, req.user.id, me.name);
     flashRedirect(res, `/classes/${id}`, 'ok', 'Class made. Share the link or QR code with your students.');
+  });
+
+  // ---- joining a class ----
+  // /c/CODE: a member sees the class page; anyone else signed in sees what joining shares, then decides. Joining also
+  // puts the course in the student's plan, so Today, the week and the timer pick it up.
+  const classLecturer = (cls) => q(`SELECT name FROM class_members WHERE class_id = ? AND role = 'lecturer' ORDER BY joined_at LIMIT 1`).get(cls.id)?.name || 'your lecturer';
+  const classJoinPage = (req, cls, extra = {}) => views.classJoin(req.ctx, {
+    cls, course: getCourse(cls.course), lecturer: classLecturer(cls), staff: req.user.role === 'staff',
+    number: Classes.studentNumber(req.user.email), name: profileOf(req.user.id)?.display_name || '', ...extra,
+  });
+
+  app.get('/c/:code', requireUser, (req, res) => {
+    const cls = classByCode(req.params.code);
+    if (!cls) return res.status(404).page(notFound(req));
+    const me = classMember(cls.id, req.user.id);
+    if (!me) return res.page(classJoinPage(req, cls));
+    res.set('Cache-Control', 'no-store').page(views.classPage(req.ctx, { cls, me, course: getCourse(cls.course), lecturer: classLecturer(cls), canRun: Classes.can(me, 'dashboard') }));
+  });
+
+  app.post('/c/:code/join', requireUser, limits.classes, (req, res) => {
+    const cls = classByCode(req.params.code);
+    if (!cls) return res.status(404).page(notFound(req));
+    if (classMember(cls.id, req.user.id)) return res.redirect(303, `/c/${cls.code}`);
+    if (req.user.role === 'staff') return res.status(403).page(classJoinPage(req, cls));
+    const anonymous = req.body.show === 'anon';
+    const name = Study.cleanName(req.body.name, 40, screenComment);
+    if (!anonymous && name.error) return res.status(400).page(classJoinPage(req, cls, { error: `Your name: ${name.error}`, name: req.body.name }));
+    q(`INSERT INTO class_members (class_id, user_id, role, name, anonymous, consent_at) VALUES (?, ?, 'student', ?, ?, CURRENT_TIMESTAMP)`).run(cls.id, req.user.id, name.name || '', anonymous ? 1 : 0);
+    const { codes, profile, week } = readPlan(req, {});
+    if (!codes.includes(cls.course)) savePlan(req, res, [...codes, cls.course], profile, week);
+    flashRedirect(res, `/c/${cls.code}`, 'ok', `You're in ${cls.name}.`);
+  });
+
+  app.post('/c/:code/leave', requireUser, (req, res) => {
+    const cls = classByCode(req.params.code);
+    const me = cls && classMember(cls.id, req.user.id);
+    if (!me || me.role === 'lecturer') return res.status(404).page(notFound(req));
+    q(`DELETE FROM class_members WHERE class_id = ? AND user_id = ?`).run(cls.id, req.user.id);
+    flashRedirect(res, '/classes', 'ok', `You've left ${cls.name}. Your lecturer no longer sees you in it.`);
   });
 
   // the class's page for the people who run it: the join link and QR code (the dashboard comes with it later)
