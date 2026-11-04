@@ -1,4 +1,5 @@
 // Classes for lecturers: who may do what, student numbers, QR codes, and the new-class form.
+const crypto = require('node:crypto');
 const qrcode = require('qrcode-generator');
 
 // What each role in a class may do. Lecturers and tutors see student numbers and progress; reps help run the class
@@ -77,4 +78,20 @@ function parseClassDate(body, today, { cleanName, screen }) {
   return { date: { type, date, time, title: title.name } };
 }
 
-module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate };
+// Attendance QR codes. The code in the QR changes every SLOT_MS: it is an HMAC of the session and the time slot,
+// so a photo of it stops working within a minute. A scan is accepted for the current slot and the two before it
+// (up to about a minute), which covers a slow phone and the tap to confirm.
+const SLOT_MS = 20_000;
+const SLOTS_ACCEPTED = 3;
+const slotAt = (now) => Math.floor(now / SLOT_MS);
+const attendanceKey = (secret, sessionId, slot) => crypto.createHmac('sha256', secret).update(`${sessionId}:${slot}`).digest('base64url').slice(0, 12);
+function keyIsCurrent(secret, sessionId, key, now) {
+  const sent = Buffer.from(String(key || ''));
+  for (let back = 0; back < SLOTS_ACCEPTED; back++) {
+    const want = Buffer.from(attendanceKey(secret, sessionId, slotAt(now) - back));
+    if (sent.length === want.length && crypto.timingSafeEqual(sent, want)) return true;
+  }
+  return false;
+}
+
+module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };

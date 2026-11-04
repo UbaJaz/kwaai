@@ -337,6 +337,21 @@ test('class dates: a type, a date near today, an optional time and a title', () 
   assert.ok(C.parseClassDate({ type: 'test', date: '2027-03-15', time: '25:00' }, '2027-03-01', deps).error);
 });
 
+test('attendance keys: change every 20 seconds and are accepted for about a minute', () => {
+  const C = require('../src/classes');
+  const now = 1_800_000_000_000;
+  const key = C.attendanceKey('secret', 7, C.slotAt(now));
+  assert.match(key, /^[A-Za-z0-9_-]{12}$/);
+  assert.notEqual(key, C.attendanceKey('secret', 7, C.slotAt(now) + 1), 'a new key every slot');
+  assert.notEqual(key, C.attendanceKey('secret', 8, C.slotAt(now)), 'and per session');
+  assert.notEqual(key, C.attendanceKey('other', 7, C.slotAt(now)), 'and per secret');
+  assert.equal(C.keyIsCurrent('secret', 7, key, now), true);
+  assert.equal(C.keyIsCurrent('secret', 7, key, now + 40_000), true, 'two slots later still counts');
+  assert.equal(C.keyIsCurrent('secret', 7, key, now + 60_000), false, 'three slots later is too old');
+  assert.equal(C.keyIsCurrent('secret', 8, key, now), false, 'not for another session');
+  assert.equal(C.keyIsCurrent('secret', 7, '', now), false);
+});
+
 test('student and staff emails: the domain decides the role', () => {
   const { accountFor } = require('../src/universities');
   assert.deepEqual([accountFor('abcxyz001@myuct.ac.za').role, accountFor('abcxyz001@myuct.ac.za').uni.slug], ['student', 'uct']);
