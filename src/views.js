@@ -1268,7 +1268,7 @@ function marks(ctx, { courses, planLink, hasPlan }) {
 }
 
 // ---------- today ----------
-function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = [], announcements = [] }) {
+function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = [], announcements = [], pulses = [] }) {
   const dayDate = t ? new Date(`${t.date}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
   return layout({ ...ctx, title: 'Today', here: '/today', path: '/today' }, html`
   <h1 class="page-title">Today</h1>
@@ -1280,6 +1280,10 @@ function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = []
       <p class="meta"><a href="/c/${a.code}#announcements">${a.class_name}</a> · ${a.poster_name} · ${CLASS_ROLE[a.poster_role]} · ${fmtDate(Study.saDay(a.created_at))}</p>
       <form method="post" action="/announcements/${a.id}/read" class="inline"><button class="btn btn-small btn-quiet">Got it</button></form>
     </li>`)}</ul>
+  </section>` : ''}
+  ${pulses.length ? html`<section class="card panel pulse-today" aria-labelledby="today-pulse">
+    <h2 id="today-pulse">Quick ${pulses.length === 1 ? 'question' : 'questions'} from your classes</h2>
+    ${pulses.map((p) => html`<div class="pulse-item"><p class="meta"><a href="/c/${p.code}#pulse">${p.class_name}</a></p>${pulseForm(p.code, p, 'today')}</div>`)}
   </section>` : ''}
   ${myClasses.length ? html`<section class="card panel class-today" aria-labelledby="today-classes-goal">
     <h2 id="today-classes-goal">Your classes this week</h2>
@@ -1516,7 +1520,7 @@ function classes(ctx, { classes: list, staff, thisYear, error, form = {} }) {
 }
 
 // the page for the people running a class: how students join (the dashboard is added to this page later)
-function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, rows, totals, tutors = [], sessions = [] }) {
+function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, rows, totals, tutors = [], sessions = [], canPulse = false, pulses = [], pulsePreset = { question: '', options: [] } }) {
   const share = `https://wa.me/?text=${encodeURIComponent(`Join ${cls.name} on Kwaai: ${link}`)}`;
   const shown = onlyNudge ? rows.filter((r) => r.nudge) : rows;
   const sortLink = (key, label) => html`<a href="/classes/${cls.id}?sort=${key}${onlyNudge ? '&filter=nudge' : ''}" ${sort === key ? html`aria-current="true"` : ''}>${label}</a>`;
@@ -1583,6 +1587,29 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
     <p class="meta">Your screen shows a QR code. Students scan it with their phone camera and tap to confirm. Keep the screen where the room can see it.</p>
     ${sessions.length ? html`<ul class="plain fact-list">${sessions.map((x) => html`<li><a href="/attend/${x.id}">${x.label}</a> <span class="meta">${plural(x.present, 'student')} present${x.ended_at ? '' : ' · open'}</span></li>`)}</ul>` : ''}
   </section>
+  ${canPulse ? html`<section class="card panel class-section" id="pulse" aria-labelledby="pulse-head">
+    <h2 id="pulse-head">Pulse checks</h2>
+    <p class="meta">Ask the class a quick question. Answers are anonymous, to you as well: you see how many picked each answer, never who.</p>
+    ${pulses.length ? html`<ul class="plain pulse-list">${pulses.map((p) => {
+      const total = p.counts.reduce((a, b) => a + b, 0);
+      return html`<li class="pulse-result">
+        <p><strong>${p.question}</strong> <span class="meta">${plural(total, 'answer')} · ${p.open ? `open until ${fmtDate(Study.saDay(p.closes_at))}` : 'closed'}</span></p>
+        <ul class="plain">${p.options.map((o, i) => {
+          const pct = total ? Math.round((p.counts[i] / total) * 100) : 0;
+          return html`<li class="pulse-bar"><span>${o}</span><span class="goal-track" aria-hidden="true"><i style="width:${pct}%"></i></span><span class="meta">${p.counts[i]} (${pct}%)</span></li>`;
+        })}</ul>
+        ${p.open ? html`<form method="post" action="/classes/${cls.id}/pulse/${p.id}/close" class="inline"><button class="link-btn meta">Close it now</button></form>` : ''}
+      </li>`;
+    })}</ul>` : ''}
+    <details class="fact-add" ${pulses.length ? '' : 'open'}><summary>Ask a question</summary>
+      <form method="post" action="/classes/${cls.id}/pulse" class="study-form">
+        <label>Question <input type="text" name="question" required maxlength="120" value="${pulsePreset.question}"></label>
+        <div class="form-row two">${[0, 1, 2, 3].map((i) => html`<label>Answer ${i + 1}${i >= 2 ? html` <span class="hint">optional</span>` : ''}<input type="text" name="option${i + 1}" maxlength="40" value="${pulsePreset.options[i] || ''}" ${i < 2 ? 'required' : ''}></label>`)}</div>
+        <p class="meta">Students see it on the class page and on Today, and tap one answer. It closes by itself after a week.</p>
+        <div class="form-actions"><button class="btn">Ask the class</button></div>
+      </form>
+    </details>
+  </section>` : ''}
   ${manage ? html`<section class="card panel class-section" id="tutors" aria-labelledby="tutor-head">
     <h2 id="tutor-head">Tutors</h2>
     <p class="meta">Tutors see this dashboard and take attendance. They need to have signed in to Kwaai once.</p>
@@ -1640,7 +1667,17 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
 }
 
 // a class from a member's side: this week against the class goal, the class ranking, and how to start studying
-function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '', attendance = [], announcements = [], canAnnounce = false }) {
+// A pulse check for a student: the question and one button per answer. back = 'today' returns to Today after.
+const pulseForm = (code, p, back = '') => html`<form method="post" action="/c/${code}/pulse/${p.id}" class="pulse-form">
+  <fieldset>
+    <legend>${p.question}</legend>
+    ${back ? html`<input type="hidden" name="back" value="${back}">` : ''}
+    <div class="pulse-options">${p.options.map((o, i) => html`<button class="btn btn-small btn-quiet" name="choice" value="${i}">${o}</button>`)}</div>
+  </fieldset>
+  <p class="meta">Anonymous: your lecturer sees only how many picked each answer.</p>
+</form>`;
+
+function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '', attendance = [], announcements = [], canAnnounce = false, pulses = [] }) {
   const student = me.role === 'student' || me.role === 'rep';
   const p = Math.min(1, weekMin / cls.goal_week_min);
   const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
@@ -1669,6 +1706,12 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
         <div class="form-actions"><button class="btn">Post it</button></div>
       </form>
     </details>` : ''}
+  </section>` : ''}
+  ${student && pulses.length ? html`<section class="card panel class-section pulse-ask" id="pulse" aria-labelledby="pulse-q">
+    <h2 id="pulse-q">Quick question</h2>
+    ${pulses.map((p) => (p.answered
+      ? html`<p class="pulse-done"><strong>${p.question}</strong><br><span class="meta">You've answered. Nobody can see which answer you picked.</span></p>`
+      : pulseForm(cls.code, p)))}
   </section>` : ''}
   ${student ? html`<section class="card your-day class-goal" aria-labelledby="class-goal">
     <h2 id="class-goal">This week</h2>
