@@ -1520,6 +1520,51 @@ function classAdmin(ctx, { cls, me, course, link, qr }) {
   </section>`);
 }
 
+// The join screen: exactly what the lecturer and tutors will see, and how classmates see you. Joining is consent.
+function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
+  return layout({ ...ctx, title: `Join ${cls.name}`, here: '/classes' }, html`
+  <div class="narrow">
+    <h1 class="page-title">Join ${cls.name}</h1>
+    <p class="lede small"><span class="code">${cls.course}</span> ${course?.title ?? ''} · ${cls.year} · with ${lecturer}</p>
+    ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
+    ${staff ? html`<div class="card panel"><p><strong>Classes are for students to join.</strong> You're signed in with a staff email. If you teach on this course, ask ${lecturer} to add you as a tutor.</p></div>` : html`
+    <form method="post" action="/c/${cls.code}/join" class="card panel study-form class-consent">
+      <h2>What ${lecturer} and the tutors will see</h2>
+      <ul class="plain consent-list">
+        <li>✓ Your student number: <strong>${number}</strong></li>
+        <li>✓ Your name below (or "Anonymous" if you choose that)</li>
+        <li>✓ The minutes you time for <strong>${cls.course}</strong> on the study timer, and your streak</li>
+        <li>✓ Your tut and prac attendance in this class</li>
+      </ul>
+      <h2>What they won't see</h2>
+      <ul class="plain consent-list no">
+        <li>✗ Time you study for other courses</li>
+        <li>✗ Your marks, reviews, votes or tips</li>
+      </ul>
+      <fieldset class="pick-group">
+        <legend>How classmates see you</legend>
+        <label class="radio"><input type="radio" name="show" value="name" checked> By my name</label>
+        <label class="radio"><input type="radio" name="show" value="anon"> Anonymous to classmates (the lecturer and tutors still see who you are)</label>
+        <label>Your name <input type="text" name="name" maxlength="40" value="${name}" autocomplete="name" placeholder="e.g. Thandi M"></label>
+      </fieldset>
+      <p class="meta">Your student number is never shown to classmates. Leave the class whenever you like, and you disappear from the lecturer's view.</p>
+      <div class="form-actions"><button class="btn btn-big">Join ${cls.course}</button> <a href="/classes">Not now</a></div>
+    </form>`}
+  </div>`);
+}
+
+// a class from a member's side (the ranking, goal and dates come with the next steps)
+function classPage(ctx, { cls, me, course, lecturer, canRun }) {
+  return layout({ ...ctx, title: cls.name, here: '/classes' }, html`
+  <p class="crumbs"><a href="/classes">Classes</a></p>
+  <h1 class="page-title">${cls.name}</h1>
+  <p class="lede small"><a class="code" href="/courses/${cls.course}">${cls.course}</a> ${course?.title ?? ''} · ${cls.year} · with ${lecturer}</p>
+  ${canRun ? html`<p><a class="btn btn-small btn-quiet" href="/classes/${cls.id}">Lecturer view</a></p>` : ''}
+  <p class="meta">You're in this class as <strong>${me.anonymous ? 'Anonymous' : me.name}</strong>${me.role !== 'student' ? ` (${CLASS_ROLE[me.role].toLowerCase()})` : ''}.</p>
+  <p><a class="btn" href="/study?course=${cls.course}">Start studying ${cls.course}</a></p>
+  ${me.role === 'lecturer' ? '' : html`<form method="post" action="/c/${cls.code}/leave" class="inline" data-confirm="Leave ${cls.name}? Your lecturer will no longer see you in it."><button class="btn btn-small btn-quiet">Leave the class</button></form>`}`);
+}
+
 // ---------- study groups ----------
 function groups(ctx, { groups: list, me, groupName = '', error }) {
   return layout({ ...ctx, title: 'Study groups', here: '/study', path: '/groups' }, html`
@@ -2112,4 +2157,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, adminLogin, adminTools, classes, classAdmin, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, adminLogin, adminTools, classes, classAdmin, classJoin, classPage, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
