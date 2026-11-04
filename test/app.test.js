@@ -2347,3 +2347,62 @@ test('class reps: full name and badge, can add dates, never the dashboard or stu
   await lecturer.post(adminPath + '/rep', { user: String(repId) });
   assert.equal(sdb.prepare('SELECT role FROM class_members WHERE user_id = ?').get(repId).role, 'student');
 }));
+
+test('class announcements: staff and reps post, members see them on Today until read, reports hide them', () => withAdminServer({ moderators: new Set(['mod001@myuct.ac.za']) }, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code, adminPath } = await makeClass(newBrowser);
+  const join = async (email, name) => {
+    const b = newBrowser();
+    await b.signIn(email);
+    await b.post('/c/' + code + '/join', { show: 'name', name });
+    return b;
+  };
+  const s1 = await join('anna001@myuct.ac.za', 'Anna Student');
+  const s2 = await join('bong002@myuct.ac.za', 'Bongi Student');
+  const rep = await join('repp003@myuct.ac.za', 'Thandi');
+  const repId = sdb.prepare(`SELECT id FROM users WHERE email = 'repp003@myuct.ac.za'`).get().id;
+  await lecturer.post(adminPath + '/rep', { user: String(repId), make: '1', name: 'Thandi Mokoena' });
+
+  assert.equal((await s1.post('/c/' + code + '/announcements', { body: 'Free marks for all' })).status, 404, 'students cannot post');
+  assert.doesNotMatch(await s1.text('/c/' + code), /Post an announcement/);
+  await lecturer.post('/c/' + code + '/announcements', { body: 'Slides on www.example.com' });
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_announcements').get().n, 0, 'links are refused');
+  await lecturer.post('/c/' + code + '/announcements', { body: 'Prac 3 moved to Thursday' });
+  await rep.post('/c/' + code + '/announcements', { body: 'Test venue: LT1' });
+
+  const today = await s1.text('/today');
+  assert.match(today, /From your classes/);
+  assert.match(today, /Prac 3 moved to Thursday[\s\S]{0,300}Dr J Smith · Lecturer/);
+  assert.match(today, /Test venue: LT1[\s\S]{0,300}Thandi Mokoena · Class rep/);
+  assert.doesNotMatch(await rep.text('/today'), /Test venue: LT1/, 'your own announcement stays off your Today');
+
+  const [repPost, lecturerPost] = sdb.prepare('SELECT id FROM class_announcements ORDER BY id DESC').all().map((r) => r.id);
+  assert.equal((await s1.post(`/announcements/${lecturerPost}/read`, {})).status, 303);
+  assert.doesNotMatch(await s1.text('/today'), /Prac 3 moved/, 'Got it takes it off Today');
+  assert.match(await s1.text('/today'), /Test venue: LT1/);
+  await s1.text('/c/' + code);
+  assert.doesNotMatch(await s1.text('/today'), /From your classes/, 'opening the class page counts as reading');
+
+  const outsider = newBrowser();
+  await outsider.signIn('outs009@myuct.ac.za');
+  assert.equal((await outsider.post(`/announcements/${repPost}/report`, {})).status, 404, 'only members report');
+  assert.equal((await s1.post(`/c/${code}/announcements/${repPost}/delete`, {})).status, 404, 'a student cannot delete');
+  await s1.post(`/announcements/${repPost}/report`, {});
+  await s1.post(`/announcements/${repPost}/report`, {});
+  assert.match(await s2.text('/c/' + code), /Test venue: LT1/, 'one member reporting twice counts once');
+  await s2.post(`/announcements/${repPost}/report`, {});
+  assert.doesNotMatch(await s2.text('/c/' + code), /Test venue: LT1/, 'two members hide it');
+  const mod = newBrowser();
+  await mod.signIn('mod001@myuct.ac.za');
+  assert.match(await mod.text('/mod'), /Hidden class announcements[\s\S]*Test venue: LT1/);
+  await mod.post(`/mod/announcements/${repPost}/allow`, {});
+  assert.match(await s2.text('/c/' + code), /Test venue: LT1/, 'a moderator can put it back');
+
+  await lecturer.post(`/c/${code}/announcements/${repPost}/delete`, {});
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_announcements WHERE id = ?').get(repPost).n, 0, 'the lecturer deletes any announcement');
+  await rep.post('/c/' + code + '/announcements', { body: 'Bring a calculator' });
+  await rep.text('/c/' + code);
+  await rep.post('/account/delete', {});
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM users WHERE id = ?').get(repId).n, 0, 'the account is gone');
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_announcements WHERE posted_by = ?').get(repId).n, 0, 'with their announcements');
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM announcement_reads WHERE user_id = ?').get(repId).n, 0, 'and what they read');
+}));
