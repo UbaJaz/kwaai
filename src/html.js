@@ -14,4 +14,7 @@ function html(strings, ...values) {
   return new Html(out);
 }
 
-module.exports = { html, esc };
+// markup our own code made (like a QR code's SVG) and that is safe as it is; never use it on anything a user typed
+const raw = (s) => new Html(String(s));
+
+module.exports = { html, esc, raw };
