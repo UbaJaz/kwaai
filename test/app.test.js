@@ -2418,3 +2418,49 @@ test('class announcements: staff and reps post, members see them on Today until 
   assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_announcements WHERE posted_by = ?').get(repId).n, 0, 'with their announcements');
   assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM announcement_reads WHERE user_id = ?').get(repId).n, 0, 'and what they read');
 }));
+
+test('pulse checks: staff ask, each student answers once, only counts are kept, closing stops answers', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code, adminPath } = await makeClass(newBrowser);
+  const join = async (email, name) => {
+    const b = newBrowser();
+    await b.signIn(email);
+    await b.post('/c/' + code + '/join', { show: 'name', name });
+    return b;
+  };
+  const s1 = await join('puls001@myuct.ac.za', 'Pulse One');
+  const s2 = await join('puls002@myuct.ac.za', 'Pulse Two');
+  const s3 = await join('puls003@myuct.ac.za', 'Pulse Three');
+  const ask = { question: "How's the pace this week?", option1: 'Too slow', option2: 'About right', option3: 'Too fast', option4: '' };
+
+  assert.equal((await s1.post(adminPath + '/pulse', ask)).status, 404, 'students cannot ask');
+  assert.match(await lecturer.text(adminPath), /Pulse checks[\s\S]*value="How&#39;s the pace this week\?"/, 'the form starts with the pace question');
+  await lecturer.post(adminPath + '/pulse', ask);
+  const pid = sdb.prepare('SELECT id FROM class_pulses').get().id;
+  assert.deepEqual(sdb.prepare('PRAGMA table_info(pulse_answered)').all().map((c) => c.name), ['pulse_id', 'user_id'], 'nothing records which answer anyone chose');
+
+  const today = await s1.text('/today');
+  assert.match(today, /Quick question from your classes[\s\S]*How(&#39;|')s the pace this week\?[\s\S]*About right/);
+  assert.equal((await s1.post(`/c/${code}/pulse/${pid}`, { choice: '2', back: 'today' })).headers.get('location'), '/today');
+  await s1.post(`/c/${code}/pulse/${pid}`, { choice: '0' });
+  assert.doesNotMatch(await s1.text('/today'), /Quick question/, 'answered questions leave Today');
+  assert.match(await s1.text('/c/' + code), /You(&#39;|')ve answered\. Nobody can see which answer you picked/);
+  await s2.post(`/c/${code}/pulse/${pid}`, { choice: '1' });
+  await s3.post(`/c/${code}/pulse/${pid}`, { choice: '7' });
+  assert.equal((await lecturer.post(`/c/${code}/pulse/${pid}`, { choice: '0' })).status, 404, 'the lecturer does not answer');
+  assert.equal(sdb.prepare('SELECT counts FROM class_pulses WHERE id = ?').get(pid).counts, '[0,1,1]', 'one answer each, a second try and a bad choice change nothing');
+
+  const dash = await lecturer.text(adminPath);
+  assert.match(dash, /2 answers · open until/);
+  assert.match(dash, /About right<\/span>[\s\S]{0,200}1 \(50%\)/);
+  assert.doesNotMatch(dash, /Pulse One[\s\S]{0,100}(Too fast|About right)/, 'no names next to answers');
+
+  await lecturer.post(`${adminPath}/pulse/${pid}/close`, {});
+  assert.match(await lecturer.text(adminPath), /2 answers · closed/);
+  await s3.post(`/c/${code}/pulse/${pid}`, { choice: '0' });
+  assert.equal(sdb.prepare('SELECT counts FROM class_pulses WHERE id = ?').get(pid).counts, '[0,1,1]', 'closed questions take no answers');
+  assert.doesNotMatch(await s3.text('/c/' + code), /Quick question/);
+
+  await lecturer.post(adminPath + '/pulse', { ...ask, question: 'Was the tut useful?', option1: 'Yes', option2: 'No', option3: '' });
+  sdb.prepare('UPDATE class_pulses SET closes_at = ? WHERE question = ?').run(Date.now() - 1, 'Was the tut useful?');
+  assert.doesNotMatch(await s3.text('/today'), /Was the tut useful/, 'and they close by themselves after a week');
+}));
