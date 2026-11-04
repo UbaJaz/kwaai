@@ -1,4 +1,4 @@
-const { html } = require('./html');
+const { html, raw } = require('./html');
 const { QUALITY, SCALES, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FREE_COMMENTS, RANKINGS } = require('./ratings');
 const { REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { ordinal, entryStatus } = require('./planner');
@@ -32,7 +32,7 @@ function tabBar({ user, isMod, isAdmin, testTools, here }) {
   const on = (href) => here === href || here.startsWith(`${href}/`);
   const more = [
     ['/plan', 'Semester planner'], ['/marks', 'Marks and DP'], ['/year', 'Your year'], ['/study/leaderboards', 'Study leaderboards'],
-    ['/groups', 'Study groups'], ['/rankings', 'Course rankings'],
+    ['/groups', 'Study groups'], ...(user ? [['/classes', 'Classes']] : []), ['/rankings', 'Course rankings'],
     ...(user ? [['/account', 'My reviews'], ['/account/profile', 'Leaderboard settings']] : []),
     ...(isMod ? [['/mod', 'Moderation']] : []), ...(isAdmin && testTools ? [['/admin/tools', 'Test tools']] : []),
     ['/about', 'About Kwaai'],
@@ -89,7 +89,7 @@ ${site.origin ? html`<meta property="og:image" content="${site.origin}/og-card.p
     <a class="logo" href="/"><img src="/kwaai-icon.svg" alt="" width="30" height="30"><span>kwaai</span></a>
     <nav class="nav" aria-label="Main">
       ${NAV.map(([href, label]) => html`<a href="${href}" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}
-      ${user ? html`<a href="/account" ${on('/account') ? html`aria-current="page"` : ''}>My reviews</a>` : ''}
+      ${user ? html`<a href="/classes" ${on('/classes') ? html`aria-current="page"` : ''}>Classes</a><a href="/account" ${on('/account') ? html`aria-current="page"` : ''}>My reviews</a>` : ''}
       ${isMod ? html`<a href="/mod" class="nav-mod">Moderation</a>` : ''}
       ${isAdmin && testTools ? html`<a href="/admin/tools" class="nav-mod">Test tools</a>` : ''}
     </nav>
@@ -1471,6 +1471,55 @@ function leaderboard(ctx, { joined, period, scope, faculty, faculties, rows, me,
   <p class="fine">Minutes come from the study timer: time counts only while the timer page is open, a session counts at most 5 minutes past its length, and a day counts at most 14 hours. Weeks start on Monday, in South African time.</p>`);
 }
 
+// ---------- classes (for lecturers) ----------
+const CLASS_ROLE = { lecturer: 'Lecturer', tutor: 'Tutor', rep: 'Class rep', student: 'Student' };
+function classes(ctx, { classes: list, staff, thisYear, error, form = {} }) {
+  return layout({ ...ctx, title: 'Classes', here: '/classes', path: '/classes' }, html`
+  <h1 class="page-title">Classes</h1>
+  <p class="lede small">${staff
+    ? 'Make a class for your course, share its link, and see how your students are getting on: study time against a weekly goal, test dates, and tut attendance.'
+    : 'Your lecturer shares a link or QR code to join their class. You choose how classmates see you, and you can leave whenever you like.'}</p>
+  ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
+  ${list.length ? html`<ul class="plain group-list">${list.map((c) => html`<li class="card">
+      <a href="${c.role === 'lecturer' || c.role === 'tutor' ? `/classes/${c.id}` : `/c/${c.code}`}"><strong>${c.name}</strong></a>
+      <span class="meta">${c.course}${c.title ? ` ${c.title}` : ''} · ${c.year} · ${plural(c.students, 'student')} · you're the ${CLASS_ROLE[c.role].toLowerCase()}</span>
+    </li>`)}</ul>`
+    : html`<p class="meta">${staff ? 'No classes yet.' : "You're not in a class yet."}</p>`}
+  ${staff ? html`<form method="post" action="/classes" class="card panel study-form class-form">
+    <h2>New class</h2>
+    <label>Course <input type="search" name="course" value="${form.course ?? ''}" required placeholder="e.g. CSC1015F" autocomplete="off" data-suggest="pick"></label>
+    <div class="form-row two">
+      <label>Year <select name="year">${[thisYear - 1, thisYear, thisYear + 1].map((y) => html`<option ${String(form.year ?? thisYear) === String(y) ? 'selected' : ''}>${y}</option>`)}</select></label>
+      <label>Weekly study goal <span class="hint">hours</span><input type="number" name="goal" min="1" max="40" step="0.5" value="${form.goal ?? ''}" placeholder="from the credits" inputmode="decimal"></label>
+    </div>
+    <label>Class name <span class="hint">optional</span><input type="text" name="name" maxlength="60" value="${form.name ?? ''}" placeholder="e.g. CSC1015F 2027, Group A"></label>
+    <label>Your name as students see it <input type="text" name="me" maxlength="60" required value="${form.me ?? ''}" placeholder="e.g. Dr J Smith"></label>
+    <p class="meta">Leave the goal empty and Kwaai uses the hours the course's credits suggest. Only time students log for this course counts.</p>
+    <div class="form-actions"><button class="btn">Make the class</button></div>
+  </form>` : ''}`);
+}
+
+// the page for the people running a class: how students join (the dashboard is added to this page later)
+function classAdmin(ctx, { cls, me, course, link, qr }) {
+  const share = `https://wa.me/?text=${encodeURIComponent(`Join ${cls.name} on Kwaai: ${link}`)}`;
+  return layout({ ...ctx, title: cls.name, here: '/classes' }, html`
+  <p class="crumbs"><a href="/classes">Classes</a></p>
+  <h1 class="page-title">${cls.name}</h1>
+  <p class="lede small"><a class="code" href="/courses/${cls.course}">${cls.course}</a> ${course?.title ?? ''} · ${cls.year} · weekly goal ${Study.hoursText(cls.goal_week_min)} · you're the ${CLASS_ROLE[me.role].toLowerCase()}</p>
+  <section class="card panel class-join" aria-labelledby="join-head">
+    <h2 id="join-head">How students join</h2>
+    <div class="class-join-row">
+      <div class="class-qr" role="img" aria-label="QR code for ${link}">${raw(qr)}</div>
+      <div>
+        <p>Put the QR code on a slide, or share the link on Amathuba or WhatsApp. Students sign in with their UCT email and see exactly what you'll see before they join.</p>
+        <label>Join link <input type="text" readonly value="${link}" class="cal-link"></label>
+        <p class="meta">Code <strong class="code-big">${cls.code}</strong></p>
+        <p><a class="btn btn-small" href="${share}" target="_blank" rel="noopener">Share on WhatsApp</a></p>
+      </div>
+    </div>
+  </section>`);
+}
+
 // ---------- study groups ----------
 function groups(ctx, { groups: list, me, groupName = '', error }) {
   return layout({ ...ctx, title: 'Study groups', here: '/study', path: '/groups' }, html`
@@ -2063,4 +2112,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, adminLogin, adminTools, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, adminLogin, adminTools, classes, classAdmin, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };

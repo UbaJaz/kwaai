@@ -291,6 +291,27 @@ test('study timer: heartbeats credit time, gaps and caps stop padding', () => {
   assert.equal(Study.hoursText(45), '45 min');
 });
 
+test('classes: who may do what, student numbers, QR codes and the new-class form', () => {
+  const Classes = require('../src/classes');
+  const table = Object.fromEntries(['lecturer', 'tutor', 'rep', 'student'].map((role) => [role, Object.keys(Classes.PERMISSIONS).filter((a) => Classes.can({ role }, a))]));
+  assert.deepEqual(table, {
+    lecturer: ['dashboard', 'attendance', 'pulse', 'dates', 'announce', 'manage'],
+    tutor: ['dashboard', 'attendance', 'pulse', 'dates', 'announce'],
+    rep: ['dates', 'announce'],
+    student: [],
+  });
+  assert.equal(Classes.can(null, 'dates'), false, 'not a member, nothing');
+  assert.equal(Classes.studentNumber('abcxyz001@myuct.ac.za'), 'ABCXYZ001');
+  assert.equal(Classes.studentNumber('jane.smith@uct.ac.za'), '', 'staff have no student number');
+  assert.match(Classes.qrSvg('https://kwaai.example/c/ABCDEFGH'), /^<svg[^>]*viewBox="0 0 \d+ \d+"/);
+  const known = { course: (c) => c === 'CSC1015F', cleanName: Study.cleanName, screen: screenComment, goalFor: () => 9, thisYear: 2027 };
+  assert.deepEqual(Classes.parseClassForm({ course: 'csc 1015f', year: '2027', name: '', goal: '' }, known).cls, { course: 'CSC1015F', year: 2027, name: 'CSC1015F 2027', goalWeekMin: 540 }, 'name and goal fill themselves in');
+  assert.equal(Classes.parseClassForm({ course: 'CSC1015F', year: '2027', name: 'Group A', goal: '6.5' }, known).cls.goalWeekMin, 390);
+  assert.ok(Classes.parseClassForm({ course: 'NOPE1234X' }, known).error);
+  assert.ok(Classes.parseClassForm({ course: 'CSC1015F', year: '2031' }, known).error);
+  assert.ok(Classes.parseClassForm({ course: 'CSC1015F', goal: '90' }, known).error);
+});
+
 test('student and staff emails: the domain decides the role', () => {
   const { accountFor } = require('../src/universities');
   assert.deepEqual([accountFor('abcxyz001@myuct.ac.za').role, accountFor('abcxyz001@myuct.ac.za').uni.slug], ['student', 'uct']);
@@ -2007,4 +2028,31 @@ test('staff sign in with @uct.ac.za, and can read but not rate', () => withAdmin
   assert.equal((await student.get('/courses/CSC1015F/review')).status, 200, 'students still can');
   assert.equal((await newBrowser().post('/login', { email: 'someone@gmail.com' })).status, 400);
   assert.ok((await newBrowser().text('/login')).includes(String.raw`pattern="[A-Za-z0-9._%+\-]+@(myuct\.)?uct\.ac\.za"`), 'the form takes both addresses');
+}));
+
+test('lecturers make classes: join link and QR, and nobody else sees the class page', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const lecturer = newBrowser();
+  await lecturer.signIn('jane.smith@uct.ac.za');
+  assert.match(await lecturer.text('/classes'), /<h2>New class<\/h2>/, 'staff get the new-class form');
+  assert.equal((await lecturer.post('/classes', { course: 'NOPE1234X', me: 'Dr J Smith' })).status, 400);
+  const made = await lecturer.post('/classes', { course: 'csc1015f', year: '2027', goal: '', name: '', me: 'Dr J Smith' });
+  assert.equal(made.status, 303);
+  const path = made.headers.get('location');
+  assert.match(path, /^\/classes\/\d+$/);
+  const cls = sdb.prepare('SELECT * FROM classes').get();
+  assert.deepEqual([cls.course, cls.year, cls.name], ['CSC1015F', 2027, 'CSC1015F 2027']);
+  assert.ok(cls.goal_week_min >= 60, 'the goal comes from the credits');
+  const page = await lecturer.text(path);
+  assert.match(page, new RegExp('/c/' + cls.code));
+  assert.match(page, /<div class="class-qr" role="img"[^>]*><svg /, 'a real QR code, not escaped text');
+  assert.match(await lecturer.text('/classes'), /CSC1015F 2027/);
+
+  const student = newBrowser();
+  await student.signIn('stud101@myuct.ac.za');
+  assert.doesNotMatch(await student.text('/classes'), /New class/, 'students get no form');
+  assert.equal((await student.post('/classes', { course: 'CSC1015F', me: 'Me' })).status, 403);
+  assert.equal((await student.get(path)).status, 404, 'not theirs to see');
+  const other = newBrowser();
+  await other.signIn('other.lecturer@uct.ac.za');
+  assert.equal((await other.get(path)).status, 404, 'another lecturer neither');
 }));

@@ -15,6 +15,7 @@ const { UNIVERSITIES, CURRENT, accountFor } = require('./universities');
 const Study = require('./study');
 const Admin = require('./admin');
 const TestData = require('./testdata');
+const Classes = require('./classes');
 
 // a plain address; accountFor then decides whether it's a UCT student (@myuct.ac.za) or staff (@uct.ac.za) one
 const EMAIL_SHAPE = /^[a-z0-9._%+-]+@[a-z0-9.-]+$/;
@@ -154,6 +155,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     study: limit(40, 60 * MIN, byUser),
     profile: limit(20, 60 * MIN, byUser),
     group: limit(30, 60 * MIN, byUser),
+    classes: limit(60, 60 * MIN, byUser),
     studyBeat: limit(150, 60 * MIN, byUser), // one a minute while a timer runs, with room for reloads
   };
   const flashRedirect = (res, to, type, text) => {
@@ -1298,6 +1300,47 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!userOk || !passOk) return res.status(401).page(views.adminLogin(req.ctx, { error: "That username and password don't match." }));
     q(`INSERT INTO users (email, uni, is_admin, is_test, agreed_at) VALUES (?, ?, 1, 1, CURRENT_TIMESTAMP) ON CONFLICT(email) DO UPDATE SET is_admin = 1, is_test = 1`).run(ADMIN_EMAIL, CURRENT.slug);
     startSession(req, res, ADMIN_EMAIL, '/study');
+  });
+
+  // ---- classes (for lecturers) ----
+  // A lecturer (a staff account) creates a class for a course; students join with its code. What each role may do is
+  // in can() in src/classes.js. Anyone outside a class, or without the right role, gets a 404, not a hint it exists.
+  const classById = (id) => q(`SELECT * FROM classes WHERE id = ?`).get(Number(id) || 0) || null;
+  const classByCode = (code) => {
+    const c = String(code || '').trim().toUpperCase();
+    return /^[A-HJ-NP-Z2-9]{8}$/.test(c) ? q(`SELECT * FROM classes WHERE code = ?`).get(c) || null : null;
+  };
+  const classMember = (classId, userId) => (userId ? q(`SELECT * FROM class_members WHERE class_id = ? AND user_id = ?`).get(classId, userId) || null : null);
+  const classesOf = (userId) => q(`SELECT c.*, m.role, (SELECT COUNT(*) FROM class_members x WHERE x.class_id = c.id AND x.role = 'student') AS students, co.title
+    FROM classes c JOIN class_members m ON m.class_id = c.id LEFT JOIN courses co ON co.code = c.course WHERE m.user_id = ? ORDER BY c.year DESC, c.course`).all(userId);
+  const joinUrl = (req, cls) => `${req.ctx.site.origin}/c/${cls.code}`;
+  const goalFor = (code) => Study.weeklyGoal(getCourse(code) || { code, credits: null }, (t) => semesterWeeks(planYear(), t)) || 6;
+  const classForm = (req, extra = {}) => views.classes(req.ctx, { classes: classesOf(req.user.id), staff: req.user.role === 'staff', thisYear: planYear(), ...extra });
+
+  app.get('/classes', requireUser, (req, res) => res.page(classForm(req)));
+
+  app.post('/classes', requireUser, limits.classes, (req, res) => {
+    if (req.user.role !== 'staff') return res.status(403).page(views.message(req.ctx, { title: 'For lecturers', emoji: '🎓', text: 'Classes are made by lecturers signed in with a @uct.ac.za staff email. Ask your lecturer for the class link to join one.' }));
+    const parsed = Classes.parseClassForm(req.body, { course: courseExists, cleanName: Study.cleanName, screen: screenComment, goalFor, thisYear: planYear() });
+    const me = Study.cleanName(req.body.me, 60, screenComment);
+    const fail = (error) => res.status(400).page(classForm(req, { error, form: req.body }));
+    if (parsed.error) return fail(parsed.error);
+    if (me.error) return fail(`Your name as students see it: ${me.error}`);
+    let code;
+    do code = Study.groupCode(crypto.randomBytes(8)); while (q(`SELECT 1 FROM classes WHERE code = ?`).get(code));
+    const c = parsed.cls;
+    const { lastInsertRowid: id } = q(`INSERT INTO classes (uni, course, year, name, code, owner_id, goal_week_min) VALUES (?, ?, ?, ?, ?, ?, ?)`).run(req.user.uni, c.course, c.year, c.name, code, req.user.id, c.goalWeekMin);
+    q(`INSERT INTO class_members (class_id, user_id, role, name, consent_at) VALUES (?, ?, 'lecturer', ?, CURRENT_TIMESTAMP)`).run(id, req.user.id, me.name);
+    flashRedirect(res, `/classes/${id}`, 'ok', 'Class made. Share the link or QR code with your students.');
+  });
+
+  // the class's page for the people who run it: the join link and QR code (the dashboard comes with it later)
+  app.get('/classes/:id', requireUser, (req, res) => {
+    const cls = classById(req.params.id);
+    const me = cls && classMember(cls.id, req.user.id);
+    if (!Classes.can(me, 'dashboard')) return res.status(404).page(notFound(req));
+    const link = joinUrl(req, cls);
+    res.set('Cache-Control', 'no-store').page(views.classAdmin(req.ctx, { cls, me, course: getCourse(cls.course), link, qr: Classes.qrSvg(link) }));
   });
 
   // ---- test tools (admin only, and only with TEST_TOOLS=1) ----

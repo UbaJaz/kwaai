@@ -195,6 +195,31 @@ CREATE TABLE IF NOT EXISTS group_members (
   PRIMARY KEY (group_id, user_id)
 );
 CREATE INDEX IF NOT EXISTS groups_by_member ON group_members (user_id);
+-- Classes: a lecturer's group for one course and year, joined by its code. role in class_members is lecturer, tutor,
+-- rep or student (what each may do is in can() in src/classes.js). name is what classmates see; anonymous hides it
+-- from them. Lecturers and tutors always see the student number (from the student's myuct address).
+CREATE TABLE IF NOT EXISTS classes (
+  id INTEGER PRIMARY KEY,
+  uni TEXT NOT NULL,
+  course TEXT NOT NULL,
+  year INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  code TEXT NOT NULL UNIQUE,
+  owner_id INTEGER NOT NULL REFERENCES users(id),
+  goal_week_min INTEGER NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS class_members (
+  class_id INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  role TEXT NOT NULL DEFAULT 'student' CHECK (role IN ('lecturer', 'tutor', 'rep', 'student')),
+  name TEXT NOT NULL DEFAULT '',
+  anonymous INTEGER NOT NULL DEFAULT 0,
+  consent_at TEXT,
+  joined_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (class_id, user_id)
+);
+CREATE INDEX IF NOT EXISTS classes_by_member ON class_members (user_id);
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,
