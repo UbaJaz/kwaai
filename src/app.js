@@ -1476,6 +1476,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const sort = DASH_SORTS[req.query.sort] ? req.query.sort : 'week';
     res.set('Cache-Control', 'no-store').page(views.classAdmin(req.ctx, {
       cls, me, course: getCourse(cls.course), link, qr: Classes.qrSvg(link), sort, onlyNudge: req.query.filter === 'nudge', manage: Classes.can(me, 'manage'), ...classDashboard(cls, sort),
+      tutors: q(`SELECT m.user_id, m.name, u.email FROM class_members m JOIN users u ON u.id = m.user_id WHERE m.class_id = ? AND m.role = 'tutor' ORDER BY m.name`).all(cls.id),
+      sessions: q(`SELECT s.*, (SELECT COUNT(*) FROM attendance a WHERE a.session_id = s.id) AS present FROM attendance_sessions s WHERE s.class_id = ? ORDER BY s.started_at DESC LIMIT 12`).all(cls.id),
     }));
   });
 
@@ -1507,6 +1509,117 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!who || who.role === 'lecturer') return res.status(404).page(notFound(req));
     q(`DELETE FROM class_members WHERE class_id = ? AND user_id = ?`).run(found.cls.id, who.user_id);
     flashRedirect(res, `/classes/${found.cls.id}`, 'ok', 'Removed from the class.');
+  });
+
+  // ---- tutors and attendance ----
+  // The lecturer adds tutors by email (they need to have signed in once). A tutor or the lecturer starts an attendance
+  // session: their phone shows a QR code that changes every 20 seconds; students scan it with their own camera, then
+  // tap to confirm (so a link preview can't mark anyone). A tutor can also add someone by student number.
+  const attendanceSecret = (() => {
+    let s = q(`SELECT value FROM meta WHERE key = 'attendance_secret'`).get()?.value;
+    if (!s) {
+      s = crypto.randomBytes(32).toString('hex');
+      q(`INSERT INTO meta (key, value) VALUES ('attendance_secret', ?)`).run(s);
+    }
+    return s;
+  })();
+  const sessionById = (id) => q(`SELECT s.*, c.code, c.name AS class_name, c.course FROM attendance_sessions s JOIN classes c ON c.id = s.class_id WHERE s.id = ?`).get(Number(id) || 0) || null;
+  const attendanceUrl = (req, s) => `${req.ctx.site.origin}/a/${s.id}?k=${Classes.attendanceKey(attendanceSecret, s.id, Classes.slotAt(Date.now()))}`;
+  const sessionCount = (id) => q(`SELECT COUNT(*) AS n FROM attendance WHERE session_id = ?`).get(id).n;
+  const recentMarks = (id) => q(`SELECT m.name, a.how FROM attendance a JOIN class_members m ON m.user_id = a.user_id JOIN attendance_sessions s ON s.id = a.session_id AND m.class_id = s.class_id
+    WHERE a.session_id = ? ORDER BY a.marked_at DESC LIMIT 8`).all(id);
+
+  app.post('/classes/:id/tutors', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'manage');
+    if (!found) return res.status(404).page(notFound(req));
+    const { cls } = found;
+    const email = normEmail(req.body.email);
+    const name = Study.cleanName(req.body.name, 60, screenComment);
+    const back = (type, text) => flashRedirect(res, `/classes/${cls.id}#tutors`, type, text);
+    if (!accountFor(email)) return back('error', 'Use their UCT email (@myuct.ac.za or @uct.ac.za).');
+    if (name.error) return back('error', `Their name: ${name.error}`);
+    const user = q(`SELECT id FROM users WHERE email = ?`).get(email);
+    if (!user) return back('error', `${email} hasn't signed in to Kwaai yet. Ask them to sign in once, then add them again.`);
+    const now = classMember(cls.id, user.id);
+    if (now?.role === 'lecturer') return back('error', "That's you.");
+    if (now) q(`UPDATE class_members SET role = 'tutor', name = ?, anonymous = 0 WHERE class_id = ? AND user_id = ?`).run(name.name, cls.id, user.id);
+    else q(`INSERT INTO class_members (class_id, user_id, role, name, consent_at) VALUES (?, ?, 'tutor', ?, CURRENT_TIMESTAMP)`).run(cls.id, user.id, name.name);
+    back('ok', `${name.name} is a tutor in this class now.`);
+  });
+
+  app.post('/classes/:id/tutors/remove', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'manage');
+    const who = found && classMember(found.cls.id, Number(req.body.user));
+    if (!who || who.role !== 'tutor') return res.status(404).page(notFound(req));
+    q(`DELETE FROM class_members WHERE class_id = ? AND user_id = ?`).run(found.cls.id, who.user_id);
+    flashRedirect(res, `/classes/${found.cls.id}#tutors`, 'ok', 'No longer a tutor in this class.');
+  });
+
+  app.post('/classes/:id/attendance', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'attendance');
+    if (!found) return res.status(404).page(notFound(req));
+    const label = Study.cleanName(req.body.label || `Tut, ${new Date(Date.now() + 7_200_000).toISOString().slice(0, 10)}`, 60, screenComment);
+    if (label.error) return flashRedirect(res, `/classes/${found.cls.id}#attendance`, 'error', `Session name: ${label.error}`);
+    const { lastInsertRowid: id } = q(`INSERT INTO attendance_sessions (class_id, label, started_by, started_at) VALUES (?, ?, ?, ?)`).run(found.cls.id, label.name, req.user.id, Date.now());
+    res.redirect(303, `/attend/${id}`);
+  });
+
+  // the tutor's screen: the QR code, the count so far, the newest names, add by student number, and End
+  const sessionForRunners = (req) => {
+    const s = sessionById(req.params.id);
+    const me = s && classMember(s.class_id, req.user.id);
+    return Classes.can(me, 'attendance') ? s : null;
+  };
+  app.get('/attend/:id', requireUser, (req, res) => {
+    const s = sessionForRunners(req);
+    if (!s) return res.status(404).page(notFound(req));
+    const url = attendanceUrl(req, s);
+    res.set('Cache-Control', 'no-store').page(views.attendanceScreen(req.ctx, { s, qr: s.ended_at ? '' : Classes.qrSvg(url), count: sessionCount(s.id), recent: recentMarks(s.id) }));
+  });
+  app.get('/attend/:id/live', requireUser, (req, res) => {
+    const s = sessionForRunners(req);
+    if (!s) return res.status(404).json({ error: 'not found' });
+    res.set('Cache-Control', 'no-store').json({ open: !s.ended_at, qr: s.ended_at ? '' : Classes.qrSvg(attendanceUrl(req, s)), count: sessionCount(s.id), recent: recentMarks(s.id).map((r) => r.name || 'A student') });
+  });
+  app.post('/attend/:id/add', requireUser, limits.classes, (req, res) => {
+    const s = sessionForRunners(req);
+    if (!s) return res.status(404).page(notFound(req));
+    const number = String(req.body.number || '').trim().toLowerCase();
+    const student = /^[a-z0-9]{3,20}$/.test(number) && q(`SELECT u.id FROM users u JOIN class_members m ON m.user_id = u.id AND m.class_id = ? WHERE u.email = ?`).get(s.class_id, `${number}@myuct.ac.za`);
+    if (!student) return flashRedirect(res, `/attend/${s.id}`, 'error', `${number.toUpperCase() || 'That student'} isn't in this class. They can join with the class link.`);
+    q(`INSERT OR IGNORE INTO attendance (session_id, user_id, marked_at, how) VALUES (?, ?, ?, 'tutor')`).run(s.id, student.id, Date.now());
+    flashRedirect(res, `/attend/${s.id}`, 'ok', `${number.toUpperCase()} is marked present.`);
+  });
+  app.post('/attend/:id/end', requireUser, (req, res) => {
+    const s = sessionForRunners(req);
+    if (!s) return res.status(404).page(notFound(req));
+    q(`UPDATE attendance_sessions SET ended_at = ? WHERE id = ? AND ended_at IS NULL`).run(Date.now(), s.id);
+    flashRedirect(res, `/classes/${s.class_id}#attendance`, 'ok', `${s.label} closed: ${sessionCount(s.id)} present.`);
+  });
+
+  // the student's side: the scanned link opens a confirm page; the tap marks them present
+  const scanCheck = (req) => {
+    const s = sessionById(req.params.id);
+    if (!s) return { status: 404 };
+    if (s.ended_at) return { s, problem: 'This attendance session has closed.' };
+    const key = String(req.query.k ?? req.body.k ?? '');
+    if (!Classes.keyIsCurrent(attendanceSecret, s.id, key, Date.now())) return { s, problem: 'That code has expired. Scan the QR code on the screen again.' };
+    const me = classMember(s.class_id, req.user.id);
+    if (!me) return { s, problem: 'join' };
+    return { s, me, key };
+  };
+  app.get('/a/:id', requireUser, (req, res) => {
+    const r = scanCheck(req);
+    if (r.status) return res.status(404).page(notFound(req));
+    const already = r.me && q(`SELECT 1 FROM attendance WHERE session_id = ? AND user_id = ?`).get(r.s.id, req.user.id);
+    res.set('Cache-Control', 'no-store').page(views.attendanceCheckIn(req.ctx, { s: r.s, problem: r.problem, key: r.key, already: !!already }));
+  });
+  app.post('/a/:id', requireUser, limits.classes, (req, res) => {
+    const r = scanCheck(req);
+    if (r.status) return res.status(404).page(notFound(req));
+    if (r.problem) return res.status(400).page(views.attendanceCheckIn(req.ctx, { s: r.s, problem: r.problem }));
+    q(`INSERT OR IGNORE INTO attendance (session_id, user_id, marked_at, how) VALUES (?, ?, ?, 'qr')`).run(r.s.id, req.user.id, Date.now());
+    res.page(views.attendanceCheckIn(req.ctx, { s: r.s, done: true }));
   });
 
   // ---- test tools (admin only, and only with TEST_TOOLS=1) ----
