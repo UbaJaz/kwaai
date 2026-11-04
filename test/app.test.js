@@ -2235,3 +2235,53 @@ test('class dates: the lecturer adds a test date and it reaches the class, Today
   await lecturer.post('/c/' + code + '/dates/' + id + '/delete', {});
   assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_dates').get().n, 0);
 }));
+
+test('QR attendance: tutors, a rotating code, confirm to check in, no double marks, and closing', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const C = require('../src/classes');
+  const { lecturer, code, adminPath } = await makeClass(newBrowser);
+  const tutor = newBrowser();
+  await tutor.signIn('tutor001@myuct.ac.za');
+  assert.match((await lecturer.post(adminPath + '/tutors', { email: 'nobody9@myuct.ac.za', name: 'Nobody' })).headers.get('location'), /#tutors$/);
+  await lecturer.post(adminPath + '/tutors', { email: 'tutor001@myuct.ac.za', name: 'Sam Tutor' });
+  assert.equal(sdb.prepare(`SELECT role FROM class_members WHERE name = 'Sam Tutor'`).get().role, 'tutor');
+  assert.match(await tutor.text(adminPath), /Tut and prac attendance/, 'tutors see the dashboard');
+
+  const join = async (email) => { const b = newBrowser(); await b.signIn(email); await b.post('/c/' + code + '/join', { show: 'name', name: email.slice(0, 6) }); return b; };
+  const s1 = await join('stud001@myuct.ac.za');
+  await join('stud002@myuct.ac.za');
+  assert.equal((await s1.post(adminPath + '/attendance', { label: 'Tut 3' })).status, 404, 'students cannot start attendance');
+  const started = await tutor.post(adminPath + '/attendance', { label: 'Tut 3' });
+  const screen = started.headers.get('location');
+  assert.match(screen, /^\/attend\/\d+$/);
+  const sid = Number(screen.split('/').pop());
+  assert.match(await tutor.text(screen), /<div class="attend-qr"[^>]*><svg /);
+  assert.equal((await s1.get(screen)).status, 404, 'students never get the tutor screen');
+
+  const secret = sdb.prepare(`SELECT value FROM meta WHERE key = 'attendance_secret'`).get().value;
+  const key = (back = 0) => C.attendanceKey(secret, sid, C.slotAt(Date.now()) - back);
+  assert.match(await s1.text(`/a/${sid}?k=${key(5)}`), /That code has expired/);
+  assert.equal((await s1.post(`/a/${sid}`, { k: key(5) })).status, 400);
+  const confirm = await s1.text(`/a/${sid}?k=${key()}`);
+  assert.match(confirm, /Mark me present/, 'scanning only opens the confirm page');
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM attendance').get().n, 0, 'nothing is marked by just opening the link');
+  assert.match(await s1.text(`/a/${sid}`), /That code has expired/, 'no code, no check-in');
+  assert.match(await (await s1.post(`/a/${sid}`, { k: key() })).text(), /You're marked present/);
+  await s1.post(`/a/${sid}`, { k: key() });
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM attendance').get().n, 1, 'once only');
+
+  const outsider = newBrowser();
+  await outsider.signIn('outs001@myuct.ac.za');
+  assert.match(await outsider.text(`/a/${sid}?k=${key()}`), /not in this class on Kwaai yet/);
+
+  await tutor.post(`/attend/${sid}/add`, { number: 'stud002' });
+  await tutor.post(`/attend/${sid}/add`, { number: 'outs001' });
+  const live = await (await tutor.get(`/attend/${sid}/live`)).json();
+  assert.equal(live.count, 2, 'the tutor added one; the outsider is not in the class');
+  assert.ok(live.qr.startsWith('<svg'));
+  assert.equal(sdb.prepare(`SELECT how FROM attendance a JOIN users u ON u.id = a.user_id WHERE u.email = 'stud002@myuct.ac.za'`).get().how, 'tutor');
+
+  await tutor.post(`/attend/${sid}/end`, {});
+  assert.match(await s1.text(`/a/${sid}?k=${key()}`), /You're marked present|has closed/);
+  const late = await join('late001@myuct.ac.za');
+  assert.match(await late.text(`/a/${sid}?k=${key()}`), /This attendance session has closed/);
+}));
