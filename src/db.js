@@ -220,6 +220,21 @@ CREATE TABLE IF NOT EXISTS class_members (
   PRIMARY KEY (class_id, user_id)
 );
 CREATE INDEX IF NOT EXISTS classes_by_member ON class_members (user_id);
+-- Test, prac, assignment and exam dates a class's lecturer, tutors or reps add. They're the course's official dates,
+-- so they reach everyone with the course in their plan (Today, the year, calendar feeds), not only class members.
+CREATE TABLE IF NOT EXISTS class_dates (
+  id INTEGER PRIMARY KEY,
+  class_id INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
+  course TEXT NOT NULL,
+  type TEXT NOT NULL CHECK (type IN ('test', 'prac', 'assignment', 'exam')),
+  title TEXT NOT NULL,
+  date TEXT NOT NULL,
+  time TEXT NOT NULL DEFAULT '',
+  added_by INTEGER REFERENCES users(id),
+  added_role TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS class_dates_by_course ON class_dates (course, date);
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,

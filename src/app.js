@@ -306,7 +306,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const realHours = Study.courseHours(q(`SELECT user_id, day, SUM(credited_sec / 60) AS minutes FROM study_sessions
       WHERE course = ? AND status = 'done' AND day >= ? ${realOnly(req.user)} GROUP BY user_id, day`).all(c.code, Study.addDay(today, -Study.HOURS_WINDOW_DAYS)), today);
     const creditHours = Study.weeklyGoal(c, (t) => semesterWeeks(planYear(), t));
-    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0, realHours, creditHours })));
+    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0, realHours, creditHours, officialDates: classDatesFor([c.code]).filter((d) => d.date >= today) })));
   });
 
   app.get('/lecturers/:id', (req, res) => {
@@ -449,10 +449,21 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       WHERE status = 'published' AND course IN (${codes.map(() => '?').join(',')}) GROUP BY course, key`).all(userId || 0, ...codes));
   }
   const datedFor = (facts) => Object.entries(facts).flatMap(([code, f]) => f.event.map((e) => ({ code, ...e }))).sort((a, b) => a.date.localeCompare(b.date) || (a.time || '').localeCompare(b.time || ''));
+  // Dates a class's lecturer, tutors or reps added for these courses. They're the official ones: confirmed, labelled
+  // with who added them, and they win over a student-added date of the same kind on the same day.
+  const classDatesFor = (codes) => (codes.length ? q(`SELECT d.*, m.name AS by_name FROM class_dates d
+    LEFT JOIN class_members m ON m.class_id = d.class_id AND m.user_id = d.added_by WHERE d.course IN (${codes.map(() => '?').join(',')})`).all(...codes) : [])
+    .map((d) => ({ id: `class-${d.id}`, code: d.course, type: d.type, title: d.title, date: d.date, time: d.time, confirmed: true, official: d.added_role === 'rep' ? 'class rep' : d.added_role, by: d.by_name }));
+  const datedWithClasses = (facts, codes) => {
+    const official = classDatesFor(codes);
+    const taken = new Set(official.map((d) => `${d.code}|${d.date}|${d.type}`));
+    return [...official, ...datedFor(facts).filter((d) => !taken.has(`${d.code}|${d.date}|${d.type}`))]
+      .sort((x, y) => x.date.localeCompare(y.date) || (x.time || '').localeCompare(y.time || ''));
+  };
   // for calendar files: student times, dated events, and a "start revising" day before each exam
   const crowdFor = (codes) => {
     const facts = factsFor(codes);
-    const dated = datedFor(facts);
+    const dated = datedWithClasses(facts, codes);
     return { crowd: crowdSlots(facts), dated, revision: revisionPlan(dated.filter((d) => d.type === 'exam'), weekRows(codes)) };
   };
   const backTo = (code) => `/courses/${code}#course-week`;
@@ -524,7 +535,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const rows = weekRows(codes);
     const facts = factsFor(codes);
     const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { crowd: crowdSlots(facts) });
-    const upcoming = datedFor(facts).filter((d) => d.date >= new Date().toISOString().slice(0, 10)).slice(0, 12);
+    const upcoming = datedWithClasses(facts, codes).filter((d) => d.date >= new Date().toISOString().slice(0, 10)).slice(0, 12);
     const cal = calCookie(req);
     const origin = baseUrl || `${req.protocol}://${req.get('host')}`;
     res.page(views.week(req.ctx, {
@@ -643,7 +654,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), { ...week, t: term }, { year, crowd: crowdSlots(facts) });
     const classes = wk.events.filter((e) => e.day === dayName).sort((a, b) => a.start.localeCompare(b.start));
     const soon = new Date(Date.parse(`${date}T00:00:00Z`) + 14 * 86_400_000).toISOString().slice(0, 10);
-    const upcoming = datedFor(facts).filter((d) => d.date >= date && d.date <= soon);
+    const upcoming = datedWithClasses(facts, codes).filter((d) => d.date >= date && d.date <= soon);
     const todays = [...new Set(classes.map((e) => e.code).filter(Boolean))];
     const tip = todays.length ? q(`SELECT course, tip FROM verdicts WHERE status = 'published' AND tip != '' AND course IN (${todays.map(() => '?').join(',')}) ORDER BY RANDOM() LIMIT 1`).get(...todays) : null;
     return { date, term, note, weekend: weekday === 0 || weekday === 6, dayName, classes, upcoming, tip, marks: marksCourses(wk.courses.map((c) => c.code)),
@@ -973,7 +984,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const rows = weekRows(codes);
     const list = codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean);
     const facts = factsFor(codes);
-    const dated = datedFor(facts);
+    const dated = datedWithClasses(facts, codes);
     const year = planYear();
     const today = saDate();
     const semesters = ['s1', 's2'].map((t) => {
@@ -1373,6 +1384,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.set('Cache-Control', 'no-store').page(views.classPage(req.ctx, {
       cls, me, course: getCourse(cls.course), lecturer: classLecturer(cls), canRun: Classes.can(me, 'dashboard'), period, weekMin,
       ranking: Study.rankBoard(rows, req.user.id, 500).rows.map(shown), idle: rows.filter((r) => !r.minutes).length,
+      dates: q(`SELECT d.*, m.name AS by_name FROM class_dates d LEFT JOIN class_members m ON m.class_id = d.class_id AND m.user_id = d.added_by WHERE d.class_id = ? AND d.date >= ? ORDER BY d.date, d.time`).all(cls.id, Study.saDay(Date.now())),
+      canDates: Classes.can(me, 'dates'), canManage: Classes.can(me, 'manage'), today: Study.saDay(Date.now()),
     }));
   });
 
@@ -1388,6 +1401,27 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const { codes, profile, week } = readPlan(req, {});
     if (!codes.includes(cls.course)) savePlan(req, res, [...codes, cls.course], profile, week);
     flashRedirect(res, `/c/${cls.code}`, 'ok', `You're in ${cls.name}.`);
+  });
+
+  // class dates: the lecturer, tutors and reps add them; whoever added one, or the lecturer, can remove it
+  app.post('/c/:code/dates', requireUser, limits.classes, (req, res) => {
+    const cls = classByCode(req.params.code);
+    const me = cls && classMember(cls.id, req.user.id);
+    if (!Classes.can(me, 'dates')) return res.status(404).page(notFound(req));
+    const parsed = Classes.parseClassDate(req.body, Study.saDay(Date.now()), { cleanName: Study.cleanName, screen: screenComment });
+    if (parsed.error) return flashRedirect(res, `/c/${cls.code}#dates`, 'error', parsed.error);
+    const d = parsed.date;
+    q(`INSERT INTO class_dates (class_id, course, type, title, date, time, added_by, added_role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`).run(cls.id, cls.course, d.type, d.title, d.date, d.time, req.user.id, me.role);
+    flashRedirect(res, `/c/${cls.code}#dates`, 'ok', `Added: ${d.title} on ${d.date}. Everyone with ${cls.course} in their plan sees it.`);
+  });
+
+  app.post('/c/:code/dates/:id/delete', requireUser, limits.classes, (req, res) => {
+    const cls = classByCode(req.params.code);
+    const me = cls && classMember(cls.id, req.user.id);
+    const d = me && q(`SELECT * FROM class_dates WHERE id = ? AND class_id = ?`).get(Number(req.params.id) || 0, cls.id);
+    if (!d || !Classes.can(me, 'dates') || (d.added_by !== req.user.id && !Classes.can(me, 'manage'))) return res.status(404).page(notFound(req));
+    q(`DELETE FROM class_dates WHERE id = ?`).run(d.id);
+    flashRedirect(res, `/c/${cls.code}#dates`, 'ok', 'Removed.');
   });
 
   app.post('/c/:code/leave', requireUser, (req, res) => {

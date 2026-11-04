@@ -326,6 +326,17 @@ test('the lecturer dashboard rules: the goal so far, who needs a nudge, and safe
   for (const evil of ['=HYPERLINK("x")', '+1', '-2', '@SUM(A1)']) assert.ok(C.csvRow([evil]).replace(/^"/, '').startsWith("'"), evil);
 });
 
+test('class dates: a type, a date near today, an optional time and a title', () => {
+  const C = require('../src/classes');
+  const deps = { cleanName: Study.cleanName, screen: screenComment };
+  assert.deepEqual(C.parseClassDate({ type: 'test', date: '2027-03-15', time: '14:00', title: 'Test 1' }, '2027-03-01', deps).date, { type: 'test', date: '2027-03-15', time: '14:00', title: 'Test 1' });
+  assert.equal(C.parseClassDate({ type: 'prac', date: '2027-03-15', title: '' }, '2027-03-01', deps).date.title, 'Prac', 'an empty title takes the type');
+  assert.ok(C.parseClassDate({ type: 'party', date: '2027-03-15' }, '2027-03-01', deps).error);
+  assert.ok(C.parseClassDate({ type: 'test', date: '2029-03-15' }, '2027-03-01', deps).error, 'too far ahead');
+  assert.ok(C.parseClassDate({ type: 'test', date: '2027-13-45' }, '2027-03-01', deps).error, 'not a real date');
+  assert.ok(C.parseClassDate({ type: 'test', date: '2027-03-15', time: '25:00' }, '2027-03-01', deps).error);
+});
+
 test('student and staff emails: the domain decides the role', () => {
   const { accountFor } = require('../src/universities');
   assert.deepEqual([accountFor('abcxyz001@myuct.ac.za').role, accountFor('abcxyz001@myuct.ac.za').uni.slug], ['student', 'uct']);
@@ -2183,4 +2194,29 @@ test('the lecturer dashboard: student numbers, progress, a nudge filter, CSV, ed
   await lecturer.post(adminPath + '/remove', { user: String(id('dash003@myuct.ac.za')) });
   assert.doesNotMatch(await lecturer.text(adminPath), /DASH003/);
   assert.equal((await lecturer.post(adminPath + '/remove', { user: String(id('jane.smith@uct.ac.za')) })).status, 404, 'the lecturer cannot remove themselves');
+}));
+
+test('class dates: the lecturer adds a test date and it reaches the class, Today, the course page and calendars', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code } = await makeClass(newBrowser);
+  const member = newBrowser();
+  await member.signIn('memb001@myuct.ac.za');
+  await member.post('/c/' + code + '/join', { show: 'name', name: 'Member One' });
+  const soon = Study.addDay(Study.saDay(Date.now()), 5);
+
+  assert.equal((await member.post('/c/' + code + '/dates', { type: 'test', date: soon, title: 'Fake test' })).status, 404, 'students cannot add dates');
+  assert.match((await lecturer.post('/c/' + code + '/dates', { type: 'party', date: soon })).headers.get('location'), /#dates$/);
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_dates').get().n, 0, 'a bad type is refused');
+  await lecturer.post('/c/' + code + '/dates', { type: 'test', date: soon, time: '14:00', title: 'Test 1' });
+
+  assert.match(await member.text('/c/' + code), /<strong>Test 1<\/strong>[^<]*14:00 <span class="meta">from Dr J Smith<\/span>/);
+  assert.match(await member.text('/today'), /Test 1[\s\S]{0,200}From the lecturer/, 'members see it on Today');
+  const outsider = newBrowser();
+  await outsider.get('/plan?add=CSC1015F');
+  assert.match(await outsider.text('/courses/CSC1015F'), /<strong>Test 1<\/strong>[^<]*14:00 <span class="badge badge-official">From the lecturer<\/span>/, 'the course page shows it to anyone');
+  assert.match(await outsider.text('/week.ics?c=CSC1015F'), /SUMMARY:CSC1015F Test 1/, 'and it goes into calendars');
+
+  const id = sdb.prepare('SELECT id FROM class_dates').get().id;
+  assert.equal((await member.post('/c/' + code + '/dates/' + id + '/delete', {})).status, 404);
+  await lecturer.post('/c/' + code + '/dates/' + id + '/delete', {});
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_dates').get().n, 0);
 }));

@@ -492,7 +492,7 @@ function factActions(ctx, c, kind, data, f) {
 }
 
 const dayOptions = () => html`${WEEK_DAYS.map((d) => html`<option>${d}</option>`)}`;
-function courseWeek(ctx, c, facts, topics) {
+function courseWeek(ctx, c, facts, topics, official = []) {
   const slots = ['lecture', 'tut', 'prac'].flatMap((k) => facts[k].map((f) => ({ kind: k, f })));
   const today = new Date().toISOString().slice(0, 10);
   const events = facts.event.filter((e) => e.date >= today);
@@ -528,6 +528,7 @@ function courseWeek(ctx, c, facts, topics) {
       </form></details>` : ''}
 
     <h3>Coming up</h3>
+    ${official.length ? html`<ul class="plain fact-list official-dates">${official.map((d) => html`<li><span><strong>${d.title}</strong> · ${fmtDate(d.date)}${d.time ? ` ${d.time}` : ''} <span class="badge badge-official">From the ${d.official}</span></span></li>`)}</ul>` : ''}
     ${events.length ? html`<ul class="plain fact-list">${events.map((e) => html`<li>
       <span><strong>${factLabel('event', e)}</strong> <span class="meta">${agreeText(e)}</span></span>${factActions(ctx, c, 'event', { type: e.type, title: e.title, date: e.date, time: e.time }, e)}</li>`)}</ul>`
       : html`<p class="meta">No tests or deadlines added yet.</p>`}
@@ -543,7 +544,7 @@ function courseWeek(ctx, c, facts, topics) {
   </section>`;
 }
 
-function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked, conveners = [], staff = [], facts = { lecture: [], tut: [], prac: [], topic: [], event: [] }, weekTopics = [], studyingNow = 0, realHours = null, creditHours = null }) {
+function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked, conveners = [], staff = [], facts = { lecture: [], tut: [], prac: [], topic: [], event: [] }, weekTopics = [], studyingNow = 0, realHours = null, creditHours = null, officialDates = [] }) {
   const cards = hideAfterFree(reviews, locked);
   const hidden = cards.filter((x) => x.hideBody).length + (locked ? Math.max(0, tips.length - FREE_COMMENTS) : 0);
   return layout({ ...ctx, title: `${c.code} ${c.title}`, description: courseSummary(c, stats, votes), path: `/courses/${c.code}` }, html`
@@ -595,7 +596,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
     <div class="reviews">
       ${gateNotice(ctx, hidden)}
       ${tips.length ? html`<h2 class="section-title" id="tips">Tips from students who took it</h2>${tipList(tips, locked)}` : ''}
-      ${courseWeek(ctx, c, facts, weekTopics)}
+      ${courseWeek(ctx, c, facts, weekTopics, officialDates)}
       <h2 class="section-title">Reviews</h2>
       ${reviews.length ? cards.map(({ r, hideBody }) => reviewCard(r, { ...ctx, hideBody })) : html`<p class="empty">Nothing here yet. Took ${c.code}? Tell the next class what it's really like.</p>`}
     </div>
@@ -1289,7 +1290,7 @@ function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = []
     </section>
     <section class="card panel" aria-labelledby="today-soon">
       <h2 id="today-soon">Next two weeks</h2>
-      ${t.upcoming.length ? html`<ul class="plain">${t.upcoming.map((e) => html`<li><a href="/courses/${e.code}#course-week" class="code">${e.code}</a> <strong>${e.title}</strong> · ${fmtDate(e.date)}${e.time ? ` ${e.time}` : ''}${e.confirmed ? '' : html` <span class="meta">(not confirmed yet)</span>`}</li>`)}</ul>`
+      ${t.upcoming.length ? html`<ul class="plain">${t.upcoming.map((e) => html`<li><a href="/courses/${e.code}#course-week" class="code">${e.code}</a> <strong>${e.title}</strong> · ${fmtDate(e.date)}${e.time ? ` ${e.time}` : ''}${e.official ? html` <span class="badge badge-official">From the ${e.official}</span>` : e.confirmed ? '' : html` <span class="meta">(not confirmed yet)</span>`}</li>`)}</ul>`
         : html`<p class="meta">No tests or deadlines added for your courses. Classmates add them on each course page.</p>`}
     </section>
     <section class="card panel" aria-labelledby="today-dp" data-dp-alerts data-courses="${JSON.stringify(t.marks.map((c) => ({ code: c.code, items: c.items, dpMin: c.dpMin, examSub: c.examSub })))}">
@@ -1478,6 +1479,7 @@ function leaderboard(ctx, { joined, period, scope, faculty, faculties, rows, me,
 }
 
 // ---------- classes (for lecturers) ----------
+const DATE_TYPE_NAMES = { test: 'Test', prac: 'Prac', assignment: 'Assignment due', exam: 'Exam' };
 const CLASS_ROLE = { lecturer: 'Lecturer', tutor: 'Tutor', rep: 'Class rep', student: 'Student' };
 function classes(ctx, { classes: list, staff, thisYear, error, form = {} }) {
   return layout({ ...ctx, title: 'Classes', here: '/classes', path: '/classes' }, html`
@@ -1526,6 +1528,7 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
   <p class="crumbs"><a href="/classes">Classes</a></p>
   <h1 class="page-title">${cls.name}</h1>
   <p class="lede small"><a class="code" href="/courses/${cls.course}">${cls.course}</a> ${course?.title ?? ''} · ${cls.year} · weekly goal ${Study.hoursText(cls.goal_week_min)} · you're the ${CLASS_ROLE[me.role].toLowerCase()}</p>
+  <p><a class="btn btn-small btn-quiet" href="/c/${cls.code}#dates">Class page: dates and ranking</a></p>
   ${rows.length ? '' : joinSection}
   <dl class="dash-totals">
     <div><dt>Students</dt><dd>${totals.students}</dd></div>
@@ -1603,7 +1606,7 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
 }
 
 // a class from a member's side: this week against the class goal, the class ranking, and how to start studying
-function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle }) {
+function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '' }) {
   const student = me.role === 'student' || me.role === 'rep';
   const p = Math.min(1, weekMin / cls.goal_week_min);
   const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
@@ -1627,6 +1630,26 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
       </div>
     </div>
   </section>` : ''}
+  <section aria-labelledby="dates" class="class-dates">
+    <h2 class="section-title" id="dates">Coming up</h2>
+    ${dates.length ? html`<ul class="plain fact-list">${dates.map((d) => html`<li><span><strong>${d.title}</strong> · ${fmtDate(d.date)}${d.time ? ` ${d.time}` : ''} <span class="meta">from ${d.by_name || 'the class'}${d.added_role === 'rep' ? ' (class rep)' : d.added_role === 'tutor' ? ' (tutor)' : ''}</span></span>
+      ${canDates && (canManage || d.added_by === ctx.user.id) ? html`<form method="post" action="/c/${cls.code}/dates/${d.id}/delete" class="inline" data-confirm="Remove ${d.title}?"><button class="link-btn meta">Remove</button></form>` : ''}</li>`)}</ul>`
+      : html`<p class="meta">No tests or deadlines added yet.</p>`}
+    ${canDates ? html`<details class="fact-add"><summary>Add a test, prac or deadline</summary>
+      <form method="post" action="/c/${cls.code}/dates" class="study-form">
+        <div class="form-row two">
+          <label>What <select name="type">${Object.entries(DATE_TYPE_NAMES).map(([k, label]) => html`<option value="${k}">${label}</option>`)}</select></label>
+          <label>Title <span class="hint">optional</span><input type="text" name="title" maxlength="60" placeholder="e.g. Test 1, Prac 3"></label>
+        </div>
+        <div class="form-row two">
+          <label>Date <input type="date" name="date" required min="${today}"></label>
+          <label>Time <span class="hint">optional</span><input type="time" name="time"></label>
+        </div>
+        <p class="meta">It shows on Today, the year view and calendar feeds for everyone with ${cls.course} in their plan, marked as from you.</p>
+        <div class="form-actions"><button class="btn">Add it</button></div>
+      </form>
+    </details>` : ''}
+  </section>
   <h2 class="section-title">Class ranking</h2>
   <div class="toggle" role="group" aria-label="Period">${Object.entries(Study.PERIODS).map(([k, label]) => html`<a href="/c/${cls.code}?period=${k}" class="${k === period ? 'on' : ''}" ${k === period ? html`aria-current="page"` : ''}>${label}</a>`)}</div>
   ${ranking.length ? html`<ol class="board card">${ranking.map(row)}</ol>` : html`<p class="meta">Nobody has timed ${cls.course} ${period === 'day' ? 'today' : period === 'week' ? 'this week' : 'this month'} yet.</p>`}
