@@ -1828,12 +1828,12 @@ function login(ctx, { error, email = '', next = '/' } = {}) {
   return layout({ ...ctx, title: 'Sign in' }, html`
   <section class="narrow">
     <h1 class="page-title">Sign in with your UCT email</h1>
-    <p class="lede small">We'll email a 6-digit code to your <strong>@myuct.ac.za</strong> address. No password, and nothing you post shows your name.</p>
+    <p class="lede small">We'll email a 6-digit code to your UCT address: <strong>@myuct.ac.za</strong> for students, <strong>@uct.ac.za</strong> for staff. No password, and nothing you post shows your name.</p>
     ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
     <form method="post" action="/login" class="card form">
       <input type="hidden" name="next" value="${next}">
-      <label>Student email
-        <input type="email" name="email" value="${email}" required autocomplete="email" inputmode="email" placeholder="abcxyz001@myuct.ac.za" pattern="[A-Za-z0-9._%+\\-]+@myuct\\.ac\\.za">
+      <label>UCT email
+        <input type="email" name="email" value="${email}" required autocomplete="email" inputmode="email" placeholder="abcxyz001@myuct.ac.za" pattern="[A-Za-z0-9._%+\\-]+@(myuct\\.)?uct\\.ac\\.za">
       </label>
       <label class="check">
         <input type="checkbox" name="agree" value="1" required>
