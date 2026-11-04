@@ -337,6 +337,16 @@ test('class dates: a type, a date near today, an optional time and a title', () 
   assert.ok(C.parseClassDate({ type: 'test', date: '2027-03-15', time: '25:00' }, '2027-03-01', deps).error);
 });
 
+test('announcements: up to 280 characters, tidied, and screened like comments', () => {
+  const C = require('../src/classes');
+  assert.deepEqual(C.parseAnnouncement('  Prac 3   moved to Thursday ', screenComment), { text: 'Prac 3 moved to Thursday' });
+  assert.equal(C.parseAnnouncement('Line one\r\n\r\n\r\n\r\nLine two', screenComment).text, 'Line one\n\nLine two', 'blank lines squeezed to one');
+  assert.ok(C.parseAnnouncement('ok', screenComment).error, 'too short');
+  assert.match(C.parseAnnouncement('x'.repeat(281), screenComment).error, /280 characters\. That one is 281/);
+  assert.match(C.parseAnnouncement('Slides at www.example.com', screenComment).error, /contains a link/);
+  assert.match(C.parseAnnouncement('This test was stupid', screenComment).error, /^Reword it/, 'what the screen would hold is refused, not held');
+});
+
 test('attendance keys: change every 20 seconds and are accepted for about a minute', () => {
   const C = require('../src/classes');
   const now = 1_800_000_000_000;
