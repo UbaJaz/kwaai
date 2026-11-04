@@ -1587,7 +1587,7 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
   <h2 class="section-title">Class ranking</h2>
   <div class="toggle" role="group" aria-label="Period">${Object.entries(Study.PERIODS).map(([k, label]) => html`<a href="/c/${cls.code}?period=${k}" class="${k === period ? 'on' : ''}" ${k === period ? html`aria-current="page"` : ''}>${label}</a>`)}</div>
   ${ranking.length ? html`<ol class="board card">${ranking.map(row)}</ol>` : html`<p class="meta">Nobody has timed ${cls.course} ${period === 'day' ? 'today' : period === 'week' ? 'this week' : 'this month'} yet.</p>`}
-  ${idle ? html`<p class="meta">${idle === 1 ? '1 classmate hasn't' : `${idle} classmates haven't`} timed any ${cls.course} study ${period === 'day' ? 'today' : period === 'week' ? 'this week' : 'this month'}.</p>` : ''}
+  ${idle ? html`<p class="meta">${idle === 1 ? "1 classmate hasn't" : `${idle} classmates haven't`} timed any ${cls.course} study ${period === 'day' ? 'today' : period === 'week' ? 'this week' : 'this month'}.</p>` : ''}
   <p class="meta">You're in this class as <strong>${me.anonymous ? 'Anonymous' : me.name}</strong>${me.role !== 'student' ? ` (${CLASS_ROLE[me.role].toLowerCase()})` : ''}. Classmates never see your student number.</p>
   ${me.role === 'lecturer' ? '' : html`<form method="post" action="/c/${cls.code}/leave" class="inline" data-confirm="Leave ${cls.name}? Your lecturer will no longer see you in it."><button class="btn btn-small btn-quiet">Leave the class</button></form>`}`);
 }

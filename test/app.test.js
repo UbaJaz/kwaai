@@ -2125,7 +2125,7 @@ test('the class page: this week against the goal, a ranking of only that course,
   assert.doesNotMatch(page, /Secret Person|BBB002|AAA001/, 'no hidden names or student numbers');
   assert.match(page, /board-rank">2<\/span>\s*<span class="board-name">Thandi M <span class="badge">You<\/span>/);
   assert.doesNotMatch(page, /Sipho K<\/span>\s*<span class="board-time" data-count="300"/, 'other courses never count');
-  assert.match(page, /1 classmate hasn't timed any CSC1015F study today/);
+  assert.match(page, /1 classmate hasn(&#39;|')t timed any CSC1015F study today/);
   assert.match(page, /<strong>1 h 30 min<\/strong> of CSC1015F this week, of a 6 h goal/);
   assert.match(page, /aria-label="90 of 360 minutes this week"/);
   const todayPage = await a.text('/today');
