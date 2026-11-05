@@ -1544,7 +1544,7 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
   <p><a class="btn btn-small btn-quiet" href="/c/${cls.code}#dates">Class page: dates and ranking</a></p>
   ${rows.length ? '' : joinSection}
   <dl class="dash-totals">
-    <div><dt>Students</dt><dd>${totals.students}</dd></div>
+    <div><dt>Students</dt><dd>${totals.students}${totals.onKwaai < totals.students ? html`<small> ${totals.onKwaai} on Kwaai</small>` : ''}</dd></div>
     <div><dt>Median this week</dt><dd>${Study.hoursText(totals.median)}</dd></div>
     <div><dt>On track</dt><dd>${totals.onTrack}<small> of ${totals.students}</small></dd></div>
     <div class="${totals.nudge ? 'dash-warn' : ''}"><dt>Need a nudge</dt><dd>${totals.nudge}</dd></div>
@@ -1563,22 +1563,45 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
       <th scope="col">${sortLink('week', 'This week')}</th><th scope="col">Goal</th><th scope="col">This month</th>
       <th scope="col">${sortLink('last', 'Last studied')}</th><th scope="col">Days (last 14)</th><th scope="col">Attendance</th>${manage ? html`<th scope="col"><span class="sr-only">Actions</span></th>` : ''}
     </tr></thead>
-    <tbody>${shown.map((r) => html`<tr class="${r.nudge ? 'dash-nudge' : ''}">
+    <tbody>${shown.map((r) => {
+      const study = (v) => (r.onKwaai ? v : html`<span class="meta">–</span>`);
+      return html`<tr class="${r.nudge ? 'dash-nudge' : ''}">
       <td class="code" data-label="Student number">${r.number}</td>
-      <td class="dash-name" data-label="Name">${r.name}${r.anonymous ? html` <span class="meta">(anonymous to classmates)</span>` : ''}${r.role === 'rep' ? html` <span class="badge badge-rep">Class rep</span>` : ''}</td>
-      <td data-label="This week">${Study.hoursText(r.week)}</td>
-      <td data-label="Goal"><span class="goal-track" aria-hidden="true"><i style="width:${Math.min(100, r.pct)}%"></i></span> ${r.pct}%</td>
-      <td data-label="This month">${Study.hoursText(r.month)}</td>
-      <td data-label="Last studied">${r.last ? fmtDate(r.last) : html`<span class="meta">Not yet</span>`}</td>
-      <td data-label="Days (last 14)">${r.days14}</td>
+      <td class="dash-name" data-label="Name">${r.name}${r.anonymous ? html` <span class="meta">(anonymous to classmates)</span>` : ''}${r.role === 'rep' ? html` <span class="badge badge-rep">Class rep</span>` : ''}${r.onKwaai ? '' : html` <span class="badge badge-off">Not on Kwaai yet</span>`}</td>
+      <td data-label="This week">${study(Study.hoursText(r.week))}</td>
+      <td data-label="Goal">${study(html`<span class="goal-track" aria-hidden="true"><i style="width:${Math.min(100, r.pct)}%"></i></span> ${r.pct}%`)}</td>
+      <td data-label="This month">${study(Study.hoursText(r.month))}</td>
+      <td data-label="Last studied">${study(r.last ? fmtDate(r.last) : html`<span class="meta">Not yet</span>`)}</td>
+      <td data-label="Days (last 14)">${study(r.days14)}</td>
       <td data-label="Attendance">${r.sessions ? `${r.attended} of ${r.sessions}` : html`<span class="meta">No sessions yet</span>`}</td>
-      ${manage ? html`<td class="dash-actions">${r.role === 'rep'
-        ? html`<form method="post" action="/classes/${cls.id}/rep" class="inline"><input type="hidden" name="user" value="${r.id}"><button class="link-btn meta">No longer rep</button></form>`
-        : html`<details class="make-rep"><summary class="meta">Make class rep</summary><form method="post" action="/classes/${cls.id}/rep" class="study-form"><input type="hidden" name="user" value="${r.id}"><input type="hidden" name="make" value="1"><label>Their full name <input type="text" name="name" required maxlength="60" value="${r.anonymous ? '' : r.name}"></label><button class="btn btn-small">Make rep</button></form></details>`}
-        <form method="post" action="/classes/${cls.id}/remove" class="inline" data-confirm="Remove ${r.name} (${r.number}) from the class?"><input type="hidden" name="user" value="${r.id}"><button class="link-btn meta">Remove</button></form></td>` : ''}
-    </tr>`)}</tbody>
-  </table></div>` : html`<p class="meta">${rows.length ? 'Nobody needs a nudge right now.' : 'No students yet. Share the link or QR code above.'}</p>`}
+      ${manage ? html`<td class="dash-actions">${!r.onKwaai
+        ? html`<form method="post" action="/classes/${cls.id}/roster/remove" class="inline" data-confirm="Take ${r.name} (${r.number}) off the class list?"><input type="hidden" name="number" value="${r.number}"><button class="link-btn meta">Take off the list</button></form>`
+        : html`${r.role === 'rep'
+          ? html`<form method="post" action="/classes/${cls.id}/rep" class="inline"><input type="hidden" name="user" value="${r.id}"><button class="link-btn meta">No longer rep</button></form>`
+          : html`<details class="make-rep"><summary class="meta">Make class rep</summary><form method="post" action="/classes/${cls.id}/rep" class="study-form"><input type="hidden" name="user" value="${r.id}"><input type="hidden" name="make" value="1"><label>Their full name <input type="text" name="name" required maxlength="60" value="${r.anonymous ? '' : r.name}"></label><button class="btn btn-small">Make rep</button></form></details>`}
+        <form method="post" action="/classes/${cls.id}/remove" class="inline" data-confirm="Remove ${r.name} (${r.number}) from the class?"><input type="hidden" name="user" value="${r.id}"><button class="link-btn meta">Remove</button></form>`}</td>` : ''}
+    </tr>`;
+    })}</tbody>
+  </table></div>` : html`<p class="meta">${rows.length ? 'Nobody needs a nudge right now.' : 'No students yet. Share the link or QR code above, or paste your class list below.'}</p>`}
   ${rows.length ? joinSection : ''}
+  ${manage ? html`<section class="card panel class-section" id="roster" aria-labelledby="roster-head">
+    <h2 id="roster-head">Class list</h2>
+    <p>${totals.listed
+      ? html`<strong>${totals.listed}</strong> students on your list. ${totals.onKwaai} of the class ${totals.onKwaai === 1 ? 'is' : 'are'} on Kwaai.`
+      : html`Paste your class list so registers and DP cover every student, not only the ones on Kwaai.`}</p>
+    <form method="post" action="/classes/${cls.id}/roster" class="study-form">
+      <label>One student per line: student number, then name, tut group and prac group if you have them
+        <textarea name="list" rows="6" required spellcheck="false" placeholder="ABCXYZ001&#9;Thandi Mokoena&#9;Tut 3&#9;Prac B"></textarea></label>
+      <p class="meta">Copy the columns straight from Excel or PeopleSoft, or paste a CSV. Header rows are skipped.</p>
+      ${totals.listed ? html`<fieldset class="radio-row"><legend class="sr-only">How to save it</legend>
+        <label class="radio"><input type="radio" name="mode" value="add" checked> Add to the list (and update students already on it)</label>
+        <label class="radio"><input type="radio" name="mode" value="replace"> Replace the whole list</label>
+      </fieldset>` : html`<input type="hidden" name="mode" value="replace">`}
+      ${cls.roster_confirmed_at ? '' : html`<label class="check"><input type="checkbox" name="confirm" value="1" required> I run this course and may use its class list for tut and prac registers. Kwaai deletes the list 30 days after the year ends.</label>`}
+      <div class="form-actions"><button class="btn">Save the list</button></div>
+    </form>
+    ${totals.listed ? html`<form method="post" action="/classes/${cls.id}/roster/clear" class="inline" data-confirm="Clear the class list? Students who joined on Kwaai stay in the class."><button class="link-btn meta">Clear the list</button></form>` : ''}
+  </section>` : ''}
   <section class="card panel class-section" id="attendance" aria-labelledby="att-head">
     <h2 id="att-head">Tut and prac attendance</h2>
     <form method="post" action="/classes/${cls.id}/attendance" class="study-form attend-start">
