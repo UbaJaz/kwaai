@@ -390,6 +390,48 @@ test('a student\'s own class group replaces the handbook tut times on their week
   assert.deepEqual(tuts(buildWeek([cs], parseWeek({}), { year: 2027, official: { CSC1015F: { tut: { name: 'Tut 3', day: '', starts: '', ends: '', venue: '' } } } })), ['Tuesday 14:00'], 'a group without a time changes nothing');
 });
 
+test('the register: tap order, which sessions count for whom, open sessions, and surname order', () => {
+  const C = require('../src/classes');
+  assert.deepEqual(['absent', 'present', 'late', 'excused', 'odd'].map(C.nextMark), ['present', 'late', 'excused', 'absent', 'present']);
+  const groups = new Map([[7, { kind: 'tut', name: 'Tut 1' }], [8, { kind: 'tut', name: 'Tut 2' }]]);
+  const sessions = [
+    { id: 1, group_id: null, kind: 'tut', label: 'Week 1', started_at: 1, ended_at: 2 },
+    { id: 2, group_id: 7, kind: 'tut', label: 'Tut 1 wk 2', started_at: 3, ended_at: 4 },
+    { id: 3, group_id: 8, kind: 'tut', label: 'Tut 2 wk 2', started_at: 3, ended_at: 4 },
+    { id: 4, group_id: 7, kind: 'tut', label: 'Tut 1 wk 3', started_at: 5, ended_at: null },
+  ];
+  const row = { number: 'AAA001', tut_group: 'Tut 1', prac_group: '' };
+  assert.deepEqual(C.sessionsFor(row, sessions, groups).map((s) => s.id), [1, 2, 4], 'whole-class sessions and their own group only');
+  const marks = new Map([['1|AAA001', 'late'], ['2|AAA001', 'excused']]);
+  const a = C.attendanceOf(row, sessions, groups, marks);
+  assert.deepEqual([a.held, a.present, a.late, a.excused, a.absent], [2, 0, 1, 1, 0], 'the open session without a mark does not count yet');
+  assert.deepEqual(a.history.map((h) => h.status), ['late', 'excused', 'absent']);
+  marks.set('4|AAA001', 'present');
+  assert.equal(C.attendanceOf(row, sessions, groups, marks).held, 3, 'once marked it counts');
+  const people = [{ name: 'Zoe Adams', number: '3' }, { name: 'Ann Zulu', number: '1' }, { name: '', number: '2' }];
+  assert.deepEqual(people.sort(C.bySurname).map((p) => p.number), ['2', '3', '1']);
+});
+
+test('old attendance (one row per user) is rebuilt by student number, keeping every mark', () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const { DatabaseSync } = require('node:sqlite');
+  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'kwaai-')), 'old.db');
+  const old = new DatabaseSync(file);
+  old.exec(`CREATE TABLE users (id INTEGER PRIMARY KEY, email TEXT); INSERT INTO users VALUES (1, 'abcxyz001@myuct.ac.za'), (2, 'staff.person@uct.ac.za');
+    CREATE TABLE attendance_sessions (id INTEGER PRIMARY KEY); INSERT INTO attendance_sessions VALUES (5);
+    CREATE TABLE attendance (session_id INTEGER NOT NULL, user_id INTEGER NOT NULL, marked_at INTEGER NOT NULL, how TEXT NOT NULL, PRIMARY KEY (session_id, user_id));
+    INSERT INTO attendance VALUES (5, 1, 100, 'qr'), (5, 2, 200, 'tutor');`);
+  old.close();
+  const db = openDb(file);
+  assert.deepEqual(db.prepare('SELECT session_id, number, user_id, status, how FROM attendance ORDER BY user_id').all().map((r) => ({ ...r })), [
+    { session_id: 5, number: 'ABCXYZ001', user_id: 1, status: 'present', how: 'qr' },
+    { session_id: 5, number: 'U2', user_id: 2, status: 'present', how: 'tutor' },
+  ]);
+  db.close();
+});
+
 test('pulse checks: a question and 2 to 4 different answers, screened', () => {
   const C = require('../src/classes');
   assert.deepEqual(C.parsePulse({ question: "  How's the   pace? ", option1: 'Too slow', option2: '', option3: 'About right', option4: ' ' }, screenComment),
@@ -2650,4 +2692,62 @@ test('tut and prac groups: made from the class list, edited by the lecturer, pic
   assert.equal(sdb.prepare(`SELECT tut_group FROM class_roster WHERE number = 'GRPCCC003'`).get().tut_group, '');
   assert.equal((await picker.post(adminPath + '/groups', { kind: 'tut', name: 'Mine' })).status, 404, 'students cannot add groups');
   assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_groups WHERE class_id = ?').get(classId).n, 3);
+}));
+
+test('the tutor\'s register: a group\'s list in surname order, taps cycle the mark, mark everyone, and the shared-phone flag', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const C = require('../src/classes');
+  const { lecturer, code, adminPath } = await makeClass(newBrowser);
+  await lecturer.post(adminPath + '/roster', { list: 'REGZZZ001\tAnn Zulu\tTut 1\nREGAAA002\tBen Adams\tTut 1\nREGMMM003\tCat Moyo\tTut 2', mode: 'replace', confirm: '1' });
+  const tut1 = sdb.prepare(`SELECT id FROM class_groups WHERE name = 'Tut 1'`).get().id;
+  const sessionPath = (await lecturer.post(adminPath + '/attendance', { group: String(tut1) })).headers.get('location');
+  const sid = Number(sessionPath.split('/').pop());
+
+  const register = await lecturer.text(sessionPath);
+  assert.match(register, /Ben Adams[\s\S]*Ann Zulu/, 'surname order');
+  assert.doesNotMatch(register, /Cat Moyo/, 'only the group');
+  assert.match(register, /<strong data-attend-count>0<\/strong> of 2 here/);
+
+  const tap = (number, status) => lecturer.post(sessionPath + '/mark', { number, status }, { headers: { accept: 'application/json' } });
+  assert.deepEqual(await (await tap('REGZZZ001', 'present')).json(), { number: 'REGZZZ001', status: 'present', count: 1 });
+  await tap('REGZZZ001', 'late');
+  assert.equal(sdb.prepare('SELECT status FROM attendance WHERE session_id = ? AND number = ?').get(sid, 'REGZZZ001').status, 'late');
+  await tap('REGZZZ001', 'excused');
+  assert.equal((await (await tap('REGZZZ001', 'absent')).json()).count, 0);
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM attendance WHERE session_id = ?').get(sid).n, 0, 'absent removes the mark');
+  assert.equal((await tap('NOTONLIST9', 'present')).status, 400, 'only names on the class list');
+  assert.equal((await lecturer.post(sessionPath + '/mark', { number: 'REGAAA002', status: 'present' })).headers.get('location'), `${sessionPath}#r-REGAAA002`, 'works without the script too');
+
+  await lecturer.post(sessionPath + '/all', {});
+  assert.deepEqual(sdb.prepare('SELECT number, status FROM attendance WHERE session_id = ? ORDER BY number').all(sid).map((r) => `${r.number} ${r.status}`), ['REGAAA002 present', 'REGZZZ001 present']);
+  const outsider = newBrowser();
+  await outsider.signIn('regmmm003@myuct.ac.za');
+  assert.equal((await outsider.post(sessionPath + '/mark', { number: 'REGMMM003', status: 'present' })).status, 404, 'students cannot use the register');
+
+  // two students checking in from the same phone are flagged
+  const wholeClass = (await lecturer.post(adminPath + '/attendance', { kind: 'tut' })).headers.get('location');
+  const wid = Number(wholeClass.split('/').pop());
+  const secret = sdb.prepare(`SELECT value FROM meta WHERE key = 'attendance_secret'`).get().value;
+  const key = () => C.attendanceKey(secret, wid, C.slotAt(Date.now()));
+  const a = newBrowser();
+  await a.signIn('regzzz001@myuct.ac.za');
+  await a.post('/c/' + code + '/join', { show: 'name', name: 'Ann' });
+  await a.get(`/a/${wid}?k=${key()}`);
+  assert.match(a.jar.kdev || '', /^[a-f0-9]{32}$/, 'the phone gets a device id');
+  await a.post(`/a/${wid}`, { k: key() });
+  const b = newBrowser();
+  await b.signIn('regaaa002@myuct.ac.za');
+  await b.post('/c/' + code + '/join', { show: 'name', name: 'Ben' });
+  b.jar.kdev = a.jar.kdev; // Ben's check-in from Ann's phone
+  await b.post(`/a/${wid}`, { k: key() });
+  const marks = sdb.prepare('SELECT number, how, device FROM attendance WHERE session_id = ? ORDER BY number').all(wid);
+  assert.deepEqual(marks.map((m) => `${m.number} ${m.how}`), ['REGAAA002 qr', 'REGZZZ001 qr']);
+  const flagged = await lecturer.text(wholeClass);
+  assert.match(flagged, /Checked in from the same phone as REGZZZ001/);
+  assert.match(flagged, /Checked in from the same phone as REGAAA002/);
+  const live = await (await lecturer.get(wholeClass + '/live')).json();
+  assert.equal(live.marks.REGZZZ001, 'present');
+  assert.equal(live.marks.REGMMM003, 'absent');
+
+  // the student's own attendance: the group session counts for Ann (present via "everyone"), Cat isn't in Tut 1
+  assert.match(await a.text('/c/' + code), /Your attendance: 2 of 2/);
 }));

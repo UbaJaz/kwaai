@@ -156,6 +156,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     profile: limit(20, 60 * MIN, byUser),
     group: limit(30, 60 * MIN, byUser),
     classes: limit(60, 60 * MIN, byUser),
+    register: limit(2000, 60 * MIN, byUser), // taps on a register: a whole tut, many times over
     studyBeat: limit(150, 60 * MIN, byUser), // one a minute while a timer runs, with room for reloads
   };
   const flashRedirect = (res, to, type, text) => {
@@ -1029,6 +1030,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       reports_you_made: q(`SELECT review_id, reason, details, created_at FROM reports WHERE user_id = ? ORDER BY created_at`).all(id),
       tips_you_reported: q(`SELECT verdict_id FROM verdict_reports WHERE user_id = ?`).all(id),
       lecturer_suggestions: q(`SELECT name, course, status, created_at FROM lecturer_suggestions WHERE user_id = ? ORDER BY created_at`).all(id),
+      attendance: q(`SELECT c.name AS class, s.label, a.status, a.how, a.marked_at FROM attendance a JOIN attendance_sessions s ON s.id = a.session_id JOIN classes c ON c.id = s.class_id WHERE a.user_id = ? ORDER BY a.marked_at`).all(id),
       classes: q(`SELECT c.course, c.year, c.name, m.role, m.name AS your_name_there, m.anonymous, m.consent_at, m.joined_at FROM class_members m JOIN classes c ON c.id = m.class_id WHERE m.user_id = ?`).all(id),
       pulse_checks_you_answered: q(`SELECT c.name AS class, p.question FROM pulse_answered a JOIN class_pulses p ON p.id = a.pulse_id JOIN classes c ON c.id = p.class_id WHERE a.user_id = ?`).all(id),
       class_announcements_you_posted: q(`SELECT c.course, c.name AS class, a.body, a.poster_name, a.poster_role, a.created_at FROM class_announcements a JOIN classes c ON c.id = a.class_id WHERE a.posted_by = ? ORDER BY a.created_at`).all(id),
@@ -1060,6 +1062,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM announcement_reads WHERE user_id = ?`).run(id);
       q(`DELETE FROM announcement_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM classes WHERE owner_id = ?`).run(id); // a lecturer's own classes go with them (members cascade)
+      q(`DELETE FROM attendance WHERE user_id = ?`).run(id);
+      q(`UPDATE attendance_sessions SET started_by = NULL WHERE started_by = ?`).run(id);
       q(`DELETE FROM class_members WHERE user_id = ?`).run(id);
       q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
@@ -1422,7 +1426,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       myRow: me.number ? q(`SELECT * FROM class_roster WHERE class_id = ? AND number = ?`).get(cls.id, me.number) || null : null,
       pulses: q(`SELECT p.*, EXISTS (SELECT 1 FROM pulse_answered a WHERE a.pulse_id = p.id AND a.user_id = ?) AS answered FROM class_pulses p
         WHERE p.class_id = ? AND p.closed_at IS NULL AND p.closes_at > ? ORDER BY p.asked_at DESC`).all(req.user.id, cls.id, Date.now()).map((p) => pulseView(p)),
-      attendance: q(`SELECT s.label, s.started_at, a.marked_at FROM attendance_sessions s LEFT JOIN attendance a ON a.session_id = s.id AND a.user_id = ? WHERE s.class_id = ? ORDER BY s.started_at DESC`).all(req.user.id, cls.id),
+      attendance: me.number ? classAttendance(cls.id).of(q(`SELECT * FROM class_roster WHERE class_id = ? AND number = ?`).get(cls.id, me.number) || { number: me.number, tut_group: '', prac_group: '' }) : null,
     }));
   });
 
@@ -1579,6 +1583,15 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   const dropFromRoster = (classId, userId) => q(`DELETE FROM class_roster WHERE class_id = ? AND source = 'joined'
     AND number = (SELECT number FROM class_members WHERE class_id = ? AND user_id = ?)`).run(classId, classId, userId);
 
+  // everyone's attendance in a class, from its sessions, groups and marks (the rules are Classes.attendanceOf)
+  function classAttendance(classId) {
+    const sessions = q(`SELECT id, group_id, kind, label, started_at, ended_at FROM attendance_sessions WHERE class_id = ?`).all(classId);
+    const groups = new Map(q(`SELECT id, kind, name FROM class_groups WHERE class_id = ?`).all(classId).map((g) => [g.id, g]));
+    const marks = new Map(q(`SELECT a.session_id, a.number, a.status FROM attendance a JOIN attendance_sessions s ON s.id = a.session_id WHERE s.class_id = ?`).all(classId)
+      .map((m) => [`${m.session_id}|${m.number}`, m.status]));
+    return { sessions, of: (row) => Classes.attendanceOf(row, sessions, groups, marks) };
+  }
+
   const DASH_SORTS = {
     week: (a, b) => b.week - a.week,
     name: (a, b) => a.name.localeCompare(b.name),
@@ -1595,23 +1608,23 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       WHERE status = 'done' AND course = ? AND credited_sec >= 60 AND user_id IN (SELECT user_id FROM class_members WHERE class_id = ?) GROUP BY user_id`)
       .all(Study.addDay(today, -13), cls.course, cls.id).map((r) => [r.user_id, r]));
     const dow = Study.weekdayOf(today);
-    const sessionsHeld = q(`SELECT COUNT(*) AS n FROM attendance_sessions WHERE class_id = ?`).get(cls.id).n;
-    const attended = new Map(q(`SELECT a.user_id, COUNT(*) AS n FROM attendance a JOIN attendance_sessions s ON s.id = a.session_id WHERE s.class_id = ? GROUP BY a.user_id`).all(cls.id).map((r) => [r.user_id, r.n]));
+    const att = classAttendance(cls.id);
     const rows = q(`SELECT r.number, r.name AS list_name, r.tut_group, r.prac_group, r.source, m.user_id, m.name, m.anonymous, m.role
       FROM class_roster r LEFT JOIN class_members m ON m.class_id = r.class_id AND m.number = r.number AND m.role IN ('student', 'rep') WHERE r.class_id = ?`).all(cls.id)
       .map((m) => {
         const onKwaai = m.user_id != null;
+        const a = att.of({ number: m.number, tut_group: m.tut_group, prac_group: m.prac_group });
         const r = { id: m.user_id, number: m.number, name: (onKwaai ? m.name : m.list_name) || '(no name)', onKwaai, onList: m.source === 'list', anonymous: !!m.anonymous, role: m.role || 'student',
           tut: m.tut_group, prac: m.prac_group,
           week: week.get(m.user_id) || 0, month: month.get(m.user_id) || 0, last: activity.get(m.user_id)?.last || null, days14: activity.get(m.user_id)?.days14 || 0,
-          attended: attended.get(m.user_id) || 0, sessions: sessionsHeld };
+          attended: a.present + a.late, excused: a.excused, sessions: a.held, history: a.history };
         return { ...r, pct: Math.round((r.week / cls.goal_week_min) * 100), nudge: onKwaai && Classes.needsNudge({ weekMin: r.week, lastDay: r.last }, cls.goal_week_min, dow, today) };
       })
       .sort(DASH_SORTS[sort] || DASH_SORTS.week);
     const weeks = rows.filter((r) => r.onKwaai).map((r) => r.week).sort((a, b) => a - b);
     const median = weeks.length ? (weeks.length % 2 ? weeks[weeks.length >> 1] : Math.round((weeks[weeks.length / 2 - 1] + weeks[weeks.length / 2]) / 2)) : 0;
     const soFar = Classes.goalSoFar(cls.goal_week_min, dow);
-    return { rows, totals: { sessions: sessionsHeld, students: rows.length, onKwaai: rows.filter((r) => r.onKwaai).length, listed: rows.filter((r) => r.onList).length, median, onTrack: rows.filter((r) => r.onKwaai && r.week >= soFar).length, nudge: rows.filter((r) => r.nudge).length, soFar } };
+    return { rows, totals: { sessions: att.sessions.length, students: rows.length, onKwaai: rows.filter((r) => r.onKwaai).length, listed: rows.filter((r) => r.onList).length, median, onTrack: rows.filter((r) => r.onKwaai && r.week >= soFar).length, nudge: rows.filter((r) => r.nudge).length, soFar } };
   }
   const classForRunners = (req, action = 'dashboard') => {
     const cls = classById(req.params.id);
@@ -1821,9 +1834,35 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   })();
   const sessionById = (id) => q(`SELECT s.*, c.code, c.name AS class_name, c.course FROM attendance_sessions s JOIN classes c ON c.id = s.class_id WHERE s.id = ?`).get(Number(id) || 0) || null;
   const attendanceUrl = (req, s) => `${req.ctx.site.origin}/a/${s.id}?k=${Classes.attendanceKey(attendanceSecret, s.id, Classes.slotAt(Date.now()))}`;
-  const sessionCount = (id) => q(`SELECT COUNT(*) AS n FROM attendance WHERE session_id = ?`).get(id).n;
-  const recentMarks = (id) => q(`SELECT m.name, a.how FROM attendance a JOIN class_members m ON m.user_id = a.user_id JOIN attendance_sessions s ON s.id = a.session_id AND m.class_id = s.class_id
-    WHERE a.session_id = ? ORDER BY a.marked_at DESC LIMIT 8`).all(id);
+  const sessionCount = (id) => q(`SELECT COUNT(*) AS n FROM attendance WHERE session_id = ? AND status IN ('present', 'late')`).get(id).n;
+  const recentMarks = (id) => q(`SELECT COALESCE(NULLIF(m.name, ''), NULLIF(r.name, ''), a.number) AS name, a.how FROM attendance a JOIN attendance_sessions s ON s.id = a.session_id
+    LEFT JOIN class_members m ON m.class_id = s.class_id AND m.number = a.number LEFT JOIN class_roster r ON r.class_id = s.class_id AND r.number = a.number
+    WHERE a.session_id = ? AND a.status IN ('present', 'late') ORDER BY a.marked_at DESC LIMIT 8`).all(id);
+  // The register for a session: everyone it's for (the whole class, or the group's students), in surname order, with
+  // their mark. Anyone marked who isn't in the group (they scanned another group's code) is listed too. A phone that
+  // checked in more than one student is flagged on each of them.
+  function registerFor(s) {
+    syncRoster(classById(s.class_id));
+    const group = s.group_id ? q(`SELECT * FROM class_groups WHERE id = ?`).get(s.group_id) : null;
+    const rows = q(`SELECT r.number, COALESCE(NULLIF(m.name, ''), NULLIF(r.name, ''), r.number) AS name, a.status, a.how, a.device
+      FROM class_roster r LEFT JOIN class_members m ON m.class_id = r.class_id AND m.number = r.number LEFT JOIN attendance a ON a.session_id = ? AND a.number = r.number
+      WHERE r.class_id = ? AND (a.number IS NOT NULL OR ${group ? `r.${GROUP_COLUMN[group.kind]} = ?` : '1'})`).all(s.id, s.class_id, ...(group ? [group.name] : []))
+      .map((r) => ({ number: r.number, name: r.name, status: r.status || 'absent', how: r.how || '', device: r.device || '' }))
+      .sort(Classes.bySurname);
+    const byDevice = new Map();
+    for (const r of rows) if (r.device) byDevice.set(r.device, [...(byDevice.get(r.device) || []), r.number]);
+    for (const r of rows) r.sharedWith = r.device ? byDevice.get(r.device).filter((n) => n !== r.number) : [];
+    return { group, rows };
+  }
+  // one mark on the register; absent removes it
+  function setMark(s, number, status, how, userId = null, device = '') {
+    if (status === 'absent') return q(`DELETE FROM attendance WHERE session_id = ? AND number = ?`).run(s.id, number);
+    q(`INSERT INTO attendance (session_id, number, user_id, marked_at, status, how, device)
+      VALUES (?, ?, COALESCE(?, (SELECT user_id FROM class_members WHERE class_id = ? AND number = ?)), ?, ?, ?, ?)
+      ON CONFLICT (session_id, number) DO UPDATE SET status = excluded.status, how = excluded.how, marked_at = excluded.marked_at`)
+      .run(s.id, number, userId, s.class_id, number, Date.now(), status, how, device);
+  }
+  const onRegister = (s, number) => !!q(`SELECT 1 FROM class_roster WHERE class_id = ? AND number = ?`).get(s.class_id, number);
 
   app.post('/classes/:id/tutors', requireUser, limits.classes, (req, res) => {
     const found = classForRunners(req, 'manage');
@@ -1873,22 +1912,43 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const s = sessionForRunners(req);
     if (!s) return res.status(404).page(notFound(req));
     const url = attendanceUrl(req, s);
-    res.set('Cache-Control', 'no-store').page(views.attendanceScreen(req.ctx, { s, qr: s.ended_at ? '' : Classes.qrSvg(url), count: sessionCount(s.id), recent: recentMarks(s.id) }));
+    const { group, rows } = registerFor(s);
+    res.set('Cache-Control', 'no-store').page(views.attendanceScreen(req.ctx, { s, group, rows, qr: s.ended_at ? '' : Classes.qrSvg(url), count: sessionCount(s.id), recent: recentMarks(s.id) }));
   });
   app.get('/attend/:id/live', requireUser, (req, res) => {
     const s = sessionForRunners(req);
     if (!s) return res.status(404).json({ error: 'not found' });
-    res.set('Cache-Control', 'no-store').json({ open: !s.ended_at, qr: s.ended_at ? '' : Classes.qrSvg(attendanceUrl(req, s)), count: sessionCount(s.id), recent: recentMarks(s.id).map((r) => r.name || 'A student') });
+    const marks = Object.fromEntries(registerFor(s).rows.map((r) => [r.number, r.status]));
+    res.set('Cache-Control', 'no-store').json({ open: !s.ended_at, qr: s.ended_at ? '' : Classes.qrSvg(attendanceUrl(req, s)), count: sessionCount(s.id), recent: recentMarks(s.id).map((r) => r.name || 'A student'), marks });
   });
-  app.post('/attend/:id/add', requireUser, limits.classes, (req, res) => {
+  // a tap on the register: the name's new mark (present, late, excused or absent). Answers in JSON for the page's
+  // script, or goes back to the register without it. Works on a closed session too, to correct it later.
+  app.post('/attend/:id/mark', requireUser, limits.register, (req, res) => {
     const s = sessionForRunners(req);
     if (!s) return res.status(404).page(notFound(req));
     const number = String(req.body.number || '').trim().toUpperCase();
-    // matched on the number worked out from each member's email, so it works for any student address (and test ones)
-    const student = /^[A-Z0-9]{3,20}$/.test(number) && q(`SELECT u.id, u.email FROM users u JOIN class_members m ON m.user_id = u.id AND m.class_id = ?`).all(s.class_id)
-      .find((u) => Classes.studentNumber(u.email) === number);
-    if (!student) return flashRedirect(res, `/attend/${s.id}`, 'error', `${number || 'That student'} isn't in this class. They can join with the class link.`);
-    q(`INSERT OR IGNORE INTO attendance (session_id, user_id, marked_at, how) VALUES (?, ?, ?, 'tutor')`).run(s.id, student.id, Date.now());
+    const status = Classes.MARKS.includes(req.body.status) ? req.body.status : null;
+    const json = (req.get('accept') || '').includes('application/json');
+    if (!status || !onRegister(s, number)) return json ? res.status(400).json({ error: 'Not on this class list.' }) : flashRedirect(res, `/attend/${s.id}`, 'error', `${number || 'That student'} isn't on this class list.`);
+    setMark(s, number, status, 'tutor');
+    if (json) return res.json({ number, status, count: sessionCount(s.id) });
+    res.redirect(303, `/attend/${s.id}#r-${number}`);
+  });
+  // everyone on the register who isn't marked yet is marked present, then the tutor taps the few who aren't there
+  app.post('/attend/:id/all', requireUser, limits.register, (req, res) => {
+    const s = sessionForRunners(req);
+    if (!s) return res.status(404).page(notFound(req));
+    const todo = registerFor(s).rows.filter((r) => r.status === 'absent');
+    for (const r of todo) setMark(s, r.number, 'present', 'tutor');
+    flashRedirect(res, `/attend/${s.id}`, 'ok', `${todo.length} ${todo.length === 1 ? 'student' : 'students'} marked present. Tap anyone who isn't here.`);
+  });
+  app.post('/attend/:id/add', requireUser, limits.register, (req, res) => {
+    const s = sessionForRunners(req);
+    if (!s) return res.status(404).page(notFound(req));
+    const number = String(req.body.number || '').trim().toUpperCase();
+    syncRoster(classById(s.class_id));
+    if (!/^[A-Z0-9]{3,20}$/.test(number) || !onRegister(s, number)) return flashRedirect(res, `/attend/${s.id}`, 'error', `${number || 'That student'} isn't on this class list. Add them to the list, or they can join with the class link.`);
+    setMark(s, number, 'present', 'tutor');
     flashRedirect(res, `/attend/${s.id}`, 'ok', `${number} is marked present.`);
   });
   app.post('/attend/:id/end', requireUser, (req, res) => {
@@ -1899,27 +1959,32 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   // the student's side: the scanned link opens a confirm page; the tap marks them present
+  const deviceOf = (req) => /(?:^|;\s*)kdev=([a-f0-9]{32})/.exec(req.headers.cookie || '')?.[1] || '';
   const scanCheck = (req) => {
     const s = sessionById(req.params.id);
     if (!s) return { status: 404 };
     if (s.ended_at) return { s, problem: 'This attendance session has closed.' };
     const key = String(req.query.k ?? req.body.k ?? '');
     if (!Classes.keyIsCurrent(attendanceSecret, s.id, key, Date.now())) return { s, problem: 'That code has expired. Scan the QR code on the screen again.' };
+    if (!classMember(s.class_id, req.user.id)) return { s, problem: 'join' };
+    syncRoster(classById(s.class_id));
     const me = classMember(s.class_id, req.user.id);
-    if (!me) return { s, problem: 'join' };
+    if (!me.number || !['student', 'rep'].includes(me.role)) return { s, problem: 'Only students check in. Tutors and lecturers run the register.' };
     return { s, me, key };
   };
   app.get('/a/:id', requireUser, (req, res) => {
     const r = scanCheck(req);
     if (r.status) return res.status(404).page(notFound(req));
-    const already = r.me && q(`SELECT 1 FROM attendance WHERE session_id = ? AND user_id = ?`).get(r.s.id, req.user.id);
+    const already = r.me && q(`SELECT 1 FROM attendance WHERE session_id = ? AND number = ? AND status IN ('present', 'late')`).get(r.s.id, r.me.number);
+    // a random id for this phone, so the register can flag one phone checking in two students
+    if (!deviceOf(req)) res.cookie('kdev', crypto.randomBytes(16).toString('hex'), { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: 365 * 24 * 60 * MIN });
     res.set('Cache-Control', 'no-store').page(views.attendanceCheckIn(req.ctx, { s: r.s, problem: r.problem, key: r.key, already: !!already }));
   });
   app.post('/a/:id', requireUser, limits.classes, (req, res) => {
     const r = scanCheck(req);
     if (r.status) return res.status(404).page(notFound(req));
     if (r.problem) return res.status(400).page(views.attendanceCheckIn(req.ctx, { s: r.s, problem: r.problem }));
-    q(`INSERT OR IGNORE INTO attendance (session_id, user_id, marked_at, how) VALUES (?, ?, ?, 'qr')`).run(r.s.id, req.user.id, Date.now());
+    if (!q(`SELECT 1 FROM attendance WHERE session_id = ? AND number = ?`).get(r.s.id, r.me.number)) setMark(r.s, r.me.number, 'present', 'qr', req.user.id, deviceOf(req));
     res.page(views.attendanceCheckIn(req.ctx, { s: r.s, done: true }));
   });
 
@@ -2075,12 +2140,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const now = Date.now();
     for (let w = weeks; w >= 1; w--) {
       const started = now - w * 7 * DAY_MS;
-      const { lastInsertRowid: sid } = q(`INSERT INTO attendance_sessions (class_id, label, started_by, started_at, ended_at) VALUES (?, ?, ?, ?, ?)`)
+      const { lastInsertRowid: sid } = q(`INSERT INTO attendance_sessions (class_id, label, started_by, started_at, ended_at, kind) VALUES (?, ?, ?, ?, ?, 'tut')`)
         .run(cls.id, `Tut ${weeks - w + 1}`, runnerId, started, started + 90 * MIN);
       ids.forEach((id, i) => {
         const skipper = (i === 3 || i === 8) && w <= 3;
         if (skipper || (i + w) % 6 === 0) return;
-        q(`INSERT INTO attendance (session_id, user_id, marked_at, how) VALUES (?, ?, ?, ?)`).run(sid, id, started + (5 + i) * MIN, i % 4 ? 'qr' : 'tutor');
+        const status = (i + w) % 7 === 0 ? 'late' : (i + w) % 11 === 0 ? 'excused' : 'present';
+        q(`INSERT INTO attendance (session_id, number, user_id, marked_at, status, how) VALUES (?, ?, ?, ?, ?, ?)`).run(sid, Classes.studentNumber(TestData.fakeEmail(i)), id, started + (5 + i) * MIN, status, i % 4 ? 'qr' : 'tutor');
       });
     }
   }
@@ -2148,7 +2214,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       .run(cls.id, 'Tutorial 4 moves to Thursday this week. Same venue.', lecturerId, now - 60 * MIN);
     q(`INSERT INTO class_pulses (class_id, question, options, counts, asked_by, asked_at, closes_at) VALUES (?, ?, ?, ?, ?, ?, ?)`)
       .run(cls.id, 'Was this week\'s tutorial useful?', JSON.stringify(['Yes', 'Somewhat', 'No']), JSON.stringify([4, 3, 1]), lecturerId, now - 3 * 60 * MIN, now + 7 * DAY_MS);
-    q(`INSERT INTO attendance_sessions (class_id, label, started_by, started_at) VALUES (?, 'Tut 4, today', ?, ?)`).run(cls.id, lecturerId, now);
+    q(`INSERT INTO attendance_sessions (class_id, label, started_by, started_at, kind) VALUES (?, 'Tut 4, today', ?, ?, 'tut')`).run(cls.id, lecturerId, now);
     flashRedirect(res, `/c/${cls.code}`, 'ok', `${DEMO_JOINED}: you're a student. Today shows the announcement and the question. Check in to today's tut from the test tools.`);
   });
 

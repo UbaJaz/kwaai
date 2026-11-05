@@ -146,6 +146,31 @@ const shortDay = (ms) => {
   return `${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getUTCDay()]} ${d.getUTCDate()} ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getUTCMonth()]}`;
 };
 
+// The register: each student is absent (no mark), present, late or excused. Tapping a name moves it to the next one.
+const MARKS = ['absent', 'present', 'late', 'excused'];
+const MARK_NAMES = { absent: 'Absent', present: 'Present', late: 'Late', excused: 'Excused' };
+const nextMark = (status) => MARKS[(Math.max(0, MARKS.indexOf(status)) + 1) % MARKS.length];
+// the sessions that count for a student (a class roster row): whole-class ones, and their own tut and prac groups'
+function sessionsFor(row, sessions, groupsById) {
+  return sessions.filter((s) => {
+    if (!s.group_id) return true;
+    const g = groupsById.get(s.group_id);
+    return !!g && (g.kind === 'tut' ? row.tut_group : row.prac_group) === g.name;
+  });
+}
+// a student's attendance, oldest first. marks: Map of "sessionId|number" to status. A session that's still open and
+// has no mark for them yet doesn't count against them.
+function attendanceOf(row, sessions, groupsById, marks) {
+  const history = sessionsFor(row, sessions, groupsById).slice().sort((a, b) => a.started_at - b.started_at)
+    .map((s) => ({ id: s.id, label: s.label, kind: s.kind, open: !s.ended_at, status: marks.get(`${s.id}|${row.number}`) || 'absent' }));
+  const counted = history.filter((h) => !(h.open && h.status === 'absent'));
+  const n = (status) => counted.filter((h) => h.status === status).length;
+  return { history, held: counted.length, present: n('present'), late: n('late'), excused: n('excused'), absent: n('absent') };
+}
+// register order: surname (the last word of the name), then the full name, then the student number
+const surname = (name) => String(name || '').trim().split(/\s+/).pop().toLowerCase();
+const bySurname = (a, b) => surname(a.name).localeCompare(surname(b.name)) || String(a.name).localeCompare(String(b.name)) || a.number.localeCompare(b.number);
+
 // Announcements: up to ANNOUNCE_MAX characters, screened like review comments (no contact details, links, insults or
 // allegations). Anything the screen would hold for a moderator is refused instead, with the reason, so the poster can
 // reword it: an announcement is only useful if it goes out now. They stay on members' Today for ANNOUNCE_DAYS.
@@ -193,4 +218,4 @@ function keyIsCurrent(secret, sessionId, key, now) {
   return false;
 }
 
-module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ROSTER_MAX, parseRoster, GROUP_KINDS, WEEKDAYS, parseGroup, shortDay, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
+module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ROSTER_MAX, parseRoster, GROUP_KINDS, WEEKDAYS, parseGroup, shortDay, MARKS, MARK_NAMES, nextMark, sessionsFor, attendanceOf, bySurname, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
