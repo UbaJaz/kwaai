@@ -4,8 +4,12 @@ const { REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { ordinal, entryStatus } = require('./planner');
 const Marks = require('../public/marks-math');
 const Study = require('./study');
-const { MARK_NAMES, nextMark } = require('./classes');
+const Classes = require('./classes');
+const { MARK_NAMES, nextMark } = Classes;
 
+// "Tuts: can miss 1 more" and the like, for a DP status from Classes.dpStatus
+const DP_KIND = { tut: 'Tuts', prac: 'Pracs' };
+const dpText = (kind, d) => (d.state === 'lost' ? `${DP_KIND[kind]}: DP out of reach` : d.canMiss === 0 ? `${DP_KIND[kind]}: can't miss another` : `${DP_KIND[kind]}: can miss ${d.canMiss} more`);
 const NEXT_MARK = Object.fromEntries(Object.keys(MARK_NAMES).map((m) => [m, nextMark(m)]));
 
 const fmt = (n) => (n == null ? '–' : Number(n).toFixed(1));
@@ -1272,7 +1276,7 @@ function marks(ctx, { courses, planLink, hasPlan }) {
 }
 
 // ---------- today ----------
-function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = [], announcements = [], pulses = [] }) {
+function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = [], announcements = [], pulses = [], dpAlerts = [] }) {
   const dayDate = t ? new Date(`${t.date}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
   return layout({ ...ctx, title: 'Today', here: '/today', path: '/today' }, html`
   <h1 class="page-title">Today</h1>
@@ -1284,6 +1288,11 @@ function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = []
       <p class="meta"><a href="/c/${a.code}#announcements">${a.class_name}</a> · ${a.poster_name} · ${CLASS_ROLE[a.poster_role]} · ${fmtDate(Study.saDay(a.created_at))}</p>
       <form method="post" action="/announcements/${a.id}/read" class="inline"><button class="btn btn-small btn-quiet">Got it</button></form>
     </li>`)}</ul>
+  </section>` : ''}
+  ${dpAlerts.length ? html`<section class="card panel dp-today" aria-labelledby="today-dp">
+    <h2 id="today-dp">Attendance and DP</h2>
+    <ul class="plain">${dpAlerts.map((a) => html`<li><a href="/c/${a.code}"><strong>${a.name}</strong></a> <span class="dp-chip dp-${a.state}">${dpText(a.kind, a)}</span></li>`)}</ul>
+    <p class="meta">From your tut and prac registers. If you missed one for a good reason, ask your tutor to mark it excused.</p>
   </section>` : ''}
   ${pulses.length ? html`<section class="card panel pulse-today" aria-labelledby="today-pulse">
     <h2 id="today-pulse">Quick ${pulses.length === 1 ? 'question' : 'questions'} from your classes</h2>
@@ -1529,9 +1538,10 @@ function classes(ctx, { classes: list, staff, thisYear, error, form = {}, myGrou
 }
 
 // the page for the people running a class: how students join (the dashboard is added to this page later)
-function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, rows, totals, tutors = [], sessions = [], groups = [], staff = [], canPulse = false, pulses = [], pulsePreset = { question: '', options: [] } }) {
+function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk = false, manage, rows, totals, tutors = [], sessions = [], groups = [], staff = [], canPulse = false, pulses = [], pulsePreset = { question: '', options: [] } }) {
   const share = `https://wa.me/?text=${encodeURIComponent(`Join ${cls.name} on Kwaai: ${link}`)}`;
-  const shown = onlyNudge ? rows.filter((r) => r.nudge) : rows;
+  const shown = onlyNudge ? rows.filter((r) => r.nudge) : onlyRisk ? rows.filter((r) => r.flags.length) : rows;
+  const filter = onlyNudge ? '&filter=nudge' : onlyRisk ? '&filter=risk' : '';
   const groupForm = (g) => html`<form method="post" action="/classes/${cls.id}/groups" class="study-form">
     ${g ? html`<input type="hidden" name="group" value="${g.id}">` : html`<label>Kind <select name="kind"><option value="tut">Tut</option><option value="prac">Prac</option></select></label>`}
     <label>Name <input type="text" name="name" required maxlength="30" value="${g?.name ?? ''}" placeholder="e.g. Tut 3"></label>
@@ -1546,7 +1556,7 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
     <label>Tutor <select name="tutor"><option value="">Nobody yet</option>${staff.map((t) => html`<option value="${t.user_id}" ${g?.tutor_id === t.user_id ? 'selected' : ''}>${t.name}${t.role === 'lecturer' ? ' (lecturer)' : ''}</option>`)}</select></label>
     <div class="form-actions"><button class="btn btn-small">${g ? 'Save' : 'Add the group'}</button></div>
   </form>`;
-  const sortLink = (key, label) => html`<a href="/classes/${cls.id}?sort=${key}${onlyNudge ? '&filter=nudge' : ''}" ${sort === key ? html`aria-current="true"` : ''}>${label}</a>`;
+  const sortLink = (key, label) => html`<a href="/classes/${cls.id}?sort=${key}${filter}" ${sort === key ? html`aria-current="true"` : ''}>${label}</a>`;
   const joinSection = html`<section class="card panel class-join" aria-labelledby="join-head">
     <h2 id="join-head">How students join</h2>
     <div class="class-join-row">
@@ -1570,12 +1580,14 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
     <div><dt>Median this week</dt><dd>${Study.hoursText(totals.median)}</dd></div>
     <div><dt>On track</dt><dd>${totals.onTrack}<small> of ${totals.students}</small></dd></div>
     <div class="${totals.nudge ? 'dash-warn' : ''}"><dt>Need a nudge</dt><dd>${totals.nudge}</dd></div>
+    <div class="${totals.atRisk ? 'dash-warn' : ''}"><dt>At risk</dt><dd>${totals.atRisk}</dd></div>
   </dl>
   <p class="meta">On track means at least ${Study.hoursText(totals.soFar)} of ${cls.course} so far this week (the ${Study.hoursText(cls.goal_week_min)} goal spread over the days gone). A nudge means under a quarter of that, or no ${cls.course} study for 7 days.</p>
   <div class="dash-tools">
     <div class="toggle" role="group" aria-label="Which students">
-      <a href="/classes/${cls.id}?sort=${sort}" class="${onlyNudge ? '' : 'on'}" ${onlyNudge ? '' : html`aria-current="page"`}>Everyone</a>
+      <a href="/classes/${cls.id}?sort=${sort}" class="${filter ? '' : 'on'}" ${filter ? '' : html`aria-current="page"`}>Everyone</a>
       <a href="/classes/${cls.id}?sort=${sort}&filter=nudge" class="${onlyNudge ? 'on' : ''}" ${onlyNudge ? html`aria-current="page"` : ''}>Needs a nudge (${totals.nudge})</a>
+      <a href="/classes/${cls.id}?sort=${sort}&filter=risk" class="${onlyRisk ? 'on' : ''}" ${onlyRisk ? html`aria-current="page"` : ''}>At risk (${totals.atRisk})</a>
     </div>
     <a class="btn btn-small btn-quiet" href="/classes/${cls.id}/students.csv" download>Download CSV</a>
   </div>
@@ -1583,7 +1595,7 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
     <thead><tr>
       <th scope="col">${sortLink('number', 'Student number')}</th><th scope="col">${sortLink('name', 'Name')}</th>
       <th scope="col">${sortLink('week', 'This week')}</th><th scope="col">Goal</th><th scope="col">This month</th>
-      <th scope="col">${sortLink('last', 'Last studied')}</th><th scope="col">Days (last 14)</th><th scope="col">Attendance</th>${manage ? html`<th scope="col"><span class="sr-only">Actions</span></th>` : ''}
+      <th scope="col">${sortLink('last', 'Last studied')}</th><th scope="col">Days (last 14)</th><th scope="col">Attendance</th><th scope="col">DP and flags</th>${manage ? html`<th scope="col"><span class="sr-only">Actions</span></th>` : ''}
     </tr></thead>
     <tbody>${shown.map((r) => {
       const study = (v) => (r.onKwaai ? v : html`<span class="meta">–</span>`);
@@ -1596,6 +1608,7 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
       <td data-label="Last studied">${study(r.last ? fmtDate(r.last) : html`<span class="meta">Not yet</span>`)}</td>
       <td data-label="Days (last 14)">${study(r.days14)}</td>
       <td data-label="Attendance">${r.sessions ? `${r.attended} of ${r.sessions}${r.excused ? ` (${r.excused} excused)` : ''}` : html`<span class="meta">No sessions yet</span>`}</td>
+      <td data-label="DP and flags" class="dash-dp">${Object.keys(r.dp).length || r.flags.length ? html`${Object.entries(r.dp).map(([kind, d]) => html`<span class="dp-chip dp-${d.state}">${dpText(kind, d)}</span>`)}${r.flags.filter((x) => !x.key.startsWith('dp-')).map((x) => html`<span class="flag-line">${x.text}</span>`)}` : html`<span class="meta">–</span>`}</td>
       ${manage ? html`<td class="dash-actions">${!r.onKwaai
         ? html`<form method="post" action="/classes/${cls.id}/roster/remove" class="inline" data-confirm="Take ${r.name} (${r.number}) off the class list?"><input type="hidden" name="number" value="${r.number}"><button class="link-btn meta">Take off the list</button></form>`
         : html`${r.role === 'rep'
@@ -1604,7 +1617,7 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
         <form method="post" action="/classes/${cls.id}/remove" class="inline" data-confirm="Remove ${r.name} (${r.number}) from the class?"><input type="hidden" name="user" value="${r.id}"><button class="link-btn meta">Remove</button></form>`}</td>` : ''}
     </tr>`;
     })}</tbody>
-  </table></div>` : html`<p class="meta">${rows.length ? 'Nobody needs a nudge right now.' : 'No students yet. Share the link or QR code above, or paste your class list below.'}</p>`}
+  </table></div>` : html`<p class="meta">${rows.length ? (onlyRisk ? 'Nobody is at risk right now.' : 'Nobody needs a nudge right now.') : 'No students yet. Share the link or QR code above, or paste your class list below.'}</p>`}
   ${rows.length ? joinSection : ''}
   ${manage ? html`<section class="card panel class-section" id="roster" aria-labelledby="roster-head">
     <h2 id="roster-head">Class list</h2>
@@ -1624,11 +1637,28 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
     </form>
     ${totals.listed ? html`<form method="post" action="/classes/${cls.id}/roster/clear" class="inline" data-confirm="Clear the class list? Students who joined on Kwaai stay in the class."><button class="link-btn meta">Clear the list</button></form>` : ''}
   </section>` : ''}
+  ${manage ? html`<section class="card panel class-section" id="dp" aria-labelledby="dp-head">
+    <h2 id="dp-head">DP rule for attendance</h2>
+    ${course?.dp ? html`<p class="meta">The handbook says: “${course.dp}”</p>` : ''}
+    <form method="post" action="/classes/${cls.id}/dp" class="study-form">
+      <div class="form-row two">
+        <label>Tuts the course will hold <input type="number" name="tut_planned" min="0" max="60" value="${cls.dp_tut_planned || ''}" placeholder="0" inputmode="numeric"></label>
+        <label>% of tuts needed for DP <input type="number" name="tut_pct" min="0" max="100" value="${cls.dp_tut_pct || ''}" placeholder="e.g. 80" inputmode="numeric"></label>
+      </div>
+      <div class="form-row two">
+        <label>Pracs the course will hold <input type="number" name="prac_planned" min="0" max="60" value="${cls.dp_prac_planned || ''}" placeholder="0" inputmode="numeric"></label>
+        <label>% of pracs needed for DP <input type="number" name="prac_pct" min="0" max="100" value="${cls.dp_prac_pct || ''}" placeholder="e.g. 100" inputmode="numeric"></label>
+      </div>
+      <label class="check"><input type="checkbox" name="late" value="1" ${cls.dp_late_counts ? 'checked' : ''}> Late counts as attended</label>
+      <p class="meta">Leave a number empty for no rule. Excused sessions come off what's needed, like a leave of absence. This is attendance only: marks stay out of Kwaai.</p>
+      <div class="form-actions"><button class="btn">Save the DP rule</button></div>
+    </form>
+  </section>` : ''}
   <section class="card panel class-section" id="groups" aria-labelledby="groups-head">
     <h2 id="groups-head">Tut and prac groups</h2>
     ${groups.length ? html`<ul class="plain group-rows">${groups.map((g) => html`<li class="group-row">
       <div class="group-info"><strong>${g.name}</strong> <span class="meta">${g.kind === 'tut' ? 'Tut' : 'Prac'} · ${plural(g.students, 'student')}</span><br>
-        <span class="meta">${g.day ? `${g.day} ${g.starts}–${g.ends}` : 'No time yet'}${g.venue ? ` · ${g.venue}` : ''}${g.tutor_name ? ` · ${g.tutor_name}` : ''}</span></div>
+        <span class="meta">${g.day ? `${g.day} ${g.starts}–${g.ends}` : 'No time yet'}${g.venue ? ` · ${g.venue}` : ''}${g.tutor_name ? ` · ${g.tutor_name}` : ''}${g.rate != null ? ` · ${g.rate}% attendance over ${g.sessionsHeld} ${g.sessionsHeld === 1 ? 'session' : 'sessions'}` : ''}</span></div>
       <form method="post" action="/classes/${cls.id}/attendance" class="inline"><input type="hidden" name="group" value="${g.id}"><button class="btn btn-small">Take today's register</button></form>
       ${manage ? html`<details class="group-edit"><summary class="meta">Edit ${g.name}</summary>${groupForm(g)}
         <form method="post" action="/classes/${cls.id}/groups/${g.id}/delete" class="inline" data-confirm="Delete ${g.name}? Its students will have no ${g.kind} group."><button class="link-btn meta">Delete the group</button></form></details>` : ''}
@@ -1737,7 +1767,7 @@ const pulseForm = (code, p, back = '') => html`<form method="post" action="/c/${
   <p class="meta">Anonymous: your lecturer sees only how many picked each answer.</p>
 </form>`;
 
-function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '', attendance = null, announcements = [], canAnnounce = false, pulses = [], groups = [], myRow = null }) {
+function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '', attendance = null, dpRules = {}, announcements = [], canAnnounce = false, pulses = [], groups = [], myRow = null }) {
   const student = me.role === 'student' || me.role === 'rep';
   const p = Math.min(1, weekMin / cls.goal_week_min);
   const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
@@ -1823,6 +1853,10 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
   </section>
   ${(me.role === 'student' || me.role === 'rep') && attendance?.history.length ? html`<section class="card panel class-section" aria-labelledby="my-att">
     <h2 id="my-att">Your attendance: ${attendance.present + attendance.late} of ${attendance.held}${attendance.excused ? html` <span class="meta">(${attendance.excused} excused)</span>` : ''}</h2>
+    ${Object.entries(dpRules).filter(([, rule]) => rule).map(([kind, rule]) => {
+      const d = Classes.dpFor(attendance.history, rule, kind);
+      return html`<p class="dp-line dp-${d.state}"><strong>${DP_KIND[kind]}:</strong> ${d.attended} attended of ${d.total} counted so far (${rule.pct}% needed for DP). ${d.state === 'lost' ? html`You can't reach DP on attendance any more. Talk to your lecturer or tutor now.` : d.canMiss === 0 ? 'You can\'t miss another and keep DP.' : `You can miss ${d.canMiss} more and keep DP.`}</p>`;
+    })}
     <ul class="plain fact-list">${attendance.history.slice().reverse().map((x) => html`<li><span>${x.label}</span> <span class="${x.status === 'present' || x.status === 'late' ? 'ok-text' : 'meta'}">${x.open && x.status === 'absent' ? 'Open now' : x.status === 'absent' ? 'Not marked' : MARK_NAMES[x.status]}</span></li>`)}</ul>
   </section>` : ''}
   <h2 class="section-title">Class ranking</h2>

@@ -416,6 +416,9 @@ function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker
   addMissingColumns(db, 'lecturers', LECTURER_DETAILS);
   addMissingColumns(db, 'users', USER_DETAILS);
   addMissingColumns(db, 'classes', { roster_confirmed_at: 'TEXT' }); // when the lecturer confirmed they may use the class list
+  // the class's DP rule for attendance: how many tuts and pracs it will hold, the % a student must attend, and whether
+  // late counts as attended (0 planned means no rule for that kind)
+  addMissingColumns(db, 'classes', { dp_tut_planned: 'INTEGER NOT NULL DEFAULT 0', dp_tut_pct: 'INTEGER NOT NULL DEFAULT 0', dp_prac_planned: 'INTEGER NOT NULL DEFAULT 0', dp_prac_pct: 'INTEGER NOT NULL DEFAULT 0', dp_late_counts: 'INTEGER NOT NULL DEFAULT 1' });
   addMissingColumns(db, 'class_members', { number: "TEXT NOT NULL DEFAULT ''" }); // the member's student number, from their email
   // which group a register is for (null: the whole class), and whether it counts as a tut, a prac or neither for DP
   addMissingColumns(db, 'attendance_sessions', { group_id: 'INTEGER REFERENCES class_groups(id) ON DELETE SET NULL', kind: "TEXT NOT NULL DEFAULT 'other'" });
