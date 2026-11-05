@@ -1726,11 +1726,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.post('/attend/:id/add', requireUser, limits.classes, (req, res) => {
     const s = sessionForRunners(req);
     if (!s) return res.status(404).page(notFound(req));
-    const number = String(req.body.number || '').trim().toLowerCase();
-    const student = /^[a-z0-9]{3,20}$/.test(number) && q(`SELECT u.id FROM users u JOIN class_members m ON m.user_id = u.id AND m.class_id = ? WHERE u.email = ?`).get(s.class_id, `${number}@myuct.ac.za`);
-    if (!student) return flashRedirect(res, `/attend/${s.id}`, 'error', `${number.toUpperCase() || 'That student'} isn't in this class. They can join with the class link.`);
+    const number = String(req.body.number || '').trim().toUpperCase();
+    // matched on the number worked out from each member's email, so it works for any student address (and test ones)
+    const student = /^[A-Z0-9]{3,20}$/.test(number) && q(`SELECT u.id, u.email FROM users u JOIN class_members m ON m.user_id = u.id AND m.class_id = ?`).all(s.class_id)
+      .find((u) => Classes.studentNumber(u.email) === number);
+    if (!student) return flashRedirect(res, `/attend/${s.id}`, 'error', `${number || 'That student'} isn't in this class. They can join with the class link.`);
     q(`INSERT OR IGNORE INTO attendance (session_id, user_id, marked_at, how) VALUES (?, ?, ?, 'tutor')`).run(s.id, student.id, Date.now());
-    flashRedirect(res, `/attend/${s.id}`, 'ok', `${number.toUpperCase()} is marked present.`);
+    flashRedirect(res, `/attend/${s.id}`, 'ok', `${number} is marked present.`);
   });
   app.post('/attend/:id/end', requireUser, (req, res) => {
     const s = sessionForRunners(req);
