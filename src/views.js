@@ -1589,7 +1589,10 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
       <a href="/classes/${cls.id}?sort=${sort}&filter=nudge" class="${onlyNudge ? 'on' : ''}" ${onlyNudge ? html`aria-current="page"` : ''}>Needs a nudge (${totals.nudge})</a>
       <a href="/classes/${cls.id}?sort=${sort}&filter=risk" class="${onlyRisk ? 'on' : ''}" ${onlyRisk ? html`aria-current="page"` : ''}>At risk (${totals.atRisk})</a>
     </div>
-    <a class="btn btn-small btn-quiet" href="/classes/${cls.id}/students.csv" download>Download CSV</a>
+    <span class="dash-downloads">
+      <a class="btn btn-small btn-quiet" href="/classes/${cls.id}/students.csv" download>Download CSV</a>
+      <a class="btn btn-small btn-quiet" href="/classes/${cls.id}/register.csv" download>Register for Excel</a>
+    </span>
   </div>
   ${shown.length ? html`<div class="table-scroll card"><table class="dash-table">
     <thead><tr>
@@ -1674,7 +1677,8 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
       </div>
       <div class="form-actions"><button class="btn">Start attendance</button></div>
     </form>
-    <p class="meta">Your screen shows a QR code. Students scan it with their phone camera and tap to confirm. Keep the screen where the room can see it.</p>
+    <p class="meta">You get the register to tap names on, and a QR code students can scan with their phone camera instead.</p>
+    <p class="meta">Downloads: the <a href="/classes/${cls.id}/register.csv" download>register for Excel</a> (P, L, E or A for each session), or <a href="/classes/${cls.id}/amathuba.csv" download>tut attendance as an Amathuba grade import</a>. For Amathuba, first make a numeric grade item called "Tut attendance" out of 100, and check the file with your course admin: we haven't tested it against UCT's Amathuba yet.</p>
     ${sessions.length ? html`<ul class="plain fact-list">${sessions.map((x) => html`<li><a href="/attend/${x.id}">${x.label}</a> <span class="meta">${plural(x.present, 'student')} present${x.ended_at ? '' : ' · open'}</span></li>`)}</ul>` : ''}
   </section>
   ${canPulse ? html`<section class="card panel class-section" id="pulse" aria-labelledby="pulse-head">

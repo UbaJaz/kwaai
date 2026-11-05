@@ -2821,3 +2821,47 @@ test('DP from the register: the rule, ok to warn to lost on the class page and T
   const csv = await (await lecturer.get(adminPath + '/students.csv')).text();
   assert.match(csv, /\r\nDPSAAA001,Amy,[^\r]*,lost,,Missed [^\r]*\r\n/);
 }));
+
+test('attendance % for exports, and a letter per session for the register spreadsheet', () => {
+  const C = require('../src/classes');
+  const history = [
+    { kind: 'tut', status: 'present', open: false }, { kind: 'tut', status: 'late', open: false },
+    { kind: 'tut', status: 'excused', open: false }, { kind: 'tut', status: 'absent', open: false },
+    { kind: 'prac', status: 'present', open: false }, { kind: 'tut', status: 'absent', open: true },
+  ];
+  assert.deepEqual(C.attendancePercent(history, 'tut', true), { attended: 2, held: 3, pct: 67 }, 'excused and the open session are left out');
+  assert.deepEqual(C.attendancePercent(history, 'tut', false), { attended: 1, held: 3, pct: 33 });
+  assert.deepEqual(C.attendancePercent(history), { attended: 3, held: 4, pct: 75 });
+  assert.equal(C.attendancePercent([], 'tut').pct, null);
+  assert.deepEqual(history.map(C.registerLetter), ['P', 'L', 'E', 'A', 'P', '']);
+  assert.equal(C.registerLetter(undefined), '', 'a session that was not for them');
+});
+
+test('exports: the register for Excel and tut attendance as an Amathuba grade import', () => withAdminServer({}, async ({ browser: newBrowser }) => {
+  const { lecturer, adminPath } = await makeClass(newBrowser);
+  await lecturer.post(adminPath + '/roster', { list: 'EXPAAA001\tAmy Ex\tTut 1\nEXPBBB002\tBo Ex\tTut 2', mode: 'replace', confirm: '1' });
+  const dash = await lecturer.text(adminPath);
+  const tut1 = /<option value="(\d+)">Tut 1<\/option>/.exec(dash)[1];
+  const s1 = (await lecturer.post(adminPath + '/attendance', { group: tut1, label: 'Tut 1 week 1' })).headers.get('location');
+  await lecturer.post(s1 + '/mark', { number: 'EXPAAA001', status: 'late' });
+  await lecturer.post(s1 + '/end', {});
+  const whole = (await lecturer.post(adminPath + '/attendance', { kind: 'tut', label: 'All tuts week 2' })).headers.get('location');
+  await lecturer.post(whole + '/mark', { number: 'EXPBBB002', status: 'present' });
+  await lecturer.post(whole + '/end', {});
+  await lecturer.post(adminPath + '/dp', { tut_planned: '10', tut_pct: '80' }); // late does not count here
+
+  const reg = await (await lecturer.get(adminPath + '/register.csv')).text();
+  const lines = reg.trim().split('\r\n');
+  assert.match(lines[0], /^student_number,name,tut_group,prac_group,Tut 1 week 1 \(\d{4}-\d{2}-\d{2}\),All tuts week 2 \(\d{4}-\d{2}-\d{2}\),attended,held,attendance_percent,excused,tut_dp,prac_dp$/);
+  assert.equal(lines[1], 'EXPAAA001,Amy Ex,Tut 1,,L,A,0,2,0,0,warn,', 'late does not count, so 2 of the 2 allowed misses are used');
+  assert.equal(lines[2], 'EXPBBB002,Bo Ex,Tut 2,,,P,1,1,100,0,ok,', 'Bo was not in Tut 1: that cell is empty');
+
+  const am = await (await lecturer.get(adminPath + '/amathuba.csv')).text();
+  assert.equal(am, 'OrgDefinedId,Username,Tut attendance Points Grade <Numeric MaxPoints:100>,End-of-Line Indicator\r\n#EXPAAA001,#expaaa001,0,#\r\n#EXPBBB002,#expbbb002,100,#\r\n');
+
+  const student = newBrowser();
+  await student.signIn('expaaa001@myuct.ac.za');
+  assert.equal((await student.get(adminPath + '/register.csv')).status, 404, 'students cannot download');
+  assert.match(dash, /Register for Excel/);
+  assert.match(dash, /tut attendance as an Amathuba grade import/);
+}));

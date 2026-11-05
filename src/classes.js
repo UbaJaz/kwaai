@@ -205,6 +205,17 @@ function riskFlags({ history, dp = {}, onKwaai = false, days14 = 0, course = '' 
   return flags;
 }
 
+// Attendance as a percentage, for exports: of the sessions held (of one kind, or all when kind is empty), how many the
+// student attended. Excused ones are left out; late counts if the class says so. pct is null when nothing is held yet.
+function attendancePercent(history, kind = '', lateCounts = true) {
+  const counted = history.filter((h) => (!kind || h.kind === kind) && h.status !== 'excused' && !(h.open && h.status === 'absent'));
+  const attended = counted.filter((h) => h.status === 'present' || (lateCounts && h.status === 'late')).length;
+  return { attended, held: counted.length, pct: counted.length ? Math.round((attended / counted.length) * 100) : null };
+}
+// one letter per session for the register spreadsheet; empty for a session that's still open without a mark
+const REGISTER_LETTER = { present: 'P', late: 'L', excused: 'E', absent: 'A' };
+const registerLetter = (h) => (!h ? '' : h.open && h.status === 'absent' ? '' : REGISTER_LETTER[h.status]);
+
 // Announcements: up to ANNOUNCE_MAX characters, screened like review comments (no contact details, links, insults or
 // allegations). Anything the screen would hold for a moderator is refused instead, with the reason, so the poster can
 // reword it: an announcement is only useful if it goes out now. They stay on members' Today for ANNOUNCE_DAYS.
@@ -252,4 +263,4 @@ function keyIsCurrent(secret, sessionId, key, now) {
   return false;
 }
 
-module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ROSTER_MAX, parseRoster, GROUP_KINDS, WEEKDAYS, parseGroup, shortDay, MARKS, MARK_NAMES, nextMark, sessionsFor, attendanceOf, bySurname, dpStatus, dpRule, dpFor, riskFlags, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
+module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ROSTER_MAX, parseRoster, GROUP_KINDS, WEEKDAYS, parseGroup, shortDay, MARKS, MARK_NAMES, nextMark, sessionsFor, attendanceOf, bySurname, dpStatus, dpRule, dpFor, riskFlags, attendancePercent, registerLetter, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };

@@ -1666,7 +1666,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.set('Cache-Control', 'no-store').page(views.classAdmin(req.ctx, {
       cls, me, course: getCourse(cls.course), link, qr: Classes.qrSvg(link), sort, onlyNudge: req.query.filter === 'nudge', onlyRisk: req.query.filter === 'risk', manage: Classes.can(me, 'manage'), ...classDashboard(cls, sort),
       tutors: q(`SELECT m.user_id, m.name, u.email FROM class_members m JOIN users u ON u.id = m.user_id WHERE m.class_id = ? AND m.role = 'tutor' ORDER BY m.name`).all(cls.id),
-      sessions: q(`SELECT s.*, (SELECT COUNT(*) FROM attendance a WHERE a.session_id = s.id) AS present FROM attendance_sessions s WHERE s.class_id = ? ORDER BY s.started_at DESC LIMIT 12`).all(cls.id),
+      sessions: q(`SELECT s.*, (SELECT COUNT(*) FROM attendance a WHERE a.session_id = s.id AND a.status IN ('present', 'late')) AS present FROM attendance_sessions s WHERE s.class_id = ? ORDER BY s.started_at DESC LIMIT 12`).all(cls.id),
       canPulse: Classes.can(me, 'pulse'), pulsePreset: Classes.PULSE_PRESET,
       groups: groupAttendance(cls.id, classGroupsOf(cls.id)), staff: q(`SELECT user_id, name, role FROM class_members WHERE class_id = ? AND role IN ('lecturer', 'tutor') ORDER BY role, name`).all(cls.id),
       pulses: q(`SELECT * FROM class_pulses WHERE class_id = ? ORDER BY asked_at DESC LIMIT 10`).all(cls.id).map((p) => pulseView(p)),
@@ -1684,6 +1684,43 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
         : [r.number, r.name, '', r.role, '', '', '', '', '', '', r.attended, r.sessions, 'no', 'yes'])
         .concat([r.excused, r.dp.tut?.state || '', r.dp.prac?.state || '', r.flags.map((x) => x.text).join('; ')]))));
     res.set({ 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="${cls.course}-${cls.year}-students.csv"`, 'Cache-Control': 'no-store' }).send(lines.join('\r\n') + '\r\n');
+  });
+
+  // The register for Excel: a row per student, a column per session (P present, L late, E excused, A absent; empty if
+  // the session wasn't for their group or is still open), then totals and DP.
+  app.get('/classes/:id/register.csv', requireUser, (req, res) => {
+    const found = classForRunners(req);
+    if (!found) return res.status(404).page(notFound(req));
+    const { cls } = found;
+    const { rows } = classDashboard(cls, 'number');
+    const sessions = classAttendance(cls.id).sessions.slice().sort((a, b) => a.started_at - b.started_at);
+    const lines = [Classes.csvRow(['student_number', 'name', 'tut_group', 'prac_group', ...sessions.map((s) => `${s.label} (${Study.saDay(s.started_at)})`),
+      'attended', 'held', 'attendance_percent', 'excused', 'tut_dp', 'prac_dp'])];
+    for (const r of rows) {
+      const byId = new Map(r.history.map((h) => [h.id, h]));
+      const all = Classes.attendancePercent(r.history, '', !!cls.dp_late_counts);
+      lines.push(Classes.csvRow([r.number, r.name, r.tut || '', r.prac || '', ...sessions.map((s) => Classes.registerLetter(byId.get(s.id))),
+        all.attended, all.held, all.pct ?? '', r.excused, r.dp.tut?.state || '', r.dp.prac?.state || '']));
+    }
+    res.set({ 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="${cls.course}-${cls.year}-register.csv"`, 'Cache-Control': 'no-store' }).send(lines.join('\r\n') + '\r\n');
+  });
+
+  // Tut attendance as a grade to import into Amathuba (Brightspace): its grade import columns, with the student number
+  // as the user. The course needs a numeric grade item called "Tut attendance" out of 100. Pracs are used when the class
+  // has no tuts. Not yet confirmed against UCT's Amathuba: the button says to check with the course admin.
+  app.get('/classes/:id/amathuba.csv', requireUser, (req, res) => {
+    const found = classForRunners(req);
+    if (!found) return res.status(404).page(notFound(req));
+    const { cls } = found;
+    const { rows } = classDashboard(cls, 'number');
+    const hasTuts = classAttendance(cls.id).sessions.some((s) => s.kind === 'tut');
+    const item = hasTuts ? 'Tut attendance' : 'Prac attendance';
+    const lines = [Classes.csvRow(['OrgDefinedId', 'Username', `${item} Points Grade <Numeric MaxPoints:100>`, 'End-of-Line Indicator'])];
+    for (const r of rows) {
+      const { pct } = Classes.attendancePercent(r.history, hasTuts ? 'tut' : 'prac', !!cls.dp_late_counts);
+      lines.push(Classes.csvRow([`#${r.number}`, `#${r.number.toLowerCase()}`, pct ?? '', '#']));
+    }
+    res.set({ 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="${cls.course}-${cls.year}-amathuba-grades.csv"`, 'Cache-Control': 'no-store' }).send(lines.join('\r\n') + '\r\n');
   });
 
   app.post('/classes/:id/edit', requireUser, limits.classes, (req, res) => {
