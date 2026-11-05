@@ -432,6 +432,37 @@ test('old attendance (one row per user) is rebuilt by student number, keeping ev
   db.close();
 });
 
+test('DP from attendance: misses allowed, excused sessions, late, and the warning before it is lost', () => {
+  const C = require('../src/classes');
+  const at = (o) => { const d = C.dpStatus({ planned: 10, pct: 80, excused: 0, ...o }); return `${d.state} ${d.canMiss}`; };
+  assert.equal(at({ held: 0, attended: 0 }), 'ok 2', '10 tuts at 80%: two can be missed');
+  assert.equal(at({ held: 3, attended: 3 }), 'ok 2');
+  assert.equal(at({ held: 3, attended: 2 }), 'warn 1', 'one missed, one more allowed: warn');
+  assert.equal(at({ held: 5, attended: 3 }), 'warn 0', 'none left to miss');
+  assert.equal(at({ held: 6, attended: 3 }), 'lost 0');
+  assert.equal(at({ held: 4, attended: 2, excused: 2 }), 'ok 1', 'excused comes off what is planned (8 left, 7 needed)');
+  assert.equal(C.dpStatus({ planned: 5, held: 1, attended: 0, excused: 0, pct: 100 }).state, 'lost', 'pracs at 100%: one miss loses DP');
+  assert.equal(C.dpStatus({ planned: 4, held: 6, attended: 6, excused: 0, pct: 75 }).total, 6, 'more held than planned: the held count is used');
+
+  const cls = { dp_tut_planned: 10, dp_tut_pct: 80, dp_prac_planned: 0, dp_prac_pct: 0, dp_late_counts: 0 };
+  assert.equal(C.dpRule(cls, 'prac'), null, 'no rule for pracs');
+  const rule = C.dpRule(cls, 'tut');
+  const history = [
+    { kind: 'tut', label: 'Tut 1', status: 'present', open: false },
+    { kind: 'tut', label: 'Tut 2', status: 'late', open: false },
+    { kind: 'prac', label: 'Prac 1', status: 'absent', open: false },
+    { kind: 'tut', label: 'Tut 3', status: 'absent', open: false },
+    { kind: 'tut', label: 'Tut 4', status: 'absent', open: true },
+  ];
+  const tut = C.dpFor(history, rule, 'tut');
+  assert.deepEqual([tut.attended, tut.missed, tut.state], [1, 2, 'warn'], 'late does not count here, the open tut not yet');
+  assert.equal(C.dpFor(history, { ...rule, lateCounts: true }, 'tut').missed, 1);
+
+  const flags = C.riskFlags({ history, dp: { tut }, onKwaai: true, days14: 0, course: 'CSC1015F' });
+  assert.deepEqual(flags.map((f) => f.text), ['Missed Prac 1 and Tut 3', "Can't miss another tut", 'No CSC1015F study in 14 days']);
+  assert.deepEqual(C.riskFlags({ history: history.slice(0, 2), dp: {}, onKwaai: false }), [], 'nothing to flag');
+});
+
 test('pulse checks: a question and 2 to 4 different answers, screened', () => {
   const C = require('../src/classes');
   assert.deepEqual(C.parsePulse({ question: "  How's the   pace? ", option1: 'Too slow', option2: '', option3: 'About right', option4: ' ' }, screenComment),

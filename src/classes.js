@@ -171,6 +171,40 @@ function attendanceOf(row, sessions, groupsById, marks) {
 const surname = (name) => String(name || '').trim().split(/\s+/).pop().toLowerCase();
 const bySurname = (a, b) => surname(a.name).localeCompare(surname(b.name)) || String(a.name).localeCompare(String(b.name)) || a.number.localeCompare(b.number);
 
+// DP from attendance, for one kind (tuts or pracs). planned: sessions the course will hold (at least the ones held so
+// far); pct: the share a student must attend. Excused sessions come off what's planned, the way a leave of absence works.
+// canMiss: how many more they can miss and keep DP. warn once they've missed some and can miss at most one more.
+function dpStatus({ planned, held, attended, excused, pct }) {
+  const total = Math.max(planned, held) - excused;
+  const required = Math.ceil((pct / 100) * total - 1e-9);
+  const missed = held - excused - attended;
+  const canMiss = total - required - missed;
+  const state = canMiss < 0 ? 'lost' : missed > 0 && canMiss <= 1 ? 'warn' : 'ok';
+  return { state, canMiss: Math.max(0, canMiss), required, missed, attended, total };
+}
+// a class's DP rule for a kind, or null if it has none
+const dpRule = (cls, kind) => (cls[`dp_${kind}_planned`] > 0 && cls[`dp_${kind}_pct`] > 0 ? { planned: cls[`dp_${kind}_planned`], pct: cls[`dp_${kind}_pct`], lateCounts: !!cls.dp_late_counts } : null);
+// DP for one kind from a student's attendance history (Classes.attendanceOf); open sessions they aren't marked in yet don't count
+function dpFor(history, rule, kind) {
+  const counted = history.filter((h) => h.kind === kind && !(h.open && h.status === 'absent'));
+  const n = (status) => counted.filter((h) => h.status === status).length;
+  return dpStatus({ planned: rule.planned, held: counted.length, attended: n('present') + (rule.lateCounts ? n('late') : 0), excused: n('excused'), pct: rule.pct });
+}
+// Why a student might need a hand, in plain words: two missed sessions in a row, DP at risk or lost, or no study of
+// the course for 14 days (only for students on Kwaai, whose study we can see)
+function riskFlags({ history, dp = {}, onKwaai = false, days14 = 0, course = '' }) {
+  const flags = [];
+  const counted = history.filter((h) => !(h.open && h.status === 'absent'));
+  const last2 = counted.slice(-2);
+  if (last2.length === 2 && last2.every((h) => h.status === 'absent')) flags.push({ key: 'missed2', text: `Missed ${last2[0].label} and ${last2[1].label}` });
+  for (const [kind, d] of Object.entries(dp)) {
+    if (d.state === 'lost') flags.push({ key: `dp-${kind}`, text: `Can't reach ${kind} DP` });
+    else if (d.state === 'warn') flags.push({ key: `dp-${kind}`, text: d.canMiss ? `Can miss 1 more ${kind} for DP` : `Can't miss another ${kind}` });
+  }
+  if (onKwaai && !days14) flags.push({ key: 'nostudy', text: `No ${course} study in 14 days` });
+  return flags;
+}
+
 // Announcements: up to ANNOUNCE_MAX characters, screened like review comments (no contact details, links, insults or
 // allegations). Anything the screen would hold for a moderator is refused instead, with the reason, so the poster can
 // reword it: an announcement is only useful if it goes out now. They stay on members' Today for ANNOUNCE_DAYS.
@@ -218,4 +252,4 @@ function keyIsCurrent(secret, sessionId, key, now) {
   return false;
 }
 
-module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ROSTER_MAX, parseRoster, GROUP_KINDS, WEEKDAYS, parseGroup, shortDay, MARKS, MARK_NAMES, nextMark, sessionsFor, attendanceOf, bySurname, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
+module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ROSTER_MAX, parseRoster, GROUP_KINDS, WEEKDAYS, parseGroup, shortDay, MARKS, MARK_NAMES, nextMark, sessionsFor, attendanceOf, bySurname, dpStatus, dpRule, dpFor, riskFlags, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
