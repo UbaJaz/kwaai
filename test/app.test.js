@@ -350,6 +350,19 @@ test('announcements: up to 280 characters, tidied, and screened like comments', 
   assert.match(C.parseAnnouncement('This test was stupid', screenComment).error, /^Reword it/, 'what the screen would hold is refused, not held');
 });
 
+test('class lists: pasted from Excel or a CSV, by student number, headers skipped', () => {
+  const C = require('../src/classes');
+  const fromExcel = C.parseRoster('Student number\tName\tTut\tPrac\nabcxyz001\tSmith, Ann\tTut 3\tPrac A\r\nDEFGHI002\tBob  Jones\n\nnot a number 12');
+  assert.deepEqual(fromExcel.rows, [
+    { number: 'ABCXYZ001', name: 'Smith, Ann', tut: 'Tut 3', prac: 'Prac A' },
+    { number: 'DEFGHI002', name: 'Bob Jones', tut: '', prac: '' },
+  ]);
+  assert.deepEqual(fromExcel.skipped, [5], 'the header is skipped quietly, a junk line with digits is reported');
+  assert.deepEqual(C.parseRoster('"JKLMNO003","Mokoena, Thandi",T1\nJKLMNO003,Again,T2').rows, [{ number: 'JKLMNO003', name: 'Again', tut: 'T2', prac: '' }], 'quoted CSV, and the last line for a number wins');
+  assert.match(C.parseRoster('Names only').error, /No student numbers/);
+  assert.match(C.parseRoster(Array.from({ length: C.ROSTER_MAX + 1 }, (_, i) => `ABC${i}`).join('\n')).error, /up to 3000/);
+});
+
 test('pulse checks: a question and 2 to 4 different answers, screened', () => {
   const C = require('../src/classes');
   assert.deepEqual(C.parsePulse({ question: "  How's the   pace? ", option1: 'Too slow', option2: '', option3: 'About right', option4: ' ' }, screenComment),
