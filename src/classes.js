@@ -21,6 +21,7 @@ const ROLE_NAMES = { lecturer: 'Lecturer', tutor: 'Tutor', rep: 'Class rep', stu
 const studentNumber = (email, studentDomain = 'myuct.ac.za') => {
   const [local, domain] = String(email).toLowerCase().split('@');
   if (domain === 'kwaai.invalid') {
+    if (local === 'admin') return 'TEST000'; // the admin, when trying a class as a student
     const n = /^test-student-(\d+)$/.exec(local);
     return n ? `TEST${n[1].padStart(3, '0')}` : '';
   }
@@ -139,6 +140,12 @@ function parseGroup(body) {
   return { group: { kind, name, day, starts, ends, venue } };
 }
 
+// "Wed 5 Nov" for a moment in South African time, for naming a register
+const shortDay = (ms) => {
+  const d = new Date(ms + 2 * 3_600_000);
+  return `${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getUTCDay()]} ${d.getUTCDate()} ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getUTCMonth()]}`;
+};
+
 // Announcements: up to ANNOUNCE_MAX characters, screened like review comments (no contact details, links, insults or
 // allegations). Anything the screen would hold for a moderator is refused instead, with the reason, so the poster can
 // reword it: an announcement is only useful if it goes out now. They stay on members' Today for ANNOUNCE_DAYS.
@@ -186,4 +193,4 @@ function keyIsCurrent(secret, sessionId, key, now) {
   return false;
 }
 
-module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ROSTER_MAX, parseRoster, GROUP_KINDS, WEEKDAYS, parseGroup, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
+module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ROSTER_MAX, parseRoster, GROUP_KINDS, WEEKDAYS, parseGroup, shortDay, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
