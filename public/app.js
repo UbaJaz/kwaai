@@ -217,20 +217,94 @@ document.querySelectorAll('[data-tab-more]').forEach((more) => {
   });
 });
 
-/// The tutor's attendance screen: every 4 seconds, a fresh QR code (it changes every 20 seconds), the count and the
-// newest names. Without this script the page still works; it just needs a refresh for a new code.
+// The tutor's register: a tap moves a name to its next mark and saves it straight away. Without a connection the taps
+// wait on this phone (localStorage) and are sent, oldest first, when it's back. Without the script each tap is a normal
+// form post. The search box narrows the list by name or student number.
+const MARK_ORDER = ['absent', 'present', 'late', 'excused'];
+const MARK_NAMES = { absent: 'Absent', present: 'Present', late: 'Late', excused: 'Excused' };
+document.querySelectorAll('[data-register]').forEach((reg) => {
+  const url = reg.dataset.register;
+  const key = `kwaai-register:${url}`;
+  const csrf = reg.querySelector('input[name="_csrf"]')?.value || '';
+  const offline = reg.querySelector('[data-register-offline]');
+  const count = reg.querySelector('[data-attend-count]');
+  const queue = () => { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch { return []; } };
+  const save = (list) => { try { localStorage.setItem(key, JSON.stringify(list)); } catch { /* private mode: taps are sent straight away only */ } };
+  const show = (btn, status) => {
+    const next = MARK_ORDER[(MARK_ORDER.indexOf(status) + 1) % MARK_ORDER.length];
+    btn.className = `register-btn mark-${status}`;
+    btn.querySelector('.register-mark').textContent = MARK_NAMES[status];
+    btn.form.elements.status.value = next;
+    btn.setAttribute('aria-label', `${btn.querySelector('.register-name').firstChild.textContent.trim()}: ${MARK_NAMES[status]}. Tap for ${MARK_NAMES[next].toLowerCase()}.`);
+  };
+  let sending = false;
+  const flush = () => {
+    if (sending) return;
+    const waiting = queue();
+    if (offline) offline.hidden = !waiting.length || navigator.onLine;
+    if (!waiting.length) return;
+    sending = true;
+    const { number, status } = waiting[0];
+    fetch(url, { method: 'POST', headers: { accept: 'application/json' }, body: new URLSearchParams({ _csrf: csrf, number, status }) })
+      .then((r) => {
+        if (!r.ok && r.status !== 400) throw new Error(String(r.status)); // 400: not on the list any more, so drop it
+        return r.ok ? r.json() : null;
+      })
+      .then((d) => {
+        save(queue().filter((x, i) => i > 0 || x.number !== number || x.status !== status));
+        if (d && count) count.textContent = String(d.count);
+        sending = false;
+        flush();
+      })
+      .catch(() => { sending = false; if (offline) offline.hidden = false; });
+  };
+  reg.addEventListener('submit', (e) => {
+    const btn = e.target.querySelector('.register-btn');
+    if (!btn) return;
+    e.preventDefault();
+    const status = e.target.elements.status.value;
+    show(btn, status);
+    save([...queue().filter((x) => x.number !== btn.dataset.number), { number: btn.dataset.number, status }]); // the latest tap wins
+    flush();
+  });
+  window.addEventListener('online', flush);
+  // taps not sent before a reload show again until they are
+  for (const { number, status } of queue()) {
+    const btn = reg.querySelector(`.register-btn[data-number="${CSS.escape(number)}"]`);
+    if (btn) show(btn, status);
+  }
+  flush();
+  const search = reg.querySelector('[data-register-search]');
+  search?.addEventListener('input', () => {
+    const text = search.value.trim().toLowerCase();
+    reg.querySelectorAll('.register-list > li').forEach((li) => { li.hidden = !!text && !li.dataset.name.includes(text); });
+  });
+  // students scanning the QR code show up without a reload (public/app.js's live tick passes the marks here)
+  reg.applyMarks = (marks) => {
+    const waiting = new Set(queue().map((x) => x.number));
+    reg.querySelectorAll('.register-btn').forEach((btn) => {
+      const status = marks[btn.dataset.number] || 'absent';
+      if (!waiting.has(btn.dataset.number) && !btn.classList.contains(`mark-${status}`)) show(btn, status);
+    });
+  };
+});
+
+// The tutor's attendance screen: every 4 seconds, a fresh QR code (it changes every 20 seconds), the count, the newest
+// names and the register's marks. Without this script the page still works; it just needs a refresh for a new code.
 document.querySelectorAll('[data-attend-live]').forEach((screen) => {
   const qr = screen.querySelector('[data-attend-qr]');
-  const count = screen.querySelector('[data-attend-count]');
+  const count = document.querySelector('[data-attend-count]');
   const recent = screen.querySelector('[data-attend-recent]');
+  const reg = document.querySelector('[data-register]');
   const tick = () => fetch(screen.dataset.attendLive, { headers: { accept: 'application/json' } })
     .then((r) => (r.ok ? r.json() : null))
     .then((d) => {
       if (!d) return;
       if (!d.open) { window.location.reload(); return; }
       qr.innerHTML = d.qr; // our own server's SVG
-      count.textContent = String(d.count);
+      if (count) count.textContent = String(d.count);
       recent.replaceChildren(...d.recent.map((name) => { const li = document.createElement('li'); li.textContent = name; return li; }));
+      if (reg?.applyMarks && d.marks) reg.applyMarks(d.marks);
     })
     .catch(() => { /* offline for a moment: the next tick tries again */ });
   setInterval(tick, 4000);
