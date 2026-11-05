@@ -363,6 +363,32 @@ test('class lists: pasted from Excel or a CSV, by student number, headers skippe
   assert.match(C.parseRoster(Array.from({ length: C.ROSTER_MAX + 1 }, (_, i) => `ABC${i}`).join('\n')).error, /up to 3000/);
 });
 
+test('tut and prac groups: a name, and a weekday, times and venue if known', () => {
+  const C = require('../src/classes');
+  assert.deepEqual(C.parseGroup({ kind: 'tut', name: ' Tut  3 ', day: 'Wednesday', starts: '14:00', ends: '15:45', venue: 'Menzies 10' }).group,
+    { kind: 'tut', name: 'Tut 3', day: 'Wednesday', starts: '14:00', ends: '15:45', venue: 'Menzies 10' });
+  assert.deepEqual(C.parseGroup({ kind: 'prac', name: 'Prac A' }).group, { kind: 'prac', name: 'Prac A', day: '', starts: '', ends: '', venue: '' }, 'times can come later');
+  assert.ok(C.parseGroup({ kind: 'lab', name: 'X' }).error);
+  assert.ok(C.parseGroup({ kind: 'tut', name: 'T1', day: 'Wednesday' }).error, 'a day needs times');
+  assert.ok(C.parseGroup({ kind: 'tut', name: 'T1', day: 'Saturday', starts: '09:00', ends: '10:00' }).error);
+  assert.ok(C.parseGroup({ kind: 'tut', name: 'T1', day: 'Monday', starts: '06:00', ends: '07:00' }).error);
+});
+
+test('a student\'s own class group replaces the handbook tut times on their week, with the venue', () => {
+  const cs = { code: 'CSC1015F', title: 'Computer Science 1015', credits: 18, periods: '3', days: 'Monday', period_choice: 0,
+    sessions: JSON.stringify([{ kind: 'tut', count: 1, choice: true, options: [{ day: 'Tuesday', start: '14:00', end: '15:45' }, { day: 'Thursday', start: '14:00', end: '15:45' }], text: '' }]) };
+  const tuts = (w) => w.events.filter((e) => e.kind === 'tut').map((e) => `${e.day} ${e.start} ${e.venue || ''}`.trim());
+  assert.deepEqual(tuts(buildWeek([cs], parseWeek({}), { year: 2027 })), ['Tuesday 14:00'], 'without a group: the first handbook option');
+  const official = { CSC1015F: { tut: { name: 'Tut 3', day: 'Wednesday', starts: '16:00', ends: '17:45', venue: 'Menzies 10' } } };
+  const w = buildWeek([cs], parseWeek({}), { year: 2027, official });
+  assert.deepEqual(tuts(w), ['Wednesday 16:00 Menzies 10']);
+  assert.equal(w.events.find((e) => e.kind === 'tut').source, 'class');
+  assert.ok(!w.choices.some((c) => c.kind === 'tut'), 'no group to pick: the lecturer set it');
+  const ics = icsFor([cs], parseWeek({}), { year: 2027, official });
+  assert.match(ics, /SUMMARY:CSC1015F [^\r]*\(Tut 3\)\r\nLOCATION:Menzies 10\r\n/);
+  assert.deepEqual(tuts(buildWeek([cs], parseWeek({}), { year: 2027, official: { CSC1015F: { tut: { name: 'Tut 3', day: '', starts: '', ends: '', venue: '' } } } })), ['Tuesday 14:00'], 'a group without a time changes nothing');
+});
+
 test('pulse checks: a question and 2 to 4 different answers, screened', () => {
   const C = require('../src/classes');
   assert.deepEqual(C.parsePulse({ question: "  How's the   pace? ", option1: 'Too slow', option2: '', option3: 'About right', option4: ' ' }, screenComment),
