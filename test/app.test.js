@@ -437,7 +437,7 @@ test('DP from attendance: misses allowed, excused sessions, late, and the warnin
   const at = (o) => { const d = C.dpStatus({ planned: 10, pct: 80, excused: 0, ...o }); return `${d.state} ${d.canMiss}`; };
   assert.equal(at({ held: 0, attended: 0 }), 'ok 2', '10 tuts at 80%: two can be missed');
   assert.equal(at({ held: 3, attended: 3 }), 'ok 2');
-  assert.equal(at({ held: 3, attended: 2 }), 'warn 1', 'one missed, one more allowed: warn');
+  assert.equal(at({ held: 3, attended: 2 }), 'ok 1', 'one missed, one more allowed: not a warning yet');
   assert.equal(at({ held: 5, attended: 3 }), 'warn 0', 'none left to miss');
   assert.equal(at({ held: 6, attended: 3 }), 'lost 0');
   assert.equal(at({ held: 4, attended: 2, excused: 2 }), 'ok 1', 'excused comes off what is planned (8 left, 7 needed)');
@@ -2440,8 +2440,8 @@ test('attendance shows up for the student, on the dashboard and in the CSV', () 
   assert.match(page, /<span>Tut 2<\/span> <span class="meta">Not marked<\/span>[\s\S]*<span>Tut 1<\/span> <span class="ok-text">Present<\/span>/);
   assert.match(await lecturer.text(adminPath), /<td data-label="Attendance">1 of 2<\/td>/);
   const csv = await (await lecturer.get(adminPath + '/students.csv')).text();
-  assert.match(csv, /needs_a_nudge,sessions_attended,sessions_held,on_kwaai,on_class_list\r\n/);
-  assert.match(csv, /\r\nATTD001,Att Student,no,student,.*,1,2,yes,no\r\n/);
+  assert.match(csv, /needs_a_nudge,sessions_attended,sessions_held,on_kwaai,on_class_list,sessions_excused,tut_dp,prac_dp,flags\r\n/);
+  assert.match(csv, /\r\nATTD001,Att Student,no,student,.*,1,2,yes,no,0,,,[^\r]*\r\n/);
 }));
 
 test('class reps: full name and badge, can add dates, never the dashboard or student numbers', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
@@ -2655,7 +2655,7 @@ test('class list: the lecturer pastes it once with consent, members match by num
   assert.match(dash, /Joined Early(?:(?!<\/tr>)[\s\S])*Make class rep/, 'a member on the list shows by their class name, with the member actions');
   assert.match(dash, /Dee Notyet <span class="badge badge-off">Not on Kwaai yet<\/span>(?:(?!<\/tr>)[\s\S])*Take off the list/);
   const csv = await (await lecturer.get(adminPath + '/students.csv')).text();
-  assert.match(csv, /\r\nLSTDEF002,Dee Notyet,,student,,,,,,,0,0,no,yes\r\n/);
+  assert.match(csv, /\r\nLSTDEF002,Dee Notyet,,student,,,,,,,0,0,no,yes,0,,,\r\n/);
 
   const later = newBrowser();
   await later.signIn('lstdef002@myuct.ac.za');
@@ -2781,4 +2781,43 @@ test('the tutor\'s register: a group\'s list in surname order, taps cycle the ma
 
   // the student's own attendance: the group session counts for Ann (present via "everyone"), Cat isn't in Tut 1
   assert.match(await a.text('/c/' + code), /Your attendance: 2 of 2/);
+}));
+
+test('DP from the register: the rule, ok to warn to lost on the class page and Today, at-risk flags and group attendance', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code, adminPath } = await makeClass(newBrowser);
+  await lecturer.post(adminPath + '/roster', { list: 'DPSAAA001\tAmy Dee\tTut 1\nDPSBBB002\tBo Dee\tTut 1', mode: 'replace', confirm: '1' });
+  assert.match((await lecturer.post(adminPath + '/dp', { tut_planned: '4', tut_pct: '120' })).headers.get('location'), /#dp$/);
+  assert.equal(sdb.prepare('SELECT dp_tut_planned FROM classes').get().dp_tut_planned, 0, 'a bad % is refused');
+  await lecturer.post(adminPath + '/dp', { tut_planned: '4', tut_pct: '75', prac_planned: '', prac_pct: '', late: '1' });
+  assert.deepEqual({ ...sdb.prepare('SELECT dp_tut_planned, dp_tut_pct, dp_prac_planned, dp_late_counts FROM classes').get() }, { dp_tut_planned: 4, dp_tut_pct: 75, dp_prac_planned: 0, dp_late_counts: 1 });
+
+  const amy = newBrowser();
+  await amy.signIn('dpsaaa001@myuct.ac.za');
+  await amy.post('/c/' + code + '/join', { show: 'name', name: 'Amy' });
+  const tut1 = sdb.prepare(`SELECT id FROM class_groups WHERE name = 'Tut 1'`).get().id;
+  const hold = async (marks) => {
+    const path = (await lecturer.post(adminPath + '/attendance', { group: String(tut1) })).headers.get('location');
+    for (const [number, status] of Object.entries(marks)) await lecturer.post(path + '/mark', { number, status });
+    await lecturer.post(path + '/end', {});
+  };
+
+  await hold({ DPSAAA001: 'late', DPSBBB002: 'present' });
+  assert.match(await amy.text('/c/' + code), /<strong>Tuts:<\/strong> 1 attended of 4 counted so far \(75% needed for DP\)\. You can miss 1 more and keep DP\./, 'late counts here');
+  assert.doesNotMatch(await amy.text('/today'), /Attendance and DP/, 'nothing to warn about yet');
+
+  await hold({ DPSBBB002: 'present' });
+  assert.match(await amy.text('/c/' + code), /You can(&#39;|')t miss another and keep DP/);
+  assert.match(await amy.text('/today'), /Attendance and DP[\s\S]*Tuts: can(&#39;|')t miss another/, 'Today warns before it is lost');
+
+  await hold({ DPSBBB002: 'excused' });
+  assert.match(await amy.text('/c/' + code), /You can(&#39;|')t reach DP on attendance any more/);
+  assert.match(await amy.text('/today'), /Tuts: DP out of reach/);
+
+  const risk = await lecturer.text(adminPath + '?filter=risk');
+  assert.match(risk, /<dt>At risk<\/dt><dd>1<\/dd>/);
+  assert.match(risk, /Amy(?:(?!<\/tr>)[\s\S])*Tuts: DP out of reach(?:(?!<\/tr>)[\s\S])*Missed the last two sessions/, 'flagged, with why (same-day labels say it plainly)');
+  assert.doesNotMatch(risk, /Bo Dee/, 'Bo is fine: excused comes off what is needed');
+  assert.match(risk, /Tut 1<\/strong>[\s\S]{0,400}50% attendance over 3 sessions/, 'group attendance: 3 of 6 places (excused is not attended)');
+  const csv = await (await lecturer.get(adminPath + '/students.csv')).text();
+  assert.match(csv, /\r\nDPSAAA001,Amy,[^\r]*,lost,,Missed [^\r]*\r\n/);
 }));
