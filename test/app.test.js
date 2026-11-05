@@ -350,6 +350,19 @@ test('announcements: up to 280 characters, tidied, and screened like comments', 
   assert.match(C.parseAnnouncement('This test was stupid', screenComment).error, /^Reword it/, 'what the screen would hold is refused, not held');
 });
 
+test('class lists: pasted from Excel or a CSV, by student number, headers skipped', () => {
+  const C = require('../src/classes');
+  const fromExcel = C.parseRoster('Student number\tName\tTut\tPrac\nabcxyz001\tSmith, Ann\tTut 3\tPrac A\r\nDEFGHI002\tBob  Jones\n\nnot a number 12');
+  assert.deepEqual(fromExcel.rows, [
+    { number: 'ABCXYZ001', name: 'Smith, Ann', tut: 'Tut 3', prac: 'Prac A' },
+    { number: 'DEFGHI002', name: 'Bob Jones', tut: '', prac: '' },
+  ]);
+  assert.deepEqual(fromExcel.skipped, [5], 'the header is skipped quietly, a junk line with digits is reported');
+  assert.deepEqual(C.parseRoster('"JKLMNO003","Mokoena, Thandi",T1\nJKLMNO003,Again,T2').rows, [{ number: 'JKLMNO003', name: 'Again', tut: 'T2', prac: '' }], 'quoted CSV, and the last line for a number wins');
+  assert.match(C.parseRoster('Names only').error, /No student numbers/);
+  assert.match(C.parseRoster(Array.from({ length: C.ROSTER_MAX + 1 }, (_, i) => `ABC${i}`).join('\n')).error, /up to 3000/);
+});
+
 test('pulse checks: a question and 2 to 4 different answers, screened', () => {
   const C = require('../src/classes');
   assert.deepEqual(C.parsePulse({ question: "  How's the   pace? ", option1: 'Too slow', option2: '', option3: 'About right', option4: ' ' }, screenComment),
@@ -2327,8 +2340,8 @@ test('attendance shows up for the student, on the dashboard and in the CSV', () 
   assert.match(page, /<span>Tut 2<\/span> <span class="meta">Not marked<\/span>[\s\S]*<span>Tut 1<\/span> <span class="ok-text">Present<\/span>/);
   assert.match(await lecturer.text(adminPath), /<td data-label="Attendance">1 of 2<\/td>/);
   const csv = await (await lecturer.get(adminPath + '/students.csv')).text();
-  assert.match(csv, /needs_a_nudge,sessions_attended,sessions_held\r\n/);
-  assert.match(csv, /\r\nATTD001,Att Student,no,student,.*,1,2\r\n/);
+  assert.match(csv, /needs_a_nudge,sessions_attended,sessions_held,on_kwaai,on_class_list\r\n/);
+  assert.match(csv, /\r\nATTD001,Att Student,no,student,.*,1,2,yes,no\r\n/);
 }));
 
 test('class reps: full name and badge, can add dates, never the dashboard or student numbers', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
@@ -2519,4 +2532,47 @@ test('class test tools are off without TEST_TOOLS', () => withAdminServer({}, as
   for (const path of ['/admin/tools/role', '/admin/tools/demo-lecturer', '/admin/tools/demo-student', '/admin/tools/become']) {
     assert.equal((await admin.post(path, { role: 'staff', student: '0' })).status, 404, path);
   }
+}));
+
+test('class list: the lecturer pastes it once with consent, members match by number, others show as not on Kwaai', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code, adminPath } = await makeClass(newBrowser);
+  const joined = newBrowser();
+  await joined.signIn('lstabc001@myuct.ac.za');
+  await joined.post('/c/' + code + '/join', { show: 'name', name: 'Joined Early' });
+  const list = 'Student number\tName\tTut\tPrac\nLSTABC001\tAbe Listed\tTut 1\tPrac A\nLSTDEF002\tDee Notyet\tTut 2\n';
+
+  await lecturer.post(adminPath + '/roster', { list, mode: 'replace' });
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE source = 'list'`).get().n, 0, 'the first paste needs the tick');
+  assert.equal((await joined.post(adminPath + '/roster', { list, mode: 'replace', confirm: '1' })).status, 404, 'only the lecturer');
+  await lecturer.post(adminPath + '/roster', { list, mode: 'replace', confirm: '1' });
+  assert.deepEqual(sdb.prepare('SELECT number, tut_group, source FROM class_roster ORDER BY number').all().map((r) => ({ ...r })), [
+    { number: 'LSTABC001', tut_group: 'Tut 1', source: 'list' },
+    { number: 'LSTDEF002', tut_group: 'Tut 2', source: 'list' },
+  ]);
+
+  const dash = await lecturer.text(adminPath);
+  assert.match(dash, /<dt>Students<\/dt><dd>2<small> 1 on Kwaai<\/small>/);
+  assert.match(dash, /Joined Early(?:(?!<\/tr>)[\s\S])*Make class rep/, 'a member on the list shows by their class name, with the member actions');
+  assert.match(dash, /Dee Notyet <span class="badge badge-off">Not on Kwaai yet<\/span>(?:(?!<\/tr>)[\s\S])*Take off the list/);
+  const csv = await (await lecturer.get(adminPath + '/students.csv')).text();
+  assert.match(csv, /\r\nLSTDEF002,Dee Notyet,,student,,,,,,,0,0,no,yes\r\n/);
+
+  const later = newBrowser();
+  await later.signIn('lstdef002@myuct.ac.za');
+  await later.post('/c/' + code + '/join', { show: 'anon', name: '' });
+  assert.doesNotMatch(await lecturer.text(adminPath), /Not on Kwaai yet/, 'joining later matches them to the list');
+  await later.post('/c/' + code + '/leave', {});
+  assert.match(await lecturer.text(adminPath), /Dee Notyet <span class="badge badge-off">/, 'leaving keeps a listed student on the list');
+
+  const stranger = newBrowser();
+  await stranger.signIn('strxyz009@myuct.ac.za');
+  await stranger.post('/c/' + code + '/join', { show: 'name', name: 'Not Listed' });
+  await lecturer.post(adminPath + '/roster', { list: 'LSTABC001\tAbe Listed', mode: 'replace' });
+  assert.deepEqual(sdb.prepare('SELECT number, source FROM class_roster ORDER BY number').all().map((r) => [r.number, r.source]),
+    [['LSTABC001', 'list'], ['STRXYZ009', 'joined']], 'replacing drops LSTDEF002, and members always stay on the register');
+  await stranger.post('/c/' + code + '/leave', {});
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE number = 'STRXYZ009'`).get().n, 0, 'a member who was never listed leaves the register');
+
+  await lecturer.post(adminPath + '/roster/clear', {});
+  assert.deepEqual(sdb.prepare('SELECT number, source FROM class_roster').all().map((r) => [r.number, r.source]), [['LSTABC001', 'joined']], 'clearing keeps members');
 }));

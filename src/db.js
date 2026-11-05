@@ -296,6 +296,19 @@ CREATE TABLE IF NOT EXISTS pulse_answered (
   user_id INTEGER NOT NULL REFERENCES users(id),
   PRIMARY KEY (pulse_id, user_id)
 );
+-- The class list: everyone the lecturer pasted from the official list (source 'list') and everyone who joined on Kwaai
+-- (source 'joined'), by student number, so registers and DP cover students who aren't on Kwaai. tut_group and
+-- prac_group name the student's groups. Pasted rows are deleted 30 days after the class's year ends.
+CREATE TABLE IF NOT EXISTS class_roster (
+  class_id INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
+  number TEXT NOT NULL,
+  name TEXT NOT NULL DEFAULT '',
+  tut_group TEXT NOT NULL DEFAULT '',
+  prac_group TEXT NOT NULL DEFAULT '',
+  source TEXT NOT NULL DEFAULT 'list' CHECK (source IN ('list', 'joined')),
+  added_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (class_id, number)
+);
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,
@@ -360,6 +373,8 @@ function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker
   addMissingColumns(db, 'reports', REPORT_DETAILS);
   addMissingColumns(db, 'lecturers', LECTURER_DETAILS);
   addMissingColumns(db, 'users', USER_DETAILS);
+  addMissingColumns(db, 'classes', { roster_confirmed_at: 'TEXT' }); // when the lecturer confirmed they may use the class list
+  addMissingColumns(db, 'class_members', { number: "TEXT NOT NULL DEFAULT ''" }); // the member's student number, from their email
   db.exec('CREATE UNIQUE INDEX IF NOT EXISTS one_report_each ON reports (review_id, user_id)');
   db.exec('CREATE INDEX IF NOT EXISTS test_users ON users (id) WHERE is_test = 1'); // the few test accounts, for leaving them out of figures
   return db;

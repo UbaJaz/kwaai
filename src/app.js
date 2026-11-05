@@ -1429,6 +1429,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const name = Study.cleanName(req.body.name, 40, screenComment);
     if (!anonymous && name.error) return res.status(400).page(classJoinPage(req, cls, { error: `Your name: ${name.error}`, name: req.body.name }));
     q(`INSERT INTO class_members (class_id, user_id, role, name, anonymous, consent_at) VALUES (?, ?, 'student', ?, ?, CURRENT_TIMESTAMP)`).run(cls.id, req.user.id, name.name || '', anonymous ? 1 : 0);
+    syncRoster(cls);
     const { codes, profile, week } = readPlan(req, {});
     if (!codes.includes(cls.course)) savePlan(req, res, [...codes, cls.course], profile, week);
     flashRedirect(res, `/c/${cls.code}`, 'ok', `You're in ${cls.name}.`);
@@ -1548,12 +1549,30 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const cls = classByCode(req.params.code);
     const me = cls && classMember(cls.id, req.user.id);
     if (!me || me.role === 'lecturer') return res.status(404).page(notFound(req));
+    dropFromRoster(cls.id, req.user.id);
     q(`DELETE FROM class_members WHERE class_id = ? AND user_id = ?`).run(cls.id, req.user.id);
     flashRedirect(res, '/classes', 'ok', `You've left ${cls.name}. Your lecturer no longer sees you in it.`);
   });
 
   // Every student (and rep) in a class with their progress on the course: minutes this week and month, the goal %,
   // when they last studied it, how many of the last 14 days, and whether they need a nudge. Only that course counts.
+  // ---- the class list ----
+  // Everyone on the lecturer's pasted list plus everyone who joined, by student number. A member gets a row of their
+  // own (source 'joined') if they aren't on the list, so registers and DP cover the whole class either way.
+  function syncRoster(cls) {
+    for (const m of q(`SELECT m.user_id, u.email FROM class_members m JOIN users u ON u.id = m.user_id WHERE m.class_id = ? AND m.number = ''`).all(cls.id)) {
+      const number = Classes.studentNumber(m.email);
+      if (number) q(`UPDATE class_members SET number = ? WHERE class_id = ? AND user_id = ?`).run(number, cls.id, m.user_id);
+    }
+    // a pasted list is kept until 30 days after the class's year ends
+    if (Study.saDay(Date.now()) >= `${cls.year + 1}-01-31`) q(`DELETE FROM class_roster WHERE class_id = ? AND source = 'list'`).run(cls.id);
+    q(`INSERT OR IGNORE INTO class_roster (class_id, number, name, source) SELECT class_id, number, name, 'joined' FROM class_members
+      WHERE class_id = ? AND number != '' AND role IN ('student', 'rep')`).run(cls.id);
+  }
+  // when a member leaves or is removed, their row goes too, unless it came from the lecturer's list
+  const dropFromRoster = (classId, userId) => q(`DELETE FROM class_roster WHERE class_id = ? AND source = 'joined'
+    AND number = (SELECT number FROM class_members WHERE class_id = ? AND user_id = ?)`).run(classId, classId, userId);
+
   const DASH_SORTS = {
     week: (a, b) => b.week - a.week,
     name: (a, b) => a.name.localeCompare(b.name),
@@ -1561,6 +1580,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     last: (a, b) => (b.last || '').localeCompare(a.last || ''),
   };
   function classDashboard(cls, sort = 'week') {
+    syncRoster(cls);
     const today = Study.saDay(Date.now());
     const minutesIn = (period) => new Map(classMinutes(cls, ...Study.periodRange(period, today)).map((r) => [r.user_id, r.minutes]));
     const week = minutesIn('week');
@@ -1571,18 +1591,21 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const dow = Study.weekdayOf(today);
     const sessionsHeld = q(`SELECT COUNT(*) AS n FROM attendance_sessions WHERE class_id = ?`).get(cls.id).n;
     const attended = new Map(q(`SELECT a.user_id, COUNT(*) AS n FROM attendance a JOIN attendance_sessions s ON s.id = a.session_id WHERE s.class_id = ? GROUP BY a.user_id`).all(cls.id).map((r) => [r.user_id, r.n]));
-    const rows = q(`SELECT m.*, u.email FROM class_members m JOIN users u ON u.id = m.user_id WHERE m.class_id = ? AND m.role IN ('student', 'rep')`).all(cls.id)
+    const rows = q(`SELECT r.number, r.name AS list_name, r.tut_group, r.prac_group, r.source, m.user_id, m.name, m.anonymous, m.role
+      FROM class_roster r LEFT JOIN class_members m ON m.class_id = r.class_id AND m.number = r.number AND m.role IN ('student', 'rep') WHERE r.class_id = ?`).all(cls.id)
       .map((m) => {
-        const r = { id: m.user_id, number: Classes.studentNumber(m.email), name: m.name || '(no name)', anonymous: !!m.anonymous, role: m.role,
+        const onKwaai = m.user_id != null;
+        const r = { id: m.user_id, number: m.number, name: (onKwaai ? m.name : m.list_name) || '(no name)', onKwaai, onList: m.source === 'list', anonymous: !!m.anonymous, role: m.role || 'student',
+          tut: m.tut_group, prac: m.prac_group,
           week: week.get(m.user_id) || 0, month: month.get(m.user_id) || 0, last: activity.get(m.user_id)?.last || null, days14: activity.get(m.user_id)?.days14 || 0,
           attended: attended.get(m.user_id) || 0, sessions: sessionsHeld };
-        return { ...r, pct: Math.round((r.week / cls.goal_week_min) * 100), nudge: Classes.needsNudge({ weekMin: r.week, lastDay: r.last }, cls.goal_week_min, dow, today) };
+        return { ...r, pct: Math.round((r.week / cls.goal_week_min) * 100), nudge: onKwaai && Classes.needsNudge({ weekMin: r.week, lastDay: r.last }, cls.goal_week_min, dow, today) };
       })
       .sort(DASH_SORTS[sort] || DASH_SORTS.week);
-    const weeks = rows.map((r) => r.week).sort((a, b) => a - b);
+    const weeks = rows.filter((r) => r.onKwaai).map((r) => r.week).sort((a, b) => a - b);
     const median = weeks.length ? (weeks.length % 2 ? weeks[weeks.length >> 1] : Math.round((weeks[weeks.length / 2 - 1] + weeks[weeks.length / 2]) / 2)) : 0;
     const soFar = Classes.goalSoFar(cls.goal_week_min, dow);
-    return { rows, totals: { sessions: sessionsHeld, students: rows.length, median, onTrack: rows.filter((r) => r.week >= soFar).length, nudge: rows.filter((r) => r.nudge).length, soFar } };
+    return { rows, totals: { sessions: sessionsHeld, students: rows.length, onKwaai: rows.filter((r) => r.onKwaai).length, listed: rows.filter((r) => r.onList).length, median, onTrack: rows.filter((r) => r.onKwaai && r.week >= soFar).length, nudge: rows.filter((r) => r.nudge).length, soFar } };
   }
   const classForRunners = (req, action = 'dashboard') => {
     const cls = classById(req.params.id);
@@ -1611,8 +1634,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!found) return res.status(404).page(notFound(req));
     const { cls } = found;
     const { rows } = classDashboard(cls, 'number');
-    const lines = [Classes.csvRow(['student_number', 'name', 'anonymous_to_classmates', 'role', 'minutes_this_week', 'minutes_this_month', 'goal_percent_this_week', 'last_studied', 'days_studied_last_14', 'needs_a_nudge', 'sessions_attended', 'sessions_held'])]
-      .concat(rows.map((r) => Classes.csvRow([r.number, r.name, r.anonymous ? 'yes' : 'no', r.role, r.week, r.month, r.pct, r.last || '', r.days14, r.nudge ? 'yes' : 'no', r.attended, r.sessions])));
+    const lines = [Classes.csvRow(['student_number', 'name', 'anonymous_to_classmates', 'role', 'minutes_this_week', 'minutes_this_month', 'goal_percent_this_week', 'last_studied', 'days_studied_last_14', 'needs_a_nudge', 'sessions_attended', 'sessions_held', 'on_kwaai', 'on_class_list'])]
+      .concat(rows.map((r) => Classes.csvRow(r.onKwaai
+        ? [r.number, r.name, r.anonymous ? 'yes' : 'no', r.role, r.week, r.month, r.pct, r.last || '', r.days14, r.nudge ? 'yes' : 'no', r.attended, r.sessions, 'yes', r.onList ? 'yes' : 'no']
+        : [r.number, r.name, '', r.role, '', '', '', '', '', '', r.attended, r.sessions, 'no', 'yes'])));
     res.set({ 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="${cls.course}-${cls.year}-students.csv"`, 'Cache-Control': 'no-store' }).send(lines.join('\r\n') + '\r\n');
   });
 
@@ -1645,10 +1670,58 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     back('ok', `${name.name} is the class rep now.`);
   });
 
+  // the lecturer pastes the class list; "replace" swaps the old list for this one, "add" adds to it. The first paste
+  // needs a tick: they run the course and may use its list for registers.
+  app.post('/classes/:id/roster', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'manage');
+    if (!found) return res.status(404).page(notFound(req));
+    const { cls } = found;
+    const back = (type, text) => flashRedirect(res, `/classes/${cls.id}#roster`, type, text);
+    if (!cls.roster_confirmed_at && req.body.confirm !== '1') return back('error', 'Tick the box to confirm you run this course and may use its class list for registers.');
+    const parsed = Classes.parseRoster(req.body.list);
+    if (parsed.error) return back('error', parsed.error);
+    db.exec('BEGIN');
+    try {
+      if (!cls.roster_confirmed_at) q(`UPDATE classes SET roster_confirmed_at = CURRENT_TIMESTAMP WHERE id = ?`).run(cls.id);
+      if (req.body.mode === 'replace') q(`DELETE FROM class_roster WHERE class_id = ? AND source = 'list'`).run(cls.id);
+      const put = q(`INSERT INTO class_roster (class_id, number, name, tut_group, prac_group, source) VALUES (?, ?, ?, ?, ?, 'list')
+        ON CONFLICT (class_id, number) DO UPDATE SET name = excluded.name, source = 'list',
+          tut_group = CASE WHEN excluded.tut_group != '' THEN excluded.tut_group ELSE class_roster.tut_group END,
+          prac_group = CASE WHEN excluded.prac_group != '' THEN excluded.prac_group ELSE class_roster.prac_group END`);
+      for (const r of parsed.rows) put.run(cls.id, r.number, r.name, r.tut, r.prac);
+      db.exec('COMMIT');
+    } catch (err) {
+      db.exec('ROLLBACK');
+      throw err;
+    }
+    syncRoster(cls);
+    const onKwaai = q(`SELECT COUNT(*) AS n FROM class_roster r JOIN class_members m ON m.class_id = r.class_id AND m.number = r.number WHERE r.class_id = ? AND r.source = 'list'`).get(cls.id).n;
+    const skipped = parsed.skipped.length ? ` Skipped line${parsed.skipped.length === 1 ? '' : 's'} ${parsed.skipped.slice(0, 5).join(', ')}${parsed.skipped.length > 5 ? ' and more' : ''}: no student number at the start.` : '';
+    back('ok', `${parsed.rows.length} students saved to the class list. ${onKwaai} of the list ${onKwaai === 1 ? 'is' : 'are'} on Kwaai.${skipped}`);
+  });
+
+  app.post('/classes/:id/roster/remove', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'manage');
+    if (!found) return res.status(404).page(notFound(req));
+    const number = String(req.body.number || '').toUpperCase();
+    q(`DELETE FROM class_roster WHERE class_id = ? AND number = ? AND source = 'list'`).run(found.cls.id, number);
+    syncRoster(found.cls);
+    flashRedirect(res, `/classes/${found.cls.id}#roster`, 'ok', `${number} is off the class list.`);
+  });
+
+  app.post('/classes/:id/roster/clear', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'manage');
+    if (!found) return res.status(404).page(notFound(req));
+    q(`DELETE FROM class_roster WHERE class_id = ? AND source = 'list'`).run(found.cls.id);
+    syncRoster(found.cls);
+    flashRedirect(res, `/classes/${found.cls.id}#roster`, 'ok', 'The class list is cleared. Students who joined on Kwaai stay.');
+  });
+
   app.post('/classes/:id/remove', requireUser, limits.classes, (req, res) => {
     const found = classForRunners(req, 'manage');
     const who = found && classMember(found.cls.id, Number(req.body.user));
     if (!who || who.role === 'lecturer') return res.status(404).page(notFound(req));
+    dropFromRoster(found.cls.id, who.user_id);
     q(`DELETE FROM class_members WHERE class_id = ? AND user_id = ?`).run(found.cls.id, who.user_id);
     flashRedirect(res, `/classes/${found.cls.id}`, 'ok', 'Removed from the class.');
   });
@@ -1946,6 +2019,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     demoStudents(cls, students, today, req.user.uni);
     q(`UPDATE class_members SET role = 'rep', name = 'Thandi Mokoena', anonymous = 0 WHERE class_id = ? AND user_id = ?`).run(cls.id, ids[0]);
     q(`INSERT OR REPLACE INTO class_members (class_id, user_id, role, name, consent_at) VALUES (?, ?, 'tutor', 'Sam Tutor', CURRENT_TIMESTAMP)`).run(cls.id, ids[14]);
+    // four students on the class list who aren't on Kwaai, so the list, registers and DP include them
+    q(`UPDATE classes SET roster_confirmed_at = CURRENT_TIMESTAMP WHERE id = ?`).run(cls.id);
+    [['TEST101', 'Lindiwe Dube'], ['TEST102', 'Pieter van Wyk'], ['TEST103', 'Ayesha Patel'], ['TEST104', 'Kagiso Molefe']]
+      .forEach(([number, name]) => q(`INSERT INTO class_roster (class_id, number, name, source) VALUES (?, ?, ?, 'list')`).run(cls.id, number, name));
     demoAttendance(cls, students, req.user.id, 6);
     const date = q(`INSERT INTO class_dates (class_id, course, type, title, date, time, added_by, added_role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
     date.run(cls.id, cls.course, 'prac', 'Prac 5', Study.addDay(today, 2), '23:59', req.user.id, 'lecturer');

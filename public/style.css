@@ -669,6 +669,9 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .class-today h2 { font-size: 1.05rem; }
 .class-today li { display: grid; grid-template-columns: minmax(0, 1fr) 110px auto; gap: 6px 12px; align-items: center; }
 .badge-rep { background: var(--uni-soft); color: var(--uni); }
+.badge-off { background: var(--paper, #f7f7f2); color: var(--muted, #5b6170); border: 1px solid var(--line); }
+.radio-row { border: 0; margin: 0; padding: 0; min-width: 0; }
+#roster textarea { width: 100%; font-family: var(--mono, ui-monospace, monospace); font-size: .85rem; }
 /* the lecturer dashboard */
 .dash-totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 0 0 8px; }
 .dash-totals div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }

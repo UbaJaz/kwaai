@@ -83,6 +83,42 @@ function parseClassDate(body, today, { cleanName, screen }) {
   return { date: { type, date, time, title: title.name } };
 }
 
+// A class list pasted from Excel or PeopleSoft (tab-separated) or a CSV: student number, then optionally the name, the
+// tut group and the prac group. Lines without a student number in the first column (headers, blank lines) are skipped;
+// skipped counts only the ones that had digits in them, so a header row isn't reported as a problem.
+const ROSTER_MAX = 3000;
+function splitCsvLine(line) {
+  const out = [];
+  let cell = '';
+  let quoted = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (quoted) {
+      if (ch === '"' && line[i + 1] === '"') { cell += '"'; i++; } else if (ch === '"') quoted = false; else cell += ch;
+    } else if (ch === '"') quoted = true;
+    else if (ch === ',' || ch === ';') { out.push(cell); cell = ''; } else cell += ch;
+  }
+  out.push(cell);
+  return out;
+}
+function parseRoster(text) {
+  const byNumber = new Map();
+  const skipped = [];
+  String(text || '').replace(/\r\n?/g, '\n').split('\n').forEach((line, i) => {
+    if (!line.trim()) return;
+    const cells = (line.includes('\t') ? line.split('\t') : splitCsvLine(line)).map((c) => c.replace(/\s+/g, ' ').trim());
+    const number = (cells[0] || '').toUpperCase();
+    if (!/^[A-Z0-9]{3,20}$/.test(number) || !/\d/.test(number)) {
+      if (/\d/.test(line)) skipped.push(i + 1);
+      return;
+    }
+    byNumber.set(number, { number, name: (cells[1] || '').slice(0, 80), tut: (cells[2] || '').slice(0, 30), prac: (cells[3] || '').slice(0, 30) });
+  });
+  if (byNumber.size > ROSTER_MAX) return { error: `That's ${byNumber.size} students. A class list can have up to ${ROSTER_MAX}.` };
+  if (!byNumber.size) return { error: 'No student numbers found. Paste one student per line, starting with their student number.' };
+  return { rows: [...byNumber.values()], skipped };
+}
+
 // Announcements: up to ANNOUNCE_MAX characters, screened like review comments (no contact details, links, insults or
 // allegations). Anything the screen would hold for a moderator is refused instead, with the reason, so the poster can
 // reword it: an announcement is only useful if it goes out now. They stay on members' Today for ANNOUNCE_DAYS.
@@ -130,4 +166,4 @@ function keyIsCurrent(secret, sessionId, key, now) {
   return false;
 }
 
-module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
+module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ROSTER_MAX, parseRoster, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
