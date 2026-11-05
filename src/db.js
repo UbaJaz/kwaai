@@ -309,6 +309,20 @@ CREATE TABLE IF NOT EXISTS class_roster (
   added_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (class_id, number)
 );
+-- Tut and prac groups in a class: when and where they meet, and who tutors them. Students are in a group by name
+-- (class_roster.tut_group and prac_group), from the lecturer's list or their own pick.
+CREATE TABLE IF NOT EXISTS class_groups (
+  id INTEGER PRIMARY KEY,
+  class_id INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
+  kind TEXT NOT NULL CHECK (kind IN ('tut', 'prac')),
+  name TEXT NOT NULL,
+  day TEXT NOT NULL DEFAULT '',
+  starts TEXT NOT NULL DEFAULT '',
+  ends TEXT NOT NULL DEFAULT '',
+  venue TEXT NOT NULL DEFAULT '',
+  tutor_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  UNIQUE (class_id, kind, name)
+);
 CREATE TABLE IF NOT EXISTS mod_log (
   id INTEGER PRIMARY KEY,
   review_id INTEGER,
@@ -375,6 +389,8 @@ function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker
   addMissingColumns(db, 'users', USER_DETAILS);
   addMissingColumns(db, 'classes', { roster_confirmed_at: 'TEXT' }); // when the lecturer confirmed they may use the class list
   addMissingColumns(db, 'class_members', { number: "TEXT NOT NULL DEFAULT ''" }); // the member's student number, from their email
+  // which group a register is for (null: the whole class), and whether it counts as a tut, a prac or neither for DP
+  addMissingColumns(db, 'attendance_sessions', { group_id: 'INTEGER REFERENCES class_groups(id) ON DELETE SET NULL', kind: "TEXT NOT NULL DEFAULT 'other'" });
   db.exec('CREATE UNIQUE INDEX IF NOT EXISTS one_report_each ON reports (review_id, user_id)');
   db.exec('CREATE INDEX IF NOT EXISTS test_users ON users (id) WHERE is_test = 1'); // the few test accounts, for leaving them out of figures
   return db;

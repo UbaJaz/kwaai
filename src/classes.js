@@ -21,6 +21,7 @@ const ROLE_NAMES = { lecturer: 'Lecturer', tutor: 'Tutor', rep: 'Class rep', stu
 const studentNumber = (email, studentDomain = 'myuct.ac.za') => {
   const [local, domain] = String(email).toLowerCase().split('@');
   if (domain === 'kwaai.invalid') {
+    if (local === 'admin') return 'TEST000'; // the admin, when trying a class as a student
     const n = /^test-student-(\d+)$/.exec(local);
     return n ? `TEST${n[1].padStart(3, '0')}` : '';
   }
@@ -119,6 +120,32 @@ function parseRoster(text) {
   return { rows: [...byNumber.values()], skipped };
 }
 
+// A tut or prac group: a name like "Tut 3", and if known a weekday, start and end time (07:00 to 21:00) and venue.
+const GROUP_KINDS = { tut: 'Tut', prac: 'Prac' };
+const WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+function parseGroup(body) {
+  const kind = GROUP_KINDS[body.kind] ? body.kind : null;
+  if (!kind) return { error: 'Pick tut or prac.' };
+  const name = String(body.name || '').replace(/\s+/g, ' ').trim();
+  if (name.length < 1 || name.length > 30) return { error: 'Give the group a name of up to 30 characters, like Tut 3.' };
+  const day = String(body.day || '');
+  const starts = String(body.starts || '').trim();
+  const ends = String(body.ends || '').trim();
+  const venue = String(body.venue || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+  if (day || starts || ends) {
+    const time = /^([01]\d|2[0-3]):[0-5]\d$/;
+    if (!WEEKDAYS.includes(day) || !time.test(starts) || !time.test(ends) || ends <= starts) return { error: 'Pick a weekday, and an end time after the start time (or leave all three empty).' };
+    if (starts < '07:00' || ends > '21:00') return { error: 'Groups meet between 07:00 and 21:00.' };
+  }
+  return { group: { kind, name, day, starts, ends, venue } };
+}
+
+// "Wed 5 Nov" for a moment in South African time, for naming a register
+const shortDay = (ms) => {
+  const d = new Date(ms + 2 * 3_600_000);
+  return `${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getUTCDay()]} ${d.getUTCDate()} ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getUTCMonth()]}`;
+};
+
 // Announcements: up to ANNOUNCE_MAX characters, screened like review comments (no contact details, links, insults or
 // allegations). Anything the screen would hold for a moderator is refused instead, with the reason, so the poster can
 // reword it: an announcement is only useful if it goes out now. They stay on members' Today for ANNOUNCE_DAYS.
@@ -166,4 +193,4 @@ function keyIsCurrent(secret, sessionId, key, now) {
   return false;
 }
 
-module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ROSTER_MAX, parseRoster, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };
+module.exports = { PERMISSIONS, ROLE_NAMES, can, studentNumber, qrSvg, parseClassForm, goalSoFar, needsNudge, csvRow, DATE_TYPES, parseClassDate, ROSTER_MAX, parseRoster, GROUP_KINDS, WEEKDAYS, parseGroup, shortDay, ANNOUNCE_MAX, ANNOUNCE_DAYS, parseAnnouncement, PULSE_DAYS, PULSE_PRESET, parsePulse, SLOT_MS, slotAt, attendanceKey, keyIsCurrent };

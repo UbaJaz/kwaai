@@ -305,6 +305,7 @@ test('classes: who may do what, student numbers, QR codes and the new-class form
   assert.equal(Classes.studentNumber('jane.smith@uct.ac.za'), '', 'staff have no student number');
   assert.equal(Classes.studentNumber('test-student-3@kwaai.invalid'), 'TEST003', 'test students get a TEST number for demos');
   assert.equal(Classes.studentNumber('test-lecturer@kwaai.invalid'), '', 'other test accounts get none');
+  assert.equal(Classes.studentNumber('admin@kwaai.invalid'), 'TEST000', 'the admin, for trying a class as a student');
   assert.equal(Classes.studentNumber('test-student-3@gmail.com'), '', 'only the test domain');
   assert.match(Classes.qrSvg('https://kwaai.example/c/ABCDEFGH'), /^<svg[^>]*viewBox="0 0 \d+ \d+"/);
   const known = { course: (c) => c === 'CSC1015F', cleanName: Study.cleanName, screen: screenComment, goalFor: () => 9, thisYear: 2027 };
@@ -361,6 +362,32 @@ test('class lists: pasted from Excel or a CSV, by student number, headers skippe
   assert.deepEqual(C.parseRoster('"JKLMNO003","Mokoena, Thandi",T1\nJKLMNO003,Again,T2').rows, [{ number: 'JKLMNO003', name: 'Again', tut: 'T2', prac: '' }], 'quoted CSV, and the last line for a number wins');
   assert.match(C.parseRoster('Names only').error, /No student numbers/);
   assert.match(C.parseRoster(Array.from({ length: C.ROSTER_MAX + 1 }, (_, i) => `ABC${i}`).join('\n')).error, /up to 3000/);
+});
+
+test('tut and prac groups: a name, and a weekday, times and venue if known', () => {
+  const C = require('../src/classes');
+  assert.deepEqual(C.parseGroup({ kind: 'tut', name: ' Tut  3 ', day: 'Wednesday', starts: '14:00', ends: '15:45', venue: 'Menzies 10' }).group,
+    { kind: 'tut', name: 'Tut 3', day: 'Wednesday', starts: '14:00', ends: '15:45', venue: 'Menzies 10' });
+  assert.deepEqual(C.parseGroup({ kind: 'prac', name: 'Prac A' }).group, { kind: 'prac', name: 'Prac A', day: '', starts: '', ends: '', venue: '' }, 'times can come later');
+  assert.ok(C.parseGroup({ kind: 'lab', name: 'X' }).error);
+  assert.ok(C.parseGroup({ kind: 'tut', name: 'T1', day: 'Wednesday' }).error, 'a day needs times');
+  assert.ok(C.parseGroup({ kind: 'tut', name: 'T1', day: 'Saturday', starts: '09:00', ends: '10:00' }).error);
+  assert.ok(C.parseGroup({ kind: 'tut', name: 'T1', day: 'Monday', starts: '06:00', ends: '07:00' }).error);
+});
+
+test('a student\'s own class group replaces the handbook tut times on their week, with the venue', () => {
+  const cs = { code: 'CSC1015F', title: 'Computer Science 1015', credits: 18, periods: '3', days: 'Monday', period_choice: 0,
+    sessions: JSON.stringify([{ kind: 'tut', count: 1, choice: true, options: [{ day: 'Tuesday', start: '14:00', end: '15:45' }, { day: 'Thursday', start: '14:00', end: '15:45' }], text: '' }]) };
+  const tuts = (w) => w.events.filter((e) => e.kind === 'tut').map((e) => `${e.day} ${e.start} ${e.venue || ''}`.trim());
+  assert.deepEqual(tuts(buildWeek([cs], parseWeek({}), { year: 2027 })), ['Tuesday 14:00'], 'without a group: the first handbook option');
+  const official = { CSC1015F: { tut: { name: 'Tut 3', day: 'Wednesday', starts: '16:00', ends: '17:45', venue: 'Menzies 10' } } };
+  const w = buildWeek([cs], parseWeek({}), { year: 2027, official });
+  assert.deepEqual(tuts(w), ['Wednesday 16:00 Menzies 10']);
+  assert.equal(w.events.find((e) => e.kind === 'tut').source, 'class');
+  assert.ok(!w.choices.some((c) => c.kind === 'tut'), 'no group to pick: the lecturer set it');
+  const ics = icsFor([cs], parseWeek({}), { year: 2027, official });
+  assert.match(ics, /SUMMARY:CSC1015F [^\r]*\(Tut 3\)\r\nLOCATION:Menzies 10\r\n/);
+  assert.deepEqual(tuts(buildWeek([cs], parseWeek({}), { year: 2027, official: { CSC1015F: { tut: { name: 'Tut 3', day: '', starts: '', ends: '', venue: '' } } } })), ['Tuesday 14:00'], 'a group without a time changes nothing');
 });
 
 test('pulse checks: a question and 2 to 4 different answers, screened', () => {
@@ -2575,4 +2602,52 @@ test('class list: the lecturer pastes it once with consent, members match by num
 
   await lecturer.post(adminPath + '/roster/clear', {});
   assert.deepEqual(sdb.prepare('SELECT number, source FROM class_roster').all().map((r) => [r.number, r.source]), [['LSTABC001', 'joined']], 'clearing keeps members');
+}));
+
+test('tut and prac groups: made from the class list, edited by the lecturer, picked by students, on their week, and a register per group', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code, adminPath } = await makeClass(newBrowser);
+  const classId = Number(adminPath.split('/').pop());
+  await lecturer.post(adminPath + '/roster', { list: 'GRPAAA001\tAnn Listed\tTut 1\tPrac A\nGRPBBB002\tBen Listed\tTut 2', mode: 'replace', confirm: '1' });
+  assert.deepEqual(sdb.prepare('SELECT kind, name FROM class_groups ORDER BY kind DESC, name').all().map((g) => `${g.kind} ${g.name}`), ['tut Tut 1', 'tut Tut 2', 'prac Prac A'], 'groups named on the list are made');
+
+  const tut1 = sdb.prepare(`SELECT id FROM class_groups WHERE name = 'Tut 1'`).get().id;
+  await lecturer.post(adminPath + '/groups', { group: String(tut1), name: 'Tut 1A', day: 'Wednesday', starts: '14:00', ends: '15:45', venue: 'Menzies 10', tutor: '' });
+  assert.equal(sdb.prepare(`SELECT tut_group FROM class_roster WHERE number = 'GRPAAA001'`).get().tut_group, 'Tut 1A', 'renaming moves its students');
+  await lecturer.post(adminPath + '/groups', { kind: 'tut', name: 'Tut 2', day: 'Friday', starts: '10:00', ends: '11:00' });
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_groups WHERE name = 'Tut 2'`).get().n, 1, 'no second group with the same name');
+  await lecturer.post(adminPath + '/groups', { kind: 'tut', name: 'Tut 3', day: 'Friday', starts: '10:00', ends: '11:45', venue: 'LT2' });
+  const dash = await lecturer.text(adminPath);
+  assert.match(dash, /<strong>Tut 1A<\/strong> <span class="meta">Tut · 1 student<\/span><br>\s*<span class="meta">Wednesday 14:00–15:45 · Menzies 10<\/span>/);
+
+  // a listed student is put in a group by the list; another student picks their own
+  const listed = newBrowser();
+  await listed.signIn('grpaaa001@myuct.ac.za');
+  await listed.post('/c/' + code + '/join', { show: 'name', name: 'Ann' });
+  const page = await listed.text('/c/' + code);
+  assert.match(page, /<strong>Tut:<\/strong> Tut 1A · Wednesday 14:00–15:45 · Menzies 10/);
+  assert.match(page, /From your lecturer(&#39;|')s class list/);
+  const tut3 = sdb.prepare(`SELECT id FROM class_groups WHERE name = 'Tut 3'`).get().id;
+  await listed.post('/c/' + code + '/group', { kind: 'tut', group: String(tut3) });
+  assert.equal(sdb.prepare(`SELECT tut_group FROM class_roster WHERE number = 'GRPAAA001'`).get().tut_group, 'Tut 1A', 'the list wins');
+  const picker = newBrowser();
+  await picker.signIn('grpccc003@myuct.ac.za');
+  await picker.post('/c/' + code + '/join', { show: 'name', name: 'Cee' });
+  await picker.post('/c/' + code + '/group', { kind: 'tut', group: String(tut3) });
+  assert.equal(sdb.prepare(`SELECT tut_group FROM class_roster WHERE number = 'GRPCCC003'`).get().tut_group, 'Tut 3');
+
+  // the group is on their week and Today (joining put CSC1015F in their plan)
+  assert.match(await listed.text('/week?c=CSC1015F'), /title="CSC1015F [^"]*, 14:00 to 15:45">[\s\S]{0,300}· Menzies 10/, 'the group with its venue on the Wednesday grid');
+
+  // a register for a group is named after it and counts as a tut
+  const started = await lecturer.post(adminPath + '/attendance', { group: String(tut1), label: '' });
+  const session = sdb.prepare('SELECT * FROM attendance_sessions WHERE id = ?').get(Number(started.headers.get('location').split('/').pop()));
+  assert.match(session.label, /^Tut 1A, (Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d{1,2} [A-Z][a-z]{2}$/);
+  assert.equal(session.kind, 'tut');
+  assert.equal(session.group_id, tut1);
+
+  // deleting a group leaves its students without one
+  await lecturer.post(`${adminPath}/groups/${tut3}/delete`, {});
+  assert.equal(sdb.prepare(`SELECT tut_group FROM class_roster WHERE number = 'GRPCCC003'`).get().tut_group, '');
+  assert.equal((await picker.post(adminPath + '/groups', { kind: 'tut', name: 'Mine' })).status, 404, 'students cannot add groups');
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_groups WHERE class_id = ?').get(classId).n, 3);
 }));

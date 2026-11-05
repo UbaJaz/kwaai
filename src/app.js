@@ -534,7 +534,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!fromUrl && (codes.length || week.blocks.length)) return res.redirect(303, planUrl(codes, profile, week, '/week'));
     const rows = weekRows(codes);
     const facts = factsFor(codes);
-    const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { crowd: crowdSlots(facts) });
+    const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { crowd: crowdSlots(facts), official: classSlotsFor(req.user) });
     const upcoming = datedWithClasses(facts, codes).filter((d) => d.date >= new Date().toISOString().slice(0, 10)).slice(0, 12);
     const cal = calCookie(req);
     const origin = baseUrl || `${req.protocol}://${req.get('host')}`;
@@ -550,7 +550,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const { codes, week } = readPlan(req);
     const rows = weekRows(codes);
     res.set({ 'Content-Type': 'text/calendar; charset=utf-8', 'Content-Disposition': 'attachment; filename="kwaai-week.ics"' })
-      .send(icsFor(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { origin: baseUrl || '', ...crowdFor(codes) }));
+      .send(icsFor(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { origin: baseUrl || '', ...crowdFor(codes), official: classSlotsFor(req.user) }));
   });
 
   // A calendar that keeps itself up to date: Google, Apple or Outlook fetch /cal/<id>.ics every few hours, and it
@@ -631,7 +631,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // Today's classes from the week, what's coming up in the next two weeks, a tip for a course you have today, and DP
   // alerts worked out in the browser from the marks saved on this device.
   const saDate = () => new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().slice(0, 10); // South Africa is UTC+2
-  function todayFor(codes, week) {
+  function todayFor(codes, week, official = {}) {
     const date = saDate();
     const year = Number(date.slice(0, 4));
     const dates = termDates(year, 's1') && termDates(year, 's2') ? { s1: termDates(year, 's1'), s2: termDates(year, 's2') } : null;
@@ -651,7 +651,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const dayName = DAYS[weekday >= 1 && weekday <= 5 ? weekday - 1 : 0];
     const rows = weekRows(codes);
     const facts = factsFor(codes);
-    const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), { ...week, t: term }, { year, crowd: crowdSlots(facts) });
+    const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), { ...week, t: term }, { year, crowd: crowdSlots(facts), official });
     const classes = wk.events.filter((e) => e.day === dayName).sort((a, b) => a.start.localeCompare(b.start));
     const soon = new Date(Date.parse(`${date}T00:00:00Z`) + 14 * 86_400_000).toISOString().slice(0, 10);
     const upcoming = datedWithClasses(facts, codes).filter((d) => d.date >= date && d.date <= soon);
@@ -664,7 +664,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
-    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [] }));
+    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [] }));
   });
 
   // ---- study timer ----
@@ -1336,7 +1336,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     FROM classes c JOIN class_members m ON m.class_id = c.id LEFT JOIN courses co ON co.code = c.course WHERE m.user_id = ? ORDER BY c.year DESC, c.course`).all(userId);
   const joinUrl = (req, cls) => `${req.ctx.site.origin}/c/${cls.code}`;
   const goalFor = (code) => Study.weeklyGoal(getCourse(code) || { code, credits: null }, (t) => semesterWeeks(planYear(), t)) || 6;
-  const classForm = (req, extra = {}) => views.classes(req.ctx, { classes: classesOf(req.user.id), staff: req.user.role === 'staff', thisYear: planYear(), ...extra });
+  const classForm = (req, extra = {}) => views.classes(req.ctx, { classes: classesOf(req.user.id), staff: req.user.role === 'staff', thisYear: planYear(),
+    myGroups: q(`SELECT g.*, c.name AS class_name FROM class_groups g JOIN classes c ON c.id = g.class_id JOIN class_members m ON m.class_id = g.class_id AND m.user_id = g.tutor_id
+      WHERE g.tutor_id = ? AND m.role IN ('lecturer', 'tutor') ORDER BY c.name, g.kind DESC, g.name`).all(req.user.id), ...extra });
 
   app.get('/classes', requireUser, (req, res) => res.page(classForm(req)));
 
@@ -1401,6 +1403,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!cls) return res.status(404).page(notFound(req));
     const me = classMember(cls.id, req.user.id);
     if (!me) return res.page(classJoinPage(req, cls));
+    syncRoster(cls);
+    Object.assign(me, classMember(cls.id, req.user.id));
     const period = Study.PERIODS[req.query.period] ? req.query.period : 'week';
     const [from, to] = Study.periodRange(period, Study.saDay(Date.now()));
     const shown = (r) => ({ id: r.user_id, rank: r.rank, minutes: r.minutes, you: r.user_id === req.user.id, role: r.role, name: r.anonymous && r.user_id !== req.user.id ? 'Anonymous' : r.name || 'Anonymous' });
@@ -1414,6 +1418,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       dates: q(`SELECT d.*, m.name AS by_name FROM class_dates d LEFT JOIN class_members m ON m.class_id = d.class_id AND m.user_id = d.added_by WHERE d.class_id = ? AND d.date >= ? ORDER BY d.date, d.time`).all(cls.id, Study.saDay(Date.now())),
       canDates: Classes.can(me, 'dates'), canManage: Classes.can(me, 'manage'), today: Study.saDay(Date.now()),
       announcements, canAnnounce: Classes.can(me, 'announce'),
+      groups: q(`SELECT * FROM class_groups WHERE class_id = ? ORDER BY kind DESC, name`).all(cls.id),
+      myRow: me.number ? q(`SELECT * FROM class_roster WHERE class_id = ? AND number = ?`).get(cls.id, me.number) || null : null,
       pulses: q(`SELECT p.*, EXISTS (SELECT 1 FROM pulse_answered a WHERE a.pulse_id = p.id AND a.user_id = ?) AS answered FROM class_pulses p
         WHERE p.class_id = ? AND p.closed_at IS NULL AND p.closes_at > ? ORDER BY p.asked_at DESC`).all(req.user.id, cls.id, Date.now()).map((p) => pulseView(p)),
       attendance: q(`SELECT s.label, s.started_at, a.marked_at FROM attendance_sessions s LEFT JOIN attendance a ON a.session_id = s.id AND a.user_id = ? WHERE s.class_id = ? ORDER BY s.started_at DESC`).all(req.user.id, cls.id),
@@ -1625,6 +1631,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       tutors: q(`SELECT m.user_id, m.name, u.email FROM class_members m JOIN users u ON u.id = m.user_id WHERE m.class_id = ? AND m.role = 'tutor' ORDER BY m.name`).all(cls.id),
       sessions: q(`SELECT s.*, (SELECT COUNT(*) FROM attendance a WHERE a.session_id = s.id) AS present FROM attendance_sessions s WHERE s.class_id = ? ORDER BY s.started_at DESC LIMIT 12`).all(cls.id),
       canPulse: Classes.can(me, 'pulse'), pulsePreset: Classes.PULSE_PRESET,
+      groups: classGroupsOf(cls.id), staff: q(`SELECT user_id, name, role FROM class_members WHERE class_id = ? AND role IN ('lecturer', 'tutor') ORDER BY role, name`).all(cls.id),
       pulses: q(`SELECT * FROM class_pulses WHERE class_id = ? ORDER BY asked_at DESC LIMIT 10`).all(cls.id).map((p) => pulseView(p)),
     }));
   });
@@ -1670,6 +1677,28 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     back('ok', `${name.name} is the class rep now.`);
   });
 
+  // ---- tut and prac groups ----
+  // a student's own groups in the classes they're in, for their week, Today and calendar file
+  function classSlotsFor(user) {
+    const out = {};
+    if (!user) return out;
+    for (const g of q(`SELECT c.course, g.kind, g.name, g.day, g.starts, g.ends, g.venue FROM class_members m JOIN classes c ON c.id = m.class_id
+        JOIN class_roster r ON r.class_id = m.class_id AND r.number = m.number
+        JOIN class_groups g ON g.class_id = m.class_id AND ((g.kind = 'tut' AND g.name = r.tut_group) OR (g.kind = 'prac' AND g.name = r.prac_group))
+        WHERE m.user_id = ? AND m.role IN ('student', 'rep')`).all(user.id)) (out[g.course] ||= {})[g.kind] = g;
+    return out;
+  }
+  // a class's groups with their tutor's name and how many students are in each
+  const classGroupsOf = (classId) => q(`SELECT g.*, m.name AS tutor_name,
+      (SELECT COUNT(*) FROM class_roster r WHERE r.class_id = g.class_id AND ((g.kind = 'tut' AND r.tut_group = g.name) OR (g.kind = 'prac' AND r.prac_group = g.name))) AS students
+    FROM class_groups g LEFT JOIN class_members m ON m.class_id = g.class_id AND m.user_id = g.tutor_id WHERE g.class_id = ? ORDER BY g.kind DESC, g.name`).all(classId);
+  // groups named on the class list are made for the lecturer, who then only adds their times and venues
+  function groupsFromRoster(classId) {
+    q(`INSERT OR IGNORE INTO class_groups (class_id, kind, name) SELECT DISTINCT class_id, 'tut', tut_group FROM class_roster WHERE class_id = ? AND tut_group != ''`).run(classId);
+    q(`INSERT OR IGNORE INTO class_groups (class_id, kind, name) SELECT DISTINCT class_id, 'prac', prac_group FROM class_roster WHERE class_id = ? AND prac_group != ''`).run(classId);
+  }
+  const GROUP_COLUMN = { tut: 'tut_group', prac: 'prac_group' };
+
   // the lecturer pastes the class list; "replace" swaps the old list for this one, "add" adds to it. The first paste
   // needs a tick: they run the course and may use its list for registers.
   app.post('/classes/:id/roster', requireUser, limits.classes, (req, res) => {
@@ -1695,9 +1724,61 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       throw err;
     }
     syncRoster(cls);
+    groupsFromRoster(cls.id);
     const onKwaai = q(`SELECT COUNT(*) AS n FROM class_roster r JOIN class_members m ON m.class_id = r.class_id AND m.number = r.number WHERE r.class_id = ? AND r.source = 'list'`).get(cls.id).n;
     const skipped = parsed.skipped.length ? ` Skipped line${parsed.skipped.length === 1 ? '' : 's'} ${parsed.skipped.slice(0, 5).join(', ')}${parsed.skipped.length > 5 ? ' and more' : ''}: no student number at the start.` : '';
     back('ok', `${parsed.rows.length} students saved to the class list. ${onKwaai} of the list ${onKwaai === 1 ? 'is' : 'are'} on Kwaai.${skipped}`);
+  });
+
+  // the lecturer adds a group, or edits one (renaming it moves its students along; its kind stays)
+  app.post('/classes/:id/groups', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'manage');
+    if (!found) return res.status(404).page(notFound(req));
+    const { cls } = found;
+    const back = (type, text) => flashRedirect(res, `/classes/${cls.id}#groups`, type, text);
+    const old = req.body.group ? q(`SELECT * FROM class_groups WHERE id = ? AND class_id = ?`).get(Number(req.body.group) || 0, cls.id) : null;
+    if (req.body.group && !old) return res.status(404).page(notFound(req));
+    const parsed = Classes.parseGroup({ ...req.body, kind: old ? old.kind : req.body.kind });
+    if (parsed.error) return back('error', parsed.error);
+    const g = parsed.group;
+    const tutor = Number(req.body.tutor) || null;
+    if (tutor && !['tutor', 'lecturer'].includes(classMember(cls.id, tutor)?.role)) return back('error', 'Pick one of the class tutors, or nobody.');
+    const same = q(`SELECT id FROM class_groups WHERE class_id = ? AND kind = ? AND name = ?`).get(cls.id, g.kind, g.name);
+    if (same && same.id !== old?.id) return back('error', `There's already a ${g.kind} group called ${g.name}.`);
+    if (old) {
+      q(`UPDATE class_groups SET name = ?, day = ?, starts = ?, ends = ?, venue = ?, tutor_id = ? WHERE id = ?`).run(g.name, g.day, g.starts, g.ends, g.venue, tutor, old.id);
+      if (old.name !== g.name) q(`UPDATE class_roster SET ${GROUP_COLUMN[old.kind]} = ? WHERE class_id = ? AND ${GROUP_COLUMN[old.kind]} = ?`).run(g.name, cls.id, old.name);
+    } else {
+      q(`INSERT INTO class_groups (class_id, kind, name, day, starts, ends, venue, tutor_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`).run(cls.id, g.kind, g.name, g.day, g.starts, g.ends, g.venue, tutor);
+    }
+    back('ok', `${g.name} ${old ? 'saved' : 'added'}.${g.day ? '' : ' Add its day and time so it shows on students\' timetables.'}`);
+  });
+
+  app.post('/classes/:id/groups/:gid/delete', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'manage');
+    const g = found && q(`SELECT * FROM class_groups WHERE id = ? AND class_id = ?`).get(Number(req.params.gid) || 0, found.cls.id);
+    if (!g) return res.status(404).page(notFound(req));
+    q(`UPDATE class_roster SET ${GROUP_COLUMN[g.kind]} = '' WHERE class_id = ? AND ${GROUP_COLUMN[g.kind]} = ?`).run(g.class_id, g.name);
+    q(`DELETE FROM class_groups WHERE id = ?`).run(g.id);
+    flashRedirect(res, `/classes/${g.class_id}#groups`, 'ok', `${g.name} deleted. Its students have no ${g.kind} group now.`);
+  });
+
+  // a student picks their own group, unless the lecturer's list already puts them in one
+  app.post('/c/:code/group', requireUser, limits.classes, (req, res) => {
+    const cls = classByCode(req.params.code);
+    const me = cls && classMember(cls.id, req.user.id);
+    if (!me || !['student', 'rep'].includes(me.role) || !GROUP_COLUMN[req.body.kind]) return res.status(404).page(notFound(req));
+    syncRoster(cls);
+    const number = classMember(cls.id, req.user.id).number;
+    const row = q(`SELECT * FROM class_roster WHERE class_id = ? AND number = ?`).get(cls.id, number);
+    const col = GROUP_COLUMN[req.body.kind];
+    const back = (type, text) => flashRedirect(res, `/c/${cls.code}#groups`, type, text);
+    if (!row) return back('error', 'Your account has no student number, so you can\'t be in a group.');
+    if (row.source === 'list' && row[col]) return back('error', `Your lecturer's list puts you in ${row[col]}. Ask them if that's wrong.`);
+    const g = req.body.group ? q(`SELECT * FROM class_groups WHERE id = ? AND class_id = ? AND kind = ?`).get(Number(req.body.group) || 0, cls.id, req.body.kind) : null;
+    if (req.body.group && !g) return back('error', 'Pick one of the groups.');
+    q(`UPDATE class_roster SET ${col} = ? WHERE class_id = ? AND number = ?`).run(g ? g.name : '', cls.id, number);
+    back('ok', g ? `You're in ${g.name}. It's on your week${g.day ? '' : ' once the lecturer adds its time'}.` : `You're not in a ${req.body.kind} group now.`);
   });
 
   app.post('/classes/:id/roster/remove', requireUser, limits.classes, (req, res) => {
@@ -1773,9 +1854,12 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.post('/classes/:id/attendance', requireUser, limits.classes, (req, res) => {
     const found = classForRunners(req, 'attendance');
     if (!found) return res.status(404).page(notFound(req));
-    const label = Study.cleanName(req.body.label || `Tut, ${new Date(Date.now() + 7_200_000).toISOString().slice(0, 10)}`, 60, screenComment);
+    const group = req.body.group ? q(`SELECT * FROM class_groups WHERE id = ? AND class_id = ?`).get(Number(req.body.group) || 0, found.cls.id) : null;
+    if (req.body.group && !group) return res.status(404).page(notFound(req));
+    const kind = group ? group.kind : Classes.GROUP_KINDS[req.body.kind] ? req.body.kind : 'other';
+    const label = Study.cleanName(req.body.label || `${group ? group.name : Classes.GROUP_KINDS[kind] || 'Class'}, ${Classes.shortDay(Date.now())}`, 60, screenComment);
     if (label.error) return flashRedirect(res, `/classes/${found.cls.id}#attendance`, 'error', `Session name: ${label.error}`);
-    const { lastInsertRowid: id } = q(`INSERT INTO attendance_sessions (class_id, label, started_by, started_at) VALUES (?, ?, ?, ?)`).run(found.cls.id, label.name, req.user.id, Date.now());
+    const { lastInsertRowid: id } = q(`INSERT INTO attendance_sessions (class_id, label, started_by, started_at, group_id, kind) VALUES (?, ?, ?, ?, ?, ?)`).run(found.cls.id, label.name, req.user.id, Date.now(), group?.id ?? null, kind);
     res.redirect(303, `/attend/${id}`);
   });
 
@@ -2023,6 +2107,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     q(`UPDATE classes SET roster_confirmed_at = CURRENT_TIMESTAMP WHERE id = ?`).run(cls.id);
     [['TEST101', 'Lindiwe Dube'], ['TEST102', 'Pieter van Wyk'], ['TEST103', 'Ayesha Patel'], ['TEST104', 'Kagiso Molefe']]
       .forEach(([number, name]) => q(`INSERT INTO class_roster (class_id, number, name, source) VALUES (?, ?, ?, 'list')`).run(cls.id, number, name));
+    // two tuts and a prac with times, venues and tutors; the class list puts everyone in one of each
+    syncRoster(cls);
+    const addGroup = q(`INSERT INTO class_groups (class_id, kind, name, day, starts, ends, venue, tutor_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
+    addGroup.run(cls.id, 'tut', 'Tut 1', 'Tuesday', '14:00', '15:45', 'Menzies 10', ids[14]);
+    addGroup.run(cls.id, 'tut', 'Tut 2', 'Thursday', '10:00', '11:45', 'PD Hahn 3', req.user.id);
+    addGroup.run(cls.id, 'prac', 'Prac A', 'Wednesday', '14:00', '17:00', 'Shuttleworth lab', ids[14]);
+    q(`UPDATE class_roster SET tut_group = CASE WHEN rowid % 2 THEN 'Tut 1' ELSE 'Tut 2' END, prac_group = 'Prac A' WHERE class_id = ?`).run(cls.id);
     demoAttendance(cls, students, req.user.id, 6);
     const date = q(`INSERT INTO class_dates (class_id, course, type, title, date, time, added_by, added_role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
     date.run(cls.id, cls.course, 'prac', 'Prac 5', Study.addDay(today, 2), '23:59', req.user.id, 'lecturer');
@@ -2047,6 +2138,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const cls = freshDemoClass(lecturerId, 'Dr T Test', DEMO_JOINED, 'MAM1031F');
     demoStudents(cls, ids.slice(0, 10), today, req.user.uni);
     q(`INSERT INTO class_members (class_id, user_id, role, name, consent_at) VALUES (?, ?, 'student', 'You', CURRENT_TIMESTAMP)`).run(cls.id, req.user.id);
+    // everyone in one tut group, so its time and venue show on your week and Today (with MAM1031F in your plan)
+    syncRoster(cls);
+    q(`INSERT INTO class_groups (class_id, kind, name, day, starts, ends, venue, tutor_id) VALUES (?, 'tut', 'Tut B', 'Friday', '12:00', '13:45', 'Leslie Social LT2', ?)`).run(cls.id, lecturerId);
+    q(`UPDATE class_roster SET tut_group = 'Tut B' WHERE class_id = ?`).run(cls.id);
     demoAttendance(cls, ids.slice(0, 10), lecturerId, 3);
     q(`INSERT INTO class_dates (class_id, course, type, title, date, time, added_by, added_role) VALUES (?, ?, 'test', 'Class test 2', ?, '14:00', ?, 'lecturer')`).run(cls.id, cls.course, Study.addDay(today, 4), lecturerId);
     q(`INSERT INTO class_announcements (class_id, body, posted_by, poster_name, poster_role, created_at) VALUES (?, ?, ?, 'Dr T Test', 'lecturer', ?)`)

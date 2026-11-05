@@ -1048,7 +1048,7 @@ function weekGrid(wk, colour) {
       <div class="week-col">
         ${lanes(wk.events.filter((e) => e.day === day)).map(({ e, lane, of }) => html`<div class="week-ev ev-${e.kind}${e.suggested ? ' ev-suggested' : ''}" style="top:${((mins(e.start) - from) / span) * 100}%;height:${((mins(e.end) - mins(e.start)) / span) * 100}%;left:${(lane / of) * 100}%;width:${100 / of}%${e.code && e.kind !== 'own' ? `;--c:${colour(e.code)}` : ''}" title="${eventName(e)}, ${e.start} to ${e.end}">
           <strong>${e.kind === 'own' || e.kind === 'set' ? e.label : e.code}</strong>
-          <span>${e.kind === 'own' || e.kind === 'set' ? '' : KIND_LABEL[e.kind]}${e.suggested ? ' (suggested)' : ''}</span>
+          <span>${e.kind === 'own' || e.kind === 'set' ? '' : KIND_LABEL[e.kind]}${e.suggested ? ' (suggested)' : ''}${e.venue ? ` · ${e.venue}` : ''}</span>
           <span>${e.start}–${e.end}</span>
         </div>`)}
       </div>
@@ -1063,7 +1063,7 @@ function weekAgenda(wk) {
       <h3>${day}</h3>
       ${today.length ? html`<ul class="plain">${today.map((e) => html`<li class="agenda-ev ev-${e.kind}">
         <span class="agenda-time">${e.start}–${e.end}</span>
-        <span>${e.code && e.kind !== 'set' && e.kind !== 'own' ? html`<a href="/courses/${e.code}" class="code">${e.code}</a> ${KIND_LABEL[e.kind]}` : e.label}${e.suggested ? html` <span class="meta">(suggested)</span>` : ''}${e.kind === 'study' && e.code ? html` · <a href="/study?course=${e.code}">Start the timer</a>` : ''}</span>
+        <span>${e.code && e.kind !== 'set' && e.kind !== 'own' ? html`<a href="/courses/${e.code}" class="code">${e.code}</a> ${KIND_LABEL[e.kind]}` : e.label}${e.suggested ? html` <span class="meta">(suggested)</span>` : ''}${e.group ? html` <span class="meta">· ${e.group}${e.venue ? `, ${e.venue}` : ''}</span>` : ''}${e.kind === 'study' && e.code ? html` · <a href="/study?course=${e.code}">Start the timer</a>` : ''}</span>
       </li>`)}</ul>` : html`<p class="meta">Nothing planned.</p>`}
     </section>`;
   })}</div>`;
@@ -1297,7 +1297,7 @@ function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = []
   <div class="today-grid">
     <section class="card panel" aria-labelledby="today-classes">
       <h2 id="today-classes">${t.weekend ? `It's the weekend. Here's ${t.dayName}` : 'Your classes'}</h2>
-      ${t.classes.length ? html`<ul class="plain">${t.classes.map((e) => html`<li class="agenda-ev"><span class="agenda-time">${e.start}–${e.end}</span><span>${e.code && e.kind !== 'own' && e.kind !== 'set' ? html`<a href="/courses/${e.code}" class="code">${e.code}</a> ${KIND_LABEL[e.kind]}` : e.label}${e.suggested ? html` <span class="meta">(suggested group)</span>` : ''}</span></li>`)}</ul>`
+      ${t.classes.length ? html`<ul class="plain">${t.classes.map((e) => html`<li class="agenda-ev"><span class="agenda-time">${e.start}–${e.end}</span><span>${e.code && e.kind !== 'own' && e.kind !== 'set' ? html`<a href="/courses/${e.code}" class="code">${e.code}</a> ${KIND_LABEL[e.kind]}` : e.label}${e.suggested ? html` <span class="meta">(suggested group)</span>` : ''}${e.group ? html` <span class="meta">· ${e.group}${e.venue ? `, ${e.venue}` : ''}</span>` : ''}</span></li>`)}</ul>`
         : html`<p class="meta">No classes on your timetable today.</p>`}
       <p class="meta"><a href="${weekLink}">Your whole week</a></p>
     </section>
@@ -1494,7 +1494,7 @@ function leaderboard(ctx, { joined, period, scope, faculty, faculties, rows, me,
 // ---------- classes (for lecturers) ----------
 const DATE_TYPE_NAMES = { test: 'Test', prac: 'Prac', assignment: 'Assignment due', exam: 'Exam' };
 const CLASS_ROLE = { lecturer: 'Lecturer', tutor: 'Tutor', rep: 'Class rep', student: 'Student' };
-function classes(ctx, { classes: list, staff, thisYear, error, form = {} }) {
+function classes(ctx, { classes: list, staff, thisYear, error, form = {}, myGroups = [] }) {
   return layout({ ...ctx, title: 'Classes', here: '/classes', path: '/classes' }, html`
   <h1 class="page-title">Classes</h1>
   <p class="lede small">${staff
@@ -1506,6 +1506,11 @@ function classes(ctx, { classes: list, staff, thisYear, error, form = {} }) {
       <span class="meta">${c.course}${c.title ? ` ${c.title}` : ''} · ${c.year} · ${plural(c.students, 'student')} · you're the ${CLASS_ROLE[c.role].toLowerCase()}</span>
     </li>`)}</ul>`
     : html`<p class="meta">${staff ? 'No classes yet.' : "You're not in a class yet."}</p>`}
+  ${myGroups.length ? html`<section class="card panel class-section" aria-labelledby="tut-groups">
+    <h2 id="tut-groups">Groups you tutor</h2>
+    <ul class="plain fact-list">${myGroups.map((g) => html`<li><span><strong>${g.name}</strong> <span class="meta">${g.class_name}${g.day ? ` · ${g.day} ${g.starts}` : ''}${g.venue ? ` · ${g.venue}` : ''}</span></span>
+      <form method="post" action="/classes/${g.class_id}/attendance" class="inline"><input type="hidden" name="group" value="${g.id}"><button class="btn btn-small">Take today's register</button></form></li>`)}</ul>
+  </section>` : ''}
   ${staff ? html`<form method="post" action="/classes" class="card panel study-form class-form">
     <h2>New class</h2>
     <label>Course <input type="search" name="course" value="${form.course ?? ''}" required placeholder="e.g. CSC1015F" autocomplete="off" data-suggest="pick"></label>
@@ -1521,9 +1526,23 @@ function classes(ctx, { classes: list, staff, thisYear, error, form = {} }) {
 }
 
 // the page for the people running a class: how students join (the dashboard is added to this page later)
-function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, rows, totals, tutors = [], sessions = [], canPulse = false, pulses = [], pulsePreset = { question: '', options: [] } }) {
+function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, rows, totals, tutors = [], sessions = [], groups = [], staff = [], canPulse = false, pulses = [], pulsePreset = { question: '', options: [] } }) {
   const share = `https://wa.me/?text=${encodeURIComponent(`Join ${cls.name} on Kwaai: ${link}`)}`;
   const shown = onlyNudge ? rows.filter((r) => r.nudge) : rows;
+  const groupForm = (g) => html`<form method="post" action="/classes/${cls.id}/groups" class="study-form">
+    ${g ? html`<input type="hidden" name="group" value="${g.id}">` : html`<label>Kind <select name="kind"><option value="tut">Tut</option><option value="prac">Prac</option></select></label>`}
+    <label>Name <input type="text" name="name" required maxlength="30" value="${g?.name ?? ''}" placeholder="e.g. Tut 3"></label>
+    <div class="form-row two">
+      <label>Day <span class="hint">optional</span><select name="day"><option value="">Not set</option>${['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map((d) => html`<option ${g?.day === d ? 'selected' : ''}>${d}</option>`)}</select></label>
+      <label>Venue <span class="hint">optional</span><input type="text" name="venue" maxlength="60" value="${g?.venue ?? ''}" placeholder="e.g. Menzies 10"></label>
+    </div>
+    <div class="form-row two">
+      <label>Starts <input type="time" name="starts" value="${g?.starts ?? ''}"></label>
+      <label>Ends <input type="time" name="ends" value="${g?.ends ?? ''}"></label>
+    </div>
+    <label>Tutor <select name="tutor"><option value="">Nobody yet</option>${staff.map((t) => html`<option value="${t.user_id}" ${g?.tutor_id === t.user_id ? 'selected' : ''}>${t.name}${t.role === 'lecturer' ? ' (lecturer)' : ''}</option>`)}</select></label>
+    <div class="form-actions"><button class="btn btn-small">${g ? 'Save' : 'Add the group'}</button></div>
+  </form>`;
   const sortLink = (key, label) => html`<a href="/classes/${cls.id}?sort=${key}${onlyNudge ? '&filter=nudge' : ''}" ${sort === key ? html`aria-current="true"` : ''}>${label}</a>`;
   const joinSection = html`<section class="card panel class-join" aria-labelledby="join-head">
     <h2 id="join-head">How students join</h2>
@@ -1602,10 +1621,24 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
     </form>
     ${totals.listed ? html`<form method="post" action="/classes/${cls.id}/roster/clear" class="inline" data-confirm="Clear the class list? Students who joined on Kwaai stay in the class."><button class="link-btn meta">Clear the list</button></form>` : ''}
   </section>` : ''}
+  <section class="card panel class-section" id="groups" aria-labelledby="groups-head">
+    <h2 id="groups-head">Tut and prac groups</h2>
+    ${groups.length ? html`<ul class="plain group-rows">${groups.map((g) => html`<li class="group-row">
+      <div class="group-info"><strong>${g.name}</strong> <span class="meta">${g.kind === 'tut' ? 'Tut' : 'Prac'} · ${plural(g.students, 'student')}</span><br>
+        <span class="meta">${g.day ? `${g.day} ${g.starts}–${g.ends}` : 'No time yet'}${g.venue ? ` · ${g.venue}` : ''}${g.tutor_name ? ` · ${g.tutor_name}` : ''}</span></div>
+      <form method="post" action="/classes/${cls.id}/attendance" class="inline"><input type="hidden" name="group" value="${g.id}"><button class="btn btn-small">Take today's register</button></form>
+      ${manage ? html`<details class="group-edit"><summary class="meta">Edit ${g.name}</summary>${groupForm(g)}
+        <form method="post" action="/classes/${cls.id}/groups/${g.id}/delete" class="inline" data-confirm="Delete ${g.name}? Its students will have no ${g.kind} group."><button class="link-btn meta">Delete the group</button></form></details>` : ''}
+    </li>`)}</ul>` : html`<p class="meta">No groups yet.${manage ? " Add them here, or put tut and prac columns in your class list and they're made for you." : ''}</p>`}
+    ${manage ? html`<details class="fact-add" ${groups.length ? '' : 'open'}><summary>Add a group</summary>${groupForm(null)}</details>` : ''}
+  </section>
   <section class="card panel class-section" id="attendance" aria-labelledby="att-head">
     <h2 id="att-head">Tut and prac attendance</h2>
     <form method="post" action="/classes/${cls.id}/attendance" class="study-form attend-start">
-      <label>Session name <input type="text" name="label" maxlength="60" placeholder="e.g. Tut 3, Wednesday"></label>
+      <div class="form-row two">
+        <label>For <select name="group"><option value="">The whole class</option>${groups.map((g) => html`<option value="${g.id}">${g.name}</option>`)}</select></label>
+        <label>Session name <span class="hint">optional</span><input type="text" name="label" maxlength="60" placeholder="Named after the group and day"></label>
+      </div>
       <div class="form-actions"><button class="btn">Start attendance</button></div>
     </form>
     <p class="meta">Your screen shows a QR code. Students scan it with their phone camera and tap to confirm. Keep the screen where the room can see it.</p>
@@ -1701,7 +1734,7 @@ const pulseForm = (code, p, back = '') => html`<form method="post" action="/c/${
   <p class="meta">Anonymous: your lecturer sees only how many picked each answer.</p>
 </form>`;
 
-function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '', attendance = [], announcements = [], canAnnounce = false, pulses = [] }) {
+function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '', attendance = [], announcements = [], canAnnounce = false, pulses = [], groups = [], myRow = null }) {
   const student = me.role === 'student' || me.role === 'rep';
   const p = Math.min(1, weekMin / cls.goal_week_min);
   const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
@@ -1747,6 +1780,23 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
         <a class="btn btn-big" href="/study?course=${cls.course}">Start studying ${cls.course}</a>
       </div>
     </div>
+  </section>` : ''}
+  ${student && groups.length ? html`<section class="card panel class-section" id="groups" aria-labelledby="my-groups">
+    <h2 id="my-groups">Your tut and prac groups</h2>
+    ${['tut', 'prac'].filter((k) => groups.some((g) => g.kind === k)).map((k) => {
+      const mineName = myRow?.[k === 'tut' ? 'tut_group' : 'prac_group'] || '';
+      const mine = groups.find((g) => g.kind === k && g.name === mineName);
+      const fromList = myRow?.source === 'list' && mineName;
+      return html`<div class="my-group">
+        <p><strong>${k === 'tut' ? 'Tut' : 'Prac'}:</strong> ${mine ? `${mine.name}${mine.day ? ` · ${mine.day} ${mine.starts}–${mine.ends}` : ''}${mine.venue ? ` · ${mine.venue}` : ''}` : html`<span class="meta">Not picked yet</span>`}</p>
+        ${fromList ? html`<p class="meta">From your lecturer's class list.</p>` : html`<form method="post" action="/c/${cls.code}/group" class="inline-form">
+          <input type="hidden" name="kind" value="${k}">
+          <label>Your ${k} group <select name="group"><option value="">None</option>${groups.filter((g) => g.kind === k).map((g) => html`<option value="${g.id}" ${mine?.id === g.id ? 'selected' : ''}>${g.name}${g.day ? ` (${g.day.slice(0, 3)} ${g.starts})` : ''}</option>`)}</select></label>
+          <button class="btn btn-small btn-quiet">Save</button>
+        </form>`}
+      </div>`;
+    })}
+    <p class="meta">Your groups go on your week and Today, with the venue.</p>
   </section>` : ''}
   <section aria-labelledby="dates" class="class-dates">
     <h2 class="section-title" id="dates">Coming up</h2>
