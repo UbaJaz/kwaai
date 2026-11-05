@@ -303,6 +303,9 @@ test('classes: who may do what, student numbers, QR codes and the new-class form
   assert.equal(Classes.can(null, 'dates'), false, 'not a member, nothing');
   assert.equal(Classes.studentNumber('abcxyz001@myuct.ac.za'), 'ABCXYZ001');
   assert.equal(Classes.studentNumber('jane.smith@uct.ac.za'), '', 'staff have no student number');
+  assert.equal(Classes.studentNumber('test-student-3@kwaai.invalid'), 'TEST003', 'test students get a TEST number for demos');
+  assert.equal(Classes.studentNumber('test-lecturer@kwaai.invalid'), '', 'other test accounts get none');
+  assert.equal(Classes.studentNumber('test-student-3@gmail.com'), '', 'only the test domain');
   assert.match(Classes.qrSvg('https://kwaai.example/c/ABCDEFGH'), /^<svg[^>]*viewBox="0 0 \d+ \d+"/);
   const known = { course: (c) => c === 'CSC1015F', cleanName: Study.cleanName, screen: screenComment, goalFor: () => 9, thisYear: 2027 };
   assert.deepEqual(Classes.parseClassForm({ course: 'csc 1015f', year: '2027', name: '', goal: '' }, known).cls, { course: 'CSC1015F', year: 2027, name: 'CSC1015F 2027', goalWeekMin: 540 }, 'name and goal fill themselves in');

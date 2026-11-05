@@ -16,9 +16,14 @@ const can = (member, action) => !!member && (PERMISSIONS[action] || []).includes
 const ROLE_NAMES = { lecturer: 'Lecturer', tutor: 'Tutor', rep: 'Class rep', student: 'Student' };
 
 // A UCT student number is the part of the myuct address before the @ (ABCXYZ001@myuct.ac.za is ABCXYZ001).
-// Staff addresses have no student number.
+// Staff addresses have no student number. The test tools' made-up students (test-student-3@kwaai.invalid) get TEST003,
+// so demo classes look like real ones; that domain can't sign in, so no real account ever matches it.
 const studentNumber = (email, studentDomain = 'myuct.ac.za') => {
   const [local, domain] = String(email).toLowerCase().split('@');
+  if (domain === 'kwaai.invalid') {
+    const n = /^test-student-(\d+)$/.exec(local);
+    return n ? `TEST${n[1].padStart(3, '0')}` : '';
+  }
   return domain === studentDomain ? local.toUpperCase() : '';
 };
 
