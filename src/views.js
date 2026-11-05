@@ -103,6 +103,7 @@ ${site.origin ? html`<meta property="og:image" content="${site.origin}/og-card.p
 </header>
 <div class="uni-band"></div>
 <main class="wrap" id="main">
+${testTools && user?.is_test && !user.is_admin ? html`<div class="flash flash-info test-banner" role="status">You're signed in as a test student (${user.email}). <a href="/admin/login">Sign in as admin again</a></div>` : ''}
 ${flash ? html`<div class="flash flash-${flash.type}" role="status">${flash.text}</div>` : ''}
 ${body}
 </main>
@@ -2172,7 +2173,7 @@ function login(ctx, { error, email = '', next = '/' } = {}) {
 }
 
 // the admin's test tools: buttons that write made-up study data for the admin's own account
-function adminTools(ctx, { today, streak, days, minutes }) {
+function adminTools(ctx, { today, streak, days, minutes, role = 'student', demo = {}, testStudents = [] }) {
   return layout({ ...ctx, title: 'Test tools', here: '/admin/tools' }, html`
   <h1 class="page-title">Test tools</h1>
   <p class="lede small">Made-up study data for trying the heatmap, streaks and leaderboards. It all belongs to test accounts, so students never see it. These tools only exist while <code>TEST_TOOLS=1</code> is set: turn it off before launch.</p>
@@ -2217,8 +2218,37 @@ function adminTools(ctx, { today, streak, days, minutes }) {
     </form>
     <form method="post" action="/admin/tools/clear-all" class="card panel study-form" data-confirm="Delete every test student, test group and all test study data?">
       <h2>Clear all test data</h2>
-      <p class="meta">Deletes the test students and everything they own, test groups, and your own study data. Real students' data is never touched.</p>
+      <p class="meta">Deletes the test students and everything they own, test groups, demo classes, and your own study data. Real students' data is never touched.</p>
       <div class="form-actions"><button class="btn btn-danger">Clear all test data</button></div>
+    </form>
+  </div>
+  <h2 class="section-title" id="classes">Classes</h2>
+  <p class="meta">Try both sides of a class with the 15 test students. Running a demo again rebuilds it from scratch. Clear all test data (above) removes the demo classes too.</p>
+  <div class="tool-grid">
+    <form method="post" action="/admin/tools/role" class="card panel study-form">
+      <h2>Student or lecturer</h2>
+      <p>You're viewing Kwaai as a <strong>${role === 'staff' ? 'lecturer (staff account)' : 'student'}</strong>.</p>
+      <p class="meta">Lecturers can make classes but can't rate courses or join a class as a student.</p>
+      <input type="hidden" name="role" value="${role === 'staff' ? 'student' : 'staff'}">
+      <div class="form-actions"><button class="btn">${role === 'staff' ? 'Switch to student' : 'Switch to lecturer'}</button></div>
+    </form>
+    <form method="post" action="/admin/tools/demo-lecturer" class="card panel study-form">
+      <h2>A class you run</h2>
+      <p class="meta">CSC1015F with 14 test students (a few behind on study, two skipping tuts), a class rep, a tutor, 6 past tuts, 3 dates, 2 announcements and a pulse check. Switches you to lecturer.</p>
+      ${demo.run ? html`<p><a href="/classes/${demo.run.id}">Open the dashboard</a> · <a href="/c/${demo.run.code}">Class page</a></p>` : ''}
+      <div class="form-actions"><button class="btn">${demo.run ? 'Rebuild it' : 'Make the class'}</button></div>
+    </form>
+    <form method="post" action="/admin/tools/demo-student" class="card panel study-form">
+      <h2>A class you're in</h2>
+      <p class="meta">MAM1031F run by "Dr T Test", with you as a student: an unread announcement and a question on Today, a test date, and a tut that's open now.</p>
+      ${demo.joined ? html`<p><a href="/c/${demo.joined.code}">Open the class page</a>${demo.checkIn ? html` · <a href="${demo.checkIn}">Check in to today's tut</a>` : ''}</p>` : ''}
+      <div class="form-actions"><button class="btn">${demo.joined ? 'Rebuild it' : 'Join the class'}</button></div>
+    </form>
+    <form method="post" action="/admin/tools/become" class="card panel study-form" data-confirm="Sign in as this test student? To come back you sign in as admin again with your password.">
+      <h2>Be a test student</h2>
+      <p class="meta">Sign in on your phone as a test student and scan the attendance QR from your laptop, or see the class as they do. You'll need the admin password to come back.</p>
+      <label>Test student <select name="student">${testStudents.map((s) => html`<option value="${s.i}">${s.number} · ${s.name}</option>`)}</select></label>
+      <div class="form-actions"><button class="btn btn-quiet">Sign in as them</button></div>
     </form>
   </div>`);
 }

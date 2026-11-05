@@ -1726,11 +1726,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.post('/attend/:id/add', requireUser, limits.classes, (req, res) => {
     const s = sessionForRunners(req);
     if (!s) return res.status(404).page(notFound(req));
-    const number = String(req.body.number || '').trim().toLowerCase();
-    const student = /^[a-z0-9]{3,20}$/.test(number) && q(`SELECT u.id FROM users u JOIN class_members m ON m.user_id = u.id AND m.class_id = ? WHERE u.email = ?`).get(s.class_id, `${number}@myuct.ac.za`);
-    if (!student) return flashRedirect(res, `/attend/${s.id}`, 'error', `${number.toUpperCase() || 'That student'} isn't in this class. They can join with the class link.`);
+    const number = String(req.body.number || '').trim().toUpperCase();
+    // matched on the number worked out from each member's email, so it works for any student address (and test ones)
+    const student = /^[A-Z0-9]{3,20}$/.test(number) && q(`SELECT u.id, u.email FROM users u JOIN class_members m ON m.user_id = u.id AND m.class_id = ?`).all(s.class_id)
+      .find((u) => Classes.studentNumber(u.email) === number);
+    if (!student) return flashRedirect(res, `/attend/${s.id}`, 'error', `${number || 'That student'} isn't in this class. They can join with the class link.`);
     q(`INSERT OR IGNORE INTO attendance (session_id, user_id, marked_at, how) VALUES (?, ?, ?, 'tutor')`).run(s.id, student.id, Date.now());
-    flashRedirect(res, `/attend/${s.id}`, 'ok', `${number.toUpperCase()} is marked present.`);
+    flashRedirect(res, `/attend/${s.id}`, 'ok', `${number} is marked present.`);
   });
   app.post('/attend/:id/end', requireUser, (req, res) => {
     const s = sessionForRunners(req);
@@ -1783,8 +1785,17 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const totals = studyTotals(req.user.id, today);
     res.set('Cache-Control', 'no-store').page(views.adminTools(req.ctx, {
       today, streak: Study.streak(totals, today, TERMS.years), days: totals.filter((t) => t.minutes > 0).length, minutes: totals.reduce((s, t) => s + t.minutes, 0),
+      role: req.user.role, demo: adminDemo(req),
+      testStudents: TestData.FAKE_STUDENTS.map((s, i) => ({ i, name: s.name || 'Anonymous', number: Classes.studentNumber(TestData.fakeEmail(i)) })),
     }));
   });
+  // the demo classes, if made, and a link that checks you in to the open tut in the class you're a student in
+  function adminDemo(req) {
+    const run = demoClassOf(req.user.email, DEMO_RUN);
+    const joined = demoClassOf(DEMO_LECTURER, DEMO_JOINED);
+    const open = joined && classMember(joined.id, req.user.id) && q(`SELECT * FROM attendance_sessions WHERE class_id = ? AND ended_at IS NULL ORDER BY started_at DESC`).get(joined.id);
+    return { run, joined: joined && classMember(joined.id, req.user.id) ? joined : null, checkIn: open ? attendanceUrl(req, open) : null };
+  }
 
   // one finished session on any day in the last year
   app.post('/admin/tools/study', requireUser, requireTools, (req, res) => {
@@ -1873,6 +1884,113 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, `/courses/${course}`, 'ok', `Six test students have timed ${course} for four weeks.`);
   });
 
+  // ---- test tools: classes ----
+  // Two demo classes for trying the lecturer and student sides with the 15 test students: one the admin runs, and one
+  // run by a test lecturer that the admin is in as a student. Running a tool again rebuilds its class from scratch.
+  const DEMO_LECTURER = 'test-lecturer@kwaai.invalid';
+  const DEMO_RUN = 'CSC1015F demo';
+  const DEMO_JOINED = 'MAM1031F demo';
+  const DAY_MS = 24 * 60 * MIN;
+  const demoClassOf = (ownerEmail, name) => q(`SELECT c.* FROM classes c JOIN users u ON u.id = c.owner_id WHERE u.email = ? AND c.name = ?`).get(ownerEmail, name) || null;
+  function freshDemoClass(ownerId, ownerName, name, course) {
+    q(`DELETE FROM classes WHERE owner_id = ? AND name = ?`).run(ownerId, name); // members, dates, sessions, posts and pulses cascade
+    let code;
+    do code = Study.groupCode(crypto.randomBytes(8)); while (q(`SELECT 1 FROM classes WHERE code = ?`).get(code));
+    const { lastInsertRowid: id } = q(`INSERT INTO classes (uni, course, year, name, code, owner_id, goal_week_min) VALUES (?, ?, ?, ?, ?, ?, ?)`)
+      .run(CURRENT.slug, course, planYear(), name, code, ownerId, Math.round(goalFor(course) * 60));
+    q(`INSERT INTO class_members (class_id, user_id, role, name, consent_at) VALUES (?, ?, 'lecturer', ?, CURRENT_TIMESTAMP)`).run(id, ownerId, ownerName);
+    return classById(id);
+  }
+  // the test students join: named ones by name, the rest anonymously; each gets four weeks of the course, some far less
+  function demoStudents(cls, ids, today, uni) {
+    ids.forEach((id, i) => {
+      const s = TestData.FAKE_STUDENTS[i];
+      q(`INSERT OR REPLACE INTO class_members (class_id, user_id, role, name, anonymous, consent_at) VALUES (?, ?, 'student', ?, ?, CURRENT_TIMESTAMP)`)
+        .run(cls.id, id, s.name || `Student ${i + 1}`, s.name ? 0 : 1);
+      q(`DELETE FROM study_sessions WHERE user_id = ? AND course = ?`).run(id, cls.course);
+      const behind = i % 5 === 4; // a few who stopped studying a while ago, so "Needs a nudge" has rows
+      const days = TestData.historyDays(today, 28).filter((d) => d.minutes <= 150 && (!behind || d.day < Study.addDay(today, -10)));
+      addSessions(id, uni, days, () => cls.course);
+    });
+  }
+  // past weekly tuts: most come, a couple of students skip the last few
+  function demoAttendance(cls, ids, runnerId, weeks) {
+    const now = Date.now();
+    for (let w = weeks; w >= 1; w--) {
+      const started = now - w * 7 * DAY_MS;
+      const { lastInsertRowid: sid } = q(`INSERT INTO attendance_sessions (class_id, label, started_by, started_at, ended_at) VALUES (?, ?, ?, ?, ?)`)
+        .run(cls.id, `Tut ${weeks - w + 1}`, runnerId, started, started + 90 * MIN);
+      ids.forEach((id, i) => {
+        const skipper = (i === 3 || i === 8) && w <= 3;
+        if (skipper || (i + w) % 6 === 0) return;
+        q(`INSERT INTO attendance (session_id, user_id, marked_at, how) VALUES (?, ?, ?, ?)`).run(sid, id, started + (5 + i) * MIN, i % 4 ? 'qr' : 'tutor');
+      });
+    }
+  }
+
+  // view Kwaai as a student or as staff (a lecturer); staff can make classes but not rate courses
+  app.post('/admin/tools/role', requireUser, requireTools, (req, res) => {
+    const role = req.body.role === 'staff' ? 'staff' : 'student';
+    q(`UPDATE users SET role = ? WHERE id = ?`).run(role, req.user.id);
+    flashRedirect(res, '/admin/tools#classes', 'ok', role === 'staff' ? "You're a lecturer now: make a class from Classes." : "You're a student again.");
+  });
+
+  // a class you run, with the test students, a rep and a tutor, study, past tuts, dates, an announcement and a pulse check
+  app.post('/admin/tools/demo-lecturer', requireUser, requireTools, (req, res) => {
+    const today = Study.saDay(Date.now());
+    const now = Date.now();
+    const ids = fakeStudentIds(req.user.uni);
+    q(`UPDATE users SET role = 'staff' WHERE id = ?`).run(req.user.id);
+    const cls = freshDemoClass(req.user.id, 'You (demo lecturer)', DEMO_RUN, 'CSC1015F');
+    const students = ids.slice(0, 14);
+    demoStudents(cls, students, today, req.user.uni);
+    q(`UPDATE class_members SET role = 'rep', name = 'Thandi Mokoena', anonymous = 0 WHERE class_id = ? AND user_id = ?`).run(cls.id, ids[0]);
+    q(`INSERT OR REPLACE INTO class_members (class_id, user_id, role, name, consent_at) VALUES (?, ?, 'tutor', 'Sam Tutor', CURRENT_TIMESTAMP)`).run(cls.id, ids[14]);
+    demoAttendance(cls, students, req.user.id, 6);
+    const date = q(`INSERT INTO class_dates (class_id, course, type, title, date, time, added_by, added_role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
+    date.run(cls.id, cls.course, 'prac', 'Prac 5', Study.addDay(today, 2), '23:59', req.user.id, 'lecturer');
+    date.run(cls.id, cls.course, 'test', 'Test 2', Study.addDay(today, 6), '18:00', req.user.id, 'lecturer');
+    date.run(cls.id, cls.course, 'assignment', 'Assignment 3', Study.addDay(today, 11), '', ids[0], 'rep');
+    const post = q(`INSERT INTO class_announcements (class_id, body, posted_by, poster_name, poster_role, created_at) VALUES (?, ?, ?, ?, ?, ?)`);
+    post.run(cls.id, 'Test 2 is in LT1 on the day. Bring your student card.', req.user.id, 'You (demo lecturer)', 'lecturer', now - 2 * DAY_MS);
+    post.run(cls.id, 'Study group for Test 2 on Thursday at 16:00 in the library, all welcome.', ids[0], 'Thandi Mokoena', 'rep', now - 3 * 60 * MIN);
+    const { lastInsertRowid: pid } = q(`INSERT INTO class_pulses (class_id, question, options, counts, asked_by, asked_at, closes_at) VALUES (?, ?, ?, ?, ?, ?, ?)`)
+      .run(cls.id, Classes.PULSE_PRESET.question, JSON.stringify(Classes.PULSE_PRESET.options), JSON.stringify([2, 7, 4]), req.user.id, now - DAY_MS, now + 6 * DAY_MS);
+    students.slice(0, 13).forEach((id) => q(`INSERT INTO pulse_answered (pulse_id, user_id) VALUES (?, ?)`).run(pid, id));
+    flashRedirect(res, `/classes/${cls.id}`, 'ok', `${DEMO_RUN}: you're the lecturer, with 14 test students, a rep, a tutor and 6 past tuts.`);
+  });
+
+  // a class run by a test lecturer, with you in it as a student: an unread announcement, an open pulse and an open tut
+  app.post('/admin/tools/demo-student', requireUser, requireTools, (req, res) => {
+    const today = Study.saDay(Date.now());
+    const now = Date.now();
+    const ids = fakeStudentIds(req.user.uni);
+    q(`INSERT INTO users (email, uni, role, is_test, agreed_at) VALUES (?, ?, 'staff', 1, CURRENT_TIMESTAMP) ON CONFLICT(email) DO UPDATE SET is_test = 1, role = 'staff'`).run(DEMO_LECTURER, req.user.uni);
+    const lecturerId = q(`SELECT id FROM users WHERE email = ?`).get(DEMO_LECTURER).id;
+    const cls = freshDemoClass(lecturerId, 'Dr T Test', DEMO_JOINED, 'MAM1031F');
+    demoStudents(cls, ids.slice(0, 10), today, req.user.uni);
+    q(`INSERT INTO class_members (class_id, user_id, role, name, consent_at) VALUES (?, ?, 'student', 'You', CURRENT_TIMESTAMP)`).run(cls.id, req.user.id);
+    demoAttendance(cls, ids.slice(0, 10), lecturerId, 3);
+    q(`INSERT INTO class_dates (class_id, course, type, title, date, time, added_by, added_role) VALUES (?, ?, 'test', 'Class test 2', ?, '14:00', ?, 'lecturer')`).run(cls.id, cls.course, Study.addDay(today, 4), lecturerId);
+    q(`INSERT INTO class_announcements (class_id, body, posted_by, poster_name, poster_role, created_at) VALUES (?, ?, ?, 'Dr T Test', 'lecturer', ?)`)
+      .run(cls.id, 'Tutorial 4 moves to Thursday this week. Same venue.', lecturerId, now - 60 * MIN);
+    q(`INSERT INTO class_pulses (class_id, question, options, counts, asked_by, asked_at, closes_at) VALUES (?, ?, ?, ?, ?, ?, ?)`)
+      .run(cls.id, 'Was this week\'s tutorial useful?', JSON.stringify(['Yes', 'Somewhat', 'No']), JSON.stringify([4, 3, 1]), lecturerId, now - 3 * 60 * MIN, now + 7 * DAY_MS);
+    q(`INSERT INTO attendance_sessions (class_id, label, started_by, started_at) VALUES (?, 'Tut 4, today', ?, ?)`).run(cls.id, lecturerId, now);
+    flashRedirect(res, `/c/${cls.code}`, 'ok', `${DEMO_JOINED}: you're a student. Today shows the announcement and the question. Check in to today's tut from the test tools.`);
+  });
+
+  // sign in as one of the test students, to try the student side on a second device (like scanning the QR on a phone).
+  // Only test students, and there is no way back to admin without the admin password.
+  app.post('/admin/tools/become', requireUser, requireTools, (req, res) => {
+    const i = Number(req.body.student);
+    if (!Number.isInteger(i) || i < 0 || i >= TestData.FAKE_STUDENTS.length) return flashRedirect(res, '/admin/tools#classes', 'error', 'Pick one of the test students.');
+    fakeStudentIds(req.user.uni);
+    const email = TestData.fakeEmail(i);
+    if (!q(`SELECT 1 FROM users WHERE email = ? AND is_test = 1 AND is_admin = 0`).get(email)) return res.status(404).page(notFound(req));
+    startSession(req, res, email, '/classes');
+  });
+
   // everything the test tools made: the fake students and all they own, test groups, and the admin's study data
   app.post('/admin/tools/clear-all', requireUser, requireTools, (req, res) => {
     const fakes = q(`SELECT id FROM users WHERE is_test = 1 AND is_admin = 0`).all().map((u) => u.id);
@@ -1884,6 +2002,19 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM study_sessions WHERE user_id ${testOwned}`).run();
       q(`DELETE FROM name_reports WHERE user_id ${testOwned} OR target_id ${testOwned}`).run();
       q(`DELETE FROM profiles WHERE user_id ${testOwned}`).run();
+      // classes test accounts run (the demo classes) go with their members, dates, tuts, posts and pulses; then anything
+      // test accounts left in real classes
+      q(`DELETE FROM classes WHERE owner_id ${testOwned}`).run();
+      q(`DELETE FROM attendance WHERE user_id ${testOwned}`).run();
+      q(`DELETE FROM pulse_answered WHERE user_id ${testOwned}`).run();
+      q(`DELETE FROM announcement_reads WHERE user_id ${testOwned}`).run();
+      q(`DELETE FROM announcement_reports WHERE user_id ${testOwned}`).run();
+      q(`DELETE FROM class_announcements WHERE posted_by ${testOwned}`).run();
+      q(`UPDATE class_pulses SET asked_by = NULL WHERE asked_by ${testOwned}`).run();
+      q(`DELETE FROM class_dates WHERE added_by ${testOwned}`).run();
+      q(`UPDATE attendance_sessions SET started_by = NULL WHERE started_by ${testOwned}`).run();
+      q(`DELETE FROM class_members WHERE user_id ${testOwned}`).run();
+      q(`UPDATE users SET role = 'student' WHERE id = ?`).run(req.user.id);
       for (const id of fakes) {
         q(`DELETE FROM sessions WHERE user_id = ?`).run(id);
         q(`DELETE FROM users WHERE id = ?`).run(id);
@@ -1893,7 +2024,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       db.exec('ROLLBACK');
       throw e;
     }
-    flashRedirect(res, '/admin/tools', 'ok', `Cleared: ${fakes.length} test students, their groups, and all test study data.`);
+    flashRedirect(res, '/admin/tools', 'ok', `Cleared: ${fakes.length} test accounts, their groups and demo classes, and all test study data. You're a student again.`);
   });
 
   function startSession(req, res, email, next) {

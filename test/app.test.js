@@ -303,6 +303,9 @@ test('classes: who may do what, student numbers, QR codes and the new-class form
   assert.equal(Classes.can(null, 'dates'), false, 'not a member, nothing');
   assert.equal(Classes.studentNumber('abcxyz001@myuct.ac.za'), 'ABCXYZ001');
   assert.equal(Classes.studentNumber('jane.smith@uct.ac.za'), '', 'staff have no student number');
+  assert.equal(Classes.studentNumber('test-student-3@kwaai.invalid'), 'TEST003', 'test students get a TEST number for demos');
+  assert.equal(Classes.studentNumber('test-lecturer@kwaai.invalid'), '', 'other test accounts get none');
+  assert.equal(Classes.studentNumber('test-student-3@gmail.com'), '', 'only the test domain');
   assert.match(Classes.qrSvg('https://kwaai.example/c/ABCDEFGH'), /^<svg[^>]*viewBox="0 0 \d+ \d+"/);
   const known = { course: (c) => c === 'CSC1015F', cleanName: Study.cleanName, screen: screenComment, goalFor: () => 9, thisYear: 2027 };
   assert.deepEqual(Classes.parseClassForm({ course: 'csc 1015f', year: '2027', name: '', goal: '' }, known).cls, { course: 'CSC1015F', year: 2027, name: 'CSC1015F 2027', goalWeekMin: 540 }, 'name and goal fill themselves in');
@@ -2463,4 +2466,57 @@ test('pulse checks: staff ask, each student answers once, only counts are kept, 
   await lecturer.post(adminPath + '/pulse', { ...ask, question: 'Was the tut useful?', option1: 'Yes', option2: 'No', option3: '' });
   sdb.prepare('UPDATE class_pulses SET closes_at = ? WHERE question = ?').run(Date.now() - 1, 'Was the tut useful?');
   assert.doesNotMatch(await s3.text('/today'), /Was the tut useful/, 'and they close by themselves after a week');
+}));
+
+test('test tools for classes: the role switch, a class you run, a class you are in, and signing in as a test student', () => withAdminServer({ testTools: true }, async ({ db: sdb, admin, browser: newBrowser }) => {
+  const adminRole = () => sdb.prepare(`SELECT role FROM users WHERE email = 'admin@kwaai.invalid'`).get().role;
+  await admin.post('/admin/tools/role', { role: 'staff' });
+  assert.equal(adminRole(), 'staff');
+  assert.match(await admin.text('/admin/tools'), /viewing Kwaai as a <strong>lecturer/);
+  await admin.post('/admin/tools/role', { role: 'student' });
+  assert.equal(adminRole(), 'student');
+
+  const dashPath = (await admin.post('/admin/tools/demo-lecturer', {})).headers.get('location');
+  assert.match(dashPath, /^\/classes\/\d+$/);
+  assert.equal(adminRole(), 'staff', 'running a class makes you a lecturer');
+  const dash = await admin.text(dashPath);
+  assert.match(dash, /TEST001/, 'test students have TEST numbers');
+  assert.match(dash, /Need a nudge<\/dt><dd>[1-9]/, 'some are behind');
+  assert.match(dash, /Thandi Mokoena <span class="badge badge-rep">Class rep/);
+  assert.match(dash, /Tut 6/);
+  assert.match(dash, /13 answers · open until/, 'the pulse check has answers');
+  await admin.post('/admin/tools/demo-lecturer', {});
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM classes WHERE name = 'CSC1015F demo'`).get().n, 1, 'rebuilding replaces it');
+
+  assert.match((await admin.post('/admin/tools/demo-student', {})).headers.get('location'), /^\/c\/[A-HJ-NP-Z2-9]{8}$/);
+  const today = await admin.text('/today');
+  assert.match(today, /Tutorial 4 moves to Thursday/);
+  assert.match(today, /Was this week(&#39;|')s tutorial useful\?/);
+  const link = /href="https?:\/\/[^/"]+(\/a\/(\d+)\?k=([^"]+))">Check in to today/.exec(await admin.text('/admin/tools'));
+  assert.ok(link, 'the tools page links to the open tut');
+  assert.match(await admin.text(link[1]), /Mark me present/);
+  await admin.post(`/a/${link[2]}`, { k: link[3] });
+  assert.match(await admin.text(link[1]), /You(&#39;|')re marked present/);
+
+  assert.match((await admin.post('/admin/tools/become', { student: '99' })).headers.get('location'), /^\/admin\/tools/, 'only the 15 test students');
+  await admin.post('/admin/tools/become', { student: '2' });
+  const asStudent = await admin.text('/classes');
+  assert.match(asStudent, /signed in as a test student \(test-student-3@kwaai\.invalid\)/);
+  assert.match(asStudent, /CSC1015F demo/, 'they are in the demo class');
+  assert.equal((await admin.get('/admin/tools')).status, 404, 'a test student never has the tools');
+
+  const { code } = await makeClass(newBrowser);
+  const again = newBrowser();
+  await again.post('/admin/login', { username: 'kwaai', password: 'test-only-password-123' });
+  await again.post('/admin/tools/clear-all', {});
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM classes WHERE name LIKE '% demo'`).get().n, 0, 'demo classes are gone');
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM classes WHERE code = ?').get(code).n, 1, 'real classes stay');
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM users WHERE email LIKE '%@kwaai.invalid' AND is_admin = 0`).get().n, 0, 'test accounts are gone');
+  assert.equal(adminRole(), 'student');
+}));
+
+test('class test tools are off without TEST_TOOLS', () => withAdminServer({}, async ({ admin }) => {
+  for (const path of ['/admin/tools/role', '/admin/tools/demo-lecturer', '/admin/tools/demo-student', '/admin/tools/become']) {
+    assert.equal((await admin.post(path, { role: 'staff', student: '0' })).status, 404, path);
+  }
 }));
