@@ -1,5 +1,20 @@
 const { DatabaseSync } = require('node:sqlite');
 const path = require('node:path');
+const { studentNumber } = require('./classes');
+
+// Attendance marks, one per student per session, by student number so students who aren't on Kwaai can be marked.
+// user_id is set when the student is on Kwaai. No row means absent. how: 'qr' (they scanned) or 'tutor' (tapped on the
+// register). device: a random id from the phone that scanned, so the register can flag one phone checking in two people.
+const ATTENDANCE_TABLE = `CREATE TABLE IF NOT EXISTS attendance (
+  session_id INTEGER NOT NULL REFERENCES attendance_sessions(id) ON DELETE CASCADE,
+  number TEXT NOT NULL,
+  user_id INTEGER REFERENCES users(id),
+  marked_at INTEGER NOT NULL,
+  status TEXT NOT NULL DEFAULT 'present' CHECK (status IN ('present', 'late', 'excused')),
+  how TEXT NOT NULL CHECK (how IN ('qr', 'tutor')),
+  device TEXT NOT NULL DEFAULT '',
+  PRIMARY KEY (session_id, number)
+);`;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
@@ -245,13 +260,7 @@ CREATE TABLE IF NOT EXISTS attendance_sessions (
   started_at INTEGER NOT NULL,
   ended_at INTEGER
 );
-CREATE TABLE IF NOT EXISTS attendance (
-  session_id INTEGER NOT NULL REFERENCES attendance_sessions(id) ON DELETE CASCADE,
-  user_id INTEGER NOT NULL REFERENCES users(id),
-  marked_at INTEGER NOT NULL,
-  how TEXT NOT NULL CHECK (how IN ('qr', 'tutor')),
-  PRIMARY KEY (session_id, user_id)
-);
+${ATTENDANCE_TABLE}
 -- Short notes from a class's lecturer, tutors or reps, like "Prac 3 moved to Thursday". poster_name is the name shown
 -- with it, kept as it was when posted. hidden = 1 once enough members report it, until a moderator looks.
 CREATE TABLE IF NOT EXISTS class_announcements (
@@ -378,6 +387,25 @@ function addMissingColumns(db, table, columns) {
   for (const [name, type] of Object.entries(columns)) if (!have.has(name)) db.exec(`ALTER TABLE ${table} ADD COLUMN ${name} ${type}`);
 }
 
+// Attendance used to be one row per Kwaai user. It's rebuilt by student number, keeping every mark.
+function migrateAttendance(db) {
+  if (db.prepare('PRAGMA table_info(attendance)').all().some((c) => c.name === 'number')) return;
+  db.exec('BEGIN');
+  try {
+    db.exec('ALTER TABLE attendance RENAME TO attendance_by_user');
+    db.exec(ATTENDANCE_TABLE);
+    const put = db.prepare(`INSERT OR IGNORE INTO attendance (session_id, number, user_id, marked_at, status, how) VALUES (?, ?, ?, ?, 'present', ?)`);
+    for (const r of db.prepare('SELECT a.*, u.email FROM attendance_by_user a LEFT JOIN users u ON u.id = a.user_id').all()) {
+      put.run(r.session_id, studentNumber(r.email || '') || `U${r.user_id}`, r.user_id, r.marked_at, r.how);
+    }
+    db.exec('DROP TABLE attendance_by_user');
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+}
+
 function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker.db')) {
   const db = new DatabaseSync(file);
   db.exec('PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL;');
@@ -391,6 +419,7 @@ function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker
   addMissingColumns(db, 'class_members', { number: "TEXT NOT NULL DEFAULT ''" }); // the member's student number, from their email
   // which group a register is for (null: the whole class), and whether it counts as a tut, a prac or neither for DP
   addMissingColumns(db, 'attendance_sessions', { group_id: 'INTEGER REFERENCES class_groups(id) ON DELETE SET NULL', kind: "TEXT NOT NULL DEFAULT 'other'" });
+  migrateAttendance(db);
   db.exec('CREATE UNIQUE INDEX IF NOT EXISTS one_report_each ON reports (review_id, user_id)');
   db.exec('CREATE INDEX IF NOT EXISTS test_users ON users (id) WHERE is_test = 1'); // the few test accounts, for leaving them out of figures
   return db;
