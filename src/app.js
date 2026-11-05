@@ -665,7 +665,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
-    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [] }));
+    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [], dpAlerts: dpAlertsFor(req.user) }));
   });
 
   // ---- study timer ----
@@ -1426,6 +1426,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       myRow: me.number ? q(`SELECT * FROM class_roster WHERE class_id = ? AND number = ?`).get(cls.id, me.number) || null : null,
       pulses: q(`SELECT p.*, EXISTS (SELECT 1 FROM pulse_answered a WHERE a.pulse_id = p.id AND a.user_id = ?) AS answered FROM class_pulses p
         WHERE p.class_id = ? AND p.closed_at IS NULL AND p.closes_at > ? ORDER BY p.asked_at DESC`).all(req.user.id, cls.id, Date.now()).map((p) => pulseView(p)),
+      dpRules: { tut: Classes.dpRule(cls, 'tut'), prac: Classes.dpRule(cls, 'prac') },
       attendance: me.number ? classAttendance(cls.id).of(q(`SELECT * FROM class_roster WHERE class_id = ? AND number = ?`).get(cls.id, me.number) || { number: me.number, tut_group: '', prac_group: '' }) : null,
     }));
   });
@@ -1592,6 +1593,27 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     return { sessions, of: (row) => Classes.attendanceOf(row, sessions, groups, marks) };
   }
 
+  // a student's DP for each kind the class has a rule for, from their attendance history
+  function classDp(cls, history) {
+    const dp = {};
+    for (const kind of ['tut', 'prac']) {
+      const rule = Classes.dpRule(cls, kind);
+      if (rule) dp[kind] = Classes.dpFor(history, rule, kind);
+    }
+    return dp;
+  }
+  // Today's warnings: classes you're in as a student where your attendance puts DP at risk or out of reach
+  function dpAlertsFor(user) {
+    if (!user) return [];
+    const out = [];
+    for (const cls of q(`SELECT c.*, m.number FROM classes c JOIN class_members m ON m.class_id = c.id WHERE m.user_id = ? AND m.role IN ('student', 'rep') AND m.number != ''
+        AND (c.dp_tut_planned > 0 OR c.dp_prac_planned > 0)`).all(user.id)) {
+      const row = q(`SELECT * FROM class_roster WHERE class_id = ? AND number = ?`).get(cls.id, cls.number);
+      if (!row) continue;
+      for (const [kind, d] of Object.entries(classDp(cls, classAttendance(cls.id).of(row).history))) if (d.state !== 'ok') out.push({ code: cls.code, name: cls.name, kind, ...d });
+    }
+    return out;
+  }
   const DASH_SORTS = {
     week: (a, b) => b.week - a.week,
     name: (a, b) => a.name.localeCompare(b.name),
@@ -1614,17 +1636,19 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       .map((m) => {
         const onKwaai = m.user_id != null;
         const a = att.of({ number: m.number, tut_group: m.tut_group, prac_group: m.prac_group });
+        const dp = classDp(cls, a.history);
         const r = { id: m.user_id, number: m.number, name: (onKwaai ? m.name : m.list_name) || '(no name)', onKwaai, onList: m.source === 'list', anonymous: !!m.anonymous, role: m.role || 'student',
           tut: m.tut_group, prac: m.prac_group,
           week: week.get(m.user_id) || 0, month: month.get(m.user_id) || 0, last: activity.get(m.user_id)?.last || null, days14: activity.get(m.user_id)?.days14 || 0,
           attended: a.present + a.late, excused: a.excused, sessions: a.held, history: a.history };
-        return { ...r, pct: Math.round((r.week / cls.goal_week_min) * 100), nudge: onKwaai && Classes.needsNudge({ weekMin: r.week, lastDay: r.last }, cls.goal_week_min, dow, today) };
+        return { ...r, pct: Math.round((r.week / cls.goal_week_min) * 100), nudge: onKwaai && Classes.needsNudge({ weekMin: r.week, lastDay: r.last }, cls.goal_week_min, dow, today),
+          dp, flags: Classes.riskFlags({ history: a.history, dp, onKwaai, days14: r.days14, course: cls.course }) };
       })
       .sort(DASH_SORTS[sort] || DASH_SORTS.week);
     const weeks = rows.filter((r) => r.onKwaai).map((r) => r.week).sort((a, b) => a - b);
     const median = weeks.length ? (weeks.length % 2 ? weeks[weeks.length >> 1] : Math.round((weeks[weeks.length / 2 - 1] + weeks[weeks.length / 2]) / 2)) : 0;
     const soFar = Classes.goalSoFar(cls.goal_week_min, dow);
-    return { rows, totals: { sessions: att.sessions.length, students: rows.length, onKwaai: rows.filter((r) => r.onKwaai).length, listed: rows.filter((r) => r.onList).length, median, onTrack: rows.filter((r) => r.onKwaai && r.week >= soFar).length, nudge: rows.filter((r) => r.nudge).length, soFar } };
+    return { rows, totals: { sessions: att.sessions.length, students: rows.length, onKwaai: rows.filter((r) => r.onKwaai).length, listed: rows.filter((r) => r.onList).length, median, onTrack: rows.filter((r) => r.onKwaai && r.week >= soFar).length, nudge: rows.filter((r) => r.nudge).length, atRisk: rows.filter((r) => r.flags.length).length, soFar } };
   }
   const classForRunners = (req, action = 'dashboard') => {
     const cls = classById(req.params.id);
@@ -1640,11 +1664,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const link = joinUrl(req, cls);
     const sort = DASH_SORTS[req.query.sort] ? req.query.sort : 'week';
     res.set('Cache-Control', 'no-store').page(views.classAdmin(req.ctx, {
-      cls, me, course: getCourse(cls.course), link, qr: Classes.qrSvg(link), sort, onlyNudge: req.query.filter === 'nudge', manage: Classes.can(me, 'manage'), ...classDashboard(cls, sort),
+      cls, me, course: getCourse(cls.course), link, qr: Classes.qrSvg(link), sort, onlyNudge: req.query.filter === 'nudge', onlyRisk: req.query.filter === 'risk', manage: Classes.can(me, 'manage'), ...classDashboard(cls, sort),
       tutors: q(`SELECT m.user_id, m.name, u.email FROM class_members m JOIN users u ON u.id = m.user_id WHERE m.class_id = ? AND m.role = 'tutor' ORDER BY m.name`).all(cls.id),
       sessions: q(`SELECT s.*, (SELECT COUNT(*) FROM attendance a WHERE a.session_id = s.id) AS present FROM attendance_sessions s WHERE s.class_id = ? ORDER BY s.started_at DESC LIMIT 12`).all(cls.id),
       canPulse: Classes.can(me, 'pulse'), pulsePreset: Classes.PULSE_PRESET,
-      groups: classGroupsOf(cls.id), staff: q(`SELECT user_id, name, role FROM class_members WHERE class_id = ? AND role IN ('lecturer', 'tutor') ORDER BY role, name`).all(cls.id),
+      groups: groupAttendance(cls.id, classGroupsOf(cls.id)), staff: q(`SELECT user_id, name, role FROM class_members WHERE class_id = ? AND role IN ('lecturer', 'tutor') ORDER BY role, name`).all(cls.id),
       pulses: q(`SELECT * FROM class_pulses WHERE class_id = ? ORDER BY asked_at DESC LIMIT 10`).all(cls.id).map((p) => pulseView(p)),
     }));
   });
@@ -1654,10 +1678,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!found) return res.status(404).page(notFound(req));
     const { cls } = found;
     const { rows } = classDashboard(cls, 'number');
-    const lines = [Classes.csvRow(['student_number', 'name', 'anonymous_to_classmates', 'role', 'minutes_this_week', 'minutes_this_month', 'goal_percent_this_week', 'last_studied', 'days_studied_last_14', 'needs_a_nudge', 'sessions_attended', 'sessions_held', 'on_kwaai', 'on_class_list'])]
-      .concat(rows.map((r) => Classes.csvRow(r.onKwaai
+    const lines = [Classes.csvRow(['student_number', 'name', 'anonymous_to_classmates', 'role', 'minutes_this_week', 'minutes_this_month', 'goal_percent_this_week', 'last_studied', 'days_studied_last_14', 'needs_a_nudge', 'sessions_attended', 'sessions_held', 'on_kwaai', 'on_class_list', 'sessions_excused', 'tut_dp', 'prac_dp', 'flags'])]
+      .concat(rows.map((r) => Classes.csvRow((r.onKwaai
         ? [r.number, r.name, r.anonymous ? 'yes' : 'no', r.role, r.week, r.month, r.pct, r.last || '', r.days14, r.nudge ? 'yes' : 'no', r.attended, r.sessions, 'yes', r.onList ? 'yes' : 'no']
-        : [r.number, r.name, '', r.role, '', '', '', '', '', '', r.attended, r.sessions, 'no', 'yes'])));
+        : [r.number, r.name, '', r.role, '', '', '', '', '', '', r.attended, r.sessions, 'no', 'yes'])
+        .concat([r.excused, r.dp.tut?.state || '', r.dp.prac?.state || '', r.flags.map((x) => x.text).join('; ')]))));
     res.set({ 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="${cls.course}-${cls.year}-students.csv"`, 'Cache-Control': 'no-store' }).send(lines.join('\r\n') + '\r\n');
   });
 
@@ -1741,6 +1766,34 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const onKwaai = q(`SELECT COUNT(*) AS n FROM class_roster r JOIN class_members m ON m.class_id = r.class_id AND m.number = r.number WHERE r.class_id = ? AND r.source = 'list'`).get(cls.id).n;
     const skipped = parsed.skipped.length ? ` Skipped line${parsed.skipped.length === 1 ? '' : 's'} ${parsed.skipped.slice(0, 5).join(', ')}${parsed.skipped.length > 5 ? ' and more' : ''}: no student number at the start.` : '';
     back('ok', `${parsed.rows.length} students saved to the class list. ${onKwaai} of the list ${onKwaai === 1 ? 'is' : 'are'} on Kwaai.${skipped}`);
+  });
+
+  // each group's attendance: of the places in its sessions (sessions x students), how many were present or late
+  function groupAttendance(classId, groups) {
+    const held = new Map(q(`SELECT s.group_id, COUNT(*) AS n, (SELECT COUNT(*) FROM attendance a JOIN attendance_sessions x ON x.id = a.session_id
+        WHERE x.class_id = s.class_id AND x.group_id = s.group_id AND a.status IN ('present', 'late')) AS here
+      FROM attendance_sessions s WHERE s.class_id = ? AND s.group_id IS NOT NULL GROUP BY s.group_id`).all(classId).map((r) => [r.group_id, r]));
+    return groups.map((g) => {
+      const h = held.get(g.id);
+      return { ...g, sessionsHeld: h?.n || 0, rate: h && g.students ? Math.round((h.here / (h.n * g.students)) * 100) : null };
+    });
+  }
+
+  // the lecturer sets the DP rule for attendance
+  app.post('/classes/:id/dp', requireUser, limits.classes, (req, res) => {
+    const found = classForRunners(req, 'manage');
+    if (!found) return res.status(404).page(notFound(req));
+    const num = (v, max) => Math.round(Number(v));
+    const fields = { tut_planned: [req.body.tut_planned, 60], tut_pct: [req.body.tut_pct, 100], prac_planned: [req.body.prac_planned, 60], prac_pct: [req.body.prac_pct, 100] };
+    const v = {};
+    for (const [k, [raw, max]] of Object.entries(fields)) {
+      const n = num(raw === '' || raw == null ? 0 : raw, max);
+      if (!Number.isInteger(n) || n < 0 || n > max) return flashRedirect(res, `/classes/${found.cls.id}#dp`, 'error', `Use whole numbers: up to ${max} for ${k.includes('pct') ? 'a percentage' : 'sessions'}.`);
+      v[k] = n;
+    }
+    q(`UPDATE classes SET dp_tut_planned = ?, dp_tut_pct = ?, dp_prac_planned = ?, dp_prac_pct = ?, dp_late_counts = ? WHERE id = ?`)
+      .run(v.tut_planned, v.tut_pct, v.prac_planned, v.prac_pct, req.body.late === '1' ? 1 : 0, found.cls.id);
+    flashRedirect(res, `/classes/${found.cls.id}#dp`, 'ok', 'DP rule saved. Students see where they stand on their class page and on Today.');
   });
 
   // the lecturer adds a group, or edits one (renaming it moves its students along; its kind stays)
@@ -2170,7 +2223,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     q(`UPDATE class_members SET role = 'rep', name = 'Thandi Mokoena', anonymous = 0 WHERE class_id = ? AND user_id = ?`).run(cls.id, ids[0]);
     q(`INSERT OR REPLACE INTO class_members (class_id, user_id, role, name, consent_at) VALUES (?, ?, 'tutor', 'Sam Tutor', CURRENT_TIMESTAMP)`).run(cls.id, ids[14]);
     // four students on the class list who aren't on Kwaai, so the list, registers and DP include them
-    q(`UPDATE classes SET roster_confirmed_at = CURRENT_TIMESTAMP WHERE id = ?`).run(cls.id);
+    q(`UPDATE classes SET roster_confirmed_at = CURRENT_TIMESTAMP, dp_tut_planned = 10, dp_tut_pct = 80 WHERE id = ?`).run(cls.id); // DP: 80% of 10 tuts
     [['TEST101', 'Lindiwe Dube'], ['TEST102', 'Pieter van Wyk'], ['TEST103', 'Ayesha Patel'], ['TEST104', 'Kagiso Molefe']]
       .forEach(([number, name]) => q(`INSERT INTO class_roster (class_id, number, name, source) VALUES (?, ?, ?, 'list')`).run(cls.id, number, name));
     // two tuts and a prac with times, venues and tutors; the class list puts everyone in one of each
@@ -2209,6 +2262,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     q(`INSERT INTO class_groups (class_id, kind, name, day, starts, ends, venue, tutor_id) VALUES (?, 'tut', 'Tut B', 'Friday', '12:00', '13:45', 'Leslie Social LT2', ?)`).run(cls.id, lecturerId);
     q(`UPDATE class_roster SET tut_group = 'Tut B' WHERE class_id = ?`).run(cls.id);
     demoAttendance(cls, ids.slice(0, 10), lecturerId, 3);
+    // DP: 75% of 6 tuts. You (the admin) weren't at the 3 held so far, so Today warns you
+    q(`UPDATE classes SET dp_tut_planned = 6, dp_tut_pct = 75 WHERE id = ?`).run(cls.id);
     q(`INSERT INTO class_dates (class_id, course, type, title, date, time, added_by, added_role) VALUES (?, ?, 'test', 'Class test 2', ?, '14:00', ?, 'lecturer')`).run(cls.id, cls.course, Study.addDay(today, 4), lecturerId);
     q(`INSERT INTO class_announcements (class_id, body, posted_by, poster_name, poster_role, created_at) VALUES (?, ?, ?, 'Dr T Test', 'lecturer', ?)`)
       .run(cls.id, 'Tutorial 4 moves to Thursday this week. Same venue.', lecturerId, now - 60 * MIN);
