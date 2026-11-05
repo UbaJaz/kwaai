@@ -4,6 +4,9 @@ const { REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { ordinal, entryStatus } = require('./planner');
 const Marks = require('../public/marks-math');
 const Study = require('./study');
+const { MARK_NAMES, nextMark } = require('./classes');
+
+const NEXT_MARK = Object.fromEntries(Object.keys(MARK_NAMES).map((m) => [m, nextMark(m)]));
 
 const fmt = (n) => (n == null ? '–' : Number(n).toFixed(1));
 const month = (iso) => new Date(iso.replace(' ', 'T') + 'Z').toLocaleDateString('en-ZA', { month: 'short', year: 'numeric' });
@@ -1592,7 +1595,7 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, manage, r
       <td data-label="This month">${study(Study.hoursText(r.month))}</td>
       <td data-label="Last studied">${study(r.last ? fmtDate(r.last) : html`<span class="meta">Not yet</span>`)}</td>
       <td data-label="Days (last 14)">${study(r.days14)}</td>
-      <td data-label="Attendance">${r.sessions ? `${r.attended} of ${r.sessions}` : html`<span class="meta">No sessions yet</span>`}</td>
+      <td data-label="Attendance">${r.sessions ? `${r.attended} of ${r.sessions}${r.excused ? ` (${r.excused} excused)` : ''}` : html`<span class="meta">No sessions yet</span>`}</td>
       ${manage ? html`<td class="dash-actions">${!r.onKwaai
         ? html`<form method="post" action="/classes/${cls.id}/roster/remove" class="inline" data-confirm="Take ${r.name} (${r.number}) off the class list?"><input type="hidden" name="number" value="${r.number}"><button class="link-btn meta">Take off the list</button></form>`
         : html`${r.role === 'rep'
@@ -1734,7 +1737,7 @@ const pulseForm = (code, p, back = '') => html`<form method="post" action="/c/${
   <p class="meta">Anonymous: your lecturer sees only how many picked each answer.</p>
 </form>`;
 
-function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '', attendance = [], announcements = [], canAnnounce = false, pulses = [], groups = [], myRow = null }) {
+function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ranking, idle, dates = [], canDates = false, canManage = false, today = '', attendance = null, announcements = [], canAnnounce = false, pulses = [], groups = [], myRow = null }) {
   const student = me.role === 'student' || me.role === 'rep';
   const p = Math.min(1, weekMin / cls.goal_week_min);
   const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
@@ -1818,9 +1821,9 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
       </form>
     </details>` : ''}
   </section>
-  ${(me.role === 'student' || me.role === 'rep') && attendance.length ? html`<section class="card panel class-section" aria-labelledby="my-att">
-    <h2 id="my-att">Your attendance: ${attendance.filter((x) => x.marked_at).length} of ${attendance.length}</h2>
-    <ul class="plain fact-list">${attendance.map((x) => html`<li><span>${x.label}</span> <span class="${x.marked_at ? 'ok-text' : 'meta'}">${x.marked_at ? 'Present' : 'Not marked'}</span></li>`)}</ul>
+  ${(me.role === 'student' || me.role === 'rep') && attendance?.history.length ? html`<section class="card panel class-section" aria-labelledby="my-att">
+    <h2 id="my-att">Your attendance: ${attendance.present + attendance.late} of ${attendance.held}${attendance.excused ? html` <span class="meta">(${attendance.excused} excused)</span>` : ''}</h2>
+    <ul class="plain fact-list">${attendance.history.slice().reverse().map((x) => html`<li><span>${x.label}</span> <span class="${x.status === 'present' || x.status === 'late' ? 'ok-text' : 'meta'}">${x.open && x.status === 'absent' ? 'Open now' : x.status === 'absent' ? 'Not marked' : MARK_NAMES[x.status]}</span></li>`)}</ul>
   </section>` : ''}
   <h2 class="section-title">Class ranking</h2>
   <div class="toggle" role="group" aria-label="Period">${Object.entries(Study.PERIODS).map(([k, label]) => html`<a href="/c/${cls.code}?period=${k}" class="${k === period ? 'on' : ''}" ${k === period ? html`aria-current="page"` : ''}>${label}</a>`)}</div>
@@ -1832,25 +1835,57 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
 }
 
 /// ---------- attendance ----------
-// The tutor's screen: a big QR code that public/app.js refreshes every few seconds, the count so far, the newest names,
-// add by student number for someone without a phone, and End.
-function attendanceScreen(ctx, { s, qr, count, recent }) {
+// The tutor's screen: the register (tap a name to move it along: present, late, excused, absent) and the rotating QR
+// code for students to scan, which public/app.js refreshes every few seconds. Both work without the script too.
+function attendanceScreen(ctx, { s, group, rows = [], qr, count, recent }) {
+  const register = html`<section class="card panel register" aria-labelledby="reg-head" data-register="/attend/${s.id}/mark">
+    <div class="register-head">
+      <h2 id="reg-head">Register</h2>
+      <p class="meta"><strong data-attend-count>${count}</strong> of ${rows.length} here</p>
+    </div>
+    ${rows.length ? html`
+    <div class="register-tools">
+      <form method="post" action="/attend/${s.id}/all" class="inline" data-confirm="Mark everyone who isn't marked yet as present?"><button class="btn btn-small btn-quiet">Mark everyone present</button></form>
+      <label class="register-search">Find a name <input type="search" data-register-search placeholder="Name or student number" autocomplete="off" spellcheck="false"></label>
+    </div>
+    <p class="meta">Tap a name to move it along: present, late, excused, absent. Excused never records a reason.</p>
+    <ul class="plain register-list">${rows.map((r) => {
+      const next = NEXT_MARK[r.status];
+      return html`<li id="r-${r.number}" data-name="${`${r.name} ${r.number}`.toLowerCase()}">
+        <form method="post" action="/attend/${s.id}/mark" class="register-row">
+          <input type="hidden" name="number" value="${r.number}"><input type="hidden" name="status" value="${next}">
+          <button class="register-btn mark-${r.status}" data-number="${r.number}" aria-label="${r.name}: ${MARK_NAMES[r.status]}. Tap for ${MARK_NAMES[next].toLowerCase()}.">
+            <span class="register-name">${r.name} <span class="code meta">${r.number}</span></span>
+            <span class="register-mark">${MARK_NAMES[r.status]}</span>
+          </button>
+        </form>
+        ${r.how === 'qr' ? html`<p class="register-note meta">Scanned the code</p>` : ''}
+        ${r.sharedWith.length ? html`<p class="register-flag">Checked in from the same phone as ${r.sharedWith.join(', ')}. Check they're both here.</p>` : ''}
+      </li>`;
+    })}</ul>
+    <p class="register-offline" data-register-offline hidden role="status">You're offline. Taps are kept on this phone and sent when you're back online.</p>`
+    : html`<p class="meta">Nobody is on this ${group ? 'group' : 'class'}'s list yet. Students who scan the code show up here, or paste the class list on the dashboard.</p>`}
+  </section>`;
   return layout({ ...ctx, title: `Attendance: ${s.label}`, here: '/classes' }, html`
   <p class="crumbs"><a href="/classes/${s.class_id}#attendance">${s.class_name}</a></p>
   <h1 class="page-title">${s.label}</h1>
-  ${s.ended_at ? html`<div class="card panel"><p><strong>This session is closed.</strong> ${plural(count, 'student')} marked present.</p></div>` : html`
-  <section class="attend-screen" data-attend-live="/attend/${s.id}/live" aria-labelledby="attend-head">
-    <h2 id="attend-head" class="sr-only">Scan to check in</h2>
-    <div class="attend-qr" role="img" aria-label="Attendance QR code. It changes every 20 seconds." data-attend-qr>${raw(qr)}</div>
-    <p class="attend-help">Point your phone camera at the code, open the link, and tap <strong>Mark me present</strong>. It changes every 20 seconds.</p>
-    <p class="attend-count"><strong data-attend-count>${count}</strong> present</p>
-    <ul class="plain attend-recent" data-attend-recent>${recent.map((r) => html`<li>${r.name || 'A student'}</li>`)}</ul>
-  </section>
+  ${group?.day ? html`<p class="lede small">${group.day} ${group.starts}–${group.ends}${group.venue ? ` · ${group.venue}` : ''}</p>` : ''}
+  ${s.ended_at ? html`<div class="card panel"><p><strong>This session is closed.</strong> ${plural(count, 'student')} marked present or late. You can still correct the register below.</p></div>${register}` : html`
+  ${register}
+  <details class="card panel attend-qr-box" ${group ? '' : 'open'}>
+    <summary>QR code for students to scan</summary>
+    <section class="attend-screen" data-attend-live="/attend/${s.id}/live" aria-labelledby="attend-head">
+      <h2 id="attend-head" class="sr-only">Scan to check in</h2>
+      <div class="attend-qr" role="img" aria-label="Attendance QR code. It changes every 20 seconds." data-attend-qr>${raw(qr)}</div>
+      <p class="attend-help">Point your phone camera at the code, open the link, and tap <strong>Mark me present</strong>. It changes every 20 seconds.</p>
+      <ul class="plain attend-recent" data-attend-recent>${recent.map((r) => html`<li>${r.name || 'A student'}</li>`)}</ul>
+    </section>
+  </details>
   <form method="post" action="/attend/${s.id}/add" class="card panel study-form attend-add">
-    <label>No phone? Add by student number <input type="text" name="number" required placeholder="e.g. ABCXYZ001" autocapitalize="characters" autocomplete="off" spellcheck="false"></label>
+    <label>Add by student number <input type="text" name="number" required placeholder="e.g. ABCXYZ001" autocapitalize="characters" autocomplete="off" spellcheck="false"></label>
     <div class="form-actions"><button class="btn btn-small btn-quiet">Mark present</button></div>
   </form>
-  <form method="post" action="/attend/${s.id}/end" class="form-actions" data-confirm="Close ${s.label}? Nobody else can check in after this.">
+  <form method="post" action="/attend/${s.id}/end" class="form-actions" data-confirm="Close ${s.label}? Nobody else can scan in after this. You can still correct the register.">
     <button class="btn btn-big btn-ink">End attendance</button>
   </form>`}`);
 }

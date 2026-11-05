@@ -679,6 +679,28 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .my-group + .my-group { border-top: 1px solid var(--line); padding-top: 8px; }
 .inline-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; }
 .inline-form label { flex: 1 1 200px; }
+.register-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.register-head h2 { margin: 0; }
+.register-tools { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; margin: 10px 0 4px; }
+.register-search { flex: 1 1 220px; }
+.register-list { display: grid; gap: 6px; margin-top: 10px; }
+.register-list > li[hidden] { display: none; }
+.register-row { margin: 0; }
+.register-btn { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 8px 14px;
+  border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: #fff; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.register-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.register-name { min-width: 0; overflow-wrap: anywhere; }
+.register-mark { flex: none; font-weight: 700; font-size: .85rem; padding: 3px 10px; border-radius: 999px; background: var(--paper); }
+.register-btn.mark-present { border-color: #2f7d4f; background: #eef8f1; }
+.register-btn.mark-present .register-mark { background: #2f7d4f; color: #fff; }
+.register-btn.mark-late { border-color: #a26200; background: #fff6e8; }
+.register-btn.mark-late .register-mark { background: #a26200; color: #fff; }
+.register-btn.mark-excused { border-color: #4a5a8a; background: #f0f2fa; }
+.register-btn.mark-excused .register-mark { background: #4a5a8a; color: #fff; }
+.register-note { margin: 2px 0 0 14px; font-size: .8rem; }
+.register-flag { margin: 4px 0 0; padding: 6px 10px; border-radius: var(--radius-sm); background: #fff1e6; color: #8a3b00; font-size: .85rem; }
+.register-offline { margin: 10px 0 0; padding: 8px 12px; border-radius: var(--radius-sm); background: var(--sample-soft); color: var(--sample); }
+.attend-qr-box > summary { cursor: pointer; font-weight: 600; }
 #roster textarea { width: 100%; font-family: var(--mono, ui-monospace, monospace); font-size: .85rem; }
 /* the lecturer dashboard */
 .dash-totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 0 0 8px; }
