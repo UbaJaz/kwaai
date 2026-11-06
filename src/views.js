@@ -466,6 +466,15 @@ function rankUpCard(up, origin) {
   </section>`;
 }
 
+// A name on a board, a group or a class: the rank emblem, then the name in the style the student picked (only once
+// their rank unlocks it; see nameLooks in src/app.js). Screen readers hear the rank after the name.
+function nameTag(r) {
+  if (!r.badge && !r.fx) return r.name;
+  const name = html`<span class="board-who${r.fx ? ` name-fx fx-${r.fx}` : ''}">${r.name}</span>`;
+  if (!r.badge) return name;
+  return html`${emblem(r.badge)}${name}<span class="sr-only">, ${r.badge.label}</span>`;
+}
+
 // the test tools' rank gallery: every step's emblem and chip side by side, to check them by eye
 function rankGallery(ctx) {
   const steps = [Ranks.rankOf(0), ...Ranks.LIFETIME.map((x) => Ranks.rankOf(x[2] * 60))];
@@ -1583,7 +1592,7 @@ function study(ctx, { courses, pick, current, today, sessions, board, rank = nul
 
 // ---------- leaderboards ----------
 const YEAR_NAMES = ['1st', '2nd', '3rd', '4th', '5th', '6th'];
-function profile(ctx, { profile: p, faculties, programmes, error }) {
+function profile(ctx, { profile: p, faculties, programmes, rank = null, error }) {
   const anon = !p || !Number(p.show_name);
   return layout({ ...ctx, title: 'Leaderboard settings', here: '/study' }, html`
   <h1 class="page-title">Leaderboard settings</h1>
@@ -1598,6 +1607,18 @@ function profile(ctx, { profile: p, faculties, programmes, error }) {
       <label class="radio"><input type="radio" name="show" value="name" ${anon ? '' : 'checked'}> With a display name</label>
       <label>Display name <input type="text" name="display_name" maxlength="30" value="${p?.display_name ?? ''}" autocomplete="nickname"></label>
       <p class="meta">Your real name or a nickname, 2 to 30 characters. No contact details, insults or anyone else's name. Other students can report a name, and a moderator may remove it.</p>
+    </fieldset>
+    <fieldset>
+      <legend>Name style</legend>
+      <p class="meta">How your display name looks on the boards, in groups and in classes. Each rank unlocks a style: ${rank?.tier ? html`you're ${rankChip(rank)}.` : 'time an hour of study to get your first rank.'} <a href="/study/rank">See the ranks</a></p>
+      <div class="fx-picks">
+        <label class="radio fx-pick"><input type="radio" name="name_fx" value="" ${p?.name_fx ? '' : 'checked'}> <span class="board-who">Plain</span></label>
+        ${Ranks.TIERS.slice(1).map((tier) => {
+          const open = Ranks.unlockedFx(rank?.tier).includes(tier);
+          return html`<label class="radio fx-pick${open ? '' : ' is-locked'}"><input type="radio" name="name_fx" value="${tier}" ${open ? '' : 'disabled'} ${p?.name_fx === tier ? 'checked' : ''}> <span class="board-who name-fx fx-${tier}">${p?.display_name || 'Your name'}</span> <span class="meta">${open ? Ranks.NAME_FX[tier] : `Unlocks at ${Ranks.TIER_NAMES[tier]}`}</span></label>`;
+        })}
+      </div>
+      <p class="meta">Styles only show with a display name. Anonymous entries show the rank badge only.</p>
     </fieldset>
     <fieldset>
       <legend>About you <span class="hint">(optional)</span></legend>
@@ -1622,7 +1643,7 @@ function leaderboard(ctx, { joined, period, scope, faculty, faculties, rows, me,
   const facultyName = faculties.find((f) => f.key === faculty)?.name ?? '';
   const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
     <span class="board-rank">${r.rank}</span>
-    <span class="board-name">${r.name}${r.you ? html` <span class="badge">You</span>` : ''}</span>
+    <span class="board-name">${nameTag(r)}${r.you ? html` <span class="badge">You</span>` : ''}</span>
     <span class="board-time" data-count="${r.minutes}">${Study.hoursText(r.minutes)}</span>
     ${r.reportable ? html`<form method="post" action="/study/report-name" class="inline board-report" data-confirm="Report this name to a moderator?"><input type="hidden" name="user" value="${r.id}"><input type="hidden" name="back" value="${here}"><button class="link-btn">Report name</button></form>` : ''}
   </li>`;
@@ -1916,7 +1937,7 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
   const p = Math.min(1, weekMin / cls.goal_week_min);
   const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
     <span class="board-rank">${r.rank}</span>
-    <span class="board-name">${r.name}${r.you ? html` <span class="badge">You</span>` : ''}${r.role === 'rep' ? html` <span class="badge badge-rep">Class rep</span>` : ''}</span>
+    <span class="board-name">${nameTag(r)}${r.you ? html` <span class="badge">You</span>` : ''}${r.role === 'rep' ? html` <span class="badge badge-rep">Class rep</span>` : ''}</span>
     <span class="board-time" data-count="${r.minutes}">${Study.hoursText(r.minutes)}</span>
   </li>`;
   return layout({ ...ctx, title: cls.name, here: '/classes' }, html`
@@ -2127,7 +2148,7 @@ function group(ctx, { group: g, owner, period, rows, idle, invite, live = [] }) 
   const share = `https://wa.me/?text=${encodeURIComponent(`Join my study group "${g.name}" on Kwaai: ${invite}`)}`;
   const row = (r, i = 0) => html`<li class="board-row${r.you ? ' board-you' : ''}" style="--n:${Math.min(i, 20)}">
     <span class="board-rank">${r.rank ?? '–'}</span>
-    <span class="board-name">${r.name}${r.you ? html` <span class="badge">You</span>` : ''}</span>
+    <span class="board-name">${nameTag(r)}${r.you ? html` <span class="badge">You</span>` : ''}</span>
     <span class="board-time" ${r.minutes ? html`data-count="${r.minutes}"` : ''}>${r.minutes ? Study.hoursText(r.minutes) : 'No study yet'}</span>
     ${owner && !r.you ? html`<form method="post" action="/g/${g.code}/remove" class="inline board-report" data-confirm="Remove ${r.name} from the group?"><input type="hidden" name="user" value="${r.id}"><button class="link-btn">Remove</button></form>` : ''}
   </li>`;

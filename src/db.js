@@ -415,6 +415,7 @@ function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker
   addMissingColumns(db, 'reports', REPORT_DETAILS);
   addMissingColumns(db, 'lecturers', LECTURER_DETAILS);
   addMissingColumns(db, 'users', USER_DETAILS);
+  addMissingColumns(db, 'profiles', { name_fx: "TEXT NOT NULL DEFAULT ''" }); // the name style picked, from src/ranks.js NAME_FX ('' is plain)
   addMissingColumns(db, 'classes', { roster_confirmed_at: 'TEXT' }); // when the lecturer confirmed they may use the class list
   // the class's DP rule for attendance: how many tuts and pracs it will hold, the % a student must attend, and whether
   // late counts as attended (0 planned means no rule for that kind)

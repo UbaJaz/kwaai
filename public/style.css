@@ -1021,3 +1021,29 @@ circle.emblem-mark { fill: #fff; stroke: none; }
 @keyframes rank-pop { 0% { transform: scale(.3) rotate(-20deg); opacity: 0; } 70% { transform: scale(1.12) rotate(4deg); opacity: 1; } 100% { transform: none; } }
 @media (max-width: 480px) { .rankup { flex-direction: column; text-align: center; } .rankup-actions { justify-content: center; } }
 @media (prefers-reduced-motion: reduce) { .rankup .emblem { animation: none; } }
+
+/* ---- name styles (src/ranks.js NAME_FX), unlocked by the lifetime rank. Every colour in a gradient keeps at least
+   4.5:1 on white except the short highlight that sweeps past; the name stays readable at every moment. Animations
+   run three times and stop, to spare cheap phones, and never run for people who prefer less motion. */
+.board-name .emblem { margin-right: 5px; vertical-align: -3px; }
+.board-who { font-weight: 600; }
+.fx-silver { color: #4f5b68; }
+.fx-gold, .fx-platinum, .fx-diamond, .fx-kwaai { color: var(--tier-text, var(--ink)); }
+.fx-gold { color: #7a5400; }
+.fx-platinum { color: #1d6e65; }
+.fx-diamond { color: #2f5fc4; }
+.fx-kwaai { color: #a3256f; }
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .name-fx.fx-gold, .name-fx.fx-platinum, .name-fx.fx-diamond, .name-fx.fx-kwaai { -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .fx-gold { background-image: linear-gradient(90deg, #7a5400, #956b00 50%, #7a5400); }
+  .fx-platinum { background-image: linear-gradient(110deg, #1d6e65 40%, #3aa597 50%, #1d6e65 60%); background-size: 250% 100%; animation: fx-sweep 3.2s ease-in-out 3; }
+  .fx-diamond { background-image: linear-gradient(110deg, #2f5fc4 42%, #9dbbf5 50%, #2f5fc4 58%); background-size: 300% 100%; animation: fx-sweep 2.4s ease-in-out .6s 3; }
+  .fx-kwaai { background-image: linear-gradient(90deg, #a3256f, #6b2fb3, #2f5fc4, #a3256f); background-size: 300% 100%; animation: fx-flow 4s linear 3; filter: drop-shadow(0 0 5px rgb(214 64 159 / 35%)); }
+}
+@keyframes fx-sweep { from { background-position: 100% 0; } to { background-position: 0 0; } }
+@keyframes fx-flow { to { background-position: 300% 0; } }
+@media (prefers-reduced-motion: reduce) { .name-fx { animation: none !important; } }
+.fx-picks { display: grid; gap: 6px; margin: 8px 0; }
+.fx-pick { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.fx-pick.is-locked { opacity: .55; }
+.fx-pick .meta { margin: 0; }

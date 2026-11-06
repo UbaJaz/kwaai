@@ -726,6 +726,29 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   }
 
   // ---- ranks (the ladders are in src/ranks.js) ----
+  // How names look on boards, groups and classes: the lifetime rank badge and the name style a student picked. Only
+  // for students on the leaderboards (a profiles row): others see plain names. A student always sees their own rank.
+  // The style is checked against the rank again here, so a style saved earlier never shows above the rank.
+  // ids: user ids; viewerId: the student looking. Returns a Map of id to { badge (the rank, or null), fx }.
+  function nameLooks(ids, viewerId) {
+    const out = new Map();
+    if (!ids.length) return out;
+    const profiles = new Map(q(`SELECT user_id, name_fx, show_name, display_name, name_held FROM profiles WHERE user_id IN (${ids.map(() => '?').join(',')})`).all(...ids).map((p) => [p.user_id, p]));
+    const minutes = lifetimeMinutes(ids);
+    for (const id of ids) {
+      const p = profiles.get(id);
+      if (!p && id !== viewerId) continue;
+      const rank = Ranks.rankOf(minutes.get(id));
+      const named = p && p.show_name && p.display_name && !p.name_held;
+      out.set(id, { badge: rank.tier ? rank : null, fx: named && Ranks.fxAllowed(p.name_fx, rank.tier) ? p.name_fx || '' : '' });
+    }
+    return out;
+  }
+  const myLifetime = (userId) => Ranks.rankOf(lifetimeMinutes([userId]).get(userId));
+  const withLooks = (rows, viewerId, hide = () => false) => {
+    const looks = nameLooks(rows.map((r) => r.id), viewerId);
+    return rows.map((r) => (hide(r) ? r : { ...r, ...looks.get(r.id) }));
+  };
   // A rank-up is shown once, on the next Study, Today or home page the student opens, however the session ended (the
   // timer ran out, Stop, or a closed tab). users.rank_seen and season_seen remember what was last celebrated.
   function celebrateRank(user, rank) {
@@ -865,26 +888,27 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   };
 
   app.get('/account/profile', requireUser, (req, res) => {
-    res.page(views.profile(req.ctx, { profile: profileOf(req.user.id), faculties: facultyOptions(), programmes: programmeOptions() }));
+    res.page(views.profile(req.ctx, { profile: profileOf(req.user.id), faculties: facultyOptions(), programmes: programmeOptions(), rank: myLifetime(req.user.id) }));
   });
 
   app.post('/account/profile', requireUser, limits.profile, (req, res) => {
-    const parsed = Study.parseProfileForm(req.body, knownProfile, screenComment);
+    const rank = myLifetime(req.user.id);
+    const parsed = Study.parseProfileForm(req.body, { ...knownProfile, fx: (fx) => Ranks.fxAllowed(fx, rank.tier) }, screenComment);
     const id = req.user.id;
     if (parsed.leave) {
       q(`DELETE FROM profiles WHERE user_id = ?`).run(id);
       q(`DELETE FROM name_reports WHERE target_id = ?`).run(id);
       return flashRedirect(res, '/account/profile', 'ok', "You've left the leaderboards. Your study time is still yours on the Study page.");
     }
-    if (parsed.error) return res.status(400).page(views.profile(req.ctx, { profile: { ...req.body, show_name: req.body.show === 'name' ? 1 : 0 }, faculties: facultyOptions(), programmes: programmeOptions(), error: parsed.error }));
+    if (parsed.error) return res.status(400).page(views.profile(req.ctx, { profile: { ...req.body, show_name: req.body.show === 'name' ? 1 : 0 }, faculties: facultyOptions(), programmes: programmeOptions(), rank, error: parsed.error }));
     const p = parsed.profile;
     const before = profileOf(id);
     // a new name gets a fresh start: earlier reports were about the old one
     if (before && before.display_name !== p.display_name) q(`DELETE FROM name_reports WHERE target_id = ?`).run(id);
-    q(`INSERT INTO profiles (user_id, uni, display_name, show_name, faculty, major, year) VALUES (?, ?, ?, ?, ?, ?, ?)
-      ON CONFLICT(user_id) DO UPDATE SET display_name = excluded.display_name, show_name = excluded.show_name, faculty = excluded.faculty, major = excluded.major, year = excluded.year,
+    q(`INSERT INTO profiles (user_id, uni, display_name, show_name, faculty, major, year, name_fx) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(user_id) DO UPDATE SET display_name = excluded.display_name, show_name = excluded.show_name, faculty = excluded.faculty, major = excluded.major, year = excluded.year, name_fx = excluded.name_fx,
         name_held = CASE WHEN profiles.display_name = excluded.display_name THEN profiles.name_held ELSE 0 END`)
-      .run(id, req.user.uni, p.display_name, p.show_name, p.faculty, p.major, p.year);
+      .run(id, req.user.uni, p.display_name, p.show_name, p.faculty, p.major, p.year, p.name_fx);
     flashRedirect(res, '/study/leaderboards', 'ok', before ? 'Saved.' : "You're on the leaderboards.");
   });
 
@@ -914,7 +938,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const board = Study.rankBoard(rows, req.user.id);
     const show = (r) => ({ rank: r.rank, minutes: r.minutes, name: boardName(r), you: r.user_id === req.user.id, id: r.user_id, reportable: !!(r.show_name && r.display_name && !r.name_held) && r.user_id !== req.user.id });
     res.set('Cache-Control', 'no-store').page(views.leaderboard(req.ctx, {
-      joined: !!me, period, scope, faculty, faculties: facultyOptions(), rows: board.rows.map(show), me: board.me && show(board.me), total: board.total,
+      joined: !!me, period, scope, faculty, faculties: facultyOptions(), rows: withLooks(board.rows.map(show), req.user.id), me: board.me && withLooks([show(board.me)], req.user.id)[0], total: board.total,
     }));
   });
 
@@ -990,7 +1014,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       .map((s) => ({ name: s.name, course: s.course, minutes: Math.max(1, Math.round((now - s.started_at) / 60_000)), you: s.user_id === req.user.id }));
     res.set('Cache-Control', 'no-store').page(views.group(req.ctx, {
       group: g, owner: g.owner_id === req.user.id, period, live, invite: `${req.ctx.site.origin}/g/${g.code}`,
-      rows: Study.rankBoard(rows, req.user.id, Study.MAX_MEMBERS).rows.map(show), idle: rows.filter((r) => !r.minutes).map(show),
+      rows: withLooks(Study.rankBoard(rows, req.user.id, Study.MAX_MEMBERS).rows.map(show), req.user.id), idle: rows.filter((r) => !r.minutes).map(show),
     }));
   });
 
@@ -1464,14 +1488,14 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     Object.assign(me, classMember(cls.id, req.user.id));
     const period = Study.PERIODS[req.query.period] ? req.query.period : 'week';
     const [from, to] = Study.periodRange(period, Study.saDay(Date.now()));
-    const shown = (r) => ({ id: r.user_id, rank: r.rank, minutes: r.minutes, you: r.user_id === req.user.id, role: r.role, name: r.anonymous && r.user_id !== req.user.id ? 'Anonymous' : r.name || 'Anonymous' });
+    const shown = (r) => ({ id: r.user_id, rank: r.rank, minutes: r.minutes, you: r.user_id === req.user.id, role: r.role, anon: !!r.anonymous && r.user_id !== req.user.id, name: r.anonymous && r.user_id !== req.user.id ? 'Anonymous' : r.name || 'Anonymous' });
     const rows = classMinutes(cls, from, to);
     const weekMin = classMinutes(cls, ...Study.periodRange('week', Study.saDay(Date.now()))).find((r) => r.user_id === req.user.id)?.minutes || 0;
     const announcements = q(`SELECT * FROM class_announcements WHERE class_id = ? AND hidden = 0 ORDER BY created_at DESC LIMIT 20`).all(cls.id);
     q(`INSERT OR IGNORE INTO announcement_reads (announcement_id, user_id) SELECT id, ? FROM class_announcements WHERE class_id = ? AND hidden = 0`).run(req.user.id, cls.id);
     res.set('Cache-Control', 'no-store').page(views.classPage(req.ctx, {
       cls, me, course: getCourse(cls.course), lecturer: classLecturer(cls), canRun: Classes.can(me, 'dashboard'), period, weekMin,
-      ranking: Study.rankBoard(rows, req.user.id, 500).rows.map(shown), idle: rows.filter((r) => !r.minutes).length,
+      ranking: withLooks(Study.rankBoard(rows, req.user.id, 500).rows.map(shown), req.user.id, (r) => r.anon), idle: rows.filter((r) => !r.minutes).length,
       dates: q(`SELECT d.*, m.name AS by_name FROM class_dates d LEFT JOIN class_members m ON m.class_id = d.class_id AND m.user_id = d.added_by WHERE d.class_id = ? AND d.date >= ? ORDER BY d.date, d.time`).all(cls.id, Study.saDay(Date.now())),
       canDates: Classes.can(me, 'dates'), canManage: Classes.can(me, 'manage'), today: Study.saDay(Date.now()),
       announcements, canAnnounce: Classes.can(me, 'announce'),
@@ -2253,13 +2277,15 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const now = Date.now();
     ids.forEach((id, i) => {
       const s = TestData.FAKE_STUDENTS[i];
-      q(`INSERT OR REPLACE INTO profiles (user_id, uni, display_name, show_name, faculty, major, year) VALUES (?, ?, ?, ?, ?, ?, ?)`)
-        .run(id, req.user.uni, s.name, s.name ? 1 : 0, s.faculty, s.major, s.year);
+      // the named ones wear the best name style their rank unlocks, so every style shows on the boards
+      const step = Ranks.LIFETIME[Math.round((i * 15) / 14)];
+      q(`INSERT OR REPLACE INTO profiles (user_id, uni, display_name, show_name, faculty, major, year, name_fx) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
+        .run(id, req.user.uni, s.name, s.name ? 1 : 0, s.faculty, s.major, s.year, Ranks.unlockedFx(step[0]).at(-1) || '');
       q(`DELETE FROM study_sessions WHERE user_id = ?`).run(id);
       // four weeks of history, plus some study today so every board (today, this week, this month) has them
       addSessions(id, req.user.uni, [...TestData.historyDays(today, 28).filter((d) => d.day !== today), { day: today, minutes: 20 + ((i * 37) % 130) }], pickCourse);
       // older study, so the 15 are spread from Bronze I to Kwaai
-      bankHours(id, req.user.uni, Ranks.LIFETIME[Math.round((i * 15) / 14)][2] * 60);
+      bankHours(id, req.user.uni, step[2] * 60);
       if (i < 4) {
         q(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, status) VALUES (?, ?, ?, ?, ?, ?, 120, 'running')`)
           .run(id, req.user.uni, TOOL_COURSES[i % TOOL_COURSES.length], today, now - (i + 1) * 9 * 60_000, now + 2 * 60 * 60_000); // keeps beating for two hours
