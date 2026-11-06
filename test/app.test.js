@@ -3027,3 +3027,42 @@ test('name styles: locked until the rank unlocks them, shown on boards and in gr
   group = await gold.text(`/g/${code}`);
   assert.match(group, /<span class="board-name">Quiet<\/span>/, 'not on the boards: a plain name for others');
 }));
+
+test('weekly quests on Study, Today and the rank page: progress, news once, the count, and the test tools', () => withAdminServer({ testTools: true }, async ({ db, admin, browser }) => {
+  const s = browser();
+  await s.signIn('quest001@myuct.ac.za');
+  let page = await s.text('/study');
+  assert.match(page, /<h2 id="quests-title">This week&#39;s quests<\/h2>|<h2 id="quests-title">This week's quests<\/h2>/);
+  assert.equal((page.match(/<li class="quest[ "]/g) || []).length, 3, 'three quests');
+  assert.match(page, /0 of 3 done\. New quests every Monday\./);
+  assert.match(await s.text('/today'), /class="card today-strip quest-strip" href="\/study#quests"/);
+
+  // enough study this week to finish every quest a week can draw
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'quest001@myuct.ac.za'`).get().id;
+  const Quests = require('../src/quests');
+  const monday = Quests.mondayOf(Study.saDay(Date.now()));
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', ?, ?, ?, 0, 120, ?, 'done')`);
+  for (let d = 0; d < 3; d++) {
+    const day = Study.addDay(monday, d);
+    add.run(uid, 'CSC1015F', day, Date.parse(`${day}T06:00:00Z`), 110 * 60); // 08:00 in South Africa
+    add.run(uid, '', day, Date.parse(`${day}T12:00:00Z`), 20 * 60);
+  }
+  page = await s.text('/study');
+  assert.match(page, /<p class="quest-news" role="status"><strong>Quests done:<\/strong>[^<]*\. That&#39;s all three: a full week\.<\/p>|That's all three: a full week\./);
+  assert.match(page, /All three done\. A full week\./);
+  assert.equal((page.match(/<li class="quest is-done"/g) || []).length, 3);
+  assert.doesNotMatch(await s.text('/study'), /class="quest-news"/, 'the news shows once');
+  assert.match(await s.text('/today'), /All three done this week\. New ones on Monday\./);
+  assert.match(await s.text('/study/rank'), /Quests done so far: <strong>3<\/strong> · Full weeks \(all three\): <strong>1<\/strong>/);
+
+  // the tools: a quiet last week brings the comeback quest; finishing the quests ticks all three
+  await admin.post('/admin/tools/clear-mine', {});
+  const aid = db.prepare(`SELECT id FROM users WHERE email = 'admin@kwaai.invalid'`).get()?.id;
+  assert.ok(aid, 'the admin account');
+  await admin.post('/admin/tools/quiet-week', {});
+  page = await admin.text('/study');
+  assert.match(page, /Welcome back: study 30 minutes on 2 days/);
+  assert.match((await admin.post('/admin/tools/quests', {})).headers.get('location'), /^\/study#quests$/);
+  page = await admin.text('/study');
+  assert.equal((page.match(/<li class="quest is-done"/g) || []).length, 3, 'all three done');
+}));
