@@ -2888,3 +2888,29 @@ test('ranks: lifetime hours from every timed day (each capped at 14 h), a season
   assert.match(await s.text('/'), /study streak <span class="rank-chip tier-bronze">/);
   assert.doesNotMatch(await browser().text('/study'), /id="rank-card"/, 'signed out: no rank');
 }));
+
+test('test tools: set my rank (exactly, or 10 minutes short), and fake students spread from Bronze I to Kwaai', () => withAdminServer({ testTools: true }, async ({ db: sdb, admin }) => {
+  assert.match(await admin.text('/admin/tools'), /Set my rank[\s\S]*?<option value="6" selected>Gold I \(75 h\)<\/option>/);
+  assert.match((await admin.post('/admin/tools/rank', { step: '6', under: '0' })).headers.get('location'), /^\/study/);
+  assert.match(await admin.text('/study'), /<h2 id="rank-card">Gold I<\/h2>[\s\S]*?75 h of timed study, all time/);
+  assert.match(await admin.text('/study'), /season: 0 min/, 'banked hours stay out of the season');
+  await admin.post('/admin/tools/rank', { step: '6', under: '1' });
+  let page = await admin.text('/study');
+  assert.match(page, /<h2 id="rank-card">Silver III<\/h2>/);
+  assert.match(page, /10 min to Gold I/);
+  await admin.post('/admin/tools/rank', { step: '0', under: '0' });
+  assert.match(await admin.text('/study'), /<h2 id="rank-card">Bronze I<\/h2>/, 'going down replaces the old banked hours');
+  assert.match((await admin.post('/admin/tools/rank', { step: '99' })).headers.get('location'), /^\/admin\/tools/);
+
+  await admin.post('/admin/tools/students', {});
+  const life = sdb.prepare(`SELECT SUM(MIN(m, 840)) AS n FROM (SELECT user_id, day, SUM(credited_sec / 60) AS m FROM study_sessions WHERE status = 'done'
+    AND user_id IN (SELECT id FROM users WHERE email LIKE 'test-student-%') GROUP BY user_id, day) GROUP BY user_id ORDER BY n`).all().map((r) => r.n);
+  assert.equal(life.length, 15);
+  const tiers = new Set(life.map((m) => require('../src/ranks').rankOf(m).tier));
+  assert.ok(tiers.size >= 5, `spread over the tiers, got ${[...tiers]}`);
+  assert.ok(tiers.has('kwaai'), 'one of them is Kwaai');
+}));
+
+test('the rank tool is not there without TEST_TOOLS', () => withAdminServer({}, async ({ admin }) => {
+  assert.equal((await admin.post('/admin/tools/rank', { step: '6' })).status, 404);
+}));
