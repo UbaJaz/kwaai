@@ -2882,7 +2882,7 @@ test('ranks: lifetime hours from every timed day (each capped at 14 h), a season
   assert.match(page, /<h2 id="rank-card">Bronze III<\/h2>/, '14 h + 1 h = 15 h is Bronze III (10 h)');
   assert.match(page, /15 h of timed study, all time/);
   assert.match(page, /5 h to Silver I/);
-  assert.match(page, /season: 1 h, 2 h to Bronze II/, 'only this semester counts for the season');
+  assert.match(page, /This season: Semester [12] \d{4}<\/p>\s*<p class="rank-season-row">[\s\S]*?Bronze I<\/span><\/span> <span class="meta">1 h<\/span>[\s\S]*?2 h to Bronze II\. The season starts again on/, 'only this semester counts for the season');
   assert.match(page, /role="progressbar" aria-label="Progress to Silver I" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"/);
   assert.match(await s.text('/today'), /class="rank-chip tier-bronze"[\s\S]*?Bronze III/);
   assert.match(await s.text('/'), /study streak <span class="rank-chip tier-bronze">/);
@@ -2893,7 +2893,7 @@ test('test tools: set my rank (exactly, or 10 minutes short), and fake students 
   assert.match(await admin.text('/admin/tools'), /Set my rank[\s\S]*?<option value="6" selected>Gold I \(75 h\)<\/option>/);
   assert.match((await admin.post('/admin/tools/rank', { step: '6', under: '0' })).headers.get('location'), /^\/study/);
   assert.match(await admin.text('/study'), /<h2 id="rank-card">Gold I<\/h2>[\s\S]*?75 h of timed study, all time/);
-  assert.match(await admin.text('/study'), /season: 0 min/, 'banked hours stay out of the season');
+  assert.match(await admin.text('/study'), /rank-season-row">[\s\S]*?Unranked<\/span><\/span> <span class="meta">0 min/, 'banked hours stay out of the season');
   await admin.post('/admin/tools/rank', { step: '6', under: '1' });
   let page = await admin.text('/study');
   assert.match(page, /<h2 id="rank-card">Silver III<\/h2>/);

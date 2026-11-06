@@ -365,7 +365,7 @@ const rankChip = (r) => html`<span class="rank-chip tier-${r.tier || 'none'}">${
 // what the next step needs, in words: "4 h 20 min to Gold III"
 const rankNext = (r) => (r.next ? `${Study.hoursText(r.toNextMin)} to ${r.next.label}` : 'The top rank. Nothing higher to reach.');
 // a progress bar towards the next step
-const rankBar = (r, label) => html`<span class="rank-bar tier-${r.next?.tier || r.tier || 'none'}" role="progressbar" aria-label="${label}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(r.progress * 100)}"><i style="width:${(r.progress * 100).toFixed(1)}%"></i></span>`;
+const rankBar = (r, label) => html`<span class="rank-bar tier-${r.tier || 'none'}" role="progressbar" aria-label="${label}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(r.progress * 100)}"><i style="width:${(r.progress * 100).toFixed(1)}%"></i></span>`;
 
 // the rank card on the Study page: lifetime rank, the way to the next step, and this semester's season
 function rankCard(rank) {
@@ -381,7 +381,12 @@ function rankCard(rank) {
     </div>
     ${rankBar(l, `Progress to ${l.next?.label ?? 'the top'}`)}
     <p class="rank-next">${rankNext(l)}</p>
-    <p class="rank-season">${rankChip(s)} <span><strong>${s.name}</strong> season: ${Study.hoursText(s.minutes)}${s.next ? `, ${Study.hoursText(s.toNextMin)} to ${s.next.label}` : ''}. It starts again next semester.</span></p>
+    <div class="rank-season">
+      <p class="label">This season: ${s.name}</p>
+      <p class="rank-season-row">${rankChip(s)} <span class="meta">${Study.hoursText(s.minutes)}</span></p>
+      ${rankBar(s, `Season progress to ${s.next?.label ?? 'the top'}`)}
+      <p class="meta">${s.next ? `${rankNext(s)}. ` : ''}The season starts again on ${fmtDate(Study.addDay(s.to, 1))}.</p>
+    </div>
   </section>`;
 }
 
