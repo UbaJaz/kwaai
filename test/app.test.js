@@ -2914,3 +2914,35 @@ test('test tools: set my rank (exactly, or 10 minutes short), and fake students 
 test('the rank tool is not there without TEST_TOOLS', () => withAdminServer({}, async ({ admin }) => {
   assert.equal((await admin.post('/admin/tools/rank', { step: '6' })).status, 404);
 }));
+
+test('the rank page: all time, this season, last season, and the ladder with what each tier unlocks', () => withAdminServer({}, async ({ db, browser }) => {
+  const s = browser();
+  assert.match((await s.get('/study/rank')).headers.get('location'), /^\/login/, 'signed out: sign in first');
+  await s.signIn('rankpage001@myuct.ac.za');
+  let page = await s.text('/study/rank');
+  assert.match(page, /<h2 id="rank-now">Unranked<\/h2>/);
+  assert.match(page, /Your first season on Kwaai\./);
+  assert.equal((page.match(/class="ladder-row tier-/g) || []).length, 6, 'six tiers on the ladder');
+  assert.doesNotMatch(page, /is-reached/, 'nothing reached yet');
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'rankpage001@myuct.ac.za'`).get().id;
+  const today = Study.saDay(Date.now());
+  const Ranks = require('../src/ranks');
+  const lastSeason = Ranks.previousSeason(Ranks.seasonOf(today, require('../data/terms.json').years), require('../data/terms.json').years);
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 120, ?, 'done')`);
+  for (let i = 0; i < 6; i++) add.run(uid, Study.addDay(lastSeason.to, -i), 10 * 3600); // 60 h last season
+  add.run(uid, today, 2 * 3600);
+  page = await s.text('/study/rank');
+  assert.match(page, /<h2 id="rank-now">Silver III<\/h2>/, '62 h all time');
+  assert.match(page, /<h2 id="rank-season">Bronze I<\/h2>/, '2 h this season');
+  assert.match(page, new RegExp(`Last season, ${lastSeason.name}, you finished <span class="rank-chip tier-gold">[^]*?Gold III</span></span> with 60 h[.]`), 'the season ladder: Gold III from 55 h');
+  assert.match(page, /class="ladder-row tier-silver is-reached is-current">[\s\S]*?Silver <span class="badge">You<\/span>[\s\S]*?Unlocked: Your name in silver/);
+  assert.match(page, /class="ladder-row tier-gold">[\s\S]*?All time: 75 h, 100 h, 150 h<\/span><span>A season: 30 h, 40 h, 55 h[\s\S]*?Unlocks: A gold gradient/);
+  assert.match(await s.text('/study'), /href="\/study\/rank">See every rank/);
+  assert.match(await s.text('/study/wrapped'), /class="wrapped-season">[\s\S]*?Season rank<\/small><span class="rank-chip tier-bronze">/, 'Wrapped shows the season rank');
+}));
+
+test('test tools: the rank gallery shows every step', () => withAdminServer({ testTools: true }, async ({ admin }) => {
+  const page = await admin.text('/admin/tools/ranks');
+  assert.equal((page.match(/<li class="card tier-/g) || []).length, 17, 'unranked and 16 steps');
+  assert.match(page, /Kwaai<\/span><\/span><span class="meta">1000 h/);
+}));
