@@ -2865,3 +2865,52 @@ test('exports: the register for Excel and tut attendance as an Amathuba grade im
   assert.match(dash, /Register for Excel/);
   assert.match(dash, /tut attendance as an Amathuba grade import/);
 }));
+
+test('ranks: lifetime hours from every timed day (each capped at 14 h), a season rank, on Study, Today and home', () => withAdminServer({}, async ({ db, browser }) => {
+  const s = browser();
+  await s.signIn('rank001@myuct.ac.za');
+  let page = await s.text('/study');
+  assert.match(page, /<h2 id="rank-card">Unranked<\/h2>/, 'a new student is unranked');
+  assert.match(page, /1 h to Bronze I/);
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'rank001@myuct.ac.za'`).get().id;
+  const today = Study.saDay(Date.now());
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 120, ?, 'done')`);
+  const old = Study.addDay(today, -500); // older than the heatmap's year, still counts for the lifetime rank
+  for (let i = 0; i < 10; i++) add.run(uid, old, 120 * 60); // 20 h on one day: capped at 14 h
+  add.run(uid, today, 60 * 60);
+  page = await s.text('/study');
+  assert.match(page, /<h2 id="rank-card">Bronze III<\/h2>/, '14 h + 1 h = 15 h is Bronze III (10 h)');
+  assert.match(page, /15 h of timed study, all time/);
+  assert.match(page, /5 h to Silver I/);
+  assert.match(page, /This season: Semester [12] \d{4}<\/p>\s*<p class="rank-season-row">[\s\S]*?Bronze I<\/span><\/span> <span class="meta">1 h<\/span>[\s\S]*?2 h to Bronze II\. The season starts again on/, 'only this semester counts for the season');
+  assert.match(page, /role="progressbar" aria-label="Progress to Silver I" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"/);
+  assert.match(await s.text('/today'), /class="rank-chip tier-bronze"[\s\S]*?Bronze III/);
+  assert.match(await s.text('/'), /study streak <span class="rank-chip tier-bronze">/);
+  assert.doesNotMatch(await browser().text('/study'), /id="rank-card"/, 'signed out: no rank');
+}));
+
+test('test tools: set my rank (exactly, or 10 minutes short), and fake students spread from Bronze I to Kwaai', () => withAdminServer({ testTools: true }, async ({ db: sdb, admin }) => {
+  assert.match(await admin.text('/admin/tools'), /Set my rank[\s\S]*?<option value="6" selected>Gold I \(75 h\)<\/option>/);
+  assert.match((await admin.post('/admin/tools/rank', { step: '6', under: '0' })).headers.get('location'), /^\/study/);
+  assert.match(await admin.text('/study'), /<h2 id="rank-card">Gold I<\/h2>[\s\S]*?75 h of timed study, all time/);
+  assert.match(await admin.text('/study'), /rank-season-row">[\s\S]*?Unranked<\/span><\/span> <span class="meta">0 min/, 'banked hours stay out of the season');
+  await admin.post('/admin/tools/rank', { step: '6', under: '1' });
+  let page = await admin.text('/study');
+  assert.match(page, /<h2 id="rank-card">Silver III<\/h2>/);
+  assert.match(page, /10 min to Gold I/);
+  await admin.post('/admin/tools/rank', { step: '0', under: '0' });
+  assert.match(await admin.text('/study'), /<h2 id="rank-card">Bronze I<\/h2>/, 'going down replaces the old banked hours');
+  assert.match((await admin.post('/admin/tools/rank', { step: '99' })).headers.get('location'), /^\/admin\/tools/);
+
+  await admin.post('/admin/tools/students', {});
+  const life = sdb.prepare(`SELECT SUM(MIN(m, 840)) AS n FROM (SELECT user_id, day, SUM(credited_sec / 60) AS m FROM study_sessions WHERE status = 'done'
+    AND user_id IN (SELECT id FROM users WHERE email LIKE 'test-student-%') GROUP BY user_id, day) GROUP BY user_id ORDER BY n`).all().map((r) => r.n);
+  assert.equal(life.length, 15);
+  const tiers = new Set(life.map((m) => require('../src/ranks').rankOf(m).tier));
+  assert.ok(tiers.size >= 5, `spread over the tiers, got ${[...tiers]}`);
+  assert.ok(tiers.has('kwaai'), 'one of them is Kwaai');
+}));
+
+test('the rank tool is not there without TEST_TOOLS', () => withAdminServer({}, async ({ admin }) => {
+  assert.equal((await admin.post('/admin/tools/rank', { step: '6' })).status, 404);
+}));

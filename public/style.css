@@ -960,3 +960,38 @@ label > .meta { display: block; font-weight: 400; margin-top: 4px; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* ---- study ranks (src/ranks.js). --tier is the tier's colour: the emblem fill and the progress bar. --tier-text is
+   a darker shade of it that passes 4.5:1 on white, for text. */
+.tier-none { --tier: #c9cbc3; --tier-text: var(--muted); }
+.tier-bronze { --tier: #b5703a; --tier-text: #8a4f22; }
+.tier-silver { --tier: #9aa5b1; --tier-text: #4f5b68; }
+.tier-gold { --tier: #e0aa1e; --tier-text: #855f00; }
+.tier-platinum { --tier: #3fb3a6; --tier-text: #1d6e65; }
+.tier-diamond { --tier: #5b8def; --tier-text: #2f5fc4; }
+.tier-kwaai { --tier: #d6409f; --tier-text: #a3256f; }
+.emblem { display: inline-block; flex: none; vertical-align: middle; }
+.emblem-sm { width: 1.25em; height: 1.25em; }
+.emblem-lg { width: 64px; height: 64px; }
+.emblem-body { fill: var(--tier); stroke: rgb(21 29 43 / 25%); stroke-width: 1; }
+.emblem-inset { fill: none; stroke: rgb(255 255 255 / 45%); stroke-width: 1.5; }
+.emblem-mark { fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+circle.emblem-mark { fill: #fff; stroke: none; }
+.tier-none .emblem-body { fill: none; stroke: var(--line-strong); stroke-dasharray: 3 2; }
+.tier-none .emblem-inset { display: none; }
+.rank-chip { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; font-size: .85rem; color: var(--tier-text); white-space: nowrap; vertical-align: middle; }
+.rank-bar { display: block; height: 10px; border-radius: 99px; background: var(--paper); border: 1px solid var(--line); overflow: hidden; }
+.rank-bar i { display: block; height: 100%; background: var(--tier); border-radius: inherit; transform-origin: left; animation: bar-grow .7s ease-out both; }
+.rank-card { border-top: 4px solid var(--tier); }
+.rank-head { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; }
+.rank-head h2 { margin: 0; font-size: 1.6rem; color: var(--tier-text); }
+.rank-head .eyebrow { margin: 0; }
+.rank-head .meta { margin: 2px 0 0; }
+.rank-next { margin: 8px 0 12px; font-weight: 600; }
+.rank-season { padding-top: 12px; border-top: 1px solid var(--line); }
+.rank-season .label { margin: 0 0 6px; }
+.rank-season-row { display: flex; gap: 10px; align-items: center; margin: 0 0 8px; }
+.rank-season .rank-bar { height: 6px; }
+.rank-season .meta { margin: 6px 0 0; }
+.day-streak .rank-chip { margin-left: 6px; }
+@media (prefers-reduced-motion: reduce) { .rank-bar i { animation: none; } }
