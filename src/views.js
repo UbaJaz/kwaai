@@ -5,6 +5,7 @@ const { ordinal, entryStatus } = require('./planner');
 const Marks = require('../public/marks-math');
 const Study = require('./study');
 const Classes = require('./classes');
+const Ranks = require('./ranks');
 const { MARK_NAMES, nextMark } = Classes;
 
 // "Tuts: can miss 1 more" and the like, for a DP status from Classes.dpStatus
@@ -2365,7 +2366,7 @@ function login(ctx, { error, email = '', next = '/' } = {}) {
 }
 
 // the admin's test tools: buttons that write made-up study data for the admin's own account
-function adminTools(ctx, { today, streak, days, minutes, role = 'student', demo = {}, testStudents = [] }) {
+function adminTools(ctx, { today, streak, days, minutes, rank = null, role = 'student', demo = {}, testStudents = [] }) {
   return layout({ ...ctx, title: 'Test tools', here: '/admin/tools' }, html`
   <h1 class="page-title">Test tools</h1>
   <p class="lede small">Made-up study data for trying the heatmap, streaks and leaderboards. It all belongs to test accounts, so students never see it. These tools only exist while <code>TEST_TOOLS=1</code> is set: turn it off before launch.</p>
@@ -2399,7 +2400,7 @@ function adminTools(ctx, { today, streak, days, minutes, role = 'student', demo 
     </form>
     <form method="post" action="/admin/tools/students" class="card panel study-form">
       <h2>Fill the leaderboards</h2>
-      <p class="meta">15 test students with a month of study, some named and some anonymous, across faculties. 8 join a "Test group" with you, and 4 are "studying now" for the next two hours. Running it again refreshes them.</p>
+      <p class="meta">15 test students with a month of study and older hours that put them at ranks from Bronze I to Kwaai, some named and some anonymous, across faculties. 8 join a "Test group" with you, and 4 are "studying now" for the next two hours. Running it again refreshes them.</p>
       <div class="form-actions"><button class="btn">Add test students</button></div>
     </form>
     <form method="post" action="/admin/tools/course-hours" class="card panel study-form">
@@ -2412,6 +2413,18 @@ function adminTools(ctx, { today, streak, days, minutes, role = 'student', demo 
       <h2>Clear all test data</h2>
       <p class="meta">Deletes the test students and everything they own, test groups, demo classes, and your own study data. Real students' data is never touched.</p>
       <div class="form-actions"><button class="btn btn-danger">Clear all test data</button></div>
+    </form>
+  </div>
+  <h2 class="section-title" id="ranks">Ranks</h2>
+  <p class="meta">${rank ? html`You're ${rankChip(rank.lifetime)} with ${Study.hoursText(rank.lifetime.minutes)} all time, and ${rankChip(rank.season)} this season.` : ''} Ranks come from timed study: lifetime hours never drop, the season starts again each semester.</p>
+  <div class="tool-grid">
+    <form method="post" action="/admin/tools/rank" class="card panel study-form">
+      <h2>Set my rank</h2>
+      <label>Lifetime rank <select name="step">${Ranks.LIFETIME.map((s, i) => html`<option value="${i}" ${i === 6 ? 'selected' : ''}>${Ranks.stepLabel(s)} (${s[2]} h)</option>`)}</select></label>
+      <label class="radio"><input type="radio" name="under" value="0" checked> Exactly that rank</label>
+      <label class="radio"><input type="radio" name="under" value="1"> 10 minutes short of it (time a short session to rank up)</label>
+      <p class="meta">Adds the hours on days more than a year ago, so they count for your lifetime rank but not for the heatmap, this season or the boards. Your last year of study stays as it is.</p>
+      <div class="form-actions"><button class="btn">Set my rank</button></div>
     </form>
   </div>
   <h2 class="section-title" id="classes">Classes</h2>

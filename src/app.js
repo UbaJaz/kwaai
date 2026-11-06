@@ -2126,7 +2126,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const totals = studyTotals(req.user.id, today);
     res.set('Cache-Control', 'no-store').page(views.adminTools(req.ctx, {
       today, streak: Study.streak(totals, today, TERMS.years), days: totals.filter((t) => t.minutes > 0).length, minutes: totals.reduce((s, t) => s + t.minutes, 0),
-      role: req.user.role, demo: adminDemo(req),
+      rank: rankFor(req.user.id, totals), role: req.user.role, demo: adminDemo(req),
       testStudents: TestData.FAKE_STUDENTS.map((s, i) => ({ i, name: s.name || 'Anonymous', number: Classes.studentNumber(TestData.fakeEmail(i)) })),
     }));
   });
@@ -2170,6 +2170,29 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, '/study', 'ok', 'Added about six months of study history.');
   });
 
+  // study on days more than a year ago, at most 12 h a day: it counts for the lifetime rank and stays off the heatmap,
+  // the season and every board
+  function bankHours(userId, uni, minutes) {
+    const today = Study.saDay(Date.now());
+    const days = [];
+    for (let i = 0; minutes > 0; i++, minutes -= 720) days.push({ day: Study.addDay(today, -400 - i), minutes: Math.min(720, minutes) });
+    addSessions(userId, uni, days, () => '');
+  }
+
+  // the admin's lifetime rank set to one step, or 10 minutes short of it to try a rank-up
+  app.post('/admin/tools/rank', requireUser, requireTools, (req, res) => {
+    const step = Ranks.LIFETIME[Number(req.body.step)];
+    if (!step || req.body.step === '') return flashRedirect(res, '/admin/tools#ranks', 'error', 'Pick a rank.');
+    const under = req.body.under === '1';
+    const label = Ranks.stepLabel(step);
+    q(`DELETE FROM study_sessions WHERE user_id = ? AND day < ?`).run(req.user.id, Study.addDay(Study.saDay(Date.now()), -371));
+    const have = lifetimeMinutes([req.user.id]).get(req.user.id);
+    const target = step[2] * 60 - (under ? 10 : 0);
+    if (have > target) return flashRedirect(res, '/admin/tools#ranks', 'error', `Your last year already has ${Study.hoursText(have)} of study, more than ${label} needs. Clear your study data first.`);
+    bankHours(req.user.id, req.user.uni, target - have);
+    flashRedirect(res, '/study', 'ok', under ? `You're 10 minutes short of ${label}. Time a 10-minute session to rank up.` : `You're ${label} now.`);
+  });
+
   app.post('/admin/tools/clear-mine', requireUser, requireTools, (req, res) => {
     q(`DELETE FROM study_sessions WHERE user_id = ?`).run(req.user.id);
     flashRedirect(res, '/admin/tools', 'ok', 'Your study data is cleared.');
@@ -2196,6 +2219,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM study_sessions WHERE user_id = ?`).run(id);
       // four weeks of history, plus some study today so every board (today, this week, this month) has them
       addSessions(id, req.user.uni, [...TestData.historyDays(today, 28).filter((d) => d.day !== today), { day: today, minutes: 20 + ((i * 37) % 130) }], pickCourse);
+      // older study, so the 15 are spread from Bronze I to Kwaai
+      bankHours(id, req.user.uni, Ranks.LIFETIME[Math.round((i * 15) / 14)][2] * 60);
       if (i < 4) {
         q(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, status) VALUES (?, ?, ?, ?, ?, ?, 120, 'running')`)
           .run(id, req.user.uni, TOOL_COURSES[i % TOOL_COURSES.length], today, now - (i + 1) * 9 * 60_000, now + 2 * 60 * 60_000); // keeps beating for two hours
@@ -2210,7 +2235,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     q(`INSERT OR IGNORE INTO group_members (group_id, user_id, name) VALUES (?, ?, 'You')`).run(g.id, req.user.id);
     ids.slice(0, 8).forEach((id, i) => q(`INSERT OR IGNORE INTO group_members (group_id, user_id, name) VALUES (?, ?, ?)`).run(g.id, id, TestData.FAKE_STUDENTS[i].name || `Student ${i + 1}`));
-    flashRedirect(res, `/g/${g.code}`, 'ok', '15 test students are on the boards, 8 are in this group, and 4 are studying now.');
+    flashRedirect(res, `/g/${g.code}`, 'ok', '15 test students are on the boards, from Bronze I to Kwaai, 8 are in this group, and 4 are studying now.');
   });
 
   // six of the fake students timing one course over the last four weeks, so its page shows "Time it takes"
