@@ -860,6 +860,17 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.set('Cache-Control', 'no-store').page(views.rankPage(req.ctx, { rank: rankFor(req.user.id, totals), streak: totals.length ? Study.streak(totals, today, TERMS.years) : null, quests: questsFor(req.user, { history: true }) }));
   });
 
+  // the rank card for a screenshot: the display name only if the student picked one for the boards
+  app.get('/study/rank/card', requireUser, (req, res) => {
+    const today = Study.saDay(Date.now());
+    const totals = studyTotals(req.user.id, today);
+    const p = profileOf(req.user.id);
+    res.set('Cache-Control', 'no-store').page(views.rankShareCard(req.ctx, {
+      rank: rankFor(req.user.id, totals), name: p?.show_name && p.display_name && !p.name_held ? p.display_name : `A ${req.ctx.uni.short} student`,
+      streak: totals.length ? Study.streak(totals, today, TERMS.years) : null, quests: questsFor(req.user, { history: true }),
+    }));
+  });
+
   app.post('/study/start', requireUser, limits.study, (req, res) => {
     const parsed = Study.parseStart(req.body, courseExists);
     const fail = (status, text) => (wantsJson(req) ? res.status(status).json({ error: text }) : flashRedirect(res, '/study', 'error', text));
