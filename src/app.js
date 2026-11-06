@@ -14,6 +14,7 @@ const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderat
 const { UNIVERSITIES, CURRENT, accountFor } = require('./universities');
 const Study = require('./study');
 const Ranks = require('./ranks');
+const Quests = require('./quests');
 const Admin = require('./admin');
 const TestData = require('./testdata');
 const Classes = require('./classes');
@@ -667,7 +668,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
-    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, rank: rankWithUp(req.user), classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [], dpAlerts: dpAlertsFor(req.user) }));
+    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, rank: rankWithUp(req.user), quests: req.user ? questsFor(req.user, { announce: true }) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [], dpAlerts: dpAlertsFor(req.user) }));
   });
 
   // ---- study timer ----
@@ -708,6 +709,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       today: Study.dayTotals(sessions.filter((s) => s.status === 'done'))[0] || null, sessions: sessions.filter((s) => s.status === 'done'),
       board: req.user ? studyBoard(req.user, codes, req.query.day) : null,
       rank: rankWithUp(req.user),
+      quests: req.user ? questsFor(req.user, { announce: true }) : null,
       studyingNow: liveStudents(req.user, `uni = ?`, req.user?.uni ?? CURRENT.slug),
     }));
   });
@@ -723,6 +725,23 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const today = Study.saDay(Date.now());
     const totals = studyTotals(userId, today);
     return totals.length ? Study.streak(totals, today, TERMS.years) : null;
+  }
+
+  // ---- weekly quests (src/quests.js) ----
+  // This week's quests. announce: also say which quests were finished since the student last opened Study or Today
+  // (users.quests_seen remembers). history: count every quest finished so far, for the rank page.
+  function questsFor(user, { announce = false, history = false } = {}) {
+    const monday = Quests.mondayOf(Study.saDay(Date.now()));
+    const sessions = q(`SELECT day, started_at, credited_sec, course FROM study_sessions WHERE user_id = ? AND status = 'done' AND day >= ?`)
+      .all(user.id, Study.addDay(monday, -7 * (history ? 52 : 5)));
+    const quests = Quests.weekQuests({ userId: user.id, monday, sessions });
+    let news = [];
+    if (announce) {
+      const n = Quests.newlyDone(quests, monday, user.quests_seen ?? null);
+      if (n.seen !== user.quests_seen) q(`UPDATE users SET quests_seen = ? WHERE id = ?`).run(n.seen, user.id);
+      news = n.news;
+    }
+    return { monday, quests, news, history: history ? Quests.questHistory({ userId: user.id, monday, sessions }) : null };
   }
 
   // ---- ranks (the ladders are in src/ranks.js) ----
@@ -838,7 +857,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.get('/study/rank', requireUser, (req, res) => {
     const today = Study.saDay(Date.now());
     const totals = studyTotals(req.user.id, today);
-    res.set('Cache-Control', 'no-store').page(views.rankPage(req.ctx, { rank: rankFor(req.user.id, totals), streak: totals.length ? Study.streak(totals, today, TERMS.years) : null }));
+    res.set('Cache-Control', 'no-store').page(views.rankPage(req.ctx, { rank: rankFor(req.user.id, totals), streak: totals.length ? Study.streak(totals, today, TERMS.years) : null, quests: questsFor(req.user, { history: true }) }));
   });
 
   app.post('/study/start', requireUser, limits.study, (req, res) => {
@@ -2227,6 +2246,26 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     addSessions(userId, uni, days, () => '');
   }
 
+  // this week's quests, all done: sessions that tick every quest a week can draw (3 days, 5 h, a 50-minute and an
+  // early session, two in a day, and an hour on each course timed lately). Early in the week some days are ahead.
+  app.post('/admin/tools/quests', requireUser, requireTools, (req, res) => {
+    const monday = Quests.mondayOf(Study.saDay(Date.now()));
+    const recent = q(`SELECT DISTINCT course FROM study_sessions WHERE user_id = ? AND course != '' AND day >= ? AND day < ?`).all(req.user.id, Study.addDay(monday, -28), monday).map((r) => r.course);
+    const course = recent[0] || 'CSC1015F';
+    addSessions(req.user.id, req.user.uni, [{ day: monday, minutes: 120 }], () => course);
+    for (const c of recent.slice(1)) addSessions(req.user.id, req.user.uni, [{ day: monday, minutes: 60 }], () => c);
+    addSessions(req.user.id, req.user.uni, [{ day: Study.addDay(monday, 1), minutes: 100 }, { day: Study.addDay(monday, 2), minutes: 80 }, { day: Study.addDay(monday, 2), minutes: 15 }], pickCourse);
+    res.redirect(303, '/study#quests');
+  });
+
+  // last week with no study at all, so this week offers the comeback quest
+  app.post('/admin/tools/quiet-week', requireUser, requireTools, (req, res) => {
+    const monday = Quests.mondayOf(Study.saDay(Date.now()));
+    q(`DELETE FROM study_sessions WHERE user_id = ? AND day BETWEEN ? AND ?`).run(req.user.id, Study.addDay(monday, -7), Study.addDay(monday, -1));
+    if (!q(`SELECT 1 FROM study_sessions WHERE user_id = ? AND day < ?`).get(req.user.id, Study.addDay(monday, -7))) addSessions(req.user.id, req.user.uni, [{ day: Study.addDay(monday, -10), minutes: 45 }], pickCourse);
+    flashRedirect(res, '/study#quests', 'ok', 'Last week is empty now. If this week has no quest done yet, the comeback quest is one of the three.');
+  });
+
   app.get('/admin/tools/ranks', requireUser, requireTools, (req, res) => res.page(views.rankGallery(req.ctx)));
 
   // plays the admin's rank-up card again: the next Study page shows the current rank as new (or the first look at
@@ -2257,7 +2296,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.post('/admin/tools/clear-mine', requireUser, requireTools, (req, res) => {
     q(`DELETE FROM study_sessions WHERE user_id = ?`).run(req.user.id);
-    q(`UPDATE users SET rank_seen = NULL, season_seen = NULL WHERE id = ?`).run(req.user.id);
+    q(`UPDATE users SET rank_seen = NULL, season_seen = NULL, quests_seen = NULL WHERE id = ?`).run(req.user.id);
     flashRedirect(res, '/admin/tools', 'ok', 'Your study data is cleared.');
   });
 
