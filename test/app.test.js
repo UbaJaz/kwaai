@@ -3066,3 +3066,24 @@ test('weekly quests on Study, Today and the rank page: progress, news once, the 
   page = await admin.text('/study');
   assert.equal((page.match(/<li class="quest is-done"/g) || []).length, 3, 'all three done');
 }));
+
+test('the rank card: the rank, season, streak and quests, and a name only if the student chose one', () => withAdminServer({}, async ({ db, browser }) => {
+  const s = browser();
+  assert.match((await s.get('/study/rank/card')).headers.get('location'), /^\/login/);
+  await s.signIn('card001@myuct.ac.za');
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'card001@myuct.ac.za'`).get().id;
+  const today = Study.saDay(Date.now());
+  for (let i = 0; i < 3; i++) db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 120, ?, 'done')`).run(uid, Study.addDay(today, -i), 8 * 3600);
+  let page = await s.text('/study/rank/card');
+  assert.match(page, /class="wrapped-card rank-share tier-silver"/);
+  assert.match(page, /<p class="rank-share-name">A UCT student<\/p>/, 'no display name: no name');
+  assert.match(page, /<h1 id="rank-share-title">Silver I<\/h1>/, '24 h');
+  assert.match(page, /24 hours of timed study/);
+  assert.match(page, /<dt>This season<\/dt><dd>Silver III<\/dd>/, '24 h in a season is Silver III (Gold I is 30 h)');
+  assert.match(page, /<dt>Best streak<\/dt><dd>3 days<\/dd>/);
+  assert.doesNotMatch(/<article[\s\S]*?<\/article>/.exec(page)[0], /card001/, 'never the email on the card');
+  await s.post('/account/profile', { join: '1', show: 'name', display_name: 'Card Holder' });
+  page = await s.text('/study/rank/card');
+  assert.match(page, /<p class="rank-share-name">Card Holder<\/p>/);
+  assert.match(await s.text('/study/rank'), /href="\/study\/rank\/card">Get your rank card/);
+}));
