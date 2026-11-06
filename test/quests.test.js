@@ -20,25 +20,25 @@ test('a week in numbers: days with 30 minutes, long and early sessions, twice in
 });
 
 test('three quests a week, the same all week, different for different students and weeks', () => {
-  const a = Q.weekQuests({ userId: 1, monday: MONDAY, sessions: [], codes: ['CSC1015F'] });
+  const a = Q.weekQuests({ userId: 1, monday: MONDAY, sessions: [] });
   assert.equal(a.length, 3);
   assert.equal(new Set(a.map((x) => x.key)).size, 3, 'no repeats');
-  assert.deepEqual(Q.weekQuests({ userId: 1, monday: MONDAY, sessions: [at(MONDAY, 9, 60)], codes: ['CSC1015F'] }).map((x) => x.key), a.map((x) => x.key), 'progress never changes which quests');
-  const others = [2, 3, 4, 5, 6].map((u) => Q.weekQuests({ userId: u, monday: MONDAY, sessions: [], codes: ['CSC1015F'] }).map((x) => x.key).join());
+  assert.deepEqual(Q.weekQuests({ userId: 1, monday: MONDAY, sessions: [at(MONDAY, 9, 60, 'CSC1015F')] }).map((x) => x.key), a.map((x) => x.key), 'progress this week never changes which quests');
+  const others = [2, 3, 4, 5, 6].map((u) => Q.weekQuests({ userId: u, monday: MONDAY, sessions: [] }).map((x) => x.key).join());
   assert.ok(new Set([a.map((x) => x.key).join(), ...others]).size > 1, 'students get different sets');
-  const weeks = ['2026-11-09', '2026-11-16', '2026-11-23'].map((m) => Q.weekQuests({ userId: 1, monday: m, sessions: [], codes: ['CSC1015F'] }).map((x) => x.key).join());
+  const weeks = ['2026-11-09', '2026-11-16', '2026-11-23'].map((m) => Q.weekQuests({ userId: 1, monday: m, sessions: [] }).map((x) => x.key).join());
   assert.ok(new Set([a.map((x) => x.key).join(), ...weeks]).size > 1, 'weeks change');
-  assert.ok(!Q.weekQuests({ userId: 1, monday: MONDAY, sessions: [] }).some((x) => x.key === 'course'), 'no plan: no course quest');
+  for (let u = 1; u < 40; u++) assert.ok(!Q.weekQuests({ userId: u, monday: MONDAY, sessions: [at('2026-10-27', 9, 60, 'CSC1015F')] }).some((x) => x.key === 'course'), 'one recent course: nothing to compare, no course quest');
 });
 
 test('quest progress, capped at the target, and the course studied least last week', () => {
-  const sessions = [at('2026-10-27', 9, 120, 'MAM1031F'), at('2026-10-28', 9, 10, 'CSC1015F'), at(MONDAY, 9, 45, 'CSC1015F'), at('2026-11-03', 9, 400)];
+  const sessions = [at('2026-10-27', 9, 120, 'MAM1031F'), at('2026-10-28', 9, 10, 'CSC1015F'), at('2026-09-28', 9, 60, 'STA1006S'), at(MONDAY, 9, 45, 'CSC1015F'), at('2026-11-03', 9, 400)];
   for (let u = 1; u < 60; u++) {
-    const qs = Q.weekQuests({ userId: u, monday: MONDAY, sessions, codes: ['MAM1031F', 'CSC1015F', 'STA1006S'] });
+    const qs = Q.weekQuests({ userId: u, monday: MONDAY, sessions });
     for (const x of qs) {
       assert.ok(x.value <= x.target);
       if (x.key === 'hours5') assert.deepEqual([x.value, x.done, x.unit], [300, true, 'min'], '445 minutes is capped at 300');
-      if (x.key === 'course') assert.deepEqual([x.course, x.value, x.done], ['STA1006S', 0, false], 'STA1006S had nothing last week (CSC1015F had 10 min)');
+      if (x.key === 'course') assert.deepEqual([x.course, x.value, x.done], ['CSC1015F', 45, false], 'CSC1015F had 10 min last week, MAM1031F 120; STA1006S is from more than four weeks ago');
       if (x.key === 'days3') assert.deepEqual([x.value, x.done], [2, false]);
       if (x.key === 'long') assert.equal(x.done, true);
     }
@@ -57,8 +57,8 @@ test('the comeback quest: only after a week with no study, by someone who studie
 test('history counts finished quests and full weeks from the first week with study', () => {
   const sessions = [];
   // three weeks of a lot of study: every quest a week can draw is done, apart from the comeback (never drawn here)
-  for (const m of ['2026-10-19', '2026-10-26', MONDAY]) for (let d = 0; d < 4; d++) sessions.push(at(addDays(m, d), 8, 90, 'CSC1015F'), at(addDays(m, d), 15, 30, 'CSC1015F'));
-  const h = Q.questHistory({ userId: 3, monday: MONDAY, sessions, codes: ['CSC1015F'] });
+  for (const m of ['2026-10-19', '2026-10-26', MONDAY]) for (let d = 0; d < 4; d++) sessions.push(at(addDays(m, d), 8, 90, 'CSC1015F'), at(addDays(m, d), 15, 70, 'MAM1031F'));
+  const h = Q.questHistory({ userId: 3, monday: MONDAY, sessions });
   assert.deepEqual(h, { done: 9, fullWeeks: 3 });
   assert.deepEqual(Q.questHistory({ userId: 3, monday: MONDAY, sessions: [] }), { done: 0, fullWeeks: 0 });
 });
