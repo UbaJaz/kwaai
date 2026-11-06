@@ -537,12 +537,14 @@ test('leaderboards: periods, shared ranks, and the opt-in profile form', () => {
   const known = { faculty: (f) => f === 'sci', major: (f, m) => f === 'sci' && m === 'CSC05' };
   assert.deepEqual(Study.parseProfileForm({}, known, screenComment), { leave: true }, 'unticked means not on the boards');
   assert.deepEqual(Study.parseProfileForm({ join: '1', show: 'anon', faculty: 'sci', major: 'CSC05', year: '2' }, known, screenComment).profile,
-    { display_name: '', show_name: 0, faculty: 'sci', major: 'CSC05', year: 2 });
+    { display_name: '', show_name: 0, faculty: 'sci', major: 'CSC05', year: 2, name_fx: '' });
   assert.ok(Study.parseProfileForm({ join: '1', show: 'name', display_name: 'A' }, known, screenComment).error, 'too short');
   assert.ok(Study.parseProfileForm({ join: '1', show: 'name', display_name: 'call 082 123 4567' }, known, screenComment).error, 'contact details');
   assert.ok(Study.parseProfileForm({ join: '1', show: 'name', display_name: 'kak lecturer' }, known, screenComment).error, 'insults');
   const ok = Study.parseProfileForm({ join: '1', show: 'name', display_name: '  Thandi   M ', faculty: 'law', major: 'CSC05', year: '9' }, known, screenComment).profile;
-  assert.deepEqual(ok, { display_name: 'Thandi M', show_name: 1, faculty: '', major: '', year: null }, 'unknown faculty, major and year are dropped');
+  assert.deepEqual(ok, { display_name: 'Thandi M', show_name: 1, faculty: '', major: '', year: null, name_fx: '' }, 'unknown faculty, major and year are dropped');
+  assert.ok(Study.parseProfileForm({ join: '1', show: 'name', display_name: 'Thandi', name_fx: 'gold' }, known, screenComment).error, 'a name style needs the rank that unlocks it');
+  assert.equal(Study.parseProfileForm({ join: '1', show: 'name', display_name: 'Thandi', name_fx: 'gold' }, { ...known, fx: (fx) => fx === 'gold' }, screenComment).profile.name_fx, 'gold');
 });
 
 test('real hours per course: the median week of students who track it, from 5 students', () => {
@@ -1700,8 +1702,8 @@ test('leaderboards: opt in, named or anonymous, faculty boards, reports and leav
   await b.post('/account/profile', { join: '1', show: 'anon', display_name: 'Secret Name', faculty: 'sci', major: 'CSC05', year: '1' });
 
   let page = await a.text('/study/leaderboards?period=day');
-  assert.match(page, /board-rank">1<\/span>\s*<span class="board-name">1st-year Computer Science student/);
-  assert.match(page, /board-rank">2<\/span>\s*<span class="board-name">Thandi M <span class="badge">You/);
+  assert.match(page, /board-rank">1<\/span>\s*<span class="board-name"><svg class="emblem emblem-sm tier-bronze"[\s\S]*?<\/svg><span class="board-who">1st-year Computer Science student<\/span><span class="sr-only">, Bronze I<\/span>/, 'anonymous: the rank badge but no name style');
+  assert.match(page, /board-rank">2<\/span>\s*<span class="board-name"><svg class="emblem emblem-sm tier-bronze"[\s\S]*?<\/svg><span class="board-who">Thandi M<\/span><span class="sr-only">, Bronze I<\/span> <span class="badge">You/);
   assert.doesNotMatch(page, /Secret Name/, 'an anonymous student\'s name never shows');
   assert.doesNotMatch(page, /2 h/, 'a student who never joined is not on the board');
   assert.match(page, /2 students on this board/);
@@ -2301,7 +2303,7 @@ test('the class page: this week against the goal, a ranking of only that course,
   const page = await a.text('/c/' + code + '?period=day');
   assert.match(page, /board-rank">1<\/span>\s*<span class="board-name">Anonymous<\/span>/, 'anonymous classmates stay anonymous');
   assert.doesNotMatch(page, /Secret Person|BBB002|AAA001/, 'no hidden names or student numbers');
-  assert.match(page, /board-rank">2<\/span>\s*<span class="board-name">Thandi M <span class="badge">You<\/span>/);
+  assert.match(page, /board-rank">2<\/span>\s*<span class="board-name"><svg class="emblem emblem-sm tier-bronze"[\s\S]*?<\/svg><span class="board-who">Thandi M<\/span><span class="sr-only">, Bronze I<\/span> <span class="badge">You<\/span>/);
   assert.doesNotMatch(page, /Sipho K<\/span>\s*<span class="board-time" data-count="300"/, 'other courses never count');
   assert.match(page, /1 classmate hasn(&#39;|')t timed any CSC1015F study today/);
   assert.match(page, /<strong>1 h 30 min<\/strong> of CSC1015F this week, of a 6 h goal/);
@@ -2979,4 +2981,49 @@ test('rank-ups: shown once on the next page, the first look at ranks, a new step
   assert.match(await admin.text('/study'), /New rank: Gold I/);
   await admin.post('/admin/tools/rank-up', { kind: 'intro' });
   assert.match(await admin.text('/study'), /Ranks are here/);
+}));
+
+test('name styles: locked until the rank unlocks them, shown on boards and in groups, never for anonymous or unlisted students', () => withAdminServer({}, async ({ db, browser }) => {
+  const gold = browser();
+  const quiet = browser();
+  const shy = browser();
+  await gold.signIn('fxgold001@myuct.ac.za');
+  await quiet.signIn('fxquiet001@myuct.ac.za');
+  await shy.signIn('fxshy001@myuct.ac.za');
+  const id = (e) => db.prepare('SELECT id FROM users WHERE email = ?').get(e).id;
+  const today = Study.saDay(Date.now());
+  const add = db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 120, ?, 'done')`);
+  add.run(id('fxgold001@myuct.ac.za'), today, 60 * 60);
+  for (let i = 1; i <= 7; i++) add.run(id('fxgold001@myuct.ac.za'), Study.addDay(today, -400 - i), 12 * 3600); // 85 h all time: Gold I
+  add.run(id('fxquiet001@myuct.ac.za'), today, 30 * 60);
+  add.run(id('fxshy001@myuct.ac.za'), today, 2 * 3600);
+
+  let form = await gold.text('/account/profile');
+  assert.match(form, /<legend>Name style<\/legend>[\s\S]*?you&#39;re <span class="rank-chip tier-gold">|you're <span class="rank-chip tier-gold">/);
+  assert.match(form, /<input type="radio" name="name_fx" value="gold"  >/, 'Gold is open');
+  assert.match(form, /<input type="radio" name="name_fx" value="platinum" disabled >[\s\S]*?Unlocks at Platinum/, 'Platinum is locked');
+  assert.equal((await gold.post('/account/profile', { join: '1', show: 'name', display_name: 'Goldie', name_fx: 'platinum' })).status, 400, 'a locked style is refused');
+  assert.equal((await gold.post('/account/profile', { join: '1', show: 'name', display_name: 'Goldie', name_fx: 'gold' })).status, 303);
+  assert.match(await gold.text('/account/profile'), /value="gold"  checked>/);
+  await shy.post('/account/profile', { join: '1', show: 'anon', display_name: 'Shy One', name_fx: '' });
+  db.prepare(`UPDATE profiles SET name_fx = 'silver' WHERE user_id = ?`).run(id('fxshy001@myuct.ac.za')); // even if one were stored
+
+  const board = await quiet.text('/study/leaderboards?period=day');
+  assert.match(board, /<svg class="emblem emblem-sm tier-gold"[\s\S]*?<\/svg><span class="board-who name-fx fx-gold">Goldie<\/span><span class="sr-only">, Gold I<\/span>/, 'others see the badge and the gold style');
+  assert.match(board, /<svg class="emblem emblem-sm tier-bronze"[\s\S]*?<\/svg><span class="board-who">[^<]*student<\/span>/, 'anonymous: badge, no style');
+  assert.doesNotMatch(board, /fx-silver/);
+
+  // a style above the rank (the hours were removed) isn't shown
+  db.prepare(`UPDATE profiles SET name_fx = 'kwaai' WHERE user_id = ?`).run(id('fxgold001@myuct.ac.za'));
+  assert.doesNotMatch(await quiet.text('/study/leaderboards?period=day'), /fx-kwaai/);
+  db.prepare(`UPDATE profiles SET name_fx = 'gold' WHERE user_id = ?`).run(id('fxgold001@myuct.ac.za'));
+
+  // a study group: the member on the boards gets the badge and style; a member who never joined the boards shows plain
+  const made = await gold.post('/groups', { name: 'Fx group', me: 'Goldie' });
+  const code = /^\/g\/([A-HJ-NP-Z2-9]{8})$/.exec(made.headers.get('location'))[1];
+  await quiet.post(`/g/${code}/join`, { me: 'Quiet' });
+  let group = await quiet.text(`/g/${code}`);
+  assert.match(group, /<span class="board-who name-fx fx-gold">Goldie<\/span>/);
+  group = await gold.text(`/g/${code}`);
+  assert.match(group, /<span class="board-name">Quiet<\/span>/, 'not on the boards: a plain name for others');
 }));
