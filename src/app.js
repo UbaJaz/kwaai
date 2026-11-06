@@ -785,13 +785,24 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const sem = all.find((s) => String(s.year) === req.query.year && s.term === req.query.term) || all[all.length - 1];
     if (!sem) return res.status(404).page(notFound(req));
     const to = sem.end < today ? sem.end : today;
-    const w = Study.wrapped(studyTotals(req.user.id, today), sem.start, to, TERMS.years);
+    const totals = studyTotals(req.user.id, today);
+    const w = Study.wrapped(totals, sem.start, to, TERMS.years);
+    // the season this semester falls in, up to the card's last day
+    const se = Ranks.seasonOf(sem.start, TERMS.years);
+    const seasonMin = totals.filter((t) => t.day >= se.from && t.day <= (se.to < to ? se.to : to)).reduce((sum, t) => sum + t.minutes, 0);
     const codes = w.courses.map((c) => c.code).filter(Boolean);
     const titles = codes.length ? Object.fromEntries(q(`SELECT code, title FROM courses WHERE code IN (${codes.map(() => '?').join(',')})`).all(...codes).map((c) => [c.code, c.title])) : {};
     res.set('Cache-Control', 'no-store').page(views.wrapped(req.ctx, {
       sem: { ...sem, to, running: sem.end >= today }, w: { ...w, courses: w.courses.slice(0, 3).map((c) => ({ ...c, title: titles[c.code] ?? '' })) },
-      ranks: ranksFor(req.user, sem.start, to), others: all.slice(-4).reverse(),
+      ranks: ranksFor(req.user, sem.start, to), season: Ranks.rankOf(seasonMin, Ranks.SEASON), others: all.slice(-4).reverse(),
     }));
+  });
+
+  // the rank in full: all time, this season, last season and the ladder
+  app.get('/study/rank', requireUser, (req, res) => {
+    const today = Study.saDay(Date.now());
+    const totals = studyTotals(req.user.id, today);
+    res.set('Cache-Control', 'no-store').page(views.rankPage(req.ctx, { rank: rankFor(req.user.id, totals), streak: totals.length ? Study.streak(totals, today, TERMS.years) : null }));
   });
 
   app.post('/study/start', requireUser, limits.study, (req, res) => {
@@ -2178,6 +2189,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     for (let i = 0; minutes > 0; i++, minutes -= 720) days.push({ day: Study.addDay(today, -400 - i), minutes: Math.min(720, minutes) });
     addSessions(userId, uni, days, () => '');
   }
+
+  app.get('/admin/tools/ranks', requireUser, requireTools, (req, res) => res.page(views.rankGallery(req.ctx)));
 
   // the admin's lifetime rank set to one step, or 10 minutes short of it to try a rank-up
   app.post('/admin/tools/rank', requireUser, requireTools, (req, res) => {

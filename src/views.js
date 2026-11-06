@@ -387,7 +387,74 @@ function rankCard(rank) {
       ${rankBar(s, `Season progress to ${s.next?.label ?? 'the top'}`)}
       <p class="meta">${s.next ? `${rankNext(s)}. ` : ''}The season starts again on ${fmtDate(Study.addDay(s.to, 1))}.</p>
     </div>
+    <p class="meta rank-more"><a href="/study/rank">See every rank and what it unlocks</a></p>
   </section>`;
+}
+
+// /study/rank: the rank in full, this season, and the whole ladder with what each tier unlocks
+const FX_TEXT = {
+  bronze: 'The rank badge next to your name',
+  silver: 'Your name in silver',
+  gold: 'A gold gradient on your name',
+  platinum: 'A slow shimmer across your name',
+  diamond: 'A glint that sweeps across your name',
+  kwaai: 'A moving glow on your name, for the few who get here',
+};
+function rankPage(ctx, { rank, streak }) {
+  const { lifetime: l, season: s, lastSeason: last } = rank;
+  const hoursOf = (steps, tier) => steps.filter((x) => x[0] === tier).map((x) => `${x[2]} h`).join(', ');
+  const reached = (tier) => l.tier && Ranks.TIERS.indexOf(tier) <= Ranks.TIERS.indexOf(l.tier);
+  return layout({ ...ctx, title: 'Your rank', here: '/study', path: '/study/rank' }, html`
+  <h1 class="page-title">Your rank</h1>
+  <p class="lede small">Ranks come from the hours you time on Kwaai. Your all-time rank never drops. Your season rank starts again each semester, so everyone gets a fresh go.</p>
+  <section class="card panel rank-card rank-hero tier-${l.tier || 'none'}" aria-labelledby="rank-now">
+    <div class="rank-head">
+      ${emblem(l, 'xl')}
+      <div>
+        <p class="eyebrow">All time</p>
+        <h2 id="rank-now">${l.label}</h2>
+        <p class="meta">${Study.hoursText(l.minutes)} of timed study</p>
+      </div>
+    </div>
+    ${rankBar(l, `Progress to ${l.next?.label ?? 'the top'}`)}
+    <p class="rank-next">${rankNext(l)}</p>
+  </section>
+  <section class="card panel rank-card tier-${s.tier || 'none'}" aria-labelledby="rank-season">
+    <div class="rank-head">
+      ${emblem(s, 'lg')}
+      <div>
+        <p class="eyebrow">This season: ${s.name}</p>
+        <h2 id="rank-season">${s.label}</h2>
+        <p class="meta">${Study.hoursText(s.minutes)} this season · ${s.daysLeft === 0 ? 'last day' : `${plural(s.daysLeft, 'day')} left`}</p>
+      </div>
+    </div>
+    ${rankBar(s, `Season progress to ${s.next?.label ?? 'the top'}`)}
+    <p class="rank-next">${rankNext(s)}</p>
+    <p class="meta">${last ? html`Last season, ${last.name}, you finished ${rankChip(last)} with ${Study.hoursText(last.minutes)}.` : 'Your first season on Kwaai.'}${streak?.best ? ` Your best streak in the last year: ${plural(streak.best, 'day')}.` : ''}</p>
+  </section>
+  <section class="card panel" aria-labelledby="rank-ladder">
+    <h2 id="rank-ladder">Every rank</h2>
+    <p class="meta">Each tier has three steps, I to III, except Kwaai at the top. The hours are timed study: all time, or within one semester for the season.</p>
+    <ol class="plain ladder">${[...Ranks.TIERS].reverse().map((tier) => html`<li class="ladder-row tier-${tier}${reached(tier) ? ' is-reached' : ''}${l.tier === tier ? ' is-current' : ''}">
+      ${emblem({ tier, division: tier === 'kwaai' ? null : l.tier === tier ? l.division : 2 }, 'lg')}
+      <div>
+        <h3>${Ranks.TIER_NAMES[tier]}${l.tier === tier ? html` <span class="badge">You</span>` : ''}</h3>
+        <p class="meta"><span>All time: ${hoursOf(Ranks.LIFETIME, tier)}</span><span>A season: ${hoursOf(Ranks.SEASON, tier)}</span></p>
+        <p class="ladder-unlock">${reached(tier) ? 'Unlocked: ' : 'Unlocks: '}${FX_TEXT[tier]}</p>
+      </div>
+    </li>`)}</ol>
+  </section>
+  <p class="fine">Only timer sessions count, with the same rules as the leaderboards: a session counts at most 5 minutes past its length and a day at most 14 hours. Ranks only change how your name looks. They never add hours.</p>
+  <p class="meta"><a href="/study">Back to Study</a></p>`);
+}
+
+// the test tools' rank gallery: every step's emblem and chip side by side, to check them by eye
+function rankGallery(ctx) {
+  const steps = [Ranks.rankOf(0), ...Ranks.LIFETIME.map((x) => Ranks.rankOf(x[2] * 60))];
+  return layout({ ...ctx, title: 'Rank gallery', here: '/admin/tools' }, html`
+  <h1 class="page-title">Rank gallery</h1>
+  <p class="lede small">Every rank's emblem and chip, for checking how they look. <a href="/admin/tools#ranks">Back to the test tools</a></p>
+  <ul class="plain rank-gallery">${steps.map((r) => html`<li class="card tier-${r.tier || 'none'}">${emblem(r, 'xl')}${rankChip(r)}<span class="meta">${r.minutes ? `${r.minutes / 60} h` : 'under 1 h'}</span></li>`)}</ul>`);
 }
 
 // the streak in a sentence: whether today counts yet, or how many minutes would keep it
@@ -2081,7 +2148,7 @@ function weekRecapCard(r, uniShort) {
 }
 
 const SEMESTER_NAME = { s1: 'Semester 1', s2: 'Semester 2' };
-function wrapped(ctx, { sem, w, ranks, others }) {
+function wrapped(ctx, { sem, w, ranks, season = null, others }) {
   const title = `${SEMESTER_NAME[sem.term]} ${sem.year}${sem.running ? ' so far' : ''}`;
   return layout({ ...ctx, title: `Your ${title}`, here: '/study' }, html`
   <div class="wrapped-page">
@@ -2096,6 +2163,7 @@ function wrapped(ctx, { sem, w, ranks, others }) {
         <div><dt>Longest streak</dt><dd>${plural(w.longest, 'day')}</dd></div>
         <div><dt>Best day</dt><dd>${Study.hoursText(w.bestDay.minutes)}</dd></div>
       </dl>
+      ${season?.tier ? html`<p class="wrapped-season">${emblem(season, 'lg')}<span><small>Season rank</small>${rankChip(season)}</span></p>` : ''}
       ${w.courses.length ? html`<h2>Most time on</h2>
       <ol class="wrapped-courses">${w.courses.map((c) => html`<li><span>${c.code ? html`<b>${c.code}</b> ${c.title}` : 'General study'}</span><span>${Study.hoursText(c.minutes)}</span></li>`)}</ol>` : ''}
       ${ranks?.uni ? html`<p class="wrapped-rank">${rankText(ranks, ctx.uni.short)}</p>` : ''}`
@@ -2431,6 +2499,11 @@ function adminTools(ctx, { today, streak, days, minutes, rank = null, role = 'st
       <p class="meta">Adds the hours on days more than a year ago, so they count for your lifetime rank but not for the heatmap, this season or the boards. Your last year of study stays as it is.</p>
       <div class="form-actions"><button class="btn">Set my rank</button></div>
     </form>
+    <div class="card panel study-form">
+      <h2>Rank gallery</h2>
+      <p class="meta">Every emblem and chip on one page, to check them at phone and desktop width.</p>
+      <div class="form-actions"><a class="btn" href="/admin/tools/ranks">Open the gallery</a></div>
+    </div>
   </div>
   <h2 class="section-title" id="classes">Classes</h2>
   <p class="meta">Try both sides of a class with the 15 test students. Running a demo again rebuilds it from scratch. Clear all test data (above) removes the demo classes too.</p>
@@ -2640,4 +2713,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, adminLogin, adminTools, classes, classAdmin, classJoin, classPage, attendanceScreen, attendanceCheckIn, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, rankPage, rankGallery, adminLogin, adminTools, classes, classAdmin, classJoin, classPage, attendanceScreen, attendanceCheckIn, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };

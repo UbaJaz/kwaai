@@ -995,3 +995,20 @@ circle.emblem-mark { fill: #fff; stroke: none; }
 .rank-season .meta { margin: 6px 0 0; }
 .day-streak .rank-chip { margin-left: 6px; }
 @media (prefers-reduced-motion: reduce) { .rank-bar i { animation: none; } }
+.emblem-xl { width: 88px; height: 88px; }
+.rank-hero .rank-head h2 { font-size: 2rem; }
+.rank-more { margin: 12px 0 0; }
+.ladder { display: grid; gap: 8px; margin: 12px 0 0; }
+.ladder-row { display: flex; gap: 14px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
+.ladder-row h3 { margin: 0; font-size: 1.05rem; color: var(--tier-text); }
+.ladder-row .meta { margin: 2px 0; }
+.ladder-row:not(.is-reached) .emblem { filter: grayscale(1); opacity: .45; }
+.ladder-row.is-current { border-color: var(--tier); box-shadow: inset 4px 0 0 var(--tier); }
+.ladder-unlock { margin: 0; font-size: .9rem; }
+.rank-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.rank-gallery li { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px; }
+.wrapped-season { display: flex; gap: 12px; align-items: center; margin: 0 0 18px; }
+.wrapped-season small { display: block; font-size: .72rem; color: color-mix(in srgb, var(--paper) 70%, transparent); }
+.wrapped-card .rank-chip { font: 700 1.15rem/1.2 var(--display); color: color-mix(in srgb, var(--tier) 70%, var(--paper)); }
+.wrapped-card .rank-chip .emblem { display: none; }
+.ladder-row .meta span { display: block; }
