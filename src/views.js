@@ -339,6 +339,51 @@ function streakBadge(s) {
   return html`<span class="streak${s.todayDone ? ' is-lit' : ''}" data-streak="${s.current}" ${s.todayDone ? html`data-celebrate="${today}" data-milestone="${Study.milestone(s.current) || ''}"` : ''}><span class="flame" aria-hidden="true">🔥</span><span class="streak-n">${s.current}</span> ${s.current === 1 ? 'day' : 'days'}</span>`;
 }
 
+// ---- study ranks (src/ranks.js) ----
+// A rank's emblem: one shape per tier, filled with the tier colour from CSS (.tier-gold and so on), and one chevron
+// per division. Drawn inline, so there are no image files to download.
+const EMBLEM_SHAPES = {
+  shield: 'M20 3 L35 9 V22 C35 30 28 35 20 38 C12 35 5 30 5 22 V9 Z',
+  crest: 'M20 2 L26 8 L35 6 V22 C35 30 28 35 20 38 C12 35 5 30 5 22 V6 L14 8 Z',
+  gem: 'M12 4 H28 L37 15 L20 38 L3 15 Z',
+  star: 'M20 2 L25 13 L37 14 L28 23 L31 37 L20 30 L9 37 L12 23 L3 14 L15 13 Z',
+};
+const TIER_SHAPE = { bronze: 'shield', silver: 'shield', gold: 'shield', platinum: 'crest', diamond: 'gem', kwaai: 'star' };
+function emblem(r, size = 'sm') {
+  const d = EMBLEM_SHAPES[TIER_SHAPE[r.tier] || 'shield'];
+  const chevrons = r.division == null ? [] : Array.from({ length: r.division + 1 }, (_, i) => 15 + i * 5);
+  return html`<svg class="emblem emblem-${size} tier-${r.tier || 'none'}" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+    <path class="emblem-body" d="${d}"></path>
+    <path class="emblem-inset" d="${d}" transform="translate(4 4) scale(.8)"></path>
+    ${chevrons.map((y) => html`<path class="emblem-mark" d="M14 ${y} L20 ${y + 4} L26 ${y}"></path>`)}
+    ${r.tier === 'kwaai' ? html`<circle class="emblem-mark" cx="20" cy="21" r="3"></circle>` : ''}
+  </svg>`;
+}
+// "Gold II" with its emblem, small enough for a line of text
+const rankChip = (r) => html`<span class="rank-chip tier-${r.tier || 'none'}">${emblem(r)}<span>${r.label}</span></span>`;
+// what the next step needs, in words: "4 h 20 min to Gold III"
+const rankNext = (r) => (r.next ? `${Study.hoursText(r.toNextMin)} to ${r.next.label}` : 'The top rank. Nothing higher to reach.');
+// a progress bar towards the next step
+const rankBar = (r, label) => html`<span class="rank-bar tier-${r.next?.tier || r.tier || 'none'}" role="progressbar" aria-label="${label}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(r.progress * 100)}"><i style="width:${(r.progress * 100).toFixed(1)}%"></i></span>`;
+
+// the rank card on the Study page: lifetime rank, the way to the next step, and this semester's season
+function rankCard(rank) {
+  const { lifetime: l, season: s } = rank;
+  return html`<section class="card panel rank-card tier-${l.tier || 'none'}" aria-labelledby="rank-card">
+    <div class="rank-head">
+      ${emblem(l, 'lg')}
+      <div>
+        <p class="eyebrow">Your rank</p>
+        <h2 id="rank-card">${l.label}</h2>
+        <p class="meta">${Study.hoursText(l.minutes)} of timed study, all time</p>
+      </div>
+    </div>
+    ${rankBar(l, `Progress to ${l.next?.label ?? 'the top'}`)}
+    <p class="rank-next">${rankNext(l)}</p>
+    <p class="rank-season">${rankChip(s)} <span><strong>${s.name}</strong> season: ${Study.hoursText(s.minutes)}${s.next ? `, ${Study.hoursText(s.toNextMin)} to ${s.next.label}` : ''}. It starts again next semester.</span></p>
+  </section>`;
+}
+
 // the streak in a sentence: whether today counts yet, or how many minutes would keep it
 function streakNote(s) {
   if (s.todayDone) return `Today counts.${s.best > s.current ? ` Your best is ${plural(s.best, 'day')}.` : ''}`;
@@ -348,7 +393,7 @@ function streakNote(s) {
 
 // The top of the home page for a student who's back: a greeting, today's progress towards the 30 minutes that keep
 // a streak, the streak, one big way to start studying, the next class and the next test.
-function yourDay(t, streak) {
+function yourDay(t, streak, rank = null) {
   const now = new Date(Date.now() + 2 * 3_600_000); // South African time
   const hour = now.getUTCHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
@@ -361,7 +406,7 @@ function yourDay(t, streak) {
     <div class="day-row">
       ${streak ? html`<div class="day-goal" style="--p:${(todayMin / Study.STREAK_MIN).toFixed(3)}" role="img" aria-label="${todayMin} of ${Study.STREAK_MIN} minutes studied today"><span>${todayMin}<small>/${Study.STREAK_MIN} min</small></span></div>` : ''}
       <div class="day-text">
-        ${streak ? html`<p class="day-streak">${streakBadge(streak)} study streak</p><p class="meta">${streakNote(streak)}</p>` : html`<p class="meta">Study 30 minutes a day to start a streak.</p>`}
+        ${streak ? html`<p class="day-streak">${streakBadge(streak)} study streak ${rank ? rankChip(rank.lifetime) : ''}</p><p class="meta">${streakNote(streak)}</p>` : html`<p class="meta">Study 30 minutes a day to start a streak.</p>`}
         <a class="btn btn-big" href="/study">Start studying</a>
       </div>
     </div>
@@ -373,13 +418,13 @@ function yourDay(t, streak) {
   </section>`;
 }
 
-function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null, studyingNow = 0, recentTips = [] }) {
+function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: t = null, streak = null, rank = null, studyingNow = 0, recentTips = [] }) {
   const { uni } = ctx;
   const n = (v) => v.toLocaleString('en-ZA');
   // back again (a plan on this device or a streak): the page opens on your day, and the pitch makes way
   const back = !!(t || streak);
   return layout({ ...ctx, path: '/' }, html`
-  ${back ? yourDay(t, streak) : ''}
+  ${back ? yourDay(t, streak, rank) : ''}
   <section class="hero${back ? ' hero-back' : ''}">
     <div class="hero-main">
       <p class="eyebrow"><b>${uni.name}</b> · ${plural(counts.courses, 'course')}</p>
@@ -1276,11 +1321,11 @@ function marks(ctx, { courses, planLink, hasPlan }) {
 }
 
 // ---------- today ----------
-function today(ctx, { today: t, weekLink, streak = null, classes: myClasses = [], announcements = [], pulses = [], dpAlerts = [] }) {
+function today(ctx, { today: t, weekLink, streak = null, rank = null, classes: myClasses = [], announcements = [], pulses = [], dpAlerts = [] }) {
   const dayDate = t ? new Date(`${t.date}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
   return layout({ ...ctx, title: 'Today', here: '/today', path: '/today' }, html`
   <h1 class="page-title">Today</h1>
-  ${streak ? html`<a class="card today-strip" href="/study"><strong>${streakBadge(streak)} study streak</strong><span>${streakNote(streak)}</span><span class="meta">Start studying →</span></a>` : ''}
+  ${streak ? html`<a class="card today-strip" href="/study"><strong>${streakBadge(streak)} study streak</strong>${rank ? rankChip(rank.lifetime) : ''}<span>${streakNote(streak)}</span><span class="meta">Start studying →</span></a>` : ''}
   ${announcements.length ? html`<section class="card panel announce-today" aria-labelledby="today-announce">
     <h2 id="today-announce">From your classes</h2>
     <ul class="plain">${announcements.map((a) => html`<li>
@@ -1362,7 +1407,7 @@ const TIMER_RING = html`<svg class="ring" viewBox="0 0 120 120" aria-hidden="tru
 const STUDY_PRESETS = [[25, '25 min', 'then a 5-minute break'], [50, '50 min', 'then a 10-minute break'], [90, '90 min', 'then a 15-minute break']];
 const clock = (ms) => new Date(ms + 2 * 60 * 60 * 1000).toISOString().slice(11, 16); // South African time
 
-function study(ctx, { courses, pick, current, today, sessions, board, studyingNow = 0 }) {
+function study(ctx, { courses, pick, current, today, sessions, board, rank = null, studyingNow = 0 }) {
   const signedIn = !!ctx.user;
   const courseName = (code) => (code ? `${code} ${courses.find((c) => c.code === code)?.title ?? ''}`.trim() : 'General study');
   return layout({ ...ctx, title: 'Study', here: '/study', path: '/study', description: 'A study timer for your courses. Kwaai logs the time so you can see how much you studied each day and for which course.' }, html`
@@ -1437,6 +1482,7 @@ function study(ctx, { courses, pick, current, today, sessions, board, studyingNo
     <ul class="plain">${sessions.map((s) => html`<li>${clock(s.started_at)} · ${s.course ? html`<a class="code" href="/courses/${s.course}">${s.course}</a>` : 'General study'} · ${Study.hoursText(Math.floor(s.credited_sec / 60))}</li>`)}</ul>`
       : html`<p class="meta">Nothing logged yet today.</p>`}
   </section>` : ''}
+  ${rank ? rankCard(rank) : ''}
   ${board ? studyBoard(board, ctx.uni.short) : ''}
   <p class="fine">How time counts: while the timer runs, this page checks in with Kwaai about once a minute. Time with the page closed or offline doesn't count, a session counts at most 5 minutes past its length, and a day counts at most 14 hours. There's no way to type hours in by hand, so everyone's numbers mean the same thing.</p>`);
 }
