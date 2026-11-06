@@ -13,6 +13,7 @@ const { parseFact, screenFact, groupFacts, weekTopics, crowdSlots } = require('.
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { UNIVERSITIES, CURRENT, accountFor } = require('./universities');
 const Study = require('./study');
+const Ranks = require('./ranks');
 const Admin = require('./admin');
 const TestData = require('./testdata');
 const Classes = require('./classes');
@@ -202,6 +203,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
         return { classes: t.classes.length, next: t.classes.find((e) => e.start >= new Date(Date.now() + 2 * 3_600_000).toISOString().slice(11, 16)), soon: t.upcoming[0], weekend: t.weekend };
       })(),
       streak: req.user ? streakFor(req.user.id) : null,
+      rank: req.user ? rankFor(req.user.id) : null,
       studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0,
       // only each course's newest tip, in the course page's order, so it's always one of the free ones there
       recentTips: q(`SELECT t.id, t.course, t.lekker, t.tip, c.title FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY course ORDER BY created_at DESC, id DESC) AS k
@@ -665,7 +667,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
-    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [], dpAlerts: dpAlertsFor(req.user) }));
+    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, rank: req.user ? rankFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [], dpAlerts: dpAlertsFor(req.user) }));
   });
 
   // ---- study timer ----
@@ -705,6 +707,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       courses, pick: current?.course || (courses.some((c) => c.code === pick) ? pick : ''), current: current && sessionState(current),
       today: Study.dayTotals(sessions.filter((s) => s.status === 'done'))[0] || null, sessions: sessions.filter((s) => s.status === 'done'),
       board: req.user ? studyBoard(req.user, codes, req.query.day) : null,
+      rank: req.user ? rankFor(req.user.id) : null,
       studyingNow: liveStudents(req.user, `uni = ?`, req.user?.uni ?? CURRENT.slug),
     }));
   });
@@ -720,6 +723,32 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const today = Study.saDay(Date.now());
     const totals = studyTotals(userId, today);
     return totals.length ? Study.streak(totals, today, TERMS.years) : null;
+  }
+
+  // ---- ranks (the ladders are in src/ranks.js) ----
+  // every minute each student ever timed, with each day capped as in Study.dayTotals; a Map of user id to minutes
+  function lifetimeMinutes(ids) {
+    const out = new Map(ids.map((id) => [id, 0]));
+    if (!ids.length) return out;
+    const rows = q(`SELECT user_id, SUM(MIN(m, ${Study.DAY_CAP_MIN})) AS minutes FROM (SELECT user_id, day, SUM(credited_sec / 60) AS m FROM study_sessions
+      WHERE status = 'done' AND user_id IN (${ids.map(() => '?').join(',')}) GROUP BY user_id, day) GROUP BY user_id`).all(...ids);
+    for (const r of rows) out.set(r.user_id, r.minutes);
+    return out;
+  }
+  // a student's lifetime rank, this semester's season rank and how last season ended. totals (from studyTotals)
+  // covers the last 371 days, which always includes this season and the one before.
+  function rankFor(userId, totals = null) {
+    const today = Study.saDay(Date.now());
+    const days = totals || studyTotals(userId, today);
+    const minutesIn = (s) => days.filter((t) => t.day >= s.from && t.day <= s.to).reduce((sum, t) => sum + t.minutes, 0);
+    const season = Ranks.seasonOf(today, TERMS.years);
+    const last = Ranks.previousSeason(season, TERMS.years);
+    const lastMin = minutesIn(last);
+    return {
+      lifetime: Ranks.rankOf(lifetimeMinutes([userId]).get(userId)),
+      season: { ...season, ...Ranks.rankOf(minutesIn(season), Ranks.SEASON), daysLeft: Math.round((Date.parse(season.to) - Date.parse(today)) / 86_400_000) },
+      lastSeason: lastMin ? { ...last, ...Ranks.rankOf(lastMin, Ranks.SEASON) } : null,
+    };
   }
 
   function studyBoard(user, codes, askedDay) {
