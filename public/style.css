@@ -1012,3 +1012,12 @@ circle.emblem-mark { fill: #fff; stroke: none; }
 .wrapped-card .rank-chip { font: 700 1.15rem/1.2 var(--display); color: color-mix(in srgb, var(--tier) 70%, var(--paper)); }
 .wrapped-card .rank-chip .emblem { display: none; }
 .ladder-row .meta span { display: block; }
+/* a new rank, shown once: the emblem pops in, and public/app.js adds confetti */
+.rankup { display: flex; gap: 16px; align-items: center; border: 2px solid var(--tier); background: linear-gradient(135deg, color-mix(in srgb, var(--tier) 14%, var(--surface)), var(--surface) 60%); margin-bottom: 18px; }
+.rankup h2 { margin: 0 0 4px; color: var(--tier-text); }
+.rankup p { margin: 0 0 6px; }
+.rankup-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0 !important; }
+.rankup .emblem { animation: rank-pop .7s cubic-bezier(.2, 1.4, .4, 1) both; }
+@keyframes rank-pop { 0% { transform: scale(.3) rotate(-20deg); opacity: 0; } 70% { transform: scale(1.12) rotate(4deg); opacity: 1; } 100% { transform: none; } }
+@media (max-width: 480px) { .rankup { flex-direction: column; text-align: center; } .rankup-actions { justify-content: center; } }
+@media (prefers-reduced-motion: reduce) { .rankup .emblem { animation: none; } }
