@@ -481,6 +481,7 @@ function rankPage(ctx, { rank, streak, quests = null }) {
       </div>
     </li>`)}</ol>
   </section>
+  <p><a class="btn" href="/study/rank/card">Get your rank card</a> <span class="meta">Sized for a phone screenshot, like Wrapped.</span></p>
   <p class="fine">Only timer sessions count, with the same rules as the leaderboards: a session counts at most 5 minutes past its length and a day at most 14 hours. Ranks only change how your name looks. They never add hours.</p>
   <p class="meta"><a href="/study">Back to Study</a></p>`);
 }
@@ -510,6 +511,34 @@ function nameTag(r) {
   const name = html`<span class="board-who${r.fx ? ` name-fx fx-${r.fx}` : ''}">${r.name}</span>`;
   if (!r.badge) return name;
   return html`${emblem(r.badge)}${name}<span class="sr-only">, ${r.badge.label}</span>`;
+}
+
+// the rank card: a phone-screenshot card like Wrapped, framed in the tier's colour. Only the signed-in student sees
+// it; their display name shows only if they chose one for the leaderboards.
+function rankShareCard(ctx, { rank, name, streak, quests }) {
+  const { lifetime: l, season: s } = rank;
+  const hours = Math.floor(l.minutes / 60);
+  return layout({ ...ctx, title: 'Your rank card', here: '/study', path: '/study/rank/card' }, html`
+  <div class="wrapped-page">
+    <article class="wrapped-card rank-share tier-${l.tier || 'none'}" aria-labelledby="rank-share-title">
+      <p class="wrapped-kicker">kwaai · ${ctx.uni.short}</p>
+      <p class="rank-share-name">${name}</p>
+      <div class="rank-share-emblem">${emblem(l, 'xl')}</div>
+      <h1 id="rank-share-title">${l.label}</h1>
+      <p class="wrapped-sub">${hours === 1 ? '1 hour' : `${hours} hours`} of timed study</p>
+      <dl class="wrapped-stats">
+        <div><dt>This season</dt><dd>${s.label}</dd></div>
+        <div><dt>Best streak</dt><dd>${plural(streak?.best || 0, 'day')}</dd></div>
+        <div><dt>Quests done</dt><dd>${quests.history.done}</dd></div>
+      </dl>
+      <p class="wrapped-foot">Only timed study counts · kwaai</p>
+    </article>
+    <div class="wrapped-actions">
+      <button class="btn" type="button" data-share hidden data-share-title="My rank on Kwaai" data-share-text="${`I'm ${l.label} on Kwaai: ${hours} hours of timed study.`}" data-share-url="${ctx.site.origin}/study">Share</button>
+      <p class="meta">Take a screenshot for your story. The card shows ${name === `A ${ctx.uni.short} student` ? 'no name' : 'your display name'}, never your email.</p>
+      <p class="meta"><a href="/study/rank">Back to your rank</a></p>
+    </div>
+  </div>`);
 }
 
 // the test tools' rank gallery: every step's emblem and chip side by side, to check them by eye
@@ -2811,4 +2840,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, rankPage, rankGallery, adminLogin, adminTools, classes, classAdmin, classJoin, classPage, attendanceScreen, attendanceCheckIn, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, rankPage, rankShareCard, rankGallery, adminLogin, adminTools, classes, classAdmin, classJoin, classPage, attendanceScreen, attendanceCheckIn, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };

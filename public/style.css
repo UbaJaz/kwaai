@@ -1063,3 +1063,11 @@ circle.emblem-mark { fill: #fff; stroke: none; }
 .quest-news-inline { flex-basis: 100%; font-weight: 600; color: var(--good); }
 .rank-quests { margin: -6px 0 18px; }
 @media (prefers-reduced-motion: reduce) { .quest.is-done .quest-tick, .quest-bar i, .quest-news { animation: none; } }
+
+/* ---- the rank card: Wrapped's card, framed in the tier's colour */
+.rank-share { border: 3px solid var(--tier); box-shadow: 0 0 0 6px color-mix(in srgb, var(--tier) 25%, transparent), 0 18px 40px rgb(21 29 43 / 25%); background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--tier) 30%, var(--ink)), var(--ink) 65%); text-align: center; }
+.rank-share-name { margin: 0 0 14px; font-weight: 600; color: color-mix(in srgb, var(--paper) 80%, transparent); }
+.rank-share-emblem .emblem-xl { width: 128px; height: 128px; filter: drop-shadow(0 6px 18px color-mix(in srgb, var(--tier) 60%, transparent)); }
+.rank-share h1 { margin: 10px 0 2px; font-size: 2.4rem; color: color-mix(in srgb, var(--tier) 65%, var(--paper)); }
+.rank-share .wrapped-stats { margin-top: auto; text-align: left; }
+.rank-share .wrapped-foot { margin-top: 14px; }
