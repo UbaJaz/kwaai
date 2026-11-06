@@ -1047,3 +1047,19 @@ circle.emblem-mark { fill: #fff; stroke: none; }
 .fx-pick { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
 .fx-pick.is-locked { opacity: .55; }
 .fx-pick .meta { margin: 0; }
+
+/* ---- weekly quests (src/quests.js) */
+.quest-list { display: grid; gap: 10px; margin: 10px 0 0; }
+.quest { display: flex; gap: 12px; align-items: flex-start; }
+.quest > div { flex: 1; }
+.quest-tick { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--line-strong); font-weight: 800; color: var(--ink); }
+.quest.is-done .quest-tick { background: var(--lime); border-color: var(--ink); animation: flare .5s ease-out; }
+.quest-title { margin: 2px 0 6px; font-weight: 600; }
+.quest.is-done .quest-title { text-decoration: line-through; text-decoration-color: var(--muted); }
+.quest-bar { display: block; height: 6px; border-radius: 99px; background: var(--paper); border: 1px solid var(--line); overflow: hidden; margin-bottom: 4px; }
+.quest-bar i { display: block; height: 100%; background: var(--good); border-radius: inherit; transform-origin: left; animation: bar-grow .7s ease-out both; }
+.quest-news { margin: 0 0 8px; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--lime); color: var(--ink); animation: rise .5s ease-out; }
+.quest-strip { border-color: var(--line-strong); }
+.quest-news-inline { flex-basis: 100%; font-weight: 600; color: var(--good); }
+.rank-quests { margin: -6px 0 18px; }
+@media (prefers-reduced-motion: reduce) { .quest.is-done .quest-tick, .quest-bar i, .quest-news { animation: none; } }
