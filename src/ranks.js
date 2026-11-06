@@ -68,4 +68,23 @@ const fxAllowed = (fx, tier) => !fx || unlockedFx(tier).includes(fx);
 // did a session move someone up? before and after are rankOf() results
 const rankedUp = (before, after) => after.step > before.step;
 
-module.exports = { TIERS, TIER_NAMES, DIVISIONS, LIFETIME, SEASON, NAME_FX, rankOf, seasonOf, previousSeason, unlockedFx, fxAllowed, rankedUp, stepLabel };
+// What to celebrate on the next page a student opens, and what to remember as seen. rank is { lifetime, season }
+// (the season with its key); seen is what was last celebrated: { lifetime: a step or null for never, season:
+// 'key:step' or null }. In order:
+//   - intro: the first page with ranks for someone who already has one ("Ranks are here")
+//   - lifetime: a higher all-time step
+//   - season: a new tier this season (divisions inside a season tier pass quietly, so it isn't every few hours)
+// A lower rank (only the test tools can do that) is remembered as seen, so the next step up is celebrated again.
+function newRank(rank, seen) {
+  const l = rank.lifetime;
+  const s = rank.season;
+  const next = { lifetime: l.step, season: `${s.key}:${s.step}` };
+  const seasonSeen = typeof seen.season === 'string' && seen.season.startsWith(`${s.key}:`) ? Number(seen.season.slice(s.key.length + 1)) : -1;
+  let up = null;
+  if (seen.lifetime == null) up = l.step >= 0 ? { kind: 'intro', ...l } : null;
+  else if (l.step > seen.lifetime) up = { kind: 'lifetime', ...l, newTier: l.division == null || l.division === 0 };
+  else if (s.step > seasonSeen && s.tier !== (SEASON[seasonSeen]?.[0] ?? null)) up = { kind: 'season', ...s };
+  return { up, seen: next };
+}
+
+module.exports = { TIERS, TIER_NAMES, DIVISIONS, LIFETIME, SEASON, NAME_FX, rankOf, seasonOf, previousSeason, unlockedFx, fxAllowed, rankedUp, stepLabel, newRank };

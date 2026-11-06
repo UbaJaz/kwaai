@@ -2946,3 +2946,37 @@ test('test tools: the rank gallery shows every step', () => withAdminServer({ te
   assert.equal((page.match(/<li class="card tier-/g) || []).length, 17, 'unranked and 16 steps');
   assert.match(page, /Kwaai<\/span><\/span><span class="meta">1000 h/);
 }));
+
+test('rank-ups: shown once on the next page, the first look at ranks, a new step, and the test tools', () => withAdminServer({ testTools: true }, async ({ db, admin, browser }) => {
+  const s = browser();
+  await s.signIn('rankup001@myuct.ac.za');
+  assert.doesNotMatch(await s.text('/study'), /data-rankup/, 'no rank, nothing to celebrate');
+  const uid = db.prepare(`SELECT id FROM users WHERE email = 'rankup001@myuct.ac.za'`).get().id;
+  const today = Study.saDay(Date.now());
+  const add = (min) => db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 120, ?, 'done')`).run(uid, today, min * 60);
+  add(70);
+  let page = await s.text('/today');
+  assert.match(page, /class="card panel rankup tier-bronze" data-rankup role="status"[\s\S]*?<h2 id="rankup-title">New rank: Bronze I<\/h2>/, 'from unranked to Bronze I: the all-time step wins over the season');
+  assert.doesNotMatch(await s.text('/today'), /data-rankup/, 'shown once');
+  add(4 * 60);
+  page = await s.text('/study');
+  assert.match(page, /<h2 id="rankup-title">New rank: Bronze II<\/h2>/);
+  assert.match(page, /data-share-title="My rank on Kwaai" data-share-text="I&#39;m Bronze II on Kwaai: 5 h 10 min of timed study\."|data-share-text="I'm Bronze II on Kwaai/);
+  assert.match(page, /href="\/study\/rank">See your rank/);
+  assert.doesNotMatch(await s.text('/'), /data-rankup/);
+
+  // students who already had hours when ranks arrived see an introduction instead
+  db.prepare(`UPDATE users SET rank_seen = NULL, season_seen = NULL WHERE id = ?`).run(uid);
+  assert.match(await s.text('/'), /<h2 id="rankup-title">Ranks are here\. You&#39;re Bronze II\.<\/h2>|Ranks are here\. You're Bronze II\./);
+
+  // the test tools: 10 minutes short, then the session that crosses the line; and replaying the card
+  await admin.post('/admin/tools/rank', { step: '6', under: '1' });
+  assert.doesNotMatch(await admin.text('/study'), /New rank/, 'being 10 minutes short is not a rank-up');
+  const aid = db.prepare(`SELECT id FROM users WHERE is_admin = 1`).get()?.id ?? db.prepare(`SELECT user_id AS id FROM sessions ORDER BY rowid DESC LIMIT 1`).get().id;
+  db.prepare(`INSERT INTO study_sessions (user_id, uni, course, day, started_at, last_beat, planned_min, credited_sec, status) VALUES (?, 'uct', '', ?, 0, 0, 10, 600, 'done')`).run(aid, Study.addDay(today, -400));
+  assert.match(await admin.text('/study'), /New rank: Gold I<\/h2>[\s\S]*?Unlocked: A gold gradient on your name\./);
+  assert.match((await admin.post('/admin/tools/rank-up', { kind: 'step' })).headers.get('location'), /^\/study$/);
+  assert.match(await admin.text('/study'), /New rank: Gold I/);
+  await admin.post('/admin/tools/rank-up', { kind: 'intro' });
+  assert.match(await admin.text('/study'), /Ranks are here/);
+}));

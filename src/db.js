@@ -380,7 +380,7 @@ const LECTURER_DETAILS = { role: "TEXT NOT NULL DEFAULT ''" };
 // uni is the university the student's email belongs to (see uniForEmail in src/universities.js).
 // is_admin: the password-only admin account (see src/admin.js). is_test: accounts used for testing (the admin and the
 // fake students the test tools make); they're left out of every figure other students see.
-const USER_DETAILS = { agreed_at: 'TEXT', uni: "TEXT NOT NULL DEFAULT 'uct'", is_admin: 'INTEGER NOT NULL DEFAULT 0', is_test: 'INTEGER NOT NULL DEFAULT 0', role: "TEXT NOT NULL DEFAULT 'student'" }; // role: student or staff, from the email domain
+const USER_DETAILS = { agreed_at: 'TEXT', uni: "TEXT NOT NULL DEFAULT 'uct'", is_admin: 'INTEGER NOT NULL DEFAULT 0', is_test: 'INTEGER NOT NULL DEFAULT 0', role: "TEXT NOT NULL DEFAULT 'student'", rank_seen: 'INTEGER', season_seen: 'TEXT' }; // role: student or staff, from the email domain. rank_seen and season_seen: the last rank celebrated (src/ranks.js newRank)
 
 function addMissingColumns(db, table, columns) {
   const have = new Set(db.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name));

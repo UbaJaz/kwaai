@@ -448,6 +448,24 @@ function rankPage(ctx, { rank, streak }) {
   <p class="meta"><a href="/study">Back to Study</a></p>`);
 }
 
+// A new rank, shown once on the next Study, Today or home page (see celebrateRank in src/app.js). public/app.js adds
+// confetti in the tier's colour, unless the student prefers less motion.
+function rankUpCard(up, origin) {
+  const title = up.kind === 'intro' ? `Ranks are here. You're ${up.label}.` : up.kind === 'season' ? `Season rank: ${up.label}` : `New rank: ${up.label}`;
+  const hours = Study.hoursText(up.minutes);
+  const unlock = (up.kind === 'intro' || up.newTier) && up.tier !== 'bronze' ? FX_TEXT[up.tier] : null;
+  const shareText = up.kind === 'season' ? `I'm ${up.label} this season on Kwaai: ${hours} of timed study.` : `I'm ${up.label} on Kwaai: ${hours} of timed study.`;
+  return html`<section class="card panel rankup tier-${up.tier}" data-rankup role="status" aria-labelledby="rankup-title">
+    ${emblem(up, 'xl')}
+    <div>
+      <h2 id="rankup-title">${title}</h2>
+      <p>${up.kind === 'season' ? `${hours} of timed study this season.` : `${hours} of timed study, all time.`}${up.kind === 'intro' ? ' Every hour you time counts toward the next rank.' : ''}</p>
+      ${unlock ? html`<p class="meta">Unlocked: ${unlock}.</p>` : ''}
+      <p class="rankup-actions"><a class="btn btn-small" href="/study/rank">See your rank</a> <button class="btn btn-small btn-quiet" type="button" data-share hidden data-share-title="My rank on Kwaai" data-share-text="${shareText}" data-share-url="${origin}/study">Share</button></p>
+    </div>
+  </section>`;
+}
+
 // the test tools' rank gallery: every step's emblem and chip side by side, to check them by eye
 function rankGallery(ctx) {
   const steps = [Ranks.rankOf(0), ...Ranks.LIFETIME.map((x) => Ranks.rankOf(x[2] * 60))];
@@ -497,6 +515,7 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
   // back again (a plan on this device or a streak): the page opens on your day, and the pitch makes way
   const back = !!(t || streak);
   return layout({ ...ctx, path: '/' }, html`
+  ${rank?.up ? rankUpCard(rank.up, ctx.site.origin) : ''}
   ${back ? yourDay(t, streak, rank) : ''}
   <section class="hero${back ? ' hero-back' : ''}">
     <div class="hero-main">
@@ -1398,6 +1417,7 @@ function today(ctx, { today: t, weekLink, streak = null, rank = null, classes: m
   const dayDate = t ? new Date(`${t.date}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
   return layout({ ...ctx, title: 'Today', here: '/today', path: '/today' }, html`
   <h1 class="page-title">Today</h1>
+  ${rank?.up ? rankUpCard(rank.up, ctx.site.origin) : ''}
   ${streak ? html`<a class="card today-strip" href="/study"><strong>${streakBadge(streak)} study streak</strong>${rank ? rankChip(rank.lifetime) : ''}<span>${streakNote(streak)}</span><span class="meta">Start studying →</span></a>` : ''}
   ${announcements.length ? html`<section class="card panel announce-today" aria-labelledby="today-announce">
     <h2 id="today-announce">From your classes</h2>
@@ -1486,6 +1506,7 @@ function study(ctx, { courses, pick, current, today, sessions, board, rank = nul
   return layout({ ...ctx, title: 'Study', here: '/study', path: '/study', description: 'A study timer for your courses. Kwaai logs the time so you can see how much you studied each day and for which course.' }, html`
   <h1 class="page-title">Study</h1>
   <p class="lede small">Pick a course, start the timer and work until it rings. Kwaai logs the time against the course.</p>
+  ${rank?.up ? rankUpCard(rank.up, ctx.site.origin) : ''}
   ${studyingNow ? html`<p class="live-note"><i class="live-dot" aria-hidden="true"></i>${plural(studyingNow, `${ctx.uni.short} student`)} ${studyingNow === 1 ? 'is' : 'are'} studying on Kwaai right now</p>` : ''}
   ${signedIn ? '' : html`<p class="privacy-note">The timer works without an account. <a href="${loginHref('/study')}">Sign in with your UCT email</a> to keep your hours.</p>`}
   ${signedIn ? '' : html`<div class="study-pair">`}
@@ -2498,6 +2519,13 @@ function adminTools(ctx, { today, streak, days, minutes, rank = null, role = 'st
       <label class="radio"><input type="radio" name="under" value="1"> 10 minutes short of it (time a short session to rank up)</label>
       <p class="meta">Adds the hours on days more than a year ago, so they count for your lifetime rank but not for the heatmap, this season or the boards. Your last year of study stays as it is.</p>
       <div class="form-actions"><button class="btn">Set my rank</button></div>
+    </form>
+    <form method="post" action="/admin/tools/rank-up" class="card panel study-form">
+      <h2>Show a rank-up</h2>
+      <label class="radio"><input type="radio" name="kind" value="step" checked> My current rank, as if I just reached it</label>
+      <label class="radio"><input type="radio" name="kind" value="intro"> "Ranks are here", what students who already have hours see first</label>
+      <p class="meta">Opens Study with the card and the confetti. It shows once, like for students.</p>
+      <div class="form-actions"><button class="btn">Show it</button></div>
     </form>
     <div class="card panel study-form">
       <h2>Rank gallery</h2>

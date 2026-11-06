@@ -348,11 +348,11 @@ document.querySelectorAll('form[action="/logout"]').forEach((form) => form.addEv
   if (window.caches) caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
 }));
 
-// Wrapped: the phone's share sheet, where there is one
+// Wrapped and a new rank: the phone's share sheet, where there is one
 document.querySelectorAll('[data-share]').forEach((btn) => {
   if (!navigator.share) return;
   btn.hidden = false;
-  btn.addEventListener('click', () => navigator.share({ title: 'My semester on Kwaai', text: btn.dataset.shareText, url: btn.dataset.shareUrl }).catch(() => { /* closed the share sheet */ }));
+  btn.addEventListener('click', () => navigator.share({ title: btn.dataset.shareTitle || 'My semester on Kwaai', text: btn.dataset.shareText, url: btn.dataset.shareUrl }).catch(() => { /* closed the share sheet */ }));
 });
 
 // The streak celebration: once a day per device, the first time a page shows that today counts. The number ticks up,
@@ -384,11 +384,24 @@ document.querySelectorAll('[data-share]').forEach((btn) => {
   note.textContent = el.dataset.milestone;
   (el.closest('dl, a') || el).insertAdjacentElement('afterend', note);
   if (calm) return;
+  confettiFrom(el, ['#c8f169', '#151d2b', '#2f9a55', '#f2b134', getComputedStyle(document.body).getPropertyValue('--uni').trim() || '#0b3c5d']);
+})();
+
+// A new rank (the card from rankUpCard): confetti in the tier's colour, white and lime, once, as the page opens. The
+// server shows the card only once, so there's nothing to remember here. Nothing moves for people who prefer less motion.
+(() => {
+  const card = document.querySelector('[data-rankup]');
+  if (!card || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const tier = getComputedStyle(card).getPropertyValue('--tier').trim() || '#c8f169';
+  confettiFrom(card.querySelector('.emblem') || card, [tier, tier, '#ffffff', '#c8f169', '#151d2b']);
+})();
+
+// a burst of confetti from the middle of an element, cleared after it falls
+function confettiFrom(el, colours) {
   const box = el.getBoundingClientRect();
   const layer = document.createElement('div');
   layer.className = 'confetti';
   layer.setAttribute('aria-hidden', 'true');
-  const colours = ['#c8f169', '#151d2b', '#2f9a55', '#f2b134', getComputedStyle(document.body).getPropertyValue('--uni').trim() || '#0b3c5d'];
   for (let i = 0; i < 40; i++) {
     const bit = document.createElement('i');
     bit.style.left = `${box.left + box.width / 2}px`;
@@ -402,7 +415,7 @@ document.querySelectorAll('[data-share]').forEach((btn) => {
   }
   document.body.append(layer);
   setTimeout(() => layer.remove(), 2600);
-})();
+}
 
 // Numbers count up from zero the first time they come into view: study minutes (data-count, written like the server
 // writes them, "1 h 5 min") and Wrapped's hours (data-unit="hours", "62.9 h"). Each one ends on exactly the server's
