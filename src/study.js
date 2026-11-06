@@ -169,7 +169,8 @@ function rankBoard(rows, meId, size = BOARD_SIZE) {
 }
 
 // the "Join the leaderboards" form. Nobody is on a board without ticking the box; unticking it means leaving.
-// known: { faculty(key), major(faculty, key) } say which faculties and majors exist; screen(text) is screenComment.
+// known: { faculty(key), major(faculty, key), fx(style) } say which faculties, majors and name styles (the ones the
+// student's rank has unlocked) are allowed; screen(text) is screenComment.
 function parseProfileForm(body, known, screen) {
   if (body.join !== '1') return { leave: true };
   const showName = body.show === 'name';
@@ -179,7 +180,9 @@ function parseProfileForm(body, known, screen) {
   const faculty = known.faculty(body.faculty) ? body.faculty : '';
   const major = faculty && known.major(faculty, body.major) ? body.major : '';
   const year = Number(body.year);
-  return { profile: { display_name: name.slice(0, 30), show_name: showName ? 1 : 0, faculty, major, year: Number.isInteger(year) && year >= 1 && year <= 6 ? year : null } };
+  const fx = String(body.name_fx || '');
+  if (fx && !known.fx?.(fx)) return { error: 'That name style is still locked. Your rank unlocks it later.' };
+  return { profile: { display_name: name.slice(0, 30), show_name: showName ? 1 : 0, faculty, major, year: Number.isInteger(year) && year >= 1 && year <= 6 ? year : null, name_fx: fx } };
 }
 
 // ---- real hours per course ----
