@@ -203,7 +203,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
         return { classes: t.classes.length, next: t.classes.find((e) => e.start >= new Date(Date.now() + 2 * 3_600_000).toISOString().slice(11, 16)), soon: t.upcoming[0], weekend: t.weekend };
       })(),
       streak: req.user ? streakFor(req.user.id) : null,
-      rank: req.user ? rankFor(req.user.id) : null,
+      rank: rankWithUp(req.user),
       studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0,
       // only each course's newest tip, in the course page's order, so it's always one of the free ones there
       recentTips: q(`SELECT t.id, t.course, t.lekker, t.tip, c.title FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY course ORDER BY created_at DESC, id DESC) AS k
@@ -667,7 +667,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
-    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, rank: req.user ? rankFor(req.user.id) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [], dpAlerts: dpAlertsFor(req.user) }));
+    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, rank: rankWithUp(req.user), classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [], dpAlerts: dpAlertsFor(req.user) }));
   });
 
   // ---- study timer ----
@@ -707,7 +707,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       courses, pick: current?.course || (courses.some((c) => c.code === pick) ? pick : ''), current: current && sessionState(current),
       today: Study.dayTotals(sessions.filter((s) => s.status === 'done'))[0] || null, sessions: sessions.filter((s) => s.status === 'done'),
       board: req.user ? studyBoard(req.user, codes, req.query.day) : null,
-      rank: req.user ? rankFor(req.user.id) : null,
+      rank: rankWithUp(req.user),
       studyingNow: liveStudents(req.user, `uni = ?`, req.user?.uni ?? CURRENT.slug),
     }));
   });
@@ -726,6 +726,19 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   }
 
   // ---- ranks (the ladders are in src/ranks.js) ----
+  // A rank-up is shown once, on the next Study, Today or home page the student opens, however the session ended (the
+  // timer ran out, Stop, or a closed tab). users.rank_seen and season_seen remember what was last celebrated.
+  function celebrateRank(user, rank) {
+    const { up, seen } = Ranks.newRank(rank, { lifetime: user.rank_seen, season: user.season_seen });
+    if (seen.lifetime !== user.rank_seen || seen.season !== user.season_seen) q(`UPDATE users SET rank_seen = ?, season_seen = ? WHERE id = ?`).run(seen.lifetime, seen.season, user.id);
+    return up;
+  }
+  // the rank for a page that can celebrate it: rank.up is the new rank to show, or null
+  function rankWithUp(user) {
+    if (!user) return null;
+    const rank = rankFor(user.id);
+    return { ...rank, up: celebrateRank(user, rank) };
+  }
   // every minute each student ever timed, with each day capped as in Study.dayTotals; a Map of user id to minutes
   function lifetimeMinutes(ids) {
     const out = new Map(ids.map((id) => [id, 0]));
@@ -2192,6 +2205,16 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/admin/tools/ranks', requireUser, requireTools, (req, res) => res.page(views.rankGallery(req.ctx)));
 
+  // plays the admin's rank-up card again: the next Study page shows the current rank as new (or the first look at
+  // ranks, for the intro)
+  app.post('/admin/tools/rank-up', requireUser, requireTools, (req, res) => {
+    const intro = req.body.kind === 'intro';
+    const step = Ranks.rankOf(lifetimeMinutes([req.user.id]).get(req.user.id)).step;
+    if (step < 0) return flashRedirect(res, '/admin/tools#ranks', 'error', 'You need a rank first: set one above.');
+    q(`UPDATE users SET rank_seen = ?, season_seen = NULL WHERE id = ?`).run(intro ? null : step - 1, req.user.id);
+    res.redirect(303, '/study');
+  });
+
   // the admin's lifetime rank set to one step, or 10 minutes short of it to try a rank-up
   app.post('/admin/tools/rank', requireUser, requireTools, (req, res) => {
     const step = Ranks.LIFETIME[Number(req.body.step)];
@@ -2203,11 +2226,14 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const target = step[2] * 60 - (under ? 10 : 0);
     if (have > target) return flashRedirect(res, '/admin/tools#ranks', 'error', `Your last year already has ${Study.hoursText(have)} of study, more than ${label} needs. Clear your study data first.`);
     bankHours(req.user.id, req.user.uni, target - have);
+    // 10 minutes short: the step below counts as celebrated, so the session that crosses the line gets the moment
+    if (under) q(`UPDATE users SET rank_seen = ? WHERE id = ?`).run(Ranks.rankOf(target).step, req.user.id);
     flashRedirect(res, '/study', 'ok', under ? `You're 10 minutes short of ${label}. Time a 10-minute session to rank up.` : `You're ${label} now.`);
   });
 
   app.post('/admin/tools/clear-mine', requireUser, requireTools, (req, res) => {
     q(`DELETE FROM study_sessions WHERE user_id = ?`).run(req.user.id);
+    q(`UPDATE users SET rank_seen = NULL, season_seen = NULL WHERE id = ?`).run(req.user.id);
     flashRedirect(res, '/admin/tools', 'ok', 'Your study data is cleared.');
   });
 
