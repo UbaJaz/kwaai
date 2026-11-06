@@ -340,6 +340,41 @@ function streakBadge(s) {
   return html`<span class="streak${s.todayDone ? ' is-lit' : ''}" data-streak="${s.current}" ${s.todayDone ? html`data-celebrate="${today}" data-milestone="${Study.milestone(s.current) || ''}"` : ''}><span class="flame" aria-hidden="true">🔥</span><span class="streak-n">${s.current}</span> ${s.current === 1 ? 'day' : 'days'}</span>`;
 }
 
+// ---- weekly quests (src/quests.js) ----
+const questProgress = (x) => (x.unit === 'min' ? `${Study.hoursText(x.value)} of ${Study.hoursText(x.target)}` : `${x.value} of ${x.target}`);
+// what just got finished, in a sentence: "Quest done: Study twice in one day." and a full week when it's all three
+function questNews(qs) {
+  if (!qs.news.length) return '';
+  const all = qs.quests.every((x) => x.done);
+  return html`<p class="quest-news" role="status"><strong>${qs.news.length === 1 ? 'Quest done' : 'Quests done'}:</strong> ${qs.news.map((x) => x.title).join('; ')}.${all ? ' That\'s all three: a full week.' : ''}</p>`;
+}
+// the week's three quests with progress bars, on Study and the rank page
+function questCard(qs) {
+  const done = qs.quests.filter((x) => x.done).length;
+  return html`<section class="card panel quests" id="quests" aria-labelledby="quests-title">
+    <h2 id="quests-title">This week's quests</h2>
+    ${questNews(qs)}
+    <p class="meta">${done === qs.quests.length ? 'All three done. A full week.' : `${done} of ${qs.quests.length} done.`} New quests every Monday.</p>
+    <ul class="plain quest-list">${qs.quests.map((x) => html`<li class="quest${x.done ? ' is-done' : ''}">
+      <span class="quest-tick" aria-hidden="true">${x.done ? '✓' : ''}</span>
+      <div>
+        <p class="quest-title">${x.title}${x.done ? html`<span class="sr-only"> (done)</span>` : ''}</p>
+        <span class="quest-bar" aria-hidden="true"><i style="width:${Math.round((x.value / x.target) * 100)}%"></i></span>
+        <span class="meta">${questProgress(x)}</span>
+      </div>
+    </li>`)}</ul>
+  </section>`;
+}
+// one line on Today: what was just finished, or the unfinished quest that's closest to done
+function questStrip(qs) {
+  const open = qs.quests.filter((x) => !x.done).sort((a, b) => b.value / b.target - a.value / a.target)[0];
+  return html`<a class="card today-strip quest-strip" href="/study#quests">
+    <strong>${open ? 'Quest' : 'Quests'}</strong>
+    <span>${open ? html`${open.title} · ${questProgress(open)}` : 'All three done this week. New ones on Monday.'}</span>
+    ${qs.news.length ? html`<span class="quest-news-inline" role="status">Just done: ${qs.news.map((x) => x.title).join('; ')}</span>` : ''}
+  </a>`;
+}
+
 // ---- study ranks (src/ranks.js) ----
 // A rank's emblem: one shape per tier, filled with the tier colour from CSS (.tier-gold and so on), and one chevron
 // per division. Drawn inline, so there are no image files to download.
@@ -400,7 +435,7 @@ const FX_TEXT = {
   diamond: 'A glint that sweeps across your name',
   kwaai: 'A moving glow on your name, for the few who get here',
 };
-function rankPage(ctx, { rank, streak }) {
+function rankPage(ctx, { rank, streak, quests = null }) {
   const { lifetime: l, season: s, lastSeason: last } = rank;
   const hoursOf = (steps, tier) => steps.filter((x) => x[0] === tier).map((x) => `${x[2]} h`).join(', ');
   const reached = (tier) => l.tier && Ranks.TIERS.indexOf(tier) <= Ranks.TIERS.indexOf(l.tier);
@@ -432,6 +467,8 @@ function rankPage(ctx, { rank, streak }) {
     <p class="rank-next">${rankNext(s)}</p>
     <p class="meta">${last ? html`Last season, ${last.name}, you finished ${rankChip(last)} with ${Study.hoursText(last.minutes)}.` : 'Your first season on Kwaai.'}${streak?.best ? ` Your best streak in the last year: ${plural(streak.best, 'day')}.` : ''}</p>
   </section>
+  ${quests ? html`${questCard(quests)}
+  <p class="meta rank-quests">Quests done so far: <strong>${quests.history.done}</strong> · Full weeks (all three): <strong>${quests.history.fullWeeks}</strong></p>` : ''}
   <section class="card panel" aria-labelledby="rank-ladder">
     <h2 id="rank-ladder">Every rank</h2>
     <p class="meta">Each tier has three steps, I to III, except Kwaai at the top. The hours are timed study: all time, or within one semester for the season.</p>
@@ -1422,12 +1459,13 @@ function marks(ctx, { courses, planLink, hasPlan }) {
 }
 
 // ---------- today ----------
-function today(ctx, { today: t, weekLink, streak = null, rank = null, classes: myClasses = [], announcements = [], pulses = [], dpAlerts = [] }) {
+function today(ctx, { today: t, weekLink, streak = null, rank = null, quests = null, classes: myClasses = [], announcements = [], pulses = [], dpAlerts = [] }) {
   const dayDate = t ? new Date(`${t.date}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
   return layout({ ...ctx, title: 'Today', here: '/today', path: '/today' }, html`
   <h1 class="page-title">Today</h1>
   ${rank?.up ? rankUpCard(rank.up, ctx.site.origin) : ''}
   ${streak ? html`<a class="card today-strip" href="/study"><strong>${streakBadge(streak)} study streak</strong>${rank ? rankChip(rank.lifetime) : ''}<span>${streakNote(streak)}</span><span class="meta">Start studying →</span></a>` : ''}
+  ${quests ? questStrip(quests) : ''}
   ${announcements.length ? html`<section class="card panel announce-today" aria-labelledby="today-announce">
     <h2 id="today-announce">From your classes</h2>
     <ul class="plain">${announcements.map((a) => html`<li>
@@ -1509,7 +1547,7 @@ const TIMER_RING = html`<svg class="ring" viewBox="0 0 120 120" aria-hidden="tru
 const STUDY_PRESETS = [[25, '25 min', 'then a 5-minute break'], [50, '50 min', 'then a 10-minute break'], [90, '90 min', 'then a 15-minute break']];
 const clock = (ms) => new Date(ms + 2 * 60 * 60 * 1000).toISOString().slice(11, 16); // South African time
 
-function study(ctx, { courses, pick, current, today, sessions, board, rank = null, studyingNow = 0 }) {
+function study(ctx, { courses, pick, current, today, sessions, board, rank = null, quests = null, studyingNow = 0 }) {
   const signedIn = !!ctx.user;
   const courseName = (code) => (code ? `${code} ${courses.find((c) => c.code === code)?.title ?? ''}`.trim() : 'General study');
   return layout({ ...ctx, title: 'Study', here: '/study', path: '/study', description: 'A study timer for your courses. Kwaai logs the time so you can see how much you studied each day and for which course.' }, html`
@@ -1586,6 +1624,7 @@ function study(ctx, { courses, pick, current, today, sessions, board, rank = nul
       : html`<p class="meta">Nothing logged yet today.</p>`}
   </section>` : ''}
   ${rank ? rankCard(rank) : ''}
+  ${quests ? questCard(quests) : ''}
   ${board ? studyBoard(board, ctx.uni.short) : ''}
   <p class="fine">How time counts: while the timer runs, this page checks in with Kwaai about once a minute. Time with the page closed or offline doesn't count, a session counts at most 5 minutes past its length, and a day counts at most 14 hours. There's no way to type hours in by hand, so everyone's numbers mean the same thing.</p>`);
 }
@@ -2547,6 +2586,16 @@ function adminTools(ctx, { today, streak, days, minutes, rank = null, role = 'st
       <label class="radio"><input type="radio" name="kind" value="intro"> "Ranks are here", what students who already have hours see first</label>
       <p class="meta">Opens Study with the card and the confetti. It shows once, like for students.</p>
       <div class="form-actions"><button class="btn">Show it</button></div>
+    </form>
+    <form method="post" action="/admin/tools/quests" class="card panel study-form">
+      <h2>Finish my quests</h2>
+      <p class="meta">Adds study this week that ticks all three quests. Early in the week, some of it lands on days still to come. The next Study page says which quests just finished.</p>
+      <div class="form-actions"><button class="btn">Finish this week's quests</button></div>
+    </form>
+    <form method="post" action="/admin/tools/quiet-week" class="card panel study-form" data-confirm="Delete your study from last week?">
+      <h2>A quiet last week</h2>
+      <p class="meta">Deletes your study from last week, so this week offers the comeback quest.</p>
+      <div class="form-actions"><button class="btn">Empty last week</button></div>
     </form>
     <div class="card panel study-form">
       <h2>Rank gallery</h2>
