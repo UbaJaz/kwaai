@@ -68,3 +68,25 @@ test('a rank-up is a move to a higher step', () => {
   assert.ok(Ranks.rankedUp(Ranks.rankOf(59), Ranks.rankOf(60)));
   assert.ok(!Ranks.rankedUp(Ranks.rankOf(61), Ranks.rankOf(120)));
 });
+
+test('what to celebrate: the first look at ranks, a new all-time step, a new season tier, and nothing twice', () => {
+  const at = (lifeH, seasonH) => ({ lifetime: Ranks.rankOf(lifeH * H), season: { key: '2026-s2', ...Ranks.rankOf(seasonH * H, Ranks.SEASON) } });
+  const never = { lifetime: null, season: null };
+  assert.equal(Ranks.newRank(at(0, 0), never).up, null, 'nothing to show a student with no rank yet');
+  assert.deepEqual(Ranks.newRank(at(0, 0), never).seen, { lifetime: -1, season: '2026-s2:-1' });
+  const intro = Ranks.newRank(at(100, 12), never);
+  assert.equal(intro.up.kind, 'intro');
+  assert.equal(intro.up.label, 'Gold II');
+  assert.equal(Ranks.newRank(at(100, 12), intro.seen).up, null, 'shown once');
+  const life = Ranks.newRank(at(150, 12), intro.seen).up;
+  assert.equal(life.kind, 'lifetime');
+  assert.equal(life.label, 'Gold III');
+  assert.equal(life.newTier, false);
+  assert.equal(Ranks.newRank(at(200, 12), intro.seen).up.newTier, true, 'Platinum I is a new tier');
+  assert.equal(Ranks.newRank(at(100, 16), intro.seen).up, null, 'Silver I to Silver II in a season passes quietly');
+  const season = Ranks.newRank(at(100, 31), intro.seen).up;
+  assert.equal(season.kind, 'season');
+  assert.equal(season.label, 'Gold I');
+  assert.equal(Ranks.newRank(at(100, 1), { lifetime: 7, season: '2026-s1:9' }).up.kind, 'season', 'a new season starts from scratch: its first rank counts');
+  assert.deepEqual(Ranks.newRank(at(5, 1), { lifetime: 10, season: null }).seen.lifetime, 1, 'a lower rank is remembered, so climbing again is celebrated');
+});
