@@ -61,6 +61,15 @@ const sweep = () => {
     DELETE FROM calendars WHERE IFNULL(fetched_at, created_at) < datetime('now', '-12 months');
     -- a lecturer's pasted class list, 30 days after the class's year ends, even if nobody opens the class again
     DELETE FROM class_roster WHERE source = 'list' AND class_id IN (SELECT id FROM classes WHERE date('now') >= (year + 1) || '-01-31');`);
+  // the daily backup to BACKUP_DIR; a failure (e.g. a full disk) is logged, never allowed to crash the site
+  if (!devMode) {
+    try {
+      const file = require('./scripts/backup').backupIfDue(db);
+      if (file) console.log('backed up to', file);
+    } catch (e) {
+      console.error('Backup failed:', e);
+    }
+  }
 };
 sweep();
 setInterval(sweep, 60 * 60 * 1000).unref();

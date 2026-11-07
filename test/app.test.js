@@ -3105,3 +3105,29 @@ test('the server refuses to start in production with TEST_TOOLS=1', () => {
   assert.equal(r.status, 1, r.stderr || r.stdout);
   assert.match(r.stderr, /TEST_TOOLS/);
 });
+
+test('backups: a consistent copy, one a day, and none kept past 30 days', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { backup, backupIfDue } = require('../scripts/backup');
+  const dir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'kwaai-backup-'));
+  const db = openDb(path.join(dir, 'live.db'));
+  db.prepare(`INSERT INTO meta (key, value) VALUES ('x', 'kept')`).run();
+  const out = path.join(dir, 'backups');
+  const first = backupIfDue(db, out);
+  assert.ok(first, 'no backup yet, so one is due');
+  const copy = openDb(first);
+  assert.equal(copy.prepare(`SELECT value FROM meta WHERE key = 'x'`).get().value, 'kept');
+  copy.close();
+  assert.equal(backupIfDue(db, out), null, 'not twice in a day');
+  const ago = (days) => new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+  fs.utimesSync(first, ago(1), ago(1));
+  const old = path.join(out, 'lekker-old.db');
+  fs.writeFileSync(old, '');
+  fs.utimesSync(old, ago(31), ago(31));
+  assert.ok(backupIfDue(db, out), 'a day later, another');
+  assert.ok(!fs.existsSync(old), 'a 31-day-old backup is deleted');
+  assert.ok(fs.existsSync(first), 'a 1-day-old one stays');
+  db.close();
+  fs.rmSync(dir, { recursive: true, force: true });
+});
