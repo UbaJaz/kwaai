@@ -1970,7 +1970,8 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
         <li>✓ Your student number: <strong>${number}</strong></li>
         <li>✓ Your name below (or "Anonymous" if you choose that)</li>
         <li>✓ The minutes you time for <strong>${cls.course}</strong> on the study timer, and your streak</li>
-        <li>✓ Your tut and prac attendance in this class</li>
+        <li>✓ Your tut and prac attendance in this class, and your DP status from it</li>
+        <li>✓ Warnings like "missed the last two sessions", "can't reach DP" or "no study in 14 days", so they can check in with you</li>
       </ul>
       <h2>What they won't see</h2>
       <ul class="plain consent-list no">
@@ -2471,7 +2472,7 @@ function privacy(ctx) {
     <li>Moderators (currently the two of us), who can see hidden reviews and removal requests but not which student wrote a review.</li>
     <li>The lecturer and tutors of each class you join, as set out under Classes above.</li>
     <li>Our email provider, Brevo (a French company), which sends sign-in emails. It receives your email address and processes it in the EU under the GDPR and its own data-processing terms.</li>
-    <li>Our hosting provider, Fly.io (a US company), which runs the site on its servers in Johannesburg, so the database and its backups are stored in South Africa. Fly.io processes it under its own data-protection terms, and as a US company it may access it from outside South Africa to run the service; we rely on POPIA section 72 for that because we need it to run the service you signed up for.</li>
+    <li>Our hosting provider, Fly.io (a US company), which runs the site and its database on its servers in Johannesburg. Fly.io processes it under its own data-protection terms, and as a US company it may access it from outside South Africa to run the service; we rely on POPIA section 72 for that because we need it to run the service you signed up for.</li>
   </ul>
   <p>We never sell personal information and never share it with UCT unless a court or the law requires us to.</p>
 
@@ -2481,7 +2482,7 @@ function privacy(ctx) {
     <li>Sign-in links expire after 15 minutes and sessions after 30 days. Both are then deleted.</li>
     <li>Reviews and tips removed by moderators, handled removal requests and the moderators' action log are deleted after 12 months.</li>
     <li>A class list a lecturer pasted is deleted 30 days after the class's year ends. The rest of a class (its sessions, attendance, announcements, dates and pulse counts) stays until the lecturer deletes the class or their account.</li>
-    <li>Deleting your account removes you from your classes, deletes every attendance mark under your student number, and takes you off class lists you joined. If your lecturer's own pasted list includes you, that row stays with the lecturer until the list is deleted.</li>
+    <li>Deleting your account removes you from your classes and from class lists you joined, and deletes your attendance marks. If a lecturer's own pasted list includes you, that row and your attendance in that class stay on the lecturer's register, no longer linked to your account, because a missing mark would count as an absence against your DP.</li>
     <li>Database backups are kept for 30 days, so something you delete can stay in a backup for up to 30 days before it's gone for good.</li>
   </ul>
 
@@ -2541,7 +2542,7 @@ function account(ctx, { reviews, verdicts }) {
 
   <h2 class="section-title">Delete my account</h2>
   <div class="card panel danger-zone">
-    <p>This permanently deletes your account, your email address and <strong>all your votes, tips and reviews</strong>.</p>
+    <p>This permanently deletes your account, your email address and <strong>all your votes, tips and reviews</strong>, your study history, and your class memberships and attendance. Attendance on a lecturer's own class list stays on their register, without your account.</p>
     <form method="post" action="/account/delete" data-confirm="Delete your account with all your votes and reviews? This can't be undone."><button class="btn btn-danger">Delete my account</button></form>
   </div>`);
 }
