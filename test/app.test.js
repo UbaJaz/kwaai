@@ -2282,8 +2282,15 @@ test('deleting a lecturer account deletes their classes; deleting a student remo
   const s = newBrowser();
   await s.signIn('abcxyz002@myuct.ac.za');
   await s.post('/c/' + code + '/join', { show: 'name', name: 'Thandi M' });
+  await s.text('/c/' + code); // puts them on the class list as 'joined'
+  const classId = sdb.prepare('SELECT id FROM classes').get().id;
+  const sess = sdb.prepare(`INSERT INTO attendance_sessions (class_id, label, started_at) VALUES (?, 'Tut 1', ?)`).run(classId, Date.now()).lastInsertRowid;
+  sdb.prepare(`INSERT INTO attendance (session_id, number, user_id, marked_at, how) VALUES (?, 'ABCXYZ002', NULL, ?, 'tutor')`).run(sess, Date.now());
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE number = 'ABCXYZ002'`).get().n, 1);
   await s.post('/account/delete', {});
   assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_members WHERE role = 'student'`).get().n, 0);
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE number = 'ABCXYZ002'`).get().n, 0, 'their name and number leave the class list');
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM attendance WHERE number = 'ABCXYZ002'`).get().n, 0, 'and so does attendance marked by number');
   assert.equal((await lecturer.post('/account/delete', {})).status, 303, 'no foreign key gets in the way');
   assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM classes').get().n, 0);
 }));

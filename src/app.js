@@ -1170,6 +1170,12 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM announcement_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM classes WHERE owner_id = ?`).run(id); // a lecturer's own classes go with them (members cascade)
       q(`DELETE FROM attendance WHERE user_id = ?`).run(id);
+      // marks a tutor added by student number, and the class-list row joining made; a lecturer's pasted list row stays
+      const number = Classes.studentNumber(req.user.email);
+      if (number) {
+        q(`DELETE FROM attendance WHERE number = ?`).run(number);
+        q(`DELETE FROM class_roster WHERE number = ? AND source = 'joined'`).run(number);
+      }
       q(`UPDATE attendance_sessions SET started_by = NULL WHERE started_by = ?`).run(id);
       q(`DELETE FROM class_members WHERE user_id = ?`).run(id);
       q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
