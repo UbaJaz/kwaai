@@ -1530,6 +1530,11 @@ test('home page offers the two paths: rate a course and plan a semester', async 
 
 test('privacy, terms and about pages render, and every page says who makes Kwaai', async () => {
   for (const p of ['/privacy', '/terms', '/about']) assert.equal((await fetch(base + p)).status, 200, p);
+  const privacy = await (await fetch(`${base}/privacy`)).text();
+  assert.match(privacy, /Class lists from lecturers/, 'the notice covers class data');
+  assert.match(privacy, /Fly\.io/, 'and names the host we actually use');
+  assert.match(await (await fetch(`${base}/terms`)).text(), /Classes \(for staff\)/);
+  assert.match(await (await fetch(`${base}/rules`)).text(), /id="classes"/);
   const about = await (await fetch(`${base}/about`)).text();
   assert.match(about, /<a href="https:\/\/ubayd\.me">Ubayd Hattas<\/a>/);
   assert.match(about, /<a href="https:\/\/jaswin\.me">Jaswin Chinthala<\/a>/);
