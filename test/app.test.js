@@ -1530,6 +1530,11 @@ test('home page offers the two paths: rate a course and plan a semester', async 
 
 test('privacy, terms and about pages render, and every page says who makes Kwaai', async () => {
   for (const p of ['/privacy', '/terms', '/about']) assert.equal((await fetch(base + p)).status, 200, p);
+  const privacy = await (await fetch(`${base}/privacy`)).text();
+  assert.match(privacy, /Class lists from lecturers/, 'the notice covers class data');
+  assert.match(privacy, /Fly\.io/, 'and names the host we actually use');
+  assert.match(await (await fetch(`${base}/terms`)).text(), /Classes \(for staff\)/);
+  assert.match(await (await fetch(`${base}/rules`)).text(), /id="classes"/);
   const about = await (await fetch(`${base}/about`)).text();
   assert.match(about, /<a href="https:\/\/ubayd\.me">Ubayd Hattas<\/a>/);
   assert.match(about, /<a href="https:\/\/jaswin\.me">Jaswin Chinthala<\/a>/);
@@ -2282,10 +2287,28 @@ test('deleting a lecturer account deletes their classes; deleting a student remo
   const s = newBrowser();
   await s.signIn('abcxyz002@myuct.ac.za');
   await s.post('/c/' + code + '/join', { show: 'name', name: 'Thandi M' });
+  await s.text('/c/' + code); // puts them on the class list as 'joined'
+  const classId = sdb.prepare('SELECT id FROM classes').get().id;
+  const sess = sdb.prepare(`INSERT INTO attendance_sessions (class_id, label, started_at) VALUES (?, 'Tut 1', ?)`).run(classId, Date.now()).lastInsertRowid;
+  sdb.prepare(`INSERT INTO attendance (session_id, number, user_id, marked_at, how) VALUES (?, 'ABCXYZ002', NULL, ?, 'tutor')`).run(sess, Date.now());
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE number = 'ABCXYZ002'`).get().n, 1);
+  // a second class whose lecturer pasted the official list with this student on it; they checked in by QR
+  const { code: code2 } = await makeClass(newBrowser, 'other.lecturer@uct.ac.za');
+  const class2 = sdb.prepare('SELECT id FROM classes WHERE code = ?').get(code2).id;
+  sdb.prepare(`INSERT INTO class_roster (class_id, number, name, source) VALUES (?, 'ABCXYZ002', 'T Mokoena', 'list')`).run(class2);
+  await s.post('/c/' + code2 + '/join', { show: 'name', name: 'Thandi M' });
+  const userId = sdb.prepare(`SELECT id FROM users WHERE email = 'abcxyz002@myuct.ac.za'`).get().id;
+  const sess2 = sdb.prepare(`INSERT INTO attendance_sessions (class_id, label, started_at) VALUES (?, 'Prac 1', ?)`).run(class2, Date.now()).lastInsertRowid;
+  sdb.prepare(`INSERT INTO attendance (session_id, number, user_id, marked_at, how, device) VALUES (?, 'ABCXYZ002', ?, ?, 'qr', 'phone1')`).run(sess2, userId, Date.now());
   await s.post('/account/delete', {});
   assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_members WHERE role = 'student'`).get().n, 0);
+  assert.deepEqual(sdb.prepare(`SELECT class_id, source FROM class_roster WHERE number = 'ABCXYZ002'`).all().map((r) => ({ ...r })), [{ class_id: class2, source: 'list' }],
+    'their joined class-list row goes; the lecturer\'s pasted list stays');
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM attendance WHERE session_id = ?`).get(sess).n, 0, 'marks in a class they only joined are deleted');
+  assert.deepEqual({ ...sdb.prepare(`SELECT user_id, device FROM attendance WHERE session_id = ?`).get(sess2) }, { user_id: null, device: '' },
+    'on the lecturer\'s own list the mark stays, unlinked from the account, so their DP isn\'t lost');
   assert.equal((await lecturer.post('/account/delete', {})).status, 303, 'no foreign key gets in the way');
-  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM classes').get().n, 0);
+  assert.deepEqual(sdb.prepare('SELECT id FROM classes').all().map((c) => c.id), [class2], "only the other lecturer's class is left");
 }));
 
 test('the class page: this week against the goal, a ranking of only that course, anonymous names, and Today', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
@@ -3087,3 +3110,40 @@ test('the rank card: the rank, season, streak and quests, and a name only if the
   assert.match(page, /<p class="rank-share-name">Card Holder<\/p>/);
   assert.match(await s.text('/study/rank'), /href="\/study\/rank\/card">Get your rank card/);
 }));
+
+test('the server refuses to start in production with TEST_TOOLS=1', () => {
+  const { spawnSync } = require('node:child_process');
+  const os = require('node:os');
+  // every variable set explicitly, so a developer's .env can't fill one in
+  const env = { ...process.env, NODE_ENV: 'production', TEST_TOOLS: '1', BASE_URL: 'https://kwaai.test', EMAIL_FROM: 'Kwaai <a@kwaai.test>', MODERATORS: 'mod@myuct.ac.za',
+    CONTACT_EMAIL: 'a@kwaai.test', BREVO_API_KEY: 'test', RESEND_API_KEY: '', DEMO_PASSWORD: '', PORT: '0', DB_FILE: require('node:path').join(os.tmpdir(), `kwaai-refuse-${process.pid}.db`) };
+  const r = spawnSync(process.execPath, [require('node:path').join(__dirname, '..', 'server.js')], { env, encoding: 'utf8', timeout: 10_000, killSignal: 'SIGKILL' });
+  assert.equal(r.status, 1, r.stderr || r.stdout);
+  assert.match(r.stderr, /TEST_TOOLS/);
+});
+
+test('backups: a consistent copy, one a day, and none kept past 30 days', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { backup, backupIfDue } = require('../scripts/backup');
+  const dir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'kwaai-backup-'));
+  const db = openDb(path.join(dir, 'live.db'));
+  db.prepare(`INSERT INTO meta (key, value) VALUES ('x', 'kept')`).run();
+  const out = path.join(dir, 'backups');
+  const first = backupIfDue(db, out);
+  assert.ok(first, 'no backup yet, so one is due');
+  const copy = openDb(first);
+  assert.equal(copy.prepare(`SELECT value FROM meta WHERE key = 'x'`).get().value, 'kept');
+  copy.close();
+  assert.equal(backupIfDue(db, out), null, 'not twice in a day');
+  const ago = (days) => new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+  fs.utimesSync(first, ago(1), ago(1));
+  const old = path.join(out, 'lekker-old.db');
+  fs.writeFileSync(old, '');
+  fs.utimesSync(old, ago(31), ago(31));
+  assert.ok(backupIfDue(db, out), 'a day later, another');
+  assert.ok(!fs.existsSync(old), 'a 31-day-old backup is deleted');
+  assert.ok(fs.existsSync(first), 'a 1-day-old one stays');
+  db.close();
+  fs.rmSync(dir, { recursive: true, force: true });
+});

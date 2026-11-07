@@ -2,7 +2,7 @@
 
 For Jaswin. This gets real sign-in emails going to @myuct.ac.za addresses and sets up the contact address the privacy notice promises. Allow an evening: most of the time is waiting for DNS.
 
-Never paste an API key into a chat, a commit, a screenshot or a code file. Keys go in Render's environment settings and a password manager, nowhere else.
+Never paste an API key into a chat, a commit, a screenshot or a code file. Keys go in Fly secrets (`fly secrets set`) and a password manager, nowhere else.
 
 ## What you're setting up
 
@@ -12,7 +12,7 @@ Never paste an API key into a chat, a commit, a screenshot or a code file. Keys 
 
 ## 1. Turn on two-factor sign-in everywhere
 
-Before anything else, turn on 2FA for GitHub, Render, Brevo and the domain registrar. Anyone who gets into one of these can read students' emails or send mail as Kwaai.
+Before anything else, turn on 2FA for GitHub, Fly.io, Brevo and the domain registrar. Anyone who gets into one of these can read students' emails or send mail as Kwaai.
 
 ## 2. Get the domain
 
@@ -38,23 +38,23 @@ Set up `hello@kwaai.co.za` (or whatever name you like) to forward to one of your
 
 This address goes on the privacy notice. Under POPIA we have to answer requests to see, correct or delete information. Removal requests promise a reply within 48 hours, so check it daily.
 
-## 5. Put it on Render
+## 5. Put it on Fly
 
-In the Render dashboard, open the web service, then **Environment**, and set:
+Set these as Fly secrets, e.g. `fly secrets set BREVO_API_KEY=… EMAIL_FROM="Kwaai <signin@kwaai.co.za>"` (each one restarts the app):
 
 | Variable | Value |
 |---|---|
 | `BREVO_API_KEY` | the key from step 3 |
 | `EMAIL_FROM` | `Kwaai <signin@kwaai.co.za>` |
-| `BASE_URL` | `https://kwaai.onrender.com` (or the custom domain, once it points at Render) |
+| `BASE_URL` | `https://<your-app>.fly.dev` (or the custom domain, once it points at Fly: `fly certs add kwaai.co.za`) |
 | `CONTACT_EMAIL` | `hello@kwaai.co.za` |
 | `MODERATORS` | both our @myuct.ac.za addresses, comma-separated |
 | `INFORMATION_OFFICER` | the one person named as information officer (see step 7), e.g. `Ubayd Hattas` |
-| `DEMO_PASSWORD` | keep it while we're still building; remove it at launch |
+| `DEMO_PASSWORD` | keep it while we're still building; remove it at launch (`fly secrets unset DEMO_PASSWORD`) |
 
 If an email key is set without `EMAIL_FROM` and `BASE_URL`, the app refuses to start. That's on purpose: without `BASE_URL`, sign-in links could be built from a faked address.
 
-Save, and let Render redeploy.
+Fly restarts the app with the new secrets.
 
 ## 6. Test it
 
@@ -71,14 +71,14 @@ If emails keep landing in junk, check the domain's records with an online SPF/DK
 None of this is legal advice. Before real students sign up, ask a lawyer to read `/privacy`, `/terms` and `/rules`. UCT's Law Clinic is a cheap place to start.
 
 - **Information officer.** POPIA says a responsible party must have an information officer and register them with the Information Regulator. Pick one of us, set `INFORMATION_OFFICER`, and register through the Regulator's eServices portal ([inforegulator.org.za](https://inforegulator.org.za)). Ask the lawyer whether this applies to us as two individuals running a student project. If it does, do it before launch.
-- **Processors.** Brevo (email) and Render (hosting) process students' data for us. Keep copies of their data-processing terms. If we add another service that touches personal data, update the "Who else sees it" section of `/privacy` first.
+- **Processors.** Brevo (email) and Fly.io (hosting) process students' data for us. Keep copies of their data-processing terms. If we add another service that touches personal data, update the "Who else sees it" section of `/privacy` first.
 - **Under-18s.** The sign-in form makes students confirm they're 18 or older, because POPIA needs a guardian's consent for children. If we learn an account belongs to someone under 18, delete it from `/mod` and note it in the moderation log.
 - **Requests.** Students can download and delete their own data from `/account`. Anything else that comes to the contact address (correct my data, object to processing) gets a reply within 30 days. Takedown requests get one within 48 hours.
 - **Keep it minimal.** Don't add analytics, trackers or new fields about students without updating `/privacy` first.
 
 ## Before real launch (not yet)
 
-- Move off Render's free plan to one with a persistent disk (about $7 a month). On the free plan the database is wiped whenever the app sleeps, so every account and review would vanish.
+- Host on Fly.io with the `lekker_data` volume (see the README). Render's free plan wipes the database whenever the app sleeps, so it's only for demos.
 - Set `NODE_ENV=production` (secure cookies, no sample reviews) and remove `DEMO_PASSWORD`.
-- Schedule `npm run backup` daily. It keeps 30 days of backups, which the privacy notice promises.
-- Check that `TRUST_PROXY=1` matches Render's setup. The app doesn't log IPs, so this needs a temporary one-line log of `req.ip`: sign in from two networks (Wi-Fi and mobile data) and check you see two different IPs, then remove the log. If both show the same IP, rate limits would treat everyone as one person.
+- Backups run daily by themselves in production and keep 30 days, which the privacy notice promises. Also keep a copy off the server (see the README's launch checklist).
+- Check that `TRUST_PROXY=1` matches Fly's setup. The app doesn't log IPs, so this needs a temporary one-line log of `req.ip`: sign in from two networks (Wi-Fi and mobile data) and check you see two different IPs, then remove the log. If both show the same IP, rate limits would treat everyone as one person.
