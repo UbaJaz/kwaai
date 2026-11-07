@@ -19,6 +19,12 @@ if (!devMode) {
     console.error(`Refusing to start in production. Missing env vars: ${missing.join(', ')} (see README).`);
     process.exit(1);
   }
+  // the test tools make fake students and study data, which must never mix with real students'
+  if (env.TEST_TOOLS === '1') {
+    console.error('Refusing to start in production with TEST_TOOLS=1. Unset it (see README).');
+    process.exit(1);
+  }
+  if (env.DEMO_PASSWORD) console.log('DEMO_PASSWORD is set, so every page asks for it. Remove it to open the site to students.');
 }
 
 // Real emails, even on a dev-mode demo, need the sender and a fixed site address. Without BASE_URL the sign-in link
