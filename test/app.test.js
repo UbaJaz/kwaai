@@ -2292,12 +2292,23 @@ test('deleting a lecturer account deletes their classes; deleting a student remo
   const sess = sdb.prepare(`INSERT INTO attendance_sessions (class_id, label, started_at) VALUES (?, 'Tut 1', ?)`).run(classId, Date.now()).lastInsertRowid;
   sdb.prepare(`INSERT INTO attendance (session_id, number, user_id, marked_at, how) VALUES (?, 'ABCXYZ002', NULL, ?, 'tutor')`).run(sess, Date.now());
   assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE number = 'ABCXYZ002'`).get().n, 1);
+  // a second class whose lecturer pasted the official list with this student on it; they checked in by QR
+  const { code: code2 } = await makeClass(newBrowser, 'other.lecturer@uct.ac.za');
+  const class2 = sdb.prepare('SELECT id FROM classes WHERE code = ?').get(code2).id;
+  sdb.prepare(`INSERT INTO class_roster (class_id, number, name, source) VALUES (?, 'ABCXYZ002', 'T Mokoena', 'list')`).run(class2);
+  await s.post('/c/' + code2 + '/join', { show: 'name', name: 'Thandi M' });
+  const userId = sdb.prepare(`SELECT id FROM users WHERE email = 'abcxyz002@myuct.ac.za'`).get().id;
+  const sess2 = sdb.prepare(`INSERT INTO attendance_sessions (class_id, label, started_at) VALUES (?, 'Prac 1', ?)`).run(class2, Date.now()).lastInsertRowid;
+  sdb.prepare(`INSERT INTO attendance (session_id, number, user_id, marked_at, how, device) VALUES (?, 'ABCXYZ002', ?, ?, 'qr', 'phone1')`).run(sess2, userId, Date.now());
   await s.post('/account/delete', {});
   assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_members WHERE role = 'student'`).get().n, 0);
-  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE number = 'ABCXYZ002'`).get().n, 0, 'their name and number leave the class list');
-  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM attendance WHERE number = 'ABCXYZ002'`).get().n, 0, 'and so does attendance marked by number');
+  assert.deepEqual(sdb.prepare(`SELECT class_id, source FROM class_roster WHERE number = 'ABCXYZ002'`).all().map((r) => ({ ...r })), [{ class_id: class2, source: 'list' }],
+    'their joined class-list row goes; the lecturer\'s pasted list stays');
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM attendance WHERE session_id = ?`).get(sess).n, 0, 'marks in a class they only joined are deleted');
+  assert.deepEqual({ ...sdb.prepare(`SELECT user_id, device FROM attendance WHERE session_id = ?`).get(sess2) }, { user_id: null, device: '' },
+    'on the lecturer\'s own list the mark stays, unlinked from the account, so their DP isn\'t lost');
   assert.equal((await lecturer.post('/account/delete', {})).status, 303, 'no foreign key gets in the way');
-  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM classes').get().n, 0);
+  assert.deepEqual(sdb.prepare('SELECT id FROM classes').all().map((c) => c.id), [class2], "only the other lecturer's class is left");
 }));
 
 test('the class page: this week against the goal, a ranking of only that course, anonymous names, and Today', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
