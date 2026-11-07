@@ -135,7 +135,7 @@ fly secrets set BASE_URL=https://… BREVO_API_KEY=… EMAIL_FROM="Kwaai <signin
 fly deploy
 ```
 
-Backups: `fly ssh console -C "npm run backup"`, then `fly ssh sftp get /data/backups/<file>` to copy one off the server.
+Backups: the server writes one to `/data/backups` every day by itself (see [Backups](#backups)). To copy one off the server: `fly ssh sftp get /data/backups/<file>`. Fly also snapshots the volume daily; check `fly volumes list` and `fly volumes snapshots list <volume-id>`.
 
 ### Environment variables
 
@@ -154,10 +154,10 @@ Backups: `fly ssh console -C "npm run backup"`, then `fly ssh sftp get /data/bac
 | `TRUST_PROXY` | set by Dockerfile | `1` = trust one proxy hop, so rate limits see the real client IP. Set it to `0` only if nothing sits in front of the app. |
 | `ADMIN_PASSWORD_HASH` | no | Turns on the admin sign-in at `/admin/login`. Make it with `npm run admin-hash` (see below). Never put the password itself here. |
 | `ADMIN_USERNAME` | no | The admin's username. Defaults to `kwaai`. |
-| `TEST_TOOLS` | no, and off at launch | `1` shows `/admin/tools` to the admin: fake study days, streaks and students for testing. |
+| `TEST_TOOLS` | no, and refused in production | `1` shows `/admin/tools` to the admin: fake study days, streaks and students for testing. The server won't start with it in production. |
 | `DB_FILE`, `BACKUP_DIR`, `PORT` | no | Paths and port. |
 
-The server refuses to start in production if a required variable is missing.
+The server refuses to start in production if a required variable is missing or `TEST_TOOLS=1`, and logs a reminder while `DEMO_PASSWORD` is set.
 
 ### The admin account
 
@@ -177,11 +177,13 @@ With `TEST_TOOLS=1` the admin also gets `/admin/tools` (linked in the header): s
 npm run backup
 ```
 
-This writes a consistent copy to `backups/` (or `BACKUP_DIR`) while the site runs, and deletes backups older than 30 days (the privacy notice promises deleted data is gone from backups within 30 days). Schedule it daily and copy the files off the server.
+In production the server backs itself up: once an hour it checks `BACKUP_DIR` (`/data/backups` in Docker), and if the newest backup is over 23 hours old it writes a new one, so a deploy or restart never skips a day. `npm run backup` makes one straight away. Either way it's a consistent copy taken while the site runs, and backups older than 30 days are deleted (the privacy notice promises deleted data is gone from backups within 30 days). A failed backup is logged as `Backup failed:` and the site keeps running.
+
+These copies sit on the same volume as the database, so they don't survive losing the volume. Keep a copy off the server too, and keep any off-server copies and volume snapshots for 30 days or less. Thirty copies of today's 4 MB database fit easily on the 1 GB volume.
 
 ### Housekeeping the server does itself
 
-Every hour it deletes expired sign-in links and sessions, plus moderator-removed reviews, handled takedown requests, closed lecturer suggestions and moderation-log entries older than 12 months, as the privacy notice promises.
+Every hour it deletes expired sign-in links and sessions, plus moderator-removed reviews, handled takedown requests, closed lecturer suggestions, moderation-log entries and unused calendar links older than 12 months, and lecturers' pasted class lists 30 days after the class's year ends, as the privacy notice promises. In production it also makes the daily backup.
 
 ### Abuse limits
 
@@ -197,10 +199,18 @@ Limits are kept in memory, so they reset when the app restarts.
 
 Step-by-step email, contact and POPIA setup: [`docs/email-setup.md`](docs/email-setup.md).
 
-- [ ] **Persistent database.** Render's free plan wipes it on sleep. Move to a plan with a disk (about $7 a month) before inviting real students.
-- [ ] **Get a lawyer to read `/privacy`, `/terms` and `/rules`.** They're careful drafts, not legal advice. UCT's Law Clinic or a POPIA-focused attorney is a cheap place to start.
+Hosting is Fly.io (decided November 2026): `jnb` region, one machine, the `lekker_data` volume. Render's free plan wipes the database on sleep, so it's only for demos.
+
+- [ ] **Fly account and first deploy**, following [Fly.io](#flyio) above: create the app and the volume, set the secrets, `fly deploy`. Check the logs show `backed up to /data/backups/...`.
+- [ ] **Volume snapshots:** check `fly volumes snapshots list <volume-id>` shows daily snapshots, with retention of 30 days or less (the privacy notice promises deleted data leaves backups within 30 days).
+- [ ] **Off-server backup:** once a week (or set up a job), `fly ssh sftp get /data/backups/<newest file>` to somewhere safe, and delete copies older than 30 days.
+- [ ] **Get a lawyer to read `/privacy`, `/terms` and `/rules`.** They're careful drafts, not legal advice. UCT's Law Clinic or a POPIA-focused attorney is a cheap place to start. Ask especially:
+  - Classes: when a lecturer pastes a class list (students who never signed up), is Kwaai an *operator* for the lecturer or UCT, and do we need an agreement with UCT before lecturers use Classes?
+  - Is processing attendance and "at risk" warnings on consent at join plus the lecturer's teaching purpose a sound legal basis?
+  - Fly.io stores the data in Johannesburg but is a US company: is the section 72 wording right?
+  - Class records (attendance, sessions) have no automatic deletion: they stay until the lecturer deletes the class. Should they expire, e.g. a year after the class's year ends?
 - [ ] **Name the information officer** (`INFORMATION_OFFICER`) and register them with the Information Regulator if the lawyer confirms it applies.
-- [ ] **Domain, Brevo and contact address**, following `docs/email-setup.md`. Send test sign-ins to a few myuct addresses.
-- [ ] **Switch to production:** `NODE_ENV=production`, remove `DEMO_PASSWORD`, check `TRUST_PROXY`.
+- [ ] **Domain, Brevo and contact address**, following `docs/email-setup.md`. Send test sign-ins to a few myuct and uct addresses.
+- [ ] **Switch to production:** `NODE_ENV=production` and `TRUST_PROXY=1` come from the Dockerfile; don't set `DEMO_PASSWORD` or `TEST_TOOLS` (the server refuses `TEST_TOOLS=1`).
 - [ ] **Moderators:** check `/mod` daily, so removal requests get handled within the 48 hours the rules promise.
-- [ ] **Schedule `npm run backup`.**
+- [ ] **Try a restore once:** download a backup, run `DB_FILE=<that file> npm start` on your laptop, and check the reviews and classes are there.
