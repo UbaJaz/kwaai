@@ -119,7 +119,7 @@ Render's free plan blocks SMTP, so emails go through Brevo's HTTP API. The free 
 1. Sign up at [brevo.com](https://www.brevo.com) (free plan).
 2. In Brevo's settings, find **Senders** and add one: an address you can open, e.g. a Gmail you make for Kwaai. Click the link Brevo emails you to verify it.
 3. In the settings, find **SMTP & API → API keys** and generate a key. Copy it straight away; Brevo only shows it once.
-4. On Render, set `BREVO_API_KEY` to that key, `EMAIL_FROM` to `Kwaai <the-sender-you-verified>` and `BASE_URL` to `https://kwaai.onrender.com`.
+4. On Render (or with `fly secrets set` on Fly), set `BREVO_API_KEY` to that key, `EMAIL_FROM` to `Kwaai <the-sender-you-verified>` and `BASE_URL` to `https://kwaai.onrender.com`.
 5. Sign in with your own myuct address to test. The first emails may land in **Junk** or **Other**: mark them "Not junk". A sender on your own domain (later, with Resend or Brevo) lands in the inbox more reliably.
 
 Don't use this for real reviews: they'd be lost on the next restart.
@@ -142,7 +142,7 @@ Backups: the server writes one to `/data/backups` every day by itself (see [Back
 | Variable | Required in production | What it is |
 |---|---|---|
 | `NODE_ENV` | yes | `production` (set by the Dockerfile) |
-| `BASE_URL` | yes, and whenever an email key is set | Public URL, e.g. `https://kwaai.onrender.com`. Sign-in links use it. |
+| `BASE_URL` | yes, and whenever an email key is set | Public URL, e.g. `https://kwaai.co.za` or `https://<app>.fly.dev`. Sign-in links use it. |
 | `BREVO_API_KEY` | this or `RESEND_API_KEY` | From [brevo.com](https://www.brevo.com). Free, and works with one verified sender address, no domain. Used first if both are set. |
 | `RESEND_API_KEY` | this or `BREVO_API_KEY` | From [resend.com](https://resend.com). Needs a verified domain to email students. |
 | `EMAIL_FROM` | yes, and whenever an email key is set | e.g. `Kwaai <kwaai.signin@gmail.com>`. Must be the sender verified in Brevo, or on the domain verified in Resend. |
@@ -164,7 +164,7 @@ The server refuses to start in production if a required variable is missing or `
 One username-and-password account for testing the study features and moderating, separate from student sign-in.
 
 1. Run `npm run admin-hash` and type a password of at least 10 characters (nothing shows while you type). It prints a line starting `ADMIN_PASSWORD_HASH=scrypt$...`.
-2. Put that line in `.env` on your laptop, or add it as an environment variable on Render. The password itself is never stored.
+2. Put that line in `.env` on your laptop, or set it on the host (`fly secrets set ADMIN_PASSWORD_HASH='scrypt$...'` on Fly, in single quotes so the shell leaves the `$` alone). The password itself is never stored.
 3. Open `/admin/login`, sign in with `kwaai` (or your `ADMIN_USERNAME`) and the password.
 
 The account is `admin@kwaai.invalid`: it can use `/mod`, and as a test account it never appears in leaderboards, "studying now" counts or course hours that students see. Signed in as the admin you see test accounts in those figures too, so you can check them.
@@ -213,4 +213,4 @@ Hosting is Fly.io (decided November 2026): `jnb` region, one machine, the `lekke
 - [ ] **Domain, Brevo and contact address**, following `docs/email-setup.md`. Send test sign-ins to a few myuct and uct addresses.
 - [ ] **Switch to production:** `NODE_ENV=production` and `TRUST_PROXY=1` come from the Dockerfile; don't set `DEMO_PASSWORD` or `TEST_TOOLS` (the server refuses `TEST_TOOLS=1`).
 - [ ] **Moderators:** check `/mod` daily, so removal requests get handled within the 48 hours the rules promise.
-- [ ] **Try a restore once:** download a backup, run `DB_FILE=<that file> npm start` on your laptop, and check the reviews and classes are there.
+- [ ] **Try a restore once:** download a backup, copy it (dev mode adds sample data to the file it opens), run `DB_FILE=<the copy> npm start` on your laptop, and check the reviews and classes are there.
