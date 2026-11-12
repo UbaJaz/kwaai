@@ -17,7 +17,7 @@ You asked for more commits, within reason. Each task lists the commits it natura
 - Merge pull requests with a merge commit, not a squash, so each commit stays in the history.
 - Do not split a change to raise the count: no one-line-per-commit, no committing a rename apart from its use, no empty or whitespace commits. A reviewer or recruiter who opens the history should find that every commit means something.
 
-The plan below comes to about 105 commits across 33 tasks if every optional item is approved. That is the honest number for this much work.
+The plan below comes to about 135 commits across 42 tasks if every optional item is approved (107 commits across 32 tasks without phase 4). That is the honest number for this much work.
 
 ## Phase 1: security and anonymity
 
