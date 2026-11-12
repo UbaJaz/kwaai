@@ -721,29 +721,29 @@ test('student reviews, report hides it, moderator restores it', async () => {
   await student.signIn('abcxyz001@myuct.ac.za');
   const good = { lecturer_id: 'none', year: String(new Date().getFullYear()), teaching: 5, engagement: 5, exams: 4, support: 5, difficulty: 3, workload: 3, body: 'Demos in lectures are the best part', agree: '1' };
 
-  assert.equal((await student.post('/courses/PHY1012F/review', good)).status, 303);
-  assert.equal((await student.post('/courses/PHY1012F/review', good)).status, 400, 'second review for same lecturer/year is refused');
+  assert.equal((await student.post('/courses/CSC1016S/review', good)).status, 303);
+  assert.equal((await student.post('/courses/CSC1016S/review', good)).status, 400, 'second review for same lecturer/year is refused');
 
   const anon = browser();
-  let page = await anon.text('/courses/PHY1012F');
+  let page = await anon.text('/courses/CSC1016S');
   assert.match(page, /Demos in lectures are the best part/);
   assert.doesNotMatch(page, /abcxyz001/, 'author email never shown');
   const id = /id="review-(\d+)"[\s\S]*?Demos in lectures/.exec(page)[1];
 
   const loggedOut = await anon.post(`/reviews/${id}/report`, { reason: 'defamation' });
-  assert.match(loggedOut.headers.get('location'), /^\/login\?next=%2Fcourses%2FPHY1012F/, 'reporting needs a sign-in');
-  assert.match(await anon.text('/courses/PHY1012F'), /Demos in lectures/, 'an anonymous report hides nothing');
+  assert.match(loggedOut.headers.get('location'), /^\/login\?next=%2Fcourses%2FCSC1016S/, 'reporting needs a sign-in');
+  assert.match(await anon.text('/courses/CSC1016S'), /Demos in lectures/, 'an anonymous report hides nothing');
   const reader = browser();
   await reader.signIn('rep001@myuct.ac.za');
   assert.equal((await reader.post(`/reviews/${id}/report`, { reason: 'defamation' })).status, 303);
-  assert.doesNotMatch(await anon.text('/courses/PHY1012F'), /Demos in lectures/, 'serious report hides the review immediately');
+  assert.doesNotMatch(await anon.text('/courses/CSC1016S'), /Demos in lectures/, 'serious report hides the review immediately');
 
   assert.equal((await student.get('/mod')).status, 404, 'students cannot moderate');
   const mod = browser();
   await mod.signIn('mod001@myuct.ac.za');
   assert.match(await mod.text('/mod'), /Demos in lectures/);
   assert.equal((await mod.post(`/mod/reviews/${id}/approve`, {})).status, 303);
-  assert.match(await anon.text('/courses/PHY1012F'), /Demos in lectures/);
+  assert.match(await anon.text('/courses/CSC1016S'), /Demos in lectures/);
 });
 
 test('rule-breaking comments are held, contact details rejected', async () => {
@@ -1008,7 +1008,7 @@ test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can b
   // its own server, so earlier tests haven't used up this IP's report limit
   const db = openDb(':memory:');
   seed(db, { samples: false });
-  const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true }).listen(0);
+  const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true, commentsFrom: 1 }).listen(0);
   t.after(() => own.close());
   await new Promise((r) => own.once('listening', r));
   const fresh = () => browser(() => `http://localhost:${own.address().port}`);
@@ -1106,7 +1106,7 @@ test('rule-breaking tips are held, contact details rejected, votes deleted with 
 test('a held tip stays held when resubmitted, and a removed vote cannot be deleted and recast', async (t) => {
   const db = openDb(':memory:');
   seed(db, { samples: false });
-  const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true }).listen(0);
+  const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true, commentsFrom: 1 }).listen(0);
   t.after(() => own.close());
   await new Promise((r) => own.once('listening', r));
   const fresh = () => browser(() => `http://localhost:${own.address().port}`);
@@ -1141,7 +1141,7 @@ test('readers see the first 2 comments until they vote once, then all of them', 
   const add = db.prepare(`INSERT INTO reviews (course, year, teaching, engagement, exams, support, difficulty, workload, overall, body, created_at)
     VALUES ('CSC2001F', 2025, 4, 4, 4, 4, 3, 3, 4, ?, ?)`);
   for (const n of [1, 2, 3, 4]) add.run(`Gate comment number ${n}`, `2025-06-0${n} 10:00:00`);
-  const own = createApp(db, { devMode: true }).listen(0);
+  const own = createApp(db, { devMode: true, commentsFrom: 1 }).listen(0);
   t.after(() => own.close());
   await new Promise((r) => own.once('listening', r));
   const b = browser(() => `http://localhost:${own.address().port}`);
