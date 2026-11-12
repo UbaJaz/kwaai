@@ -2478,6 +2478,22 @@ test('class reps: full name and badge, can add dates, never the dashboard or stu
   assert.equal(sdb.prepare('SELECT role FROM class_members WHERE user_id = ?').get(repId).role, 'student');
 }));
 
+test('a class rep who added a date can still delete their account, and the date stays', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code, adminPath } = await makeClass(newBrowser);
+  const rep = newBrowser();
+  await rep.signIn('dele001@myuct.ac.za');
+  await rep.post('/c/' + code + '/join', { show: 'name', name: 'Dele Rep' });
+  const repId = sdb.prepare(`SELECT id FROM users WHERE email = 'dele001@myuct.ac.za'`).get().id;
+  await lecturer.post(adminPath + '/rep', { user: String(repId), make: '1', name: 'Dele Adeyemi' });
+  await rep.post('/c/' + code + '/dates', { type: 'test', date: Study.addDay(Study.saDay(Date.now()), 5), title: 'Test 3' });
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_dates WHERE added_by = ?').get(repId).n, 1);
+
+  const res = await rep.post('/account/delete', {});
+  assert.equal(res.status, 303, 'deleting the account works');
+  assert.equal(sdb.prepare('SELECT 1 FROM users WHERE id = ?').get(repId), undefined, 'the account is gone');
+  assert.match(await lecturer.text('/c/' + code), /Test 3[\s\S]{0,120}from the class/, 'the date stays, without the name of who added it');
+}));
+
 test('class announcements: staff and reps post, members see them on Today until read, reports hide them', () => withAdminServer({ moderators: new Set(['mod001@myuct.ac.za']) }, async ({ db: sdb, browser: newBrowser }) => {
   const { lecturer, code, adminPath } = await makeClass(newBrowser);
   const join = async (email, name) => {
