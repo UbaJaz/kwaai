@@ -1386,7 +1386,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!EMAIL_SHAPE.test(email) || !accountFor(email)) return res.status(400).page(views.login(req.ctx, { email, next, error: 'That isn\'t a UCT email. Students use their @myuct.ac.za address, staff their @uct.ac.za one.' }));
     // POPIA: children's information needs a guardian's consent, so accounts are for students 18 and older
     if (req.body.agree !== '1') return res.status(400).page(views.login(req.ctx, { email, next, error: 'Tick the box to confirm you\'re 18 or older and agree to the terms, house rules and privacy notice.' }));
-    if (q(`SELECT 1 FROM users WHERE email = ? AND banned = 1`).get(email)) return res.status(403).page(views.login(req.ctx, { email, next, error: 'This account has been suspended for breaking the house rules.' }));
+    // A suspended address gets a code like any other. Anyone can type an address here, so saying "suspended" now would
+    // tell a stranger who was banned; the owner of the inbox finds out when they use the code (startSession).
     const token = crypto.randomBytes(32).toString('hex');
     const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
     const today = new Date().toISOString().slice(0, 10);

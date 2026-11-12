@@ -899,6 +899,20 @@ test('launch safety: one live code per address, guess cap across IPs, daily emai
   assert.equal(status(ids[4]), 'published');
 });
 
+test('the sign-in form does not tell a stranger that an address was suspended', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  sdb.prepare(`INSERT INTO users (email, banned) VALUES ('bnd001@myuct.ac.za', 1)`).run();
+  const res = await newBrowser().post('/login', { email: 'bnd001@myuct.ac.za' });
+  assert.equal(res.status, 200);
+  const page = await res.text();
+  assert.doesNotMatch(page, /suspended/, 'anyone can type an address, so the form must look the same for every one');
+  assert.match(page, /Check your inbox/);
+  // the owner of the inbox finds out once they use the code or link
+  const owner = newBrowser();
+  const done = await owner.signIn('bnd001@myuct.ac.za');
+  assert.equal(done.status, 403);
+  assert.match(await done.text(), /Account suspended/);
+}));
+
 test('wrong admin passwords from other connections cannot lock the admin out', async (t) => {
   const sdb = openDb(':memory:');
   const srv = createApp(sdb, { devMode: true, trustProxy: '1', adminPasswordHash: Admin.hashPassword('test-only-password-123') }).listen(0);
