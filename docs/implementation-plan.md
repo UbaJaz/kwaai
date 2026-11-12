@@ -278,11 +278,13 @@ Listed in the order of `docs/opportunities.md`. Each needs a yes.
 
 S1, S2, S3, S4, S5, S6, S8, S9, then D1 to D8 and D10, then U7 and U8. S7 (author keys) should also land first if the lecturer page is to describe it as done; otherwise that page must say "planned". Badges and the rest of phase 3 do not block the demo.
 
-## What you need to decide before work starts
+## Decisions (12 November 2026)
 
-1. Badge concept, logo and tier names (`docs/brand.md`).
-2. Which opportunities and cuts to approve (`docs/opportunities.md`).
-3. S2: staff-only instant hide, or add email-code verification for others.
-4. S5: remove "lowest rated" for lecturers only, or lecturer rankings altogether.
-5. Whether S7 must be finished before the first lecturer sees the demo.
-6. Demo feedback by email through Brevo: acceptable, or research a free database.
+Ubayd handed these to Claude to decide. Change any of them and the affected tasks change with it.
+
+1. **Badges:** concept A, chevron stack. **Logo:** the live `kwaai-icon.svg`; the preview PNG is dropped. **Tier names:** kept for now.
+2. **Opportunities:** all eight approved. O1 (lecturer reply) is built last in phase 4 because it is the largest. **Cuts:** all six approved. Cut 3 (freeze the study game) needs no code: no new work on ranks, quests, seasons or leaderboards beyond the badge redesign.
+3. **S2:** signed-in staff hide a review at once; everyone else is queued for a moderator. No email-code step for now: it adds a flow for a case moderators can handle within 48 hours.
+4. **S5:** lecturer rankings are removed altogether (cut 1 is folded into S5). Courses are still ranked.
+5. **S7:** must land before the first lecturer gets the link, so the page for lecturers can describe it as done. It goes to the `architect` agent before any code.
+6. **Demo feedback:** email through Brevo plus a database row, as designed. No new service.
