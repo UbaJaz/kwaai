@@ -2719,7 +2719,7 @@ function takedown(ctx, { review, error, values = {} }) {
       ${review ? html`<input type="hidden" name="review_id" value="${review.id}">` : html`<label>Link to the review or its number <span class="hint">Optional</span><input name="review_ref" value="${v('review_ref')}" placeholder="e.g. 42 or https://…/courses/MEC2047F#review-42"></label>`}
       <div class="form-row two">
         <label>Your name<input name="name" value="${v('name')}" required maxlength="100"></label>
-        <label>Email we can reply to<input type="email" name="email" value="${v('email')}" required maxlength="200"></label>
+        <label>Email we can reply to<input type="email" name="email" value="${values.email ?? ctx.user?.email ?? ''}" required maxlength="200"></label>
       </div>
       <label>You are…
         <select name="relation" required>
