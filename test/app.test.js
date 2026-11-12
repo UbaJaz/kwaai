@@ -1060,6 +1060,34 @@ test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can b
   assert.match(page, new RegExp(`id="${/#(tip-\d+)/.exec(home)[1]}"`), 'the home link lands on a readable tip');
 });
 
+test('a course with fewer than 5 reviews shows its scores but no comments, tips or lecturer breakdown', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const lecturerId = Number(sdb.prepare(`INSERT INTO lecturers (name, dept) VALUES ('Dr Small Class', 'MAM')`).run().lastInsertRowid);
+  const review = (n) => sdb.prepare(`INSERT INTO reviews (course, lecturer_id, year, teaching, engagement, exams, support, difficulty, workload, overall, body)
+    VALUES ('MAM1031F', ?, 2026, 3, 3, 3, 3, 3, 3, 3, ?)`).run(lecturerId, `Small class comment ${n}`);
+  const tip = (n) => {
+    const uid = sdb.prepare(`INSERT INTO users (email) VALUES (?)`).run(`smallclass00${n}@myuct.ac.za`).lastInsertRowid;
+    sdb.prepare(`INSERT INTO verdicts (course, user_id, year, lekker, tip) VALUES ('MAM1031F', ?, 2026, 1, ?)`).run(uid, `Small class tip ${n}`);
+  };
+  for (const n of [1, 2, 3, 4]) { review(n); tip(n); }
+  const anon = newBrowser();
+  let page = await anon.text('/courses/MAM1031F');
+  assert.match(page, /4 reviews/, 'the scores still count');
+  assert.doesNotMatch(page, /Small class comment|Small class tip/, 'in a small class a comment can give its writer away');
+  assert.doesNotMatch(page, /Who taught it/, 'nor the per-lecturer table');
+  assert.match(page, /1 more review/, 'and it says how many more are needed');
+  assert.doesNotMatch(await anon.text(`/lecturers/${lecturerId}`), /Small class comment/, 'the lecturer page follows the course');
+  assert.doesNotMatch(await anon.text('/'), /Small class tip/, 'the home page too');
+
+  review(5);
+  tip(5);
+  page = await anon.text('/courses/MAM1031F');
+  assert.match(page, /Small class comment 5/, 'from 5 reviews, comments show');
+  assert.match(page, /Small class tip 5/, 'from 5 tips, tips show');
+  assert.match(page, /Who taught it/);
+  assert.match(await anon.text(`/lecturers/${lecturerId}`), /Small class comment/);
+  assert.match(await anon.text('/'), /Small class tip 5/);
+}));
+
 test('rule-breaking tips are held, contact details rejected, votes deleted with the account', async () => {
   const b = browser();
   await b.signIn('vot009@myuct.ac.za');
