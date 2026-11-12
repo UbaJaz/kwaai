@@ -767,21 +767,23 @@ test('a removal request without an account goes to a moderator and the review st
   assert.ok(db.prepare(`SELECT 1 FROM takedowns WHERE review_id = ? AND status = 'open'`).get(Number(id)), 'the request is queued');
 });
 
-test('a removal request from a signed-in staff account hides the review straight away', async () => {
-  const b = browser();
+// its own server: the shared one is close to its sign-in rate limit
+test('a removal request from a signed-in staff account hides the review straight away', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const add = () => String(sdb.prepare(`INSERT INTO reviews (course, year, teaching, engagement, exams, support, difficulty, workload, overall, body)
+    VALUES ('MAM1021S', 2026, 2, 2, 2, 2, 4, 4, 2, 'Hard to follow')`).run().lastInsertRowid);
+  const [id, other] = [add(), add()];
+  const b = newBrowser();
   await b.signIn('removal.staff@uct.ac.za');
-  const id = /id="review-(\d+)"/.exec(await b.text('/courses/MAM1021S'))[1];
   assert.match(await b.text(`/takedown?review=${id}`), /value="removal\.staff@uct\.ac\.za"/, 'the reply address is filled in from the account');
   const res = await b.post('/takedown', { review_id: id, name: 'Dr A Staff', email: 'removal.staff@uct.ac.za', relation: 'The lecturer or staff member it is about', details: 'Not accurate' });
   assert.match(await res.text(), /hidden while a moderator looks at it/);
   assert.doesNotMatch(await b.text('/courses/MAM1021S'), new RegExp(`id="review-${id}"`));
 
-  const student = browser();
+  const student = newBrowser();
   await student.signIn('notstaff001@myuct.ac.za');
-  const other = /id="review-(\d+)"/.exec(await student.text('/courses/MAM1021S'))[1];
   await student.post('/takedown', { review_id: other, name: 'A Student', email: 'notstaff001@myuct.ac.za', details: 'Please remove' });
   assert.match(await student.text('/courses/MAM1021S'), new RegExp(`id="review-${other}"`), 'a student account does not hide it');
-});
+}));
 
 test('pages render', async () => {
   for (const p of ['/', '/courses', '/courses?dept=MEC&q=dyn', '/rankings?cat=hardest&kind=lecturer&dept=EEE', '/rules', '/takedown', '/lecturers/1']) {
