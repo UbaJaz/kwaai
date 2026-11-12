@@ -2388,7 +2388,7 @@ function rules(ctx) {
   </ol>
 
   <h2 id="takedown">📮 Are you the person a review is about?</h2>
-  <p>Lecturers and staff don't need an account. Use the <a href="/takedown">removal request form</a>, or the "Request removal" link on any review. The review is hidden while we look at it.</p>
+  <p>Use the <a href="/takedown">removal request form</a>, or the "Request removal" link on any review. You don't need an account, and a moderator replies within 48 hours. If you sign in with your @uct.ac.za staff email first, the review is hidden straight away while we look at it.</p>
 
   <h2 id="privacy">🔒 Privacy</h2>
   <p>Your email is never shown next to your reviews. You can delete your reviews or your whole account from <a href="/account">My reviews</a>. The full details are in the <a href="/privacy">privacy notice</a>.</p>
@@ -2712,7 +2712,10 @@ function takedown(ctx, { review, error, values = {} }) {
   return layout({ ...ctx, title: 'Request removal' }, html`
   <section class="narrow">
     <h1 class="page-title">Request a review's removal</h1>
-    <p class="lede small">For lecturers, staff or anyone a review is about. No account needed. If you name a specific review, it's hidden straight away while a moderator looks at it.</p>
+    <p class="lede small">For lecturers, staff or anyone a review is about. No account needed: a moderator reads every request and replies by email within 48 hours.</p>
+    <p class="meta">${ctx.user?.role === 'staff'
+      ? "You're signed in with a UCT staff email, so a review you name here is hidden straight away while a moderator looks at it."
+      : html`UCT staff: <a href="/login?next=${encodeURIComponent('/takedown' + (review ? `?review=${review.id}` : ''))}">sign in with your @uct.ac.za email</a> first and a review you name is hidden straight away while a moderator looks at it. Without signing in, it stays up until then.`}</p>
     ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
     ${review ? html`<div class="card quote"><p class="meta">Review #${review.id} on ${review.course}</p>${review.body ? html`<p>“${review.body}”</p>` : html`<p class="muted">(rating only, no comment)</p>`}</div>` : ''}
     <form method="post" action="/takedown" class="card form">

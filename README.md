@@ -20,7 +20,7 @@ Not affiliated with any university. "Kwaai" is South African slang that means bo
 - **Moderation built in:**
   - Comments are screened. Contact details and links are rejected. Possible allegations, insults, and remarks about appearance or identity are *held* for a moderator.
   - Every review has a **⚑ Report** button. Reports of defamation, private info or discrimination hide the review **immediately**. Other reasons hide it after 2 reports.
-  - `/takedown` lets lecturers (no account needed) request removal, which hides the review straight away.
+  - `/takedown` lets anyone request removal without an account; a moderator decides. A request from someone signed in with a `@uct.ac.za` staff email hides the review straight away.
   - Students can suggest a missing lecturer. It only appears once a moderator approves it.
   - `/mod` lets moderators approve, remove, or remove and ban the author. Every decision goes into an audit log.
 - **Your semester, planned:**
