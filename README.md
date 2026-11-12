@@ -15,7 +15,7 @@ Not affiliated with any university. "Kwaai" is South African slang that means bo
 
 - **Courses first.** Each review is for one *(course, lecturer, year)*, because big courses rotate lecturers.
 - **Structured ratings.** Four sliders (teaching, fun & interactive, exam fairness, approachable) make up the star score. Exam difficulty and workload are shown separately, because hard isn't the same as bad. Reviewers add up to 3 tags and an optional comment of 280 characters or less.
-- **Rankings** per department and category: highest rated, funniest, hardest exams, fairest exams, heaviest workload, lowest rated. Anything needs at least 3 reviews to be ranked.
+- **Course rankings** per department and category: highest rated, funniest, hardest exams, fairest exams, heaviest workload, lowest rated. A course needs at least 3 reviews to be ranked. Lecturers are never ranked, and lecturer pages send `X-Robots-Tag: noindex` so search engines leave them out.
 - **UCT-only sign-in** with no passwords: we email a 6-digit code and a link to an `@myuct.ac.za` address, and either one works once within 15 minutes. Opening the link shows a **Sign in** button rather than signing in straight away, because Microsoft 365 (which runs myuct mail) opens links to scan them. Five wrong codes and the code stops working. Reviews never show who wrote them.
 - **Moderation built in:**
   - Comments are screened. Contact details and links are rejected. Possible allegations, insults, and remarks about appearance or identity are *held* for a moderator.
