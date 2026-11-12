@@ -2679,6 +2679,19 @@ test('class list: the lecturer pastes it once with consent, members match by num
   assert.deepEqual(sdb.prepare('SELECT number, source FROM class_roster').all().map((r) => [r.number, r.source]), [['LSTABC001', 'joined']], 'clearing keeps members');
 }));
 
+test('a first-year sized class list saves, and other forms keep their small limit', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, adminPath } = await makeClass(newBrowser);
+  // 1,000 students with a name, a tut and a prac each: about 45 KB once the form encodes it
+  const list = Array.from({ length: 1000 }, (_, i) => `BIGLST${String(i).padStart(3, '0')}\tStudent Number${i}\tTut ${i % 20}\tPrac ${i % 8}`).join('\n');
+  const res = await lecturer.post(adminPath + '/roster', { list, mode: 'replace', confirm: '1' });
+  assert.equal(res.status, 303, 'the list is accepted');
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE source = 'list'`).get().n, 1000);
+
+  const tooLong = await lecturer.post('/takedown', { name: 'x', email: 'x@y.za', details: 'x'.repeat(30_000) });
+  assert.equal(tooLong.status, 413, 'everything else keeps the 20 KB limit');
+  assert.match(await tooLong.text(), /too long/);
+}));
+
 test('tut and prac groups: made from the class list, edited by the lecturer, picked by students, on their week, and a register per group', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
   const { lecturer, code, adminPath } = await makeClass(newBrowser);
   const classId = Number(adminPath.split('/').pop());
