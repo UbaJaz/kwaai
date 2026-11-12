@@ -772,6 +772,18 @@ test('pages render', async () => {
   assert.equal((await fetch(`${base}/courses/NOPE123X`)).status, 404);
 });
 
+test('lecturers are never ranked and their pages stay out of search engines', async () => {
+  const lecturerPage = await fetch(`${base}/lecturers/1`);
+  assert.equal(lecturerPage.headers.get('x-robots-tag'), 'noindex', 'a named person\'s scores should not turn up when someone searches their name');
+  assert.equal((await fetch(`${base}/courses`)).headers.get('x-robots-tag'), null, 'course pages can still be found');
+  const robots = await fetch(`${base}/robots.txt`);
+  assert.equal(robots.status, 200);
+  assert.match(await robots.text(), /Disallow: \/mod/);
+  const ranked = await (await fetch(`${base}/rankings?cat=lowest&kind=lecturer`)).text();
+  assert.doesNotMatch(ranked, /href="\/lecturers\/\d+" class="rank-name"/, 'an old lecturer ranking link shows courses instead');
+  assert.doesNotMatch(ranked, /kind=lecturer/, 'no way to switch to ranking lecturers');
+});
+
 test('scores built from sample reviews are badged wherever they appear', async () => {
   for (const p of ['/courses?q=EEE3099S', '/courses/EEE3099S', '/rankings?cat=best&kind=course']) {
     assert.match(await (await fetch(base + p)).text(), /class="badge sample"/, p);
