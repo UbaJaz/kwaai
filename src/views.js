@@ -2391,7 +2391,7 @@ function rules(ctx) {
   <p>Lecturers and staff don't need an account. Use the <a href="/takedown">removal request form</a>, or the "Request removal" link on any review. The review is hidden while we look at it.</p>
 
   <h2 id="privacy">🔒 Privacy</h2>
-  <p>Your email is never shown next to your reviews. You can delete your reviews or your whole account from <a href="/account">My reviews</a>. The full details are in the <a href="/privacy">privacy notice</a>.</p>
+  <p>Your email is never shown next to your reviews. You can delete your reviews or your whole account from <a href="/account">My reviews</a>. The privacy notice says exactly <a href="/privacy#anonymity">who could find out who wrote a review</a>.</p>
   </article>`);
 }
 
@@ -2442,7 +2442,6 @@ function privacy(ctx) {
     <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), a short-lived one for on-screen messages, and one that remembers your semester plan for 180 days. The plan cookie holds the course codes you added and, if you filled them in, your faculty, majors, year of study and the courses you've passed. That information stays on your device and in the plan's link. We don't store it on our server. No advertising or tracking cookies.</li>
     <li><strong>Course details you add</strong> (a class time, a week's topic, a test date). They're shown with a count of how many students agree, never with your name or email, and they're deleted with your account.</li>
     <li><strong>Marks you type on <a href="/marks">Marks and DP</a></strong> stay in your browser on your device. We never receive them. If you use the page without JavaScript, the numbers are sent once to work out the answer and aren't stored or logged.</li>
-    <li><strong>Your study timer sessions</strong>, if you use the <a href="/study">study timer</a> while signed in: the course, the day, when the session started, how long you planned, and how many minutes counted. You see them on the Study page, they're in your data download, and they're deleted with your account. Nobody else sees them.</li>
     <li><strong>Your study sessions</strong>, if you use the <a href="/study">study timer</a> while signed in: the course, the day, when you started, the length you picked and the minutes that counted. You see them on the Study page and in your data download. They're deleted with your account. While your timer runs you're counted, without your name, in "students studying now" figures; a course page shows its figure only when 3 or more students are studying it. Signed out, the timer runs on your device and sends us nothing.</li>
     <li><strong>A leaderboard profile</strong>, only if you tick "Put me on the leaderboards" in <a href="/account/profile">leaderboard settings</a>: a display name (or none, if you appear anonymously), and the faculty, major and year you choose to give, with the date you joined. Other signed-in students at your university then see that name or an anonymous label like "2nd-year Computer Science student", next to your study minutes for the day, week and month. Students can report a name; reports record who reported which student, and a moderator sees the name and the report count. Untick the box to leave: your profile is deleted straight away and you disappear from the boards. Your email is never shown.</li>
     <li><strong>Study groups</strong> you start or join: the group's name, its invite code, who started it, and the name you chose to be called in it. Members of a group see each other's group names and study minutes, and while your timer runs they see that you're studying, which course and for how long; people outside it see only the group's name and size when they open the invite link. Leave a group at any time; a group is deleted when its last member leaves or its owner deletes it.</li>
@@ -2456,11 +2455,19 @@ function privacy(ctx) {
 
   <h2>Who else sees it</h2>
   <ul>
-    <li>Moderators (currently the two of us), who can see hidden reviews and removal requests but not which student wrote a review.</li>
+    <li>Moderators (currently the two of us), who see hidden reviews, reports and removal requests. The moderation page doesn't show who wrote a review. See <a href="#anonymity">how anonymous your reviews are</a>.</li>
     <li>Our email provider, Brevo (a French company), which sends sign-in emails. It receives your email address and processes it in the EU under the GDPR and its own data-processing terms.</li>
     <li>Our hosting provider, Render (a US company), which runs the site and stores the database outside South Africa under its own data-protection terms. We transfer information to it under POPIA section 72 because we need it to run the service you signed up for.</li>
   </ul>
   <p>We never sell personal information and never share it with UCT unless a court or the law requires us to.</p>
+
+  <h2 id="anonymity">How anonymous your reviews are</h2>
+  <ul>
+    <li>Other students, lecturers and UCT never see who wrote a review, vote or tip. A review shows "a UCT student" and the month it was posted, never your name or email.</li>
+    <li>Our database does record which account wrote each review. We need that to allow one review per course, lecturer and year, to let you see and delete your own, and to ban people who break the rules. It means the two of us, as the people who run Kwaai, could find out who wrote a review by looking in the database or a backup. We don't, and nothing on the site shows it.</li>
+    <li>We would only hand that information to anyone if the law requires us to, for example under a court order.</li>
+    <li>Before Kwaai launches we're changing how this is stored, so that the database and its backups alone can't link a review to an account.</li>
+  </ul>
 
   <h2>How long we keep it</h2>
   <ul>
