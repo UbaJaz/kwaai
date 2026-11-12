@@ -765,6 +765,20 @@ test('takedown request hides the review without needing an account', async () =>
   assert.doesNotMatch(await b.text('/courses/MAM1020F'), new RegExp(`id="review-${id}"`));
 });
 
+test('the removal form never shows the text of a hidden or removed review', async () => {
+  const add = (status) => Number(db.prepare(`INSERT INTO reviews (course, year, teaching, engagement, exams, support, difficulty, workload, overall, body, status)
+    VALUES ('AGE1002S', 2026, 2, 2, 2, 2, 3, 3, 2, ?, ?)`).run(`TEXT-OF-${status}`, status).lastInsertRowid);
+  const held = add('held');
+  const published = add('published');
+  const removed = add('removed');
+  const b = browser();
+  const heldPage = await b.text(`/takedown?review=${held}`);
+  assert.doesNotMatch(heldPage, /TEXT-OF-held/, 'a held review is hidden: its text must not be readable here');
+  assert.match(heldPage, new RegExp(`Review #${held} on AGE1002S`), 'it still says which review the request is about');
+  assert.match(await b.text(`/takedown?review=${published}`), /TEXT-OF-published/, 'a live review is quoted, as before');
+  assert.doesNotMatch(await b.text(`/takedown?review=${removed}`), /TEXT-OF-removed/);
+});
+
 test('pages render', async () => {
   for (const p of ['/', '/courses', '/courses?dept=MEC&q=dyn', '/rankings?cat=hardest&kind=lecturer&dept=EEE', '/rules', '/takedown', '/lecturers/1']) {
     assert.equal((await fetch(base + p)).status, 200, p);
