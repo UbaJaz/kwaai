@@ -1541,6 +1541,9 @@ test('privacy, terms and about pages render, and every page says who makes Kwaai
   assert.doesNotMatch(privacy, /not which student wrote a review/, 'the people who run Kwaai can link a review to an account, so the notice must not say otherwise');
   assert.match(privacy, /id="anonymity"/, 'it says plainly who could find out who wrote a review');
   assert.equal(privacy.match(/Your study (timer )?sessions<\/strong>/g).length, 1, 'study sessions are described once');
+  for (const what of [/Classes<\/strong>/, /Attendance marks<\/strong>/, /Class lists a lecturer pastes in<\/strong>/, /pulse check/, /Staff accounts<\/strong>/, /random id for your phone/])
+    assert.match(privacy, what, `the notice covers what classes collect: ${what}`);
+  assert.match(await (await fetch(`${base}/terms`)).text(), /@uct\.ac\.za/, 'the terms mention staff accounts');
 });
 
 test('re-running the seed keeps real reviews and only swaps demo data', () => {
@@ -2259,6 +2262,7 @@ test('students join a class: they see what is shared first, choose a name or ano
   assert.match(join, /Join CSC1015F 2027/);
   assert.match(join, /Your student number: <strong>ABCXYZ001<\/strong>/, 'the number the lecturer will see, shown before joining');
   assert.match(join, /with Dr J Smith/);
+  assert.doesNotMatch(join, /your streak/, 'the dashboard shows no streak, so joining must not promise one');
   assert.equal((await s.post('/c/' + code + '/join', { show: 'name', name: 'x' })).status, 400, 'a shown name needs 2 characters');
   assert.equal((await s.post('/c/' + code + '/join', { show: 'anon', name: '' })).status, 303);
   const m = sdb.prepare('SELECT * FROM class_members WHERE role = ?').get('student');
