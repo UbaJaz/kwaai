@@ -777,6 +777,12 @@ test('the removal form never shows the text of a hidden or removed review', asyn
   assert.match(heldPage, new RegExp(`Review #${held} on AGE1002S`), 'it still says which review the request is about');
   assert.match(await b.text(`/takedown?review=${published}`), /TEXT-OF-published/, 'a live review is quoted, as before');
   assert.doesNotMatch(await b.text(`/takedown?review=${removed}`), /TEXT-OF-removed/);
+  // the form shown again after a mistake loads the review without a status check, so check it there too
+  for (const id of [held, removed]) {
+    const again = await b.post('/takedown', { review_id: id, name: '', email: '', details: '' });
+    assert.equal(again.status, 400);
+    assert.doesNotMatch(await again.text(), /TEXT-OF-(held|removed)/);
+  }
 });
 
 test('pages render', async () => {
