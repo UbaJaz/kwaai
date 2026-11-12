@@ -764,7 +764,11 @@ function courseWeek(ctx, c, facts, topics, official = []) {
   </section>`;
 }
 
-function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years, locked, conveners = [], staff = [], facts = { lecture: [], tut: [], prac: [], topic: [], event: [] }, weekTopics = [], studyingNow = 0, realHours = null, creditHours = null, officialDates = [] }) {
+// Below commentsFrom, a course shows its scores but not what was written: in a small class a comment can give away who
+// wrote it. This says how many more are needed.
+const closedNote = (count, commentsFrom, what) => html`<p class="empty">${plural(count, what)} so far. ${what === 'tip' ? 'Tips' : 'Written comments'} show once there are ${commentsFrom}, so nobody in a small class can tell who wrote what: ${plural(commentsFrom - count, `more ${what}`)} to go.</p>`;
+
+function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, closedTips = 0, commentsFrom = 5, myVerdict, years, locked, conveners = [], staff = [], facts = { lecture: [], tut: [], prac: [], topic: [], event: [] }, weekTopics = [], studyingNow = 0, realHours = null, creditHours = null, officialDates = [] }) {
   const cards = hideAfterFree(reviews, locked);
   const hidden = cards.filter((x) => x.hideBody).length + (locked ? Math.max(0, tips.length - FREE_COMMENTS) : 0);
   return layout({ ...ctx, title: `${c.code} ${c.title}`, description: courseSummary(c, stats, votes), path: `/courses/${c.code}` }, html`
@@ -791,7 +795,7 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
   </section>
 
   ${verdictBox(ctx, { c, votes, myVerdict, years })}
-  ${!reviews.length && !votes.n ? html`<section class="card first-rate">
+  ${!stats.n && !votes.n ? html`<section class="card first-rate">
     <h2>Be the first to rate ${c.code}</h2>
     <p>Next year's class is choosing courses with no one to ask. Took it? Tap kwaai or nah above. Didn't? Ask someone who did.</p>
     <a class="btn btn-quiet" href="${whatsappLink(c, votes, ctx.site.origin)}" target="_blank" rel="noopener">Ask a classmate on WhatsApp</a>
@@ -815,10 +819,13 @@ function course(ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tip
     </aside>
     <div class="reviews">
       ${gateNotice(ctx, hidden)}
-      ${tips.length ? html`<h2 class="section-title" id="tips">Tips from students who took it</h2>${tipList(tips, locked)}` : ''}
+      ${tips.length ? html`<h2 class="section-title" id="tips">Tips from students who took it</h2>${tipList(tips, locked)}`
+        : closedTips ? html`<h2 class="section-title" id="tips">Tips from students who took it</h2>${closedNote(closedTips, commentsFrom, 'tip')}` : ''}
       ${courseWeek(ctx, c, facts, weekTopics, officialDates)}
       <h2 class="section-title">Reviews</h2>
-      ${reviews.length ? cards.map(({ r, hideBody }) => reviewCard(r, { ...ctx, hideBody })) : html`<p class="empty">Nothing here yet. Took ${c.code}? Tell the next class what it's really like.</p>`}
+      ${reviews.length ? cards.map(({ r, hideBody }) => reviewCard(r, { ...ctx, hideBody }))
+        : stats.n ? closedNote(stats.n, commentsFrom, 'review')
+          : html`<p class="empty">Nothing here yet. Took ${c.code}? Tell the next class what it's really like.</p>`}
     </div>
   </section>`);
 }
@@ -908,7 +915,7 @@ function slider(key, label, hint, low, high, value) {
   </div>`;
 }
 
-function lecturer(ctx, { l, stats, courses: taught, reviews, locked }) {
+function lecturer(ctx, { l, stats, courses: taught, reviews, locked, commentsFrom = 5 }) {
   const cards = hideAfterFree(reviews, locked);
   return layout({ ...ctx, title: l.name }, html`
   <nav class="crumbs"><a href="/rankings?kind=lecturer">Lecturers</a> / ${l.name}</nav>
@@ -930,7 +937,8 @@ function lecturer(ctx, { l, stats, courses: taught, reviews, locked }) {
     <div class="reviews">
       ${gateNotice(ctx, cards.filter((x) => x.hideBody).length)}
       <h2 class="section-title">Reviews</h2>
-      ${reviews.length ? cards.map(({ r, hideBody }) => reviewCard(r, { ...ctx, lecturerLink: false, courseLink: true, hideBody })) : html`<p class="empty">No reviews yet.</p>`}
+      ${reviews.length ? cards.map(({ r, hideBody }) => reviewCard(r, { ...ctx, lecturerLink: false, courseLink: true, hideBody })) : stats.n ? '' : html`<p class="empty">No reviews yet.</p>`}
+      ${stats.n > reviews.length ? html`<p class="meta">${plural(stats.n - reviews.length, 'review')} from courses with fewer than ${commentsFrom} reviews ${stats.n - reviews.length === 1 ? 'counts' : 'count'} in the scores above, but ${stats.n - reviews.length === 1 ? 'isn\'t' : 'aren\'t'} shown, so nobody in a small class can tell who wrote what.</p>` : ''}
     </div>
   </section>`);
 }
