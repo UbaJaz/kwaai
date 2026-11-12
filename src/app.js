@@ -175,14 +175,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall, MAX(is_sample) AS has_sample FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
     ${where} ORDER BY ${order} LIMIT ${limit}`).all(...params);
 
-  function ranking(kind, rank, dept, limit = 10) {
-    const [join, key, cols, deptCol] = kind === 'course'
-      ? ['JOIN courses c ON c.code = r.course JOIN departments d ON d.code = c.dept', 'c.code', 'c.code, c.title', 'c.dept']
-      : ['JOIN lecturers l ON l.id = r.lecturer_id JOIN departments d ON d.code = l.dept', 'l.id', 'l.id, l.name', 'l.dept'];
+  // Courses only. Lecturers are never ranked: a league table of named people helps nobody choose a course.
+  function ranking(rank, dept, limit = 10) {
     // rank.column comes from the fixed RANKINGS list, never from the request
-    return q(`SELECT ${cols}, MAX(r.is_sample) AS is_sample, d.name AS dept_name, COUNT(*) AS n, AVG(r.${rank.column}) AS score FROM reviews r ${join}
-      WHERE r.status = 'published' ${dept ? `AND ${deptCol} = ?` : ''}
-      GROUP BY ${key} HAVING n >= ${MIN_FOR_RANKING} ORDER BY score ${rank.order}, n DESC LIMIT ${limit}`).all(...(dept ? [dept] : []));
+    return q(`SELECT c.code, c.title, MAX(r.is_sample) AS is_sample, d.name AS dept_name, COUNT(*) AS n, AVG(r.${rank.column}) AS score FROM reviews r
+      JOIN courses c ON c.code = r.course JOIN departments d ON d.code = c.dept
+      WHERE r.status = 'published' ${dept ? 'AND c.dept = ?' : ''}
+      GROUP BY c.code HAVING n >= ${MIN_FOR_RANKING} ORDER BY score ${rank.order}, n DESC LIMIT ${limit}`).all(...(dept ? [dept] : []));
   }
 
   app.get('/', (req, res) => {
@@ -192,8 +191,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const studying = liveStudents(req.user, `uni = ?`, req.user?.uni ?? CURRENT.slug);
     res.page((views.home(req.ctx, {
       counts,
-      topCourses: ranking('course', byKey('best'), null, 5),
-      heaviest: ranking('course', byKey('workload'), null, 5),
+      topCourses: ranking(byKey('best'), null, 5),
+      heaviest: ranking(byKey('workload'), null, 5),
       // November to January: exams are done and registration hasn't opened, the best time to ask for ratings
       ratingSeason: [10, 11, 0].includes(new Date().getMonth()),
       // a returning student with a plan on this device gets a way straight into their day
@@ -326,11 +325,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   app.get('/rankings', (req, res) => {
+    // ?kind=lecturer from old links just shows the course ranking
     const rank = RANKINGS.find((r) => r.key === req.query.cat) || RANKINGS[0];
-    const kind = req.query.kind === 'lecturer' ? 'lecturer' : 'course';
     const all = depts();
     const dept = all.some((d) => d.code === req.query.dept) ? req.query.dept : '';
-    res.page((views.rankings(req.ctx, { rows: ranking(kind, rank, dept, 25), depts: all, dept, rank, kind })));
+    res.page((views.rankings(req.ctx, { rows: ranking(rank, dept, 25), depts: all, dept, rank })));
   });
 
   // ---- semester planner ----
