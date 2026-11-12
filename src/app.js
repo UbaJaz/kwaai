@@ -1422,7 +1422,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // never reach it. It's a test account: left out of every figure other students see.
   const ADMIN_EMAIL = 'admin@kwaai.invalid';
   const adminOn = Admin.isValidHash(adminPasswordHash);
-  const adminLimits = [limit(5, 15 * MIN), limit(20, 24 * 60 * MIN, () => 'admin-login', 'Admin sign-in is paused for today after too many tries.')];
+  // both per IP: a single count for everyone would let a stranger lock the admin out every day with 20 bad tries
+  const adminLimits = [limit(5, 15 * MIN), limit(20, 24 * 60 * MIN, (req) => `admin-login:${req.ip}`, 'Admin sign-in is paused for today after too many tries from this connection.')];
   app.get('/admin/login', (req, res) => (adminOn ? res.page(views.adminLogin(req.ctx, {})) : res.status(404).page(notFound(req))));
   app.post('/admin/login', ...adminLimits, (req, res) => {
     if (!adminOn) return res.status(404).page(notFound(req));

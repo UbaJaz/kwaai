@@ -899,6 +899,20 @@ test('launch safety: one live code per address, guess cap across IPs, daily emai
   assert.equal(status(ids[4]), 'published');
 });
 
+test('wrong admin passwords from other connections cannot lock the admin out', async (t) => {
+  const sdb = openDb(':memory:');
+  const srv = createApp(sdb, { devMode: true, trustProxy: '1', adminPasswordHash: Admin.hashPassword('test-only-password-123') }).listen(0);
+  t.after(() => srv.close());
+  await new Promise((r) => srv.once('listening', r));
+  const b = browser(() => `http://localhost:${srv.address().port}`);
+  const from = (ip) => ({ headers: { 'x-forwarded-for': ip } });
+  // 20 wrong tries, 5 from each of four connections (the most each may make in 15 minutes)
+  for (const ip of ['10.0.0.1', '10.0.0.2', '10.0.0.3', '10.0.0.4'])
+    for (let i = 0; i < 5; i++) await b.post('/admin/login', { username: 'kwaai', password: 'wrong-password' }, from(ip));
+  const res = await b.post('/admin/login', { username: 'kwaai', password: 'test-only-password-123' }, from('10.0.0.9'));
+  assert.equal(res.status, 303, 'the admin, on their own connection, still gets in');
+});
+
 test('sign in with the emailed code, back to the page you came from', async () => {
   const b = browser();
   const page = await (await b.post('/login', { email: 'cod001@myuct.ac.za', next: '/courses/CSC1015F#verdict' })).text();
