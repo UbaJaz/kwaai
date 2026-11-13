@@ -441,22 +441,27 @@ function migrateAttendance(db) {
 // for changing a table: foreign keys off, new table, copy, drop, rename, check). Renaming the old table out of the way
 // instead would leave reports and takedowns pointing at the renamed one.
 function migrateAuthorKeys(db, keyGiven) {
-  const old = Object.keys(KEYED).filter((t) => db.prepare(`PRAGMA table_info(${t})`).all().some((c) => c.name === 'user_id'));
+  const columns = (t) => db.prepare(`PRAGMA table_info(${t})`).all().map((c) => c.name);
+  // a table needs rebuilding if it lacks its key column. A very old reports table has neither that nor user_id: give
+  // it an empty user_id first, so it goes through the same rebuild with no reporter.
+  const old = Object.keys(KEYED).filter((t) => !columns(t).some((c) => c === 'author_key' || c === 'reporter_key'));
   if (!old.length) return;
-  // without the real key the rows would get keys nobody can match again, so refuse rather than lose them
-  if (!keyGiven && old.some((t) => db.prepare(`SELECT 1 FROM ${t} WHERE user_id IS NOT NULL LIMIT 1`).get())) {
+  // without the real key the rows would get keys nobody can match again, so refuse (changing nothing) rather than lose them
+  if (!keyGiven && old.some((t) => columns(t).includes('user_id') && db.prepare(`SELECT 1 FROM ${t} WHERE user_id IS NOT NULL LIMIT 1`).get())) {
     throw new Error('This database has reviews or votes from before author keys. Open it with AUTHOR_KEY set to migrate it.');
   }
   db.exec('PRAGMA foreign_keys = OFF');
   db.exec('BEGIN');
   try {
+    for (const t of old) if (!columns(t).includes('user_id')) db.exec(`ALTER TABLE ${t} ADD COLUMN user_id INTEGER`);
     for (const t of old) {
       db.exec(KEYED[t].replace(`CREATE TABLE IF NOT EXISTS ${t} (`, `CREATE TABLE ${t}_new (`));
       db.exec(`INSERT INTO ${t}_new (${REKEY[t][0]}) SELECT ${REKEY[t][1]} FROM ${t}`);
       db.exec(`DROP TABLE ${t}`);
       db.exec(`ALTER TABLE ${t}_new RENAME TO ${t}`);
     }
-    if (db.prepare('PRAGMA foreign_key_check').all().length) throw new Error('author key migration broke a foreign key');
+    // only the rebuilt tables and takedowns (which points at reviews): an old problem elsewhere mustn't stop the start
+    for (const t of [...old, 'takedowns']) if (db.prepare(`PRAGMA foreign_key_check(${t})`).all().length) throw new Error(`author key migration broke a foreign key in ${t}`);
     db.exec('COMMIT');
   } catch (err) {
     db.exec('ROLLBACK');

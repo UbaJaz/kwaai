@@ -1679,6 +1679,35 @@ test('an old database moves to author keys, keeps its links, and refuses a missi
   }
 });
 
+test('a reports table from before reporters were recorded still gets its key columns', () => {
+  const { DatabaseSync } = require('node:sqlite');
+  const path = require('node:path');
+  const fs = require('node:fs');
+  const file = path.join(require('node:os').tmpdir(), `kwaai-oldreports-${process.pid}-${Date.now()}.db`);
+  const old = new DatabaseSync(file);
+  old.exec(`CREATE TABLE departments (code TEXT PRIMARY KEY, name TEXT NOT NULL);
+    CREATE TABLE courses (code TEXT PRIMARY KEY, title TEXT NOT NULL, dept TEXT NOT NULL REFERENCES departments(code), credits INTEGER, nqf INTEGER, conveners TEXT NOT NULL DEFAULT '', source TEXT NOT NULL);
+    CREATE TABLE reviews (id INTEGER PRIMARY KEY, course TEXT NOT NULL REFERENCES courses(code), lecturer_id INTEGER, year INTEGER NOT NULL, user_id INTEGER,
+      teaching INTEGER NOT NULL, engagement INTEGER NOT NULL, exams INTEGER NOT NULL, support INTEGER NOT NULL, difficulty INTEGER NOT NULL, workload INTEGER NOT NULL,
+      overall REAL NOT NULL, tags TEXT NOT NULL DEFAULT '', body TEXT NOT NULL DEFAULT '', status TEXT NOT NULL DEFAULT 'published', flags TEXT NOT NULL DEFAULT '',
+      is_sample INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+    CREATE TABLE reports (id INTEGER PRIMARY KEY, review_id INTEGER NOT NULL REFERENCES reviews(id), reason TEXT NOT NULL, details TEXT NOT NULL DEFAULT '', resolved INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+    INSERT INTO departments VALUES ('CSC', 'Computer Science');
+    INSERT INTO courses (code, title, dept, source) VALUES ('CSC1015F', 'Intro', 'CSC', 'test');
+    INSERT INTO reviews (id, course, year, teaching, engagement, exams, support, difficulty, workload, overall, is_sample) VALUES (1, 'CSC1015F', 2025, 4, 4, 4, 4, 3, 3, 4, 1);
+    INSERT INTO reports (review_id, reason) VALUES (1, 'spam');`);
+  old.close();
+  try {
+    const db = openDb(file); // no student rows, so the development key is enough
+    const cols = db.prepare('PRAGMA table_info(reports)').all().map((c) => c.name);
+    assert.ok(cols.includes('reporter_key') && cols.includes('day_key') && !cols.includes('user_id'));
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM reports WHERE reporter_key IS NULL').get().n, 1, 'the old report stays, with no reporter');
+    db.close();
+  } finally {
+    for (const f of [file, `${file}-wal`, `${file}-shm`]) fs.rmSync(f, { force: true });
+  }
+});
+
 test('re-running the seed keeps real reviews and only swaps demo data', () => {
   const db = openDb(':memory:');
   seed(db, { samples: true });
