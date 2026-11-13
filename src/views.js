@@ -2733,7 +2733,10 @@ function takedown(ctx, { review, error, values = {} }) {
     <h1 class="page-title">Request a review's removal</h1>
     <p class="lede small">For lecturers, staff or anyone a review is about. No account needed. If you name a specific review, it's hidden straight away while a moderator looks at it.</p>
     ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
-    ${review ? html`<div class="card quote"><p class="meta">Review #${review.id} on ${review.course}</p>${review.body ? html`<p>“${review.body}”</p>` : html`<p class="muted">(rating only, no comment)</p>`}</div>` : ''}
+    ${review ? html`<div class="card quote"><p class="meta">Review #${review.id} on ${review.course}</p>${review.status !== 'published'
+      // a hidden review stays hidden here too: anyone can open this page, so only a live review is quoted
+      ? html`<p class="muted">This review is hidden while a moderator looks at it.</p>`
+      : review.body ? html`<p>“${review.body}”</p>` : html`<p class="muted">(rating only, no comment)</p>`}</div>` : ''}
     <form method="post" action="/takedown" class="card form">
       ${review ? html`<input type="hidden" name="review_id" value="${review.id}">` : html`<label>Link to the review or its number <span class="hint">Optional</span><input name="review_ref" value="${v('review_ref')}" placeholder="e.g. 42 or https://…/courses/MEC2047F#review-42"></label>`}
       <div class="form-row two">
