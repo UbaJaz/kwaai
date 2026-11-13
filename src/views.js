@@ -1970,7 +1970,8 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
         <li>✓ Your student number: <strong>${number}</strong></li>
         <li>✓ Your name below (or "Anonymous" if you choose that)</li>
         <li>✓ The minutes you time for <strong>${cls.course}</strong> on the study timer, and your streak</li>
-        <li>✓ Your tut and prac attendance in this class</li>
+        <li>✓ Your tut and prac attendance in this class, and your DP status from it</li>
+        <li>✓ Warnings like "missed the last two sessions", "can't reach DP" or "no study in 14 days", so they can check in with you</li>
       </ul>
       <h2>What they won't see</h2>
       <ul class="plain consent-list no">
@@ -2390,8 +2391,15 @@ function rules(ctx) {
   <h2 id="takedown">📮 Are you the person a review is about?</h2>
   <p>Use the <a href="/takedown">removal request form</a>, or the "Request removal" link on any review. You don't need an account, and a moderator replies within 48 hours. If you sign in with your @uct.ac.za staff email first, the review is hidden straight away while we look at it.</p>
 
+  <h2 id="classes">🎓 Classes</h2>
+  <ul>
+    <li>Class names and announcements follow the same rules as reviews: no attacks, no allegations, no private information.</li>
+    <li>Any member can report an announcement. After ${HIDE_AFTER_REPORTS} members report it, it's hidden until a moderator looks.</li>
+    <li>Check in only for yourself, and only when you're in the session. Lecturers and tutors see when one phone checks in for two people.</li>
+  </ul>
+
   <h2 id="privacy">🔒 Privacy</h2>
-  <p>Your email is never shown next to your reviews. You can delete your reviews or your whole account from <a href="/account">My reviews</a>. The full details are in the <a href="/privacy">privacy notice</a>.</p>
+  <p>Your email is never shown next to your reviews. You can delete your reviews or your whole account from <a href="/account">My reviews</a>. In a class, the lecturer and tutors see your student number, attendance and your study time for that course; the join screen shows exactly what before you join. The full details are in the <a href="/privacy">privacy notice</a>.</p>
   </article>`);
 }
 
@@ -2437,28 +2445,34 @@ function privacy(ctx) {
 
   <h2>What we collect, and why</h2>
   <ul>
-    <li><strong>Your @myuct.ac.za email</strong>, to check you're a UCT student, send sign-in codes and links, and enforce bans. It is never shown publicly. We also record when you confirmed you're 18 or older and agreed to the terms.</li>
+    <li><strong>Your UCT email</strong> (@myuct.ac.za for students, @uct.ac.za for staff), to check you're at UCT, send sign-in codes and links, and enforce bans. It is never shown publicly. We also record when you confirmed you're 18 or older and agreed to the terms.</li>
     <li><strong>Your reviews and votes</strong> (ratings, tags, comment, kwaai-or-nah vote, tip, course, lecturer, year). They are published without your name or email.</li>
-    <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), a short-lived one for on-screen messages, and one that remembers your semester plan for 180 days. The plan cookie holds the course codes you added and, if you filled them in, your faculty, majors, year of study and the courses you've passed. That information stays on your device and in the plan's link. We don't store it on our server. No advertising or tracking cookies.</li>
+    <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), a short-lived one for on-screen messages, one that remembers your semester plan for 180 days, one that remembers your calendar link (if you make one) for 2 years, and, if you check in to a class, a random device id kept for a year (see Classes below). The plan cookie holds the course codes you added and, if you filled them in, your faculty, majors, year of study and the courses you've passed. That information stays on your device and in the plan's link. We don't store it on our server. No advertising or tracking cookies.</li>
     <li><strong>Course details you add</strong> (a class time, a week's topic, a test date). They're shown with a count of how many students agree, never with your name or email, and they're deleted with your account.</li>
     <li><strong>Marks you type on <a href="/marks">Marks and DP</a></strong> stay in your browser on your device. We never receive them. If you use the page without JavaScript, the numbers are sent once to work out the answer and aren't stored or logged.</li>
-    <li><strong>Your study timer sessions</strong>, if you use the <a href="/study">study timer</a> while signed in: the course, the day, when the session started, how long you planned, and how many minutes counted. You see them on the Study page, they're in your data download, and they're deleted with your account. Nobody else sees them.</li>
     <li><strong>Your study sessions</strong>, if you use the <a href="/study">study timer</a> while signed in: the course, the day, when you started, the length you picked and the minutes that counted. You see them on the Study page and in your data download. They're deleted with your account. While your timer runs you're counted, without your name, in "students studying now" figures; a course page shows its figure only when 3 or more students are studying it. Signed out, the timer runs on your device and sends us nothing.</li>
     <li><strong>A leaderboard profile</strong>, only if you tick "Put me on the leaderboards" in <a href="/account/profile">leaderboard settings</a>: a display name (or none, if you appear anonymously), and the faculty, major and year you choose to give, with the date you joined. Other signed-in students at your university then see that name or an anonymous label like "2nd-year Computer Science student", next to your study minutes for the day, week and month. Students can report a name; reports record who reported which student, and a moderator sees the name and the report count. Untick the box to leave: your profile is deleted straight away and you disappear from the boards. Your email is never shown.</li>
     <li><strong>Study groups</strong> you start or join: the group's name, its invite code, who started it, and the name you chose to be called in it. Members of a group see each other's group names and study minutes, and while your timer runs they see that you're studying, which course and for how long; people outside it see only the group's name and size when they open the invite link. Leave a group at any time; a group is deleted when its last member leaves or its owner deletes it.</li>
     <li><strong>A calendar link</strong>, only if you make one on <a href="/week">Your week</a>: your course codes and timetable choices, stored under a random address so your calendar app can fetch them. No name, email or "about you" answers. Delete it there at any time; links nobody has used for 12 months are deleted automatically.</li>
+    <li><strong>Classes you join</strong> with a lecturer's class code. Before you join, the join screen shows what's shared, and joining is your consent. The class's lecturer and tutors see your student number (the part of your myuct address before the @), the name you give (or the name on their class list), the minutes you time for that course on the study timer and how many days you studied in the last 14, your tut and prac attendance, your DP status worked out from it, and warnings like "missed the last two sessions" or "can't reach DP" that help them check in on students. They don't see your study time for other courses, or your marks, reviews, votes or tips. Classmates see your name, or "Anonymous" if you choose that, and your minutes for that course; never your student number. You see your own attendance and DP warnings on the class page and on Today. Leave a class at any time.</li>
+    <li><strong>Attendance.</strong> When you check in by scanning a tutor's QR code we record the session, the time, and a random id stored in a cookie on your phone, so the register can flag one phone checking in for two people. A tutor or lecturer can also mark you present, late, excused or absent by student number.</li>
+    <li><strong>Class lists from lecturers.</strong> A lecturer can paste their official class list: student numbers, names, and tut and prac groups. This covers students who don't use Kwaai, so attendance and DP can be kept for the whole class. The lecturer gives us this list for their teaching, and only that class's lecturer and tutors see it.</li>
+    <li><strong>Class announcements, dates and pulse checks.</strong> Announcements show the poster's name and role, and we record who has read or reported each one. Test and assignment dates show to everyone with the course in their plan. Pulse-check answers are anonymous to everyone, the lecturer included: we keep only a count for each option, and that you answered, never what you chose.</li>
+    <li><strong>Staff accounts.</strong> Lecturers and tutors sign in with their @uct.ac.za email. We store the classes they run, the name they use in each, and what they post. Staff can read reviews but can't post them.</li>
+    <li><strong>Downloads.</strong> A class's lecturer and tutors can download its class list with study progress and warnings, its attendance register, and a grade file for Amathuba, as spreadsheet (CSV) files. Once downloaded, the file is held by the lecturer under UCT's own rules for student information, not by Kwaai.</li>
     <li><strong>Your IP address</strong>, held briefly in memory to limit abuse (for example, too many sign-in attempts). It isn't written to our database.</li>
     <li><strong>Removal requests:</strong> the name, email and details you give us, used only to deal with that request.</li>
     <li><strong>Lecturers' names and job titles</strong> come from UCT's public 2026 handbooks: the convener of each course and each department's staff list. A lecturer is shown with a course only when the handbook names them as its convener or a student picks them in a review.</li>
   </ul>
-  <p>We process this information with your consent when you sign up, and for our legitimate interest, and our users', in running a fair course-review service (POPIA section 11(1)(f)).</p>
+  <p>We process this information with your consent when you sign up, and for our legitimate interest, and our users', in running a fair course-review service (POPIA section 11(1)(f)). Class attendance and class lists are processed for the lecturer's teaching of that course.</p>
   <p><strong>Kwaai is for students aged 18 and older.</strong> POPIA needs a parent's or guardian's consent to process a child's information, so you can't create an account if you're under 18. If we learn an account belongs to someone under 18, we delete it.</p>
 
   <h2>Who else sees it</h2>
   <ul>
     <li>Moderators (currently the two of us), who can see hidden reviews and removal requests but not which student wrote a review.</li>
+    <li>The lecturer and tutors of each class you join, as set out under Classes above.</li>
     <li>Our email provider, Brevo (a French company), which sends sign-in emails. It receives your email address and processes it in the EU under the GDPR and its own data-processing terms.</li>
-    <li>Our hosting provider, Render (a US company), which runs the site and stores the database outside South Africa under its own data-protection terms. We transfer information to it under POPIA section 72 because we need it to run the service you signed up for.</li>
+    <li>Our hosting provider, Fly.io (a US company), which runs the site and its database on its servers in Johannesburg. Fly.io processes it under its own data-protection terms, and as a US company it may access it from outside South Africa to run the service; we rely on POPIA section 72 for that because we need it to run the service you signed up for.</li>
   </ul>
   <p>We never sell personal information and never share it with UCT unless a court or the law requires us to.</p>
 
@@ -2467,6 +2481,8 @@ function privacy(ctx) {
     <li>Your account, reviews and votes stay until you delete them.</li>
     <li>Sign-in links expire after 15 minutes and sessions after 30 days. Both are then deleted.</li>
     <li>Reviews and tips removed by moderators, handled removal requests and the moderators' action log are deleted after 12 months.</li>
+    <li>A class list a lecturer pasted is deleted 30 days after the class's year ends. The rest of a class (its sessions, attendance, announcements, dates and pulse counts) stays until the lecturer deletes the class or their account.</li>
+    <li>Deleting your account removes you from your classes and from class lists you joined, and deletes your attendance marks. If a lecturer's own pasted list includes you, that row and your attendance in that class stay on the lecturer's register, no longer linked to your account, because a missing mark would count as an absence against your DP.</li>
     <li>Database backups are kept for 30 days, so something you delete can stay in a backup for up to 30 days before it's gone for good.</li>
   </ul>
 
@@ -2475,6 +2491,7 @@ function privacy(ctx) {
     <li>See or delete your reviews, download everything we hold about you, or delete your whole account, at <a href="/account">My reviews</a>.</li>
     <li>Ask what information we hold about you, ask for corrections, or object to processing, via ${contact}.</li>
     <li>Lecturers can object to a review through the <a href="/takedown">removal request form</a>.</li>
+    <li>If a lecturer put you on a class list and you don't use Kwaai, you can still ask us what we hold about you, or ask for a correction, via ${contact}.</li>
     <li>If you're unhappy with how we've handled your information, you can complain to the <a href="https://inforegulator.org.za" rel="noopener">Information Regulator</a>.</li>
   </ul>
   </article>`);
@@ -2487,10 +2504,12 @@ function terms(ctx) {
   <p class="lede small">The short version: be honest, be fair, and remember these are students' opinions.</p>
   <ol>
     <li><strong>Unofficial.</strong> Kwaai is an independent student project. It is not affiliated with, endorsed by or run by any university, including the University of Cape Town. Course information comes from UCT's public handbooks and may be out of date.</li>
-    <li><strong>Who can post.</strong> You need a current @myuct.ac.za email. One account per person. Don't share your sign-in link.</li>
+    <li><strong>Who can sign in.</strong> Students need a current @myuct.ac.za email; only students can post reviews and votes. UCT staff sign in with a @uct.ac.za email to read reviews and run classes. One account per person. Don't share your sign-in link or code.</li>
     <li><strong>Your reviews.</strong> You're responsible for what you post. It must be your honest opinion of a course you took, and it must follow the <a href="/rules">house rules</a>. Don't post allegations, private information, or anything defamatory, discriminatory or harassing.</li>
     <li><strong>Permission to show your review.</strong> By posting, you let Kwaai display your review on this site. You can delete it at any time.</li>
     <li><strong>Moderation.</strong> We may hide or remove any review, and suspend any account, that breaks these terms or the house rules, or that we reasonably think could harm someone. Reviews may be hidden while a report or removal request is looked at.</li>
+    <li><strong>Classes (for staff).</strong> Only create a class for a course you teach, and only add tutors who teach it. Use class lists, attendance, progress and downloads only to teach and administer that course, keep downloaded files safe, and follow UCT's rules on student information. Don't add anyone to a class list who isn't in the class. We may delete a class that breaks these terms.</li>
+    <li><strong>Classes (for students).</strong> Check in only for yourself, at sessions you attend. Checking in for someone else, or sharing the QR code with people who aren't there, is against these terms and the lecturer will see it on the register.</li>
     <li><strong>Opinions, not facts.</strong> Reviews are the personal opinions of individual students, not statements by Kwaai. Ratings are averages of those opinions.</li>
     <li><strong>No guarantees.</strong> The site is provided as is, for free. We don't guarantee it will always be available or accurate, and to the extent the law allows we're not liable for decisions you make using it.</li>
     <li><strong>Changes.</strong> We may update these terms. Material changes will be announced on the site.</li>
@@ -2523,7 +2542,7 @@ function account(ctx, { reviews, verdicts }) {
 
   <h2 class="section-title">Delete my account</h2>
   <div class="card panel danger-zone">
-    <p>This permanently deletes your account, your email address and <strong>all your votes, tips and reviews</strong>.</p>
+    <p>This permanently deletes your account, your email address and <strong>all your votes, tips and reviews</strong>, your study history, and your class memberships and attendance. Attendance on a lecturer's own class list stays on their register, without your account.</p>
     <form method="post" action="/account/delete" data-confirm="Delete your account with all your votes and reviews? This can't be undone."><button class="btn btn-danger">Delete my account</button></form>
   </div>`);
 }
@@ -2717,7 +2736,10 @@ function takedown(ctx, { review, error, values = {} }) {
       ? "You're signed in with a UCT staff email, so a review you name here is usually hidden straight away while a moderator looks at it. One a moderator has already checked stays up until they look again."
       : html`UCT staff: <a href="/login?next=${encodeURIComponent('/takedown' + (review ? `?review=${review.id}` : ''))}">sign in with your @uct.ac.za email</a> first and a review you name is usually hidden straight away while a moderator looks at it. Without signing in, it stays up until then.`}</p>
     ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
-    ${review ? html`<div class="card quote"><p class="meta">Review #${review.id} on ${review.course}</p>${review.body ? html`<p>“${review.body}”</p>` : html`<p class="muted">(rating only, no comment)</p>`}</div>` : ''}
+    ${review ? html`<div class="card quote"><p class="meta">Review #${review.id} on ${review.course}</p>${review.status !== 'published'
+      // a hidden review stays hidden here too: anyone can open this page, so only a live review is quoted
+      ? html`<p class="muted">This review is hidden while a moderator looks at it.</p>`
+      : review.body ? html`<p>“${review.body}”</p>` : html`<p class="muted">(rating only, no comment)</p>`}</div>` : ''}
     <form method="post" action="/takedown" class="card form">
       ${review ? html`<input type="hidden" name="review_id" value="${review.id}">` : html`<label>Link to the review or its number <span class="hint">Optional</span><input name="review_ref" value="${v('review_ref')}" placeholder="e.g. 42 or https://…/courses/MEC2047F#review-42"></label>`}
       <div class="form-row two">
