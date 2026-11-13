@@ -2403,7 +2403,7 @@ function rules(ctx) {
   </ul>
 
   <h2 id="privacy">🔒 Privacy</h2>
-  <p>Your email is never shown next to your reviews. You can delete your reviews or your whole account from <a href="/account">My reviews</a>. In a class, the lecturer and tutors see your student number, attendance and your study time for that course; the join screen shows exactly what before you join. The full details are in the <a href="/privacy">privacy notice</a>.</p>
+  <p>Your email is never shown next to your reviews. You can delete your reviews or your whole account from <a href="/account">My reviews</a>. In a class, the lecturer and tutors see your student number, attendance and your study time for that course; the join screen shows exactly what before you join. The privacy notice has the full details, including exactly <a href="/privacy#anonymity">who could find out who wrote a review</a>.</p>
   </article>`);
 }
 
@@ -2473,12 +2473,20 @@ function privacy(ctx) {
 
   <h2>Who else sees it</h2>
   <ul>
-    <li>Moderators (currently the two of us), who can see hidden reviews and removal requests but not which student wrote a review.</li>
+    <li>Moderators (currently the two of us), who see hidden reviews, reports and removal requests. The moderation page doesn't show who wrote a review. See <a href="#anonymity">how anonymous your reviews are</a>.</li>
     <li>The lecturer and tutors of each class you join, as set out under Classes above.</li>
     <li>Our email provider, Brevo (a French company), which sends sign-in emails. It receives your email address and processes it in the EU under the GDPR and its own data-processing terms.</li>
     <li>Our hosting provider, Fly.io (a US company), which runs the site and its database on its servers in Johannesburg. Fly.io processes it under its own data-protection terms, and as a US company it may access it from outside South Africa to run the service; we rely on POPIA section 72 for that because we need it to run the service you signed up for.</li>
   </ul>
   <p>We never sell personal information and never share it with UCT unless a court or the law requires us to.</p>
+
+  <h2 id="anonymity">How anonymous your reviews are</h2>
+  <ul>
+    <li>Other students, lecturers and UCT never see who wrote a review, vote or tip. A review shows "a UCT student" and the month it was posted, never your name or email.</li>
+    <li>Our database does record which account wrote each review. We need that to allow one review per course, lecturer and year, to let you see and delete your own, and to ban people who break the rules. It means the two of us, as the people who run Kwaai, could find out who wrote a review by looking in the database or a backup. We don't, and nothing on the site shows it.</li>
+    <li>We would only hand that information to anyone if the law requires us to, for example under a court order.</li>
+    <li>Before Kwaai launches we're changing how this is stored, so that the database and its backups alone can't link a review to an account.</li>
+  </ul>
 
   <h2>How long we keep it</h2>
   <ul>

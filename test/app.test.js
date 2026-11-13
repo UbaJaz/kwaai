@@ -1627,6 +1627,9 @@ test('privacy, terms and about pages render, and every page says who makes Kwaai
   const home = await (await fetch(`${base}/`)).text();
   assert.match(home, /made by two UCT students/);
   assert.match(home, /isn't affiliated with, endorsed by or run by any university/, 'the disclaimer stays');
+  assert.doesNotMatch(privacy, /not which student wrote a review/, 'the people who run Kwaai can link a review to an account, so the notice must not say otherwise');
+  assert.match(privacy, /id="anonymity"/, 'it says plainly who could find out who wrote a review');
+  assert.equal(privacy.match(/Your study (timer )?sessions<\/strong>/g).length, 1, 'study sessions are described once');
 });
 
 test('re-running the seed keeps real reviews and only swaps demo data', () => {
