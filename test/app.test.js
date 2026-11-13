@@ -993,6 +993,47 @@ test('the lecturer demo: one tap gives each visitor their own made-up class, del
   assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM classes WHERE id = ?`).get(b.classId).n, 1);
 });
 
+test('demo guards: nothing one visitor does reaches another, no real student numbers, no posting', async (t) => {
+  const sdb = openDb(':memory:');
+  seedDemo(sdb);
+  const srv = createApp(sdb, { devMode: false, demoMode: true }).listen(0);
+  t.after(() => srv.close());
+  await new Promise((r) => srv.once('listening', r));
+  const root = () => `http://localhost:${srv.address().port}`;
+  const start = async () => {
+    const b = browser(root);
+    const where = (await b.post('/demo/start', {})).headers.get('location');
+    const id = Number(where.split('/').pop());
+    return { b, id, code: sdb.prepare('SELECT code FROM classes WHERE id = ?').get(id).code };
+  };
+  const a = await start();
+  const other = await start();
+  const day = Study.addDay(Study.saDay(Date.now()), 5);
+  await a.b.post(`/c/${a.code}/dates`, { type: 'test', date: day, title: 'Visitor A secret test' });
+  assert.match(await a.b.text(`/c/${a.code}`), /Visitor A secret test/, 'it shows in their own class');
+  assert.match(await a.b.text('/courses/EXS1001F'), /Visitor A secret test/, 'and to them on the course page');
+  assert.doesNotMatch(await other.b.text('/courses/EXS1001F'), /Visitor A secret test/, 'but never to another visitor on the same made-up course');
+
+  const reviewId = sdb.prepare(`SELECT id FROM reviews WHERE status = 'published' LIMIT 1`).get().id;
+  for (const [path, body] of [['/courses/EXS1001F/review', { lecturer_id: 'none', year: '2026', teaching: 3, engagement: 3, exams: 3, support: 3, difficulty: 3, workload: 3, agree: '1' }],
+    ['/takedown', { review_id: String(reviewId), name: 'Dr X', email: 'x@uct.ac.za', details: 'test' }], [`/reviews/${reviewId}/report`, { reason: 'spam' }]]) {
+    const res = await a.b.post(path, body);
+    assert.equal(res.status, 403, path);
+    assert.match(await res.text(), /switched off in the demo/);
+  }
+  assert.equal(sdb.prepare(`SELECT status FROM reviews WHERE id = ?`).get(reviewId).status, 'published', 'the shared made-up reviews stay as they are');
+
+  assert.match(await a.b.text(`/classes/${a.id}`), /please paste made-up student numbers/, 'the class list warns first');
+  await a.b.post(`/classes/${a.id}/roster`, { list: 'ABCXYZ001\tReal Person', mode: 'add' });
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE number = 'ABCXYZ001'`).get().n, 0, 'a real-looking student number is refused');
+  await a.b.post(`/classes/${a.id}/roster`, { list: 'TEST105\tMade Up', mode: 'add' });
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE class_id = ? AND number = 'TEST105'`).get(a.id).n, 1, 'a made-up one is fine');
+  const tutors = () => sdb.prepare(`SELECT COUNT(*) AS n FROM class_members WHERE class_id = ? AND role = 'tutor'`).get(a.id).n;
+  const before = tutors();
+  await a.b.post(`/classes/${a.id}/tutors`, { email: 'someone001@myuct.ac.za', name: 'Real Tutor' });
+  assert.equal(tutors(), before, 'no real people join a sandbox');
+});
+
 test('the demo catalogue is made up: no real course or staff name, and two reviews waiting for a moderator', () => {
   const fs = require('node:fs');
   const db = openDb(':memory:');

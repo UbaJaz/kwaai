@@ -218,6 +218,20 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       const cls = buildLecturerClass(owner, ids, DEMO_COURSE, `${DEMO_COURSE} demo class`);
       startSession(req, res, ownerEmail, `/classes/${cls.id}`);
     });
+    // Anything that reaches other visitors is off: every sandbox shares the same made-up courses and reviews.
+    const SHARED = ['/courses/:code/review', '/courses/:code/verdict', '/courses/:code/facts', '/courses/:code/facts/withdraw', '/courses/:code/facts/report',
+      '/courses/:code/suggest-lecturer', '/reviews/:id/report', '/verdicts/:id/report', '/takedown'];
+    app.post(SHARED, (req, res) => res.status(403).page(views.message(req.ctx, {
+      title: 'Not in the demo', emoji: '',
+      text: 'Reviews, votes, reports and removal requests are switched off in the demo, because every visitor shares the same made-up courses. On the real site, a removal request from someone signed in with a UCT staff email hides the review straight away while a moderator looks at it.',
+      link: { href: '/classes', label: 'Back to your demo class' },
+    })));
+    // a pasted class list must be made up: refuse anything shaped like a real UCT student number (six letters, three digits)
+    app.post('/classes/:id/roster', (req, res, next) => (/\b[A-Za-z]{6}\d{3}\b/.test(String(req.body.list || ''))
+      ? flashRedirect(res, `/classes/${Number(req.params.id) || 0}#roster`, 'error', "This is a demo, so please paste made-up student numbers, like TEST105. Real UCT student numbers aren't accepted here.")
+      : next()));
+    // the sandbox comes with its made-up tutor; real people can't be added to it
+    app.post('/classes/:id/tutors', (req, res) => flashRedirect(res, `/classes/${Number(req.params.id) || 0}#tutors`, 'info', 'Your demo class already has a tutor, Sam Tutor. On the real site you add tutors by their UCT email.'));
   }
 
   app.get('/', (req, res) => {
@@ -235,7 +249,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       today: (() => {
         const { codes, week } = readPlan(req, {}); // the home page has no plan in its link: only this device's plan
         if (!codes.length) return null;
-        const t = todayFor(codes, week);
+        const t = todayFor(codes, week, {}, req.user);
         return { classes: t.classes.length, next: t.classes.find((e) => e.start >= new Date(Date.now() + 2 * 3_600_000).toISOString().slice(11, 16)), soon: t.upcoming[0], weekend: t.weekend };
       })(),
       streak: req.user ? streakFor(req.user.id) : null,
@@ -348,7 +362,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const realHours = Study.courseHours(q(`SELECT user_id, day, SUM(credited_sec / 60) AS minutes FROM study_sessions
       WHERE course = ? AND status = 'done' AND day >= ? ${realOnly(req.user)} GROUP BY user_id, day`).all(c.code, Study.addDay(today, -Study.HOURS_WINDOW_DAYS)), today);
     const creditHours = Study.weeklyGoal(c, (t) => semesterWeeks(planYear(), t));
-    res.page((views.course(req.ctx, { c, stats, offerings: open ? offerings : [], reviews: open ? reviews : [], topTags, myHeld, votes, tips, closedTips: tipCount >= commentsFrom ? 0 : tipCount, commentsFrom, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0, realHours, creditHours, officialDates: classDatesFor([c.code]).filter((d) => d.date >= today) })));
+    res.page((views.course(req.ctx, { c, stats, offerings: open ? offerings : [], reviews: open ? reviews : [], topTags, myHeld, votes, tips, closedTips: tipCount >= commentsFrom ? 0 : tipCount, commentsFrom, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0, realHours, creditHours, officialDates: classDatesFor([c.code], req.user).filter((d) => d.date >= today) })));
   });
 
   app.get('/lecturers/:id', (req, res) => {
@@ -496,21 +510,23 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       WHERE status = 'published' AND course IN (${codes.map(() => '?').join(',')}) GROUP BY course, key`).all(userId || 0, ...codes));
   }
   const datedFor = (facts) => Object.entries(facts).flatMap(([code, f]) => f.event.map((e) => ({ code, ...e }))).sort((a, b) => a.date.localeCompare(b.date) || (a.time || '').localeCompare(b.time || ''));
-  // Dates a class's lecturer, tutors or reps added for these courses. They're the official ones: confirmed, labelled
+  // Dates a class's lecturer, tutors or reps added for these courses. In the demo every visitor's class is on the same
+  // made-up course, so there a class's dates reach only its own members. They're the official ones: confirmed, labelled
   // with who added them, and they win over a student-added date of the same kind on the same day.
-  const classDatesFor = (codes) => (codes.length ? q(`SELECT d.*, m.name AS by_name FROM class_dates d
-    LEFT JOIN class_members m ON m.class_id = d.class_id AND m.user_id = d.added_by WHERE d.course IN (${codes.map(() => '?').join(',')})`).all(...codes) : [])
+  const classDatesFor = (codes, viewer = null) => (codes.length ? q(`SELECT d.*, m.name AS by_name FROM class_dates d
+    LEFT JOIN class_members m ON m.class_id = d.class_id AND m.user_id = d.added_by WHERE d.course IN (${codes.map(() => '?').join(',')})${demoMode ? ' AND d.class_id IN (SELECT class_id FROM class_members WHERE user_id = ?)' : ''}`)
+    .all(...codes, ...(demoMode ? [viewer?.id ?? 0] : [])) : [])
     .map((d) => ({ id: `class-${d.id}`, code: d.course, type: d.type, title: d.title, date: d.date, time: d.time, confirmed: true, official: d.added_role === 'rep' ? 'class rep' : d.added_role, by: d.by_name }));
-  const datedWithClasses = (facts, codes) => {
-    const official = classDatesFor(codes);
+  const datedWithClasses = (facts, codes, viewer = null) => {
+    const official = classDatesFor(codes, viewer);
     const taken = new Set(official.map((d) => `${d.code}|${d.date}|${d.type}`));
     return [...official, ...datedFor(facts).filter((d) => !taken.has(`${d.code}|${d.date}|${d.type}`))]
       .sort((x, y) => x.date.localeCompare(y.date) || (x.time || '').localeCompare(y.time || ''));
   };
   // for calendar files: student times, dated events, and a "start revising" day before each exam
-  const crowdFor = (codes) => {
+  const crowdFor = (codes, viewer = null) => {
     const facts = factsFor(codes);
-    const dated = datedWithClasses(facts, codes);
+    const dated = datedWithClasses(facts, codes, viewer);
     return { crowd: crowdSlots(facts), dated, revision: revisionPlan(dated.filter((d) => d.type === 'exam'), weekRows(codes)) };
   };
   const backTo = (code) => `/courses/${code}#course-week`;
@@ -582,7 +598,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const rows = weekRows(codes);
     const facts = factsFor(codes);
     const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { crowd: crowdSlots(facts), official: classSlotsFor(req.user) });
-    const upcoming = datedWithClasses(facts, codes).filter((d) => d.date >= new Date().toISOString().slice(0, 10)).slice(0, 12);
+    const upcoming = datedWithClasses(facts, codes, req.user).filter((d) => d.date >= new Date().toISOString().slice(0, 10)).slice(0, 12);
     const cal = calCookie(req);
     const origin = baseUrl || `${req.protocol}://${req.get('host')}`;
     res.page(views.week(req.ctx, {
@@ -597,7 +613,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const { codes, week } = readPlan(req);
     const rows = weekRows(codes);
     res.set({ 'Content-Type': 'text/calendar; charset=utf-8', 'Content-Disposition': 'attachment; filename="kwaai-week.ics"' })
-      .send(icsFor(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { origin: baseUrl || '', ...crowdFor(codes), official: classSlotsFor(req.user) }));
+      .send(icsFor(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), week, { origin: baseUrl || '', ...crowdFor(codes, req.user), official: classSlotsFor(req.user) }));
   });
 
   // A calendar that keeps itself up to date: Google, Apple or Outlook fetch /cal/<id>.ics every few hours, and it
@@ -678,7 +694,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // Today's classes from the week, what's coming up in the next two weeks, a tip for a course you have today, and DP
   // alerts worked out in the browser from the marks saved on this device.
   const saDate = () => new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().slice(0, 10); // South Africa is UTC+2
-  function todayFor(codes, week, official = {}) {
+  function todayFor(codes, week, official = {}, viewer = null) {
     const date = saDate();
     const year = Number(date.slice(0, 4));
     const dates = termDates(year, 's1') && termDates(year, 's2') ? { s1: termDates(year, 's1'), s2: termDates(year, 's2') } : null;
@@ -701,7 +717,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const wk = buildWeek(codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean), { ...week, t: term }, { year, crowd: crowdSlots(facts), official });
     const classes = wk.events.filter((e) => e.day === dayName).sort((a, b) => a.start.localeCompare(b.start));
     const soon = new Date(Date.parse(`${date}T00:00:00Z`) + 14 * 86_400_000).toISOString().slice(0, 10);
-    const upcoming = datedWithClasses(facts, codes).filter((d) => d.date >= date && d.date <= soon);
+    const upcoming = datedWithClasses(facts, codes, viewer).filter((d) => d.date >= date && d.date <= soon);
     const todays = [...new Set(classes.map((e) => e.code).filter(Boolean))];
     const tip = todays.length ? q(`SELECT course, tip FROM verdicts WHERE status = 'published' AND tip != '' AND course IN (${todays.map(() => '?').join(',')}) AND course IN ${OPEN_TIPS} ORDER BY RANDOM() LIMIT 1`).get(...todays) : null;
     return { date, term, note, weekend: weekday === 0 || weekday === 6, dayName, classes, upcoming, tip, marks: marksCourses(wk.courses.map((c) => c.code)),
@@ -711,7 +727,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
-    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, rank: rankWithUp(req.user), quests: req.user ? questsFor(req.user, { announce: true }) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [], dpAlerts: dpAlertsFor(req.user) }));
+    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user), req.user) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, rank: rankWithUp(req.user), quests: req.user ? questsFor(req.user, { announce: true }) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [], dpAlerts: dpAlertsFor(req.user) }));
   });
 
   // ---- study timer ----
@@ -1135,7 +1151,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const rows = weekRows(codes);
     const list = codes.map((c) => rows.find((r) => r.code === c)).filter(Boolean);
     const facts = factsFor(codes);
-    const dated = datedWithClasses(facts, codes);
+    const dated = datedWithClasses(facts, codes, req.user);
     const year = planYear();
     const today = saDate();
     const semesters = ['s1', 's2'].map((t) => {

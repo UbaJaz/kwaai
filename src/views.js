@@ -1860,6 +1860,7 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
     <p>${totals.listed
       ? html`<strong>${totals.listed}</strong> students on your list. ${totals.onKwaai} of the class ${totals.onKwaai === 1 ? 'is' : 'are'} on Kwaai.`
       : html`Paste your class list so registers and DP cover every student, not only the ones on Kwaai.`}</p>
+    ${ctx.demoMode ? html`<p class="flash flash-info">Demo only: please paste made-up student numbers, like TEST105, not a real class list. Real UCT student numbers are refused here.</p>` : ''}
     <form method="post" action="/classes/${cls.id}/roster" class="study-form">
       <label>One student per line: student number, then name, tut group and prac group if you have them
         <textarea name="list" rows="6" required spellcheck="false" placeholder="ABCXYZ001&#9;Thandi Mokoena&#9;Tut 3&#9;Prac B"></textarea></label>
