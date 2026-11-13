@@ -62,7 +62,7 @@ const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/study', 'Study'],
 
 // description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
 // uni sets the accent colour for the university being browsed; the Kwaai brand colours never change.
-function layout({ title, user, isMod, isAdmin, testTools, hasSamples = false, flash, site = {}, uni, here = '', description = DEFAULT_DESCRIPTION, path }, body) {
+function layout({ title, user, isMod, isAdmin, testTools, hasSamples = false, demoMode = false, flash, site = {}, uni, here = '', description = DEFAULT_DESCRIPTION, path }, body) {
   const fullTitle = title ? `${title} · Kwaai` : 'Kwaai: find out if a course is kwaai before you register';
   const on = (href) => (here === href || here.startsWith(`${href}/`) ? 'page' : null);
   return html`<!doctype html>
@@ -91,7 +91,7 @@ ${site.origin ? html`<meta property="og:image" content="${site.origin}/og-card.p
 </head>
 <body${uni ? html` style="--uni:${uni.accent};--uni-soft:${uni.soft}"` : ''}>
 <a class="skip" href="#main">Skip to content</a>
-<div class="notice">Unofficial student project, not affiliated with any university.${hasSamples ? html` Reviews marked <span class="badge sample">Sample</span> are demo data.` : ''}</div>
+<div class="notice">${demoMode ? html`<strong>Demo.</strong> Every lecturer, student, course and review here is made up. ` : ''}Unofficial student project, not affiliated with any university.${hasSamples ? html` Reviews marked <span class="badge sample">Sample</span> are demo data.` : ''}</div>
 <header class="site-header">
   <div class="wrap header-row">
     <a class="logo" href="/"><img src="/kwaai-icon.svg" alt="" width="30" height="30"><span>kwaai</span></a>
