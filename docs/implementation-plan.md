@@ -74,6 +74,16 @@ All of phase 1 ships before any lecturer gets a link.
 - **Commits (6):** key helper with unit tests; reviews; votes and tips; reports and course details; ban and export; env docs.
 - **Size:** L
 - **Send to the `architect` agent first:** a wrong design here is expensive. Open questions for it: storing `created_at` to the day, and what happens if the key is lost.
+- **Architect's design (13 November 2026), which replaces the acceptance line above where they differ:**
+  - **Key per course, not per user.** `author_key = HMAC-SHA256(AUTHOR_KEY, course + ':' + userId)`. One key per user would let anyone with the database group a person's reviews into a set of courses and match it against `class_members`, `study_sessions` and `profiles`, which already link users to courses. Registered in `openDb` as a deterministic SQL function `akey(course, userId)`, with the key passed in as `openDb(file, { authorKey })`. Tests and dev use a fixed dev key; check that `node:sqlite` supports `deterministic` on Node 24.
+  - **Tables:** `reviews`, `verdicts`, `course_facts` get `author_key`; `reports` gets `reporter_key` plus `day_key = akey('day:' || date, userId)` for the daily serious-report cap; `verdict_reports` and `fact_reports` keyed the same way. Unique indexes move onto the keys and are created after migration.
+  - **Dates:** `created_at` stored as the date only on those tables; the sweep compares dates.
+  - **Ban:** `SELECT id FROM users WHERE akey(course, id) = ?`, one HMAC per user, fine for a moderator action.
+  - **Key loss:** no recovery; old content can't be deleted or attributed by its author. Keep the key in both operators' password managers. Store `meta.author_key_check = HMAC(K, 'kwaai-check')` and refuse to start on a mismatch. Production refuses to start without `AUTHOR_KEY`, or with one shorter than 32 bytes, or without one whenever an email key is set.
+  - **Migration:** the SQLite 12-step rebuild with `foreign_keys` off, not the rename pattern in `migrateAttendance` (a rename would point `reports` and `takedowns` at the old table). Refuse to migrate rows with a user id when no key is given (protects `scripts/backup.js`).
+  - **Honest limit for `/privacy`:** someone with access to Render sees the env var, so this protects leaked backups and copies, not a hosting-account compromise.
+  - **Cut:** no rotation script.
+  - **Commits (7):** key and SQL function with startup checks; reviews and review reports; votes and tip reports; course facts and fact reports; date-only content dates; a test that no row links content to a student; README and `/privacy`.
 
 ### S8. Privacy notice and terms cover staff and classes (audit C3, L8, M8)
 - **Branch:** `docs/privacy-classes`
