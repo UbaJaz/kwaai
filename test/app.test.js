@@ -1,6 +1,6 @@
 const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { openDb } = require('../src/db');
+const { openDb, cleanUp } = require('../src/db');
 const { createApp } = require('../src/app');
 const { seed } = require('../scripts/seed');
 const { screenComment } = require('../src/moderation');
@@ -951,6 +951,58 @@ test('launch safety: one live code per address, guess cap across IPs, daily emai
   const td = await browser(root).post('/takedown', { review_id: String(ids[4]), name: 'A Person', email: 'a@example.com', details: 'Please remove' });
   assert.match(await td.text(), /A moderator will look at your request/);
   assert.equal(status(ids[4]), 'published');
+});
+
+test('the top bar mentions sample data only on a site that has some', () => withAdminServer({}, async ({ browser: newBrowser }) => {
+  assert.match(await (await fetch(`${base}/rules`)).text(), /are demo data/, 'the shared test site is seeded with samples');
+  const page = await newBrowser().text('/rules');
+  assert.match(page, /Unofficial student project/);
+  assert.doesNotMatch(page, /are demo data/, 'production has none, so it says nothing about them');
+}));
+
+test('the hourly clean-up deletes a pasted class list 30 days after its year, keeping members', () => {
+  const sdb = openDb(':memory:');
+  const owner = sdb.prepare(`INSERT INTO users (email, role) VALUES ('owner@uct.ac.za', 'staff')`).run().lastInsertRowid;
+  const addClass = (year, code) => sdb.prepare(`INSERT INTO classes (uni, course, year, name, code, owner_id, goal_week_min) VALUES ('uct', 'CSC1015F', ?, 'x', ?, ?, 360)`).run(year, code, owner).lastInsertRowid;
+  const old = addClass(2025, 'OLDCLASS');
+  const current = addClass(2026, 'NEWCLASS');
+  const row = sdb.prepare(`INSERT INTO class_roster (class_id, number, source) VALUES (?, ?, ?)`);
+  row.run(old, 'LISTED001', 'list');
+  row.run(old, 'JOINED001', 'joined');
+  row.run(current, 'LISTED002', 'list');
+  const rows = () => sdb.prepare('SELECT number FROM class_roster ORDER BY number').all().map((r) => r.number);
+  cleanUp(sdb, Date.parse('2026-01-30T12:00:00Z'));
+  assert.deepEqual(rows(), ['JOINED001', 'LISTED001', 'LISTED002'], 'kept until 30 days after the year ends');
+  cleanUp(sdb, Date.parse('2026-01-31T12:00:00Z'));
+  assert.deepEqual(rows(), ['JOINED001', 'LISTED002'], 'then the pasted list goes, without anyone opening the class');
+});
+
+test('the sign-in form does not tell a stranger that an address was suspended', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  sdb.prepare(`INSERT INTO users (email, banned) VALUES ('bnd001@myuct.ac.za', 1)`).run();
+  const res = await newBrowser().post('/login', { email: 'bnd001@myuct.ac.za' });
+  assert.equal(res.status, 200);
+  const page = await res.text();
+  assert.doesNotMatch(page, /suspended/, 'anyone can type an address, so the form must look the same for every one');
+  assert.match(page, /Check your inbox/);
+  // the owner of the inbox finds out once they use the code or link
+  const owner = newBrowser();
+  const done = await owner.signIn('bnd001@myuct.ac.za');
+  assert.equal(done.status, 403);
+  assert.match(await done.text(), /Account suspended/);
+}));
+
+test('wrong admin passwords from other connections cannot lock the admin out', async (t) => {
+  const sdb = openDb(':memory:');
+  const srv = createApp(sdb, { devMode: true, trustProxy: '1', adminPasswordHash: Admin.hashPassword('test-only-password-123') }).listen(0);
+  t.after(() => srv.close());
+  await new Promise((r) => srv.once('listening', r));
+  const b = browser(() => `http://localhost:${srv.address().port}`);
+  const from = (ip) => ({ headers: { 'x-forwarded-for': ip } });
+  // 20 wrong tries, 5 from each of four connections (the most each may make in 15 minutes)
+  for (const ip of ['10.0.0.1', '10.0.0.2', '10.0.0.3', '10.0.0.4'])
+    for (let i = 0; i < 5; i++) await b.post('/admin/login', { username: 'kwaai', password: 'wrong-password' }, from(ip));
+  const res = await b.post('/admin/login', { username: 'kwaai', password: 'test-only-password-123' }, from('10.0.0.9'));
+  assert.equal(res.status, 303, 'the admin, on their own connection, still gets in');
 });
 
 test('sign in with the emailed code, back to the page you came from', async () => {
@@ -2188,8 +2240,11 @@ test('a friend\'s plan link offers to become your plan', async () => {
   await b.get('/plan?add=STA1000S');
   let page = await b.text('/plan?c=CSC1015S,MAM1032S');
   assert.match(page, /This plan came from a link/);
-  const adopt = /href="(\/plan\?[^"]*adopt=1[^"]*)"/.exec(page)[1].replace(/&amp;/g, '&');
-  const res = await b.get(adopt);
+  const plan = /action="\/plan\/adopt">[\s\S]*?name="plan" value="([^"]*)"/.exec(page)[1].replace(/&amp;/g, '&');
+  await b.get('/plan?c=CSC1015S,MAM1032S&adopt=1');
+  assert.equal((await b.get('/plan')).headers.get('location'), '/plan?c=STA1000S', 'a link alone no longer replaces the plan saved on this device');
+  assert.doesNotMatch(await b.text('/today'), /CSC1015S|MAM1032S/);
+  const res = await b.post('/plan/adopt', { plan });
   assert.equal(res.status, 303);
   page = await b.text(res.headers.get('location'));
   assert.match(page, /This is your plan now/);

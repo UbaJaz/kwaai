@@ -85,6 +85,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.use((req, res, next) => { req.body ??= {}; next(); }); // Express 5 leaves it undefined for empty POSTs
 
   const q = (sql) => db.prepare(sql);
+  // sample reviews only come from the seed, which runs before the app starts, so checking once is enough
+  const hasSamples = !!q('SELECT 1 FROM reviews WHERE is_sample = 1 LIMIT 1').get();
   // Courses whose written comments and tips may show (see COMMENTS_FROM): goes after "course IN".
   const OPEN_REVIEWS = `(SELECT course FROM reviews WHERE status = 'published' GROUP BY course HAVING COUNT(*) >= ${Number(commentsFrom)})`;
   const OPEN_TIPS = `(SELECT course FROM verdicts WHERE status = 'published' AND tip != '' GROUP BY course HAVING COUNT(*) >= ${Number(commentsFrom)})`;
@@ -98,7 +100,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     const flash = /(?:^|;\s*)flash=([^;]+)/.exec(req.headers.cookie || '')?.[1];
     if (flash) res.clearCookie('flash');
-    req.ctx = { user: req.user, isMod: !!req.user && (mods.has(req.user.email) || !!req.user.is_admin), isAdmin: !!req.user?.is_admin, testTools, flash: parseFlash(flash), uni: CURRENT, here: req.path,
+    req.ctx = { user: req.user, isMod: !!req.user && (mods.has(req.user.email) || !!req.user.is_admin), isAdmin: !!req.user?.is_admin, testTools, hasSamples, flash: parseFlash(flash), uni: CURRENT, here: req.path,
       // origin for share links and link previews; production always has BASE_URL
       site: { contactEmail, operator, informationOfficer, origin: baseUrl || `${req.protocol}://${req.get('host')}` } };
     // CSRF: double-submit token, added to every POST form on its way out
@@ -383,15 +385,18 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     return { fromUrl, shared, codes, profile: parseProfile(state), week: parseWeek(state) };
   }
 
+  // "Make this my plan" on a plan someone shared: save it on this device, so Week, Today and Study use it. A POST, so a
+  // link someone sends can't replace the plan saved on your phone without you pressing the button.
+  app.post('/plan/adopt', (req, res) => {
+    const { codes, profile, week } = readPlan(req, Object.fromEntries(new URLSearchParams(String(req.body.plan || ''))));
+    savePlan(req, res, codes, profile, week);
+    flashRedirect(res, planUrl(codes, profile, week), 'ok', 'This is your plan now. Your week, Today and Study use it.');
+  });
+
   app.get('/plan', (req, res) => {
     const saved = readPlan(req);
     const { fromUrl, week } = saved;
     let { codes, profile } = saved;
-    // "Make this my plan" on a plan someone shared: save it on this device, so Week, Today and Study use it
-    if (req.query.adopt != null) {
-      savePlan(req, res, codes, profile, week);
-      return flashRedirect(res, planUrl(codes, profile, week), 'ok', 'This is your plan now. Your week, Today and Study use it.');
-    }
     // the "about you" form: majors come from two selects, passed courses from ticked boxes plus a free text box
     if (req.query.about != null) {
       profile = req.query.about === 'clear' ? parseProfile() : parseProfile({
@@ -1412,7 +1417,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!EMAIL_SHAPE.test(email) || !accountFor(email)) return res.status(400).page(views.login(req.ctx, { email, next, error: 'That isn\'t a UCT email. Students use their @myuct.ac.za address, staff their @uct.ac.za one.' }));
     // POPIA: children's information needs a guardian's consent, so accounts are for students 18 and older
     if (req.body.agree !== '1') return res.status(400).page(views.login(req.ctx, { email, next, error: 'Tick the box to confirm you\'re 18 or older and agree to the terms, house rules and privacy notice.' }));
-    if (q(`SELECT 1 FROM users WHERE email = ? AND banned = 1`).get(email)) return res.status(403).page(views.login(req.ctx, { email, next, error: 'This account has been suspended for breaking the house rules.' }));
+    // A suspended address gets a code like any other. Anyone can type an address here, so saying "suspended" now would
+    // tell a stranger who was banned; the owner of the inbox finds out when they use the code (startSession).
     const token = crypto.randomBytes(32).toString('hex');
     const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
     const today = new Date().toISOString().slice(0, 10);
@@ -1448,7 +1454,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // never reach it. It's a test account: left out of every figure other students see.
   const ADMIN_EMAIL = 'admin@kwaai.invalid';
   const adminOn = Admin.isValidHash(adminPasswordHash);
-  const adminLimits = [limit(5, 15 * MIN), limit(20, 24 * 60 * MIN, () => 'admin-login', 'Admin sign-in is paused for today after too many tries.')];
+  // both per IP: a single count for everyone would let a stranger lock the admin out every day with 20 bad tries
+  const adminLimits = [limit(5, 15 * MIN), limit(20, 24 * 60 * MIN, (req) => `admin-login:${req.ip}`, 'Admin sign-in is paused for today after too many tries from this connection.')];
   app.get('/admin/login', (req, res) => (adminOn ? res.page(views.adminLogin(req.ctx, {})) : res.status(404).page(notFound(req))));
   app.post('/admin/login', ...adminLimits, (req, res) => {
     if (!adminOn) return res.status(404).page(notFound(req));

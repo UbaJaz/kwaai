@@ -62,7 +62,7 @@ const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/study', 'Study'],
 
 // description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
 // uni sets the accent colour for the university being browsed; the Kwaai brand colours never change.
-function layout({ title, user, isMod, isAdmin, testTools, flash, site = {}, uni, here = '', description = DEFAULT_DESCRIPTION, path }, body) {
+function layout({ title, user, isMod, isAdmin, testTools, hasSamples = false, flash, site = {}, uni, here = '', description = DEFAULT_DESCRIPTION, path }, body) {
   const fullTitle = title ? `${title} · Kwaai` : 'Kwaai: find out if a course is kwaai before you register';
   const on = (href) => (here === href || here.startsWith(`${href}/`) ? 'page' : null);
   return html`<!doctype html>
@@ -91,7 +91,7 @@ ${site.origin ? html`<meta property="og:image" content="${site.origin}/og-card.p
 </head>
 <body${uni ? html` style="--uni:${uni.accent};--uni-soft:${uni.soft}"` : ''}>
 <a class="skip" href="#main">Skip to content</a>
-<div class="notice">Unofficial student project, not affiliated with any university. Reviews marked <span class="badge sample">Sample</span> are demo data.</div>
+<div class="notice">Unofficial student project, not affiliated with any university.${hasSamples ? html` Reviews marked <span class="badge sample">Sample</span> are demo data.` : ''}</div>
 <header class="site-header">
   <div class="wrap header-row">
     <a class="logo" href="/"><img src="/kwaai-icon.svg" alt="" width="30" height="30"><span>kwaai</span></a>
@@ -1176,7 +1176,7 @@ function plan(ctx, { courses: list, plan: p, matches, add, codes, profile, needs
     : 'Plan your UCT semesters: lecture clashes, entry requirements, exam weight and how heavy students say each course is.';
   return layout({ ...ctx, title: 'Semester planner', here: '/plan', description, path: codes.length ? `/plan?c=${codes.join(',')}` : '/plan' }, html`
   <h1 class="page-title">Plan your semesters</h1>
-  ${shared ? html`<div class="shared-plan card panel" role="status"><p><strong>This plan came from a link.</strong> Your week, Today and Study use the plan saved on this device, so they won't show these courses yet.</p><p><a class="btn" href="${link({ adopt: '1' })}">Make this my plan</a></p></div>` : ''}
+  ${shared ? html`<div class="shared-plan card panel" role="status"><p><strong>This plan came from a link.</strong> Your week, Today and Study use the plan saved on this device, so they won't show these courses yet.</p><form method="post" action="/plan/adopt"><input type="hidden" name="plan" value="${new URLSearchParams(state).toString()}"><button class="btn">Make this my plan</button></form></div>` : ''}
   <p class="lede small">Add the courses you're thinking of taking. Kwaai checks them against the 2026 handbook and what students say, and splits them into Semester 1 and Semester 2.</p>
 
   ${profileCard(profile, { programmeOptions, facultyOptions, needs, state, known })}

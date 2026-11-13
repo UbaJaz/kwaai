@@ -429,4 +429,23 @@ function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker
   return db;
 }
 
-module.exports = { openDb };
+// The clean-up server.js runs every hour: expired sign-in links and sessions, plus every retention period the privacy
+// notice promises. now is for tests.
+function cleanUp(db, now = Date.now()) {
+  db.prepare('DELETE FROM login_tokens WHERE expires < ?').run(now);
+  db.prepare('DELETE FROM sessions WHERE expires < ?').run(now);
+  db.exec(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
+    UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
+    DELETE FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
+    DELETE FROM verdicts WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
+    DELETE FROM takedowns WHERE status = 'closed' AND created_at < datetime('now', '-12 months');
+    DELETE FROM lecturer_suggestions WHERE status != 'open' AND created_at < datetime('now', '-12 months');
+    DELETE FROM mod_log WHERE created_at < datetime('now', '-12 months');
+    DELETE FROM calendars WHERE IFNULL(fetched_at, created_at) < datetime('now', '-12 months');`);
+  // A pasted class list goes 30 days after its class's year ends (31 January, South African date). Rows for students
+  // who joined on Kwaai stay: they're the members themselves.
+  const saToday = new Date(now + 2 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  db.prepare(`DELETE FROM class_roster WHERE source = 'list' AND class_id IN (SELECT id FROM classes WHERE ? >= (year + 1) || '-01-31')`).run(saToday);
+}
+
+module.exports = { openDb, cleanUp };
