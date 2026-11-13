@@ -81,6 +81,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.use((req, res, next) => { req.body ??= {}; next(); }); // Express 5 leaves it undefined for empty POSTs
 
   const q = (sql) => db.prepare(sql);
+  // a student's author key for one course (see KEYED in src/db.js), for comparing with a row's in JavaScript
+  const keyOf = (course, userId) => q('SELECT akey(?, ?) AS k').get(course, userId).k;
   // Courses whose written comments and tips may show (see COMMENTS_FROM): goes after "course IN".
   const OPEN_REVIEWS = `(SELECT course FROM reviews WHERE status = 'published' GROUP BY course HAVING COUNT(*) >= ${Number(commentsFrom)})`;
   const OPEN_TIPS = `(SELECT course FROM verdicts WHERE status = 'published' AND tip != '' GROUP BY course HAVING COUNT(*) >= ${Number(commentsFrom)})`;
@@ -278,8 +280,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   // Has this reader voted on or reviewed anything? If not, most comments stay hidden (see FREE_COMMENTS).
-  const canReadAll = (req) => req.ctx.isMod || (!!req.user && !!q(`SELECT 1 FROM verdicts WHERE user_id = ? AND status != 'removed'
-    UNION ALL SELECT 1 FROM reviews WHERE user_id = ? AND status != 'removed' LIMIT 1`).get(req.user.id, req.user.id));
+  const canReadAll = (req) => req.ctx.isMod || (!!req.user && !!q(`SELECT 1 FROM verdicts WHERE author_key = akey(course, ?) AND status != 'removed'
+    UNION ALL SELECT 1 FROM reviews WHERE author_key = akey(course, ?) AND status != 'removed' LIMIT 1`).get(req.user.id, req.user.id));
   const verdictStats = (code) => q(`SELECT COUNT(*) AS n, COALESCE(SUM(lekker), 0) AS lekker FROM verdicts WHERE course = ? AND status = 'published'`).get(code);
   const getCourse = (code) => q(`SELECT c.*, d.name AS dept_name FROM courses c JOIN departments d ON d.code = c.dept WHERE c.code = ?`).get(String(code).toUpperCase());
 
@@ -289,17 +291,18 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const stats = q(`SELECT ${STATS} FROM reviews WHERE course = ? AND status = 'published'`).get(c.code);
     const offerings = q(`SELECT r.lecturer_id, l.name AS lecturer_name, r.year, COUNT(*) AS n, AVG(r.overall) AS overall FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id
       WHERE r.course = ? AND r.status = 'published' GROUP BY r.lecturer_id, r.year ORDER BY r.year DESC, n DESC`).all(c.code);
-    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.course = ? AND r.status = 'published' ORDER BY r.created_at DESC, r.id DESC`).all(c.code);
+    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.course = ? AND r.status = 'published' ORDER BY r.created_at DESC, r.id DESC`).all(c.code)
+      .map((r) => ({ ...r, mine: !!req.user && r.author_key === keyOf(r.course, req.user.id) }));
     const tagCounts = {};
     for (const r of reviews) for (const t of r.tags.split('|').filter(Boolean)) tagCounts[t] = (tagCounts[t] || 0) + 1;
     const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
-    const myHeld = req.user && q(`SELECT 1 FROM reviews WHERE course = ? AND user_id = ? AND status = 'held'`).get(c.code, req.user.id);
+    const myHeld = req.user && q(`SELECT 1 FROM reviews WHERE course = ? AND author_key = akey(?, ?) AND status = 'held'`).get(c.code, c.code, req.user.id);
     const votes = verdictStats(c.code);
     const tipCount = q(`SELECT COUNT(*) AS n FROM verdicts WHERE course = ? AND status = 'published' AND tip != ''`).get(c.code).n;
     const tips = tipCount >= commentsFrom ? q(`SELECT id, year, lekker, tip, created_at FROM verdicts WHERE course = ? AND status = 'published' AND tip != '' ORDER BY created_at DESC, id DESC LIMIT 30`).all(c.code) : [];
     // below commentsFrom reviews the scores count, but comments and who taught which year would point at the writer
     const open = stats.n >= commentsFrom;
-    const myVerdict = req.user && q(`SELECT * FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
+    const myVerdict = req.user && q(`SELECT * FROM verdicts WHERE course = ? AND author_key = akey(?, ?)`).get(c.code, c.code, req.user.id);
     // the convener is the handbook's link between a person and this course; the rest of the department's teaching
     // staff are listed as "in the department", never as teaching this course
     const inDept = q(`SELECT id, name, role FROM lecturers WHERE dept = ? AND is_sample = 0 ORDER BY name`).all(c.dept);
@@ -326,7 +329,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const taught = q(`SELECT c.code, c.title, s.n, s.overall FROM courses c
       LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall FROM reviews WHERE lecturer_id = ? AND status = 'published' GROUP BY course) s ON s.course = c.code
       WHERE s.n > 0 OR ('|' || c.conveners || '|') LIKE ? ORDER BY c.code`).all(l.id, `%|${l.name}|%`);
-    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.lecturer_id = ? AND r.status = 'published' AND r.course IN ${OPEN_REVIEWS} ORDER BY r.created_at DESC, r.id DESC`).all(l.id);
+    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.lecturer_id = ? AND r.status = 'published' AND r.course IN ${OPEN_REVIEWS} ORDER BY r.created_at DESC, r.id DESC`).all(l.id)
+      .map((r) => ({ ...r, mine: !!req.user && r.author_key === keyOf(r.course, req.user.id) }));
     res.page((views.lecturer(req.ctx, { l, stats, courses: taught, reviews, commentsFrom, locked: !canReadAll(req) })));
   });
 
@@ -455,7 +459,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // Grouped facts per course: each distinct fact with how many students added it, and whether this student did.
   function factsFor(codes, userId = 0) {
     if (!codes.length) return {};
-    return groupFacts(q(`SELECT course, kind, key, MIN(data) AS data, COUNT(DISTINCT user_id) AS n, MAX(user_id = ?) AS mine FROM course_facts
+    return groupFacts(q(`SELECT course, kind, key, MIN(data) AS data, COUNT(DISTINCT author_key) AS n, MAX(author_key = akey(course, ?)) AS mine FROM course_facts
       WHERE status = 'published' AND course IN (${codes.map(() => '?').join(',')}) GROUP BY course, key`).all(userId || 0, ...codes));
   }
   const datedFor = (facts) => Object.entries(facts).flatMap(([code, f]) => f.event.map((e) => ({ code, ...e }))).sort((a, b) => a.date.localeCompare(b.date) || (a.time || '').localeCompare(b.time || ''));
@@ -487,15 +491,15 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const screen = screenFact(fact);
     if (screen.action === 'reject') return flashRedirect(res, backTo(c.code), 'error', `That can't go up: ${screen.reasons.join(', ')}.`);
     // one topic per student per week: a new one replaces their old one
-    if (fact.kind === 'topic') q(`DELETE FROM course_facts WHERE course = ? AND user_id = ? AND kind = 'topic' AND key LIKE ?`).run(c.code, req.user.id, `topic|${fact.data.week}|%`);
+    if (fact.kind === 'topic') q(`DELETE FROM course_facts WHERE course = ? AND author_key = akey(?, ?) AND kind = 'topic' AND key LIKE ?`).run(c.code, c.code, req.user.id, `topic|${fact.data.week}|%`);
     const status = screen.action === 'hold' || q(`SELECT 1 FROM course_facts WHERE course = ? AND key = ? AND status != 'published'`).get(c.code, fact.key) ? 'held' : 'published';
-    q(`INSERT OR IGNORE INTO course_facts (course, kind, key, data, user_id, status) VALUES (?, ?, ?, ?, ?, ?)`).run(c.code, fact.kind, fact.key, JSON.stringify(fact.data), req.user.id, status);
+    q(`INSERT OR IGNORE INTO course_facts (course, kind, key, data, author_key, status) VALUES (?, ?, ?, ?, akey(?, ?), ?)`).run(c.code, fact.kind, fact.key, JSON.stringify(fact.data), c.code, req.user.id, status);
     flashRedirect(res, backTo(c.code), 'ok', status === 'held' ? 'Thanks. A moderator will check it before it shows.' : 'Thanks, that helps everyone in this course.');
   });
 
   app.post('/courses/:code/facts/withdraw', requireUser, (req, res) => {
     const code = String(req.params.code).toUpperCase();
-    q(`DELETE FROM course_facts WHERE course = ? AND key = ? AND user_id = ?`).run(code, String(req.body.key || ''), req.user.id);
+    q(`DELETE FROM course_facts WHERE course = ? AND key = ? AND author_key = akey(?, ?)`).run(code, String(req.body.key || ''), code, req.user.id);
     flashRedirect(res, backTo(code), 'ok', 'Removed.');
   });
 
@@ -504,7 +508,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const code = String(req.params.code).toUpperCase();
     const key = String(req.body.key || '').slice(0, 200);
     if (!q(`SELECT 1 FROM course_facts WHERE course = ? AND key = ?`).get(code, key)) return res.status(404).page(notFound(req));
-    q(`INSERT OR IGNORE INTO fact_reports (course, key, user_id) VALUES (?, ?, ?)`).run(code, key, req.user.id);
+    q(`INSERT OR IGNORE INTO fact_reports (course, key, reporter_key) VALUES (?, ?, akey(?, ?))`).run(code, key, code, req.user.id);
     const n = q(`SELECT COUNT(*) AS n FROM fact_reports WHERE course = ? AND key = ?`).get(code, key).n;
     if (n >= HIDE_AFTER_REPORTS) q(`UPDATE course_facts SET status = 'held' WHERE course = ? AND key = ? AND status = 'published'`).run(code, key);
     flashRedirect(res, backTo(code), 'ok', n >= HIDE_AFTER_REPORTS ? 'Thanks. It\'s hidden until a moderator checks it.' : 'Thanks. A moderator will take a look.');
@@ -1126,8 +1130,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   // ---- your account (POPIA: see and delete what we hold about you) ----
   app.get('/account', requireUser, (req, res) => {
-    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.user_id = ? ORDER BY r.created_at DESC`).all(req.user.id);
-    const verdicts = q(`SELECT * FROM verdicts WHERE user_id = ? ORDER BY created_at DESC`).all(req.user.id);
+    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.author_key = akey(r.course, ?) ORDER BY r.created_at DESC, r.id DESC`).all(req.user.id);
+    const verdicts = q(`SELECT * FROM verdicts WHERE author_key = akey(course, ?) ORDER BY created_at DESC, id DESC`).all(req.user.id);
     res.page(views.account(req.ctx, { reviews, verdicts }));
   });
 
@@ -1138,10 +1142,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       exported_at: new Date().toISOString(),
       account: q(`SELECT email, created_at, agreed_at FROM users WHERE id = ?`).get(id),
       reviews: q(`SELECT r.course, l.name AS lecturer, r.year, r.teaching, r.engagement, r.exams, r.support, r.difficulty, r.workload, r.overall, r.tags, r.body, r.status, r.created_at
-        FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.user_id = ? ORDER BY r.created_at`).all(id),
-      votes: q(`SELECT course, year, lekker, tip, status, created_at FROM verdicts WHERE user_id = ? ORDER BY created_at`).all(id),
-      reports_you_made: q(`SELECT review_id, reason, details, created_at FROM reports WHERE user_id = ? ORDER BY created_at`).all(id),
-      tips_you_reported: q(`SELECT verdict_id FROM verdict_reports WHERE user_id = ?`).all(id),
+        FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.author_key = akey(r.course, ?) ORDER BY r.created_at, r.id`).all(id),
+      votes: q(`SELECT course, year, lekker, tip, status, created_at FROM verdicts WHERE author_key = akey(course, ?) ORDER BY created_at, id`).all(id),
+      reports_you_made: q(`SELECT review_id, reason, details, created_at FROM reports WHERE reporter_key = akey((SELECT course FROM reviews x WHERE x.id = review_id), ?) ORDER BY created_at, id`).all(id),
+      tips_you_reported: q(`SELECT verdict_id FROM verdict_reports WHERE reporter_key = akey((SELECT course FROM verdicts x WHERE x.id = verdict_id), ?)`).all(id),
       lecturer_suggestions: q(`SELECT name, course, status, created_at FROM lecturer_suggestions WHERE user_id = ? ORDER BY created_at`).all(id),
       attendance: q(`SELECT c.name AS class, s.label, a.status, a.how, a.marked_at FROM attendance a JOIN attendance_sessions s ON s.id = a.session_id JOIN classes c ON c.id = s.class_id WHERE a.user_id = ? ORDER BY a.marked_at`).all(id),
       classes: q(`SELECT c.course, c.year, c.name, m.role, m.name AS your_name_there, m.anonymous, m.consent_at, m.joined_at FROM class_members m JOIN classes c ON c.id = m.class_id WHERE m.user_id = ?`).all(id),
@@ -1150,7 +1154,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       study_groups: q(`SELECT g.name, m.name AS your_name_there, m.joined_at, g.owner_id = ? AS you_own_it FROM group_members m JOIN study_groups g ON g.id = m.group_id WHERE m.user_id = ?`).all(id, id),
       leaderboard_profile: q(`SELECT display_name, show_name, faculty, major, year, boards_agreed_at FROM profiles WHERE user_id = ?`).get(id) || null,
       study_sessions: q(`SELECT course, day, started_at, planned_min, credited_sec, status FROM study_sessions WHERE user_id = ? ORDER BY started_at`).all(id),
-      course_details_you_added: q(`SELECT course, kind, data, status, created_at FROM course_facts WHERE user_id = ? ORDER BY created_at`).all(id).map((f) => ({ ...f, data: JSON.parse(f.data) })),
+      course_details_you_added: q(`SELECT course, kind, data, status, created_at FROM course_facts WHERE author_key = akey(course, ?) ORDER BY created_at, id`).all(id).map((f) => ({ ...f, data: JSON.parse(f.data) })),
       note: 'Your semester plan and "about you" answers are kept only in a cookie on your device and in the plan link, not on our server. Sign-in codes, links and sessions are stored as one-way hashes and deleted when they expire.',
     };
     res.set({ 'Content-Disposition': 'attachment; filename="kwaai-my-data.json"', 'Cache-Control': 'no-store' }).json(data);
@@ -1160,11 +1164,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const id = req.user.id;
     db.exec('BEGIN');
     try {
-      q(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE user_id = ?)`).run(id);
-      q(`UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE user_id = ?)`).run(id);
-      q(`DELETE FROM reviews WHERE user_id = ?`).run(id);
-      q(`DELETE FROM verdicts WHERE user_id = ?`).run(id);
-      q(`DELETE FROM course_facts WHERE user_id = ?`).run(id);
+      q(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE author_key = akey(course, ?))`).run(id);
+      q(`UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE author_key = akey(course, ?))`).run(id);
+      q(`DELETE FROM reviews WHERE author_key = akey(course, ?)`).run(id);
+      q(`DELETE FROM verdicts WHERE author_key = akey(course, ?)`).run(id);
+      q(`DELETE FROM course_facts WHERE author_key = akey(course, ?)`).run(id);
       q(`DELETE FROM study_sessions WHERE user_id = ?`).run(id);
       q(`DELETE FROM name_reports WHERE user_id = ? OR target_id = ?`).run(id, id);
       q(`DELETE FROM profiles WHERE user_id = ?`).run(id);
@@ -1178,9 +1182,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM attendance WHERE user_id = ?`).run(id);
       q(`UPDATE attendance_sessions SET started_by = NULL WHERE started_by = ?`).run(id);
       q(`DELETE FROM class_members WHERE user_id = ?`).run(id);
-      q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
-      q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
-      q(`UPDATE reports SET user_id = NULL WHERE user_id = ?`).run(id);
+      q(`DELETE FROM fact_reports WHERE reporter_key = akey(course, ?)`).run(id);
+      q(`DELETE FROM verdict_reports WHERE reporter_key = akey((SELECT course FROM verdicts x WHERE x.id = verdict_id), ?)`).run(id);
+      q(`UPDATE reports SET reporter_key = NULL, day_key = NULL WHERE reporter_key = akey((SELECT course FROM reviews x WHERE x.id = review_id), ?)`).run(id);
       q(`UPDATE lecturer_suggestions SET user_id = NULL WHERE user_id = ?`).run(id);
       q(`DELETE FROM sessions WHERE user_id = ?`).run(id);
       q(`DELETE FROM users WHERE id = ?`).run(id);
@@ -1230,8 +1234,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (screen.action === 'reject') return fail(`Your comment can't be posted as written: ${screen.reasons.join(', ').toLowerCase()}. Please remove it and try again.`);
     const status = screen.action === 'hold' ? 'held' : 'published';
     try {
-      q(`INSERT INTO reviews (course, lecturer_id, year, user_id, teaching, engagement, exams, support, difficulty, workload, overall, tags, body, status, flags)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(c.code, lecturerId, review.year, req.user.id, review.teaching, review.engagement, review.exams,
+      q(`INSERT INTO reviews (course, lecturer_id, year, author_key, teaching, engagement, exams, support, difficulty, workload, overall, tags, body, status, flags)
+         VALUES (?, ?, ?, akey(?, ?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(c.code, lecturerId, review.year, c.code, req.user.id, review.teaching, review.engagement, review.exams,
         review.support, review.difficulty, review.workload, review.overall, review.tags, review.body, status, screen.reasons.join('|'));
     } catch (e) {
       if (/UNIQUE/.test(e.message)) return fail("You've already reviewed this lecturer for that year. Delete your old review first if you want to redo it.");
@@ -1247,7 +1251,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const back = `/courses/${c.code}#verdict`;
     const { verdict, error } = parseVerdictForm(req.body);
     if (error) return flashRedirect(res, back, 'error', error);
-    const old = q(`SELECT status, tip, flags FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
+    const old = q(`SELECT status, tip, flags FROM verdicts WHERE course = ? AND author_key = akey(?, ?)`).get(c.code, c.code, req.user.id);
     if (old?.status === 'removed') return flashRedirect(res, back, 'error', "A moderator removed your vote on this course, so you can't vote on it again.");
     const screen = screenComment(verdict.tip);
     if (screen.action === 'reject') return flashRedirect(res, back, 'error', `Your tip can't be posted as written: ${screen.reasons.join(', ').toLowerCase()}. Please remove it and try again.`);
@@ -1255,16 +1259,16 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     // Changing the words sends it through screening again.
     const stuck = old?.status === 'held' && old.tip === verdict.tip;
     const status = stuck || screen.action === 'hold' ? 'held' : 'published';
-    q(`INSERT INTO verdicts (course, user_id, year, lekker, tip, status, flags) VALUES (?, ?, ?, ?, ?, ?, ?)
-       ON CONFLICT (user_id, course) DO UPDATE SET year = excluded.year, lekker = excluded.lekker, tip = excluded.tip, status = excluded.status, flags = excluded.flags`)
-      .run(c.code, req.user.id, verdict.year, verdict.lekker, verdict.tip, status, stuck ? old.flags : screen.reasons.join('|'));
-    if (!stuck) q(`DELETE FROM verdict_reports WHERE verdict_id = (SELECT id FROM verdicts WHERE course = ? AND user_id = ?)`).run(c.code, req.user.id);
+    q(`INSERT INTO verdicts (course, author_key, year, lekker, tip, status, flags) VALUES (?, akey(?, ?), ?, ?, ?, ?, ?)
+       ON CONFLICT (author_key, course) DO UPDATE SET year = excluded.year, lekker = excluded.lekker, tip = excluded.tip, status = excluded.status, flags = excluded.flags`)
+      .run(c.code, c.code, req.user.id, verdict.year, verdict.lekker, verdict.tip, status, stuck ? old.flags : screen.reasons.join('|'));
+    if (!stuck) q(`DELETE FROM verdict_reports WHERE verdict_id = (SELECT id FROM verdicts WHERE course = ? AND author_key = akey(?, ?))`).run(c.code, c.code, req.user.id);
     flashRedirect(res, back, status === 'held' ? 'info' : 'ok',
       status === 'held' ? 'Thanks! Your vote counts once a moderator has checked your tip.' : `Thanks! You voted ${verdict.lekker ? 'lekker 🤙' : 'nah 👎'}.`);
   });
 
   app.post('/verdicts/:id/delete', requireUser, (req, res) => {
-    const v = q(`SELECT * FROM verdicts WHERE id = ? AND user_id = ?`).get(Number(req.params.id) || 0, req.user.id);
+    const v = q(`SELECT * FROM verdicts WHERE id = ? AND author_key = akey(course, ?)`).get(Number(req.params.id) || 0, req.user.id);
     if (!v) return res.status(404).page(notFound(req));
     // otherwise a removed vote could be deleted and cast again, dodging the block. Deleting the whole account still erases it.
     if (v.status === 'removed') return flashRedirect(res, req.body.back === 'account' ? '/account' : `/courses/${v.course}`, 'error', "A moderator removed this vote, so it can't be deleted or cast again. Deleting your account erases it.");
@@ -1285,8 +1289,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const v = q(`SELECT * FROM verdicts WHERE id = ? AND status = 'published' AND tip != ''`).get(Number(req.params.id) || 0);
     if (!v) return flashRedirect(res, '/', 'error', 'That tip was already hidden or removed.');
     const back = `/courses/${v.course}#tips`;
-    if (v.user_id === req.user.id) return flashRedirect(res, back, 'error', "That's your own tip. You can delete it from your account.");
-    q(`INSERT OR IGNORE INTO verdict_reports (verdict_id, user_id) VALUES (?, ?)`).run(v.id, req.user.id);
+    if (v.author_key === keyOf(v.course, req.user.id)) return flashRedirect(res, back, 'error', "That's your own tip. You can delete it from your account.");
+    q(`INSERT OR IGNORE INTO verdict_reports (verdict_id, reporter_key) VALUES (?, akey(?, ?))`).run(v.id, v.course, req.user.id);
     const n = q(`SELECT COUNT(*) AS n FROM verdict_reports WHERE verdict_id = ?`).get(v.id).n;
     if (n >= HIDE_AFTER_REPORTS) q(`UPDATE verdicts SET status = 'held', flags = 'Reported by readers' WHERE id = ?`).run(v.id);
     flashRedirect(res, back, 'ok', n >= HIDE_AFTER_REPORTS ? 'Thanks. That tip is hidden until a moderator checks it.' : 'Thanks. A moderator will take a look.');
@@ -1315,7 +1319,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   app.post('/reviews/:id/delete', requireUser, (req, res) => {
-    const r = q(`SELECT * FROM reviews WHERE id = ? AND user_id = ?`).get(Number(req.params.id) || 0, req.user.id);
+    const r = q(`SELECT * FROM reviews WHERE id = ? AND author_key = akey(course, ?)`).get(Number(req.params.id) || 0, req.user.id);
     if (!r) return res.status(404).page((notFound(req)));
     q(`DELETE FROM reports WHERE review_id = ?`).run(r.id);
     q(`UPDATE takedowns SET review_id = NULL WHERE review_id = ?`).run(r.id);
@@ -1334,14 +1338,14 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const r = q(`SELECT * FROM reviews WHERE id = ? AND status != 'removed'`).get(Number(req.params.id) || 0);
     const reason = REPORT_REASONS.find((x) => x.key === req.body.reason);
     if (!r || !reason) return flashRedirect(res, r ? `/courses/${r.course}` : '/', 'error', 'Please pick a reason for the report.');
-    if (r.user_id === req.user.id) return flashRedirect(res, `/courses/${r.course}`, 'error', "That's your own review. You can delete it from your account.");
-    if (q(`SELECT 1 FROM reports WHERE review_id = ? AND user_id = ?`).get(r.id, req.user.id)) return flashRedirect(res, `/courses/${r.course}`, 'info', 'You already reported this review. A moderator will take a look.');
-    q(`INSERT INTO reports (review_id, reason, details, user_id) VALUES (?, ?, ?, ?)`).run(r.id, reason.key, String(req.body.details || '').slice(0, 500), req.user.id);
+    if (r.author_key === keyOf(r.course, req.user.id)) return flashRedirect(res, `/courses/${r.course}`, 'error', "That's your own review. You can delete it from your account.");
+    if (q(`SELECT 1 FROM reports WHERE review_id = ? AND reporter_key = akey(?, ?)`).get(r.id, r.course, req.user.id)) return flashRedirect(res, `/courses/${r.course}`, 'info', 'You already reported this review. A moderator will take a look.');
+    q(`INSERT INTO reports (review_id, reason, details, reporter_key, day_key) VALUES (?, ?, ?, akey(?, ?), akey('day:' || date('now'), ?))`).run(r.id, reason.key, String(req.body.details || '').slice(0, 500), r.course, req.user.id, req.user.id);
     const open = q(`SELECT COUNT(*) AS n FROM reports WHERE review_id = ? AND resolved = 0`).get(r.id).n;
     // Serious reasons (a false allegation, private details) hide a review straight away, but one student gets three
     // of those a day; after that a serious report needs a second reporter, like any other.
     const seriousKeys = REPORT_REASONS.filter((x) => x.hideNow).map((x) => x.key);
-    const seriousToday = q(`SELECT COUNT(*) AS n FROM reports WHERE user_id = ? AND reason IN (${seriousKeys.map(() => '?').join(',')}) AND created_at > datetime('now', '-1 day')`).get(req.user.id, ...seriousKeys).n;
+    const seriousToday = q(`SELECT COUNT(*) AS n FROM reports WHERE day_key = akey('day:' || date('now'), ?) AND reason IN (${seriousKeys.map(() => '?').join(',')})`).get(req.user.id, ...seriousKeys).n;
     const hideNow = (reason.hideNow && seriousToday <= INSTANT_HIDES_PER_DAY) || open >= HIDE_AFTER_REPORTS;
     // a review a moderator already checked and put back stays up until a moderator looks again
     if (hideNow && !modApproved(r.id)) hold(r.id, `Reported: ${reason.label}`);
@@ -2593,7 +2597,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const suggestions = q(`SELECT s.*, d.name AS dept_name FROM lecturer_suggestions s JOIN departments d ON d.code = s.dept WHERE s.status = 'open' ORDER BY s.created_at`).all();
     const heldTips = q(`SELECT * FROM verdicts WHERE status = 'held' ORDER BY created_at`).all();
     const log = q(`SELECT * FROM mod_log ORDER BY id DESC LIMIT 30`).all();
-    const heldFacts = q(`SELECT course, kind, key, MIN(data) AS data, COUNT(DISTINCT user_id) AS n, (SELECT COUNT(*) FROM fact_reports r WHERE r.course = f.course AND r.key = f.key) AS reports
+    const heldFacts = q(`SELECT course, kind, key, MIN(data) AS data, COUNT(DISTINCT author_key) AS n, (SELECT COUNT(*) FROM fact_reports r WHERE r.course = f.course AND r.key = f.key) AS reports
       FROM course_facts f WHERE status = 'held' GROUP BY course, key ORDER BY MIN(created_at)`).all().map((f) => ({ ...f, data: JSON.parse(f.data) }));
     const heldNames = q(`SELECT p.user_id, p.display_name, (SELECT COUNT(*) FROM name_reports r WHERE r.target_id = p.user_id) AS reports FROM profiles p WHERE p.name_held = 1 ORDER BY p.user_id`).all();
     const heldAnnouncements = q(`SELECT a.*, c.code, c.name AS class_name, (SELECT COUNT(*) FROM announcement_reports r WHERE r.announcement_id = a.id) AS reports
@@ -2644,7 +2648,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!r || !['approve', 'remove', 'ban'].includes(action)) return res.status(404).page((notFound(req)));
     q(`UPDATE reviews SET status = ?, flags = CASE WHEN ? = 'approve' THEN '' ELSE flags END WHERE id = ?`).run(action === 'approve' ? 'published' : 'removed', action, r.id);
     q(`UPDATE reports SET resolved = 1 WHERE review_id = ?`).run(r.id);
-    if (action === 'ban' && r.user_id) q(`UPDATE users SET banned = 1 WHERE id = ?`).run(r.user_id);
+    if (action === 'ban' && r.author_key) q(`UPDATE users SET banned = 1 WHERE akey(?, id) = ?`).run(r.course, r.author_key);
     q(`INSERT INTO mod_log (review_id, action, note, moderator) VALUES (?, ?, ?, ?)`).run(r.id, action, String(req.body.note || '').slice(0, 200), req.user.email);
     flashRedirect(res, '/mod', 'ok', `Review #${r.id}: ${action === 'approve' ? 'approved and back up' : action === 'ban' ? 'removed, author banned' : 'removed'}.`);
   });
@@ -2654,7 +2658,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const action = req.params.action;
     if (!v || !['approve', 'remove', 'ban'].includes(action)) return res.status(404).page(notFound(req));
     q(`UPDATE verdicts SET status = ?, flags = CASE WHEN ? = 'approve' THEN '' ELSE flags END WHERE id = ?`).run(action === 'approve' ? 'published' : 'removed', action, v.id);
-    if (action === 'ban') q(`UPDATE users SET banned = 1 WHERE id = ?`).run(v.user_id);
+    if (action === 'ban') q(`UPDATE users SET banned = 1 WHERE akey(?, id) = ?`).run(v.course, v.author_key);
     q(`INSERT INTO mod_log (action, note, moderator) VALUES (?, ?, ?)`).run(`${action} tip`, `tip #${v.id} on ${v.course}`, req.user.email); // no tip text: the log outlives deleted accounts
     flashRedirect(res, '/mod', 'ok', `Tip #${v.id}: ${action === 'approve' ? 'approved and back up' : action === 'ban' ? 'removed, author banned' : 'removed'}.`);
   });
