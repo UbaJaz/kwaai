@@ -77,7 +77,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // an hour of caching: the files aren't fingerprinted, so a longer cache would show old styles after a deploy
   // the service worker is checked on every visit so an update reaches installed copies straight away
   app.use(express.static(path.join(__dirname, '..', 'public'), { maxAge: '1h', setHeaders: (res, file) => { if (file.endsWith('sw.js')) res.setHeader('Cache-Control', 'no-cache'); } }));
-  app.use(express.urlencoded({ extended: false, limit: '20kb' }));
+  // Forms are small, so 20 KB is plenty, except a pasted class list: 3,000 students (Classes.ROSTER_MAX) with names and
+  // groups come to about 140 KB once encoded.
+  const smallForm = express.urlencoded({ extended: false, limit: '20kb' });
+  const classListForm = express.urlencoded({ extended: false, limit: '300kb' });
+  app.use((req, res, next) => (/^\/classes\/\d+\/roster$/.test(req.path) ? classListForm : smallForm)(req, res, next));
   app.use((req, res, next) => { req.body ??= {}; next(); }); // Express 5 leaves it undefined for empty POSTs
 
   const q = (sql) => db.prepare(sql);
@@ -178,14 +182,13 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall, MAX(is_sample) AS has_sample FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
     ${where} ORDER BY ${order} LIMIT ${limit}`).all(...params);
 
-  function ranking(kind, rank, dept, limit = 10) {
-    const [join, key, cols, deptCol] = kind === 'course'
-      ? ['JOIN courses c ON c.code = r.course JOIN departments d ON d.code = c.dept', 'c.code', 'c.code, c.title', 'c.dept']
-      : ['JOIN lecturers l ON l.id = r.lecturer_id JOIN departments d ON d.code = l.dept', 'l.id', 'l.id, l.name', 'l.dept'];
+  // Courses only. Lecturers are never ranked: a league table of named people helps nobody choose a course.
+  function ranking(rank, dept, limit = 10) {
     // rank.column comes from the fixed RANKINGS list, never from the request
-    return q(`SELECT ${cols}, MAX(r.is_sample) AS is_sample, d.name AS dept_name, COUNT(*) AS n, AVG(r.${rank.column}) AS score FROM reviews r ${join}
-      WHERE r.status = 'published' ${dept ? `AND ${deptCol} = ?` : ''}
-      GROUP BY ${key} HAVING n >= ${MIN_FOR_RANKING} ORDER BY score ${rank.order}, n DESC LIMIT ${limit}`).all(...(dept ? [dept] : []));
+    return q(`SELECT c.code, c.title, MAX(r.is_sample) AS is_sample, d.name AS dept_name, COUNT(*) AS n, AVG(r.${rank.column}) AS score FROM reviews r
+      JOIN courses c ON c.code = r.course JOIN departments d ON d.code = c.dept
+      WHERE r.status = 'published' ${dept ? 'AND c.dept = ?' : ''}
+      GROUP BY c.code HAVING n >= ${MIN_FOR_RANKING} ORDER BY score ${rank.order}, n DESC LIMIT ${limit}`).all(...(dept ? [dept] : []));
   }
 
   app.get('/', (req, res) => {
@@ -195,8 +198,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const studying = liveStudents(req.user, `uni = ?`, req.user?.uni ?? CURRENT.slug);
     res.page((views.home(req.ctx, {
       counts,
-      topCourses: ranking('course', byKey('best'), null, 5),
-      heaviest: ranking('course', byKey('workload'), null, 5),
+      topCourses: ranking(byKey('best'), null, 5),
+      heaviest: ranking(byKey('workload'), null, 5),
       // November to January: exams are done and registration hasn't opened, the best time to ask for ratings
       ratingSeason: [10, 11, 0].includes(new Date().getMonth()),
       // a returning student with a plan on this device gets a way straight into their day
@@ -328,15 +331,16 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall FROM reviews WHERE lecturer_id = ? AND status = 'published' AND course IN ${OPEN_REVIEWS} GROUP BY course) s ON s.course = c.code
       WHERE s.n > 0 OR ('|' || c.conveners || '|') LIKE ? ORDER BY c.code`).all(l.id, `%|${l.name}|%`);
     const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.lecturer_id = ? AND r.status = 'published' AND r.course IN ${OPEN_REVIEWS} ORDER BY r.created_at DESC, r.id DESC`).all(l.id);
-    res.page((views.lecturer(req.ctx, { l, stats, courses: taught, reviews, commentsFrom, locked: !canReadAll(req) })));
+    // a named person's scores shouldn't be what comes up when someone searches their name
+    res.set('X-Robots-Tag', 'noindex').page((views.lecturer(req.ctx, { l, stats, courses: taught, reviews, commentsFrom, locked: !canReadAll(req) })));
   });
 
   app.get('/rankings', (req, res) => {
+    // ?kind=lecturer from old links just shows the course ranking
     const rank = RANKINGS.find((r) => r.key === req.query.cat) || RANKINGS[0];
-    const kind = req.query.kind === 'lecturer' ? 'lecturer' : 'course';
     const all = depts();
     const dept = all.some((d) => d.code === req.query.dept) ? req.query.dept : '';
-    res.page((views.rankings(req.ctx, { rows: ranking(kind, rank, dept, 25), depts: all, dept, rank, kind })));
+    res.page((views.rankings(req.ctx, { rows: ranking(rank, dept, 25), depts: all, dept, rank })));
   });
 
   // ---- semester planner ----
@@ -1176,8 +1180,18 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM announcement_reads WHERE user_id = ?`).run(id);
       q(`DELETE FROM announcement_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM classes WHERE owner_id = ?`).run(id); // a lecturer's own classes go with them (members cascade)
+      // Marks by student number, and the class-list row joining made. Where the lecturer's own pasted list has them,
+      // the marks stay on that register without the account (no mark means absent, so deleting would cost them DP).
+      const number = Classes.studentNumber(req.user.email);
+      if (number) {
+        const listed = `session_id IN (SELECT s.id FROM attendance_sessions s JOIN class_roster r ON r.class_id = s.class_id AND r.source = 'list' AND r.number = ?)`;
+        q(`UPDATE attendance SET user_id = NULL, device = '' WHERE number = ? AND ${listed}`).run(number, number);
+        q(`DELETE FROM attendance WHERE number = ? AND NOT ${listed}`).run(number, number);
+        q(`DELETE FROM class_roster WHERE number = ? AND source = 'joined'`).run(number);
+      }
       q(`DELETE FROM attendance WHERE user_id = ?`).run(id);
       q(`UPDATE attendance_sessions SET started_by = NULL WHERE started_by = ?`).run(id);
+      q(`UPDATE class_dates SET added_by = NULL WHERE added_by = ?`).run(id); // the date stays for the class, without who added it
       q(`DELETE FROM class_members WHERE user_id = ?`).run(id);
       q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
@@ -1368,11 +1382,16 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       return res.status(400).page((views.takedown(req.ctx, { review, values: b, error: 'Please fill in your name, a valid email and what the problem is.' })));
     }
     q(`INSERT INTO takedowns (review_id, name, email, relation, details) VALUES (?, ?, ?, ?, ?)`).run(review?.id ?? null, name, email, String(b.relation || '').slice(0, 100), details);
-    const hidden = review && !modApproved(review.id);
-    if (hidden) hold(review.id, 'Removal requested');
+    // Anyone can type a name and an email, so a request only hides a review straight away when it comes from a
+    // signed-in UCT staff account. Everything else waits for a moderator with the review still up.
+    const staff = req.user?.role === 'staff';
+    const hidden = staff && review?.status === 'published' && !modApproved(review.id);
+    if (hidden) hold(review.id, 'Removal requested by staff');
     res.page((views.message(req.ctx, {
       title: 'Request received', emoji: '📮',
-      text: hidden ? 'The review is now hidden while a moderator looks at it. We aim to reply within 48 hours.' : 'A moderator will look at your request and reply by email, usually within 48 hours.',
+      text: hidden ? 'The review is now hidden while a moderator looks at it. We aim to reply within 48 hours.'
+        : review?.status === 'published' && !staff && !modApproved(review.id) ? 'A moderator will look at your request and reply by email, usually within 48 hours. The review stays up until a moderator has looked at it. If you are UCT staff, sign in with your @uct.ac.za email and send the request again to hide it straight away.'
+          : 'A moderator will look at your request and reply by email, usually within 48 hours.',
       link: { href: '/', label: 'Back to Kwaai' },
     })));
   });
@@ -2685,7 +2704,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     // errors from the body parser happen before the session middleware, so res.page may not exist yet
     res.status(status).send(String(views.message(req.ctx || {}, status === 500
       ? { title: 'Something broke', emoji: '🫠', text: 'Sorry, that was our fault. Please try again.' }
-      : { title: 'That request didn\'t work', emoji: '🤔', text: 'Please go back and try again.' })));
+      : status === 413
+        ? { title: 'That was too long to send', emoji: '🤔', text: /\/roster$/.test(req.path)
+          ? `A class list can have up to ${Classes.ROSTER_MAX.toLocaleString('en-ZA')} students. Go back, split the list and add it in parts.`
+          : 'Go back, shorten what you typed and try again.' }
+        : { title: 'That request didn\'t work', emoji: '🤔', text: 'Please go back and try again.' })));
   });
   return app;
 }
