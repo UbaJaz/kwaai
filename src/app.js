@@ -1180,6 +1180,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       }
       q(`DELETE FROM attendance WHERE user_id = ?`).run(id);
       q(`UPDATE attendance_sessions SET started_by = NULL WHERE started_by = ?`).run(id);
+      q(`UPDATE class_dates SET added_by = NULL WHERE added_by = ?`).run(id); // the date stays for the class, without who added it
       q(`DELETE FROM class_members WHERE user_id = ?`).run(id);
       q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
