@@ -2,7 +2,7 @@ const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { openDb, cleanUp } = require('../src/db');
 const { createApp } = require('../src/app');
-const { seed } = require('../scripts/seed');
+const { seed, seedDemo } = require('../scripts/seed');
 const { screenComment } = require('../src/moderation');
 const { parseReviewForm, parseVerdictForm, overallOf, semesterLoad } = require('../src/ratings');
 const { analysePlan, termsOf, parseProfile, majorNeeds, creditAdvice } = require('../src/planner');
@@ -953,6 +953,26 @@ test('launch safety: one live code per address, guess cap across IPs, daily emai
   assert.equal(status(ids[4]), 'published');
 });
 
+test('the demo catalogue is made up: no real course or staff name, and two reviews waiting for a moderator', () => {
+  const fs = require('node:fs');
+  const db = openDb(':memory:');
+  const started = Date.now();
+  seedDemo(db);
+  const ms = Date.now() - started;
+  const realStaff = new Set(JSON.parse(fs.readFileSync('data/staff-2026.json', 'utf8')).staff.map((s) => s.name));
+  const realCodes = new Set(fs.readdirSync('data').filter((f) => /^courses-.*\.json$/.test(f)).flatMap((f) => JSON.parse(fs.readFileSync(`data/${f}`, 'utf8')).courses.map((c) => c.code)));
+  const lecturers = db.prepare('SELECT name FROM lecturers').all().map((r) => r.name);
+  const codes = db.prepare('SELECT code FROM courses').all().map((r) => r.code);
+  assert.equal(lecturers.length, 8);
+  assert.equal(codes.length, 12);
+  assert.deepEqual(lecturers.filter((n) => realStaff.has(n)), [], 'no real staff member appears in the demo');
+  assert.deepEqual(codes.filter((c) => realCodes.has(c)), [], 'no real course either');
+  assert.ok(db.prepare(`SELECT COUNT(*) AS n FROM reviews WHERE status = 'published'`).get().n >= 50, 'enough reviews to look alive');
+  assert.equal(db.prepare(`SELECT COUNT(*) AS n FROM reviews WHERE status = 'held'`).get().n, 2, 'two show what a moderator sees');
+  assert.equal(db.prepare(`SELECT COUNT(*) AS n FROM lecturers WHERE is_sample = 0`).get().n, 0, 'every lecturer is marked made up');
+  assert.ok(ms < 1000, `seeded in ${ms} ms, so a cold start doesn't wait on it`);
+});
+
 test('demo mode: out of search engines, says it is made up, no email sign-in, and a health check', async (t) => {
   const sdb = openDb(':memory:');
   const demo = createApp(sdb, { devMode: false, demoMode: true }).listen(0);
@@ -961,7 +981,7 @@ test('demo mode: out of search engines, says it is made up, no email sign-in, an
   const root = `http://localhost:${demo.address().port}`;
   const home = await fetch(`${root}/`);
   assert.equal(home.headers.get('x-robots-tag'), 'noindex', 'every page is kept out of search engines');
-  assert.match(await home.text(), /Demo\.<\/strong> Every review, student and class here is made up\./);
+  assert.match(await home.text(), /Demo\.<\/strong> Every lecturer, student, course and review here is made up\./);
   assert.match(await (await fetch(`${root}/robots.txt`)).text(), /Disallow: \/\s*$/);
   assert.match(await (await fetch(`${root}/login`)).text(), /doesn&#39;t need an account|doesn't need an account/);
   const b = browser(() => root);
@@ -974,7 +994,7 @@ test('demo mode: out of search engines, says it is made up, no email sign-in, an
 
   const normal = await fetch(`${base}/`);
   assert.equal(normal.headers.get('x-robots-tag'), null, 'without demo mode nothing changes');
-  assert.doesNotMatch(await normal.text(), /Every review, student and class here is made up/);
+  assert.doesNotMatch(await normal.text(), /Every lecturer, student, course and review here is made up/);
   assert.equal((await fetch(`${base}/healthz`)).status, 200, 'the health check is always there, for keep-alive pings');
 });
 
