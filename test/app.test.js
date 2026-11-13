@@ -2137,8 +2137,10 @@ test('a friend\'s plan link offers to become your plan', async () => {
   await b.get('/plan?add=STA1000S');
   let page = await b.text('/plan?c=CSC1015S,MAM1032S');
   assert.match(page, /This plan came from a link/);
-  const adopt = /href="(\/plan\?[^"]*adopt=1[^"]*)"/.exec(page)[1].replace(/&amp;/g, '&');
-  const res = await b.get(adopt);
+  const plan = /action="\/plan\/adopt">[\s\S]*?name="plan" value="([^"]*)"/.exec(page)[1].replace(/&amp;/g, '&');
+  assert.match((await b.get('/plan?c=CSC1015S,MAM1032S&adopt=1')).headers.get('location') || '', /^$|^\/plan\?c=STA1000S/, 'a link alone no longer replaces your plan');
+  assert.doesNotMatch(await b.text('/today'), /CSC1015S|MAM1032S/);
+  const res = await b.post('/plan/adopt', { plan });
   assert.equal(res.status, 303);
   page = await b.text(res.headers.get('location'));
   assert.match(page, /This is your plan now/);

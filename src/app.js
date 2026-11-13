@@ -372,15 +372,18 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     return { fromUrl, shared, codes, profile: parseProfile(state), week: parseWeek(state) };
   }
 
+  // "Make this my plan" on a plan someone shared: save it on this device, so Week, Today and Study use it. A POST, so a
+  // link someone sends can't replace the plan saved on your phone without you pressing the button.
+  app.post('/plan/adopt', (req, res) => {
+    const { codes, profile, week } = readPlan(req, Object.fromEntries(new URLSearchParams(String(req.body.plan || ''))));
+    savePlan(req, res, codes, profile, week);
+    flashRedirect(res, planUrl(codes, profile, week), 'ok', 'This is your plan now. Your week, Today and Study use it.');
+  });
+
   app.get('/plan', (req, res) => {
     const saved = readPlan(req);
     const { fromUrl, week } = saved;
     let { codes, profile } = saved;
-    // "Make this my plan" on a plan someone shared: save it on this device, so Week, Today and Study use it
-    if (req.query.adopt != null) {
-      savePlan(req, res, codes, profile, week);
-      return flashRedirect(res, planUrl(codes, profile, week), 'ok', 'This is your plan now. Your week, Today and Study use it.');
-    }
     // the "about you" form: majors come from two selects, passed courses from ticked boxes plus a free text box
     if (req.query.about != null) {
       profile = req.query.about === 'clear' ? parseProfile() : parseProfile({
