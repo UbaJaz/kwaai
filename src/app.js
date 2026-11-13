@@ -194,6 +194,26 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       GROUP BY ${key} HAVING n >= ${MIN_FOR_RANKING} ORDER BY score ${rank.order}, n DESC LIMIT ${limit}`).all(...(dept ? [dept] : []));
   }
 
+  // ---- the lecturer demo (DEMO_MODE=1, docs/lecturer-demo.md) ----
+  // One tap makes a throwaway lecturer account (demo-<token>@kwaai.invalid, which can never get email) with its own
+  // class of made-up students, so visitors never see each other's changes. src/db.js cleanUp deletes it after 48 hours.
+  if (demoMode) {
+    const DEMO_COURSE = 'EXS1001F'; // from data/demo/courses.json
+    app.get('/', (req, res, next) => (req.user ? next() : res.redirect(303, '/demo')));
+    app.get('/demo', (req, res) => res.page(views.demoLanding(req.ctx)));
+    app.post('/demo/start', limit(10, 60 * MIN, (req) => `demo:${req.ip}`, 'You have started a lot of demos from this connection. Please wait an hour and try again.'), (req, res) => {
+      const token = crypto.randomBytes(6).toString('hex');
+      const add = q(`INSERT INTO users (email, uni, role, is_test, agreed_at) VALUES (?, ?, ?, 1, CURRENT_TIMESTAMP)`);
+      const ownerEmail = `demo-${token}@kwaai.invalid`;
+      add.run(ownerEmail, CURRENT.slug, 'staff');
+      // the same students as the test tools, with their own accounts, so their numbers match (TEST001 and on)
+      const ids = TestData.FAKE_STUDENTS.map((_, i) => Number(add.run(TestData.fakeEmail(i).replace('test-student-', `demo-${token}-student-`), CURRENT.slug, 'student').lastInsertRowid));
+      const owner = q(`SELECT * FROM users WHERE email = ?`).get(ownerEmail);
+      const cls = buildLecturerClass(owner, ids, DEMO_COURSE, `${DEMO_COURSE} demo class`);
+      startSession(req, res, ownerEmail, `/classes/${cls.id}`);
+    });
+  }
+
   app.get('/', (req, res) => {
     const counts = q(`SELECT (SELECT COUNT(*) FROM courses) AS courses, (SELECT COUNT(*) FROM reviews WHERE status = 'published') AS reviews,
       (SELECT COUNT(*) FROM verdicts WHERE status = 'published') AS votes, (SELECT COUNT(*) FROM verdicts WHERE status = 'published' AND tip != '') AS tips`).get();
@@ -2563,7 +2583,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const sid = crypto.randomBytes(32).toString('hex');
     q(`INSERT INTO sessions (hash, user_id, expires) VALUES (?, ?, ?)`).run(sha(sid), user.id, Date.now() + SESSION_TTL);
     res.cookie('sid', sid, { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: SESSION_TTL });
-    flashRedirect(res, safeNext(next), 'ok', "You're signed in. Anything you post shows without your name.");
+    flashRedirect(res, safeNext(next), 'ok', demoMode && email.startsWith('demo-')
+      ? "This is your demo class. Every student in it is made up, so try anything."
+      : "You're signed in. Anything you post shows without your name.");
   }
 
   app.post('/login/code', limits.login, limits.loginCode, limits.loginCodeEmail, (req, res) => {
