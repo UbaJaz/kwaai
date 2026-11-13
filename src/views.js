@@ -2714,8 +2714,8 @@ function takedown(ctx, { review, error, values = {} }) {
     <h1 class="page-title">Request a review's removal</h1>
     <p class="lede small">For lecturers, staff or anyone a review is about. No account needed: a moderator reads every request and replies by email within 48 hours.</p>
     <p class="meta">${ctx.user?.role === 'staff'
-      ? "You're signed in with a UCT staff email, so a review you name here is hidden straight away while a moderator looks at it."
-      : html`UCT staff: <a href="/login?next=${encodeURIComponent('/takedown' + (review ? `?review=${review.id}` : ''))}">sign in with your @uct.ac.za email</a> first and a review you name is hidden straight away while a moderator looks at it. Without signing in, it stays up until then.`}</p>
+      ? "You're signed in with a UCT staff email, so a review you name here is usually hidden straight away while a moderator looks at it. One a moderator has already checked stays up until they look again."
+      : html`UCT staff: <a href="/login?next=${encodeURIComponent('/takedown' + (review ? `?review=${review.id}` : ''))}">sign in with your @uct.ac.za email</a> first and a review you name is usually hidden straight away while a moderator looks at it. Without signing in, it stays up until then.`}</p>
     ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
     ${review ? html`<div class="card quote"><p class="meta">Review #${review.id} on ${review.course}</p>${review.body ? html`<p>“${review.body}”</p>` : html`<p class="muted">(rating only, no comment)</p>`}</div>` : ''}
     <form method="post" action="/takedown" class="card form">

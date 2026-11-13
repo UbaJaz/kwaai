@@ -1369,7 +1369,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     res.page((views.message(req.ctx, {
       title: 'Request received', emoji: '📮',
       text: hidden ? 'The review is now hidden while a moderator looks at it. We aim to reply within 48 hours.'
-        : review?.status === 'published' && !staff ? 'A moderator will look at your request and reply by email, usually within 48 hours. The review stays up until a moderator has looked at it. If you are UCT staff, sign in with your @uct.ac.za email and send the request again to hide it straight away.'
+        : review?.status === 'published' && !staff && !modApproved(review.id) ? 'A moderator will look at your request and reply by email, usually within 48 hours. The review stays up until a moderator has looked at it. If you are UCT staff, sign in with your @uct.ac.za email and send the request again to hide it straight away.'
           : 'A moderator will look at your request and reply by email, usually within 48 hours.',
       link: { href: '/', label: 'Back to Kwaai' },
     })));
