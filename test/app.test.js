@@ -907,7 +907,7 @@ test('demo mode: out of search engines, says it is made up, no email sign-in, an
   const root = `http://localhost:${demo.address().port}`;
   const home = await fetch(`${root}/`);
   assert.equal(home.headers.get('x-robots-tag'), 'noindex', 'every page is kept out of search engines');
-  assert.match(await home.text(), /Demo\.<\/strong> Every lecturer, student, course and review here is made up\./);
+  assert.match(await home.text(), /Demo\.<\/strong> Every review, student and class here is made up\./);
   assert.match(await (await fetch(`${root}/robots.txt`)).text(), /Disallow: \/\s*$/);
   assert.match(await (await fetch(`${root}/login`)).text(), /doesn&#39;t need an account|doesn't need an account/);
   const b = browser(() => root);
@@ -920,7 +920,7 @@ test('demo mode: out of search engines, says it is made up, no email sign-in, an
 
   const normal = await fetch(`${base}/`);
   assert.equal(normal.headers.get('x-robots-tag'), null, 'without demo mode nothing changes');
-  assert.doesNotMatch(await normal.text(), /Every lecturer, student, course and review here is made up/);
+  assert.doesNotMatch(await normal.text(), /Every review, student and class here is made up/);
   assert.equal((await fetch(`${base}/healthz`)).status, 200, 'the health check is always there, for keep-alive pings');
 });
 

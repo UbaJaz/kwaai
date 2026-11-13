@@ -91,7 +91,7 @@ ${site.origin ? html`<meta property="og:image" content="${site.origin}/og-card.p
 </head>
 <body${uni ? html` style="--uni:${uni.accent};--uni-soft:${uni.soft}"` : ''}>
 <a class="skip" href="#main">Skip to content</a>
-<div class="notice">${demoMode ? html`<strong>Demo.</strong> Every lecturer, student, course and review here is made up. ` : ''}Unofficial student project, not affiliated with any university.${hasSamples ? html` Reviews marked <span class="badge sample">Sample</span> are demo data.` : ''}</div>
+<div class="notice">${demoMode ? html`<strong>Demo.</strong> Every review, student and class here is made up. ` : ''}Unofficial student project, not affiliated with any university.${hasSamples ? html` Reviews marked <span class="badge sample">Sample</span> are demo data.` : ''}</div>
 <header class="site-header">
   <div class="wrap header-row">
     <a class="logo" href="/"><img src="/kwaai-icon.svg" alt="" width="30" height="30"><span>kwaai</span></a>
