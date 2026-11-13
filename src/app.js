@@ -81,6 +81,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.use((req, res, next) => { req.body ??= {}; next(); }); // Express 5 leaves it undefined for empty POSTs
 
   const q = (sql) => db.prepare(sql);
+  // sample reviews only come from the seed, which runs before the app starts, so checking once is enough
+  const hasSamples = !!q('SELECT 1 FROM reviews WHERE is_sample = 1 LIMIT 1').get();
   const depts = () => q(`SELECT d.code, d.name, COUNT(c.code) AS courses FROM departments d JOIN courses c ON c.dept = d.code GROUP BY d.code ORDER BY d.name`).all();
 
   // ---- session ----
@@ -91,7 +93,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     const flash = /(?:^|;\s*)flash=([^;]+)/.exec(req.headers.cookie || '')?.[1];
     if (flash) res.clearCookie('flash');
-    req.ctx = { user: req.user, isMod: !!req.user && (mods.has(req.user.email) || !!req.user.is_admin), isAdmin: !!req.user?.is_admin, testTools, flash: parseFlash(flash), uni: CURRENT, here: req.path,
+    req.ctx = { user: req.user, isMod: !!req.user && (mods.has(req.user.email) || !!req.user.is_admin), isAdmin: !!req.user?.is_admin, testTools, hasSamples, flash: parseFlash(flash), uni: CURRENT, here: req.path,
       // origin for share links and link previews; production always has BASE_URL
       site: { contactEmail, operator, informationOfficer, origin: baseUrl || `${req.protocol}://${req.get('host')}` } };
     // CSRF: double-submit token, added to every POST form on its way out

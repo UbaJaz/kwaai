@@ -899,6 +899,13 @@ test('launch safety: one live code per address, guess cap across IPs, daily emai
   assert.equal(status(ids[4]), 'published');
 });
 
+test('the top bar mentions sample data only on a site that has some', () => withAdminServer({}, async ({ browser: newBrowser }) => {
+  assert.match(await (await fetch(`${base}/rules`)).text(), /are demo data/, 'the shared test site is seeded with samples');
+  const page = await newBrowser().text('/rules');
+  assert.match(page, /Unofficial student project/);
+  assert.doesNotMatch(page, /are demo data/, 'production has none, so it says nothing about them');
+}));
+
 test('the hourly clean-up deletes a pasted class list 30 days after its year, keeping members', () => {
   const sdb = openDb(':memory:');
   const owner = sdb.prepare(`INSERT INTO users (email, role) VALUES ('owner@uct.ac.za', 'staff')`).run().lastInsertRowid;
