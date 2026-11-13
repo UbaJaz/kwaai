@@ -1,6 +1,6 @@
 const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { openDb } = require('../src/db');
+const { openDb, cleanUp } = require('../src/db');
 const { createApp } = require('../src/app');
 const { seed } = require('../scripts/seed');
 const { screenComment } = require('../src/moderation');
@@ -897,6 +897,23 @@ test('launch safety: one live code per address, guess cap across IPs, daily emai
   const td = await browser(root).post('/takedown', { review_id: String(ids[4]), name: 'A Person', email: 'a@example.com', details: 'Please remove' });
   assert.match(await td.text(), /A moderator will look at your request/);
   assert.equal(status(ids[4]), 'published');
+});
+
+test('the hourly clean-up deletes a pasted class list 30 days after its year, keeping members', () => {
+  const sdb = openDb(':memory:');
+  const owner = sdb.prepare(`INSERT INTO users (email, role) VALUES ('owner@uct.ac.za', 'staff')`).run().lastInsertRowid;
+  const addClass = (year, code) => sdb.prepare(`INSERT INTO classes (uni, course, year, name, code, owner_id, goal_week_min) VALUES ('uct', 'CSC1015F', ?, 'x', ?, ?, 360)`).run(year, code, owner).lastInsertRowid;
+  const old = addClass(2025, 'OLDCLASS');
+  const current = addClass(2026, 'NEWCLASS');
+  const row = sdb.prepare(`INSERT INTO class_roster (class_id, number, source) VALUES (?, ?, ?)`);
+  row.run(old, 'LISTED001', 'list');
+  row.run(old, 'JOINED001', 'joined');
+  row.run(current, 'LISTED002', 'list');
+  const rows = () => sdb.prepare('SELECT number FROM class_roster ORDER BY number').all().map((r) => r.number);
+  cleanUp(sdb, Date.parse('2026-01-30T12:00:00Z'));
+  assert.deepEqual(rows(), ['JOINED001', 'LISTED001', 'LISTED002'], 'kept until 30 days after the year ends');
+  cleanUp(sdb, Date.parse('2026-01-31T12:00:00Z'));
+  assert.deepEqual(rows(), ['JOINED001', 'LISTED002'], 'then the pasted list goes, without anyone opening the class');
 });
 
 test('the sign-in form does not tell a stranger that an address was suspended', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {

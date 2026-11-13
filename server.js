@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const { openDb } = require('./src/db');
+const { openDb, cleanUp } = require('./src/db');
 const { createApp } = require('./src/app');
 const { senderFromEnv } = require('./src/email');
 
@@ -41,19 +41,8 @@ if (empty || seenHash !== dataHash) {
   console.log(empty ? 'Empty database, seeding…' : 'Handbook data changed, updating courses…', require('./scripts/seed').seed(db, { samples: devMode }));
 }
 db.prepare("INSERT INTO meta (key, value) VALUES ('data_hash', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(dataHash);
-// Hourly clean-up: expired sign-in links and sessions, plus the 12-month retention promised in /privacy.
-const sweep = () => {
-  db.prepare('DELETE FROM login_tokens WHERE expires < ?').run(Date.now());
-  db.prepare('DELETE FROM sessions WHERE expires < ?').run(Date.now());
-  db.exec(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
-    UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
-    DELETE FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
-    DELETE FROM verdicts WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
-    DELETE FROM takedowns WHERE status = 'closed' AND created_at < datetime('now', '-12 months');
-    DELETE FROM lecturer_suggestions WHERE status != 'open' AND created_at < datetime('now', '-12 months');
-    DELETE FROM mod_log WHERE created_at < datetime('now', '-12 months');
-    DELETE FROM calendars WHERE IFNULL(fetched_at, created_at) < datetime('now', '-12 months');`);
-};
+// Hourly clean-up: expired sign-in links and sessions, plus the retention promised in /privacy (src/db.js).
+const sweep = () => cleanUp(db);
 sweep();
 setInterval(sweep, 60 * 60 * 1000).unref();
 
