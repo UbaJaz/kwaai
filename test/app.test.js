@@ -777,12 +777,14 @@ test('a removal request from a signed-in staff account hides the review straight
   assert.match(await b.text(`/takedown?review=${id}`), /value="removal\.staff@uct\.ac\.za"/, 'the reply address is filled in from the account');
   const res = await b.post('/takedown', { review_id: id, name: 'Dr A Staff', email: 'removal.staff@uct.ac.za', relation: 'The lecturer or staff member it is about', details: 'Not accurate' });
   assert.match(await res.text(), /hidden while a moderator looks at it/);
-  assert.doesNotMatch(await b.text('/courses/MAM1021S'), new RegExp(`id="review-${id}"`));
+  // the status, not the course page: with two reviews the page shows no review cards at all (the small-class rule)
+  const status = (rid) => sdb.prepare('SELECT status FROM reviews WHERE id = ?').get(Number(rid)).status;
+  assert.equal(status(id), 'held');
 
   const student = newBrowser();
   await student.signIn('notstaff001@myuct.ac.za');
   await student.post('/takedown', { review_id: other, name: 'A Student', email: 'notstaff001@myuct.ac.za', details: 'Please remove' });
-  assert.match(await student.text('/courses/MAM1021S'), new RegExp(`id="review-${other}"`), 'a student account does not hide it');
+  assert.equal(status(other), 'published', 'a student account does not hide it');
 }));
 
 test('the removal form never shows the text of a hidden or removed review', async () => {
