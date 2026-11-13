@@ -1973,7 +1973,7 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
       <ul class="plain consent-list">
         <li>✓ Your student number: <strong>${number}</strong></li>
         <li>✓ Your name below (or "Anonymous" if you choose that)</li>
-        <li>✓ The minutes you time for <strong>${cls.course}</strong> on the study timer, and your streak</li>
+        <li>✓ The minutes you time for <strong>${cls.course}</strong> on the study timer, and when you last studied it</li>
         <li>✓ Your tut and prac attendance in this class, and your DP status from it</li>
         <li>✓ Warnings like "missed the last two sessions", "can't reach DP" or "no study in 14 days", so they can check in with you</li>
       </ul>
@@ -1988,7 +1988,7 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
         <label class="radio"><input type="radio" name="show" value="anon"> Anonymous to classmates (the lecturer and tutors still see who you are)</label>
         <label>Your name <input type="text" name="name" maxlength="40" value="${name}" autocomplete="name" placeholder="e.g. Thandi M"></label>
       </fieldset>
-      <p class="meta">Your student number is never shown to classmates. Leave the class whenever you like, and you disappear from the lecturer's view.</p>
+      <p class="meta">Your student number is never shown to classmates. Leave the class whenever you like, and your name and study minutes stop being shared with it. If your lecturer pasted in the official class list, your number and attendance stay on that list.</p>
       <div class="form-actions"><button class="btn btn-big">Join ${cls.course}</button> <a href="/classes">Not now</a></div>
     </form>`}
   </div>`);
@@ -2454,7 +2454,7 @@ function privacy(ctx) {
     <li><strong>Cookies</strong> that are strictly necessary: one to keep you signed in, one to protect forms against forgery (CSRF), a short-lived one for on-screen messages, one that remembers your semester plan for 180 days, one that remembers your calendar link (if you make one) for 2 years, and, if you check in to a class, a random device id kept for a year (see Classes below). The plan cookie holds the course codes you added and, if you filled them in, your faculty, majors, year of study and the courses you've passed. That information stays on your device and in the plan's link. We don't store it on our server. No advertising or tracking cookies.</li>
     <li><strong>Course details you add</strong> (a class time, a week's topic, a test date). They're shown with a count of how many students agree, never with your name or email, and they're deleted with your account.</li>
     <li><strong>Marks you type on <a href="/marks">Marks and DP</a></strong> stay in your browser on your device. We never receive them. If you use the page without JavaScript, the numbers are sent once to work out the answer and aren't stored or logged.</li>
-    <li><strong>Your study sessions</strong>, if you use the <a href="/study">study timer</a> while signed in: the course, the day, when you started, the length you picked and the minutes that counted. You see them on the Study page and in your data download. They're deleted with your account. While your timer runs you're counted, without your name, in "students studying now" figures; a course page shows its figure only when 3 or more students are studying it. Signed out, the timer runs on your device and sends us nothing.</li>
+    <li><strong>Your study sessions</strong>, if you use the <a href="/study">study timer</a> while signed in: the course, the day, when you started, the length you picked and the minutes that counted. You see them on the Study page and in your data download. They're deleted with your account. If you're in a class, its lecturer and tutors see the minutes you time for that class's course (see Classes below). While your timer runs you're counted, without your name, in "students studying now" figures; a course page shows its figure only when 3 or more students are studying it. Signed out, the timer runs on your device and sends us nothing.</li>
     <li><strong>A leaderboard profile</strong>, only if you tick "Put me on the leaderboards" in <a href="/account/profile">leaderboard settings</a>: a display name (or none, if you appear anonymously), and the faculty, major and year you choose to give, with the date you joined. Other signed-in students at your university then see that name or an anonymous label like "2nd-year Computer Science student", next to your study minutes for the day, week and month. Students can report a name; reports record who reported which student, and a moderator sees the name and the report count. Untick the box to leave: your profile is deleted straight away and you disappear from the boards. Your email is never shown.</li>
     <li><strong>Study groups</strong> you start or join: the group's name, its invite code, who started it, and the name you chose to be called in it. Members of a group see each other's group names and study minutes, and while your timer runs they see that you're studying, which course and for how long; people outside it see only the group's name and size when they open the invite link. Leave a group at any time; a group is deleted when its last member leaves or its owner deletes it.</li>
     <li><strong>A calendar link</strong>, only if you make one on <a href="/week">Your week</a>: your course codes and timetable choices, stored under a random address so your calendar app can fetch them. No name, email or "about you" answers. Delete it there at any time; links nobody has used for 12 months are deleted automatically.</li>
@@ -2493,7 +2493,7 @@ function privacy(ctx) {
     <li>Your account, reviews and votes stay until you delete them.</li>
     <li>Sign-in links expire after 15 minutes and sessions after 30 days. Both are then deleted.</li>
     <li>Reviews and tips removed by moderators, handled removal requests and the moderators' action log are deleted after 12 months.</li>
-    <li>A class list a lecturer pasted is deleted 30 days after the class's year ends. The rest of a class (its sessions, attendance, announcements, dates and pulse counts) stays until the lecturer deletes the class or their account.</li>
+    <li>A class list a lecturer pasted is deleted by 31 January of the year after the class. The rest of a class (its sessions, attendance, announcements, dates and pulse counts) stays until the lecturer deletes the class or their account.</li>
     <li>Deleting your account removes you from your classes and from class lists you joined, and deletes your attendance marks. If a lecturer's own pasted list includes you, that row and your attendance in that class stay on the lecturer's register, no longer linked to your account, because a missing mark would count as an absence against your DP.</li>
     <li>Database backups are kept for 30 days, so something you delete can stay in a backup for up to 30 days before it's gone for good.</li>
   </ul>
