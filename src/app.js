@@ -323,8 +323,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const l = q(`SELECT l.*, d.name AS dept_name FROM lecturers l JOIN departments d ON d.code = l.dept WHERE l.id = ?`).get(Number(req.params.id) || 0);
     if (!l) return res.status(404).page((notFound(req)));
     const stats = q(`SELECT ${STATS} FROM reviews WHERE lecturer_id = ? AND status = 'published'`).get(l.id);
+    // per-course scores for this lecturer only on courses past the small-class threshold, like the course page's table
     const taught = q(`SELECT c.code, c.title, s.n, s.overall FROM courses c
-      LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall FROM reviews WHERE lecturer_id = ? AND status = 'published' GROUP BY course) s ON s.course = c.code
+      LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall FROM reviews WHERE lecturer_id = ? AND status = 'published' AND course IN ${OPEN_REVIEWS} GROUP BY course) s ON s.course = c.code
       WHERE s.n > 0 OR ('|' || c.conveners || '|') LIKE ? ORDER BY c.code`).all(l.id, `%|${l.name}|%`);
     const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.lecturer_id = ? AND r.status = 'published' AND r.course IN ${OPEN_REVIEWS} ORDER BY r.created_at DESC, r.id DESC`).all(l.id);
     res.page((views.lecturer(req.ctx, { l, stats, courses: taught, reviews, commentsFrom, locked: !canReadAll(req) })));

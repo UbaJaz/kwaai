@@ -1075,7 +1075,9 @@ test('a course with fewer than 5 reviews shows its scores but no comments, tips 
   assert.doesNotMatch(page, /Small class comment|Small class tip/, 'in a small class a comment can give its writer away');
   assert.doesNotMatch(page, /Who taught it/, 'nor the per-lecturer table');
   assert.match(page, /1 more review/, 'and it says how many more are needed');
-  assert.doesNotMatch(await anon.text(`/lecturers/${lecturerId}`), /Small class comment/, 'the lecturer page follows the course');
+  const lecturerPage = await anon.text(`/lecturers/${lecturerId}`);
+  assert.doesNotMatch(lecturerPage, /Small class comment/, 'the lecturer page follows the course');
+  assert.doesNotMatch(lecturerPage, /MAM1031F/, 'nor does it list the course with this lecturer\'s score, which is the per-lecturer table again');
   assert.doesNotMatch(await anon.text('/'), /Small class tip/, 'the home page too');
 
   review(5);
@@ -1085,6 +1087,7 @@ test('a course with fewer than 5 reviews shows its scores but no comments, tips 
   assert.match(page, /Small class tip 5/, 'from 5 tips, tips show');
   assert.match(page, /Who taught it/);
   assert.match(await anon.text(`/lecturers/${lecturerId}`), /Small class comment/);
+  assert.match(await anon.text(`/lecturers/${lecturerId}`), /<span class="code">MAM1031F<\/span>/, 'from 5, the course is listed with the score');
   assert.match(await anon.text('/'), /Small class tip 5/);
 }));
 
