@@ -19,6 +19,12 @@ if (!devMode) {
     console.error(`Refusing to start in production. Missing env vars: ${missing.join(', ')} (see README).`);
     process.exit(1);
   }
+  // the test tools make fake students and study data, which must never mix with real students'
+  if (env.TEST_TOOLS === '1') {
+    console.error('Refusing to start in production with TEST_TOOLS=1. Unset it (see README).');
+    process.exit(1);
+  }
+  if (env.DEMO_PASSWORD) console.log('DEMO_PASSWORD is set, so every page asks for it. Remove it to open the site to students.');
 }
 
 // Real emails, even on a dev-mode demo, need the sender and a fixed site address. Without BASE_URL the sign-in link
@@ -41,8 +47,20 @@ if (empty || seenHash !== dataHash) {
   console.log(empty ? 'Empty database, seeding…' : 'Handbook data changed, updating courses…', require('./scripts/seed').seed(db, { samples: devMode }));
 }
 db.prepare("INSERT INTO meta (key, value) VALUES ('data_hash', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(dataHash);
-// Hourly clean-up: expired sign-in links and sessions, plus the retention promised in /privacy (src/db.js).
-const sweep = () => cleanUp(db);
+// Hourly clean-up: expired sign-in links and sessions, plus the retention promised in /privacy (src/db.js), and the
+// daily backup.
+const sweep = () => {
+  cleanUp(db);
+  // the daily backup to BACKUP_DIR; a failure (e.g. a full disk) is logged, never allowed to crash the site
+  if (!devMode) {
+    try {
+      const file = require('./scripts/backup').backupIfDue(db);
+      if (file) console.log('backed up to', file);
+    } catch (e) {
+      console.error('Backup failed:', e);
+    }
+  }
+};
 sweep();
 setInterval(sweep, 60 * 60 * 1000).unref();
 
