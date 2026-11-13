@@ -200,6 +200,26 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       GROUP BY c.code HAVING n >= ${MIN_FOR_RANKING} ORDER BY score ${rank.order}, n DESC LIMIT ${limit}`).all(...(dept ? [dept] : []));
   }
 
+  // ---- the lecturer demo (DEMO_MODE=1, docs/lecturer-demo.md) ----
+  // One tap makes a throwaway lecturer account (demo-<token>@kwaai.invalid, which can never get email) with its own
+  // class of made-up students, so visitors never see each other's changes. src/db.js cleanUp deletes it after 48 hours.
+  if (demoMode) {
+    const DEMO_COURSE = 'EXS1001F'; // from data/demo/courses.json
+    app.get('/', (req, res, next) => (req.user ? next() : res.redirect(303, '/demo')));
+    app.get('/demo', (req, res) => res.page(views.demoLanding(req.ctx)));
+    app.post('/demo/start', limit(10, 60 * MIN, (req) => `demo:${req.ip}`, 'You have started a lot of demos from this connection. Please wait an hour and try again.'), (req, res) => {
+      const token = crypto.randomBytes(6).toString('hex');
+      const add = q(`INSERT INTO users (email, uni, role, is_test, agreed_at) VALUES (?, ?, ?, 1, CURRENT_TIMESTAMP)`);
+      const ownerEmail = `demo-${token}@kwaai.invalid`;
+      add.run(ownerEmail, CURRENT.slug, 'staff');
+      // the same students as the test tools, with their own accounts, so their numbers match (TEST001 and on)
+      const ids = TestData.FAKE_STUDENTS.map((_, i) => Number(add.run(TestData.fakeEmail(i).replace('test-student-', `demo-${token}-student-`), CURRENT.slug, 'student').lastInsertRowid));
+      const owner = q(`SELECT * FROM users WHERE email = ?`).get(ownerEmail);
+      const cls = buildLecturerClass(owner, ids, DEMO_COURSE, `${DEMO_COURSE} demo class`);
+      startSession(req, res, ownerEmail, `/classes/${cls.id}`);
+    });
+  }
+
   app.get('/', (req, res) => {
     const counts = q(`SELECT (SELECT COUNT(*) FROM courses) AS courses, (SELECT COUNT(*) FROM reviews WHERE status = 'published') AS reviews,
       (SELECT COUNT(*) FROM verdicts WHERE status = 'published') AS votes, (SELECT COUNT(*) FROM verdicts WHERE status = 'published' AND tip != '') AS tips`).get();
@@ -2463,14 +2483,15 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   // a class you run, with the test students, a rep and a tutor, study, past tuts, dates, an announcement and a pulse check
-  app.post('/admin/tools/demo-lecturer', requireUser, requireTools, (req, res) => {
+  // A class run by owner (a staff account) with 15 test students (ids): 14 in it, ids[0] the rep and ids[14] the
+  // tutor, four more on the class list who aren't on Kwaai, two tuts and a prac, six past tuts, dates, two
+  // announcements and an open pulse check. The test tools and the lecturer demo (/demo) both use it.
+  function buildLecturerClass(owner, ids, course, name) {
     const today = Study.saDay(Date.now());
     const now = Date.now();
-    const ids = fakeStudentIds(req.user.uni);
-    q(`UPDATE users SET role = 'staff' WHERE id = ?`).run(req.user.id);
-    const cls = freshDemoClass(req.user.id, 'You (demo lecturer)', DEMO_RUN, 'CSC1015F');
+    const cls = freshDemoClass(owner.id, 'You (demo lecturer)', name, course);
     const students = ids.slice(0, 14);
-    demoStudents(cls, students, today, req.user.uni);
+    demoStudents(cls, students, today, owner.uni);
     q(`UPDATE class_members SET role = 'rep', name = 'Thandi Mokoena', anonymous = 0 WHERE class_id = ? AND user_id = ?`).run(cls.id, ids[0]);
     q(`INSERT OR REPLACE INTO class_members (class_id, user_id, role, name, consent_at) VALUES (?, ?, 'tutor', 'Sam Tutor', CURRENT_TIMESTAMP)`).run(cls.id, ids[14]);
     // four students on the class list who aren't on Kwaai, so the list, registers and DP include them
@@ -2481,20 +2502,27 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     syncRoster(cls);
     const addGroup = q(`INSERT INTO class_groups (class_id, kind, name, day, starts, ends, venue, tutor_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
     addGroup.run(cls.id, 'tut', 'Tut 1', 'Tuesday', '14:00', '15:45', 'Menzies 10', ids[14]);
-    addGroup.run(cls.id, 'tut', 'Tut 2', 'Thursday', '10:00', '11:45', 'PD Hahn 3', req.user.id);
+    addGroup.run(cls.id, 'tut', 'Tut 2', 'Thursday', '10:00', '11:45', 'PD Hahn 3', owner.id);
     addGroup.run(cls.id, 'prac', 'Prac A', 'Wednesday', '14:00', '17:00', 'Shuttleworth lab', ids[14]);
     q(`UPDATE class_roster SET tut_group = CASE WHEN rowid % 2 THEN 'Tut 1' ELSE 'Tut 2' END, prac_group = 'Prac A' WHERE class_id = ?`).run(cls.id);
-    demoAttendance(cls, students, req.user.id, 6);
+    demoAttendance(cls, students, owner.id, 6);
     const date = q(`INSERT INTO class_dates (class_id, course, type, title, date, time, added_by, added_role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
-    date.run(cls.id, cls.course, 'prac', 'Prac 5', Study.addDay(today, 2), '23:59', req.user.id, 'lecturer');
-    date.run(cls.id, cls.course, 'test', 'Test 2', Study.addDay(today, 6), '18:00', req.user.id, 'lecturer');
+    date.run(cls.id, cls.course, 'prac', 'Prac 5', Study.addDay(today, 2), '23:59', owner.id, 'lecturer');
+    date.run(cls.id, cls.course, 'test', 'Test 2', Study.addDay(today, 6), '18:00', owner.id, 'lecturer');
     date.run(cls.id, cls.course, 'assignment', 'Assignment 3', Study.addDay(today, 11), '', ids[0], 'rep');
     const post = q(`INSERT INTO class_announcements (class_id, body, posted_by, poster_name, poster_role, created_at) VALUES (?, ?, ?, ?, ?, ?)`);
-    post.run(cls.id, 'Test 2 is in LT1 on the day. Bring your student card.', req.user.id, 'You (demo lecturer)', 'lecturer', now - 2 * DAY_MS);
+    post.run(cls.id, 'Test 2 is in LT1 on the day. Bring your student card.', owner.id, 'You (demo lecturer)', 'lecturer', now - 2 * DAY_MS);
     post.run(cls.id, 'Study group for Test 2 on Thursday at 16:00 in the library, all welcome.', ids[0], 'Thandi Mokoena', 'rep', now - 3 * 60 * MIN);
     const { lastInsertRowid: pid } = q(`INSERT INTO class_pulses (class_id, question, options, counts, asked_by, asked_at, closes_at) VALUES (?, ?, ?, ?, ?, ?, ?)`)
-      .run(cls.id, Classes.PULSE_PRESET.question, JSON.stringify(Classes.PULSE_PRESET.options), JSON.stringify([2, 7, 4]), req.user.id, now - DAY_MS, now + 6 * DAY_MS);
+      .run(cls.id, Classes.PULSE_PRESET.question, JSON.stringify(Classes.PULSE_PRESET.options), JSON.stringify([2, 7, 4]), owner.id, now - DAY_MS, now + 6 * DAY_MS);
     students.slice(0, 13).forEach((id) => q(`INSERT INTO pulse_answered (pulse_id, user_id) VALUES (?, ?)`).run(pid, id));
+    return cls;
+  }
+
+  app.post('/admin/tools/demo-lecturer', requireUser, requireTools, (req, res) => {
+    const ids = fakeStudentIds(req.user.uni);
+    q(`UPDATE users SET role = 'staff' WHERE id = ?`).run(req.user.id);
+    const cls = buildLecturerClass(req.user, ids, 'CSC1015F', DEMO_RUN);
     flashRedirect(res, `/classes/${cls.id}`, 'ok', `${DEMO_RUN}: you're the lecturer, with 14 test students, a rep, a tutor and 6 past tuts.`);
   });
 
@@ -2581,7 +2609,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const sid = crypto.randomBytes(32).toString('hex');
     q(`INSERT INTO sessions (hash, user_id, expires) VALUES (?, ?, ?)`).run(sha(sid), user.id, Date.now() + SESSION_TTL);
     res.cookie('sid', sid, { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: SESSION_TTL });
-    flashRedirect(res, safeNext(next), 'ok', "You're signed in. Anything you post shows without your name.");
+    flashRedirect(res, safeNext(next), 'ok', demoMode && email.startsWith('demo-')
+      ? "This is your demo class. Every student in it is made up, so try anything."
+      : "You're signed in. Anything you post shows without your name.");
   }
 
   app.post('/login/code', limits.login, limits.loginCode, limits.loginCodeEmail, (req, res) => {

@@ -953,6 +953,46 @@ test('launch safety: one live code per address, guess cap across IPs, daily emai
   assert.equal(status(ids[4]), 'published');
 });
 
+test('the lecturer demo: one tap gives each visitor their own made-up class, deleted after 48 hours', async (t) => {
+  assert.equal((await fetch(`${base}/demo`)).status, 404, 'there is no demo outside demo mode');
+  const sdb = openDb(':memory:');
+  seedDemo(sdb);
+  const srv = createApp(sdb, { devMode: false, demoMode: true }).listen(0);
+  t.after(() => srv.close());
+  await new Promise((r) => srv.once('listening', r));
+  const root = () => `http://localhost:${srv.address().port}`;
+  assert.equal((await fetch(`${root()}/`, { redirect: 'manual' })).headers.get('location'), '/demo', 'a visitor lands on the demo page');
+  assert.match(await (await fetch(`${root()}/demo`)).text(), /Try it as a lecturer/);
+
+  const start = async () => {
+    const b = browser(root);
+    const res = await b.post('/demo/start', {});
+    assert.equal(res.status, 303);
+    const where = res.headers.get('location');
+    assert.match(where, /^\/classes\/\d+$/, 'straight into their class');
+    return { b, classId: Number(where.split('/').pop()) };
+  };
+  const a = await start();
+  const page = await a.b.text(`/classes/${a.classId}`);
+  assert.match(page, /<dt>Students<\/dt><dd>18/, '14 students on Kwaai and 4 more on the class list');
+  const owner = sdb.prepare(`SELECT u.email, u.role FROM classes c JOIN users u ON u.id = c.owner_id WHERE c.id = ?`).get(a.classId);
+  assert.match(owner.email, /^demo-[a-f0-9]{12}@kwaai\.invalid$/, 'a throwaway address that can never get email');
+  assert.equal(owner.role, 'staff');
+  assert.equal(sdb.prepare(`SELECT course FROM classes WHERE id = ?`).get(a.classId).course, 'EXS1001F', 'on a made-up course');
+
+  const b = await start();
+  assert.notEqual(a.classId, b.classId);
+  assert.equal((await a.b.get(`/classes/${b.classId}`)).status, 404, 'nobody sees another visitor\'s class');
+
+  // two days later the first sandbox is gone, the second (made just now) stays
+  const token = owner.email.slice(5, 17);
+  sdb.prepare(`UPDATE users SET created_at = datetime('now', '-49 hours') WHERE email LIKE ?`).run(`demo-${token}%`);
+  cleanUp(sdb);
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM users WHERE email LIKE ?`).get(`demo-${token}%`).n, 0, 'the visitor and their made-up students are deleted');
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM classes WHERE id = ?`).get(a.classId).n, 0);
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM classes WHERE id = ?`).get(b.classId).n, 1);
+});
+
 test('the demo catalogue is made up: no real course or staff name, and two reviews waiting for a moderator', () => {
   const fs = require('node:fs');
   const db = openDb(':memory:');

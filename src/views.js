@@ -2770,6 +2770,21 @@ function takedown(ctx, { review, error, values = {} }) {
   </section>`);
 }
 
+// The lecturer demo's front page (DEMO_MODE=1): what Kwaai is, that the demo is made up, and one button.
+function demoLanding(ctx) {
+  return layout({ ...ctx, title: 'Try Kwaai as a lecturer', path: '/demo', description: 'A demo of Kwaai for UCT lecturers: tut registers, DP tracking and class tools, with made-up students.' }, html`
+  <section class="narrow">
+    <h1 class="page-title">Try Kwaai as a lecturer</h1>
+    <p class="lede small">Kwaai is a course review and semester planning site built by two UCT students, Ubayd Hattas and Jaswin Chinthala. It isn't run by or affiliated with UCT, and it hasn't launched yet.</p>
+    <p>Everything in this demo is made up: the courses, the lecturers, the students and the reviews. Nothing you do here reaches a real student.</p>
+    <p>Start it and you're the lecturer of a class of 14 made-up students, with six weeks of tutorial registers already taken. You can take a register, see who might lose DP, ask the class a question and read how reviews are kept fair. It takes a few minutes.</p>
+    <form method="post" action="/demo/start" class="card form">
+      <button class="btn btn-big">Try it as a lecturer</button>
+      <p class="fine">No sign-up and no email. Your demo class is deleted after 48 hours.</p>
+    </form>
+  </section>`);
+}
+
 function message(ctx, { title, emoji = '👍', text, link }) {
   return layout({ ...ctx, title }, html`
   <section class="narrow center">
@@ -2877,4 +2892,4 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, rankPage, rankShareCard, rankGallery, adminLogin, adminTools, classes, classAdmin, classJoin, classPage, attendanceScreen, attendanceCheckIn, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+module.exports = { demoLanding, universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, rankPage, rankShareCard, rankGallery, adminLogin, adminTools, classes, classAdmin, classJoin, classPage, attendanceScreen, attendanceCheckIn, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
