@@ -1173,8 +1173,18 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM announcement_reads WHERE user_id = ?`).run(id);
       q(`DELETE FROM announcement_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM classes WHERE owner_id = ?`).run(id); // a lecturer's own classes go with them (members cascade)
+      // Marks by student number, and the class-list row joining made. Where the lecturer's own pasted list has them,
+      // the marks stay on that register without the account (no mark means absent, so deleting would cost them DP).
+      const number = Classes.studentNumber(req.user.email);
+      if (number) {
+        const listed = `session_id IN (SELECT s.id FROM attendance_sessions s JOIN class_roster r ON r.class_id = s.class_id AND r.source = 'list' AND r.number = ?)`;
+        q(`UPDATE attendance SET user_id = NULL, device = '' WHERE number = ? AND ${listed}`).run(number, number);
+        q(`DELETE FROM attendance WHERE number = ? AND NOT ${listed}`).run(number, number);
+        q(`DELETE FROM class_roster WHERE number = ? AND source = 'joined'`).run(number);
+      }
       q(`DELETE FROM attendance WHERE user_id = ?`).run(id);
       q(`UPDATE attendance_sessions SET started_by = NULL WHERE started_by = ?`).run(id);
+      q(`UPDATE class_dates SET added_by = NULL WHERE added_by = ?`).run(id); // the date stays for the class, without who added it
       q(`DELETE FROM class_members WHERE user_id = ?`).run(id);
       q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
