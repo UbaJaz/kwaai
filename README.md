@@ -156,6 +156,7 @@ Backups: the server writes one to `/data/backups` every day by itself (see [Back
 | `ADMIN_PASSWORD_HASH` | no | Turns on the admin sign-in at `/admin/login`. Make it with `npm run admin-hash` (see below). Never put the password itself here. |
 | `ADMIN_USERNAME` | no | The admin's username. Defaults to `kwaai`. |
 | `TEST_TOOLS` | no, and refused in production | `1` shows `/admin/tools` to the admin: fake study days, streaks and students for testing. The server won't start with it in production. |
+| `DEMO_MODE` | no, demo service only | `1` runs the lecturer demo: every page is `noindex`, the top bar says everything is made up, and email sign-in is off. `/healthz` (always on) answers keep-alive pings. |
 | `DB_FILE`, `BACKUP_DIR`, `PORT` | no | Paths and port. |
 
 The server refuses to start in production if a required variable is missing or `TEST_TOOLS=1`, and logs a reminder while `DEMO_PASSWORD` is set.

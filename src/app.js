@@ -34,10 +34,17 @@ const STATS = `COUNT(*) AS n, AVG(overall) AS overall, AVG(teaching) AS teaching
 const REVIEW_COLS = `r.*, l.name AS lecturer_name`;
 const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'";
 
-function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'Ubayd Hattas and Jaswin Chinthala', informationOfficer = operator, demoPassword, emailDailyCap = 280, adminUsername = 'kwaai', adminPasswordHash, testTools = false, commentsFrom = COMMENTS_FROM } = {}) {
+function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'Ubayd Hattas and Jaswin Chinthala', informationOfficer = operator, demoPassword, emailDailyCap = 280, adminUsername = 'kwaai', adminPasswordHash, testTools = false, commentsFrom = COMMENTS_FROM, demoMode = false } = {}) {
   const app = express();
   const mods = new Set([...moderators].map(normEmail));
   app.disable('x-powered-by');
+  // For keep-alive pings and wake-up checks: answers before anything else (no password, no database).
+  app.get('/healthz', (req, res) => res.set('Cache-Control', 'no-store').type('text/plain').send('ok'));
+  // The lecturer demo (DEMO_MODE=1): made-up data only, so nothing in it belongs in a search engine.
+  if (demoMode) {
+    app.use((req, res, next) => { res.set('X-Robots-Tag', 'noindex'); next(); });
+    app.get('/robots.txt', (req, res) => res.type('text/plain').send('User-agent: *\nDisallow: /\n'));
+  }
   // so req.ip is the student's IP behind a host's proxy. Env vars are strings, and Express reads the string "1" as an
   // IP list rather than a hop count, so a plain number must be turned into a Number.
   if (trustProxy) app.set('trust proxy', /^\d+$/.test(String(trustProxy)) ? Number(trustProxy) : trustProxy);
@@ -100,7 +107,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     const flash = /(?:^|;\s*)flash=([^;]+)/.exec(req.headers.cookie || '')?.[1];
     if (flash) res.clearCookie('flash');
-    req.ctx = { user: req.user, isMod: !!req.user && (mods.has(req.user.email) || !!req.user.is_admin), isAdmin: !!req.user?.is_admin, testTools, hasSamples, flash: parseFlash(flash), uni: CURRENT, here: req.path,
+    req.ctx = { user: req.user, isMod: !!req.user && (mods.has(req.user.email) || !!req.user.is_admin), isAdmin: !!req.user?.is_admin, testTools, hasSamples, demoMode, flash: parseFlash(flash), uni: CURRENT, here: req.path,
       // origin for share links and link previews; production always has BASE_URL
       site: { contactEmail, operator, informationOfficer, origin: baseUrl || `${req.protocol}://${req.get('host')}` } };
     // CSRF: double-submit token, added to every POST form on its way out
@@ -1406,6 +1413,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   const safeNext = (s) => (typeof s === 'string' && /^\/(?![/\\])/.test(s) && s.length <= 300 ? s : '/');
   const codeHash = (email, code) => sha(`${email}:${code}`);
 
+  // The demo has no email sign-in: visitors get a made-up account from /demo, so nobody can sign in as a real address.
+  if (demoMode) {
+    app.get('/login', (req, res) => res.page(views.message(req.ctx, { title: 'No sign-in needed', emoji: '👋', text: "This demo doesn't need an account. Start it from the demo page and you get a made-up lecturer account with a class to try.", link: { href: '/demo', label: 'Start the demo' } })));
+    app.all(['/login', '/login/code', '/auth/:token'], (req, res) => res.status(404).page(notFound(req)));
+  }
   app.get('/login', (req, res) => res.page(views.login(req.ctx, { next: safeNext(req.query.next) })));
 
   // Brevo's free plan sends 300 emails a day. Stop below that so sign-ins fail with a clear message, not silently.

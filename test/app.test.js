@@ -953,6 +953,31 @@ test('launch safety: one live code per address, guess cap across IPs, daily emai
   assert.equal(status(ids[4]), 'published');
 });
 
+test('demo mode: out of search engines, says it is made up, no email sign-in, and a health check', async (t) => {
+  const sdb = openDb(':memory:');
+  const demo = createApp(sdb, { devMode: false, demoMode: true }).listen(0);
+  t.after(() => demo.close());
+  await new Promise((r) => demo.once('listening', r));
+  const root = `http://localhost:${demo.address().port}`;
+  const home = await fetch(`${root}/`);
+  assert.equal(home.headers.get('x-robots-tag'), 'noindex', 'every page is kept out of search engines');
+  assert.match(await home.text(), /Demo\.<\/strong> Every review, student and class here is made up\./);
+  assert.match(await (await fetch(`${root}/robots.txt`)).text(), /Disallow: \/\s*$/);
+  assert.match(await (await fetch(`${root}/login`)).text(), /doesn&#39;t need an account|doesn't need an account/);
+  const b = browser(() => root);
+  const tried = await b.post('/login', { email: 'someone001@myuct.ac.za' });
+  assert.equal(tried.status, 404, 'email sign-in is off: nobody can sign in as a real address');
+  assert.doesNotMatch(await tried.text(), /\/auth\/[a-f0-9]{64}/);
+  const health = await fetch(`${root}/healthz`);
+  assert.equal(health.status, 200);
+  assert.equal(await health.text(), 'ok');
+
+  const normal = await fetch(`${base}/`);
+  assert.equal(normal.headers.get('x-robots-tag'), null, 'without demo mode nothing changes');
+  assert.doesNotMatch(await normal.text(), /Every review, student and class here is made up/);
+  assert.equal((await fetch(`${base}/healthz`)).status, 200, 'the health check is always there, for keep-alive pings');
+});
+
 test('the top bar mentions sample data only on a site that has some', () => withAdminServer({}, async ({ browser: newBrowser }) => {
   assert.match(await (await fetch(`${base}/rules`)).text(), /are demo data/, 'the shared test site is seeded with samples');
   const page = await newBrowser().text('/rules');
