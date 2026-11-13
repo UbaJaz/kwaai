@@ -77,7 +77,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // an hour of caching: the files aren't fingerprinted, so a longer cache would show old styles after a deploy
   // the service worker is checked on every visit so an update reaches installed copies straight away
   app.use(express.static(path.join(__dirname, '..', 'public'), { maxAge: '1h', setHeaders: (res, file) => { if (file.endsWith('sw.js')) res.setHeader('Cache-Control', 'no-cache'); } }));
-  app.use(express.urlencoded({ extended: false, limit: '20kb' }));
+  // Forms are small, so 20 KB is plenty, except a pasted class list: 3,000 students (Classes.ROSTER_MAX) with names and
+  // groups come to about 140 KB once encoded.
+  const smallForm = express.urlencoded({ extended: false, limit: '20kb' });
+  const classListForm = express.urlencoded({ extended: false, limit: '300kb' });
+  app.use((req, res, next) => (/^\/classes\/\d+\/roster$/.test(req.path) ? classListForm : smallForm)(req, res, next));
   app.use((req, res, next) => { req.body ??= {}; next(); }); // Express 5 leaves it undefined for empty POSTs
 
   const q = (sql) => db.prepare(sql);
@@ -2688,7 +2692,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     // errors from the body parser happen before the session middleware, so res.page may not exist yet
     res.status(status).send(String(views.message(req.ctx || {}, status === 500
       ? { title: 'Something broke', emoji: '🫠', text: 'Sorry, that was our fault. Please try again.' }
-      : { title: 'That request didn\'t work', emoji: '🤔', text: 'Please go back and try again.' })));
+      : status === 413
+        ? { title: 'That was too long to send', emoji: '🤔', text: /\/roster$/.test(req.path)
+          ? `A class list can have up to ${Classes.ROSTER_MAX.toLocaleString('en-ZA')} students. Go back, split the list and add it in parts.`
+          : 'Go back, shorten what you typed and try again.' }
+        : { title: 'That request didn\'t work', emoji: '🤔', text: 'Please go back and try again.' })));
   });
   return app;
 }
