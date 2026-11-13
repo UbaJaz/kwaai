@@ -61,6 +61,7 @@ createApp(db, {
   adminUsername: env.ADMIN_USERNAME || undefined,
   adminPasswordHash: env.ADMIN_PASSWORD_HASH || undefined,
   testTools: env.TEST_TOOLS === '1',
+  demoMode: env.DEMO_MODE === '1',
 }).listen(port, () => {
   console.log(`Kwaai running on http://localhost:${port}${devMode ? ' (dev mode)' : ''}`);
   if (!moderators.size) console.log('Tip: set MODERATORS=you@myuct.ac.za to get access to /mod');
