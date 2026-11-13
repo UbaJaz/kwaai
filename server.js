@@ -31,16 +31,22 @@ if ((env.BREVO_API_KEY || env.RESEND_API_KEY) && (!env.EMAIL_FROM || !env.BASE_U
 const db = openDb();
 // Seed an empty database, and re-seed (upserts only, no sample reviews) whenever the handbook data files change, so a
 // redeploy with new courses or staff reaches a database that already holds students' reviews.
+// The lecturer demo (DEMO_MODE=1) loads only the made-up catalogue in data/demo, never the handbooks.
 const dataDir = path.join(__dirname, 'data');
-const hasher = crypto.createHash('sha1');
-for (const f of fs.readdirSync(dataDir).sort()) hasher.update(f).update(fs.readFileSync(path.join(dataDir, f)));
-const dataHash = hasher.digest('hex');
-const seenHash = db.prepare("SELECT value FROM meta WHERE key = 'data_hash'").get()?.value;
 const empty = !db.prepare('SELECT COUNT(*) AS n FROM courses').get().n;
-if (empty || seenHash !== dataHash) {
-  console.log(empty ? 'Empty database, seeding…' : 'Handbook data changed, updating courses…', require('./scripts/seed').seed(db, { samples: devMode }));
+if (env.DEMO_MODE === '1') {
+  if (empty) console.log('Demo: loading the made-up catalogue…', require('./scripts/seed').seedDemo(db));
+} else {
+  // only the handbook files (data/demo is a folder, and isn't part of the real catalogue)
+  const hasher = crypto.createHash('sha1');
+  for (const f of fs.readdirSync(dataDir).sort()) if (fs.statSync(path.join(dataDir, f)).isFile()) hasher.update(f).update(fs.readFileSync(path.join(dataDir, f)));
+  const dataHash = hasher.digest('hex');
+  const seenHash = db.prepare("SELECT value FROM meta WHERE key = 'data_hash'").get()?.value;
+  if (empty || seenHash !== dataHash) {
+    console.log(empty ? 'Empty database, seeding…' : 'Handbook data changed, updating courses…', require('./scripts/seed').seed(db, { samples: devMode }));
+  }
+  db.prepare("INSERT INTO meta (key, value) VALUES ('data_hash', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(dataHash);
 }
-db.prepare("INSERT INTO meta (key, value) VALUES ('data_hash', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(dataHash);
 // Hourly clean-up: expired sign-in links and sessions, plus the retention promised in /privacy (src/db.js).
 const sweep = () => cleanUp(db);
 sweep();
