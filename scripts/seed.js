@@ -160,7 +160,7 @@ function addSamples(db) {
       const tags = [...new Set([pick(TAG_POOL[mood]), pick(TAG_POOL[mood])])].slice(0, 1 + Math.floor(rand() * 2));
       const took = year - Math.floor(rand() * 2);
       const start = Date.UTC(took, 4, 1); // posted some time after the course started
-      const created = new Date(start + rand() * (Date.now() - start)).toISOString().slice(0, 19).replace('T', ' ');
+      const created = new Date(start + rand() * (Date.now() - start)).toISOString().slice(0, 10); // days only, like real reviews
       addReview.run(code, rand() < 0.8 ? main : other, took, r.teaching, r.engagement, r.exams, r.support, r.difficulty, r.workload,
         r.overall, tags.join('|'), rand() < 0.75 ? pick(BODIES[mood]) : '', created);
     }

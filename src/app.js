@@ -291,8 +291,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const stats = q(`SELECT ${STATS} FROM reviews WHERE course = ? AND status = 'published'`).get(c.code);
     const offerings = q(`SELECT r.lecturer_id, l.name AS lecturer_name, r.year, COUNT(*) AS n, AVG(r.overall) AS overall FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id
       WHERE r.course = ? AND r.status = 'published' GROUP BY r.lecturer_id, r.year ORDER BY r.year DESC, n DESC`).all(c.code);
-    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.course = ? AND r.status = 'published' ORDER BY r.created_at DESC, r.id DESC`).all(c.code)
-      .map((r) => ({ ...r, mine: !!req.user && r.author_key === keyOf(r.course, req.user.id) }));
+    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.course = ? AND r.status = 'published' ORDER BY r.created_at DESC, r.id DESC`).all(c.code);
+    const myKey = req.user ? keyOf(c.code, req.user.id) : null; // one course, so one key
+    for (const r of reviews) r.mine = !!myKey && r.author_key === myKey;
     const tagCounts = {};
     for (const r of reviews) for (const t of r.tags.split('|').filter(Boolean)) tagCounts[t] = (tagCounts[t] || 0) + 1;
     const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
@@ -329,8 +330,12 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const taught = q(`SELECT c.code, c.title, s.n, s.overall FROM courses c
       LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall FROM reviews WHERE lecturer_id = ? AND status = 'published' GROUP BY course) s ON s.course = c.code
       WHERE s.n > 0 OR ('|' || c.conveners || '|') LIKE ? ORDER BY c.code`).all(l.id, `%|${l.name}|%`);
-    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.lecturer_id = ? AND r.status = 'published' AND r.course IN ${OPEN_REVIEWS} ORDER BY r.created_at DESC, r.id DESC`).all(l.id)
-      .map((r) => ({ ...r, mine: !!req.user && r.author_key === keyOf(r.course, req.user.id) }));
+    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.lecturer_id = ? AND r.status = 'published' AND r.course IN ${OPEN_REVIEWS} ORDER BY r.created_at DESC, r.id DESC`).all(l.id);
+    const myKeys = new Map(); // the reader's key per course, worked out once each
+    for (const r of reviews) {
+      if (req.user && !myKeys.has(r.course)) myKeys.set(r.course, keyOf(r.course, req.user.id));
+      r.mine = !!req.user && r.author_key === myKeys.get(r.course);
+    }
     res.page((views.lecturer(req.ctx, { l, stats, courses: taught, reviews, commentsFrom, locked: !canReadAll(req) })));
   });
 
@@ -1327,6 +1332,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     flashRedirect(res, `/courses/${r.course}`, 'ok', 'Your review was deleted.');
   });
 
+  // a calendar day in UTC (reports.day_key), so the count starts again at 02:00 in South Africa
   const INSTANT_HIDES_PER_DAY = 3;
   // Approved after a report or removal request: later reports and requests go to the moderator queue without hiding
   // it again, so the same request can't keep a checked review offline.
