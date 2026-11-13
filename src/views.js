@@ -296,13 +296,13 @@ function gateNotice(ctx, hidden) {
   </div>`;
 }
 
-function rankList(rows, kind, toned = true) {
+function rankList(rows, toned = true) {
   if (!rows.length) return html`<p class="empty">Not enough reviews yet. Things need at least ${MIN_FOR_RANKING} reviews to be ranked.</p>`;
   return html`<ol class="rank-list">
     ${rows.map((r, i) => html`<li>
       <span class="rank-pos">${i + 1}</span>
-      <a href="${kind === 'course' ? `/courses/${r.code}` : `/lecturers/${r.id}`}" class="rank-name">
-        ${kind === 'course' ? html`<span class="code">${r.code}</span> ${r.title}` : r.name}
+      <a href="/courses/${r.code}" class="rank-name">
+        <span class="code">${r.code}</span> ${r.title}
         ${sampleBadge(r.is_sample)}
         <span class="meta">${r.dept_name} · ${plural(r.n, 'review')}</span>
       </a>
@@ -626,12 +626,12 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
   <section class="lists">
     <div>
       <h2 class="label">Highest rated</h2>
-      ${rankList(topCourses, 'course')}
+      ${rankList(topCourses)}
       <a class="more" href="/rankings?cat=best">All rankings →</a>
     </div>
     <div>
       <h2 class="label">Heaviest workload</h2>
-      ${rankList(heaviest, 'course', false)}
+      ${rankList(heaviest, false)}
       <a class="more" href="/rankings?cat=workload">All rankings →</a>
     </div>
   </section>
@@ -956,7 +956,7 @@ function rankings(ctx, { rows, depts, dept, rank }) {
   </form>
   <div class="card panel">
     <h2>${rank.label}${dept ? ` · ${depts.find((d) => d.code === dept)?.name || dept}` : ''}</h2>
-    ${rankList(rows, 'course', !['difficulty', 'workload'].includes(rank.column))}
+    ${rankList(rows, !['difficulty', 'workload'].includes(rank.column))}
   </div>`);
 }
 

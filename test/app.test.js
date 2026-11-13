@@ -766,7 +766,7 @@ test('takedown request hides the review without needing an account', async () =>
 });
 
 test('pages render', async () => {
-  for (const p of ['/', '/courses', '/courses?dept=MEC&q=dyn', '/rankings?cat=hardest&kind=lecturer&dept=EEE', '/rules', '/takedown', '/lecturers/1']) {
+  for (const p of ['/', '/courses', '/courses?dept=MEC&q=dyn', '/rankings?cat=hardest&dept=EEE', '/rules', '/takedown', '/lecturers/1']) {
     assert.equal((await fetch(base + p)).status, 200, p);
   }
   assert.equal((await fetch(`${base}/courses/NOPE123X`)).status, 404);
@@ -785,7 +785,7 @@ test('lecturers are never ranked and their pages stay out of search engines', as
 });
 
 test('scores built from sample reviews are badged wherever they appear', async () => {
-  for (const p of ['/courses?q=EEE3099S', '/courses/EEE3099S', '/rankings?cat=best&kind=course']) {
+  for (const p of ['/courses?q=EEE3099S', '/courses/EEE3099S', '/rankings?cat=best']) {
     assert.match(await (await fetch(base + p)).text(), /class="badge sample"/, p);
   }
   // a course with no sample reviews gets no badge on its card
@@ -1217,8 +1217,8 @@ test('semester planner: add by code or search, remove, and shared links do not o
   assert.doesNotMatch(top, /year-folder/);
   assert.ok((top.match(/class="card course-card"/g) || []).length <= 6, 'only a short most-reviewed row sits under the faculties');
   // ratings are coloured by how good they are; workload and exam difficulty aren't good or bad, so they stay ink
-  assert.match(await b.text('/rankings?cat=best&kind=course'), /class="score  score-(good|mid|low)"/);
-  assert.doesNotMatch(await b.text('/rankings?cat=workload&kind=course'), /score-(good|mid|low)/);
+  assert.match(await b.text('/rankings?cat=best'), /class="score  score-(good|mid|low)"/);
+  assert.doesNotMatch(await b.text('/rankings?cat=workload'), /score-(good|mid|low)/);
   assert.match(await b.text('/courses?faculty=ebe'), /href="\/courses\?faculty=ebe&dept=EEE"/);
   const eee = await b.text('/courses?faculty=ebe&dept=EEE');
   assert.match(eee, /<details class="year-folder" open>/);
