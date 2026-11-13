@@ -7,7 +7,8 @@ const { openDb } = require('../src/db');
 const dir = process.env.BACKUP_DIR || path.join(__dirname, '..', 'backups');
 fs.mkdirSync(dir, { recursive: true });
 const file = path.join(dir, `lekker-${new Date().toISOString().replace(/[:.]/g, '-')}.db`);
-openDb().exec(`VACUUM INTO '${file.replace(/'/g, "''")}'`);
+// the key is only checked against the database here (src/db.js refuses a different one); the backup holds no key
+openDb(undefined, { authorKey: process.env.AUTHOR_KEY }).exec(`VACUUM INTO '${file.replace(/'/g, "''")}'`);
 console.log('backed up to', file);
 
 // Backups older than 30 days are deleted, as the privacy notice promises: a deleted account is gone from every

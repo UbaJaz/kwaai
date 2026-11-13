@@ -13,7 +13,7 @@ const devMode = env.NODE_ENV !== 'production';
 const moderators = new Set((env.MODERATORS || '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean));
 
 if (!devMode) {
-  const missing = ['BASE_URL', 'EMAIL_FROM', 'MODERATORS', 'CONTACT_EMAIL'].filter((k) => !env[k]);
+  const missing = ['BASE_URL', 'EMAIL_FROM', 'MODERATORS', 'CONTACT_EMAIL', 'AUTHOR_KEY'].filter((k) => !env[k]);
   if (!env.BREVO_API_KEY && !env.RESEND_API_KEY) missing.push('BREVO_API_KEY or RESEND_API_KEY');
   if (missing.length) {
     console.error(`Refusing to start in production. Missing env vars: ${missing.join(', ')} (see README).`);
@@ -28,7 +28,16 @@ if ((env.BREVO_API_KEY || env.RESEND_API_KEY) && (!env.EMAIL_FROM || !env.BASE_U
   process.exit(1);
 }
 
-const db = openDb();
+// AUTHOR_KEY links reviews to their authors (see KEYED in src/db.js). Anywhere real students can sign in (production,
+// or any site sending real sign-in emails) needs a real one: at least 32 characters, kept out of the database and in
+// both operators' password managers. Losing it means old reviews can't be deleted or banned by author.
+if (!devMode || env.BREVO_API_KEY || env.RESEND_API_KEY) {
+  if (!env.AUTHOR_KEY || env.AUTHOR_KEY.length < 32) {
+    console.error('AUTHOR_KEY must be set to a secret of at least 32 characters here. Make one with: node -e "console.log(require(\'crypto\').randomBytes(32).toString(\'hex\'))"');
+    process.exit(1);
+  }
+} else if (!env.AUTHOR_KEY) console.log('No AUTHOR_KEY set: using the development key. Fine on a laptop, never on a real site.');
+const db = openDb(undefined, { authorKey: env.AUTHOR_KEY });
 // Seed an empty database, and re-seed (upserts only, no sample reviews) whenever the handbook data files change, so a
 // redeploy with new courses or staff reaches a database that already holds students' reviews.
 const dataDir = path.join(__dirname, 'data');

@@ -168,7 +168,7 @@ function addSamples(db) {
 }
 
 if (require.main === module) {
-  const db = openDb();
+  const db = openDb(undefined, { authorKey: process.env.AUTHOR_KEY });
   console.log('seeded', seed(db, { samples: process.env.SAMPLES ? process.env.SAMPLES !== '0' : process.env.NODE_ENV !== 'production' }));
 }
 
