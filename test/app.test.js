@@ -721,29 +721,29 @@ test('student reviews, report hides it, moderator restores it', async () => {
   await student.signIn('abcxyz001@myuct.ac.za');
   const good = { lecturer_id: 'none', year: String(new Date().getFullYear()), teaching: 5, engagement: 5, exams: 4, support: 5, difficulty: 3, workload: 3, body: 'Demos in lectures are the best part', agree: '1' };
 
-  assert.equal((await student.post('/courses/PHY1012F/review', good)).status, 303);
-  assert.equal((await student.post('/courses/PHY1012F/review', good)).status, 400, 'second review for same lecturer/year is refused');
+  assert.equal((await student.post('/courses/CSC1016S/review', good)).status, 303);
+  assert.equal((await student.post('/courses/CSC1016S/review', good)).status, 400, 'second review for same lecturer/year is refused');
 
   const anon = browser();
-  let page = await anon.text('/courses/PHY1012F');
+  let page = await anon.text('/courses/CSC1016S');
   assert.match(page, /Demos in lectures are the best part/);
   assert.doesNotMatch(page, /abcxyz001/, 'author email never shown');
   const id = /id="review-(\d+)"[\s\S]*?Demos in lectures/.exec(page)[1];
 
   const loggedOut = await anon.post(`/reviews/${id}/report`, { reason: 'defamation' });
-  assert.match(loggedOut.headers.get('location'), /^\/login\?next=%2Fcourses%2FPHY1012F/, 'reporting needs a sign-in');
-  assert.match(await anon.text('/courses/PHY1012F'), /Demos in lectures/, 'an anonymous report hides nothing');
+  assert.match(loggedOut.headers.get('location'), /^\/login\?next=%2Fcourses%2FCSC1016S/, 'reporting needs a sign-in');
+  assert.match(await anon.text('/courses/CSC1016S'), /Demos in lectures/, 'an anonymous report hides nothing');
   const reader = browser();
   await reader.signIn('rep001@myuct.ac.za');
   assert.equal((await reader.post(`/reviews/${id}/report`, { reason: 'defamation' })).status, 303);
-  assert.doesNotMatch(await anon.text('/courses/PHY1012F'), /Demos in lectures/, 'serious report hides the review immediately');
+  assert.doesNotMatch(await anon.text('/courses/CSC1016S'), /Demos in lectures/, 'serious report hides the review immediately');
 
   assert.equal((await student.get('/mod')).status, 404, 'students cannot moderate');
   const mod = browser();
   await mod.signIn('mod001@myuct.ac.za');
   assert.match(await mod.text('/mod'), /Demos in lectures/);
   assert.equal((await mod.post(`/mod/reviews/${id}/approve`, {})).status, 303);
-  assert.match(await anon.text('/courses/PHY1012F'), /Demos in lectures/);
+  assert.match(await anon.text('/courses/CSC1016S'), /Demos in lectures/);
 });
 
 test('rule-breaking comments are held, contact details rejected', async () => {
@@ -757,23 +757,77 @@ test('rule-breaking comments are held, contact details rejected', async () => {
   assert.match(page, /waiting for a moderator/);
 });
 
-test('takedown request hides the review without needing an account', async () => {
+test('a removal request without an account goes to a moderator and the review stays up', async () => {
   const b = browser();
   const id = /id="review-(\d+)"/.exec(await b.text('/courses/MAM1020F'))[1];
   const res = await b.post('/takedown', { review_id: id, name: 'A Lecturer', email: 'lect@uct.ac.za', relation: 'The lecturer or staff member it is about', details: 'Not accurate' });
   assert.equal(res.status, 200);
-  assert.doesNotMatch(await b.text('/courses/MAM1020F'), new RegExp(`id="review-${id}"`));
+  assert.match(await res.text(), /stays up until a moderator/);
+  assert.match(await b.text('/courses/MAM1020F'), new RegExp(`id="review-${id}"`), 'anyone can type an email, so it is not proof');
+  assert.ok(db.prepare(`SELECT 1 FROM takedowns WHERE review_id = ? AND status = 'open'`).get(Number(id)), 'the request is queued');
+});
+
+// its own server: the shared one is close to its sign-in rate limit
+test('a removal request from a signed-in staff account hides the review straight away', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const add = () => String(sdb.prepare(`INSERT INTO reviews (course, year, teaching, engagement, exams, support, difficulty, workload, overall, body)
+    VALUES ('MAM1021S', 2026, 2, 2, 2, 2, 4, 4, 2, 'Hard to follow')`).run().lastInsertRowid);
+  const [id, other] = [add(), add()];
+  const b = newBrowser();
+  await b.signIn('removal.staff@uct.ac.za');
+  assert.match(await b.text(`/takedown?review=${id}`), /value="removal\.staff@uct\.ac\.za"/, 'the reply address is filled in from the account');
+  const res = await b.post('/takedown', { review_id: id, name: 'Dr A Staff', email: 'removal.staff@uct.ac.za', relation: 'The lecturer or staff member it is about', details: 'Not accurate' });
+  assert.match(await res.text(), /hidden while a moderator looks at it/);
+  // the status, not the course page: with two reviews the page shows no review cards at all (the small-class rule)
+  const status = (rid) => sdb.prepare('SELECT status FROM reviews WHERE id = ?').get(Number(rid)).status;
+  assert.equal(status(id), 'held');
+
+  const student = newBrowser();
+  await student.signIn('notstaff001@myuct.ac.za');
+  await student.post('/takedown', { review_id: other, name: 'A Student', email: 'notstaff001@myuct.ac.za', details: 'Please remove' });
+  assert.equal(status(other), 'published', 'a student account does not hide it');
+}));
+
+test('the removal form never shows the text of a hidden or removed review', async () => {
+  const add = (status) => Number(db.prepare(`INSERT INTO reviews (course, year, teaching, engagement, exams, support, difficulty, workload, overall, body, status)
+    VALUES ('AGE1002S', 2026, 2, 2, 2, 2, 3, 3, 2, ?, ?)`).run(`TEXT-OF-${status}`, status).lastInsertRowid);
+  const held = add('held');
+  const published = add('published');
+  const removed = add('removed');
+  const b = browser();
+  const heldPage = await b.text(`/takedown?review=${held}`);
+  assert.doesNotMatch(heldPage, /TEXT-OF-held/, 'a held review is hidden: its text must not be readable here');
+  assert.match(heldPage, new RegExp(`Review #${held} on AGE1002S`), 'it still says which review the request is about');
+  assert.match(await b.text(`/takedown?review=${published}`), /TEXT-OF-published/, 'a live review is quoted, as before');
+  assert.doesNotMatch(await b.text(`/takedown?review=${removed}`), /TEXT-OF-removed/);
+  // the form shown again after a mistake loads the review without a status check, so check it there too
+  for (const id of [held, removed]) {
+    const again = await b.post('/takedown', { review_id: id, name: '', email: '', details: '' });
+    assert.equal(again.status, 400);
+    assert.doesNotMatch(await again.text(), /TEXT-OF-(held|removed)/);
+  }
 });
 
 test('pages render', async () => {
-  for (const p of ['/', '/courses', '/courses?dept=MEC&q=dyn', '/rankings?cat=hardest&kind=lecturer&dept=EEE', '/rules', '/takedown', '/lecturers/1']) {
+  for (const p of ['/', '/courses', '/courses?dept=MEC&q=dyn', '/rankings?cat=hardest&dept=EEE', '/rules', '/takedown', '/lecturers/1']) {
     assert.equal((await fetch(base + p)).status, 200, p);
   }
   assert.equal((await fetch(`${base}/courses/NOPE123X`)).status, 404);
 });
 
+test('lecturers are never ranked and their pages stay out of search engines', async () => {
+  const lecturerPage = await fetch(`${base}/lecturers/1`);
+  assert.equal(lecturerPage.headers.get('x-robots-tag'), 'noindex', 'a named person\'s scores should not turn up when someone searches their name');
+  assert.equal((await fetch(`${base}/courses`)).headers.get('x-robots-tag'), null, 'course pages can still be found');
+  const robots = await fetch(`${base}/robots.txt`);
+  assert.equal(robots.status, 200);
+  assert.match(await robots.text(), /Disallow: \/mod/);
+  const ranked = await (await fetch(`${base}/rankings?cat=lowest&kind=lecturer`)).text();
+  assert.doesNotMatch(ranked, /href="\/lecturers\/\d+" class="rank-name"/, 'an old lecturer ranking link shows courses instead');
+  assert.doesNotMatch(ranked, /kind=lecturer/, 'no way to switch to ranking lecturers');
+});
+
 test('scores built from sample reviews are badged wherever they appear', async () => {
-  for (const p of ['/courses?q=EEE3099S', '/courses/EEE3099S', '/rankings?cat=best&kind=course']) {
+  for (const p of ['/courses?q=EEE3099S', '/courses/EEE3099S', '/rankings?cat=best']) {
     assert.match(await (await fetch(base + p)).text(), /class="badge sample"/, p);
   }
   // a course with no sample reviews gets no badge on its card
@@ -1105,7 +1159,7 @@ test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can b
   // its own server, so earlier tests haven't used up this IP's report limit
   const db = openDb(':memory:');
   seed(db, { samples: false });
-  const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true }).listen(0);
+  const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true, commentsFrom: 1 }).listen(0);
   t.after(() => own.close());
   await new Promise((r) => own.once('listening', r));
   const fresh = () => browser(() => `http://localhost:${own.address().port}`);
@@ -1157,6 +1211,37 @@ test('kwaai-or-nah votes: one per student, result shows from 3 votes, tips can b
   assert.match(page, new RegExp(`id="${/#(tip-\d+)/.exec(home)[1]}"`), 'the home link lands on a readable tip');
 });
 
+test('a course with fewer than 5 reviews shows its scores but no comments, tips or lecturer breakdown', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const lecturerId = Number(sdb.prepare(`INSERT INTO lecturers (name, dept) VALUES ('Dr Small Class', 'MAM')`).run().lastInsertRowid);
+  const review = (n) => sdb.prepare(`INSERT INTO reviews (course, lecturer_id, year, teaching, engagement, exams, support, difficulty, workload, overall, body)
+    VALUES ('MAM1031F', ?, 2026, 3, 3, 3, 3, 3, 3, 3, ?)`).run(lecturerId, `Small class comment ${n}`);
+  const tip = (n) => {
+    const uid = sdb.prepare(`INSERT INTO users (email) VALUES (?)`).run(`smallclass00${n}@myuct.ac.za`).lastInsertRowid;
+    sdb.prepare(`INSERT INTO verdicts (course, user_id, year, lekker, tip) VALUES ('MAM1031F', ?, 2026, 1, ?)`).run(uid, `Small class tip ${n}`);
+  };
+  for (const n of [1, 2, 3, 4]) { review(n); tip(n); }
+  const anon = newBrowser();
+  let page = await anon.text('/courses/MAM1031F');
+  assert.match(page, /4 reviews/, 'the scores still count');
+  assert.doesNotMatch(page, /Small class comment|Small class tip/, 'in a small class a comment can give its writer away');
+  assert.doesNotMatch(page, /Who taught it/, 'nor the per-lecturer table');
+  assert.match(page, /1 more review/, 'and it says how many more are needed');
+  const lecturerPage = await anon.text(`/lecturers/${lecturerId}`);
+  assert.doesNotMatch(lecturerPage, /Small class comment/, 'the lecturer page follows the course');
+  assert.doesNotMatch(lecturerPage, /MAM1031F/, 'nor does it list the course with this lecturer\'s score, which is the per-lecturer table again');
+  assert.doesNotMatch(await anon.text('/'), /Small class tip/, 'the home page too');
+
+  review(5);
+  tip(5);
+  page = await anon.text('/courses/MAM1031F');
+  assert.match(page, /Small class comment 5/, 'from 5 reviews, comments show');
+  assert.match(page, /Small class tip 5/, 'from 5 tips, tips show');
+  assert.match(page, /Who taught it/);
+  assert.match(await anon.text(`/lecturers/${lecturerId}`), /Small class comment/);
+  assert.match(await anon.text(`/lecturers/${lecturerId}`), /<span class="code">MAM1031F<\/span>/, 'from 5, the course is listed with the score');
+  assert.match(await anon.text('/'), /Small class tip 5/);
+}));
+
 test('rule-breaking tips are held, contact details rejected, votes deleted with the account', async () => {
   const b = browser();
   await b.signIn('vot009@myuct.ac.za');
@@ -1175,7 +1260,7 @@ test('rule-breaking tips are held, contact details rejected, votes deleted with 
 test('a held tip stays held when resubmitted, and a removed vote cannot be deleted and recast', async (t) => {
   const db = openDb(':memory:');
   seed(db, { samples: false });
-  const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true }).listen(0);
+  const own = createApp(db, { moderators: new Set(['mod001@myuct.ac.za']), devMode: true, commentsFrom: 1 }).listen(0);
   t.after(() => own.close());
   await new Promise((r) => own.once('listening', r));
   const fresh = () => browser(() => `http://localhost:${own.address().port}`);
@@ -1210,7 +1295,7 @@ test('readers see the first 2 comments until they vote once, then all of them', 
   const add = db.prepare(`INSERT INTO reviews (course, year, teaching, engagement, exams, support, difficulty, workload, overall, body, created_at)
     VALUES ('CSC2001F', 2025, 4, 4, 4, 4, 3, 3, 4, ?, ?)`);
   for (const n of [1, 2, 3, 4]) add.run(`Gate comment number ${n}`, `2025-06-0${n} 10:00:00`);
-  const own = createApp(db, { devMode: true }).listen(0);
+  const own = createApp(db, { devMode: true, commentsFrom: 1 }).listen(0);
   t.after(() => own.close());
   await new Promise((r) => own.once('listening', r));
   const b = browser(() => `http://localhost:${own.address().port}`);
@@ -1302,8 +1387,8 @@ test('semester planner: add by code or search, remove, and shared links do not o
   assert.doesNotMatch(top, /year-folder/);
   assert.ok((top.match(/class="card course-card"/g) || []).length <= 6, 'only a short most-reviewed row sits under the faculties');
   // ratings are coloured by how good they are; workload and exam difficulty aren't good or bad, so they stay ink
-  assert.match(await b.text('/rankings?cat=best&kind=course'), /class="score  score-(good|mid|low)"/);
-  assert.doesNotMatch(await b.text('/rankings?cat=workload&kind=course'), /score-(good|mid|low)/);
+  assert.match(await b.text('/rankings?cat=best'), /class="score  score-(good|mid|low)"/);
+  assert.doesNotMatch(await b.text('/rankings?cat=workload'), /score-(good|mid|low)/);
   assert.match(await b.text('/courses?faculty=ebe'), /href="\/courses\?faculty=ebe&dept=EEE"/);
   const eee = await b.text('/courses?faculty=ebe&dept=EEE');
   assert.match(eee, /<details class="year-folder" open>/);
@@ -1627,6 +1712,11 @@ test('home page offers the two paths: rate a course and plan a semester', async 
 
 test('privacy, terms and about pages render, and every page says who makes Kwaai', async () => {
   for (const p of ['/privacy', '/terms', '/about']) assert.equal((await fetch(base + p)).status, 200, p);
+  const privacy = await (await fetch(`${base}/privacy`)).text();
+  assert.match(privacy, /Class lists from lecturers/, 'the notice covers class data');
+  assert.match(privacy, /Fly\.io/, 'and names the host we actually use');
+  assert.match(await (await fetch(`${base}/terms`)).text(), /Classes \(for staff\)/);
+  assert.match(await (await fetch(`${base}/rules`)).text(), /id="classes"/);
   const about = await (await fetch(`${base}/about`)).text();
   assert.match(about, /<a href="https:\/\/ubayd\.me">Ubayd Hattas<\/a>/);
   assert.match(about, /<a href="https:\/\/jaswin\.me">Jaswin Chinthala<\/a>/);
@@ -1634,6 +1724,12 @@ test('privacy, terms and about pages render, and every page says who makes Kwaai
   const home = await (await fetch(`${base}/`)).text();
   assert.match(home, /made by two UCT students/);
   assert.match(home, /isn't affiliated with, endorsed by or run by any university/, 'the disclaimer stays');
+  assert.doesNotMatch(privacy, /not which student wrote a review/, 'the people who run Kwaai can link a review to an account, so the notice must not say otherwise');
+  assert.match(privacy, /id="anonymity"/, 'it says plainly who could find out who wrote a review');
+  assert.equal(privacy.match(/Your study (timer )?sessions<\/strong>/g).length, 1, 'study sessions are described once');
+  for (const what of [/Classes you join<\/strong>/, /Class lists from lecturers/, /pulse check/i, /Staff accounts\.<\/strong>/, /random device id/, /by 31 January of the year after the class/])
+    assert.match(privacy, what, `the notice covers what classes collect: ${what}`);
+  assert.match(await (await fetch(`${base}/terms`)).text(), /@uct\.ac\.za/, 'the terms mention staff accounts');
 });
 
 test('re-running the seed keeps real reviews and only swaps demo data', () => {
@@ -2190,7 +2286,8 @@ test('a friend\'s plan link offers to become your plan', async () => {
   let page = await b.text('/plan?c=CSC1015S,MAM1032S');
   assert.match(page, /This plan came from a link/);
   const plan = /action="\/plan\/adopt">[\s\S]*?name="plan" value="([^"]*)"/.exec(page)[1].replace(/&amp;/g, '&');
-  assert.match((await b.get('/plan?c=CSC1015S,MAM1032S&adopt=1')).headers.get('location') || '', /^$|^\/plan\?c=STA1000S/, 'a link alone no longer replaces your plan');
+  await b.get('/plan?c=CSC1015S,MAM1032S&adopt=1');
+  assert.equal((await b.get('/plan')).headers.get('location'), '/plan?c=STA1000S', 'a link alone no longer replaces the plan saved on this device');
   assert.doesNotMatch(await b.text('/today'), /CSC1015S|MAM1032S/);
   const res = await b.post('/plan/adopt', { plan });
   assert.equal(res.status, 303);
@@ -2354,6 +2451,7 @@ test('students join a class: they see what is shared first, choose a name or ano
   assert.match(join, /Join CSC1015F 2027/);
   assert.match(join, /Your student number: <strong>ABCXYZ001<\/strong>/, 'the number the lecturer will see, shown before joining');
   assert.match(join, /with Dr J Smith/);
+  assert.doesNotMatch(join, /your streak/, 'the dashboard shows no streak, so joining must not promise one');
   assert.equal((await s.post('/c/' + code + '/join', { show: 'name', name: 'x' })).status, 400, 'a shown name needs 2 characters');
   assert.equal((await s.post('/c/' + code + '/join', { show: 'anon', name: '' })).status, 303);
   const m = sdb.prepare('SELECT * FROM class_members WHERE role = ?').get('student');
@@ -2381,10 +2479,28 @@ test('deleting a lecturer account deletes their classes; deleting a student remo
   const s = newBrowser();
   await s.signIn('abcxyz002@myuct.ac.za');
   await s.post('/c/' + code + '/join', { show: 'name', name: 'Thandi M' });
+  await s.text('/c/' + code); // puts them on the class list as 'joined'
+  const classId = sdb.prepare('SELECT id FROM classes').get().id;
+  const sess = sdb.prepare(`INSERT INTO attendance_sessions (class_id, label, started_at) VALUES (?, 'Tut 1', ?)`).run(classId, Date.now()).lastInsertRowid;
+  sdb.prepare(`INSERT INTO attendance (session_id, number, user_id, marked_at, how) VALUES (?, 'ABCXYZ002', NULL, ?, 'tutor')`).run(sess, Date.now());
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE number = 'ABCXYZ002'`).get().n, 1);
+  // a second class whose lecturer pasted the official list with this student on it; they checked in by QR
+  const { code: code2 } = await makeClass(newBrowser, 'other.lecturer@uct.ac.za');
+  const class2 = sdb.prepare('SELECT id FROM classes WHERE code = ?').get(code2).id;
+  sdb.prepare(`INSERT INTO class_roster (class_id, number, name, source) VALUES (?, 'ABCXYZ002', 'T Mokoena', 'list')`).run(class2);
+  await s.post('/c/' + code2 + '/join', { show: 'name', name: 'Thandi M' });
+  const userId = sdb.prepare(`SELECT id FROM users WHERE email = 'abcxyz002@myuct.ac.za'`).get().id;
+  const sess2 = sdb.prepare(`INSERT INTO attendance_sessions (class_id, label, started_at) VALUES (?, 'Prac 1', ?)`).run(class2, Date.now()).lastInsertRowid;
+  sdb.prepare(`INSERT INTO attendance (session_id, number, user_id, marked_at, how, device) VALUES (?, 'ABCXYZ002', ?, ?, 'qr', 'phone1')`).run(sess2, userId, Date.now());
   await s.post('/account/delete', {});
   assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_members WHERE role = 'student'`).get().n, 0);
+  assert.deepEqual(sdb.prepare(`SELECT class_id, source FROM class_roster WHERE number = 'ABCXYZ002'`).all().map((r) => ({ ...r })), [{ class_id: class2, source: 'list' }],
+    'their joined class-list row goes; the lecturer\'s pasted list stays');
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM attendance WHERE session_id = ?`).get(sess).n, 0, 'marks in a class they only joined are deleted');
+  assert.deepEqual({ ...sdb.prepare(`SELECT user_id, device FROM attendance WHERE session_id = ?`).get(sess2) }, { user_id: null, device: '' },
+    'on the lecturer\'s own list the mark stays, unlinked from the account, so their DP isn\'t lost');
   assert.equal((await lecturer.post('/account/delete', {})).status, 303, 'no foreign key gets in the way');
-  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM classes').get().n, 0);
+  assert.deepEqual(sdb.prepare('SELECT id FROM classes').all().map((c) => c.id), [class2], "only the other lecturer's class is left");
 }));
 
 test('the class page: this week against the goal, a ranking of only that course, anonymous names, and Today', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
@@ -2575,6 +2691,22 @@ test('class reps: full name and badge, can add dates, never the dashboard or stu
 
   await lecturer.post(adminPath + '/rep', { user: String(repId) });
   assert.equal(sdb.prepare('SELECT role FROM class_members WHERE user_id = ?').get(repId).role, 'student');
+}));
+
+test('a class rep who added a date can still delete their account, and the date stays', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, code, adminPath } = await makeClass(newBrowser);
+  const rep = newBrowser();
+  await rep.signIn('dele001@myuct.ac.za');
+  await rep.post('/c/' + code + '/join', { show: 'name', name: 'Dele Rep' });
+  const repId = sdb.prepare(`SELECT id FROM users WHERE email = 'dele001@myuct.ac.za'`).get().id;
+  await lecturer.post(adminPath + '/rep', { user: String(repId), make: '1', name: 'Dele Adeyemi' });
+  await rep.post('/c/' + code + '/dates', { type: 'test', date: Study.addDay(Study.saDay(Date.now()), 5), title: 'Test 3' });
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM class_dates WHERE added_by = ?').get(repId).n, 1);
+
+  const res = await rep.post('/account/delete', {});
+  assert.equal(res.status, 303, 'deleting the account works');
+  assert.equal(sdb.prepare('SELECT 1 FROM users WHERE id = ?').get(repId), undefined, 'the account is gone');
+  assert.match(await lecturer.text('/c/' + code), /Test 3[\s\S]{0,120}from the class/, 'the date stays, without the name of who added it');
 }));
 
 test('class announcements: staff and reps post, members see them on Today until read, reports hide them', () => withAdminServer({ moderators: new Set(['mod001@myuct.ac.za']) }, async ({ db: sdb, browser: newBrowser }) => {
@@ -2776,6 +2908,19 @@ test('class list: the lecturer pastes it once with consent, members match by num
 
   await lecturer.post(adminPath + '/roster/clear', {});
   assert.deepEqual(sdb.prepare('SELECT number, source FROM class_roster').all().map((r) => [r.number, r.source]), [['LSTABC001', 'joined']], 'clearing keeps members');
+}));
+
+test('a first-year sized class list saves, and other forms keep their small limit', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const { lecturer, adminPath } = await makeClass(newBrowser);
+  // 1,000 students with a name, a tut and a prac each: about 45 KB once the form encodes it
+  const list = Array.from({ length: 1000 }, (_, i) => `BIGLST${String(i).padStart(3, '0')}\tStudent Number${i}\tTut ${i % 20}\tPrac ${i % 8}`).join('\n');
+  const res = await lecturer.post(adminPath + '/roster', { list, mode: 'replace', confirm: '1' });
+  assert.equal(res.status, 303, 'the list is accepted');
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM class_roster WHERE source = 'list'`).get().n, 1000);
+
+  const tooLong = await lecturer.post('/takedown', { name: 'x', email: 'x@y.za', details: 'x'.repeat(30_000) });
+  assert.equal(tooLong.status, 413, 'everything else keeps the 20 KB limit');
+  assert.match(await tooLong.text(), /too long/);
 }));
 
 test('tut and prac groups: made from the class list, edited by the lecturer, picked by students, on their week, and a register per group', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
@@ -3186,3 +3331,41 @@ test('the rank card: the rank, season, streak and quests, and a name only if the
   assert.match(page, /<p class="rank-share-name">Card Holder<\/p>/);
   assert.match(await s.text('/study/rank'), /href="\/study\/rank\/card">Get your rank card/);
 }));
+
+test('the server refuses to start in production with TEST_TOOLS=1', () => {
+  const { spawnSync } = require('node:child_process');
+  const os = require('node:os');
+  // every variable set explicitly, so a developer's .env can't fill one in
+  const env = { ...process.env, NODE_ENV: 'production', TEST_TOOLS: '1', BASE_URL: 'https://kwaai.test', EMAIL_FROM: 'Kwaai <a@kwaai.test>', MODERATORS: 'mod@myuct.ac.za',
+    CONTACT_EMAIL: 'a@kwaai.test', BREVO_API_KEY: 'test', RESEND_API_KEY: '', DEMO_PASSWORD: '', PORT: '0', DB_FILE: require('node:path').join(os.tmpdir(), `kwaai-refuse-${process.pid}.db`) };
+  // starting Node alone can take over 7 s on a busy Windows laptop; the refusal itself is immediate
+  const r = spawnSync(process.execPath, [require('node:path').join(__dirname, '..', 'server.js')], { env, encoding: 'utf8', timeout: 30_000, killSignal: 'SIGKILL' });
+  assert.equal(r.status, 1, r.stderr || r.stdout);
+  assert.match(r.stderr, /TEST_TOOLS/);
+});
+
+test('backups: a consistent copy, one a day, and none kept past 30 days', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { backup, backupIfDue } = require('../scripts/backup');
+  const dir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'kwaai-backup-'));
+  const db = openDb(path.join(dir, 'live.db'));
+  db.prepare(`INSERT INTO meta (key, value) VALUES ('x', 'kept')`).run();
+  const out = path.join(dir, 'backups');
+  const first = backupIfDue(db, out);
+  assert.ok(first, 'no backup yet, so one is due');
+  const copy = openDb(first);
+  assert.equal(copy.prepare(`SELECT value FROM meta WHERE key = 'x'`).get().value, 'kept');
+  copy.close();
+  assert.equal(backupIfDue(db, out), null, 'not twice in a day');
+  const ago = (days) => new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+  fs.utimesSync(first, ago(1), ago(1));
+  const old = path.join(out, 'lekker-old.db');
+  fs.writeFileSync(old, '');
+  fs.utimesSync(old, ago(31), ago(31));
+  assert.ok(backupIfDue(db, out), 'a day later, another');
+  assert.ok(!fs.existsSync(old), 'a 31-day-old backup is deleted');
+  assert.ok(fs.existsSync(first), 'a 1-day-old one stays');
+  db.close();
+  fs.rmSync(dir, { recursive: true, force: true });
+});
