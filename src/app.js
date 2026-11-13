@@ -4,7 +4,7 @@ const path = require('node:path');
 const zlib = require('node:zlib');
 const express = require('express');
 const views = require('./views');
-const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
+const { RANKINGS, MIN_FOR_RANKING, COMMENTS_FROM, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
 const { analysePlan, REPLACED, parseProfile, hasProfile, profileParams, majorNeeds, creditAdvice, programmeOptions, facultyOptions, FACULTIES, PROGRAMMES, ordinal } = require('./planner');
 const { parseWeek, weekParams, buildWeek, icsFor, DAYS, termDates, planYear, semesterWeeks, TERMS } = require('./week');
 const Marks = require('../public/marks-math');
@@ -34,7 +34,7 @@ const STATS = `COUNT(*) AS n, AVG(overall) AS overall, AVG(teaching) AS teaching
 const REVIEW_COLS = `r.*, l.name AS lecturer_name`;
 const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'";
 
-function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'Ubayd Hattas and Jaswin Chinthala', informationOfficer = operator, demoPassword, emailDailyCap = 280, adminUsername = 'kwaai', adminPasswordHash, testTools = false } = {}) {
+function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'Ubayd Hattas and Jaswin Chinthala', informationOfficer = operator, demoPassword, emailDailyCap = 280, adminUsername = 'kwaai', adminPasswordHash, testTools = false, commentsFrom = COMMENTS_FROM } = {}) {
   const app = express();
   const mods = new Set([...moderators].map(normEmail));
   app.disable('x-powered-by');
@@ -85,6 +85,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   app.use((req, res, next) => { req.body ??= {}; next(); }); // Express 5 leaves it undefined for empty POSTs
 
   const q = (sql) => db.prepare(sql);
+  // Courses whose written comments and tips may show (see COMMENTS_FROM): goes after "course IN".
+  const OPEN_REVIEWS = `(SELECT course FROM reviews WHERE status = 'published' GROUP BY course HAVING COUNT(*) >= ${Number(commentsFrom)})`;
+  const OPEN_TIPS = `(SELECT course FROM verdicts WHERE status = 'published' AND tip != '' GROUP BY course HAVING COUNT(*) >= ${Number(commentsFrom)})`;
   const depts = () => q(`SELECT d.code, d.name, COUNT(c.code) AS courses FROM departments d JOIN courses c ON c.dept = d.code GROUP BY d.code ORDER BY d.name`).all();
 
   // ---- session ----
@@ -211,7 +214,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0,
       // only each course's newest tip, in the course page's order, so it's always one of the free ones there
       recentTips: q(`SELECT t.id, t.course, t.lekker, t.tip, c.title FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY course ORDER BY created_at DESC, id DESC) AS k
-        FROM verdicts WHERE status = 'published' AND tip != '') t JOIN courses c ON c.code = t.course WHERE t.k = 1 ORDER BY t.created_at DESC, t.id DESC LIMIT 4`).all(),
+        FROM verdicts WHERE status = 'published' AND tip != '' AND course IN ${OPEN_TIPS}) t JOIN courses c ON c.code = t.course WHERE t.k = 1 ORDER BY t.created_at DESC, t.id DESC LIMIT 4`).all(),
     })));
   });
 
@@ -295,7 +298,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
     const myHeld = req.user && q(`SELECT 1 FROM reviews WHERE course = ? AND user_id = ? AND status = 'held'`).get(c.code, req.user.id);
     const votes = verdictStats(c.code);
-    const tips = q(`SELECT id, year, lekker, tip, created_at FROM verdicts WHERE course = ? AND status = 'published' AND tip != '' ORDER BY created_at DESC, id DESC LIMIT 30`).all(c.code);
+    const tipCount = q(`SELECT COUNT(*) AS n FROM verdicts WHERE course = ? AND status = 'published' AND tip != ''`).get(c.code).n;
+    const tips = tipCount >= commentsFrom ? q(`SELECT id, year, lekker, tip, created_at FROM verdicts WHERE course = ? AND status = 'published' AND tip != '' ORDER BY created_at DESC, id DESC LIMIT 30`).all(c.code) : [];
+    // below commentsFrom reviews the scores count, but comments and who taught which year would point at the writer
+    const open = stats.n >= commentsFrom;
     const myVerdict = req.user && q(`SELECT * FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
     // the convener is the handbook's link between a person and this course; the rest of the department's teaching
     // staff are listed as "in the department", never as teaching this course
@@ -313,19 +319,20 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const realHours = Study.courseHours(q(`SELECT user_id, day, SUM(credited_sec / 60) AS minutes FROM study_sessions
       WHERE course = ? AND status = 'done' AND day >= ? ${realOnly(req.user)} GROUP BY user_id, day`).all(c.code, Study.addDay(today, -Study.HOURS_WINDOW_DAYS)), today);
     const creditHours = Study.weeklyGoal(c, (t) => semesterWeeks(planYear(), t));
-    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0, realHours, creditHours, officialDates: classDatesFor([c.code]).filter((d) => d.date >= today) })));
+    res.page((views.course(req.ctx, { c, stats, offerings: open ? offerings : [], reviews: open ? reviews : [], topTags, myHeld, votes, tips, closedTips: tipCount >= commentsFrom ? 0 : tipCount, commentsFrom, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0, realHours, creditHours, officialDates: classDatesFor([c.code]).filter((d) => d.date >= today) })));
   });
 
   app.get('/lecturers/:id', (req, res) => {
     const l = q(`SELECT l.*, d.name AS dept_name FROM lecturers l JOIN departments d ON d.code = l.dept WHERE l.id = ?`).get(Number(req.params.id) || 0);
     if (!l) return res.status(404).page((notFound(req)));
     const stats = q(`SELECT ${STATS} FROM reviews WHERE lecturer_id = ? AND status = 'published'`).get(l.id);
+    // per-course scores for this lecturer only on courses past the small-class threshold, like the course page's table
     const taught = q(`SELECT c.code, c.title, s.n, s.overall FROM courses c
-      LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall FROM reviews WHERE lecturer_id = ? AND status = 'published' GROUP BY course) s ON s.course = c.code
+      LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall FROM reviews WHERE lecturer_id = ? AND status = 'published' AND course IN ${OPEN_REVIEWS} GROUP BY course) s ON s.course = c.code
       WHERE s.n > 0 OR ('|' || c.conveners || '|') LIKE ? ORDER BY c.code`).all(l.id, `%|${l.name}|%`);
-    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.lecturer_id = ? AND r.status = 'published' ORDER BY r.created_at DESC, r.id DESC`).all(l.id);
+    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.lecturer_id = ? AND r.status = 'published' AND r.course IN ${OPEN_REVIEWS} ORDER BY r.created_at DESC, r.id DESC`).all(l.id);
     // a named person's scores shouldn't be what comes up when someone searches their name
-    res.set('X-Robots-Tag', 'noindex').page((views.lecturer(req.ctx, { l, stats, courses: taught, reviews, locked: !canReadAll(req) })));
+    res.set('X-Robots-Tag', 'noindex').page((views.lecturer(req.ctx, { l, stats, courses: taught, reviews, commentsFrom, locked: !canReadAll(req) })));
   });
 
   app.get('/rankings', (req, res) => {
@@ -664,7 +671,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const soon = new Date(Date.parse(`${date}T00:00:00Z`) + 14 * 86_400_000).toISOString().slice(0, 10);
     const upcoming = datedWithClasses(facts, codes).filter((d) => d.date >= date && d.date <= soon);
     const todays = [...new Set(classes.map((e) => e.code).filter(Boolean))];
-    const tip = todays.length ? q(`SELECT course, tip FROM verdicts WHERE status = 'published' AND tip != '' AND course IN (${todays.map(() => '?').join(',')}) ORDER BY RANDOM() LIMIT 1`).get(...todays) : null;
+    const tip = todays.length ? q(`SELECT course, tip FROM verdicts WHERE status = 'published' AND tip != '' AND course IN (${todays.map(() => '?').join(',')}) AND course IN ${OPEN_TIPS} ORDER BY RANDOM() LIMIT 1`).get(...todays) : null;
     return { date, term, note, weekend: weekday === 0 || weekday === 6, dayName, classes, upcoming, tip, marks: marksCourses(wk.courses.map((c) => c.code)),
       // courses to start a study timer for: this term's, or the whole plan between terms
       study: wk.courses.length ? wk.courses.map((c) => c.code) : codes };
