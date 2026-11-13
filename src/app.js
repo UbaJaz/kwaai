@@ -1375,11 +1375,16 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       return res.status(400).page((views.takedown(req.ctx, { review, values: b, error: 'Please fill in your name, a valid email and what the problem is.' })));
     }
     q(`INSERT INTO takedowns (review_id, name, email, relation, details) VALUES (?, ?, ?, ?, ?)`).run(review?.id ?? null, name, email, String(b.relation || '').slice(0, 100), details);
-    const hidden = review && !modApproved(review.id);
-    if (hidden) hold(review.id, 'Removal requested');
+    // Anyone can type a name and an email, so a request only hides a review straight away when it comes from a
+    // signed-in UCT staff account. Everything else waits for a moderator with the review still up.
+    const staff = req.user?.role === 'staff';
+    const hidden = staff && review?.status === 'published' && !modApproved(review.id);
+    if (hidden) hold(review.id, 'Removal requested by staff');
     res.page((views.message(req.ctx, {
       title: 'Request received', emoji: '📮',
-      text: hidden ? 'The review is now hidden while a moderator looks at it. We aim to reply within 48 hours.' : 'A moderator will look at your request and reply by email, usually within 48 hours.',
+      text: hidden ? 'The review is now hidden while a moderator looks at it. We aim to reply within 48 hours.'
+        : review?.status === 'published' && !staff && !modApproved(review.id) ? 'A moderator will look at your request and reply by email, usually within 48 hours. The review stays up until a moderator has looked at it. If you are UCT staff, sign in with your @uct.ac.za email and send the request again to hide it straight away.'
+          : 'A moderator will look at your request and reply by email, usually within 48 hours.',
       link: { href: '/', label: 'Back to Kwaai' },
     })));
   });

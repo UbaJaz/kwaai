@@ -2389,7 +2389,7 @@ function rules(ctx) {
   </ol>
 
   <h2 id="takedown">📮 Are you the person a review is about?</h2>
-  <p>Lecturers and staff don't need an account. Use the <a href="/takedown">removal request form</a>, or the "Request removal" link on any review. The review is hidden while we look at it.</p>
+  <p>Use the <a href="/takedown">removal request form</a>, or the "Request removal" link on any review. You don't need an account, and a moderator replies within 48 hours. If you sign in with your @uct.ac.za staff email first, the review is hidden straight away while we look at it.</p>
 
   <h2 id="classes">🎓 Classes</h2>
   <ul>
@@ -2731,7 +2731,10 @@ function takedown(ctx, { review, error, values = {} }) {
   return layout({ ...ctx, title: 'Request removal' }, html`
   <section class="narrow">
     <h1 class="page-title">Request a review's removal</h1>
-    <p class="lede small">For lecturers, staff or anyone a review is about. No account needed. If you name a specific review, it's hidden straight away while a moderator looks at it.</p>
+    <p class="lede small">For lecturers, staff or anyone a review is about. No account needed: a moderator reads every request and replies by email within 48 hours.</p>
+    <p class="meta">${ctx.user?.role === 'staff'
+      ? "You're signed in with a UCT staff email, so a review you name here is usually hidden straight away while a moderator looks at it. One a moderator has already checked stays up until they look again."
+      : html`UCT staff: <a href="/login?next=${encodeURIComponent('/takedown' + (review ? `?review=${review.id}` : ''))}">sign in with your @uct.ac.za email</a> first and a review you name is usually hidden straight away while a moderator looks at it. Without signing in, it stays up until then.`}</p>
     ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
     ${review ? html`<div class="card quote"><p class="meta">Review #${review.id} on ${review.course}</p>${review.status !== 'published'
       // a hidden review stays hidden here too: anyone can open this page, so only a live review is quoted
@@ -2741,7 +2744,7 @@ function takedown(ctx, { review, error, values = {} }) {
       ${review ? html`<input type="hidden" name="review_id" value="${review.id}">` : html`<label>Link to the review or its number <span class="hint">Optional</span><input name="review_ref" value="${v('review_ref')}" placeholder="e.g. 42 or https://…/courses/MEC2047F#review-42"></label>`}
       <div class="form-row two">
         <label>Your name<input name="name" value="${v('name')}" required maxlength="100"></label>
-        <label>Email we can reply to<input type="email" name="email" value="${v('email')}" required maxlength="200"></label>
+        <label>Email we can reply to<input type="email" name="email" value="${values.email ?? ctx.user?.email ?? ''}" required maxlength="200"></label>
       </div>
       <label>You are…
         <select name="relation" required>

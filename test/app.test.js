@@ -757,13 +757,33 @@ test('rule-breaking comments are held, contact details rejected', async () => {
   assert.match(page, /waiting for a moderator/);
 });
 
-test('takedown request hides the review without needing an account', async () => {
+test('a removal request without an account goes to a moderator and the review stays up', async () => {
   const b = browser();
   const id = /id="review-(\d+)"/.exec(await b.text('/courses/MAM1020F'))[1];
   const res = await b.post('/takedown', { review_id: id, name: 'A Lecturer', email: 'lect@uct.ac.za', relation: 'The lecturer or staff member it is about', details: 'Not accurate' });
   assert.equal(res.status, 200);
-  assert.doesNotMatch(await b.text('/courses/MAM1020F'), new RegExp(`id="review-${id}"`));
+  assert.match(await res.text(), /stays up until a moderator/);
+  assert.match(await b.text('/courses/MAM1020F'), new RegExp(`id="review-${id}"`), 'anyone can type an email, so it is not proof');
+  assert.ok(db.prepare(`SELECT 1 FROM takedowns WHERE review_id = ? AND status = 'open'`).get(Number(id)), 'the request is queued');
 });
+
+// its own server: the shared one is close to its sign-in rate limit
+test('a removal request from a signed-in staff account hides the review straight away', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const add = () => String(sdb.prepare(`INSERT INTO reviews (course, year, teaching, engagement, exams, support, difficulty, workload, overall, body)
+    VALUES ('MAM1021S', 2026, 2, 2, 2, 2, 4, 4, 2, 'Hard to follow')`).run().lastInsertRowid);
+  const [id, other] = [add(), add()];
+  const b = newBrowser();
+  await b.signIn('removal.staff@uct.ac.za');
+  assert.match(await b.text(`/takedown?review=${id}`), /value="removal\.staff@uct\.ac\.za"/, 'the reply address is filled in from the account');
+  const res = await b.post('/takedown', { review_id: id, name: 'Dr A Staff', email: 'removal.staff@uct.ac.za', relation: 'The lecturer or staff member it is about', details: 'Not accurate' });
+  assert.match(await res.text(), /hidden while a moderator looks at it/);
+  assert.doesNotMatch(await b.text('/courses/MAM1021S'), new RegExp(`id="review-${id}"`));
+
+  const student = newBrowser();
+  await student.signIn('notstaff001@myuct.ac.za');
+  await student.post('/takedown', { review_id: other, name: 'A Student', email: 'notstaff001@myuct.ac.za', details: 'Please remove' });
+  assert.match(await student.text('/courses/MAM1021S'), new RegExp(`id="review-${other}"`), 'a student account does not hide it');
+}));
 
 test('the removal form never shows the text of a hidden or removed review', async () => {
   const add = (status) => Number(db.prepare(`INSERT INTO reviews (course, year, teaching, engagement, exams, support, difficulty, workload, overall, body, status)
