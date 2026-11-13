@@ -3518,7 +3518,7 @@ test('the server refuses to start in production with TEST_TOOLS=1', () => {
   const os = require('node:os');
   // every variable set explicitly, so a developer's .env can't fill one in
   const env = { ...process.env, NODE_ENV: 'production', TEST_TOOLS: '1', BASE_URL: 'https://kwaai.test', EMAIL_FROM: 'Kwaai <a@kwaai.test>', MODERATORS: 'mod@myuct.ac.za',
-    CONTACT_EMAIL: 'a@kwaai.test', BREVO_API_KEY: 'test', RESEND_API_KEY: '', DEMO_PASSWORD: '', PORT: '0', DB_FILE: require('node:path').join(os.tmpdir(), `kwaai-refuse-${process.pid}.db`) };
+    CONTACT_EMAIL: 'a@kwaai.test', BREVO_API_KEY: 'test', RESEND_API_KEY: '', DEMO_PASSWORD: '', PORT: '0', AUTHOR_KEY: 'test-only-author-key-0123456789abcdef', DB_FILE: require('node:path').join(os.tmpdir(), `kwaai-refuse-${process.pid}.db`) };
   // starting Node alone can take over 7 s on a busy Windows laptop; the refusal itself is immediate
   const r = spawnSync(process.execPath, [require('node:path').join(__dirname, '..', 'server.js')], { env, encoding: 'utf8', timeout: 30_000, killSignal: 'SIGKILL' });
   assert.equal(r.status, 1, r.stderr || r.stdout);
