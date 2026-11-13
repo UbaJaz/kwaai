@@ -25,6 +25,10 @@ const MIN_FOR_RANKING = 3;
 // Anyone can read this many written comments and tips per page. The rest open up once
 // you've voted on or reviewed one course yourself, so readers become contributors.
 const FREE_COMMENTS = 2;
+// Written comments, tips and the per-lecturer table show only once a course has this many published reviews (tips:
+// this many tips). In a class of six, one comment can tell the lecturer who wrote it; the scores still count from the
+// first review.
+const COMMENTS_FROM = 5;
 
 const RANKINGS = [
   { key: 'best', label: 'Highest rated', column: 'overall', order: 'DESC' },
@@ -90,4 +94,4 @@ function semesterLoad(courses) {
   return { credits, rated: rated.length, load: Math.round(load * 10) / 10, label, advice };
 }
 
-module.exports = { PLAN_MAX, semesterLoad, QUALITY, SCALES, ALL_KEYS, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FREE_COMMENTS, RANKINGS, overallOf, parseReviewForm, parseVerdictForm };
+module.exports = { PLAN_MAX, semesterLoad, QUALITY, SCALES, ALL_KEYS, TAGS, MAX_TAGS, MAX_BODY, MAX_TIP, MIN_FOR_RANKING, FREE_COMMENTS, COMMENTS_FROM, RANKINGS, overallOf, parseReviewForm, parseVerdictForm };

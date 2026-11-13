@@ -19,6 +19,12 @@ if (!devMode) {
     console.error(`Refusing to start in production. Missing env vars: ${missing.join(', ')} (see README).`);
     process.exit(1);
   }
+  // the test tools make fake students and study data, which must never mix with real students'
+  if (env.TEST_TOOLS === '1') {
+    console.error('Refusing to start in production with TEST_TOOLS=1. Unset it (see README).');
+    process.exit(1);
+  }
+  if (env.DEMO_PASSWORD) console.log('DEMO_PASSWORD is set, so every page asks for it. Remove it to open the site to students.');
 }
 
 // Real emails, even on a dev-mode demo, need the sender and a fixed site address. Without BASE_URL the sign-in link
@@ -52,7 +58,18 @@ const sweep = () => {
     DELETE FROM takedowns WHERE status = 'closed' AND created_at < datetime('now', '-12 months');
     DELETE FROM lecturer_suggestions WHERE status != 'open' AND created_at < datetime('now', '-12 months');
     DELETE FROM mod_log WHERE created_at < datetime('now', '-12 months');
-    DELETE FROM calendars WHERE IFNULL(fetched_at, created_at) < datetime('now', '-12 months');`);
+    DELETE FROM calendars WHERE IFNULL(fetched_at, created_at) < datetime('now', '-12 months');
+    -- a lecturer's pasted class list, 30 days after the class's year ends, even if nobody opens the class again
+    DELETE FROM class_roster WHERE source = 'list' AND class_id IN (SELECT id FROM classes WHERE date('now') >= (year + 1) || '-01-31');`);
+  // the daily backup to BACKUP_DIR; a failure (e.g. a full disk) is logged, never allowed to crash the site
+  if (!devMode) {
+    try {
+      const file = require('./scripts/backup').backupIfDue(db);
+      if (file) console.log('backed up to', file);
+    } catch (e) {
+      console.error('Backup failed:', e);
+    }
+  }
 };
 sweep();
 setInterval(sweep, 60 * 60 * 1000).unref();
