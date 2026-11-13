@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const { openDb } = require('./src/db');
+const { openDb, cleanUp } = require('./src/db');
 const { createApp } = require('./src/app');
 const { senderFromEnv } = require('./src/email');
 
@@ -19,6 +19,12 @@ if (!devMode) {
     console.error(`Refusing to start in production. Missing env vars: ${missing.join(', ')} (see README).`);
     process.exit(1);
   }
+  // the test tools make fake students and study data, which must never mix with real students'
+  if (env.TEST_TOOLS === '1') {
+    console.error('Refusing to start in production with TEST_TOOLS=1. Unset it (see README).');
+    process.exit(1);
+  }
+  if (env.DEMO_PASSWORD) console.log('DEMO_PASSWORD is set, so every page asks for it. Remove it to open the site to students.');
 }
 
 // Real emails, even on a dev-mode demo, need the sender and a fixed site address. Without BASE_URL the sign-in link
@@ -40,28 +46,35 @@ if (!devMode || env.BREVO_API_KEY || env.RESEND_API_KEY) {
 const db = openDb(undefined, { authorKey: env.AUTHOR_KEY });
 // Seed an empty database, and re-seed (upserts only, no sample reviews) whenever the handbook data files change, so a
 // redeploy with new courses or staff reaches a database that already holds students' reviews.
+// The lecturer demo (DEMO_MODE=1) loads only the made-up catalogue in data/demo, never the handbooks.
 const dataDir = path.join(__dirname, 'data');
-const hasher = crypto.createHash('sha1');
-for (const f of fs.readdirSync(dataDir).sort()) hasher.update(f).update(fs.readFileSync(path.join(dataDir, f)));
-const dataHash = hasher.digest('hex');
-const seenHash = db.prepare("SELECT value FROM meta WHERE key = 'data_hash'").get()?.value;
 const empty = !db.prepare('SELECT COUNT(*) AS n FROM courses').get().n;
-if (empty || seenHash !== dataHash) {
-  console.log(empty ? 'Empty database, seeding…' : 'Handbook data changed, updating courses…', require('./scripts/seed').seed(db, { samples: devMode }));
+if (env.DEMO_MODE === '1') {
+  if (empty) console.log('Demo: loading the made-up catalogue…', require('./scripts/seed').seedDemo(db));
+} else {
+  // only the handbook files (data/demo is a folder, and isn't part of the real catalogue)
+  const hasher = crypto.createHash('sha1');
+  for (const f of fs.readdirSync(dataDir).sort()) if (fs.statSync(path.join(dataDir, f)).isFile()) hasher.update(f).update(fs.readFileSync(path.join(dataDir, f)));
+  const dataHash = hasher.digest('hex');
+  const seenHash = db.prepare("SELECT value FROM meta WHERE key = 'data_hash'").get()?.value;
+  if (empty || seenHash !== dataHash) {
+    console.log(empty ? 'Empty database, seeding…' : 'Handbook data changed, updating courses…', require('./scripts/seed').seed(db, { samples: devMode }));
+  }
+  db.prepare("INSERT INTO meta (key, value) VALUES ('data_hash', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(dataHash);
 }
-db.prepare("INSERT INTO meta (key, value) VALUES ('data_hash', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(dataHash);
-// Hourly clean-up: expired sign-in links and sessions, plus the 12-month retention promised in /privacy.
+// Hourly clean-up: expired sign-in links and sessions, plus the retention promised in /privacy (src/db.js), and the
+// daily backup.
 const sweep = () => {
-  db.prepare('DELETE FROM login_tokens WHERE expires < ?').run(Date.now());
-  db.prepare('DELETE FROM sessions WHERE expires < ?').run(Date.now());
-  db.exec(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
-    UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
-    DELETE FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
-    DELETE FROM verdicts WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
-    DELETE FROM takedowns WHERE status = 'closed' AND created_at < datetime('now', '-12 months');
-    DELETE FROM lecturer_suggestions WHERE status != 'open' AND created_at < datetime('now', '-12 months');
-    DELETE FROM mod_log WHERE created_at < datetime('now', '-12 months');
-    DELETE FROM calendars WHERE IFNULL(fetched_at, created_at) < datetime('now', '-12 months');`);
+  cleanUp(db);
+  // the daily backup to BACKUP_DIR; a failure (e.g. a full disk) is logged, never allowed to crash the site
+  if (!devMode) {
+    try {
+      const file = require('./scripts/backup').backupIfDue(db);
+      if (file) console.log('backed up to', file);
+    } catch (e) {
+      console.error('Backup failed:', e);
+    }
+  }
 };
 sweep();
 setInterval(sweep, 60 * 60 * 1000).unref();
@@ -81,6 +94,7 @@ createApp(db, {
   adminUsername: env.ADMIN_USERNAME || undefined,
   adminPasswordHash: env.ADMIN_PASSWORD_HASH || undefined,
   testTools: env.TEST_TOOLS === '1',
+  demoMode: env.DEMO_MODE === '1',
 }).listen(port, () => {
   console.log(`Kwaai running on http://localhost:${port}${devMode ? ' (dev mode)' : ''}`);
   if (!moderators.size) console.log('Tip: set MODERATORS=you@myuct.ac.za to get access to /mod');

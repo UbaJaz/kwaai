@@ -16,12 +16,12 @@ Not affiliated with any university. "Kwaai" is South African slang that means bo
 - **Courses first.** Each review is for one *(course, lecturer, year)*, because big courses rotate lecturers.
 - **Structured ratings.** Four sliders (teaching, fun & interactive, exam fairness, approachable) make up the star score. Exam difficulty and workload are shown separately, because hard isn't the same as bad. Reviewers add up to 3 tags and an optional comment of 280 characters or less.
 - **Small classes stay anonymous.** A course's written comments, tips and per-lecturer table show only once it has 5 reviews (5 tips for tips). Before that its scores still count. The number is `COMMENTS_FROM` in `src/ratings.js`.
-- **Rankings** per department and category: highest rated, funniest, hardest exams, fairest exams, heaviest workload, lowest rated. Anything needs at least 3 reviews to be ranked.
+- **Course rankings** per department and category: highest rated, funniest, hardest exams, fairest exams, heaviest workload, lowest rated. A course needs at least 3 reviews to be ranked. Lecturers are never ranked, and lecturer pages send `X-Robots-Tag: noindex` so search engines leave them out.
 - **UCT-only sign-in** with no passwords: we email a 6-digit code and a link to an `@myuct.ac.za` address, and either one works once within 15 minutes. Opening the link shows a **Sign in** button rather than signing in straight away, because Microsoft 365 (which runs myuct mail) opens links to scan them. Five wrong codes and the code stops working. Reviews never show who wrote them.
 - **Moderation built in:**
   - Comments are screened. Contact details and links are rejected. Possible allegations, insults, and remarks about appearance or identity are *held* for a moderator.
   - Every review has a **⚑ Report** button. Reports of defamation, private info or discrimination hide the review **immediately**. Other reasons hide it after 2 reports.
-  - `/takedown` lets lecturers (no account needed) request removal, which hides the review straight away.
+  - `/takedown` lets anyone request removal without an account; a moderator decides. A request from someone signed in with a `@uct.ac.za` staff email hides the review straight away.
   - Students can suggest a missing lecturer. It only appears once a moderator approves it.
   - `/mod` lets moderators approve, remove, or remove and ban the author. Every decision goes into an audit log.
 - **Your semester, planned:**
@@ -120,7 +120,7 @@ Render's free plan blocks SMTP, so emails go through Brevo's HTTP API. The free 
 1. Sign up at [brevo.com](https://www.brevo.com) (free plan).
 2. In Brevo's settings, find **Senders** and add one: an address you can open, e.g. a Gmail you make for Kwaai. Click the link Brevo emails you to verify it.
 3. In the settings, find **SMTP & API → API keys** and generate a key. Copy it straight away; Brevo only shows it once.
-4. On Render, set `BREVO_API_KEY` to that key, `EMAIL_FROM` to `Kwaai <the-sender-you-verified>` and `BASE_URL` to `https://kwaai.onrender.com`.
+4. On Render (or with `fly secrets set` on Fly), set `BREVO_API_KEY` to that key, `EMAIL_FROM` to `Kwaai <the-sender-you-verified>` and `BASE_URL` to `https://kwaai.onrender.com`.
 5. Sign in with your own myuct address to test. The first emails may land in **Junk** or **Other**: mark them "Not junk". A sender on your own domain (later, with Resend or Brevo) lands in the inbox more reliably.
 
 Don't use this for real reviews: they'd be lost on the next restart.
@@ -136,14 +136,14 @@ fly secrets set BASE_URL=https://… BREVO_API_KEY=… EMAIL_FROM="Kwaai <signin
 fly deploy
 ```
 
-Backups: `fly ssh console -C "npm run backup"`, then `fly ssh sftp get /data/backups/<file>` to copy one off the server.
+Backups: the server writes one to `/data/backups` every day by itself (see [Backups](#backups)). To copy one off the server: `fly ssh sftp get /data/backups/<file>`. Fly also snapshots the volume daily; check `fly volumes list` and `fly volumes snapshots list <volume-id>`.
 
 ### Environment variables
 
 | Variable | Required in production | What it is |
 |---|---|---|
 | `NODE_ENV` | yes | `production` (set by the Dockerfile) |
-| `BASE_URL` | yes, and whenever an email key is set | Public URL, e.g. `https://kwaai.onrender.com`. Sign-in links use it. |
+| `BASE_URL` | yes, and whenever an email key is set | Public URL, e.g. `https://kwaai.co.za` or `https://<app>.fly.dev`. Sign-in links use it. |
 | `BREVO_API_KEY` | this or `RESEND_API_KEY` | From [brevo.com](https://www.brevo.com). Free, and works with one verified sender address, no domain. Used first if both are set. |
 | `RESEND_API_KEY` | this or `BREVO_API_KEY` | From [resend.com](https://resend.com). Needs a verified domain to email students. |
 | `EMAIL_FROM` | yes, and whenever an email key is set | e.g. `Kwaai <kwaai.signin@gmail.com>`. Must be the sender verified in Brevo, or on the domain verified in Resend. |
@@ -155,7 +155,8 @@ Backups: `fly ssh console -C "npm run backup"`, then `fly ssh sftp get /data/bac
 | `TRUST_PROXY` | set by Dockerfile | `1` = trust one proxy hop, so rate limits see the real client IP. Set it to `0` only if nothing sits in front of the app. |
 | `ADMIN_PASSWORD_HASH` | no | Turns on the admin sign-in at `/admin/login`. Make it with `npm run admin-hash` (see below). Never put the password itself here. |
 | `ADMIN_USERNAME` | no | The admin's username. Defaults to `kwaai`. |
-| `TEST_TOOLS` | no, and off at launch | `1` shows `/admin/tools` to the admin: fake study days, streaks and students for testing. |
+| `TEST_TOOLS` | no, and refused in production | `1` shows `/admin/tools` to the admin: fake study days, streaks and students for testing. The server won't start with it in production. |
+| `DEMO_MODE` | no, demo service only | `1` runs the lecturer demo: every page is `noindex`, the top bar says everything is made up, and email sign-in is off. `/healthz` (always on) answers keep-alive pings. |
 | `AUTHOR_KEY` | yes, and whenever an email key is set | A secret of at least 32 characters (see below). Make one with `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. |
 | `DB_FILE`, `BACKUP_DIR`, `PORT` | no | Paths and port. |
 
@@ -169,14 +170,14 @@ Reviews, votes, tips, course details and reports never store the student's user 
 - An older database with `user_id` columns is migrated on start, but only when `AUTHOR_KEY` is set.
 - Someone with access to the hosting account can read the key, so this protects leaked backups and copies, not a compromised host.
 
-The server refuses to start in production if a required variable is missing.
+The server refuses to start in production if a required variable is missing or `TEST_TOOLS=1`, and logs a reminder while `DEMO_PASSWORD` is set.
 
 ### The admin account
 
 One username-and-password account for testing the study features and moderating, separate from student sign-in.
 
 1. Run `npm run admin-hash` and type a password of at least 10 characters (nothing shows while you type). It prints a line starting `ADMIN_PASSWORD_HASH=scrypt$...`.
-2. Put that line in `.env` on your laptop, or add it as an environment variable on Render. The password itself is never stored.
+2. Put that line in `.env` on your laptop, or set it on the host (`fly secrets set ADMIN_PASSWORD_HASH='scrypt$...'` on Fly, in single quotes so the shell leaves the `$` alone). The password itself is never stored.
 3. Open `/admin/login`, sign in with `kwaai` (or your `ADMIN_USERNAME`) and the password.
 
 The account is `admin@kwaai.invalid`: it can use `/mod`, and as a test account it never appears in leaderboards, "studying now" counts or course hours that students see. Signed in as the admin you see test accounts in those figures too, so you can check them.
@@ -189,11 +190,13 @@ With `TEST_TOOLS=1` the admin also gets `/admin/tools` (linked in the header): s
 npm run backup
 ```
 
-This writes a consistent copy to `backups/` (or `BACKUP_DIR`) while the site runs, and deletes backups older than 30 days (the privacy notice promises deleted data is gone from backups within 30 days). Schedule it daily and copy the files off the server.
+In production the server backs itself up: once an hour it checks `BACKUP_DIR` (`/data/backups` in Docker), and if the newest backup is over 23 hours old it writes a new one, so a deploy or restart never skips a day. `npm run backup` makes one straight away. Either way it's a consistent copy taken while the site runs, and backups older than 30 days are deleted (the privacy notice promises deleted data is gone from backups within 30 days). A failed backup is logged as `Backup failed:` and the site keeps running.
+
+These copies sit on the same volume as the database, so they don't survive losing the volume. Keep a copy off the server too, and keep any off-server copies and volume snapshots for 30 days or less. Thirty copies of today's 4 MB database fit easily on the 1 GB volume.
 
 ### Housekeeping the server does itself
 
-Every hour it deletes expired sign-in links and sessions, plus moderator-removed reviews, handled takedown requests, closed lecturer suggestions and moderation-log entries older than 12 months, as the privacy notice promises.
+Every hour it deletes expired sign-in links and sessions, plus moderator-removed reviews, handled takedown requests, closed lecturer suggestions, moderation-log entries and unused calendar links older than 12 months, and lecturers' pasted class lists 30 days after the class's year ends, as the privacy notice promises. In production it also makes the daily backup.
 
 ### Abuse limits
 
@@ -209,10 +212,18 @@ Limits are kept in memory, so they reset when the app restarts.
 
 Step-by-step email, contact and POPIA setup: [`docs/email-setup.md`](docs/email-setup.md).
 
-- [ ] **Persistent database.** Render's free plan wipes it on sleep. Move to a plan with a disk (about $7 a month) before inviting real students.
-- [ ] **Get a lawyer to read `/privacy`, `/terms` and `/rules`.** They're careful drafts, not legal advice. UCT's Law Clinic or a POPIA-focused attorney is a cheap place to start.
+Hosting is Fly.io (decided November 2026): `jnb` region, one machine, the `lekker_data` volume. Render's free plan wipes the database on sleep, so it's only for demos.
+
+- [ ] **Fly account and first deploy**, following [Fly.io](#flyio) above: create the app and the volume, set the secrets, `fly deploy`. Check the logs show `backed up to /data/backups/...`.
+- [ ] **Volume snapshots:** check `fly volumes snapshots list <volume-id>` shows daily snapshots, with retention of 30 days or less (the privacy notice promises deleted data leaves backups within 30 days).
+- [ ] **Off-server backup:** once a week (or set up a job), `fly ssh sftp get /data/backups/<newest file>` to somewhere safe, and delete copies older than 30 days.
+- [ ] **Get a lawyer to read `/privacy`, `/terms` and `/rules`.** They're careful drafts, not legal advice. UCT's Law Clinic or a POPIA-focused attorney is a cheap place to start. Ask especially:
+  - Classes: when a lecturer pastes a class list (students who never signed up), is Kwaai an *operator* for the lecturer or UCT, and do we need an agreement with UCT before lecturers use Classes?
+  - Is processing attendance and "at risk" warnings on consent at join plus the lecturer's teaching purpose a sound legal basis?
+  - Fly.io stores the data in Johannesburg but is a US company: is the section 72 wording right?
+  - Class records (attendance, sessions) have no automatic deletion: they stay until the lecturer deletes the class. Should they expire, e.g. a year after the class's year ends?
 - [ ] **Name the information officer** (`INFORMATION_OFFICER`) and register them with the Information Regulator if the lawyer confirms it applies.
-- [ ] **Domain, Brevo and contact address**, following `docs/email-setup.md`. Send test sign-ins to a few myuct addresses.
-- [ ] **Switch to production:** `NODE_ENV=production`, remove `DEMO_PASSWORD`, check `TRUST_PROXY`.
+- [ ] **Domain, Brevo and contact address**, following `docs/email-setup.md`. Send test sign-ins to a few myuct and uct addresses.
+- [ ] **Switch to production:** `NODE_ENV=production` and `TRUST_PROXY=1` come from the Dockerfile; don't set `DEMO_PASSWORD` or `TEST_TOOLS` (the server refuses `TEST_TOOLS=1`).
 - [ ] **Moderators:** check `/mod` daily, so removal requests get handled within the 48 hours the rules promise.
-- [ ] **Schedule `npm run backup`.**
+- [ ] **Try a restore once:** download a backup, copy it (dev mode adds sample data to the file it opens), run `DB_FILE=<the copy> npm start` on your laptop, and check the reviews and classes are there.

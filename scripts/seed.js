@@ -167,9 +167,61 @@ function addSamples(db) {
   });
 }
 
+// ---- the lecturer demo (DEMO_MODE=1) ----
+// Only data/demo/courses.json: made-up departments, courses and lecturers, never a real person or course, so a
+// lecturer trying the demo never meets reviews of a colleague. Reviews are generated the same way every time, and two
+// wait for a moderator to show what screening holds back. Small on purpose: it seeds in well under a second.
+function seedDemo(db) {
+  const demo = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'demo', 'courses.json'), 'utf8'));
+  db.exec('DELETE FROM reports; DELETE FROM takedowns; DELETE FROM mod_log; DELETE FROM reviews; DELETE FROM lecturer_suggestions; DELETE FROM lecturers; DELETE FROM courses; DELETE FROM departments;');
+  db.exec('BEGIN');
+  try {
+    const addDept = db.prepare('INSERT INTO departments (code, name) VALUES (?, ?)');
+    for (const [code, name] of Object.entries(demo.departments)) addDept.run(code, name);
+    const addLecturer = db.prepare('INSERT INTO lecturers (name, dept, is_sample, role) VALUES (?, ?, 1, ?)');
+    const lecturerId = new Map(demo.lecturers.map((l) => [l.name, Number(addLecturer.run(l.name, l.dept, l.role).lastInsertRowid)]));
+    const addCourse = db.prepare(`INSERT INTO courses (code, title, dept, credits, nqf, conveners, source, outline, entry, lectures, periods, period_choice, days, dp, assessment, exam_weight)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?)`);
+    for (const c of demo.courses) {
+      addCourse.run(c.code, c.title, c.code.slice(0, 3), c.credits, c.nqf, c.conveners.join('|'), 'Kwaai demo (made up)', c.outline, c.entry, c.lectures,
+        c.periods.join('|'), c.days.join('|'), c.dp, c.assessment, c.examWeight);
+    }
+    let seed = 7;
+    const rand = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
+    const pick = (a) => a[Math.floor(rand() * a.length)];
+    const clamp = (x) => Math.max(1, Math.min(5, Math.round(x)));
+    const addReview = db.prepare(`INSERT INTO reviews (course, lecturer_id, year, teaching, engagement, exams, support, difficulty, workload, overall, tags, body, status, flags, is_sample, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)`);
+    const year = new Date().getFullYear();
+    const day = (n) => new Date(Date.now() - n * 86_400_000).toISOString().slice(0, 10);
+    for (const c of demo.courses) {
+      const count = 5 + Math.floor(rand() * 4); // 5 to 8, so every demo course is past the small-class rule
+      for (let i = 0; i < count; i++) {
+        const [teaching, engagement, exams, support, difficulty, workload] = c.personality.map((b) => clamp(b + (rand() - 0.5) * 2));
+        const r = { teaching, engagement, exams, support, difficulty, workload };
+        r.overall = overallOf(r);
+        const mood = r.overall >= 4 ? 'good' : r.overall >= 3 ? 'mid' : 'low';
+        const tags = [...new Set([pick(TAG_POOL[mood]), pick(TAG_POOL[mood])])].slice(0, 1 + Math.floor(rand() * 2));
+        addReview.run(c.code, lecturerId.get(pick(c.taughtBy)), year - Math.floor(rand() * 2), r.teaching, r.engagement, r.exams, r.support, r.difficulty, r.workload,
+          r.overall, tags.join('|'), rand() < 0.8 ? pick(demo.bodies[mood]) : '', 'published', '', day(10 + Math.floor(rand() * 300)));
+      }
+    }
+    for (const h of demo.held) {
+      const c = demo.courses.find((x) => x.code === h.course);
+      addReview.run(c.code, lecturerId.get(c.taughtBy[0]), year, 2, 2, 2, 2, 4, 4, 2, '', h.body, 'held', h.flags, day(2));
+    }
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+  const n = (t) => db.prepare(`SELECT COUNT(*) AS n FROM ${t}`).get().n;
+  return { courses: n('courses'), lecturers: n('lecturers'), reviews: n('reviews') };
+}
+
 if (require.main === module) {
   const db = openDb(undefined, { authorKey: process.env.AUTHOR_KEY });
   console.log('seeded', seed(db, { samples: process.env.SAMPLES ? process.env.SAMPLES !== '0' : process.env.NODE_ENV !== 'production' }));
 }
 
-module.exports = { seed, DEPARTMENTS };
+module.exports = { seed, seedDemo, DEPARTMENTS };
