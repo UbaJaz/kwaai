@@ -1,0 +1,90 @@
+name: Repo health
+
+# Weekly check. Opens or updates one issue when something has drifted:
+# CI failing on main, high or critical npm advisories, dependencies a major
+# version behind, or merged branches left on the remote. Closes the issue
+# when everything is clean again.
+
+on:
+  schedule:
+    # Mondays 05:30 UTC (07:30 in South Africa)
+    - cron: '30 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  actions: read
+
+concurrency:
+  group: repo-health
+  cancel-in-progress: false
+
+jobs:
+  health:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Collect findings
+        run: |
+          : > report.md
+
+          ci=$(gh run list --workflow ci.yml --branch main --limit 1 --json conclusion --jq '.[0].conclusion // "none"')
+          if [ "$ci" != "success" ]; then
+            echo "- CI on \`main\`: the last run finished as **$ci**." >> report.md
+          fi
+
+          npm audit --package-lock-only --json > audit.json || true
+          serious=$(node -e "const v=(require('./audit.json').metadata||{}).vulnerabilities||{};console.log((v.high||0)+(v.critical||0))")
+          if [ "$serious" -gt 0 ]; then
+            echo "- \`npm audit\`: **$serious** high or critical advisories. Run \`npm audit\` for the list." >> report.md
+          fi
+
+          npm ci --ignore-scripts --no-audit --no-fund > /dev/null
+          npm outdated --json > outdated.json || true
+          behind=$(node -e "
+            const o=require('./outdated.json');
+            const major=(v)=>parseInt(String(v||'').replace(/^[^0-9]*/,''),10);
+            const names=Object.entries(o).filter(([,d])=>major(d.latest)>major(d.current)).map(([n,d])=>n+' ('+d.current+' to '+d.latest+')');
+            console.log(names.join(', '));
+          ")
+          if [ -n "$behind" ]; then
+            echo "- A major version behind: $behind." >> report.md
+          fi
+
+          merged=$(git branch -r --merged origin/main | grep -v -E 'origin/(HEAD|main)' | wc -l)
+          if [ "$merged" -gt 5 ]; then
+            echo "- **$merged** branches are merged into \`main\` but still on the remote." >> report.md
+          fi
+
+          cat report.md
+
+      - name: Open, update or close the issue
+        run: |
+          gh label create repo-health --color 5319E7 --description "Weekly repo health check" 2>/dev/null || true
+          existing=$(gh issue list --label repo-health --state open --json number --jq '.[0].number // empty')
+          if [ ! -s report.md ]; then
+            if [ -n "$existing" ]; then
+              gh issue close "$existing" --comment "Everything in the weekly check is clean again."
+            fi
+            echo "Nothing drifted."
+            exit 0
+          fi
+          { echo "Weekly check on $(date -u +%Y-%m-%d)."; echo; cat report.md; } > body.md
+          if [ -n "$existing" ]; then
+            gh issue edit "$existing" --body-file body.md
+          else
+            gh issue create --title "Repo health: something drifted" --label repo-health --body-file body.md
+          fi

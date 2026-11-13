@@ -1,0 +1,11 @@
+# Lecturer pages are not listed here on purpose: they send "X-Robots-Tag: noindex", and a crawler has to be allowed
+# to fetch a page to see that. Blocking them here would let a search engine list the bare URL.
+User-agent: *
+Disallow: /mod
+Disallow: /admin
+Disallow: /account
+Disallow: /auth
+Disallow: /login
+Disallow: /cal/
+Disallow: /a/
+Disallow: /attend/
