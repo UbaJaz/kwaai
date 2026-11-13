@@ -157,7 +157,18 @@ Backups: the server writes one to `/data/backups` every day by itself (see [Back
 | `ADMIN_USERNAME` | no | The admin's username. Defaults to `kwaai`. |
 | `TEST_TOOLS` | no, and refused in production | `1` shows `/admin/tools` to the admin: fake study days, streaks and students for testing. The server won't start with it in production. |
 | `DEMO_MODE` | no, demo service only | `1` runs the lecturer demo: every page is `noindex`, the top bar says everything is made up, and email sign-in is off. `/healthz` (always on) answers keep-alive pings. |
+| `AUTHOR_KEY` | yes, and whenever an email key is set | A secret of at least 32 characters (see below). Make one with `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. |
 | `DB_FILE`, `BACKUP_DIR`, `PORT` | no | Paths and port. |
+
+### Author keys
+
+Reviews, votes, tips, course details and reports never store the student's user id. They store `akey(course, user id)`: an HMAC with `AUTHOR_KEY`, different for every course, computed by a SQL function registered in `src/db.js`. The database and its backups alone can't say who wrote what, or group one student's reviews across courses. With the key, Kwaai can still allow one review per course, show "My reviews", delete an account and ban an author. Dates on those rows are days, not times.
+
+- **Keep the key in both operators' password managers.** If it's lost, nothing can be recovered: old reviews stay up but can't be deleted or banned by their author, and their authors could review those courses again.
+- **A database remembers which key it was made with** and refuses any other, so a typo can't quietly orphan every review.
+- **On a laptop** without `AUTHOR_KEY` a fixed development key is used. If you later set a real one, start from a fresh `lekker.db`.
+- An older database with `user_id` columns is migrated on start, but only when `AUTHOR_KEY` is set.
+- Someone with access to the hosting account can read the key, so this protects leaked backups and copies, not a compromised host.
 
 The server refuses to start in production if a required variable is missing or `TEST_TOOLS=1`, and logs a reminder while `DEMO_PASSWORD` is set.
 

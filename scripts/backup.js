@@ -27,4 +27,4 @@ function backupIfDue(db, dir = DEFAULT_DIR) {
 
 module.exports = { backup, backupIfDue, KEEP_DAYS };
 
-if (require.main === module) console.log('backed up to', backup(require('../src/db').openDb()));
+if (require.main === module) console.log('backed up to', backup(require('../src/db').openDb(undefined, { authorKey: process.env.AUTHOR_KEY })));

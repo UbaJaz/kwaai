@@ -1257,7 +1257,7 @@ test('a course with fewer than 5 reviews shows its scores but no comments, tips 
     VALUES ('MAM1031F', ?, 2026, 3, 3, 3, 3, 3, 3, 3, ?)`).run(lecturerId, `Small class comment ${n}`);
   const tip = (n) => {
     const uid = sdb.prepare(`INSERT INTO users (email) VALUES (?)`).run(`smallclass00${n}@myuct.ac.za`).lastInsertRowid;
-    sdb.prepare(`INSERT INTO verdicts (course, user_id, year, lekker, tip) VALUES ('MAM1031F', ?, 2026, 1, ?)`).run(uid, `Small class tip ${n}`);
+    sdb.prepare(`INSERT INTO verdicts (course, author_key, year, lekker, tip) VALUES ('MAM1031F', akey('MAM1031F', ?), 2026, 1, ?)`).run(uid, `Small class tip ${n}`);
   };
   for (const n of [1, 2, 3, 4]) { review(n); tip(n); }
   const anon = newBrowser();
@@ -1772,12 +1772,153 @@ test('privacy, terms and about pages render, and every page says who makes Kwaai
   assert.match(await (await fetch(`${base}/terms`)).text(), /@uct\.ac\.za/, 'the terms mention staff accounts');
 });
 
+// ---- author keys (src/db.js KEYED) ----
+const KEYED_TABLES = ['reviews', 'verdicts', 'verdict_reports', 'reports', 'course_facts', 'fact_reports'];
+
+test('nothing students write or report holds their user id, and their keys differ per course', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  for (const t of KEYED_TABLES) assert.ok(!sdb.prepare(`PRAGMA table_info(${t})`).all().some((c) => c.name === 'user_id'), `${t} has no user_id`);
+  const s = newBrowser();
+  await s.signIn('keys001@myuct.ac.za');
+  const uid = sdb.prepare(`SELECT id FROM users WHERE email = 'keys001@myuct.ac.za'`).get().id;
+  const review = { lecturer_id: 'none', year: String(new Date().getFullYear()), teaching: 4, engagement: 4, exams: 4, support: 4, difficulty: 3, workload: 3, body: '', agree: '1' };
+  assert.equal((await s.post('/courses/CSC1015F/review', review)).status, 303);
+  assert.equal((await s.post('/courses/MAM1031F/review', review)).status, 303);
+  assert.equal((await s.post('/courses/CSC1015F/review', review)).status, 400, 'one review per course, lecturer and year still holds');
+  const keys = sdb.prepare(`SELECT course, author_key FROM reviews WHERE is_sample = 0 ORDER BY course`).all();
+  assert.equal(keys.length, 2);
+  assert.notEqual(keys[0].author_key, keys[1].author_key, 'two courses, two keys: the database alone cannot group them');
+  assert.ok(keys.every((k) => k.author_key !== String(uid) && /^[0-9a-f]{64}$/.test(k.author_key)));
+  assert.match(await s.text('/account'), /CSC1015F[\s\S]*MAM1031F|MAM1031F[\s\S]*CSC1015F/, '"My reviews" still finds both');
+  assert.match(sdb.prepare(`SELECT created_at FROM reviews WHERE is_sample = 0 LIMIT 1`).get().created_at, /^\d{4}-\d{2}-\d{2}$/, 'dates only, no time');
+}));
+
+test('a moderator can still ban the author of a review or a tip, and deleting an account leaves no keyed rows', () => withAdminServer({}, async ({ db: sdb, admin, browser: newBrowser }) => {
+  const year = String(new Date().getFullYear());
+  const s = newBrowser();
+  await s.signIn('bann001@myuct.ac.za');
+  await s.post('/courses/CSC1015F/review', { lecturer_id: 'none', year, teaching: 2, engagement: 2, exams: 2, support: 2, difficulty: 3, workload: 3, body: 'Fine', agree: '1' });
+  const reviewId = sdb.prepare(`SELECT id FROM reviews WHERE course = 'CSC1015F' AND is_sample = 0`).get().id;
+  assert.equal((await admin.post(`/mod/reviews/${reviewId}/ban`, {})).status, 303);
+  assert.equal(sdb.prepare(`SELECT banned FROM users WHERE email = 'bann001@myuct.ac.za'`).get().banned, 1, 'the ban found the author from the key');
+
+  const t = newBrowser();
+  await t.signIn('bann002@myuct.ac.za');
+  await t.post('/courses/MAM1031F/verdict', { lekker: '1', year, tip: 'Do the tuts' });
+  const tipId = sdb.prepare(`SELECT id FROM verdicts WHERE course = 'MAM1031F'`).get().id;
+  await admin.post(`/mod/verdicts/${tipId}/ban`, {});
+  assert.equal(sdb.prepare(`SELECT banned FROM users WHERE email = 'bann002@myuct.ac.za'`).get().banned, 1);
+  assert.equal(sdb.prepare(`SELECT COUNT(*) AS n FROM users WHERE banned = 1`).get().n, 2, 'and nobody else');
+
+  const d = newBrowser();
+  await d.signIn('gone001@myuct.ac.za');
+  const uid = sdb.prepare(`SELECT id FROM users WHERE email = 'gone001@myuct.ac.za'`).get().id;
+  await d.post('/courses/STA1000F/review', { lecturer_id: 'none', year, teaching: 4, engagement: 4, exams: 4, support: 4, difficulty: 3, workload: 3, body: '', agree: '1' });
+  await d.post('/courses/STA1000F/verdict', { lekker: '1', year, tip: 'Start early' });
+  await d.post('/courses/STA1000F/facts', { kind: 'lecture', day: 'Monday', start: '09:00', end: '10:00' });
+  await d.post(`/reviews/${reviewId}/report`, { reason: 'spam' });
+  await d.post('/account/delete', {});
+  const left = (sql) => sdb.prepare(sql).get(uid).n;
+  assert.equal(left(`SELECT COUNT(*) AS n FROM reviews WHERE author_key = akey(course, ?)`), 0);
+  assert.equal(left(`SELECT COUNT(*) AS n FROM verdicts WHERE author_key = akey(course, ?)`), 0);
+  assert.equal(left(`SELECT COUNT(*) AS n FROM course_facts WHERE author_key = akey(course, ?)`), 0);
+  assert.equal(left(`SELECT COUNT(*) AS n FROM reports WHERE reporter_key = akey((SELECT course FROM reviews x WHERE x.id = review_id), ?)`), 0);
+}));
+
+test('an old database moves to author keys, keeps its links, and refuses a missing or different key', () => {
+  const os = require('node:os');
+  const path = require('node:path');
+  const fs = require('node:fs');
+  const { DatabaseSync } = require('node:sqlite');
+  const file = path.join(os.tmpdir(), `kwaai-migrate-${process.pid}-${Date.now()}.db`);
+  const old = new DatabaseSync(file);
+  old.exec(`CREATE TABLE departments (code TEXT PRIMARY KEY, name TEXT NOT NULL);
+    CREATE TABLE courses (code TEXT PRIMARY KEY, title TEXT NOT NULL, dept TEXT NOT NULL REFERENCES departments(code), credits INTEGER, nqf INTEGER, conveners TEXT NOT NULL DEFAULT '', source TEXT NOT NULL);
+    CREATE TABLE users (id INTEGER PRIMARY KEY, email TEXT NOT NULL UNIQUE, banned INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+    CREATE TABLE reviews (id INTEGER PRIMARY KEY, course TEXT NOT NULL REFERENCES courses(code), lecturer_id INTEGER, year INTEGER NOT NULL, user_id INTEGER REFERENCES users(id),
+      teaching INTEGER NOT NULL, engagement INTEGER NOT NULL, exams INTEGER NOT NULL, support INTEGER NOT NULL, difficulty INTEGER NOT NULL, workload INTEGER NOT NULL,
+      overall REAL NOT NULL, tags TEXT NOT NULL DEFAULT '', body TEXT NOT NULL DEFAULT '', status TEXT NOT NULL DEFAULT 'published', flags TEXT NOT NULL DEFAULT '',
+      is_sample INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+    CREATE TABLE verdicts (id INTEGER PRIMARY KEY, course TEXT NOT NULL REFERENCES courses(code), user_id INTEGER NOT NULL REFERENCES users(id), year INTEGER NOT NULL,
+      lekker INTEGER NOT NULL, tip TEXT NOT NULL DEFAULT '', status TEXT NOT NULL DEFAULT 'published', flags TEXT NOT NULL DEFAULT '', created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, UNIQUE (user_id, course));
+    CREATE TABLE verdict_reports (verdict_id INTEGER NOT NULL REFERENCES verdicts(id) ON DELETE CASCADE, user_id INTEGER NOT NULL, PRIMARY KEY (verdict_id, user_id));
+    CREATE TABLE reports (id INTEGER PRIMARY KEY, review_id INTEGER NOT NULL REFERENCES reviews(id), reason TEXT NOT NULL, details TEXT NOT NULL DEFAULT '', resolved INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, user_id INTEGER);
+    CREATE TABLE takedowns (id INTEGER PRIMARY KEY, review_id INTEGER REFERENCES reviews(id), name TEXT NOT NULL, email TEXT NOT NULL, relation TEXT NOT NULL, details TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'open', created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+    CREATE TABLE course_facts (id INTEGER PRIMARY KEY, course TEXT NOT NULL REFERENCES courses(code), kind TEXT NOT NULL, key TEXT NOT NULL, data TEXT NOT NULL,
+      user_id INTEGER NOT NULL REFERENCES users(id), status TEXT NOT NULL DEFAULT 'published', created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, UNIQUE (course, key, user_id));
+    CREATE TABLE fact_reports (course TEXT NOT NULL, key TEXT NOT NULL, user_id INTEGER NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (course, key, user_id));
+    INSERT INTO departments VALUES ('CSC', 'Computer Science');
+    INSERT INTO courses (code, title, dept, source) VALUES ('CSC1015F', 'Intro', 'CSC', 'test');
+    INSERT INTO users (id, email) VALUES (7, 'old007@myuct.ac.za'), (8, 'old008@myuct.ac.za');
+    INSERT INTO reviews (id, course, year, user_id, teaching, engagement, exams, support, difficulty, workload, overall, created_at) VALUES (1, 'CSC1015F', 2025, 7, 4, 4, 4, 4, 3, 3, 4, '2025-06-01 10:11:12');
+    INSERT INTO reports (review_id, reason, user_id, created_at) VALUES (1, 'spam', 8, '2025-06-02 09:00:00');
+    INSERT INTO takedowns (review_id, name, email, relation, details) VALUES (1, 'X', 'x@y.za', 'Someone', 'Please');
+    INSERT INTO verdicts (course, user_id, year, lekker) VALUES ('CSC1015F', 7, 2025, 1);
+    INSERT INTO verdict_reports VALUES (1, 8);
+    INSERT INTO course_facts (course, kind, key, data, user_id) VALUES ('CSC1015F', 'lecture', 'lecture|Monday|09:00|10:00', '{}', 7);
+    INSERT INTO fact_reports (course, key, user_id) VALUES ('CSC1015F', 'lecture|Monday|09:00|10:00', 8);`);
+  old.close();
+  try {
+    assert.throws(() => openDb(file), /AUTHOR_KEY/, 'without the real key the rows would lose their authors, so it refuses');
+    const key = 'test-only-author-key-0123456789abcdef';
+    const db = openDb(file, { authorKey: key });
+    for (const t of KEYED_TABLES) assert.ok(!db.prepare(`PRAGMA table_info(${t})`).all().some((c) => c.name === 'user_id'), `${t} migrated`);
+    const r = db.prepare(`SELECT author_key = akey(course, 7) AS mine, created_at FROM reviews WHERE id = 1`).get();
+    assert.equal(r.mine, 1, 'the review is still its author\'s, through the key');
+    assert.equal(r.created_at, '2025-06-01', 'and keeps only the date');
+    assert.equal(db.prepare(`SELECT reporter_key = akey('CSC1015F', 8) AS ok FROM reports`).get().ok, 1);
+    assert.equal(db.prepare(`SELECT author_key = akey('CSC1015F', 7) AS ok FROM verdicts`).get().ok, 1);
+    assert.equal(db.prepare(`SELECT reporter_key = akey('CSC1015F', 8) AS ok FROM verdict_reports`).get().ok, 1);
+    assert.equal(db.prepare(`SELECT author_key = akey('CSC1015F', 7) AS ok FROM course_facts`).get().ok, 1);
+    assert.equal(db.prepare(`SELECT reporter_key = akey('CSC1015F', 8) AS ok FROM fact_reports`).get().ok, 1);
+    for (const t of ['reports', 'takedowns']) {
+      assert.deepEqual(db.prepare(`PRAGMA foreign_key_list(${t})`).all().map((f) => f.table), ['reviews'], `${t} still points at reviews`);
+    }
+    assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
+    db.close();
+    assert.throws(() => openDb(file, { authorKey: 'a-different-key-0123456789abcdefghij' }), /not the key this database was made with/);
+    openDb(file, { authorKey: key }).close();
+  } finally {
+    for (const f of [file, `${file}-wal`, `${file}-shm`]) fs.rmSync(f, { force: true });
+  }
+});
+
+test('a reports table from before reporters were recorded still gets its key columns', () => {
+  const { DatabaseSync } = require('node:sqlite');
+  const path = require('node:path');
+  const fs = require('node:fs');
+  const file = path.join(require('node:os').tmpdir(), `kwaai-oldreports-${process.pid}-${Date.now()}.db`);
+  const old = new DatabaseSync(file);
+  old.exec(`CREATE TABLE departments (code TEXT PRIMARY KEY, name TEXT NOT NULL);
+    CREATE TABLE courses (code TEXT PRIMARY KEY, title TEXT NOT NULL, dept TEXT NOT NULL REFERENCES departments(code), credits INTEGER, nqf INTEGER, conveners TEXT NOT NULL DEFAULT '', source TEXT NOT NULL);
+    CREATE TABLE reviews (id INTEGER PRIMARY KEY, course TEXT NOT NULL REFERENCES courses(code), lecturer_id INTEGER, year INTEGER NOT NULL, user_id INTEGER,
+      teaching INTEGER NOT NULL, engagement INTEGER NOT NULL, exams INTEGER NOT NULL, support INTEGER NOT NULL, difficulty INTEGER NOT NULL, workload INTEGER NOT NULL,
+      overall REAL NOT NULL, tags TEXT NOT NULL DEFAULT '', body TEXT NOT NULL DEFAULT '', status TEXT NOT NULL DEFAULT 'published', flags TEXT NOT NULL DEFAULT '',
+      is_sample INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+    CREATE TABLE reports (id INTEGER PRIMARY KEY, review_id INTEGER NOT NULL REFERENCES reviews(id), reason TEXT NOT NULL, details TEXT NOT NULL DEFAULT '', resolved INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+    INSERT INTO departments VALUES ('CSC', 'Computer Science');
+    INSERT INTO courses (code, title, dept, source) VALUES ('CSC1015F', 'Intro', 'CSC', 'test');
+    INSERT INTO reviews (id, course, year, teaching, engagement, exams, support, difficulty, workload, overall, is_sample) VALUES (1, 'CSC1015F', 2025, 4, 4, 4, 4, 3, 3, 4, 1);
+    INSERT INTO reports (review_id, reason) VALUES (1, 'spam');`);
+  old.close();
+  try {
+    const db = openDb(file); // no student rows, so the development key is enough
+    const cols = db.prepare('PRAGMA table_info(reports)').all().map((c) => c.name);
+    assert.ok(cols.includes('reporter_key') && cols.includes('day_key') && !cols.includes('user_id'));
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM reports WHERE reporter_key IS NULL').get().n, 1, 'the old report stays, with no reporter');
+    db.close();
+  } finally {
+    for (const f of [file, `${file}-wal`, `${file}-shm`]) fs.rmSync(f, { force: true });
+  }
+});
+
 test('re-running the seed keeps real reviews and only swaps demo data', () => {
   const db = openDb(':memory:');
   seed(db, { samples: true });
   db.prepare("INSERT INTO users (email) VALUES ('pqr001@myuct.ac.za')").run();
-  db.prepare(`INSERT INTO reviews (course, year, user_id, teaching, engagement, exams, support, difficulty, workload, overall)
-    VALUES ('MEC2047F', 2025, 1, 4, 4, 4, 4, 4, 4, 4)`).run();
+  db.prepare(`INSERT INTO reviews (course, year, author_key, teaching, engagement, exams, support, difficulty, workload, overall)
+    VALUES ('MEC2047F', 2025, akey('MEC2047F', 1), 4, 4, 4, 4, 4, 4, 4)`).run();
   seed(db, { samples: false });
   const count = (sql) => db.prepare(sql).get().n;
   assert.equal(count('SELECT COUNT(*) AS n FROM reviews WHERE is_sample = 0'), 1);
@@ -1791,8 +1932,8 @@ test('re-seeding after a handbook update keeps students\' reviews and votes', ()
   seed(db, { samples: true });
   db.prepare(`INSERT INTO users (email) VALUES ('keep001@myuct.ac.za')`).run();
   const uid = db.prepare(`SELECT id FROM users WHERE email = 'keep001@myuct.ac.za'`).get().id;
-  db.prepare(`INSERT INTO reviews (user_id, course, year, teaching, engagement, exams, support, difficulty, workload, overall, tags, body, is_sample)
-    VALUES (?, 'CSC1015F', 2026, 4, 4, 4, 4, 3, 3, 4, '', 'A real review that must survive.', 0)`).run(uid);
+  db.prepare(`INSERT INTO reviews (author_key, course, year, teaching, engagement, exams, support, difficulty, workload, overall, tags, body, is_sample)
+    VALUES (akey('CSC1015F', ?), 'CSC1015F', 2026, 4, 4, 4, 4, 3, 3, 4, '', 'A real review that must survive.', 0)`).run(uid);
   seed(db, { samples: true });
   seed(db, { samples: false });
   const n = (sql) => db.prepare(sql).get().n;
@@ -3377,7 +3518,7 @@ test('the server refuses to start in production with TEST_TOOLS=1', () => {
   const os = require('node:os');
   // every variable set explicitly, so a developer's .env can't fill one in
   const env = { ...process.env, NODE_ENV: 'production', TEST_TOOLS: '1', BASE_URL: 'https://kwaai.test', EMAIL_FROM: 'Kwaai <a@kwaai.test>', MODERATORS: 'mod@myuct.ac.za',
-    CONTACT_EMAIL: 'a@kwaai.test', BREVO_API_KEY: 'test', RESEND_API_KEY: '', DEMO_PASSWORD: '', PORT: '0', DB_FILE: require('node:path').join(os.tmpdir(), `kwaai-refuse-${process.pid}.db`) };
+    CONTACT_EMAIL: 'a@kwaai.test', BREVO_API_KEY: 'test', RESEND_API_KEY: '', DEMO_PASSWORD: '', PORT: '0', AUTHOR_KEY: 'test-only-author-key-0123456789abcdef', DB_FILE: require('node:path').join(os.tmpdir(), `kwaai-refuse-${process.pid}.db`) };
   // starting Node alone can take over 7 s on a busy Windows laptop; the refusal itself is immediate
   const r = spawnSync(process.execPath, [require('node:path').join(__dirname, '..', 'server.js')], { env, encoding: 'utf8', timeout: 30_000, killSignal: 'SIGKILL' });
   assert.equal(r.status, 1, r.stderr || r.stdout);

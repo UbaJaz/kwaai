@@ -161,7 +161,7 @@ function courseCard(c) {
 
 function reviewCard(r, { user, uni, lecturerLink = true, courseLink = false, hideBody = false } = {}) {
   const tags = r.tags ? r.tags.split('|') : [];
-  const mine = user && r.user_id === user.id;
+  const mine = !!r.mine; // set by the route, from the reader's author key for this course
   return html`<article class="card review" id="review-${r.id}">
     <div class="review-head">
       ${chip(r.overall, true)}
@@ -2860,7 +2860,7 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
     <div class="mod-actions">
       <form method="post" action="/mod/reviews/${r.id}/approve" class="inline"><button class="btn btn-small btn-ok">Approve</button></form>
       <form method="post" action="/mod/reviews/${r.id}/remove" class="inline"><input name="note" placeholder="Reason (logged)" maxlength="200"><button class="btn btn-small btn-danger">Remove</button></form>
-      ${r.user_id ? html`<form method="post" action="/mod/reviews/${r.id}/ban" class="inline" data-confirm="Remove this review and ban its author?"><button class="btn btn-small btn-quiet">Remove + ban author</button></form>` : ''}
+      ${r.author_key ? html`<form method="post" action="/mod/reviews/${r.id}/ban" class="inline" data-confirm="Remove this review and ban its author?"><button class="btn btn-small btn-quiet">Remove + ban author</button></form>` : ''}
     </div>
   </div>`) : html`<p class="empty">Nothing waiting. 🎉</p>`}
 

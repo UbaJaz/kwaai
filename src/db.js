@@ -1,5 +1,6 @@
 const { DatabaseSync } = require('node:sqlite');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const { studentNumber } = require('./classes');
 
 // Attendance marks, one per student per session, by student number so students who aren't on Kwaai can be marked.
@@ -15,6 +16,98 @@ const ATTENDANCE_TABLE = `CREATE TABLE IF NOT EXISTS attendance (
   device TEXT NOT NULL DEFAULT '',
   PRIMARY KEY (session_id, number)
 );`;
+
+// What students write, and what they report, never holds their user id. It holds an author key instead:
+// akey(course, user id), an HMAC with AUTHOR_KEY, a secret kept outside the database (see openDb). The key is
+// different for each course, so even someone with the database can't group one student's reviews across courses and
+// match them to the courses that study_sessions or class_members tie to that student. Kwaai computes the key when it
+// needs it: one review per course, "my reviews", deleting an account, banning an author.
+// Dates on these tables are days, not times, so they can't be matched to a sign-in or a request in a host's logs.
+const KEYED = {
+  reviews: `CREATE TABLE IF NOT EXISTS reviews (
+  id INTEGER PRIMARY KEY,
+  course TEXT NOT NULL REFERENCES courses(code),
+  lecturer_id INTEGER REFERENCES lecturers(id),
+  year INTEGER NOT NULL,
+  author_key TEXT,
+  teaching INTEGER NOT NULL CHECK (teaching BETWEEN 1 AND 5),
+  engagement INTEGER NOT NULL CHECK (engagement BETWEEN 1 AND 5),
+  exams INTEGER NOT NULL CHECK (exams BETWEEN 1 AND 5),
+  support INTEGER NOT NULL CHECK (support BETWEEN 1 AND 5),
+  difficulty INTEGER NOT NULL CHECK (difficulty BETWEEN 1 AND 5),
+  workload INTEGER NOT NULL CHECK (workload BETWEEN 1 AND 5),
+  overall REAL NOT NULL,
+  tags TEXT NOT NULL DEFAULT '',
+  body TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('published', 'held', 'removed')),
+  flags TEXT NOT NULL DEFAULT '',
+  is_sample INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (date('now'))
+);`,
+  verdicts: `CREATE TABLE IF NOT EXISTS verdicts (
+  id INTEGER PRIMARY KEY,
+  course TEXT NOT NULL REFERENCES courses(code),
+  author_key TEXT NOT NULL,
+  year INTEGER NOT NULL,
+  lekker INTEGER NOT NULL CHECK (lekker IN (0, 1)),
+  tip TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('published', 'held', 'removed')),
+  flags TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (date('now')),
+  UNIQUE (author_key, course)
+);`,
+  verdict_reports: `CREATE TABLE IF NOT EXISTS verdict_reports (
+  verdict_id INTEGER NOT NULL REFERENCES verdicts(id) ON DELETE CASCADE,
+  reporter_key TEXT NOT NULL,
+  PRIMARY KEY (verdict_id, reporter_key)
+);`,
+  // reporter_key: akey(the review's course, reporter), so one student's reports count once. day_key:
+  // akey('day:' + the date, reporter), for the cap on serious reports a day; it links one person's reports within a day.
+  reports: `CREATE TABLE IF NOT EXISTS reports (
+  id INTEGER PRIMARY KEY,
+  review_id INTEGER NOT NULL REFERENCES reviews(id),
+  reason TEXT NOT NULL,
+  details TEXT NOT NULL DEFAULT '',
+  resolved INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (date('now')),
+  reporter_key TEXT,
+  day_key TEXT
+);`,
+  course_facts: `CREATE TABLE IF NOT EXISTS course_facts (
+  id INTEGER PRIMARY KEY,
+  course TEXT NOT NULL REFERENCES courses(code),
+  kind TEXT NOT NULL,
+  key TEXT NOT NULL,
+  data TEXT NOT NULL,
+  author_key TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'published',
+  created_at TEXT NOT NULL DEFAULT (date('now')),
+  UNIQUE (course, key, author_key)
+);`,
+  fact_reports: `CREATE TABLE IF NOT EXISTS fact_reports (
+  course TEXT NOT NULL,
+  key TEXT NOT NULL,
+  reporter_key TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (date('now')),
+  PRIMARY KEY (course, key, reporter_key)
+);`,
+};
+
+// How rows from before author keys move over: the new columns, and the SELECT that fills them from the old table.
+const REKEY = {
+  reviews: ['id, course, lecturer_id, year, author_key, teaching, engagement, exams, support, difficulty, workload, overall, tags, body, status, flags, is_sample, created_at',
+    'id, course, lecturer_id, year, CASE WHEN user_id IS NULL THEN NULL ELSE akey(course, user_id) END, teaching, engagement, exams, support, difficulty, workload, overall, tags, body, status, flags, is_sample, date(created_at)'],
+  verdicts: ['id, course, author_key, year, lekker, tip, status, flags, created_at',
+    'id, course, akey(course, user_id), year, lekker, tip, status, flags, date(created_at)'],
+  verdict_reports: ['verdict_id, reporter_key',
+    'verdict_id, akey((SELECT course FROM verdicts v WHERE v.id = verdict_id), user_id)'],
+  reports: ['id, review_id, reason, details, resolved, created_at, reporter_key, day_key',
+    "id, review_id, reason, details, resolved, date(created_at), CASE WHEN user_id IS NULL THEN NULL ELSE akey((SELECT course FROM reviews r WHERE r.id = review_id), user_id) END, CASE WHEN user_id IS NULL THEN NULL ELSE akey('day:' || date(created_at), user_id) END"],
+  course_facts: ['id, course, kind, key, data, author_key, status, created_at',
+    'id, course, kind, key, data, akey(course, user_id), status, date(created_at)'],
+  fact_reports: ['course, key, reporter_key, created_at',
+    'course, key, akey(course, user_id), date(created_at)'],
+};
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
@@ -57,55 +150,12 @@ CREATE TABLE IF NOT EXISTS sessions (
   user_id INTEGER NOT NULL REFERENCES users(id),
   expires INTEGER NOT NULL
 );
-CREATE TABLE IF NOT EXISTS reviews (
-  id INTEGER PRIMARY KEY,
-  course TEXT NOT NULL REFERENCES courses(code),
-  lecturer_id INTEGER REFERENCES lecturers(id),
-  year INTEGER NOT NULL,
-  user_id INTEGER REFERENCES users(id),
-  teaching INTEGER NOT NULL CHECK (teaching BETWEEN 1 AND 5),
-  engagement INTEGER NOT NULL CHECK (engagement BETWEEN 1 AND 5),
-  exams INTEGER NOT NULL CHECK (exams BETWEEN 1 AND 5),
-  support INTEGER NOT NULL CHECK (support BETWEEN 1 AND 5),
-  difficulty INTEGER NOT NULL CHECK (difficulty BETWEEN 1 AND 5),
-  workload INTEGER NOT NULL CHECK (workload BETWEEN 1 AND 5),
-  overall REAL NOT NULL,
-  tags TEXT NOT NULL DEFAULT '',
-  body TEXT NOT NULL DEFAULT '',
-  status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('published', 'held', 'removed')),
-  flags TEXT NOT NULL DEFAULT '',
-  is_sample INTEGER NOT NULL DEFAULT 0,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
--- one review per student per (course, lecturer, year); NULL lecturer means "not listed"
-CREATE UNIQUE INDEX IF NOT EXISTS one_review_each ON reviews (user_id, course, year, IFNULL(lecturer_id, 0));
+${KEYED.reviews}
 -- the quick "lekker or nah?" vote: one per student per course, with an optional one-line tip
-CREATE TABLE IF NOT EXISTS verdicts (
-  id INTEGER PRIMARY KEY,
-  course TEXT NOT NULL REFERENCES courses(code),
-  user_id INTEGER NOT NULL REFERENCES users(id),
-  year INTEGER NOT NULL,
-  lekker INTEGER NOT NULL CHECK (lekker IN (0, 1)),
-  tip TEXT NOT NULL DEFAULT '',
-  status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('published', 'held', 'removed')),
-  flags TEXT NOT NULL DEFAULT '',
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE (user_id, course)
-);
+${KEYED.verdicts}
 -- who reported which tip, so one student's reports count once and tips are hidden by different readers, not one
-CREATE TABLE IF NOT EXISTS verdict_reports (
-  verdict_id INTEGER NOT NULL REFERENCES verdicts(id) ON DELETE CASCADE,
-  user_id INTEGER NOT NULL,
-  PRIMARY KEY (verdict_id, user_id)
-);
-CREATE TABLE IF NOT EXISTS reports (
-  id INTEGER PRIMARY KEY,
-  review_id INTEGER NOT NULL REFERENCES reviews(id),
-  reason TEXT NOT NULL,
-  details TEXT NOT NULL DEFAULT '',
-  resolved INTEGER NOT NULL DEFAULT 0,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
+${KEYED.verdict_reports}
+${KEYED.reports}
 CREATE TABLE IF NOT EXISTS takedowns (
   id INTEGER PRIMARY KEY,
   review_id INTEGER REFERENCES reviews(id),
@@ -127,25 +177,8 @@ CREATE TABLE IF NOT EXISTS lecturer_suggestions (
 );
 -- Course details students add (src/facts.js): a lecture/tut/prac time, a week's topic, or a dated event. The same key
 -- from another student is a confirmation. status: published, held (screened or reported) or removed.
-CREATE TABLE IF NOT EXISTS course_facts (
-  id INTEGER PRIMARY KEY,
-  course TEXT NOT NULL REFERENCES courses(code),
-  kind TEXT NOT NULL,
-  key TEXT NOT NULL,
-  data TEXT NOT NULL,
-  user_id INTEGER NOT NULL REFERENCES users(id),
-  status TEXT NOT NULL DEFAULT 'published',
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE (course, key, user_id)
-);
-CREATE INDEX IF NOT EXISTS course_facts_course ON course_facts (course, status);
-CREATE TABLE IF NOT EXISTS fact_reports (
-  course TEXT NOT NULL,
-  key TEXT NOT NULL,
-  user_id INTEGER NOT NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (course, key, user_id)
-);
+${KEYED.course_facts}
+${KEYED.fact_reports}
 -- A subscribed week calendar: a random id in the URL that calendar apps fetch, and the plan's course codes and week
 -- settings (no names, emails or "about you" answers). Deleted after 12 months without a fetch.
 CREATE TABLE IF NOT EXISTS calendars (
@@ -370,8 +403,6 @@ const LOGIN_DETAILS = {
   next: "TEXT NOT NULL DEFAULT '/'",
 };
 
-// Who sent a review report, so one student's reports count once. Reports from before this column existed stay anonymous.
-const REPORT_DETAILS = { user_id: 'INTEGER' };
 
 // A lecturer's role from the handbook's department staff list ("Senior Lecturer"); '' for conveners not on a list.
 const LECTURER_DETAILS = { role: "TEXT NOT NULL DEFAULT ''" };
@@ -406,13 +437,69 @@ function migrateAttendance(db) {
   }
 }
 
-function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker.db')) {
+// Tables from before author keys still have user_id: rebuild each one with keys in its place (SQLite's own steps
+// for changing a table: foreign keys off, new table, copy, drop, rename, check). Renaming the old table out of the way
+// instead would leave reports and takedowns pointing at the renamed one.
+function migrateAuthorKeys(db, keyGiven) {
+  const columns = (t) => db.prepare(`PRAGMA table_info(${t})`).all().map((c) => c.name);
+  // a table needs rebuilding if it lacks its key column. A very old reports table has neither that nor user_id: give
+  // it an empty user_id first, so it goes through the same rebuild with no reporter.
+  const old = Object.keys(KEYED).filter((t) => !columns(t).some((c) => c === 'author_key' || c === 'reporter_key'));
+  if (!old.length) return;
+  // without the real key the rows would get keys nobody can match again, so refuse (changing nothing) rather than lose them
+  if (!keyGiven && old.some((t) => columns(t).includes('user_id') && db.prepare(`SELECT 1 FROM ${t} WHERE user_id IS NOT NULL LIMIT 1`).get())) {
+    throw new Error('This database has reviews or votes from before author keys. Open it with AUTHOR_KEY set to migrate it.');
+  }
+  db.exec('PRAGMA foreign_keys = OFF');
+  db.exec('BEGIN');
+  try {
+    for (const t of old) if (!columns(t).includes('user_id')) db.exec(`ALTER TABLE ${t} ADD COLUMN user_id INTEGER`);
+    for (const t of old) {
+      db.exec(KEYED[t].replace(`CREATE TABLE IF NOT EXISTS ${t} (`, `CREATE TABLE ${t}_new (`));
+      db.exec(`INSERT INTO ${t}_new (${REKEY[t][0]}) SELECT ${REKEY[t][1]} FROM ${t}`);
+      db.exec(`DROP TABLE ${t}`);
+      db.exec(`ALTER TABLE ${t}_new RENAME TO ${t}`);
+    }
+    // only the rebuilt tables and takedowns (which points at reviews): an old problem elsewhere mustn't stop the start
+    for (const t of [...old, 'takedowns']) if (db.prepare(`PRAGMA foreign_key_check(${t})`).all().length) throw new Error(`author key migration broke a foreign key in ${t}`);
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  } finally {
+    db.exec('PRAGMA foreign_keys = ON');
+  }
+}
+
+// Used when no AUTHOR_KEY is given: tests and a laptop. Production refuses to start without a real one (server.js).
+const DEV_AUTHOR_KEY = 'kwaai-dev-only-author-key-not-secret-0000';
+
+// authorKey: the AUTHOR_KEY secret. It lives only in this closure and the akey() SQL function, never in a table.
+function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker.db'), { authorKey } = {}) {
   const db = new DatabaseSync(file);
+  const secret = authorKey || DEV_AUTHOR_KEY;
+  const hmac = (text) => crypto.createHmac('sha256', secret).update(text).digest('hex');
+  db.function('akey', { deterministic: true }, (scope, userId) => (userId == null ? null : hmac(`${scope}:${userId}`)));
   db.exec('PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL;');
   db.exec(SCHEMA);
+  try {
+    migrateAuthorKeys(db, !!authorKey);
+    // A different key would quietly orphan every review from its author, so a database remembers which key it uses
+    // (as an HMAC of a fixed text, which reveals nothing about the key) and refuses any other.
+    const check = hmac('kwaai-author-key-check');
+    const seen = db.prepare("SELECT value FROM meta WHERE key = 'author_key_check'").get()?.value;
+    if (seen && seen !== check) throw new Error('AUTHOR_KEY is not the key this database was made with. Use the original key.');
+    if (!seen) db.prepare("INSERT INTO meta (key, value) VALUES ('author_key_check', ?)").run(check);
+  } catch (err) {
+    db.close(); // refused: don't leave the file open
+    throw err;
+  }
+  // one review per student per (course, lecturer, year); NULL lecturer means "not listed"
+  db.exec(`CREATE UNIQUE INDEX IF NOT EXISTS one_review_each ON reviews (author_key, course, year, IFNULL(lecturer_id, 0));
+    CREATE UNIQUE INDEX IF NOT EXISTS one_report_each ON reports (review_id, reporter_key);
+    CREATE INDEX IF NOT EXISTS course_facts_course ON course_facts (course, status);`);
   addMissingColumns(db, 'courses', COURSE_DETAILS);
   addMissingColumns(db, 'login_tokens', LOGIN_DETAILS);
-  addMissingColumns(db, 'reports', REPORT_DETAILS);
   addMissingColumns(db, 'lecturers', LECTURER_DETAILS);
   addMissingColumns(db, 'users', USER_DETAILS);
   addMissingColumns(db, 'profiles', { name_fx: "TEXT NOT NULL DEFAULT ''" }); // the name style picked, from src/ranks.js NAME_FX ('' is plain)
@@ -424,7 +511,6 @@ function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker
   // which group a register is for (null: the whole class), and whether it counts as a tut, a prac or neither for DP
   addMissingColumns(db, 'attendance_sessions', { group_id: 'INTEGER REFERENCES class_groups(id) ON DELETE SET NULL', kind: "TEXT NOT NULL DEFAULT 'other'" });
   migrateAttendance(db);
-  db.exec('CREATE UNIQUE INDEX IF NOT EXISTS one_report_each ON reports (review_id, user_id)');
   db.exec('CREATE INDEX IF NOT EXISTS test_users ON users (id) WHERE is_test = 1'); // the few test accounts, for leaving them out of figures
   return db;
 }
