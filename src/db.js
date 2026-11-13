@@ -429,4 +429,59 @@ function openDb(file = process.env.DB_FILE || path.join(__dirname, '..', 'lekker
   return db;
 }
 
-module.exports = { openDb };
+// The clean-up server.js runs every hour: expired sign-in links and sessions, plus every retention period the privacy
+// notice promises. now is for tests.
+function cleanUp(db, now = Date.now()) {
+  db.prepare('DELETE FROM login_tokens WHERE expires < ?').run(now);
+  db.prepare('DELETE FROM sessions WHERE expires < ?').run(now);
+  db.exec(`DELETE FROM reports WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
+    UPDATE takedowns SET review_id = NULL WHERE review_id IN (SELECT id FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months'));
+    DELETE FROM reviews WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
+    DELETE FROM verdicts WHERE status = 'removed' AND created_at < datetime('now', '-12 months');
+    DELETE FROM takedowns WHERE status = 'closed' AND created_at < datetime('now', '-12 months');
+    DELETE FROM lecturer_suggestions WHERE status != 'open' AND created_at < datetime('now', '-12 months');
+    DELETE FROM mod_log WHERE created_at < datetime('now', '-12 months');
+    DELETE FROM calendars WHERE IFNULL(fetched_at, created_at) < datetime('now', '-12 months');`);
+  // A pasted class list goes 30 days after its class's year ends (31 January, South African date). Rows for students
+  // who joined on Kwaai stay: they're the members themselves.
+  const saToday = new Date(now + 2 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  db.prepare(`DELETE FROM class_roster WHERE source = 'list' AND class_id IN (SELECT id FROM classes WHERE ? >= (year + 1) || '-01-31')`).run(saToday);
+  deleteOldDemos(db, now);
+}
+
+// Lecturer demo sandboxes (src/app.js /demo/start) go after 48 hours: the visitor's throwaway account, its made-up
+// students and their class with everything in it. Every one of those accounts is demo-...@kwaai.invalid.
+function deleteOldDemos(db, now) {
+  const ids = db.prepare(`SELECT id FROM users WHERE email LIKE 'demo-%@kwaai.invalid' AND created_at < datetime(? / 1000, 'unixepoch', '-48 hours')`).all(now).map((r) => Number(r.id));
+  if (!ids.length) return;
+  const list = ids.join(','); // integers from the query above, never from a request
+  // demo accounts can't post course details, but the column is only there on databases from before author keys
+  const factsByUser = db.prepare('PRAGMA table_info(course_facts)').all().some((c) => c.name === 'user_id');
+  db.exec('BEGIN');
+  try {
+    db.exec(`DELETE FROM classes WHERE owner_id IN (${list});
+      DELETE FROM study_groups WHERE owner_id IN (${list});
+      DELETE FROM group_members WHERE user_id IN (${list});
+      DELETE FROM class_members WHERE user_id IN (${list});
+      DELETE FROM attendance WHERE user_id IN (${list});
+      DELETE FROM pulse_answered WHERE user_id IN (${list});
+      DELETE FROM announcement_reads WHERE user_id IN (${list});
+      DELETE FROM announcement_reports WHERE user_id IN (${list});
+      DELETE FROM class_announcements WHERE posted_by IN (${list});
+      UPDATE class_dates SET added_by = NULL WHERE added_by IN (${list});
+      UPDATE attendance_sessions SET started_by = NULL WHERE started_by IN (${list});
+      UPDATE class_pulses SET asked_by = NULL WHERE asked_by IN (${list});
+      DELETE FROM name_reports WHERE user_id IN (${list}) OR target_id IN (${list});
+      DELETE FROM profiles WHERE user_id IN (${list});
+      DELETE FROM study_sessions WHERE user_id IN (${list});
+      DELETE FROM sessions WHERE user_id IN (${list});
+      ${factsByUser ? `DELETE FROM course_facts WHERE user_id IN (${list});` : ''}
+      DELETE FROM users WHERE id IN (${list});`);
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+}
+
+module.exports = { openDb, cleanUp };

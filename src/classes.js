@@ -22,7 +22,8 @@ const studentNumber = (email, studentDomain = 'myuct.ac.za') => {
   const [local, domain] = String(email).toLowerCase().split('@');
   if (domain === 'kwaai.invalid') {
     if (local === 'admin') return 'TEST000'; // the admin, when trying a class as a student
-    const n = /^test-student-(\d+)$/.exec(local);
+    // the test tools' students, and each lecturer demo's own (demo-<token>-student-3)
+    const n = /^(?:test|demo-[a-f0-9]+)-student-(\d+)$/.exec(local);
     return n ? `TEST${n[1].padStart(3, '0')}` : '';
   }
   return domain === studentDomain ? local.toUpperCase() : '';

@@ -4,7 +4,7 @@ const path = require('node:path');
 const zlib = require('node:zlib');
 const express = require('express');
 const views = require('./views');
-const { RANKINGS, MIN_FOR_RANKING, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
+const { RANKINGS, MIN_FOR_RANKING, COMMENTS_FROM, PLAN_MAX, parseReviewForm, parseVerdictForm } = require('./ratings');
 const { analysePlan, REPLACED, parseProfile, hasProfile, profileParams, majorNeeds, creditAdvice, programmeOptions, facultyOptions, FACULTIES, PROGRAMMES, ordinal } = require('./planner');
 const { parseWeek, weekParams, buildWeek, icsFor, DAYS, termDates, planYear, semesterWeeks, TERMS } = require('./week');
 const Marks = require('../public/marks-math');
@@ -34,10 +34,17 @@ const STATS = `COUNT(*) AS n, AVG(overall) AS overall, AVG(teaching) AS teaching
 const REVIEW_COLS = `r.*, l.name AS lecturer_name`;
 const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'";
 
-function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'Ubayd Hattas and Jaswin Chinthala', informationOfficer = operator, demoPassword, emailDailyCap = 280, adminUsername = 'kwaai', adminPasswordHash, testTools = false } = {}) {
+function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail, baseUrl, trustProxy, contactEmail, operator = 'Ubayd Hattas and Jaswin Chinthala', informationOfficer = operator, demoPassword, emailDailyCap = 280, adminUsername = 'kwaai', adminPasswordHash, testTools = false, commentsFrom = COMMENTS_FROM, demoMode = false } = {}) {
   const app = express();
   const mods = new Set([...moderators].map(normEmail));
   app.disable('x-powered-by');
+  // For keep-alive pings and wake-up checks: answers before anything else (no password, no database).
+  app.get('/healthz', (req, res) => res.set('Cache-Control', 'no-store').type('text/plain').send('ok'));
+  // The lecturer demo (DEMO_MODE=1): made-up data only, so nothing in it belongs in a search engine.
+  if (demoMode) {
+    app.use((req, res, next) => { res.set('X-Robots-Tag', 'noindex'); next(); });
+    app.get('/robots.txt', (req, res) => res.type('text/plain').send('User-agent: *\nDisallow: /\n'));
+  }
   // so req.ip is the student's IP behind a host's proxy. Env vars are strings, and Express reads the string "1" as an
   // IP list rather than a hop count, so a plain number must be turned into a Number.
   if (trustProxy) app.set('trust proxy', /^\d+$/.test(String(trustProxy)) ? Number(trustProxy) : trustProxy);
@@ -77,10 +84,19 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // an hour of caching: the files aren't fingerprinted, so a longer cache would show old styles after a deploy
   // the service worker is checked on every visit so an update reaches installed copies straight away
   app.use(express.static(path.join(__dirname, '..', 'public'), { maxAge: '1h', setHeaders: (res, file) => { if (file.endsWith('sw.js')) res.setHeader('Cache-Control', 'no-cache'); } }));
-  app.use(express.urlencoded({ extended: false, limit: '20kb' }));
+  // Forms are small, so 20 KB is plenty, except a pasted class list: 3,000 students (Classes.ROSTER_MAX) with names and
+  // groups come to about 140 KB once encoded.
+  const smallForm = express.urlencoded({ extended: false, limit: '20kb' });
+  const classListForm = express.urlencoded({ extended: false, limit: '300kb' });
+  app.use((req, res, next) => (/^\/classes\/\d+\/roster$/.test(req.path) ? classListForm : smallForm)(req, res, next));
   app.use((req, res, next) => { req.body ??= {}; next(); }); // Express 5 leaves it undefined for empty POSTs
 
   const q = (sql) => db.prepare(sql);
+  // sample reviews only come from the seed, which runs before the app starts, so checking once is enough
+  const hasSamples = !!q('SELECT 1 FROM reviews WHERE is_sample = 1 LIMIT 1').get();
+  // Courses whose written comments and tips may show (see COMMENTS_FROM): goes after "course IN".
+  const OPEN_REVIEWS = `(SELECT course FROM reviews WHERE status = 'published' GROUP BY course HAVING COUNT(*) >= ${Number(commentsFrom)})`;
+  const OPEN_TIPS = `(SELECT course FROM verdicts WHERE status = 'published' AND tip != '' GROUP BY course HAVING COUNT(*) >= ${Number(commentsFrom)})`;
   const depts = () => q(`SELECT d.code, d.name, COUNT(c.code) AS courses FROM departments d JOIN courses c ON c.dept = d.code GROUP BY d.code ORDER BY d.name`).all();
 
   // ---- session ----
@@ -91,7 +107,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     }
     const flash = /(?:^|;\s*)flash=([^;]+)/.exec(req.headers.cookie || '')?.[1];
     if (flash) res.clearCookie('flash');
-    req.ctx = { user: req.user, isMod: !!req.user && (mods.has(req.user.email) || !!req.user.is_admin), isAdmin: !!req.user?.is_admin, testTools, flash: parseFlash(flash), uni: CURRENT, here: req.path,
+    req.ctx = { user: req.user, isMod: !!req.user && (mods.has(req.user.email) || !!req.user.is_admin), isAdmin: !!req.user?.is_admin, testTools, hasSamples, demoMode, flash: parseFlash(flash), uni: CURRENT, here: req.path,
       // origin for share links and link previews; production always has BASE_URL
       site: { contactEmail, operator, informationOfficer, origin: baseUrl || `${req.protocol}://${req.get('host')}` } };
     // CSRF: double-submit token, added to every POST form on its way out
@@ -175,14 +191,33 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall, MAX(is_sample) AS has_sample FROM reviews WHERE status = 'published' GROUP BY course) s ON s.course = c.code
     ${where} ORDER BY ${order} LIMIT ${limit}`).all(...params);
 
-  function ranking(kind, rank, dept, limit = 10) {
-    const [join, key, cols, deptCol] = kind === 'course'
-      ? ['JOIN courses c ON c.code = r.course JOIN departments d ON d.code = c.dept', 'c.code', 'c.code, c.title', 'c.dept']
-      : ['JOIN lecturers l ON l.id = r.lecturer_id JOIN departments d ON d.code = l.dept', 'l.id', 'l.id, l.name', 'l.dept'];
+  // Courses only. Lecturers are never ranked: a league table of named people helps nobody choose a course.
+  function ranking(rank, dept, limit = 10) {
     // rank.column comes from the fixed RANKINGS list, never from the request
-    return q(`SELECT ${cols}, MAX(r.is_sample) AS is_sample, d.name AS dept_name, COUNT(*) AS n, AVG(r.${rank.column}) AS score FROM reviews r ${join}
-      WHERE r.status = 'published' ${dept ? `AND ${deptCol} = ?` : ''}
-      GROUP BY ${key} HAVING n >= ${MIN_FOR_RANKING} ORDER BY score ${rank.order}, n DESC LIMIT ${limit}`).all(...(dept ? [dept] : []));
+    return q(`SELECT c.code, c.title, MAX(r.is_sample) AS is_sample, d.name AS dept_name, COUNT(*) AS n, AVG(r.${rank.column}) AS score FROM reviews r
+      JOIN courses c ON c.code = r.course JOIN departments d ON d.code = c.dept
+      WHERE r.status = 'published' ${dept ? 'AND c.dept = ?' : ''}
+      GROUP BY c.code HAVING n >= ${MIN_FOR_RANKING} ORDER BY score ${rank.order}, n DESC LIMIT ${limit}`).all(...(dept ? [dept] : []));
+  }
+
+  // ---- the lecturer demo (DEMO_MODE=1, docs/lecturer-demo.md) ----
+  // One tap makes a throwaway lecturer account (demo-<token>@kwaai.invalid, which can never get email) with its own
+  // class of made-up students, so visitors never see each other's changes. src/db.js cleanUp deletes it after 48 hours.
+  if (demoMode) {
+    const DEMO_COURSE = 'EXS1001F'; // from data/demo/courses.json
+    app.get('/', (req, res, next) => (req.user ? next() : res.redirect(303, '/demo')));
+    app.get('/demo', (req, res) => res.page(views.demoLanding(req.ctx)));
+    app.post('/demo/start', limit(10, 60 * MIN, (req) => `demo:${req.ip}`, 'You have started a lot of demos from this connection. Please wait an hour and try again.'), (req, res) => {
+      const token = crypto.randomBytes(6).toString('hex');
+      const add = q(`INSERT INTO users (email, uni, role, is_test, agreed_at) VALUES (?, ?, ?, 1, CURRENT_TIMESTAMP)`);
+      const ownerEmail = `demo-${token}@kwaai.invalid`;
+      add.run(ownerEmail, CURRENT.slug, 'staff');
+      // the same students as the test tools, with their own accounts, so their numbers match (TEST001 and on)
+      const ids = TestData.FAKE_STUDENTS.map((_, i) => Number(add.run(TestData.fakeEmail(i).replace('test-student-', `demo-${token}-student-`), CURRENT.slug, 'student').lastInsertRowid));
+      const owner = q(`SELECT * FROM users WHERE email = ?`).get(ownerEmail);
+      const cls = buildLecturerClass(owner, ids, DEMO_COURSE, `${DEMO_COURSE} demo class`);
+      startSession(req, res, ownerEmail, `/classes/${cls.id}`);
+    });
   }
 
   app.get('/', (req, res) => {
@@ -192,8 +227,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const studying = liveStudents(req.user, `uni = ?`, req.user?.uni ?? CURRENT.slug);
     res.page((views.home(req.ctx, {
       counts,
-      topCourses: ranking('course', byKey('best'), null, 5),
-      heaviest: ranking('course', byKey('workload'), null, 5),
+      topCourses: ranking(byKey('best'), null, 5),
+      heaviest: ranking(byKey('workload'), null, 5),
       // November to January: exams are done and registration hasn't opened, the best time to ask for ratings
       ratingSeason: [10, 11, 0].includes(new Date().getMonth()),
       // a returning student with a plan on this device gets a way straight into their day
@@ -208,7 +243,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0,
       // only each course's newest tip, in the course page's order, so it's always one of the free ones there
       recentTips: q(`SELECT t.id, t.course, t.lekker, t.tip, c.title FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY course ORDER BY created_at DESC, id DESC) AS k
-        FROM verdicts WHERE status = 'published' AND tip != '') t JOIN courses c ON c.code = t.course WHERE t.k = 1 ORDER BY t.created_at DESC, t.id DESC LIMIT 4`).all(),
+        FROM verdicts WHERE status = 'published' AND tip != '' AND course IN ${OPEN_TIPS}) t JOIN courses c ON c.code = t.course WHERE t.k = 1 ORDER BY t.created_at DESC, t.id DESC LIMIT 4`).all(),
     })));
   });
 
@@ -292,7 +327,10 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
     const myHeld = req.user && q(`SELECT 1 FROM reviews WHERE course = ? AND user_id = ? AND status = 'held'`).get(c.code, req.user.id);
     const votes = verdictStats(c.code);
-    const tips = q(`SELECT id, year, lekker, tip, created_at FROM verdicts WHERE course = ? AND status = 'published' AND tip != '' ORDER BY created_at DESC, id DESC LIMIT 30`).all(c.code);
+    const tipCount = q(`SELECT COUNT(*) AS n FROM verdicts WHERE course = ? AND status = 'published' AND tip != ''`).get(c.code).n;
+    const tips = tipCount >= commentsFrom ? q(`SELECT id, year, lekker, tip, created_at FROM verdicts WHERE course = ? AND status = 'published' AND tip != '' ORDER BY created_at DESC, id DESC LIMIT 30`).all(c.code) : [];
+    // below commentsFrom reviews the scores count, but comments and who taught which year would point at the writer
+    const open = stats.n >= commentsFrom;
     const myVerdict = req.user && q(`SELECT * FROM verdicts WHERE course = ? AND user_id = ?`).get(c.code, req.user.id);
     // the convener is the handbook's link between a person and this course; the rest of the department's teaching
     // staff are listed as "in the department", never as teaching this course
@@ -310,26 +348,28 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const realHours = Study.courseHours(q(`SELECT user_id, day, SUM(credited_sec / 60) AS minutes FROM study_sessions
       WHERE course = ? AND status = 'done' AND day >= ? ${realOnly(req.user)} GROUP BY user_id, day`).all(c.code, Study.addDay(today, -Study.HOURS_WINDOW_DAYS)), today);
     const creditHours = Study.weeklyGoal(c, (t) => semesterWeeks(planYear(), t));
-    res.page((views.course(req.ctx, { c, stats, offerings, reviews, topTags, myHeld, votes, tips, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0, realHours, creditHours, officialDates: classDatesFor([c.code]).filter((d) => d.date >= today) })));
+    res.page((views.course(req.ctx, { c, stats, offerings: open ? offerings : [], reviews: open ? reviews : [], topTags, myHeld, votes, tips, closedTips: tipCount >= commentsFrom ? 0 : tipCount, commentsFrom, myVerdict, years: years(), locked: !canReadAll(req), conveners, staff, facts, weekTopics: weekTopics(draft, facts.topic), studyingNow: studying >= Study.MIN_LIVE_SHOWN ? studying : 0, realHours, creditHours, officialDates: classDatesFor([c.code]).filter((d) => d.date >= today) })));
   });
 
   app.get('/lecturers/:id', (req, res) => {
     const l = q(`SELECT l.*, d.name AS dept_name FROM lecturers l JOIN departments d ON d.code = l.dept WHERE l.id = ?`).get(Number(req.params.id) || 0);
     if (!l) return res.status(404).page((notFound(req)));
     const stats = q(`SELECT ${STATS} FROM reviews WHERE lecturer_id = ? AND status = 'published'`).get(l.id);
+    // per-course scores for this lecturer only on courses past the small-class threshold, like the course page's table
     const taught = q(`SELECT c.code, c.title, s.n, s.overall FROM courses c
-      LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall FROM reviews WHERE lecturer_id = ? AND status = 'published' GROUP BY course) s ON s.course = c.code
+      LEFT JOIN (SELECT course, COUNT(*) AS n, AVG(overall) AS overall FROM reviews WHERE lecturer_id = ? AND status = 'published' AND course IN ${OPEN_REVIEWS} GROUP BY course) s ON s.course = c.code
       WHERE s.n > 0 OR ('|' || c.conveners || '|') LIKE ? ORDER BY c.code`).all(l.id, `%|${l.name}|%`);
-    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.lecturer_id = ? AND r.status = 'published' ORDER BY r.created_at DESC, r.id DESC`).all(l.id);
-    res.page((views.lecturer(req.ctx, { l, stats, courses: taught, reviews, locked: !canReadAll(req) })));
+    const reviews = q(`SELECT ${REVIEW_COLS} FROM reviews r LEFT JOIN lecturers l ON l.id = r.lecturer_id WHERE r.lecturer_id = ? AND r.status = 'published' AND r.course IN ${OPEN_REVIEWS} ORDER BY r.created_at DESC, r.id DESC`).all(l.id);
+    // a named person's scores shouldn't be what comes up when someone searches their name
+    res.set('X-Robots-Tag', 'noindex').page((views.lecturer(req.ctx, { l, stats, courses: taught, reviews, commentsFrom, locked: !canReadAll(req) })));
   });
 
   app.get('/rankings', (req, res) => {
+    // ?kind=lecturer from old links just shows the course ranking
     const rank = RANKINGS.find((r) => r.key === req.query.cat) || RANKINGS[0];
-    const kind = req.query.kind === 'lecturer' ? 'lecturer' : 'course';
     const all = depts();
     const dept = all.some((d) => d.code === req.query.dept) ? req.query.dept : '';
-    res.page((views.rankings(req.ctx, { rows: ranking(kind, rank, dept, 25), depts: all, dept, rank, kind })));
+    res.page((views.rankings(req.ctx, { rows: ranking(rank, dept, 25), depts: all, dept, rank })));
   });
 
   // ---- semester planner ----
@@ -372,15 +412,18 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     return { fromUrl, shared, codes, profile: parseProfile(state), week: parseWeek(state) };
   }
 
+  // "Make this my plan" on a plan someone shared: save it on this device, so Week, Today and Study use it. A POST, so a
+  // link someone sends can't replace the plan saved on your phone without you pressing the button.
+  app.post('/plan/adopt', (req, res) => {
+    const { codes, profile, week } = readPlan(req, Object.fromEntries(new URLSearchParams(String(req.body.plan || ''))));
+    savePlan(req, res, codes, profile, week);
+    flashRedirect(res, planUrl(codes, profile, week), 'ok', 'This is your plan now. Your week, Today and Study use it.');
+  });
+
   app.get('/plan', (req, res) => {
     const saved = readPlan(req);
     const { fromUrl, week } = saved;
     let { codes, profile } = saved;
-    // "Make this my plan" on a plan someone shared: save it on this device, so Week, Today and Study use it
-    if (req.query.adopt != null) {
-      savePlan(req, res, codes, profile, week);
-      return flashRedirect(res, planUrl(codes, profile, week), 'ok', 'This is your plan now. Your week, Today and Study use it.');
-    }
     // the "about you" form: majors come from two selects, passed courses from ticked boxes plus a free text box
     if (req.query.about != null) {
       profile = req.query.about === 'clear' ? parseProfile() : parseProfile({
@@ -660,7 +703,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const soon = new Date(Date.parse(`${date}T00:00:00Z`) + 14 * 86_400_000).toISOString().slice(0, 10);
     const upcoming = datedWithClasses(facts, codes).filter((d) => d.date >= date && d.date <= soon);
     const todays = [...new Set(classes.map((e) => e.code).filter(Boolean))];
-    const tip = todays.length ? q(`SELECT course, tip FROM verdicts WHERE status = 'published' AND tip != '' AND course IN (${todays.map(() => '?').join(',')}) ORDER BY RANDOM() LIMIT 1`).get(...todays) : null;
+    const tip = todays.length ? q(`SELECT course, tip FROM verdicts WHERE status = 'published' AND tip != '' AND course IN (${todays.map(() => '?').join(',')}) AND course IN ${OPEN_TIPS} ORDER BY RANDOM() LIMIT 1`).get(...todays) : null;
     return { date, term, note, weekend: weekday === 0 || weekday === 6, dayName, classes, upcoming, tip, marks: marksCourses(wk.courses.map((c) => c.code)),
       // courses to start a study timer for: this term's, or the whole plan between terms
       study: wk.courses.length ? wk.courses.map((c) => c.code) : codes };
@@ -1169,8 +1212,18 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM announcement_reads WHERE user_id = ?`).run(id);
       q(`DELETE FROM announcement_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM classes WHERE owner_id = ?`).run(id); // a lecturer's own classes go with them (members cascade)
+      // Marks by student number, and the class-list row joining made. Where the lecturer's own pasted list has them,
+      // the marks stay on that register without the account (no mark means absent, so deleting would cost them DP).
+      const number = Classes.studentNumber(req.user.email);
+      if (number) {
+        const listed = `session_id IN (SELECT s.id FROM attendance_sessions s JOIN class_roster r ON r.class_id = s.class_id AND r.source = 'list' AND r.number = ?)`;
+        q(`UPDATE attendance SET user_id = NULL, device = '' WHERE number = ? AND ${listed}`).run(number, number);
+        q(`DELETE FROM attendance WHERE number = ? AND NOT ${listed}`).run(number, number);
+        q(`DELETE FROM class_roster WHERE number = ? AND source = 'joined'`).run(number);
+      }
       q(`DELETE FROM attendance WHERE user_id = ?`).run(id);
       q(`UPDATE attendance_sessions SET started_by = NULL WHERE started_by = ?`).run(id);
+      q(`UPDATE class_dates SET added_by = NULL WHERE added_by = ?`).run(id); // the date stays for the class, without who added it
       q(`DELETE FROM class_members WHERE user_id = ?`).run(id);
       q(`DELETE FROM fact_reports WHERE user_id = ?`).run(id);
       q(`DELETE FROM verdict_reports WHERE user_id = ?`).run(id);
@@ -1361,11 +1414,16 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       return res.status(400).page((views.takedown(req.ctx, { review, values: b, error: 'Please fill in your name, a valid email and what the problem is.' })));
     }
     q(`INSERT INTO takedowns (review_id, name, email, relation, details) VALUES (?, ?, ?, ?, ?)`).run(review?.id ?? null, name, email, String(b.relation || '').slice(0, 100), details);
-    const hidden = review && !modApproved(review.id);
-    if (hidden) hold(review.id, 'Removal requested');
+    // Anyone can type a name and an email, so a request only hides a review straight away when it comes from a
+    // signed-in UCT staff account. Everything else waits for a moderator with the review still up.
+    const staff = req.user?.role === 'staff';
+    const hidden = staff && review?.status === 'published' && !modApproved(review.id);
+    if (hidden) hold(review.id, 'Removal requested by staff');
     res.page((views.message(req.ctx, {
       title: 'Request received', emoji: '📮',
-      text: hidden ? 'The review is now hidden while a moderator looks at it. We aim to reply within 48 hours.' : 'A moderator will look at your request and reply by email, usually within 48 hours.',
+      text: hidden ? 'The review is now hidden while a moderator looks at it. We aim to reply within 48 hours.'
+        : review?.status === 'published' && !staff && !modApproved(review.id) ? 'A moderator will look at your request and reply by email, usually within 48 hours. The review stays up until a moderator has looked at it. If you are UCT staff, sign in with your @uct.ac.za email and send the request again to hide it straight away.'
+          : 'A moderator will look at your request and reply by email, usually within 48 hours.',
       link: { href: '/', label: 'Back to Kwaai' },
     })));
   });
@@ -1375,6 +1433,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   const safeNext = (s) => (typeof s === 'string' && /^\/(?![/\\])/.test(s) && s.length <= 300 ? s : '/');
   const codeHash = (email, code) => sha(`${email}:${code}`);
 
+  // The demo has no email sign-in: visitors get a made-up account from /demo, so nobody can sign in as a real address.
+  if (demoMode) {
+    app.get('/login', (req, res) => res.page(views.message(req.ctx, { title: 'No sign-in needed', emoji: '👋', text: "This demo doesn't need an account. Start it from the demo page and you get a made-up lecturer account with a class to try.", link: { href: '/demo', label: 'Start the demo' } })));
+    app.all(['/login', '/login/code', '/auth/:token'], (req, res) => res.status(404).page(notFound(req)));
+  }
   app.get('/login', (req, res) => res.page(views.login(req.ctx, { next: safeNext(req.query.next) })));
 
   // Brevo's free plan sends 300 emails a day. Stop below that so sign-ins fail with a clear message, not silently.
@@ -1386,7 +1449,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!EMAIL_SHAPE.test(email) || !accountFor(email)) return res.status(400).page(views.login(req.ctx, { email, next, error: 'That isn\'t a UCT email. Students use their @myuct.ac.za address, staff their @uct.ac.za one.' }));
     // POPIA: children's information needs a guardian's consent, so accounts are for students 18 and older
     if (req.body.agree !== '1') return res.status(400).page(views.login(req.ctx, { email, next, error: 'Tick the box to confirm you\'re 18 or older and agree to the terms, house rules and privacy notice.' }));
-    if (q(`SELECT 1 FROM users WHERE email = ? AND banned = 1`).get(email)) return res.status(403).page(views.login(req.ctx, { email, next, error: 'This account has been suspended for breaking the house rules.' }));
+    // A suspended address gets a code like any other. Anyone can type an address here, so saying "suspended" now would
+    // tell a stranger who was banned; the owner of the inbox finds out when they use the code (startSession).
     const token = crypto.randomBytes(32).toString('hex');
     const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
     const today = new Date().toISOString().slice(0, 10);
@@ -1422,7 +1486,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   // never reach it. It's a test account: left out of every figure other students see.
   const ADMIN_EMAIL = 'admin@kwaai.invalid';
   const adminOn = Admin.isValidHash(adminPasswordHash);
-  const adminLimits = [limit(5, 15 * MIN), limit(20, 24 * 60 * MIN, () => 'admin-login', 'Admin sign-in is paused for today after too many tries.')];
+  // both per IP: a single count for everyone would let a stranger lock the admin out every day with 20 bad tries
+  const adminLimits = [limit(5, 15 * MIN), limit(20, 24 * 60 * MIN, (req) => `admin-login:${req.ip}`, 'Admin sign-in is paused for today after too many tries from this connection.')];
   app.get('/admin/login', (req, res) => (adminOn ? res.page(views.adminLogin(req.ctx, {})) : res.status(404).page(notFound(req))));
   app.post('/admin/login', ...adminLimits, (req, res) => {
     if (!adminOn) return res.status(404).page(notFound(req));
@@ -1669,7 +1734,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!me || me.role === 'lecturer') return res.status(404).page(notFound(req));
     dropFromRoster(cls.id, req.user.id);
     q(`DELETE FROM class_members WHERE class_id = ? AND user_id = ?`).run(cls.id, req.user.id);
-    flashRedirect(res, '/classes', 'ok', `You've left ${cls.name}. Your lecturer no longer sees you in it.`);
+    flashRedirect(res, '/classes', 'ok', `You've left ${cls.name}. Your name and study minutes are no longer shared with it.`);
   });
 
   // Every student (and rep) in a class with their progress on the course: minutes this week and month, the goal %,
@@ -2418,14 +2483,15 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   // a class you run, with the test students, a rep and a tutor, study, past tuts, dates, an announcement and a pulse check
-  app.post('/admin/tools/demo-lecturer', requireUser, requireTools, (req, res) => {
+  // A class run by owner (a staff account) with 15 test students (ids): 14 in it, ids[0] the rep and ids[14] the
+  // tutor, four more on the class list who aren't on Kwaai, two tuts and a prac, six past tuts, dates, two
+  // announcements and an open pulse check. The test tools and the lecturer demo (/demo) both use it.
+  function buildLecturerClass(owner, ids, course, name) {
     const today = Study.saDay(Date.now());
     const now = Date.now();
-    const ids = fakeStudentIds(req.user.uni);
-    q(`UPDATE users SET role = 'staff' WHERE id = ?`).run(req.user.id);
-    const cls = freshDemoClass(req.user.id, 'You (demo lecturer)', DEMO_RUN, 'CSC1015F');
+    const cls = freshDemoClass(owner.id, 'You (demo lecturer)', name, course);
     const students = ids.slice(0, 14);
-    demoStudents(cls, students, today, req.user.uni);
+    demoStudents(cls, students, today, owner.uni);
     q(`UPDATE class_members SET role = 'rep', name = 'Thandi Mokoena', anonymous = 0 WHERE class_id = ? AND user_id = ?`).run(cls.id, ids[0]);
     q(`INSERT OR REPLACE INTO class_members (class_id, user_id, role, name, consent_at) VALUES (?, ?, 'tutor', 'Sam Tutor', CURRENT_TIMESTAMP)`).run(cls.id, ids[14]);
     // four students on the class list who aren't on Kwaai, so the list, registers and DP include them
@@ -2436,20 +2502,27 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     syncRoster(cls);
     const addGroup = q(`INSERT INTO class_groups (class_id, kind, name, day, starts, ends, venue, tutor_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
     addGroup.run(cls.id, 'tut', 'Tut 1', 'Tuesday', '14:00', '15:45', 'Menzies 10', ids[14]);
-    addGroup.run(cls.id, 'tut', 'Tut 2', 'Thursday', '10:00', '11:45', 'PD Hahn 3', req.user.id);
+    addGroup.run(cls.id, 'tut', 'Tut 2', 'Thursday', '10:00', '11:45', 'PD Hahn 3', owner.id);
     addGroup.run(cls.id, 'prac', 'Prac A', 'Wednesday', '14:00', '17:00', 'Shuttleworth lab', ids[14]);
     q(`UPDATE class_roster SET tut_group = CASE WHEN rowid % 2 THEN 'Tut 1' ELSE 'Tut 2' END, prac_group = 'Prac A' WHERE class_id = ?`).run(cls.id);
-    demoAttendance(cls, students, req.user.id, 6);
+    demoAttendance(cls, students, owner.id, 6);
     const date = q(`INSERT INTO class_dates (class_id, course, type, title, date, time, added_by, added_role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
-    date.run(cls.id, cls.course, 'prac', 'Prac 5', Study.addDay(today, 2), '23:59', req.user.id, 'lecturer');
-    date.run(cls.id, cls.course, 'test', 'Test 2', Study.addDay(today, 6), '18:00', req.user.id, 'lecturer');
+    date.run(cls.id, cls.course, 'prac', 'Prac 5', Study.addDay(today, 2), '23:59', owner.id, 'lecturer');
+    date.run(cls.id, cls.course, 'test', 'Test 2', Study.addDay(today, 6), '18:00', owner.id, 'lecturer');
     date.run(cls.id, cls.course, 'assignment', 'Assignment 3', Study.addDay(today, 11), '', ids[0], 'rep');
     const post = q(`INSERT INTO class_announcements (class_id, body, posted_by, poster_name, poster_role, created_at) VALUES (?, ?, ?, ?, ?, ?)`);
-    post.run(cls.id, 'Test 2 is in LT1 on the day. Bring your student card.', req.user.id, 'You (demo lecturer)', 'lecturer', now - 2 * DAY_MS);
+    post.run(cls.id, 'Test 2 is in LT1 on the day. Bring your student card.', owner.id, 'You (demo lecturer)', 'lecturer', now - 2 * DAY_MS);
     post.run(cls.id, 'Study group for Test 2 on Thursday at 16:00 in the library, all welcome.', ids[0], 'Thandi Mokoena', 'rep', now - 3 * 60 * MIN);
     const { lastInsertRowid: pid } = q(`INSERT INTO class_pulses (class_id, question, options, counts, asked_by, asked_at, closes_at) VALUES (?, ?, ?, ?, ?, ?, ?)`)
-      .run(cls.id, Classes.PULSE_PRESET.question, JSON.stringify(Classes.PULSE_PRESET.options), JSON.stringify([2, 7, 4]), req.user.id, now - DAY_MS, now + 6 * DAY_MS);
+      .run(cls.id, Classes.PULSE_PRESET.question, JSON.stringify(Classes.PULSE_PRESET.options), JSON.stringify([2, 7, 4]), owner.id, now - DAY_MS, now + 6 * DAY_MS);
     students.slice(0, 13).forEach((id) => q(`INSERT INTO pulse_answered (pulse_id, user_id) VALUES (?, ?)`).run(pid, id));
+    return cls;
+  }
+
+  app.post('/admin/tools/demo-lecturer', requireUser, requireTools, (req, res) => {
+    const ids = fakeStudentIds(req.user.uni);
+    q(`UPDATE users SET role = 'staff' WHERE id = ?`).run(req.user.id);
+    const cls = buildLecturerClass(req.user, ids, 'CSC1015F', DEMO_RUN);
     flashRedirect(res, `/classes/${cls.id}`, 'ok', `${DEMO_RUN}: you're the lecturer, with 14 test students, a rep, a tutor and 6 past tuts.`);
   });
 
@@ -2536,7 +2609,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const sid = crypto.randomBytes(32).toString('hex');
     q(`INSERT INTO sessions (hash, user_id, expires) VALUES (?, ?, ?)`).run(sha(sid), user.id, Date.now() + SESSION_TTL);
     res.cookie('sid', sid, { httpOnly: true, sameSite: 'lax', secure: !devMode, maxAge: SESSION_TTL });
-    flashRedirect(res, safeNext(next), 'ok', "You're signed in. Anything you post shows without your name.");
+    flashRedirect(res, safeNext(next), 'ok', demoMode && email.startsWith('demo-')
+      ? "This is your demo class. Every student in it is made up, so try anything."
+      : "You're signed in. Anything you post shows without your name.");
   }
 
   app.post('/login/code', limits.login, limits.loginCode, limits.loginCodeEmail, (req, res) => {
@@ -2678,7 +2753,11 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     // errors from the body parser happen before the session middleware, so res.page may not exist yet
     res.status(status).send(String(views.message(req.ctx || {}, status === 500
       ? { title: 'Something broke', emoji: '🫠', text: 'Sorry, that was our fault. Please try again.' }
-      : { title: 'That request didn\'t work', emoji: '🤔', text: 'Please go back and try again.' })));
+      : status === 413
+        ? { title: 'That was too long to send', emoji: '🤔', text: /\/roster$/.test(req.path)
+          ? `A class list can have up to ${Classes.ROSTER_MAX.toLocaleString('en-ZA')} students. Go back, split the list and add it in parts.`
+          : 'Go back, shorten what you typed and try again.' }
+        : { title: 'That request didn\'t work', emoji: '🤔', text: 'Please go back and try again.' })));
   });
   return app;
 }
