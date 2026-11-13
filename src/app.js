@@ -1669,7 +1669,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (!me || me.role === 'lecturer') return res.status(404).page(notFound(req));
     dropFromRoster(cls.id, req.user.id);
     q(`DELETE FROM class_members WHERE class_id = ? AND user_id = ?`).run(cls.id, req.user.id);
-    flashRedirect(res, '/classes', 'ok', `You've left ${cls.name}. Your lecturer no longer sees you in it.`);
+    flashRedirect(res, '/classes', 'ok', `You've left ${cls.name}. Your name and study minutes are no longer shared with it.`);
   });
 
   // Every student (and rep) in a class with their progress on the course: minutes this week and month, the goal %,
