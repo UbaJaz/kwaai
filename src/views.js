@@ -296,13 +296,13 @@ function gateNotice(ctx, hidden) {
   </div>`;
 }
 
-function rankList(rows, kind, toned = true) {
+function rankList(rows, toned = true) {
   if (!rows.length) return html`<p class="empty">Not enough reviews yet. Things need at least ${MIN_FOR_RANKING} reviews to be ranked.</p>`;
   return html`<ol class="rank-list">
     ${rows.map((r, i) => html`<li>
       <span class="rank-pos">${i + 1}</span>
-      <a href="${kind === 'course' ? `/courses/${r.code}` : `/lecturers/${r.id}`}" class="rank-name">
-        ${kind === 'course' ? html`<span class="code">${r.code}</span> ${r.title}` : r.name}
+      <a href="/courses/${r.code}" class="rank-name">
+        <span class="code">${r.code}</span> ${r.title}
         ${sampleBadge(r.is_sample)}
         <span class="meta">${r.dept_name} · ${plural(r.n, 'review')}</span>
       </a>
@@ -626,13 +626,13 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
   <section class="lists">
     <div>
       <h2 class="label">Highest rated</h2>
-      ${rankList(topCourses, 'course')}
-      <a class="more" href="/rankings?cat=best&kind=course">All rankings →</a>
+      ${rankList(topCourses)}
+      <a class="more" href="/rankings?cat=best">All rankings →</a>
     </div>
     <div>
       <h2 class="label">Heaviest workload</h2>
-      ${rankList(heaviest, 'course', false)}
-      <a class="more" href="/rankings?cat=workload&kind=course">All rankings →</a>
+      ${rankList(heaviest, false)}
+      <a class="more" href="/rankings?cat=workload">All rankings →</a>
     </div>
   </section>
 
@@ -911,7 +911,7 @@ function slider(key, label, hint, low, high, value) {
 function lecturer(ctx, { l, stats, courses: taught, reviews, locked }) {
   const cards = hideAfterFree(reviews, locked);
   return layout({ ...ctx, title: l.name }, html`
-  <nav class="crumbs"><a href="/rankings?kind=lecturer">Lecturers</a> / ${l.name}</nav>
+  <nav class="crumbs"><a href="/courses?dept=${l.dept}">${l.dept_name}</a> / ${l.name}</nav>
   <section class="course-hero">
     <div>
       <span class="code code-big">${l.dept}</span>
@@ -935,21 +935,17 @@ function lecturer(ctx, { l, stats, courses: taught, reviews, locked }) {
   </section>`);
 }
 
-function rankings(ctx, { rows, depts, dept, rank, kind }) {
+function rankings(ctx, { rows, depts, dept, rank }) {
   const link = (o) => {
-    const p = new URLSearchParams({ cat: rank.key, kind, ...(dept ? { dept } : {}), ...o });
+    const p = new URLSearchParams({ cat: rank.key, ...(dept ? { dept } : {}), ...o });
     return `/rankings?${p}`;
   };
-  return layout({ ...ctx, title: 'Rankings' }, html`
-  <h1 class="page-title">Rankings</h1>
-  <p class="lede small">Only courses and lecturers with at least ${MIN_FOR_RANKING} reviews are ranked, so one bad day can't sink anyone.</p>
-  <div class="toggle">
-    <a class="${kind === 'course' ? 'on' : ''}" href="${link({ kind: 'course' })}">Courses</a>
-    <a class="${kind === 'lecturer' ? 'on' : ''}" href="${link({ kind: 'lecturer' })}">Lecturers</a>
-  </div>
+  return layout({ ...ctx, title: 'Course rankings' }, html`
+  <h1 class="page-title">Course rankings</h1>
+  <p class="lede small">Only courses with at least ${MIN_FOR_RANKING} reviews are ranked, so a single review cannot decide a ranking. Lecturers are never ranked.</p>
   <div class="chips">${RANKINGS.map((r) => html`<a class="chip ${r.key === rank.key ? 'on' : ''}" href="${link({ cat: r.key })}">${r.label}</a>`)}</div>
   <form class="dept-filter" action="/rankings">
-    <input type="hidden" name="cat" value="${rank.key}"><input type="hidden" name="kind" value="${kind}">
+    <input type="hidden" name="cat" value="${rank.key}">
     <label>Department
       <select name="dept" data-autosubmit>
         <option value="">All departments</option>
@@ -959,8 +955,8 @@ function rankings(ctx, { rows, depts, dept, rank, kind }) {
     <noscript><button class="btn btn-small">Go</button></noscript>
   </form>
   <div class="card panel">
-    <h2>${rank.label} · ${kind === 'course' ? 'Courses' : 'Lecturers'}${dept ? ` · ${depts.find((d) => d.code === dept)?.name || dept}` : ''}</h2>
-    ${rankList(rows, kind, !['difficulty', 'workload'].includes(rank.column))}
+    <h2>${rank.label}${dept ? ` · ${depts.find((d) => d.code === dept)?.name || dept}` : ''}</h2>
+    ${rankList(rows, !['difficulty', 'workload'].includes(rank.column))}
   </div>`);
 }
 
