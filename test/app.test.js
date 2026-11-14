@@ -2479,6 +2479,28 @@ test('staff sign in with @uct.ac.za, and can read but not rate', () => withAdmin
   assert.ok((await newBrowser().text('/login')).includes(String.raw`pattern="[A-Za-z0-9._%+\-]+@(myuct\.)?uct\.ac\.za"`), 'the form takes both addresses');
 }));
 
+test('the Class tab posts announcements and dates and comes back to itself; the class page is tabbed', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const lecturer = newBrowser();
+  await lecturer.signIn('tab.lecturer@uct.ac.za');
+  const path = (await lecturer.post('/classes', { course: 'CSC1015F', year: '2027', me: 'Dr T' })).headers.get('location');
+  const page = await lecturer.text(path);
+  for (const tab of ['students', 'attendance', 'class', 'setup']) assert.match(page, new RegExp(`<div class="class-tab" id="tab-${tab}" data-tab="${tab}">`), tab);
+  assert.match(page, /<nav class="class-tabs"[\s\S]*?See it as students do/);
+  const code = sdb.prepare('SELECT code FROM classes').get().code;
+  const posted = await lecturer.post(`/c/${code}/announcements`, { body: 'Prac 3 moved to Thursday', back: `${path}#announcements` });
+  assert.equal(posted.headers.get('location').split('?')[0], `${path}#announcements`);
+  const dated = await lecturer.post(`/c/${code}/dates`, { type: 'test', title: 'Test 1', date: '2099-03-01', back: `${path}#dates` });
+  assert.equal(dated.headers.get('location').split('?')[0], `${path}#dates`);
+  const after = await lecturer.text(path);
+  assert.match(after, /id="tab-class"[\s\S]*Prac 3 moved to Thursday[\s\S]*Test 1/);
+  const away = await lecturer.post(`/c/${code}/announcements`, { body: 'Another one', back: 'https://evil.example/x' });
+  assert.equal(away.headers.get('location').split('?')[0], `/c/${code}#announcements`, 'an outside address is ignored');
+}));
+
+test('lecturer pages say how staff ask for a review to be removed', async () => {
+  assert.match(await (await fetch(`${base}/lecturers/1`)).text(), /Is this you\? Staff signed in with a @uct\.ac\.za email can <a href="\/takedown">/);
+});
+
 test('lecturers make classes: join link and QR, and nobody else sees the class page', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
   const lecturer = newBrowser();
   await lecturer.signIn('jane.smith@uct.ac.za');

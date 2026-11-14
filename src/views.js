@@ -1811,7 +1811,7 @@ function classes(ctx, { classes: list, staff, thisYear, error, form = {}, myGrou
 }
 
 // the page for the people running a class: how students join (the dashboard is added to this page later)
-function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk = false, manage, rows, totals, tutors = [], sessions = [], groups = [], staff = [], canPulse = false, pulses = [], pulsePreset = { question: '', options: [] } }) {
+function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk = false, manage, rows, totals, tutors = [], sessions = [], groups = [], staff = [], canPulse = false, pulses = [], pulsePreset = { question: '', options: [] }, announcements = [], dates = [], canAnnounce = false, canDates = false, today = '' }) {
   const share = `https://wa.me/?text=${encodeURIComponent(`Join ${cls.name} on Kwaai: ${link}`)}`;
   const shown = onlyNudge ? rows.filter((r) => r.nudge) : onlyRisk ? rows.filter((r) => r.flags.length) : rows;
   const filter = onlyNudge ? '&filter=nudge' : onlyRisk ? '&filter=risk' : '';
@@ -1941,7 +1941,33 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
       </form>
     </details>
   </section>` : ''}
-    <p class="meta">Announcements and dates live on the <a href="/c/${cls.code}#dates">class page</a>.</p>
+    <section class="card panel class-section" id="announcements" aria-labelledby="ann-head">
+      <h2 id="ann-head">Announcements</h2>
+      ${announcements.length ? html`<ul class="plain announce-list">${announcements.map((a) => html`<li class="announce"><p class="announce-body">${a.body}</p><p class="meta">${a.poster_name} · ${fmtDate(Study.saDay(a.created_at))}</p></li>`)}</ul>` : html`<p class="meta">Nothing posted yet.</p>`}
+      ${canAnnounce ? html`<form method="post" action="/c/${cls.code}/announcements" class="study-form">
+        <input type="hidden" name="back" value="/classes/${cls.id}#announcements">
+        <label>New announcement <textarea name="body" rows="3" maxlength="280" required placeholder="e.g. Prac 3 moved to Thursday"></textarea></label>
+        <div class="form-actions"><button class="btn btn-small">Post to the class</button></div>
+      </form>` : ''}
+      <p class="meta">To delete one, open the <a href="/c/${cls.code}#announcements">class page</a>.</p>
+    </section>
+    <section class="card panel class-section" id="dates" aria-labelledby="dates-head">
+      <h2 id="dates-head">Tests, assignments and other dates</h2>
+      ${dates.length ? html`<ul class="plain">${dates.map((d) => html`<li><strong>${d.title || DATE_TYPE_NAMES[d.type] || d.type}</strong> · ${fmtDate(d.date)}${d.time ? ` at ${d.time}` : ''}</li>`)}</ul>` : html`<p class="meta">No dates yet.</p>`}
+      ${canDates ? html`<form method="post" action="/c/${cls.code}/dates" class="study-form">
+        <input type="hidden" name="back" value="/classes/${cls.id}#dates">
+        <div class="form-row two">
+          <label>What <select name="type">${Object.entries(DATE_TYPE_NAMES).map(([k, label]) => html`<option value="${k}">${label}</option>`)}</select></label>
+          <label>Title <span class="hint">optional</span><input type="text" name="title" maxlength="60" placeholder="e.g. Test 1, Prac 3"></label>
+        </div>
+        <div class="form-row two">
+          <label>Date <input type="date" name="date" required min="${today}"></label>
+          <label>Time <span class="hint">optional</span><input type="time" name="time"></label>
+        </div>
+        <p class="meta">It shows on Today, the year view and calendar feeds for everyone with ${cls.course} in their plan.</p>
+        <div class="form-actions"><button class="btn btn-small">Add the date</button></div>
+      </form>` : ''}
+    </section>
   </div>
   <div class="class-tab" id="tab-setup" data-tab="setup">
   ${rows.length ? joinSection : ''}

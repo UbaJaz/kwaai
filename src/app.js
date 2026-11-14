@@ -1620,15 +1620,17 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   });
 
   // class dates: the lecturer, tutors and reps add them; whoever added one, or the lecturer, can remove it
+  // the lecturer's Class tab posts here too and comes back to itself; anything but a local path falls back to the class page
+  const returnTo = (req, fallback) => { const b = safeNext(req.body.back); return b !== '/' ? b : fallback; };
   app.post('/c/:code/dates', requireUser, limits.classes, (req, res) => {
     const cls = classByCode(req.params.code);
     const me = cls && classMember(cls.id, req.user.id);
     if (!Classes.can(me, 'dates')) return res.status(404).page(notFound(req));
     const parsed = Classes.parseClassDate(req.body, Study.saDay(Date.now()), { cleanName: Study.cleanName, screen: screenComment });
-    if (parsed.error) return flashRedirect(res, `/c/${cls.code}#dates`, 'error', parsed.error);
+    if (parsed.error) return flashRedirect(res, returnTo(req, `/c/${cls.code}#dates`), 'error', parsed.error);
     const d = parsed.date;
     q(`INSERT INTO class_dates (class_id, course, type, title, date, time, added_by, added_role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`).run(cls.id, cls.course, d.type, d.title, d.date, d.time, req.user.id, me.role);
-    flashRedirect(res, `/c/${cls.code}#dates`, 'ok', `Added: ${d.title} on ${d.date}. Everyone with ${cls.course} in their plan sees it.`);
+    flashRedirect(res, returnTo(req, `/c/${cls.code}#dates`), 'ok', `Added: ${d.title} on ${d.date}. Everyone with ${cls.course} in their plan sees it.`);
   });
 
   app.post('/c/:code/dates/:id/delete', requireUser, limits.classes, (req, res) => {
@@ -1696,9 +1698,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const me = cls && classMember(cls.id, req.user.id);
     if (!Classes.can(me, 'announce')) return res.status(404).page(notFound(req));
     const parsed = Classes.parseAnnouncement(req.body.body, screenComment);
-    if (parsed.error) return flashRedirect(res, `/c/${cls.code}#announcements`, 'error', parsed.error);
+    if (parsed.error) return flashRedirect(res, returnTo(req, `/c/${cls.code}#announcements`), 'error', parsed.error);
     q(`INSERT INTO class_announcements (class_id, body, posted_by, poster_name, poster_role, created_at) VALUES (?, ?, ?, ?, ?, ?)`).run(cls.id, parsed.text, req.user.id, me.name || Classes.ROLE_NAMES[me.role], me.role, Date.now());
-    flashRedirect(res, `/c/${cls.code}#announcements`, 'ok', `Posted. Members see it here and on their Today page for ${Classes.ANNOUNCE_DAYS} days.`);
+    flashRedirect(res, returnTo(req, `/c/${cls.code}#announcements`), 'ok', `Posted. Members see it here and on their Today page for ${Classes.ANNOUNCE_DAYS} days.`);
   });
 
   app.post('/c/:code/announcements/:id/delete', requireUser, limits.classes, (req, res) => {
@@ -1841,6 +1843,9 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       tutors: q(`SELECT m.user_id, m.name, u.email FROM class_members m JOIN users u ON u.id = m.user_id WHERE m.class_id = ? AND m.role = 'tutor' ORDER BY m.name`).all(cls.id),
       sessions: q(`SELECT s.*, (SELECT COUNT(*) FROM attendance a WHERE a.session_id = s.id AND a.status IN ('present', 'late')) AS present FROM attendance_sessions s WHERE s.class_id = ? ORDER BY s.started_at DESC LIMIT 12`).all(cls.id),
       canPulse: Classes.can(me, 'pulse'), pulsePreset: Classes.PULSE_PRESET,
+      canAnnounce: Classes.can(me, 'announce'), canDates: Classes.can(me, 'dates'), today: Study.saDay(Date.now()),
+      announcements: q(`SELECT * FROM class_announcements WHERE class_id = ? AND hidden = 0 ORDER BY created_at DESC LIMIT 5`).all(cls.id),
+      dates: q(`SELECT * FROM class_dates WHERE class_id = ? AND date >= ? ORDER BY date, time LIMIT 8`).all(cls.id, Study.saDay(Date.now())),
       groups: groupAttendance(cls.id, classGroupsOf(cls.id)), staff: q(`SELECT user_id, name, role FROM class_members WHERE class_id = ? AND role IN ('lecturer', 'tutor') ORDER BY role, name`).all(cls.id),
       pulses: q(`SELECT * FROM class_pulses WHERE class_id = ? ORDER BY asked_at DESC LIMIT 10`).all(cls.id).map((p) => pulseView(p)),
     }));
