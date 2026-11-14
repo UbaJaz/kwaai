@@ -2517,6 +2517,15 @@ test('accessibility basics: 12px text floor, no fake menu, decorative emoji hidd
   assert.match(await (await fetch(`${base}/rules`)).text(), /<h2><span aria-hidden="true">✅<\/span> Do<\/h2>/);
 });
 
+test('stylesheet uses design tokens: colours only in :root (plus animation stops), type from the scale', async () => {
+  const css = await (await fetch(`${base}/style.css`)).text();
+  const rest = css.slice(css.indexOf('}', css.indexOf(':root')));
+  const stray = [...rest.matchAll(/#[0-9a-fA-F]{3,6}/g)].map((m) => m[0].toLowerCase()).filter((h) => !['#f7f7f2', '#956b00', '#3aa597', '#9dbbf5', '#6b2fb3'].includes(h));
+  assert.deepEqual(stray, [], 'every other colour is a token');
+  assert.deepEqual([...rest.matchAll(/font-size:\s*([\d.]+)rem/g)].map((m) => m[1]).filter((v) => !['2.6', '1.9', '2'].includes(v) && Number(v) < 2), [], 'small and medium sizes use --t-*');
+  for (const t of ['--s-4', '--t-md', '--r-lg', '--tier-gold', '--info']) assert.match(css, new RegExp(`${t}:`));
+});
+
 test('lecturer pages say how staff ask for a review to be removed', async () => {
   assert.match(await (await fetch(`${base}/lecturers/1`)).text(), /Is this you\? Staff signed in with a @uct\.ac\.za email can <a href="\/takedown">/);
 });
