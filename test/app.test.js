@@ -43,14 +43,14 @@ test('overall is the mean of the four quality scores, not difficulty or workload
 });
 
 test('review form validation', () => {
-  const ok = { teaching: '4', engagement: '5', exams: '3', support: '4', difficulty: '5', workload: '2', year: '2025', tags: ['Funny', 'Great notes'], body: '  hi  there ' };
+  const ok = { teaching: '4', engagement: '5', exams: '3', support: '4', difficulty: '5', workload: '2', year: '2025', tags: ['Engaging lectures', 'Great notes'], body: '  hi  there ' };
   const { review } = parseReviewForm(ok, { currentYear: 2026 });
   assert.equal(review.overall, 4);
-  assert.equal(review.tags, 'Funny|Great notes');
+  assert.equal(review.tags, 'Engaging lectures|Great notes');
   assert.equal(review.body, 'hi there');
   assert.ok(parseReviewForm({ ...ok, teaching: '6' }).error);
   assert.ok(parseReviewForm({ ...ok, year: '1999' }).error);
-  assert.ok(parseReviewForm({ ...ok, tags: ['Funny', 'Great notes', 'Clear marking', 'Tough tests'] }).error);
+  assert.ok(parseReviewForm({ ...ok, tags: ['Engaging lectures', 'Great notes', 'Clear marking', 'Tough tests'] }).error);
   assert.ok(parseReviewForm({ ...ok, body: 'x'.repeat(281) }).error);
   assert.equal(parseReviewForm({ ...ok, tags: 'Not a real tag' }).review.tags, '');
 });
@@ -2377,11 +2377,11 @@ test('phones get a tab bar: four tabs, a More sheet, and the right one lit', asy
   assert.deepEqual([...bar.matchAll(/<a href="(\/[a-z]+)" class="tab"/g)].map((m) => m[1]), ['/today', '/plan', '/week', '/courses']);
   assert.match(bar, /<a href="\/plan" class="tab" aria-current="page">/);
   assert.match(bar, /<details class="tab tab-more" data-tab-more>\s*<summary >/, 'More is not lit on a tab page');
-  for (const href of ['/study', '/marks', '/study/leaderboards', '/groups', '/rankings']) assert.match(bar, new RegExp(`<a href="${href}" role="menuitem"`));
+  for (const href of ['/study', '/marks', '/study/leaderboards', '/groups', '/rankings']) assert.match(bar, new RegExp(`<a href="${href}"`));
   assert.doesNotMatch(bar, /\/mod|\/admin\/tools/, 'no admin links for visitors');
   const marks = await (await fetch(`${base}/marks`)).text();
   assert.match(marks, /<summary aria-current="page">/, 'a More page lights More');
-  assert.match(marks, /<a href="\/marks" role="menuitem" aria-current="page">/);
+  assert.match(marks, /<a href="\/marks" aria-current="page">/);
   assert.doesNotMatch(/<nav class="tabbar"[\s\S]*?<\/nav>/.exec(marks)[0], /class="tab" aria-current/, 'and no tab with it');
   assert.match(study, /viewport-fit=cover/, 'room for the home bar on phones with no button');
 });
@@ -2496,6 +2496,35 @@ test('the Class tab posts announcements and dates and comes back to itself; the 
   const away = await lecturer.post(`/c/${code}/announcements`, { body: 'Another one', back: 'https://evil.example/x' });
   assert.equal(away.headers.get('location').split('?')[0], `/c/${code}#announcements`, 'an outside address is ignored');
 }));
+
+test('pages lecturers can reach use plain wording and no emoji', async () => {
+  const missing = await fetch(`${base}/no-such-page`);
+  const page = await missing.text();
+  assert.equal(missing.status, 404);
+  assert.match(page, /Page not found/);
+  assert.doesNotMatch(page, /big-emoji/);
+  assert.doesNotMatch(await (await fetch(`${base}/rules`)).text(), /[Rr]oast/);
+  const form = JSON.stringify([...require('../src/ratings').QUALITY, ...require('../src/ratings').SCALES, ...require('../src/ratings').TAGS]);
+  assert.doesNotMatch(form, /Funny|funny|Chilled|Brutal|Fun & interactive/);
+});
+
+test('accessibility basics: 12px text floor, no fake menu, decorative emoji hidden, touch targets', async () => {
+  const css = await (await fetch(`${base}/style.css`)).text();
+  assert.deepEqual([...css.matchAll(/font-size:\s*(\.\d+)rem/g)].map((m) => Number(m[1])).filter((n) => n < 0.75), [], 'no text under 12px');
+  assert.match(css, /@media \(pointer: coarse\)[\s\S]*min-height: 44px/);
+  const bar = await (await fetch(`${base}/plan`)).text();
+  assert.doesNotMatch(bar, /role="menu/, 'a list of links, not an application menu');
+  assert.match(await (await fetch(`${base}/rules`)).text(), /<h2><span aria-hidden="true">✅<\/span> Do<\/h2>/);
+});
+
+test('stylesheet uses design tokens: colours only in :root (plus animation stops), type from the scale', async () => {
+  const css = await (await fetch(`${base}/style.css`)).text();
+  const rest = css.slice(css.indexOf('}', css.indexOf(':root')));
+  const stray = [...rest.matchAll(/#[0-9a-fA-F]{3,6}/g)].map((m) => m[0].toLowerCase()).filter((h) => !['#f7f7f2', '#956b00', '#3aa597', '#9dbbf5', '#6b2fb3'].includes(h));
+  assert.deepEqual(stray, [], 'every other colour is a token');
+  assert.deepEqual([...rest.matchAll(/font-size:\s*([\d.]+)rem/g)].map((m) => m[1]).filter((v) => !['2.6', '1.9', '2'].includes(v) && Number(v) < 2), [], 'small and medium sizes use --t-*');
+  for (const t of ['--s-4', '--t-md', '--r-lg', '--tier-gold', '--info']) assert.match(css, new RegExp(`${t}:`));
+});
 
 test('lecturer pages say how staff ask for a review to be removed', async () => {
   assert.match(await (await fetch(`${base}/lecturers/1`)).text(), /Is this you\? Staff signed in with a @uct\.ac\.za email can <a href="\/takedown">/);

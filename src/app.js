@@ -145,7 +145,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       let h = hits.get(key);
       if (!h || h.reset < now) hits.set(key, (h = { n: 0, reset: now + windowMs }));
       if (hits.size > 50_000) for (const [k, v] of hits) if (v.reset < now) hits.delete(k);
-      if (++h.n > max) return res.status(429).page(views.message(req.ctx, { title: 'Slow down', emoji: '🐢', text }));
+      if (++h.n > max) return res.status(429).page(views.message(req.ctx, { title: 'Too many requests', text }));
       next();
     };
   }
@@ -183,7 +183,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   };
   const requireUser = (req, res, next) => (req.user ? next() : res.redirect(303, `/login?next=${encodeURIComponent(req.originalUrl)}`));
   const requireMod = (req, res, next) => (req.ctx.isMod ? next() : res.status(404).page((notFound(req))));
-  const notFound = (req) => views.message(req.ctx, { title: 'Not found', emoji: '🤷', text: "That page doesn't exist (or was removed).", link: { href: '/', label: 'Go home' } });
+  const notFound = (req) => views.message(req.ctx, { title: 'Page not found', text: "That page doesn't exist (or was removed).", link: { href: '/', label: 'Go home' } });
 
   // ---- browsing ----
   const courseList = (where, params, order = 'c.code', limit = 500) => q(`
@@ -2758,7 +2758,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     if (status === 500) console.error(err);
     // errors from the body parser happen before the session middleware, so res.page may not exist yet
     res.status(status).send(String(views.message(req.ctx || {}, status === 500
-      ? { title: 'Something broke', emoji: '🫠', text: 'Sorry, that was our fault. Please try again.' }
+      ? { title: 'Something went wrong', text: 'That was our fault. Please try again.' }
       : status === 413
         ? { title: 'That was too long to send', emoji: '🤔', text: /\/roster$/.test(req.path)
           ? `A class list can have up to ${Classes.ROSTER_MAX.toLocaleString('en-ZA')} students. Go back, split the list and add it in parts.`

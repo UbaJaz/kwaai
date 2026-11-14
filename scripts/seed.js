@@ -125,7 +125,7 @@ const BODIES = {
   ],
 };
 const TAG_POOL = {
-  good: ['Great notes', 'Funny', 'Clear marking', 'Would take again'],
+  good: ['Great notes', 'Engaging lectures', 'Clear marking', 'Would take again'],
   mid: ['Past papers are gold', 'Tuts are essential', 'Attendance matters', 'Lots of group work'],
   low: ['Tough tests', 'Self-study heavy', 'Past papers are gold'],
 };

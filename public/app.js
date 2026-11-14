@@ -741,3 +741,10 @@ document.querySelectorAll('[data-class-tabs]').forEach((nav) => {
   addEventListener('hashchange', fromHash);
   fromHash();
 });
+
+// A form error comes back at the top of the page: move focus there so it is announced and keyboard users start from it.
+document.querySelectorAll('.flash-error[role="alert"]').forEach((box, i) => {
+  if (i) return;
+  box.tabIndex = -1;
+  box.focus({ preventScroll: false });
+});

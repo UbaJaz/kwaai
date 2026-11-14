@@ -2,18 +2,18 @@
 // Difficulty and workload are shown separately: a hard course isn't a bad course.
 const QUALITY = [
   { key: 'teaching', label: 'Teaching', hint: 'Explains clearly, good notes and slides' },
-  { key: 'engagement', label: 'Fun & interactive', hint: 'Keeps lectures lively, actually funny' },
+  { key: 'engagement', label: 'Engaging', hint: 'Keeps lectures interactive and interesting' },
   { key: 'exams', label: 'Exam fairness', hint: 'Tests what was taught, marks fairly' },
   { key: 'support', label: 'Approachable', hint: 'Answers questions, helpful in consults' },
 ];
 const SCALES = [
-  { key: 'difficulty', label: 'Exam difficulty', low: 'Chilled', high: 'Brutal' },
+  { key: 'difficulty', label: 'Exam difficulty', low: 'Manageable', high: 'Very hard' },
   { key: 'workload', label: 'Workload', low: 'Light', high: 'Heavy' },
 ];
 const ALL_KEYS = [...QUALITY, ...SCALES].map((c) => c.key);
 
 const TAGS = [
-  'Great notes', 'Funny', 'Past papers are gold', 'Attendance matters', 'Tuts are essential',
+  'Great notes', 'Engaging lectures', 'Past papers are gold', 'Attendance matters', 'Tuts are essential',
   'Tough tests', 'Clear marking', 'Lots of group work', 'Would take again', 'Self-study heavy',
 ];
 const MAX_TAGS = 3;
@@ -32,7 +32,7 @@ const COMMENTS_FROM = 5;
 
 const RANKINGS = [
   { key: 'best', label: 'Highest rated', column: 'overall', order: 'DESC' },
-  { key: 'funniest', label: 'Funniest & most interactive', column: 'engagement', order: 'DESC' },
+  { key: 'funniest', label: 'Most engaging', column: 'engagement', order: 'DESC' },
   { key: 'hardest', label: 'Hardest exams', column: 'difficulty', order: 'DESC' },
   { key: 'fairest', label: 'Fairest exams', column: 'exams', order: 'DESC' },
   { key: 'workload', label: 'Heaviest workload', column: 'workload', order: 'DESC' },
