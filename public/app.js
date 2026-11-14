@@ -721,3 +721,23 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
     });
   }
 })();
+
+// The lecturer's class page: without this script every section shows, one after the other. With it, one tab at a time;
+// a link to a section inside another tab (like #roster after saving the class list) opens that tab.
+document.querySelectorAll('[data-class-tabs]').forEach((nav) => {
+  const tabs = [...document.querySelectorAll('.class-tab')];
+  const links = [...nav.querySelectorAll('a[data-tab]')];
+  const show = (name) => {
+    tabs.forEach((t) => { t.hidden = t.dataset.tab !== name; });
+    links.forEach((a) => { a.toggleAttribute('aria-current', a.dataset.tab === name); if (a.dataset.tab === name) a.setAttribute('aria-current', 'page'); });
+  };
+  const fromHash = () => {
+    const el = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    const tab = el && el.closest('.class-tab');
+    show(tab ? tab.dataset.tab : 'students');
+    if (el && !el.classList.contains('class-tab')) el.scrollIntoView();
+  };
+  nav.classList.add('is-tabs');
+  addEventListener('hashchange', fromHash);
+  fromHash();
+});

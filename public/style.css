@@ -1085,3 +1085,10 @@ button[disabled], .btn[disabled] { opacity: .6; cursor: progress; }
 button[aria-busy="true"]::after { content: ""; display: inline-block; width: .8em; height: .8em; margin-left: .5em; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; vertical-align: -.1em; animation: busy-spin .7s linear infinite; }
 @keyframes busy-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { button[aria-busy="true"]::after { animation: none; } }
+.class-tabs { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 16px 0; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.class-tabs a { padding: 10px 16px; min-height: 44px; display: inline-flex; align-items: center; border-radius: 999px; text-decoration: none; font-weight: 600; }
+.class-tabs a:hover { background: var(--lime-soft); }
+.class-tabs a[aria-current="page"] { background: var(--ink); color: #fff; }
+.class-tabs .class-tabs-view { margin-left: auto; font-weight: 500; }
+.class-tab[hidden] { display: none; }
+.class-tab { scroll-margin-top: 72px; }

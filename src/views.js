@@ -1846,8 +1846,15 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
   <p class="crumbs"><a href="/classes">Classes</a></p>
   <h1 class="page-title">${cls.name}</h1>
   <p class="lede small"><a class="code" href="/courses/${cls.course}">${cls.course}</a> ${course?.title ?? ''} · ${cls.year} · weekly goal ${Study.hoursText(cls.goal_week_min)} · you're the ${CLASS_ROLE[me.role].toLowerCase()}</p>
-  <p><a class="btn btn-small btn-quiet" href="/c/${cls.code}#dates">Class page: dates and ranking</a></p>
   ${rows.length ? '' : joinSection}
+  <nav class="class-tabs" aria-label="Class sections" data-class-tabs>
+    <a href="#tab-students" data-tab="students">Students</a>
+    <a href="#tab-attendance" data-tab="attendance">Attendance</a>
+    <a href="#tab-class" data-tab="class">Class</a>
+    ${manage || rows.length ? html`<a href="#tab-setup" data-tab="setup">Setup</a>` : ''}
+    <a class="class-tabs-view" href="/c/${cls.code}#dates">See it as students do →</a>
+  </nav>
+  <div class="class-tab" id="tab-students" data-tab="students">
   <dl class="dash-totals">
     <div><dt>Students</dt><dd>${totals.students}${totals.onKwaai < totals.students ? html`<small> ${totals.onKwaai} on Kwaai</small>` : ''}</dd></div>
     <div><dt>Median this week</dt><dd>${Study.hoursText(totals.median)}</dd></div>
@@ -1894,6 +1901,49 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
     </tr>`;
     })}</tbody>
   </table></div>` : html`<p class="meta">${rows.length ? (onlyRisk ? 'Nobody is at risk right now.' : 'Nobody needs a nudge right now.') : 'No students yet. Share the link or QR code above, or paste your class list below.'}</p>`}
+  </div>
+  <div class="class-tab" id="tab-attendance" data-tab="attendance">
+  <section class="card panel class-section" id="attendance" aria-labelledby="att-head">
+    <h2 id="att-head">Tut and prac attendance</h2>
+    <form method="post" action="/classes/${cls.id}/attendance" class="study-form attend-start">
+      <div class="form-row two">
+        <label>For <select name="group"><option value="">The whole class</option>${groups.map((g) => html`<option value="${g.id}">${g.name}</option>`)}</select></label>
+        <label>Session name <span class="hint">optional</span><input type="text" name="label" maxlength="60" placeholder="Named after the group and day"></label>
+      </div>
+      <div class="form-actions"><button class="btn">Start attendance</button></div>
+    </form>
+    <p class="meta">You get the register to tap names on, and a QR code students can scan with their phone camera instead.</p>
+    <p class="meta">Downloads: the <a href="/classes/${cls.id}/register.csv" download>register for Excel</a> (P, L, E or A for each session), or <a href="/classes/${cls.id}/amathuba.csv" download>tut attendance as an Amathuba grade import</a>. For Amathuba, first make a numeric grade item called "Tut attendance" out of 100, and check the file with your course admin: we haven't tested it against UCT's Amathuba yet.</p>
+    ${sessions.length ? html`<ul class="plain fact-list">${sessions.map((x) => html`<li><a href="/attend/${x.id}">${x.label}</a> <span class="meta">${plural(x.present, 'student')} present${x.ended_at ? '' : ' · open'}</span></li>`)}</ul>` : ''}
+  </section>
+  </div>
+  <div class="class-tab" id="tab-class" data-tab="class">
+  ${canPulse ? html`<section class="card panel class-section" id="pulse" aria-labelledby="pulse-head">
+    <h2 id="pulse-head">Pulse checks</h2>
+    <p class="meta">Ask the class a quick question. Answers are anonymous, to you as well: you see how many picked each answer, never who.</p>
+    ${pulses.length ? html`<ul class="plain pulse-list">${pulses.map((p) => {
+      const total = p.counts.reduce((a, b) => a + b, 0);
+      return html`<li class="pulse-result">
+        <p><strong>${p.question}</strong> <span class="meta">${plural(total, 'answer')} · ${p.open ? `open until ${fmtDate(Study.saDay(p.closes_at))}` : 'closed'}</span></p>
+        <ul class="plain">${p.options.map((o, i) => {
+          const pct = total ? Math.round((p.counts[i] / total) * 100) : 0;
+          return html`<li class="pulse-bar"><span>${o}</span><span class="goal-track" aria-hidden="true"><i style="width:${pct}%"></i></span><span class="meta">${p.counts[i]} (${pct}%)</span></li>`;
+        })}</ul>
+        ${p.open ? html`<form method="post" action="/classes/${cls.id}/pulse/${p.id}/close" class="inline"><button class="link-btn meta">Close it now</button></form>` : ''}
+      </li>`;
+    })}</ul>` : ''}
+    <details class="fact-add" ${pulses.length ? '' : 'open'}><summary>Ask a question</summary>
+      <form method="post" action="/classes/${cls.id}/pulse" class="study-form">
+        <label>Question <input type="text" name="question" required maxlength="120" value="${pulsePreset.question}"></label>
+        <div class="form-row two">${[0, 1, 2, 3].map((i) => html`<label>Answer ${i + 1}${i >= 2 ? html` <span class="hint">optional</span>` : ''}<input type="text" name="option${i + 1}" maxlength="40" value="${pulsePreset.options[i] || ''}" ${i < 2 ? 'required' : ''}></label>`)}</div>
+        <p class="meta">Students see it on the class page and on Today, and tap one answer. It closes by itself after a week.</p>
+        <div class="form-actions"><button class="btn">Ask the class</button></div>
+      </form>
+    </details>
+  </section>` : ''}
+    <p class="meta">Announcements and dates live on the <a href="/c/${cls.code}#dates">class page</a>.</p>
+  </div>
+  <div class="class-tab" id="tab-setup" data-tab="setup">
   ${rows.length ? joinSection : ''}
   ${manage ? html`<section class="card panel class-section" id="roster" aria-labelledby="roster-head">
     <h2 id="roster-head">Class list</h2>
@@ -1941,42 +1991,6 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
     </li>`)}</ul>` : html`<p class="meta">No groups yet.${manage ? " Add them here, or put tut and prac columns in your class list and they're made for you." : ''}</p>`}
     ${manage ? html`<details class="fact-add" ${groups.length ? '' : 'open'}><summary>Add a group</summary>${groupForm(null)}</details>` : ''}
   </section>
-  <section class="card panel class-section" id="attendance" aria-labelledby="att-head">
-    <h2 id="att-head">Tut and prac attendance</h2>
-    <form method="post" action="/classes/${cls.id}/attendance" class="study-form attend-start">
-      <div class="form-row two">
-        <label>For <select name="group"><option value="">The whole class</option>${groups.map((g) => html`<option value="${g.id}">${g.name}</option>`)}</select></label>
-        <label>Session name <span class="hint">optional</span><input type="text" name="label" maxlength="60" placeholder="Named after the group and day"></label>
-      </div>
-      <div class="form-actions"><button class="btn">Start attendance</button></div>
-    </form>
-    <p class="meta">You get the register to tap names on, and a QR code students can scan with their phone camera instead.</p>
-    <p class="meta">Downloads: the <a href="/classes/${cls.id}/register.csv" download>register for Excel</a> (P, L, E or A for each session), or <a href="/classes/${cls.id}/amathuba.csv" download>tut attendance as an Amathuba grade import</a>. For Amathuba, first make a numeric grade item called "Tut attendance" out of 100, and check the file with your course admin: we haven't tested it against UCT's Amathuba yet.</p>
-    ${sessions.length ? html`<ul class="plain fact-list">${sessions.map((x) => html`<li><a href="/attend/${x.id}">${x.label}</a> <span class="meta">${plural(x.present, 'student')} present${x.ended_at ? '' : ' · open'}</span></li>`)}</ul>` : ''}
-  </section>
-  ${canPulse ? html`<section class="card panel class-section" id="pulse" aria-labelledby="pulse-head">
-    <h2 id="pulse-head">Pulse checks</h2>
-    <p class="meta">Ask the class a quick question. Answers are anonymous, to you as well: you see how many picked each answer, never who.</p>
-    ${pulses.length ? html`<ul class="plain pulse-list">${pulses.map((p) => {
-      const total = p.counts.reduce((a, b) => a + b, 0);
-      return html`<li class="pulse-result">
-        <p><strong>${p.question}</strong> <span class="meta">${plural(total, 'answer')} · ${p.open ? `open until ${fmtDate(Study.saDay(p.closes_at))}` : 'closed'}</span></p>
-        <ul class="plain">${p.options.map((o, i) => {
-          const pct = total ? Math.round((p.counts[i] / total) * 100) : 0;
-          return html`<li class="pulse-bar"><span>${o}</span><span class="goal-track" aria-hidden="true"><i style="width:${pct}%"></i></span><span class="meta">${p.counts[i]} (${pct}%)</span></li>`;
-        })}</ul>
-        ${p.open ? html`<form method="post" action="/classes/${cls.id}/pulse/${p.id}/close" class="inline"><button class="link-btn meta">Close it now</button></form>` : ''}
-      </li>`;
-    })}</ul>` : ''}
-    <details class="fact-add" ${pulses.length ? '' : 'open'}><summary>Ask a question</summary>
-      <form method="post" action="/classes/${cls.id}/pulse" class="study-form">
-        <label>Question <input type="text" name="question" required maxlength="120" value="${pulsePreset.question}"></label>
-        <div class="form-row two">${[0, 1, 2, 3].map((i) => html`<label>Answer ${i + 1}${i >= 2 ? html` <span class="hint">optional</span>` : ''}<input type="text" name="option${i + 1}" maxlength="40" value="${pulsePreset.options[i] || ''}" ${i < 2 ? 'required' : ''}></label>`)}</div>
-        <p class="meta">Students see it on the class page and on Today, and tap one answer. It closes by itself after a week.</p>
-        <div class="form-actions"><button class="btn">Ask the class</button></div>
-      </form>
-    </details>
-  </section>` : ''}
   ${manage ? html`<section class="card panel class-section" id="tutors" aria-labelledby="tutor-head">
     <h2 id="tutor-head">Tutors</h2>
     <p class="meta">Tutors see this dashboard and take attendance. They need to have signed in to Kwaai once.</p>
@@ -1997,7 +2011,8 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
       <label>Weekly study goal <span class="hint">hours</span><input type="number" name="goal" min="1" max="40" step="0.5" value="${cls.goal_week_min / 60}" required inputmode="decimal"></label>
       <div class="form-actions"><button class="btn">Save</button></div>
     </form>
-  </details>` : ''}`);
+  </details>` : ''}  </div>
+  `);
 }
 
 // The join screen: exactly what the lecturer and tutors will see, and how classmates see you. Joining is consent.
