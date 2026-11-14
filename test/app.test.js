@@ -2377,11 +2377,11 @@ test('phones get a tab bar: four tabs, a More sheet, and the right one lit', asy
   assert.deepEqual([...bar.matchAll(/<a href="(\/[a-z]+)" class="tab"/g)].map((m) => m[1]), ['/today', '/plan', '/week', '/courses']);
   assert.match(bar, /<a href="\/plan" class="tab" aria-current="page">/);
   assert.match(bar, /<details class="tab tab-more" data-tab-more>\s*<summary >/, 'More is not lit on a tab page');
-  for (const href of ['/study', '/marks', '/study/leaderboards', '/groups', '/rankings']) assert.match(bar, new RegExp(`<a href="${href}" role="menuitem"`));
+  for (const href of ['/study', '/marks', '/study/leaderboards', '/groups', '/rankings']) assert.match(bar, new RegExp(`<a href="${href}"`));
   assert.doesNotMatch(bar, /\/mod|\/admin\/tools/, 'no admin links for visitors');
   const marks = await (await fetch(`${base}/marks`)).text();
   assert.match(marks, /<summary aria-current="page">/, 'a More page lights More');
-  assert.match(marks, /<a href="\/marks" role="menuitem" aria-current="page">/);
+  assert.match(marks, /<a href="\/marks" aria-current="page">/);
   assert.doesNotMatch(/<nav class="tabbar"[\s\S]*?<\/nav>/.exec(marks)[0], /class="tab" aria-current/, 'and no tab with it');
   assert.match(study, /viewport-fit=cover/, 'room for the home bar on phones with no button');
 });
@@ -2506,6 +2506,15 @@ test('pages lecturers can reach use plain wording and no emoji', async () => {
   assert.doesNotMatch(await (await fetch(`${base}/rules`)).text(), /[Rr]oast/);
   const form = JSON.stringify([...require('../src/ratings').QUALITY, ...require('../src/ratings').SCALES, ...require('../src/ratings').TAGS]);
   assert.doesNotMatch(form, /Funny|funny|Chilled|Brutal|Fun & interactive/);
+});
+
+test('accessibility basics: 12px text floor, no fake menu, decorative emoji hidden, touch targets', async () => {
+  const css = await (await fetch(`${base}/style.css`)).text();
+  assert.deepEqual([...css.matchAll(/font-size:\s*(\.\d+)rem/g)].map((m) => Number(m[1])).filter((n) => n < 0.75), [], 'no text under 12px');
+  assert.match(css, /@media \(pointer: coarse\)[\s\S]*min-height: 44px/);
+  const bar = await (await fetch(`${base}/plan`)).text();
+  assert.doesNotMatch(bar, /role="menu/, 'a list of links, not an application menu');
+  assert.match(await (await fetch(`${base}/rules`)).text(), /<h2><span aria-hidden="true">✅<\/span> Do<\/h2>/);
 });
 
 test('lecturer pages say how staff ask for a review to be removed', async () => {

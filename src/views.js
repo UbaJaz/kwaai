@@ -60,8 +60,8 @@ function tabBar({ user, isMod, isAdmin, testTools, here }) {
     ${(staff ? STAFF_TABS : TABS).map(([href, label, name]) => html`<a href="${href}" class="tab" ${on(href) && !moreOn ? html`aria-current="page"` : ''}>${icon(name)}<span>${label}</span></a>`)}
     <details class="tab tab-more" data-tab-more>
       <summary ${moreOn ? html`aria-current="page"` : ''}>${icon('more')}<span>More</span></summary>
-      <div class="more-sheet" role="menu">
-        ${groups.map(([head, links]) => html`<p class="more-head" role="presentation">${head}</p>${links.map(([href, label]) => html`<a href="${href}" role="menuitem" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}`)}
+      <div class="more-sheet">
+        ${groups.map(([head, links]) => html`<p class="more-head">${head}</p>${links.map(([href, label]) => html`<a href="${href}" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}`)}
       </div>
     </details>
   </nav>`;
@@ -192,13 +192,13 @@ function reviewCard(r, { user, uni, lecturerLink = true, courseLink = false, hid
       ${SCALES.map((c) => html`<div class="scale"><dt>${c.label}</dt><dd>${r[c.key]}/5</dd></div>`)}
     </dl>
     ${tags.length ? html`<div class="tags">${tags.map((t) => html`<span class="tag">${t}</span>`)}</div>` : ''}
-    ${r.body ? hideBody ? html`<p class="review-body locked">🔒 Comment hidden. <a href="#gate">How to read it</a></p>` : html`<p class="review-body">${r.body}</p>` : ''}
+    ${r.body ? hideBody ? html`<p class="review-body locked"><span aria-hidden="true">🔒</span> Comment hidden. <a href="#gate">How to read it</a></p>` : html`<p class="review-body">${r.body}</p>` : ''}
     <div class="review-foot">
       <span class="muted">A ${uni?.short ?? 'UCT'} student, verified by email · ${month(r.created_at)}</span>
       <span class="review-actions">
         ${mine ? html`<form method="post" action="/reviews/${r.id}/delete" class="inline" data-confirm="Delete your review? This can't be undone."><button class="link-btn">Delete mine</button></form>` : ''}
         <details class="report">
-          <summary>⚑ Report</summary>
+          <summary><span aria-hidden="true">⚑</span> Report</summary>
           <form method="post" action="/reviews/${r.id}/report" class="report-form">
             <p class="report-title">What's wrong with this review?</p>
             ${REPORT_REASONS.map((x, i) => html`<label class="radio"><input type="radio" name="reason" value="${x.key}" ${i === 0 ? 'required' : ''}> ${x.label}</label>`)}
@@ -276,14 +276,14 @@ function verdictBox(ctx, { c, votes, myVerdict, years }) {
 
 function tipList(tips, locked) {
   return html`<ul class="tips">${tips.map((t, i) => locked && i >= FREE_COMMENTS
-    ? html`<li class="card tip"><span class="tip-verdict ${t.lekker ? 'yes' : 'no'}">${t.lekker ? 'Kwaai' : 'Nah'}</span><p class="tip-text locked">🔒 Tip hidden. <a href="#gate">How to read it</a></p></li>`
+    ? html`<li class="card tip"><span class="tip-verdict ${t.lekker ? 'yes' : 'no'}">${t.lekker ? 'Kwaai' : 'Nah'}</span><p class="tip-text locked"><span aria-hidden="true">🔒</span> Tip hidden. <a href="#gate">How to read it</a></p></li>`
     : html`<li class="card tip" id="tip-${t.id}">
     <span class="tip-verdict ${t.lekker ? 'yes' : 'no'}">${t.lekker ? 'Kwaai' : 'Nah'}</span>
     <div>
       <p class="tip-text">${t.tip}</p>
       <div class="review-foot tip-foot">
         <span class="muted">Took it in ${t.year}</span>
-        <form method="post" action="/verdicts/${t.id}/report" class="inline" data-confirm="Report this tip? It will be hidden until a moderator checks it."><button class="link-btn">⚑ Report</button></form>
+        <form method="post" action="/verdicts/${t.id}/report" class="inline" data-confirm="Report this tip? It will be hidden until a moderator checks it."><button class="link-btn"><span aria-hidden="true">⚑</span> Report</button></form>
       </div>
     </div>
   </li>`)}</ul>`;
@@ -2112,7 +2112,7 @@ function classPage(ctx, { cls, me, course, lecturer, canRun, period, weekMin, ra
       <p class="meta">${a.poster_name} · ${CLASS_ROLE[a.poster_role]} · ${fmtDate(Study.saDay(a.created_at))}
         ${a.posted_by === ctx.user.id || canManage
           ? html`<form method="post" action="/c/${cls.code}/announcements/${a.id}/delete" class="inline" data-confirm="Delete this announcement?"><button class="link-btn meta">Delete</button></form>`
-          : html`<form method="post" action="/announcements/${a.id}/report" class="inline" data-confirm="Report this announcement? It's hidden once two classmates report it, until a moderator checks it."><button class="link-btn meta">⚑ Report</button></form>`}</p>
+          : html`<form method="post" action="/announcements/${a.id}/report" class="inline" data-confirm="Report this announcement? It's hidden once two classmates report it, until a moderator checks it."><button class="link-btn meta"><span aria-hidden="true">⚑</span> Report</button></form>`}</p>
     </li>`)}</ul>` : html`<p class="meta">No announcements yet.</p>`}
     ${canAnnounce ? html`<details class="fact-add" ${announcements.length ? '' : 'open'}><summary>Post an announcement</summary>
       <form method="post" action="/c/${cls.code}/announcements" class="study-form">
@@ -2455,14 +2455,14 @@ function rules(ctx) {
   <h1 class="page-title">House rules</h1>
   <p class="lede small">Kwaai exists to help students choose courses and prepare for them. Criticising a course is fine. Attacking a person isn't.</p>
 
-  <h2>✅ Do</h2>
+  <h2><span aria-hidden="true">✅</span> Do</h2>
   <ul>
     <li>Rate the <strong>teaching, the course and the assessments</strong> from your own experience.</li>
     <li>Be specific and useful. "Tutorials explain far more than lectures" helps the next person. "Worst lecturer ever" doesn't.</li>
     <li>Give an honest opinion. Opinions are allowed to be negative.</li>
   </ul>
 
-  <h2>🚫 Don't</h2>
+  <h2><span aria-hidden="true">🚫</span> Don't</h2>
   <ul>
     <li><strong>No allegations.</strong> Don't accuse anyone of harassment, discrimination, misconduct or a crime here. If something serious happened, report it to UCT's Office for Inclusivity &amp; Change, the Ombud or SAPS. They can act on it. A review site can't.</li>
     <li><strong>No personal attacks.</strong> Leave out looks, accent, age, family, religion, identity and personal life.</li>
@@ -2471,10 +2471,10 @@ function rules(ctx) {
     <li><strong>No exam leaks</strong> or answers to assessments that are still running.</li>
   </ul>
 
-  <h2 id="moderation">🛡️ How moderation works</h2>
+  <h2 id="moderation"><span aria-hidden="true">🛡️</span> How moderation works</h2>
   <ol>
     <li>Every comment is screened automatically. Contact details and links are blocked. Comments that look like allegations, insults or remarks about identity or personal life wait for a moderator before they appear.</li>
-    <li>Every review has a <strong>⚑ Report</strong> button. Reports of false claims, private information or discrimination <strong>hide the review immediately</strong>. Other reports hide it after ${HIDE_AFTER_REPORTS} reports.</li>
+    <li>Every review has a <strong><span aria-hidden="true">⚑</span> Report</strong> button. Reports of false claims, private information or discrimination <strong>hide the review immediately</strong>. Other reports hide it after ${HIDE_AFTER_REPORTS} reports.</li>
     <li>A moderator then either restores the review or removes it for good. We aim to act within <strong>48 hours</strong>. Every decision is logged.</li>
     <li>Students who repeatedly break the rules are banned.</li>
   </ol>
@@ -2489,7 +2489,7 @@ function rules(ctx) {
     <li>Check in only for yourself, and only when you're in the session. Lecturers and tutors see when one phone checks in for two people.</li>
   </ul>
 
-  <h2 id="privacy">🔒 Privacy</h2>
+  <h2 id="privacy"><span aria-hidden="true">🔒</span> Privacy</h2>
   <p>Your email is never shown next to your reviews. You can delete your reviews or your whole account from <a href="/account">My reviews</a>. In a class, the lecturer and tutors see your student number, attendance and your study time for that course; the join screen shows exactly what before you join. The privacy notice has the full details, including exactly <a href="/privacy#anonymity">who could find out who wrote a review</a>.</p>
   </article>`);
 }
