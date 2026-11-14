@@ -565,6 +565,8 @@ main > .today-strip:first-of-type { margin-top: 20px; }
 .more-sheet { position: fixed; left: 10px; right: 10px; bottom: calc(72px + env(safe-area-inset-bottom)); display: grid; padding: 8px; background: var(--surface); color: var(--ink); border-radius: 16px; box-shadow: 0 12px 40px rgb(21 29 43 / 28%); animation: sheet-up .2s ease-out; }
 .more-sheet a { padding: 12px 14px; border-radius: 10px; text-decoration: none; font-weight: 500; font-size: .95rem; }
 .more-sheet a:hover, .more-sheet a[aria-current="page"] { background: var(--lime-soft); }
+.more-head { margin: 8px 14px 2px; font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.more-head:first-child { margin-top: 4px; }
 @keyframes sheet-up { from { opacity: 0; transform: translateY(12px); } }
 @media (prefers-reduced-motion: reduce) { .more-sheet { animation: none; } .tab-icon { transition: none; } }
 /* ---------- home: your day (for students who are back) ---------- */
@@ -1073,3 +1075,13 @@ circle.emblem-mark { fill: #fff; stroke: none; }
 .rank-share h1 { margin: 10px 0 2px; font-size: 2.4rem; color: color-mix(in srgb, var(--tier) 65%, var(--paper)); }
 .rank-share .wrapped-stats { margin-top: auto; text-align: left; }
 .rank-share .wrapped-foot { margin-top: 14px; }
+.scale-pick { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 8px 0 4px; }
+.scale-opt { display: block; }
+.scale-opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.scale-opt span { display: grid; place-items: center; min-height: 44px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--surface); font: 700 1.05rem var(--display); cursor: pointer; }
+.scale-opt input:checked + span { background: var(--lime); border-color: var(--ink); }
+.scale-opt input:focus-visible + span { outline: 3px solid var(--ink); outline-offset: 2px; }
+button[disabled], .btn[disabled] { opacity: .6; cursor: progress; }
+button[aria-busy="true"]::after { content: ""; display: inline-block; width: .8em; height: .8em; margin-left: .5em; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; vertical-align: -.1em; animation: busy-spin .7s linear infinite; }
+@keyframes busy-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { button[aria-busy="true"]::after { animation: none; } }

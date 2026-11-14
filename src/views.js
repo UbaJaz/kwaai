@@ -45,14 +45,15 @@ function tabBar({ user, isMod, isAdmin, testTools, here }) {
   const on = (href) => here === href || here.startsWith(`${href}/`);
   const staff = user?.role === 'staff';
   const tail = [...(isMod ? [['/mod', 'Moderation']] : []), ...(isAdmin && testTools ? [['/admin/tools', 'Test tools']] : []), ['/about', 'About Kwaai']];
-  const more = staff
-    ? [['/rankings', 'Course rankings'], ['/account', 'Account'], ...tail]
+  // three headed lists (N5): Study, Courses, Account
+  const groups = (staff
+    ? [['Courses', [['/rankings', 'Course rankings']]], ['Account', [['/account', 'Account'], ...tail]]]
     : [
-      ['/marks', 'Marks and DP'], ['/year', 'Your year'], ['/rankings', 'Course rankings'],
-      ['/study', 'Study timer'], ['/study/leaderboards', 'Study leaderboards'], ['/groups', 'Study groups'],
-      ...(user ? [['/classes', 'Classes'], ['/account', 'Account'], ['/account/profile', 'Leaderboard settings']] : []),
-      ...tail,
-    ];
+      ['Study', [['/study', 'Study timer'], ['/study/leaderboards', 'Study leaderboards'], ['/groups', 'Study groups']]],
+      ['Courses', [['/marks', 'Marks and DP'], ['/year', 'Your year'], ['/rankings', 'Course rankings']]],
+      ['Account', [...(user ? [['/classes', 'Classes'], ['/account', 'Account'], ['/account/profile', 'Leaderboard settings']] : []), ...tail]],
+    ]);
+  const more = groups.flatMap(([, links]) => links);
   // a page in the More list (like /study/leaderboards) lights More, not the tab its path starts with
   const moreOn = more.some(([href]) => on(href));
   return html`<nav class="tabbar" aria-label="App">
@@ -60,7 +61,7 @@ function tabBar({ user, isMod, isAdmin, testTools, here }) {
     <details class="tab tab-more" data-tab-more>
       <summary ${moreOn ? html`aria-current="page"` : ''}>${icon('more')}<span>More</span></summary>
       <div class="more-sheet" role="menu">
-        ${more.map(([href, label]) => html`<a href="${href}" role="menuitem" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}
+        ${groups.map(([head, links]) => html`<p class="more-head" role="presentation">${head}</p>${links.map(([href, label]) => html`<a href="${href}" role="menuitem" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}`)}
       </div>
     </details>
   </nav>`;
@@ -101,7 +102,7 @@ ${site.origin ? html`<meta property="og:image" content="${site.origin}/og-card.p
 </head>
 <body${uni ? html` style="--uni:${uni.accent};--uni-soft:${uni.soft}"` : ''}>
 <a class="skip" href="#main">Skip to content</a>
-<div class="notice">${demoMode ? html`<strong>Demo.</strong> Every lecturer, student, course and review here is made up. ` : ''}Unofficial student project, not affiliated with any university.${hasSamples ? html` Reviews marked <span class="badge sample">Sample</span> are demo data.` : ''}</div>
+<div class="notice">${demoMode ? html`<strong>Demo.</strong> Every lecturer, student, course and review here is made up. ` : ''}Unofficial student project. Not affiliated with ${uni ? uni.short : 'any university'}.${hasSamples ? html` Reviews marked <span class="badge sample">Sample</span> are demo data.` : ''}</div>
 <header class="site-header">
   <div class="wrap header-row">
     <a class="logo" href="/"><img src="/kwaai-icon.svg" alt="" width="30" height="30"><span>kwaai</span></a>
@@ -917,11 +918,11 @@ function reviewForm(ctx,{ c, conveners, others, years, values = {}, error }) {
 
     <fieldset>
       <legend>The star rating <span class="hint">These four make up the overall score</span></legend>
-      ${QUALITY.map((c2) => slider(c2.key, c2.label, c2.hint, 'Poor', 'Excellent', v(c2.key, 3)))}
+      ${QUALITY.map((c2) => slider(c2.key, c2.label, c2.hint, 'Poor', 'Excellent', v(c2.key)))}
     </fieldset>
     <fieldset>
       <legend>What to expect <span class="hint">Not counted in the stars</span></legend>
-      ${SCALES.map((s) => slider(s.key, s.label, '', s.low, s.high, v(s.key, 3)))}
+      ${SCALES.map((s) => slider(s.key, s.label, '', s.low, s.high, v(s.key)))}
     </fieldset>
 
     <fieldset>
@@ -943,11 +944,12 @@ function reviewForm(ctx,{ c, conveners, others, years, values = {}, error }) {
   </form>`);
 }
 
+// Nothing is picked until the reviewer taps a number (N6), so doing nothing can't post a middle rating.
 function slider(key, label, hint, low, high, value) {
-  return html`<div class="slider">
-    <div class="slider-top"><label for="f-${key}">${label}</label><output for="f-${key}" class="slider-val">${value}</output></div>
+  return html`<div class="slider" role="radiogroup" aria-labelledby="f-${key}">
+    <div class="slider-top"><span id="f-${key}" class="slider-label">${label}</span></div>
     ${hint ? html`<span class="hint">${hint}</span>` : ''}
-    <input id="f-${key}" type="range" name="${key}" min="1" max="5" step="1" value="${value}">
+    <div class="scale-pick">${[1, 2, 3, 4, 5].map((n) => html`<label class="scale-opt"><input type="radio" name="${key}" value="${n}" ${String(value) === String(n) ? 'checked' : ''} required><span>${n}</span></label>`)}</div>
     <div class="slider-ends"><span>${low}</span><span>${high}</span></div>
   </div>`;
 }
@@ -962,6 +964,7 @@ function lecturer(ctx, { l, stats, courses: taught, reviews, locked, commentsFro
       <h1>${l.name} ${sampleBadge(l.is_sample)}</h1>
       <p class="meta">${l.role ? `${l.role}, ` : ''}${l.dept_name}</p>
       ${l.is_sample ? html`<p class="meta">This is a made-up lecturer used to demo the site. Not a real person.</p>` : ''}
+      <p class="meta lecturer-note">Is this you? Staff signed in with a @uct.ac.za email can <a href="/takedown">ask for a review to be removed</a>. A request from a signed-in staff account hides the review at once.</p>
     </div>
   </section>
   <section class="course-layout">

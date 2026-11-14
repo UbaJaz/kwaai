@@ -1751,6 +1751,17 @@ test('home page is a student hub first, with lecturer classes and the study time
   assert.ok(home.indexOf('>Planner<') < home.indexOf('>Study<'), 'Study is the last header link');
 });
 
+test('review form starts with nothing picked; lecturer pages say how to ask for removal; More is grouped', () => withAdminServer({}, async ({ browser: newBrowser }) => {
+  const student = newBrowser();
+  await student.signIn('form001@myuct.ac.za');
+  const form = await student.text('/courses/CSC1016S/review');
+  assert.equal((form.match(/type="radio" name="(teaching|engagement|exams|support|difficulty|workload)" value="[1-5]"/g) || []).length, 30, 'six scales of 1 to 5');
+  assert.doesNotMatch(form, /type="radio" name="teaching" value="\d" checked/, 'no default rating');
+  assert.doesNotMatch(form, /type="range"/);
+  assert.match(form, /name="teaching" value="1" +required/);
+  assert.match(await student.text('/'), /<p class="more-head"[^>]*>Study<\/p>[\s\S]*<p class="more-head"[^>]*>Courses<\/p>[\s\S]*<p class="more-head"[^>]*>Account<\/p>/);
+}));
+
 test('staff land on Classes and see no student tabs; students keep theirs', () => withAdminServer({}, async ({ browser: newBrowser }) => {
   const staff = newBrowser();
   await staff.signIn('nav.lecturer@uct.ac.za');
