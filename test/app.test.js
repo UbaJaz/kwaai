@@ -1743,6 +1743,39 @@ test('pages carry the university accent, and /universities lists who is live', a
   assert.doesNotMatch(home + page, /LekkerOrNah/);
 });
 
+test('home page is a student hub first, with lecturer classes and the study timer as extras', async () => {
+  const home = await (await fetch(`${base}/`)).text();
+  assert.ok(home.indexOf('Student hub') < home.indexOf('Set up a class'), 'student hub comes first');
+  assert.match(home, /href="\/login\?next=%2Fclasses"[\s\S]*?Set up a class/);
+  assert.match(home, /href="\/study"[\s\S]*?Study timer and friends/);
+  assert.ok(home.indexOf('>Planner<') < home.indexOf('>Study<'), 'Study is the last header link');
+});
+
+test('review form starts with nothing picked; lecturer pages say how to ask for removal; More is grouped', () => withAdminServer({}, async ({ browser: newBrowser }) => {
+  const student = newBrowser();
+  await student.signIn('form001@myuct.ac.za');
+  const form = await student.text('/courses/CSC1016S/review');
+  assert.equal((form.match(/type="radio" name="(teaching|engagement|exams|support|difficulty|workload)" value="[1-5]"/g) || []).length, 30, 'six scales of 1 to 5');
+  assert.doesNotMatch(form, /type="radio" name="teaching" value="\d" checked/, 'no default rating');
+  assert.doesNotMatch(form, /type="range"/);
+  assert.match(form, /name="teaching" value="1" +required/);
+  assert.match(await student.text('/'), /<p class="more-head"[^>]*>Study<\/p>[\s\S]*<p class="more-head"[^>]*>Courses<\/p>[\s\S]*<p class="more-head"[^>]*>Account<\/p>/);
+}));
+
+test('staff land on Classes and see no student tabs; students keep theirs', () => withAdminServer({}, async ({ browser: newBrowser }) => {
+  const staff = newBrowser();
+  await staff.signIn('nav.lecturer@uct.ac.za');
+  assert.equal((await staff.get('/')).headers.get('location'), '/classes');
+  const page = await staff.text('/classes');
+  assert.match(page, /<nav class="nav"[\s\S]*?>Classes<[\s\S]*?>Courses<[\s\S]*?>About<[\s\S]*?>Account</);
+  assert.doesNotMatch(page.match(/<nav class="nav"[\s\S]*?<\/nav>/)[0], /Planner|My week|Marks|Study|Rankings/);
+  assert.doesNotMatch(page.match(/<nav class="tabbar"[\s\S]*?<\/nav>/)[0], /Today|Planner|Study/);
+  const student = newBrowser();
+  await student.signIn('nav001@myuct.ac.za');
+  assert.equal((await student.get('/')).status, 200, 'students stay on the home page');
+  assert.match((await student.text('/')).match(/<nav class="tabbar"[\s\S]*?<\/nav>/)[0], /Planner/);
+}));
+
 test('home page offers the two paths: rate a course and plan a semester', async () => {
   const home = await (await fetch(`${base}/`)).text();
   assert.match(home, /Rate it kwaai or nah/);
@@ -2339,12 +2372,12 @@ test('a friend\'s plan link offers to become your plan', async () => {
 });
 
 test('phones get a tab bar: four tabs, a More sheet, and the right one lit', async () => {
-  const study = await (await fetch(`${base}/study`)).text();
+  const study = await (await fetch(`${base}/plan`)).text();
   const bar = /<nav class="tabbar" aria-label="App">[\s\S]*?<\/nav>/.exec(study)[0];
-  assert.deepEqual([...bar.matchAll(/<a href="(\/[a-z]+)" class="tab"/g)].map((m) => m[1]), ['/today', '/study', '/week', '/courses']);
-  assert.match(bar, /<a href="\/study" class="tab" aria-current="page">/);
+  assert.deepEqual([...bar.matchAll(/<a href="(\/[a-z]+)" class="tab"/g)].map((m) => m[1]), ['/today', '/plan', '/week', '/courses']);
+  assert.match(bar, /<a href="\/plan" class="tab" aria-current="page">/);
   assert.match(bar, /<details class="tab tab-more" data-tab-more>\s*<summary >/, 'More is not lit on a tab page');
-  for (const href of ['/plan', '/marks', '/study/leaderboards', '/groups', '/rankings']) assert.match(bar, new RegExp(`<a href="${href}" role="menuitem"`));
+  for (const href of ['/study', '/marks', '/study/leaderboards', '/groups', '/rankings']) assert.match(bar, new RegExp(`<a href="${href}" role="menuitem"`));
   assert.doesNotMatch(bar, /\/mod|\/admin\/tools/, 'no admin links for visitors');
   const marks = await (await fetch(`${base}/marks`)).text();
   assert.match(marks, /<summary aria-current="page">/, 'a More page lights More');
@@ -2445,6 +2478,28 @@ test('staff sign in with @uct.ac.za, and can read but not rate', () => withAdmin
   assert.equal((await newBrowser().post('/login', { email: 'someone@gmail.com' })).status, 400);
   assert.ok((await newBrowser().text('/login')).includes(String.raw`pattern="[A-Za-z0-9._%+\-]+@(myuct\.)?uct\.ac\.za"`), 'the form takes both addresses');
 }));
+
+test('the Class tab posts announcements and dates and comes back to itself; the class page is tabbed', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const lecturer = newBrowser();
+  await lecturer.signIn('tab.lecturer@uct.ac.za');
+  const path = (await lecturer.post('/classes', { course: 'CSC1015F', year: '2027', me: 'Dr T' })).headers.get('location');
+  const page = await lecturer.text(path);
+  for (const tab of ['students', 'attendance', 'class', 'setup']) assert.match(page, new RegExp(`<div class="class-tab" id="tab-${tab}" data-tab="${tab}">`), tab);
+  assert.match(page, /<nav class="class-tabs"[\s\S]*?See it as students do/);
+  const code = sdb.prepare('SELECT code FROM classes').get().code;
+  const posted = await lecturer.post(`/c/${code}/announcements`, { body: 'Prac 3 moved to Thursday', back: `${path}#announcements` });
+  assert.equal(posted.headers.get('location').split('?')[0], `${path}#announcements`);
+  const dated = await lecturer.post(`/c/${code}/dates`, { type: 'test', title: 'Test 1', date: '2099-03-01', back: `${path}#dates` });
+  assert.equal(dated.headers.get('location').split('?')[0], `${path}#dates`);
+  const after = await lecturer.text(path);
+  assert.match(after, /id="tab-class"[\s\S]*Prac 3 moved to Thursday[\s\S]*Test 1/);
+  const away = await lecturer.post(`/c/${code}/announcements`, { body: 'Another one', back: 'https://evil.example/x' });
+  assert.equal(away.headers.get('location').split('?')[0], `/c/${code}#announcements`, 'an outside address is ignored');
+}));
+
+test('lecturer pages say how staff ask for a review to be removed', async () => {
+  assert.match(await (await fetch(`${base}/lecturers/1`)).text(), /Is this you\? Staff signed in with a @uct\.ac\.za email can <a href="\/takedown">/);
+});
 
 test('lecturers make classes: join link and QR, and nobody else sees the class page', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
   const lecturer = newBrowser();

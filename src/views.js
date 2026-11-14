@@ -31,34 +31,45 @@ const TAB_ICONS = {
   study: html`<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/>`,
   week: html`<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M9 9v12M15 9v12"/>`,
   courses: html`<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19"/>`,
+  plan: html`<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1.2 1.2L7 5M3.5 12l1.2 1.2L7 11M3.5 18l1.2 1.2L7 17"/>`,
+  classes: html`<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 5a3 3 0 0 1 0 6M18 14c2 .7 3.5 2.6 3.5 5"/>`,
   more: html`<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>`,
 };
-const TABS = [['/today', 'Today', 'today'], ['/study', 'Study', 'study'], ['/week', 'Week', 'week'], ['/courses', 'Courses', 'courses']];
+// Students: the planner and courses lead; Study (timer and friends) is a secondary link in More.
+const TABS = [['/today', 'Today', 'today'], ['/plan', 'Planner', 'plan'], ['/week', 'Week', 'week'], ['/courses', 'Courses', 'courses']];
+// Lecturers (staff accounts) get none of the student tabs.
+const STAFF_TABS = [['/classes', 'Classes', 'classes'], ['/courses', 'Courses', 'courses']];
 const icon = (name) => html`<svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">${TAB_ICONS[name]}</svg>`;
 
 function tabBar({ user, isMod, isAdmin, testTools, here }) {
   const on = (href) => here === href || here.startsWith(`${href}/`);
-  const more = [
-    ['/plan', 'Semester planner'], ['/marks', 'Marks and DP'], ['/year', 'Your year'], ['/study/leaderboards', 'Study leaderboards'],
-    ['/groups', 'Study groups'], ...(user ? [['/classes', 'Classes']] : []), ['/rankings', 'Course rankings'],
-    ...(user ? [['/account', 'My reviews'], ['/account/profile', 'Leaderboard settings']] : []),
-    ...(isMod ? [['/mod', 'Moderation']] : []), ...(isAdmin && testTools ? [['/admin/tools', 'Test tools']] : []),
-    ['/about', 'About Kwaai'],
-  ];
+  const staff = user?.role === 'staff';
+  const tail = [...(isMod ? [['/mod', 'Moderation']] : []), ...(isAdmin && testTools ? [['/admin/tools', 'Test tools']] : []), ['/about', 'About Kwaai']];
+  // three headed lists (N5): Study, Courses, Account
+  const groups = (staff
+    ? [['Courses', [['/rankings', 'Course rankings']]], ['Account', [['/account', 'Account'], ...tail]]]
+    : [
+      ['Study', [['/study', 'Study timer'], ['/study/leaderboards', 'Study leaderboards'], ['/groups', 'Study groups']]],
+      ['Courses', [['/marks', 'Marks and DP'], ['/year', 'Your year'], ['/rankings', 'Course rankings']]],
+      ['Account', [...(user ? [['/classes', 'Classes'], ['/account', 'Account'], ['/account/profile', 'Leaderboard settings']] : []), ...tail]],
+    ]);
+  const more = groups.flatMap(([, links]) => links);
   // a page in the More list (like /study/leaderboards) lights More, not the tab its path starts with
   const moreOn = more.some(([href]) => on(href));
   return html`<nav class="tabbar" aria-label="App">
-    ${TABS.map(([href, label, name]) => html`<a href="${href}" class="tab" ${on(href) && !moreOn ? html`aria-current="page"` : ''}>${icon(name)}<span>${label}</span></a>`)}
+    ${(staff ? STAFF_TABS : TABS).map(([href, label, name]) => html`<a href="${href}" class="tab" ${on(href) && !moreOn ? html`aria-current="page"` : ''}>${icon(name)}<span>${label}</span></a>`)}
     <details class="tab tab-more" data-tab-more>
       <summary ${moreOn ? html`aria-current="page"` : ''}>${icon('more')}<span>More</span></summary>
       <div class="more-sheet" role="menu">
-        ${more.map(([href, label]) => html`<a href="${href}" role="menuitem" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}
+        ${groups.map(([head, links]) => html`<p class="more-head" role="presentation">${head}</p>${links.map(([href, label]) => html`<a href="${href}" role="menuitem" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}`)}
       </div>
     </details>
   </nav>`;
 }
 
-const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/study', 'Study'], ['/week', 'My week'], ['/marks', 'Marks'], ['/rankings', 'Rankings']];
+// Course info and planning lead; Study (timer, friends) is the last, optional link. Staff see their own short list.
+const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/week', 'My week'], ['/marks', 'Marks'], ['/rankings', 'Rankings'], ['/study', 'Study']];
+const STAFF_NAV = [['/classes', 'Classes'], ['/courses', 'Courses'], ['/about', 'About']];
 
 // description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
 // uni sets the accent colour for the university being browsed; the Kwaai brand colours never change.
@@ -91,13 +102,13 @@ ${site.origin ? html`<meta property="og:image" content="${site.origin}/og-card.p
 </head>
 <body${uni ? html` style="--uni:${uni.accent};--uni-soft:${uni.soft}"` : ''}>
 <a class="skip" href="#main">Skip to content</a>
-<div class="notice">${demoMode ? html`<strong>Demo.</strong> Every lecturer, student, course and review here is made up. ` : ''}Unofficial student project, not affiliated with any university.${hasSamples ? html` Reviews marked <span class="badge sample">Sample</span> are demo data.` : ''}</div>
+<div class="notice">${demoMode ? html`<strong>Demo.</strong> Every lecturer, student, course and review here is made up. ` : ''}Unofficial student project. Not affiliated with ${uni ? uni.short : 'any university'}.${hasSamples ? html` Reviews marked <span class="badge sample">Sample</span> are demo data.` : ''}</div>
 <header class="site-header">
   <div class="wrap header-row">
     <a class="logo" href="/"><img src="/kwaai-icon.svg" alt="" width="30" height="30"><span>kwaai</span></a>
     <nav class="nav" aria-label="Main">
-      ${NAV.map(([href, label]) => html`<a href="${href}" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}
-      ${user ? html`<a href="/classes" ${on('/classes') ? html`aria-current="page"` : ''}>Classes</a><a href="/account" ${on('/account') ? html`aria-current="page"` : ''}>My reviews</a>` : ''}
+      ${(user?.role === 'staff' ? STAFF_NAV : NAV).map(([href, label]) => html`<a href="${href}" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}
+      ${user?.role === 'staff' ? html`<a href="/account" ${on('/account') ? html`aria-current="page"` : ''}>Account</a>` : user ? html`<a href="/classes" ${on('/classes') ? html`aria-current="page"` : ''}>Classes</a><a href="/account" ${on('/account') ? html`aria-current="page"` : ''}>Account</a>` : ''}
       ${isMod ? html`<a href="/mod" class="nav-mod">Moderation</a>` : ''}
       ${isAdmin && testTools ? html`<a href="/admin/tools" class="nav-mod">Test tools</a>` : ''}
     </nav>
@@ -315,6 +326,13 @@ function rankList(rows, toned = true) {
 
 // The two things to do on Kwaai. Rating comes first from the end of exams until registration opens in January
 // (that's when 2026 courses are fresh in students' minds); planning comes first the rest of the year.
+const pathCard = (p) => html`<a class="card path" href="${p.href}">
+  <span class="label">${p.when}</span>
+  <h2>${p.title}</h2>
+  <p>${p.text}</p>
+  <span class="path-go">${p.action} →</span>
+</a>`;
+
 function homePaths(ctx, ratingSeason) {
   const rate = {
     href: ctx.user ? '/courses' : '/login?next=%2Fcourses',
@@ -327,10 +345,30 @@ function homePaths(ctx, ratingSeason) {
     href: '/plan',
     when: 'Choosing courses for next year?',
     title: 'Plan your semesters',
-    text: 'Add the courses you are considering. Kwaai flags lecture clashes, checks entry requirements and shows how much of your mark rides on exams.',
+    text: 'Add the courses you are considering. Kwaai flags lecture clashes, checks entry requirements and shows how much of your mark rides on exams. Your week then shows lectures, tuts and tests.',
     action: 'Open the planner',
   };
   return ratingSeason ? [rate, planner] : [planner, rate];
+}
+
+// Below the student hub: the two other things Kwaai does, each for a different person.
+function homeMore(ctx) {
+  return [
+    {
+      href: ctx.user ? '/classes' : '/login?next=%2Fclasses',
+      when: 'For lecturers and tutors',
+      title: 'Set up a class',
+      text: 'Students join with a link. Take lecture and tut attendance, send announcements, see live tut attendance and spot students who are falling behind.',
+      action: ctx.user ? 'Open Classes' : 'Sign in with your staff email',
+    },
+    {
+      href: '/study',
+      when: 'Optional, for fun',
+      title: 'Study timer and friends',
+      text: 'Time your study, keep a streak and compete with friends on a leaderboard. No sign-in needed to try the timer.',
+      action: 'Try the timer',
+    },
+  ];
 }
 
 // The streak count with its flame. The flame is lit once today counts. data-celebrate (today's date) tells
@@ -596,7 +634,7 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
     <div class="hero-main">
       <p class="eyebrow"><b>${uni.name}</b> · ${plural(counts.courses, 'course')}</p>
       ${back ? html`<h2 class="hero-again">Look up a course</h2>` : html`<h1>Find out if a course is <em class="hl">kwaai</em> before you register.</h1>
-      <p class="lede">Ratings, workload scores and one-line tips from students who already took it, plus a planner that checks your semester against the handbook.</p>`}
+      <p class="lede">Your student hub: ratings, workload scores and tips from students who already took a course, and a planner that checks your semester against the handbook.</p>`}
       <form class="search" action="/courses" role="search">
         <input type="search" name="q" placeholder="Code or name, e.g. CSC1015F" aria-label="Search courses" autocomplete="off" data-suggest="go">
         <button class="btn btn-ink">Search</button>
@@ -614,13 +652,13 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
     </aside>
   </section>
 
-  <section class="paths" aria-label="What you can do">
-    ${homePaths(ctx, ratingSeason).map((p) => html`<a class="card path" href="${p.href}">
-      <span class="label">${p.when}</span>
-      <h2>${p.title}</h2>
-      <p>${p.text}</p>
-      <span class="path-go">${p.action} →</span>
-    </a>`)}
+  <h2 class="label">Student hub</h2>
+  <section class="paths" aria-label="Choose courses and plan your semester">
+    ${homePaths(ctx, ratingSeason).map(pathCard)}
+  </section>
+  <h2 class="label">And also</h2>
+  <section class="paths paths-more" aria-label="For lecturers, and the study timer">
+    ${homeMore(ctx).map(pathCard)}
   </section>
 
   <section class="lists">
@@ -880,11 +918,11 @@ function reviewForm(ctx,{ c, conveners, others, years, values = {}, error }) {
 
     <fieldset>
       <legend>The star rating <span class="hint">These four make up the overall score</span></legend>
-      ${QUALITY.map((c2) => slider(c2.key, c2.label, c2.hint, 'Poor', 'Excellent', v(c2.key, 3)))}
+      ${QUALITY.map((c2) => slider(c2.key, c2.label, c2.hint, 'Poor', 'Excellent', v(c2.key)))}
     </fieldset>
     <fieldset>
       <legend>What to expect <span class="hint">Not counted in the stars</span></legend>
-      ${SCALES.map((s) => slider(s.key, s.label, '', s.low, s.high, v(s.key, 3)))}
+      ${SCALES.map((s) => slider(s.key, s.label, '', s.low, s.high, v(s.key)))}
     </fieldset>
 
     <fieldset>
@@ -906,11 +944,12 @@ function reviewForm(ctx,{ c, conveners, others, years, values = {}, error }) {
   </form>`);
 }
 
+// Nothing is picked until the reviewer taps a number (N6), so doing nothing can't post a middle rating.
 function slider(key, label, hint, low, high, value) {
-  return html`<div class="slider">
-    <div class="slider-top"><label for="f-${key}">${label}</label><output for="f-${key}" class="slider-val">${value}</output></div>
+  return html`<div class="slider" role="radiogroup" aria-labelledby="f-${key}">
+    <div class="slider-top"><span id="f-${key}" class="slider-label">${label}</span></div>
     ${hint ? html`<span class="hint">${hint}</span>` : ''}
-    <input id="f-${key}" type="range" name="${key}" min="1" max="5" step="1" value="${value}">
+    <div class="scale-pick">${[1, 2, 3, 4, 5].map((n) => html`<label class="scale-opt"><input type="radio" name="${key}" value="${n}" ${String(value) === String(n) ? 'checked' : ''} required><span>${n}</span></label>`)}</div>
     <div class="slider-ends"><span>${low}</span><span>${high}</span></div>
   </div>`;
 }
@@ -925,6 +964,7 @@ function lecturer(ctx, { l, stats, courses: taught, reviews, locked, commentsFro
       <h1>${l.name} ${sampleBadge(l.is_sample)}</h1>
       <p class="meta">${l.role ? `${l.role}, ` : ''}${l.dept_name}</p>
       ${l.is_sample ? html`<p class="meta">This is a made-up lecturer used to demo the site. Not a real person.</p>` : ''}
+      <p class="meta lecturer-note">Is this you? Staff signed in with a @uct.ac.za email can <a href="/takedown">ask for a review to be removed</a>. A request from a signed-in staff account hides the review at once.</p>
     </div>
   </section>
   <section class="course-layout">
@@ -1771,7 +1811,7 @@ function classes(ctx, { classes: list, staff, thisYear, error, form = {}, myGrou
 }
 
 // the page for the people running a class: how students join (the dashboard is added to this page later)
-function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk = false, manage, rows, totals, tutors = [], sessions = [], groups = [], staff = [], canPulse = false, pulses = [], pulsePreset = { question: '', options: [] } }) {
+function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk = false, manage, rows, totals, tutors = [], sessions = [], groups = [], staff = [], canPulse = false, pulses = [], pulsePreset = { question: '', options: [] }, announcements = [], dates = [], canAnnounce = false, canDates = false, today = '' }) {
   const share = `https://wa.me/?text=${encodeURIComponent(`Join ${cls.name} on Kwaai: ${link}`)}`;
   const shown = onlyNudge ? rows.filter((r) => r.nudge) : onlyRisk ? rows.filter((r) => r.flags.length) : rows;
   const filter = onlyNudge ? '&filter=nudge' : onlyRisk ? '&filter=risk' : '';
@@ -1806,8 +1846,15 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
   <p class="crumbs"><a href="/classes">Classes</a></p>
   <h1 class="page-title">${cls.name}</h1>
   <p class="lede small"><a class="code" href="/courses/${cls.course}">${cls.course}</a> ${course?.title ?? ''} · ${cls.year} · weekly goal ${Study.hoursText(cls.goal_week_min)} · you're the ${CLASS_ROLE[me.role].toLowerCase()}</p>
-  <p><a class="btn btn-small btn-quiet" href="/c/${cls.code}#dates">Class page: dates and ranking</a></p>
   ${rows.length ? '' : joinSection}
+  <nav class="class-tabs" aria-label="Class sections" data-class-tabs>
+    <a href="#tab-students" data-tab="students">Students</a>
+    <a href="#tab-attendance" data-tab="attendance">Attendance</a>
+    <a href="#tab-class" data-tab="class">Class</a>
+    ${manage || rows.length ? html`<a href="#tab-setup" data-tab="setup">Setup</a>` : ''}
+    <a class="class-tabs-view" href="/c/${cls.code}#dates">See it as students do →</a>
+  </nav>
+  <div class="class-tab" id="tab-students" data-tab="students">
   <dl class="dash-totals">
     <div><dt>Students</dt><dd>${totals.students}${totals.onKwaai < totals.students ? html`<small> ${totals.onKwaai} on Kwaai</small>` : ''}</dd></div>
     <div><dt>Median this week</dt><dd>${Study.hoursText(totals.median)}</dd></div>
@@ -1854,6 +1901,75 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
     </tr>`;
     })}</tbody>
   </table></div>` : html`<p class="meta">${rows.length ? (onlyRisk ? 'Nobody is at risk right now.' : 'Nobody needs a nudge right now.') : 'No students yet. Share the link or QR code above, or paste your class list below.'}</p>`}
+  </div>
+  <div class="class-tab" id="tab-attendance" data-tab="attendance">
+  <section class="card panel class-section" id="attendance" aria-labelledby="att-head">
+    <h2 id="att-head">Tut and prac attendance</h2>
+    <form method="post" action="/classes/${cls.id}/attendance" class="study-form attend-start">
+      <div class="form-row two">
+        <label>For <select name="group"><option value="">The whole class</option>${groups.map((g) => html`<option value="${g.id}">${g.name}</option>`)}</select></label>
+        <label>Session name <span class="hint">optional</span><input type="text" name="label" maxlength="60" placeholder="Named after the group and day"></label>
+      </div>
+      <div class="form-actions"><button class="btn">Start attendance</button></div>
+    </form>
+    <p class="meta">You get the register to tap names on, and a QR code students can scan with their phone camera instead.</p>
+    <p class="meta">Downloads: the <a href="/classes/${cls.id}/register.csv" download>register for Excel</a> (P, L, E or A for each session), or <a href="/classes/${cls.id}/amathuba.csv" download>tut attendance as an Amathuba grade import</a>. For Amathuba, first make a numeric grade item called "Tut attendance" out of 100, and check the file with your course admin: we haven't tested it against UCT's Amathuba yet.</p>
+    ${sessions.length ? html`<ul class="plain fact-list">${sessions.map((x) => html`<li><a href="/attend/${x.id}">${x.label}</a> <span class="meta">${plural(x.present, 'student')} present${x.ended_at ? '' : ' · open'}</span></li>`)}</ul>` : ''}
+  </section>
+  </div>
+  <div class="class-tab" id="tab-class" data-tab="class">
+  ${canPulse ? html`<section class="card panel class-section" id="pulse" aria-labelledby="pulse-head">
+    <h2 id="pulse-head">Pulse checks</h2>
+    <p class="meta">Ask the class a quick question. Answers are anonymous, to you as well: you see how many picked each answer, never who.</p>
+    ${pulses.length ? html`<ul class="plain pulse-list">${pulses.map((p) => {
+      const total = p.counts.reduce((a, b) => a + b, 0);
+      return html`<li class="pulse-result">
+        <p><strong>${p.question}</strong> <span class="meta">${plural(total, 'answer')} · ${p.open ? `open until ${fmtDate(Study.saDay(p.closes_at))}` : 'closed'}</span></p>
+        <ul class="plain">${p.options.map((o, i) => {
+          const pct = total ? Math.round((p.counts[i] / total) * 100) : 0;
+          return html`<li class="pulse-bar"><span>${o}</span><span class="goal-track" aria-hidden="true"><i style="width:${pct}%"></i></span><span class="meta">${p.counts[i]} (${pct}%)</span></li>`;
+        })}</ul>
+        ${p.open ? html`<form method="post" action="/classes/${cls.id}/pulse/${p.id}/close" class="inline"><button class="link-btn meta">Close it now</button></form>` : ''}
+      </li>`;
+    })}</ul>` : ''}
+    <details class="fact-add" ${pulses.length ? '' : 'open'}><summary>Ask a question</summary>
+      <form method="post" action="/classes/${cls.id}/pulse" class="study-form">
+        <label>Question <input type="text" name="question" required maxlength="120" value="${pulsePreset.question}"></label>
+        <div class="form-row two">${[0, 1, 2, 3].map((i) => html`<label>Answer ${i + 1}${i >= 2 ? html` <span class="hint">optional</span>` : ''}<input type="text" name="option${i + 1}" maxlength="40" value="${pulsePreset.options[i] || ''}" ${i < 2 ? 'required' : ''}></label>`)}</div>
+        <p class="meta">Students see it on the class page and on Today, and tap one answer. It closes by itself after a week.</p>
+        <div class="form-actions"><button class="btn">Ask the class</button></div>
+      </form>
+    </details>
+  </section>` : ''}
+    <section class="card panel class-section" id="announcements" aria-labelledby="ann-head">
+      <h2 id="ann-head">Announcements</h2>
+      ${announcements.length ? html`<ul class="plain announce-list">${announcements.map((a) => html`<li class="announce"><p class="announce-body">${a.body}</p><p class="meta">${a.poster_name} · ${fmtDate(Study.saDay(a.created_at))}</p></li>`)}</ul>` : html`<p class="meta">Nothing posted yet.</p>`}
+      ${canAnnounce ? html`<form method="post" action="/c/${cls.code}/announcements" class="study-form">
+        <input type="hidden" name="back" value="/classes/${cls.id}#announcements">
+        <label>New announcement <textarea name="body" rows="3" maxlength="280" required placeholder="e.g. Prac 3 moved to Thursday"></textarea></label>
+        <div class="form-actions"><button class="btn btn-small">Post to the class</button></div>
+      </form>` : ''}
+      <p class="meta">To delete one, open the <a href="/c/${cls.code}#announcements">class page</a>.</p>
+    </section>
+    <section class="card panel class-section" id="dates" aria-labelledby="dates-head">
+      <h2 id="dates-head">Tests, assignments and other dates</h2>
+      ${dates.length ? html`<ul class="plain">${dates.map((d) => html`<li><strong>${d.title || DATE_TYPE_NAMES[d.type] || d.type}</strong> · ${fmtDate(d.date)}${d.time ? ` at ${d.time}` : ''}</li>`)}</ul>` : html`<p class="meta">No dates yet.</p>`}
+      ${canDates ? html`<form method="post" action="/c/${cls.code}/dates" class="study-form">
+        <input type="hidden" name="back" value="/classes/${cls.id}#dates">
+        <div class="form-row two">
+          <label>What <select name="type">${Object.entries(DATE_TYPE_NAMES).map(([k, label]) => html`<option value="${k}">${label}</option>`)}</select></label>
+          <label>Title <span class="hint">optional</span><input type="text" name="title" maxlength="60" placeholder="e.g. Test 1, Prac 3"></label>
+        </div>
+        <div class="form-row two">
+          <label>Date <input type="date" name="date" required min="${today}"></label>
+          <label>Time <span class="hint">optional</span><input type="time" name="time"></label>
+        </div>
+        <p class="meta">It shows on Today, the year view and calendar feeds for everyone with ${cls.course} in their plan.</p>
+        <div class="form-actions"><button class="btn btn-small">Add the date</button></div>
+      </form>` : ''}
+    </section>
+  </div>
+  <div class="class-tab" id="tab-setup" data-tab="setup">
   ${rows.length ? joinSection : ''}
   ${manage ? html`<section class="card panel class-section" id="roster" aria-labelledby="roster-head">
     <h2 id="roster-head">Class list</h2>
@@ -1901,42 +2017,6 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
     </li>`)}</ul>` : html`<p class="meta">No groups yet.${manage ? " Add them here, or put tut and prac columns in your class list and they're made for you." : ''}</p>`}
     ${manage ? html`<details class="fact-add" ${groups.length ? '' : 'open'}><summary>Add a group</summary>${groupForm(null)}</details>` : ''}
   </section>
-  <section class="card panel class-section" id="attendance" aria-labelledby="att-head">
-    <h2 id="att-head">Tut and prac attendance</h2>
-    <form method="post" action="/classes/${cls.id}/attendance" class="study-form attend-start">
-      <div class="form-row two">
-        <label>For <select name="group"><option value="">The whole class</option>${groups.map((g) => html`<option value="${g.id}">${g.name}</option>`)}</select></label>
-        <label>Session name <span class="hint">optional</span><input type="text" name="label" maxlength="60" placeholder="Named after the group and day"></label>
-      </div>
-      <div class="form-actions"><button class="btn">Start attendance</button></div>
-    </form>
-    <p class="meta">You get the register to tap names on, and a QR code students can scan with their phone camera instead.</p>
-    <p class="meta">Downloads: the <a href="/classes/${cls.id}/register.csv" download>register for Excel</a> (P, L, E or A for each session), or <a href="/classes/${cls.id}/amathuba.csv" download>tut attendance as an Amathuba grade import</a>. For Amathuba, first make a numeric grade item called "Tut attendance" out of 100, and check the file with your course admin: we haven't tested it against UCT's Amathuba yet.</p>
-    ${sessions.length ? html`<ul class="plain fact-list">${sessions.map((x) => html`<li><a href="/attend/${x.id}">${x.label}</a> <span class="meta">${plural(x.present, 'student')} present${x.ended_at ? '' : ' · open'}</span></li>`)}</ul>` : ''}
-  </section>
-  ${canPulse ? html`<section class="card panel class-section" id="pulse" aria-labelledby="pulse-head">
-    <h2 id="pulse-head">Pulse checks</h2>
-    <p class="meta">Ask the class a quick question. Answers are anonymous, to you as well: you see how many picked each answer, never who.</p>
-    ${pulses.length ? html`<ul class="plain pulse-list">${pulses.map((p) => {
-      const total = p.counts.reduce((a, b) => a + b, 0);
-      return html`<li class="pulse-result">
-        <p><strong>${p.question}</strong> <span class="meta">${plural(total, 'answer')} · ${p.open ? `open until ${fmtDate(Study.saDay(p.closes_at))}` : 'closed'}</span></p>
-        <ul class="plain">${p.options.map((o, i) => {
-          const pct = total ? Math.round((p.counts[i] / total) * 100) : 0;
-          return html`<li class="pulse-bar"><span>${o}</span><span class="goal-track" aria-hidden="true"><i style="width:${pct}%"></i></span><span class="meta">${p.counts[i]} (${pct}%)</span></li>`;
-        })}</ul>
-        ${p.open ? html`<form method="post" action="/classes/${cls.id}/pulse/${p.id}/close" class="inline"><button class="link-btn meta">Close it now</button></form>` : ''}
-      </li>`;
-    })}</ul>` : ''}
-    <details class="fact-add" ${pulses.length ? '' : 'open'}><summary>Ask a question</summary>
-      <form method="post" action="/classes/${cls.id}/pulse" class="study-form">
-        <label>Question <input type="text" name="question" required maxlength="120" value="${pulsePreset.question}"></label>
-        <div class="form-row two">${[0, 1, 2, 3].map((i) => html`<label>Answer ${i + 1}${i >= 2 ? html` <span class="hint">optional</span>` : ''}<input type="text" name="option${i + 1}" maxlength="40" value="${pulsePreset.options[i] || ''}" ${i < 2 ? 'required' : ''}></label>`)}</div>
-        <p class="meta">Students see it on the class page and on Today, and tap one answer. It closes by itself after a week.</p>
-        <div class="form-actions"><button class="btn">Ask the class</button></div>
-      </form>
-    </details>
-  </section>` : ''}
   ${manage ? html`<section class="card panel class-section" id="tutors" aria-labelledby="tutor-head">
     <h2 id="tutor-head">Tutors</h2>
     <p class="meta">Tutors see this dashboard and take attendance. They need to have signed in to Kwaai once.</p>
@@ -1957,7 +2037,8 @@ function classAdmin(ctx, { cls, me, course, link, qr, sort, onlyNudge, onlyRisk 
       <label>Weekly study goal <span class="hint">hours</span><input type="number" name="goal" min="1" max="40" step="0.5" value="${cls.goal_week_min / 60}" required inputmode="decimal"></label>
       <div class="form-actions"><button class="btn">Save</button></div>
     </form>
-  </details>` : ''}`);
+  </details>` : ''}  </div>
+  `);
 }
 
 // The join screen: exactly what the lecturer and tutors will see, and how classmates see you. Joining is consent.
@@ -1969,6 +2050,8 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
     ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
     ${staff ? html`<div class="card panel"><p><strong>Classes are for students to join.</strong> You're signed in with a staff email. If you teach on this course, ask ${lecturer} to add you as a tutor.</p></div>` : html`
     <form method="post" action="/c/${cls.code}/join" class="card panel study-form class-consent">
+      <div class="consent-cols">
+        <div>
       <h2>What ${lecturer} and the tutors will see</h2>
       <ul class="plain consent-list">
         <li>✓ Your student number: <strong>${number}</strong></li>
@@ -1977,11 +2060,15 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
         <li>✓ Your tut and prac attendance in this class, and your DP status from it</li>
         <li>✓ Warnings like "missed the last two sessions", "can't reach DP" or "no study in 14 days", so they can check in with you</li>
       </ul>
+        </div>
+        <div>
       <h2>What they won't see</h2>
       <ul class="plain consent-list no">
         <li>✗ Time you study for other courses</li>
         <li>✗ Your marks, reviews, votes or tips</li>
       </ul>
+        </div>
+      </div>
       <fieldset class="pick-group">
         <legend>How classmates see you</legend>
         <label class="radio"><input type="radio" name="show" value="name" checked> By my name</label>

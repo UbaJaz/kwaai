@@ -4,6 +4,16 @@ document.querySelectorAll('input[type=range]').forEach((input) => {
   input.addEventListener('input', () => { out.textContent = input.value; });
 });
 
+// A slow server (cold start) looks like a dead button, so show that the form is working. Disabled one tick later so the click still submits.
+document.addEventListener('submit', (e) => {
+  const btn = e.target.querySelector('button:not([type]), button[type=submit]');
+  if (!btn || e.defaultPrevented) return;
+  btn.setAttribute('aria-busy', 'true');
+  setTimeout(() => { btn.disabled = true; }, 0);
+});
+// back/forward restores the page from cache with the button still locked
+addEventListener('pageshow', (e) => { if (e.persisted) document.querySelectorAll('button[aria-busy]').forEach((b) => { b.disabled = false; b.removeAttribute('aria-busy'); }); });
+
 document.querySelectorAll('.tag-picker').forEach((picker) => {
   const max = Number(picker.dataset.max);
   const boxes = [...picker.querySelectorAll('input[type=checkbox]')];
@@ -711,3 +721,23 @@ document.querySelectorAll('[data-heatmap]').forEach((el) => { el.scrollLeft = el
     });
   }
 })();
+
+// The lecturer's class page: without this script every section shows, one after the other. With it, one tab at a time;
+// a link to a section inside another tab (like #roster after saving the class list) opens that tab.
+document.querySelectorAll('[data-class-tabs]').forEach((nav) => {
+  const tabs = [...document.querySelectorAll('.class-tab')];
+  const links = [...nav.querySelectorAll('a[data-tab]')];
+  const show = (name) => {
+    tabs.forEach((t) => { t.hidden = t.dataset.tab !== name; });
+    links.forEach((a) => { a.toggleAttribute('aria-current', a.dataset.tab === name); if (a.dataset.tab === name) a.setAttribute('aria-current', 'page'); });
+  };
+  const fromHash = () => {
+    const el = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    const tab = el && el.closest('.class-tab');
+    show(tab ? tab.dataset.tab : 'students');
+    if (el && !el.classList.contains('class-tab')) el.scrollIntoView();
+  };
+  nav.classList.add('is-tabs');
+  addEventListener('hashchange', fromHash);
+  fromHash();
+});
