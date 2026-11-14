@@ -220,6 +220,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     });
   }
 
+  app.get('/', (req, res, next) => (req.user?.role === 'staff' ? res.redirect(303, '/classes') : next()));
   app.get('/', (req, res) => {
     const counts = q(`SELECT (SELECT COUNT(*) FROM courses) AS courses, (SELECT COUNT(*) FROM reviews WHERE status = 'published') AS reviews,
       (SELECT COUNT(*) FROM verdicts WHERE status = 'published') AS votes, (SELECT COUNT(*) FROM verdicts WHERE status = 'published' AND tip != '') AS tips`).get();

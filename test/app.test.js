@@ -1743,6 +1743,28 @@ test('pages carry the university accent, and /universities lists who is live', a
   assert.doesNotMatch(home + page, /LekkerOrNah/);
 });
 
+test('home page is a student hub first, with lecturer classes and the study timer as extras', async () => {
+  const home = await (await fetch(`${base}/`)).text();
+  assert.ok(home.indexOf('Student hub') < home.indexOf('Set up a class'), 'student hub comes first');
+  assert.match(home, /href="\/login\?next=%2Fclasses"[\s\S]*?Set up a class/);
+  assert.match(home, /href="\/study"[\s\S]*?Study timer and friends/);
+  assert.ok(home.indexOf('>Planner<') < home.indexOf('>Study<'), 'Study is the last header link');
+});
+
+test('staff land on Classes and see no student tabs; students keep theirs', () => withAdminServer({}, async ({ browser: newBrowser }) => {
+  const staff = newBrowser();
+  await staff.signIn('nav.lecturer@uct.ac.za');
+  assert.equal((await staff.get('/')).headers.get('location'), '/classes');
+  const page = await staff.text('/classes');
+  assert.match(page, /<nav class="nav"[\s\S]*?>Classes<[\s\S]*?>Courses<[\s\S]*?>About<[\s\S]*?>Account</);
+  assert.doesNotMatch(page.match(/<nav class="nav"[\s\S]*?<\/nav>/)[0], /Planner|My week|Marks|Study|Rankings/);
+  assert.doesNotMatch(page.match(/<nav class="tabbar"[\s\S]*?<\/nav>/)[0], /Today|Planner|Study/);
+  const student = newBrowser();
+  await student.signIn('nav001@myuct.ac.za');
+  assert.equal((await student.get('/')).status, 200, 'students stay on the home page');
+  assert.match((await student.text('/')).match(/<nav class="tabbar"[\s\S]*?<\/nav>/)[0], /Planner/);
+}));
+
 test('home page offers the two paths: rate a course and plan a semester', async () => {
   const home = await (await fetch(`${base}/`)).text();
   assert.match(home, /Rate it kwaai or nah/);
@@ -2339,12 +2361,12 @@ test('a friend\'s plan link offers to become your plan', async () => {
 });
 
 test('phones get a tab bar: four tabs, a More sheet, and the right one lit', async () => {
-  const study = await (await fetch(`${base}/study`)).text();
+  const study = await (await fetch(`${base}/plan`)).text();
   const bar = /<nav class="tabbar" aria-label="App">[\s\S]*?<\/nav>/.exec(study)[0];
-  assert.deepEqual([...bar.matchAll(/<a href="(\/[a-z]+)" class="tab"/g)].map((m) => m[1]), ['/today', '/study', '/week', '/courses']);
-  assert.match(bar, /<a href="\/study" class="tab" aria-current="page">/);
+  assert.deepEqual([...bar.matchAll(/<a href="(\/[a-z]+)" class="tab"/g)].map((m) => m[1]), ['/today', '/plan', '/week', '/courses']);
+  assert.match(bar, /<a href="\/plan" class="tab" aria-current="page">/);
   assert.match(bar, /<details class="tab tab-more" data-tab-more>\s*<summary >/, 'More is not lit on a tab page');
-  for (const href of ['/plan', '/marks', '/study/leaderboards', '/groups', '/rankings']) assert.match(bar, new RegExp(`<a href="${href}" role="menuitem"`));
+  for (const href of ['/study', '/marks', '/study/leaderboards', '/groups', '/rankings']) assert.match(bar, new RegExp(`<a href="${href}" role="menuitem"`));
   assert.doesNotMatch(bar, /\/mod|\/admin\/tools/, 'no admin links for visitors');
   const marks = await (await fetch(`${base}/marks`)).text();
   assert.match(marks, /<summary aria-current="page">/, 'a More page lights More');

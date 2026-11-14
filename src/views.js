@@ -31,24 +31,32 @@ const TAB_ICONS = {
   study: html`<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/>`,
   week: html`<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M9 9v12M15 9v12"/>`,
   courses: html`<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19"/>`,
+  plan: html`<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1.2 1.2L7 5M3.5 12l1.2 1.2L7 11M3.5 18l1.2 1.2L7 17"/>`,
+  classes: html`<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 5a3 3 0 0 1 0 6M18 14c2 .7 3.5 2.6 3.5 5"/>`,
   more: html`<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>`,
 };
-const TABS = [['/today', 'Today', 'today'], ['/study', 'Study', 'study'], ['/week', 'Week', 'week'], ['/courses', 'Courses', 'courses']];
+// Students: the planner and courses lead; Study (timer and friends) is a secondary link in More.
+const TABS = [['/today', 'Today', 'today'], ['/plan', 'Planner', 'plan'], ['/week', 'Week', 'week'], ['/courses', 'Courses', 'courses']];
+// Lecturers (staff accounts) get none of the student tabs.
+const STAFF_TABS = [['/classes', 'Classes', 'classes'], ['/courses', 'Courses', 'courses']];
 const icon = (name) => html`<svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">${TAB_ICONS[name]}</svg>`;
 
 function tabBar({ user, isMod, isAdmin, testTools, here }) {
   const on = (href) => here === href || here.startsWith(`${href}/`);
-  const more = [
-    ['/plan', 'Semester planner'], ['/marks', 'Marks and DP'], ['/year', 'Your year'], ['/study/leaderboards', 'Study leaderboards'],
-    ['/groups', 'Study groups'], ...(user ? [['/classes', 'Classes']] : []), ['/rankings', 'Course rankings'],
-    ...(user ? [['/account', 'My reviews'], ['/account/profile', 'Leaderboard settings']] : []),
-    ...(isMod ? [['/mod', 'Moderation']] : []), ...(isAdmin && testTools ? [['/admin/tools', 'Test tools']] : []),
-    ['/about', 'About Kwaai'],
-  ];
+  const staff = user?.role === 'staff';
+  const tail = [...(isMod ? [['/mod', 'Moderation']] : []), ...(isAdmin && testTools ? [['/admin/tools', 'Test tools']] : []), ['/about', 'About Kwaai']];
+  const more = staff
+    ? [['/rankings', 'Course rankings'], ['/account', 'Account'], ...tail]
+    : [
+      ['/marks', 'Marks and DP'], ['/year', 'Your year'], ['/rankings', 'Course rankings'],
+      ['/study', 'Study timer'], ['/study/leaderboards', 'Study leaderboards'], ['/groups', 'Study groups'],
+      ...(user ? [['/classes', 'Classes'], ['/account', 'Account'], ['/account/profile', 'Leaderboard settings']] : []),
+      ...tail,
+    ];
   // a page in the More list (like /study/leaderboards) lights More, not the tab its path starts with
   const moreOn = more.some(([href]) => on(href));
   return html`<nav class="tabbar" aria-label="App">
-    ${TABS.map(([href, label, name]) => html`<a href="${href}" class="tab" ${on(href) && !moreOn ? html`aria-current="page"` : ''}>${icon(name)}<span>${label}</span></a>`)}
+    ${(staff ? STAFF_TABS : TABS).map(([href, label, name]) => html`<a href="${href}" class="tab" ${on(href) && !moreOn ? html`aria-current="page"` : ''}>${icon(name)}<span>${label}</span></a>`)}
     <details class="tab tab-more" data-tab-more>
       <summary ${moreOn ? html`aria-current="page"` : ''}>${icon('more')}<span>More</span></summary>
       <div class="more-sheet" role="menu">
@@ -58,7 +66,9 @@ function tabBar({ user, isMod, isAdmin, testTools, here }) {
   </nav>`;
 }
 
-const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/study', 'Study'], ['/week', 'My week'], ['/marks', 'Marks'], ['/rankings', 'Rankings']];
+// Course info and planning lead; Study (timer, friends) is the last, optional link. Staff see their own short list.
+const NAV = [['/courses', 'Courses'], ['/plan', 'Planner'], ['/week', 'My week'], ['/marks', 'Marks'], ['/rankings', 'Rankings'], ['/study', 'Study']];
+const STAFF_NAV = [['/classes', 'Classes'], ['/courses', 'Courses'], ['/about', 'About']];
 
 // description and path feed the link preview WhatsApp and other apps show when someone pastes a link.
 // uni sets the accent colour for the university being browsed; the Kwaai brand colours never change.
@@ -96,8 +106,8 @@ ${site.origin ? html`<meta property="og:image" content="${site.origin}/og-card.p
   <div class="wrap header-row">
     <a class="logo" href="/"><img src="/kwaai-icon.svg" alt="" width="30" height="30"><span>kwaai</span></a>
     <nav class="nav" aria-label="Main">
-      ${NAV.map(([href, label]) => html`<a href="${href}" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}
-      ${user ? html`<a href="/classes" ${on('/classes') ? html`aria-current="page"` : ''}>Classes</a><a href="/account" ${on('/account') ? html`aria-current="page"` : ''}>My reviews</a>` : ''}
+      ${(user?.role === 'staff' ? STAFF_NAV : NAV).map(([href, label]) => html`<a href="${href}" ${on(href) ? html`aria-current="page"` : ''}>${label}</a>`)}
+      ${user?.role === 'staff' ? html`<a href="/account" ${on('/account') ? html`aria-current="page"` : ''}>Account</a>` : user ? html`<a href="/classes" ${on('/classes') ? html`aria-current="page"` : ''}>Classes</a><a href="/account" ${on('/account') ? html`aria-current="page"` : ''}>Account</a>` : ''}
       ${isMod ? html`<a href="/mod" class="nav-mod">Moderation</a>` : ''}
       ${isAdmin && testTools ? html`<a href="/admin/tools" class="nav-mod">Test tools</a>` : ''}
     </nav>
@@ -315,6 +325,13 @@ function rankList(rows, toned = true) {
 
 // The two things to do on Kwaai. Rating comes first from the end of exams until registration opens in January
 // (that's when 2026 courses are fresh in students' minds); planning comes first the rest of the year.
+const pathCard = (p) => html`<a class="card path" href="${p.href}">
+  <span class="label">${p.when}</span>
+  <h2>${p.title}</h2>
+  <p>${p.text}</p>
+  <span class="path-go">${p.action} →</span>
+</a>`;
+
 function homePaths(ctx, ratingSeason) {
   const rate = {
     href: ctx.user ? '/courses' : '/login?next=%2Fcourses',
@@ -327,10 +344,30 @@ function homePaths(ctx, ratingSeason) {
     href: '/plan',
     when: 'Choosing courses for next year?',
     title: 'Plan your semesters',
-    text: 'Add the courses you are considering. Kwaai flags lecture clashes, checks entry requirements and shows how much of your mark rides on exams.',
+    text: 'Add the courses you are considering. Kwaai flags lecture clashes, checks entry requirements and shows how much of your mark rides on exams. Your week then shows lectures, tuts and tests.',
     action: 'Open the planner',
   };
   return ratingSeason ? [rate, planner] : [planner, rate];
+}
+
+// Below the student hub: the two other things Kwaai does, each for a different person.
+function homeMore(ctx) {
+  return [
+    {
+      href: ctx.user ? '/classes' : '/login?next=%2Fclasses',
+      when: 'For lecturers and tutors',
+      title: 'Set up a class',
+      text: 'Students join with a link. Take lecture and tut attendance, send announcements, see live tut attendance and spot students who are falling behind.',
+      action: ctx.user ? 'Open Classes' : 'Sign in with your staff email',
+    },
+    {
+      href: '/study',
+      when: 'Optional, for fun',
+      title: 'Study timer and friends',
+      text: 'Time your study, keep a streak and compete with friends on a leaderboard. No sign-in needed to try the timer.',
+      action: 'Try the timer',
+    },
+  ];
 }
 
 // The streak count with its flame. The flame is lit once today counts. data-celebrate (today's date) tells
@@ -596,7 +633,7 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
     <div class="hero-main">
       <p class="eyebrow"><b>${uni.name}</b> · ${plural(counts.courses, 'course')}</p>
       ${back ? html`<h2 class="hero-again">Look up a course</h2>` : html`<h1>Find out if a course is <em class="hl">kwaai</em> before you register.</h1>
-      <p class="lede">Ratings, workload scores and one-line tips from students who already took it, plus a planner that checks your semester against the handbook.</p>`}
+      <p class="lede">Your student hub: ratings, workload scores and tips from students who already took a course, and a planner that checks your semester against the handbook.</p>`}
       <form class="search" action="/courses" role="search">
         <input type="search" name="q" placeholder="Code or name, e.g. CSC1015F" aria-label="Search courses" autocomplete="off" data-suggest="go">
         <button class="btn btn-ink">Search</button>
@@ -614,13 +651,13 @@ function home(ctx, { counts, topCourses, heaviest, ratingSeason = false, today: 
     </aside>
   </section>
 
-  <section class="paths" aria-label="What you can do">
-    ${homePaths(ctx, ratingSeason).map((p) => html`<a class="card path" href="${p.href}">
-      <span class="label">${p.when}</span>
-      <h2>${p.title}</h2>
-      <p>${p.text}</p>
-      <span class="path-go">${p.action} →</span>
-    </a>`)}
+  <h2 class="label">Student hub</h2>
+  <section class="paths" aria-label="Choose courses and plan your semester">
+    ${homePaths(ctx, ratingSeason).map(pathCard)}
+  </section>
+  <h2 class="label">And also</h2>
+  <section class="paths paths-more" aria-label="For lecturers, and the study timer">
+    ${homeMore(ctx).map(pathCard)}
   </section>
 
   <section class="lists">
