@@ -194,7 +194,7 @@ function reviewCard(r, { user, uni, lecturerLink = true, courseLink = false, hid
     ${tags.length ? html`<div class="tags">${tags.map((t) => html`<span class="tag">${t}</span>`)}</div>` : ''}
     ${r.body ? hideBody ? html`<p class="review-body locked">🔒 Comment hidden. <a href="#gate">How to read it</a></p>` : html`<p class="review-body">${r.body}</p>` : ''}
     <div class="review-foot">
-      <span class="muted">Anonymous ${uni?.short ?? 'UCT'} student · ${month(r.created_at)}</span>
+      <span class="muted">A ${uni?.short ?? 'UCT'} student, verified by email · ${month(r.created_at)}</span>
       <span class="review-actions">
         ${mine ? html`<form method="post" action="/reviews/${r.id}/delete" class="inline" data-confirm="Delete your review? This can't be undone."><button class="link-btn">Delete mine</button></form>` : ''}
         <details class="report">
@@ -2453,7 +2453,7 @@ function rules(ctx) {
   return layout({ ...ctx, title: 'House rules' }, html`
   <article class="prose">
   <h1 class="page-title">House rules</h1>
-  <p class="lede small">Kwaai exists to help students choose courses and prepare for them. Roasting a course is fine. Attacking a person isn't.</p>
+  <p class="lede small">Kwaai exists to help students choose courses and prepare for them. Criticising a course is fine. Attacking a person isn't.</p>
 
   <h2>✅ Do</h2>
   <ul>
@@ -2504,7 +2504,7 @@ function about(ctx, { courses }) {
   <p>We're two students at the University of Cape Town, both still studying. <a href="https://ubayd.me">Ubayd Hattas</a> studies computer science, data science and statistics. <a href="https://jaswin.me">Jaswin Chinthala</a> studies electrical engineering. We build and run Kwaai ourselves, outside our degrees.</p>
 
   <h2>Why we built it</h2>
-  <p>American students have RateMyProfessors. Ubayd went looking for a South African version that covered our universities and couldn't find one. A local search turned up very little, and nothing close to what he had in mind. So he told Jaswin about it, and we decided to build it.</p>
+  <p>Choosing courses at a South African university means reading a handbook of several hundred pages, checking entry requirements, guessing at the workload and hoping your lectures don't clash, with little information from the students who took the course before you. Ubayd went looking for a South African tool that helped and couldn't find one, so he told Jaswin and we decided to build it. Sites like RateMyProfessors exist in the United States; Kwaai is different: it rates courses rather than ranking people, only verified students can write, and staff can ask for a review to be removed.</p>
   <p>Rating lecturers was only the starting point. Picking courses at a South African university means reading a handbook of several hundred pages, checking entry requirements, guessing at the workload and hoping your lectures don't clash. We wanted one place that does that work for you.</p>
 
   <h2>What you can do here</h2>
@@ -2830,7 +2830,7 @@ function takedown(ctx, { review, error, values = {} }) {
   return layout({ ...ctx, title: 'Request removal' }, html`
   <section class="narrow">
     <h1 class="page-title">Request a review's removal</h1>
-    <p class="lede small">For lecturers, staff or anyone a review is about. No account needed: a moderator reads every request and replies by email within 48 hours.</p>
+    <p class="lede small">For lecturers, staff or anyone a review is about. No account needed: a moderator reads every request and replies by email within 48 hours. Requests from signed-in staff hide the review at once.</p>
     <p class="meta">${ctx.user?.role === 'staff'
       ? "You're signed in with a UCT staff email, so a review you name here is usually hidden straight away while a moderator looks at it. One a moderator has already checked stays up until they look again."
       : html`UCT staff: <a href="/login?next=${encodeURIComponent('/takedown' + (review ? `?review=${review.id}` : ''))}">sign in with your @uct.ac.za email</a> first and a review you name is usually hidden straight away while a moderator looks at it. Without signing in, it stays up until then.`}</p>
@@ -2872,10 +2872,10 @@ function demoLanding(ctx) {
   </section>`);
 }
 
-function message(ctx, { title, emoji = '👍', text, link }) {
+// plain wording and no emoji: lecturers reach these pages too (docs/ux-plan.md section 5); callers' emoji fields are ignored
+function message(ctx, { title, text, link }) {
   return layout({ ...ctx, title }, html`
   <section class="narrow center">
-    <p class="big-emoji">${emoji}</p>
     <h1 class="page-title">${title}</h1>
     <p>${text}</p>
     ${link ? html`<p><a class="btn" href="${link.href}">${link.label}</a></p>` : ''}
