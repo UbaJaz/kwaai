@@ -2024,6 +2024,8 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
     ${error ? html`<div class="flash flash-error" role="alert">${error}</div>` : ''}
     ${staff ? html`<div class="card panel"><p><strong>Classes are for students to join.</strong> You're signed in with a staff email. If you teach on this course, ask ${lecturer} to add you as a tutor.</p></div>` : html`
     <form method="post" action="/c/${cls.code}/join" class="card panel study-form class-consent">
+      <div class="consent-cols">
+        <div>
       <h2>What ${lecturer} and the tutors will see</h2>
       <ul class="plain consent-list">
         <li>✓ Your student number: <strong>${number}</strong></li>
@@ -2032,11 +2034,15 @@ function classJoin(ctx, { cls, course, lecturer, staff, number, name, error }) {
         <li>✓ Your tut and prac attendance in this class, and your DP status from it</li>
         <li>✓ Warnings like "missed the last two sessions", "can't reach DP" or "no study in 14 days", so they can check in with you</li>
       </ul>
+        </div>
+        <div>
       <h2>What they won't see</h2>
       <ul class="plain consent-list no">
         <li>✗ Time you study for other courses</li>
         <li>✗ Your marks, reviews, votes or tips</li>
       </ul>
+        </div>
+      </div>
       <fieldset class="pick-group">
         <legend>How classmates see you</legend>
         <label class="radio"><input type="radio" name="show" value="name" checked> By my name</label>

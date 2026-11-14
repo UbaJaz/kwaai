@@ -1092,3 +1092,6 @@ button[aria-busy="true"]::after { content: ""; display: inline-block; width: .8e
 .class-tabs .class-tabs-view { margin-left: auto; font-weight: 500; }
 .class-tab[hidden] { display: none; }
 .class-tab { scroll-margin-top: 72px; }
+.consent-cols { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; align-items: start; }
+.consent-cols h2 { font-size: 1rem; margin-top: 0; }
+.consent-cols .consent-list { font-size: .9rem; }
