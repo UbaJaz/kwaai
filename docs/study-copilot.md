@@ -24,8 +24,8 @@ So the proposal is the **smallest private version, under Study, not a new tab**:
 
 1. **Scheduler** (`src/srs.js`, `test/srs.test.js`): SM-2, pure. Done in this branch.
 2. **Cards, manual only**: table `cards (id, user_id, course, front, back, due, interval, ease, reps, lapses, created_at)`, add/review/delete routes, review queue one card at a time with Again, Hard, Good and Easy buttons (no JavaScript needed), due count on `/today` and `/study`. Wire the table into every deletion path: account delete (`src/app.js` near `DELETE FROM study_sessions`), the test-user list in `src/db.js` `cleanUp`, test tools clear, and the "download everything we hold" export. Use `Study.saDay` and `Study.addDay` for days. Cap due dates at the course's exam date with `Srs.capAtExam`.
-3. **Generation**, behind an injected generator: pass it as a `createApp` option (like `sendLoginEmail`), build it in `server.js` only when the key is set, stub it in tests. Load the `claude-api` skill first; Claude takes PDFs directly as document input, so no PDF parser dependency. Upload route: no multipart parser is installed, so either add `busboy` or accept `express.raw({ type: 'application/pdf', limit })`. CSRF reads `_csrf` from the form body, so a raw upload needs the token in a header for that route.
-4. **Worked solutions** for past-paper questions, with the label in rule 3.
+3. **Generation from PDFs.** Shelved on 16 November 2026: Jaswin does not want anything that costs money or may not be allowed (copyright, POPIA). Revisit only if someone else pays for model calls and a lecturer approves uploads.
+4. **Worked solutions.** Shelved on 16 November 2026: Jaswin does not want anything that costs money or may not be allowed (copyright, POPIA). Revisit only if someone else pays for model calls and a lecturer approves uploads.
 
 ## Decisions for Jaswin and Ubayd before step 3
 
