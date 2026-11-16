@@ -156,6 +156,22 @@ CREATE TABLE IF NOT EXISTS calendars (
 );
 -- Study timer sessions. The server records the start, and credited_sec only grows from the page's heartbeats, so
 -- leaderboards count timed study, never typed-in hours. day is the South African date the session started.
+-- Flashcards (docs/study-copilot.md): private to the student who wrote them. due is a South African day; the rest is the
+-- SM-2 state from src/srs.js.
+CREATE TABLE IF NOT EXISTS cards (
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  course TEXT NOT NULL,
+  front TEXT NOT NULL,
+  back TEXT NOT NULL,
+  due TEXT NOT NULL,
+  interval INTEGER NOT NULL DEFAULT 0,
+  ease REAL NOT NULL DEFAULT 2.5,
+  reps INTEGER NOT NULL DEFAULT 0,
+  lapses INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS cards_by_user ON cards (user_id, due);
 CREATE TABLE IF NOT EXISTS study_sessions (
   id INTEGER PRIMARY KEY,
   user_id INTEGER NOT NULL REFERENCES users(id),
@@ -474,6 +490,7 @@ function deleteOldDemos(db, now) {
       DELETE FROM name_reports WHERE user_id IN (${list}) OR target_id IN (${list});
       DELETE FROM profiles WHERE user_id IN (${list});
       DELETE FROM study_sessions WHERE user_id IN (${list});
+      DELETE FROM cards WHERE user_id IN (${list});
       DELETE FROM sessions WHERE user_id IN (${list});
       ${factsByUser ? `DELETE FROM course_facts WHERE user_id IN (${list});` : ''}
       DELETE FROM users WHERE id IN (${list});`);
