@@ -3509,6 +3509,21 @@ test('the server refuses to start in production with TEST_TOOLS=1', () => {
   assert.match(r.stderr, /TEST_TOOLS/);
 });
 
+test('every environment variable the code reads is in the README and .env.example', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const root = path.join(__dirname, '..');
+  const files = ['server.js', ...['src', 'scripts'].flatMap((d) => fs.readdirSync(path.join(root, d)).filter((f) => f.endsWith('.js')).map((f) => `${d}/${f}`))];
+  const used = new Set(files.flatMap((f) => [...fs.readFileSync(path.join(root, f), 'utf8').matchAll(/\benv\.([A-Z][A-Z0-9_]+)/g)].map((m) => m[1])));
+  const readme = fs.readFileSync(path.join(root, 'README.md'), 'utf8');
+  const example = fs.readFileSync(path.join(root, '.env.example'), 'utf8');
+  for (const v of used) {
+    assert.ok(readme.includes(`\`${v}\``), `${v} is missing from the README table`);
+    assert.ok(new RegExp(`^${v}=`, 'm').test(example), `${v} is missing from .env.example`);
+  }
+  assert.ok(used.size > 15, `the scan found only ${[...used]}`);
+});
+
 test('backups: a consistent copy, one a day, and none kept past 30 days', () => {
   const fs = require('node:fs');
   const path = require('node:path');
@@ -3532,5 +3547,19 @@ test('backups: a consistent copy, one a day, and none kept past 30 days', () => 
   assert.ok(!fs.existsSync(old), 'a 31-day-old backup is deleted');
   assert.ok(fs.existsSync(first), 'a 1-day-old one stays');
   db.close();
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('backups: a corrupt copy is deleted and reported, and older backups are kept', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { backup } = require('../scripts/backup');
+  const dir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'kwaai-backup-bad-'));
+  const keep = path.join(dir, 'lekker-keep.db');
+  fs.writeFileSync(keep, '');
+  fs.utimesSync(keep, new Date(0), new Date(0));
+  const broken = { exec: (sql) => fs.writeFileSync(sql.match(/INTO '(.*)'/)[1], 'not a database') };
+  assert.throws(() => backup(broken, dir), /integrity check/);
+  assert.deepEqual(fs.readdirSync(dir), ['lekker-keep.db']);
   fs.rmSync(dir, { recursive: true, force: true });
 });
