@@ -157,6 +157,8 @@ Backups: the server writes one to `/data/backups` every day by itself (see [Back
 | `ADMIN_USERNAME` | no | The admin's username. Defaults to `kwaai`. |
 | `TEST_TOOLS` | no, and refused in production | `1` shows `/admin/tools` to the admin: fake study days, streaks and students for testing. The server won't start with it in production. |
 | `DEMO_MODE` | no, demo service only | `1` runs the lecturer demo: every page is `noindex`, the top bar says everything is made up, and email sign-in is off. `/healthz` (always on) answers keep-alive pings. |
+| `DEMO_PASSWORD` | no, never at launch | Makes every page ask for this password, for private demos. The server logs a reminder while it's set. |
+| `SAMPLES` | no, seed script only | `SAMPLES=0 npm run seed` removes the made-up sample lecturers and reviews. |
 | `DB_FILE`, `BACKUP_DIR`, `PORT` | no | Paths and port. |
 
 The server refuses to start in production if a required variable is missing or `TEST_TOOLS=1`, and logs a reminder while `DEMO_PASSWORD` is set.
