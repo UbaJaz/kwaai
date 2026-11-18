@@ -13,6 +13,7 @@ const { parseFact, screenFact, groupFacts, weekTopics, crowdSlots } = require('.
 const { screenComment, REPORT_REASONS, HIDE_AFTER_REPORTS } = require('./moderation');
 const { UNIVERSITIES, CURRENT, accountFor } = require('./universities');
 const Study = require('./study');
+const Srs = require('./srs');
 const Ranks = require('./ranks');
 const Quests = require('./quests');
 const Admin = require('./admin');
@@ -171,6 +172,8 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     takedown: limit(10, 60 * MIN),
     fact: limit(40, 60 * MIN, byUser),
     study: limit(40, 60 * MIN, byUser),
+    cards: limit(100, 60 * MIN, byUser), // adding and deleting cards
+    cardGrade: limit(600, 60 * MIN, byUser), // answers in a review
     profile: limit(20, 60 * MIN, byUser),
     group: limit(30, 60 * MIN, byUser),
     classes: limit(60, 60 * MIN, byUser),
@@ -712,7 +715,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
 
   app.get('/today', (req, res) => {
     const { codes, profile, week } = readPlan(req);
-    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, rank: rankWithUp(req.user), quests: req.user ? questsFor(req.user, { announce: true }) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [], dpAlerts: dpAlertsFor(req.user) }));
+    res.set('Cache-Control', 'no-store').page(views.today(req.ctx, { cardsDue: dueCount(req.user), today: codes.length ? todayFor(codes, week, classSlotsFor(req.user)) : null, weekLink: planUrl(codes, profile, week, '/week'), streak: req.user ? streakFor(req.user.id) : null, rank: rankWithUp(req.user), quests: req.user ? questsFor(req.user, { announce: true }) : null, classes: req.user ? myClasses(req.user) : [], announcements: req.user ? announcementsFor(req.user) : [], pulses: req.user ? pulsesFor(req.user) : [], dpAlerts: dpAlertsFor(req.user) }));
   });
 
   // ---- study timer ----
@@ -749,6 +752,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
     const wanted = [...new Set([...codes, ...[pick, current?.course].filter((c) => c && courseExists(c))])];
     const courses = wanted.length ? q(`SELECT code, title FROM courses WHERE code IN (${wanted.map(() => '?').join(',')}) ORDER BY code`).all(...wanted) : [];
     res.set('Cache-Control', 'no-store').page(views.study(req.ctx, {
+      cardsDue: dueCount(req.user),
       courses, pick: current?.course || (courses.some((c) => c.code === pick) ? pick : ''), current: current && sessionState(current),
       today: Study.dayTotals(sessions.filter((s) => s.status === 'done'))[0] || null, sessions: sessions.filter((s) => s.status === 'done'),
       board: req.user ? studyBoard(req.user, codes, req.query.day) : null,
@@ -1187,6 +1191,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       class_announcements_you_posted: q(`SELECT c.course, c.name AS class, a.body, a.poster_name, a.poster_role, a.created_at FROM class_announcements a JOIN classes c ON c.id = a.class_id WHERE a.posted_by = ? ORDER BY a.created_at`).all(id),
       study_groups: q(`SELECT g.name, m.name AS your_name_there, m.joined_at, g.owner_id = ? AS you_own_it FROM group_members m JOIN study_groups g ON g.id = m.group_id WHERE m.user_id = ?`).all(id, id),
       leaderboard_profile: q(`SELECT display_name, show_name, faculty, major, year, boards_agreed_at FROM profiles WHERE user_id = ?`).get(id) || null,
+      flashcards: q(`SELECT course, front, back, due, interval, ease, reps, lapses, created_at FROM cards WHERE user_id = ? ORDER BY created_at`).all(id),
       study_sessions: q(`SELECT course, day, started_at, planned_min, credited_sec, status FROM study_sessions WHERE user_id = ? ORDER BY started_at`).all(id),
       course_details_you_added: q(`SELECT course, kind, data, status, created_at FROM course_facts WHERE user_id = ? ORDER BY created_at`).all(id).map((f) => ({ ...f, data: JSON.parse(f.data) })),
       note: 'Your semester plan and "about you" answers are kept only in a cookie on your device and in the plan link, not on our server. Sign-in codes, links and sessions are stored as one-way hashes and deleted when they expire.',
@@ -1204,6 +1209,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM verdicts WHERE user_id = ?`).run(id);
       q(`DELETE FROM course_facts WHERE user_id = ?`).run(id);
       q(`DELETE FROM study_sessions WHERE user_id = ?`).run(id);
+      q(`DELETE FROM cards WHERE user_id = ?`).run(id);
       q(`DELETE FROM name_reports WHERE user_id = ? OR target_id = ?`).run(id, id);
       q(`DELETE FROM profiles WHERE user_id = ?`).run(id);
       for (const g of q(`SELECT g.* FROM study_groups g JOIN group_members m ON m.group_id = g.id WHERE m.user_id = ?`).all(id)) leaveGroup(g, id);
@@ -1255,6 +1261,61 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
   const requireStudent = (req, res, next) => (req.user.role === 'staff'
     ? res.status(403).page(views.message(req.ctx, { title: 'Ratings are for students', emoji: '🎓', text: 'Staff accounts can read every review and tip, but only students can rate courses and vote. Lecturers can set up a class for their course instead.', link: { href: '/classes', label: 'Your classes' } }))
     : next());
+
+  // ---- flashcards (docs/study-copilot.md): private to the student who wrote them, scheduled with SM-2 (src/srs.js) ----
+  const CARD_MAX_CHARS = 500;
+  const CARD_MAX_PER_USER = 500;
+  const dueCount = (user) => (user && user.role !== 'staff' ? q(`SELECT COUNT(*) AS n FROM cards WHERE user_id = ? AND due <= ?`).get(user.id, Study.saDay(Date.now())).n : 0);
+  // the next exam a student has added for the course: cards are never scheduled past it
+  const examDay = (course) => factsFor([course])[course]?.event.find((e) => e.type === 'exam' && e.date >= Study.saDay(Date.now()))?.date || null;
+  const cardCourse = (v) => { const c = String(v || '').trim().toUpperCase(); return courseExists(c) ? c : ''; };
+
+  app.get('/cards', requireUser, requireStudent, (req, res) => {
+    const today = Study.saDay(Date.now());
+    const summary = q(`SELECT c.course, k.title, COUNT(*) AS total, SUM(c.due <= ?) AS due FROM cards c JOIN courses k ON k.code = c.course WHERE c.user_id = ? GROUP BY c.course ORDER BY c.course`).all(today, req.user.id);
+    const mine = q(`SELECT id, course, front, back, due FROM cards WHERE user_id = ? ORDER BY id DESC LIMIT 100`).all(req.user.id);
+    res.set('Cache-Control', 'no-store').page(views.cards(req.ctx, { summary, mine, course: cardCourse(req.query.course), today, max: CARD_MAX_PER_USER, chars: CARD_MAX_CHARS }));
+  });
+
+  app.post('/cards', requireUser, requireStudent, limits.cards, (req, res) => {
+    const course = cardCourse(req.body.course);
+    const front = String(req.body.front || '').trim();
+    const back = String(req.body.back || '').trim();
+    const fail = (text) => flashRedirect(res, `/cards${course ? `?course=${course}` : ''}`, 'error', text);
+    if (!course) return fail('Choose a course by its code, like CSC1015F.');
+    if (!front || !back) return fail('A card needs a question and an answer.');
+    if (front.length > CARD_MAX_CHARS || back.length > CARD_MAX_CHARS) return fail(`Keep each side to ${CARD_MAX_CHARS} characters.`);
+    if (q(`SELECT COUNT(*) AS n FROM cards WHERE user_id = ?`).get(req.user.id).n >= CARD_MAX_PER_USER) return fail(`You have ${CARD_MAX_PER_USER} cards, the most Kwaai keeps. Delete some you know well first.`);
+    const c = Srs.capAtExam(Srs.newCard(Study.saDay(Date.now())), examDay(course));
+    q(`INSERT INTO cards (user_id, course, front, back, due, interval, ease, reps, lapses) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(req.user.id, course, front, back, c.due, c.interval, c.ease, c.reps, c.lapses);
+    flashRedirect(res, `/cards?course=${course}`, 'ok', 'Card added. It is due today.');
+  });
+
+  app.get('/cards/review', requireUser, requireStudent, (req, res) => {
+    const course = cardCourse(req.query.course);
+    const due = q(`SELECT * FROM cards WHERE user_id = ? AND due <= ? ${course ? 'AND course = ?' : ''} ORDER BY due, id`).all(req.user.id, Study.saDay(Date.now()), ...(course ? [course] : []));
+    res.set('Cache-Control', 'no-store').page(views.cardReview(req.ctx, { card: due[0] || null, remaining: due.length, course }));
+  });
+
+  // another student's card id answers 404, the same as one that doesn't exist
+  const myCard = (req) => q(`SELECT * FROM cards WHERE id = ? AND user_id = ?`).get(Number(req.params.id) || 0, req.user.id);
+
+  app.post('/cards/:id/grade', requireUser, requireStudent, limits.cardGrade, (req, res) => {
+    const card = myCard(req);
+    if (!card) return res.status(404).page(notFound(req));
+    if (!Srs.GRADES.includes(req.body.grade)) return res.status(400).page(views.message(req.ctx, { title: 'Choose an answer', text: 'Pick Again, Hard, Good or Easy.', link: { href: '/cards/review', label: 'Back to review' } }));
+    const next = Srs.capAtExam(Srs.review(card, req.body.grade, Study.saDay(Date.now())), examDay(card.course));
+    q(`UPDATE cards SET due = ?, interval = ?, ease = ?, reps = ?, lapses = ? WHERE id = ?`).run(next.due, next.interval, next.ease, next.reps, next.lapses, card.id);
+    const course = cardCourse(req.body.course);
+    res.redirect(303, `/cards/review${course ? `?course=${course}` : ''}`);
+  });
+
+  app.post('/cards/:id/delete', requireUser, requireStudent, limits.cards, (req, res) => {
+    const card = myCard(req);
+    if (!card) return res.status(404).page(notFound(req));
+    q(`DELETE FROM cards WHERE id = ?`).run(card.id);
+    flashRedirect(res, '/cards', 'ok', 'Card deleted.');
+  });
 
   app.get('/courses/:code/review', requireUser, requireStudent, (req, res) => {
     const c = getCourse(req.params.code);
@@ -2578,6 +2639,7 @@ function createApp(db, { moderators = new Set(), devMode = true, sendLoginEmail,
       q(`DELETE FROM study_groups WHERE owner_id ${testOwned}`).run();
       q(`DELETE FROM group_members WHERE user_id ${testOwned}`).run();
       q(`DELETE FROM study_sessions WHERE user_id ${testOwned}`).run();
+      q(`DELETE FROM cards WHERE user_id ${testOwned}`).run();
       q(`DELETE FROM name_reports WHERE user_id ${testOwned} OR target_id ${testOwned}`).run();
       q(`DELETE FROM profiles WHERE user_id ${testOwned}`).run();
       // classes test accounts run (the demo classes) go with their members, dates, tuts, posts and pulses; then anything

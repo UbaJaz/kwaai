@@ -2530,6 +2530,47 @@ test('lecturer pages say how staff ask for a review to be removed', async () => 
   assert.match(await (await fetch(`${base}/lecturers/1`)).text(), /Is this you\? Staff signed in with a @uct\.ac\.za email can <a href="\/takedown">/);
 });
 
+test('flashcards: add, review and reschedule; private to the student; staff refused; gone with the account', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
+  const today = Study.saDay(Date.now());
+  const a = newBrowser();
+  await a.signIn('card001@myuct.ac.za');
+  assert.match(await a.text('/cards'), /No cards yet/);
+  assert.equal((await a.post('/cards', { course: 'NOPE1234X', front: 'Q', back: 'A' })).status, 303);
+  assert.equal((await a.post('/cards', { course: 'csc1015f', front: 'x'.repeat(501), back: 'A' })).status, 303);
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM cards').get().n, 0, 'a bad course and a too-long side add nothing');
+  assert.match((await a.post('/cards', { course: 'csc1015f', front: 'What is a list?', back: 'An ordered, mutable sequence' })).headers.get('location'), /^\/cards\?course=CSC1015F/);
+  const card = sdb.prepare('SELECT * FROM cards').get();
+  assert.deepEqual([card.course, card.due, card.reps], ['CSC1015F', today, 0]);
+  assert.match(await a.text('/today'), /1 flashcard due/);
+  assert.match(await a.text('/study'), /1 card due today/);
+
+  const review = await a.text('/cards/review');
+  assert.match(review, /What is a list\?[\s\S]*<summary[^>]*>Show the answer[\s\S]*An ordered, mutable sequence[\s\S]*name="grade" value="good"/, 'question, then a reveal holding the answer and grades');
+  assert.equal((await a.post(`/cards/${card.id}/grade`, { grade: 'meh' })).status, 400);
+  assert.equal((await a.post(`/cards/${card.id}/grade`, { grade: 'good' })).status, 303);
+  const after = sdb.prepare('SELECT * FROM cards WHERE id = ?').get(card.id);
+  assert.deepEqual([after.due, after.interval, after.reps], [Study.addDay(today, 1), 1, 1]);
+  assert.match(await a.text('/cards/review'), /All done/);
+
+  const b = newBrowser();
+  await b.signIn('card002@myuct.ac.za');
+  assert.doesNotMatch(await b.text('/cards'), /What is a list/);
+  assert.equal((await b.post(`/cards/${card.id}/grade`, { grade: 'easy' })).status, 404, "another student's card is a 404");
+  assert.equal((await b.post(`/cards/${card.id}/delete`, {})).status, 404);
+  assert.equal(sdb.prepare('SELECT due FROM cards WHERE id = ?').get(card.id).due, Study.addDay(today, 1), 'and is unchanged');
+
+  const staff = newBrowser();
+  await staff.signIn('card.lecturer@uct.ac.za');
+  assert.equal((await staff.get('/cards')).status, 403);
+  assert.equal((await staff.post('/cards', { course: 'CSC1015F', front: 'Q', back: 'A' })).status, 403);
+
+  const data = await (await a.get('/account/data')).json();
+  assert.equal(data.flashcards.length, 1);
+  assert.equal(data.flashcards[0].front, 'What is a list?');
+  assert.equal((await a.post('/account/delete', {})).status, 303);
+  assert.equal(sdb.prepare('SELECT COUNT(*) AS n FROM cards').get().n, 0, 'deleting the account deletes its cards');
+}));
+
 test('lecturers make classes: join link and QR, and nobody else sees the class page', () => withAdminServer({}, async ({ db: sdb, browser: newBrowser }) => {
   const lecturer = newBrowser();
   await lecturer.signIn('jane.smith@uct.ac.za');

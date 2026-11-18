@@ -49,7 +49,7 @@ function tabBar({ user, isMod, isAdmin, testTools, here }) {
   const groups = (staff
     ? [['Courses', [['/rankings', 'Course rankings']]], ['Account', [['/account', 'Account'], ...tail]]]
     : [
-      ['Study', [['/study', 'Study timer'], ['/study/leaderboards', 'Study leaderboards'], ['/groups', 'Study groups']]],
+      ['Study', [['/study', 'Study timer'], ['/cards', 'Flashcards'], ['/study/leaderboards', 'Study leaderboards'], ['/groups', 'Study groups']]],
       ['Courses', [['/marks', 'Marks and DP'], ['/year', 'Your year'], ['/rankings', 'Course rankings']]],
       ['Account', [...(user ? [['/classes', 'Classes'], ['/account', 'Account'], ['/account/profile', 'Leaderboard settings']] : []), ...tail]],
     ]);
@@ -1532,13 +1532,14 @@ function marks(ctx, { courses, planLink, hasPlan }) {
 }
 
 // ---------- today ----------
-function today(ctx, { today: t, weekLink, streak = null, rank = null, quests = null, classes: myClasses = [], announcements = [], pulses = [], dpAlerts = [] }) {
+function today(ctx, { cardsDue = 0, today: t, weekLink, streak = null, rank = null, quests = null, classes: myClasses = [], announcements = [], pulses = [], dpAlerts = [] }) {
   const dayDate = t ? new Date(`${t.date}T12:00:00Z`).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
   return layout({ ...ctx, title: 'Today', here: '/today', path: '/today' }, html`
   <h1 class="page-title">Today</h1>
   ${rank?.up ? rankUpCard(rank.up, ctx.site.origin) : ''}
   ${streak ? html`<a class="card today-strip" href="/study"><strong>${streakBadge(streak)} study streak</strong>${rank ? rankChip(rank.lifetime) : ''}<span>${streakNote(streak)}</span><span class="meta">Start studying →</span></a>` : ''}
   ${quests ? questStrip(quests) : ''}
+  ${cardsDue ? html`<a class="card today-strip" href="/cards/review"><strong>${plural(cardsDue, 'flashcard')} due</strong><span>Review them →</span></a>` : ''}
   ${announcements.length ? html`<section class="card panel announce-today" aria-labelledby="today-announce">
     <h2 id="today-announce">From your classes</h2>
     <ul class="plain">${announcements.map((a) => html`<li>
@@ -1620,12 +1621,13 @@ const TIMER_RING = html`<svg class="ring" viewBox="0 0 120 120" aria-hidden="tru
 const STUDY_PRESETS = [[25, '25 min', 'then a 5-minute break'], [50, '50 min', 'then a 10-minute break'], [90, '90 min', 'then a 15-minute break']];
 const clock = (ms) => new Date(ms + 2 * 60 * 60 * 1000).toISOString().slice(11, 16); // South African time
 
-function study(ctx, { courses, pick, current, today, sessions, board, rank = null, quests = null, studyingNow = 0 }) {
+function study(ctx, { cardsDue = 0, courses, pick, current, today, sessions, board, rank = null, quests = null, studyingNow = 0 }) {
   const signedIn = !!ctx.user;
   const courseName = (code) => (code ? `${code} ${courses.find((c) => c.code === code)?.title ?? ''}`.trim() : 'General study');
   return layout({ ...ctx, title: 'Study', here: '/study', path: '/study', description: 'A study timer for your courses. Kwaai logs the time so you can see how much you studied each day and for which course.' }, html`
   <h1 class="page-title">Study</h1>
   <p class="lede small">Pick a course, start the timer and work until it rings. Kwaai logs the time against the course.</p>
+  ${ctx.user && ctx.user.role !== 'staff' ? html`<p class="meta"><a href="/cards">Flashcards</a>${cardsDue ? html` · <a href="/cards/review">${plural(cardsDue, 'card')} due today</a>` : ''}</p>` : ''}
   ${rank?.up ? rankUpCard(rank.up, ctx.site.origin) : ''}
   ${studyingNow ? html`<p class="live-note"><i class="live-dot" aria-hidden="true"></i>${plural(studyingNow, `${ctx.uni.short} student`)} ${studyingNow === 1 ? 'is' : 'are'} studying on Kwaai right now</p>` : ''}
   ${signedIn ? '' : html`<p class="privacy-note">The timer works without an account. <a href="${loginHref('/study')}">Sign in with your UCT email</a> to keep your hours.</p>`}
@@ -2979,4 +2981,63 @@ function mod(ctx, { held, heldTips, takedowns, suggestions, log, heldFacts = [],
   </tbody></table>` : html`<p class="empty">No decisions yet.</p>`}`);
 }
 
-module.exports = { demoLanding, universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, rankPage, rankShareCard, rankGallery, adminLogin, adminTools, classes, classAdmin, classJoin, classPage, attendanceScreen, attendanceCheckIn, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
+
+// ---------- flashcards (docs/study-copilot.md): private to the student who wrote them ----------
+function cards(ctx, { summary, mine, course, today, max, chars }) {
+  const total = summary.reduce((n, r) => n + r.total, 0);
+  const due = summary.reduce((n, r) => n + r.due, 0);
+  return layout({ ...ctx, title: 'Flashcards', here: '/cards' }, html`
+  <h1 class="page-title">Flashcards</h1>
+  <p class="lede small">Write a question and its answer. Kwaai shows each card again just before you would forget it: after a day, then a few days, then weeks. Only you can see your cards.</p>
+  ${due ? html`<p><a class="btn btn-big" href="/cards/review">Review ${plural(due, 'card')} due now</a></p>` : html`<p class="meta">${total ? 'Nothing is due right now. Come back tomorrow.' : 'No cards yet. Add your first below.'}</p>`}
+  <section class="card panel" aria-labelledby="add-card">
+    <h2 id="add-card">Add a card</h2>
+    <form method="post" action="/cards" class="study-form">
+      <label>Course code <input type="text" name="course" required maxlength="12" value="${course}" placeholder="e.g. CSC1015F" autocapitalize="characters"></label>
+      <label>Question <textarea name="front" rows="3" required maxlength="${chars}"></textarea></label>
+      <label>Answer <textarea name="back" rows="3" required maxlength="${chars}"></textarea></label>
+      <p class="meta">Up to ${chars} characters a side, ${max} cards in all. If the course has an exam date on its page, no card is scheduled past it.</p>
+      <div class="form-actions"><button class="btn">Add the card</button></div>
+    </form>
+  </section>
+  ${summary.length ? html`<section aria-labelledby="by-course"><h2 class="section-title" id="by-course">Your courses</h2>
+    <ul class="plain">${summary.map((r) => html`<li><a class="code" href="/courses/${r.course}">${r.course}</a> ${r.title} · ${plural(r.total, 'card')}${r.due ? html`, <a href="/cards/review?course=${r.course}">${r.due} due</a>` : ''}</li>`)}</ul></section>` : ''}
+  ${mine.length ? html`<section aria-labelledby="all-cards"><h2 class="section-title" id="all-cards">Newest cards</h2>
+    <ul class="plain">${mine.map((c) => html`<li class="card panel"><p><span class="code">${c.course}</span> <strong>${c.front}</strong></p><p>${c.back}</p>
+      <p class="meta">${c.due <= today ? 'Due now' : `Next review ${fmtDate(c.due)}`}</p>
+      <form method="post" action="/cards/${c.id}/delete" class="inline" data-confirm="Delete this card?"><button class="link-btn meta">Delete</button></form></li>`)}</ul></section>` : ''}`);
+}
+
+// One card at a time: the question, then a reveal with the answer and the four ways to grade it. Works without scripts.
+function cardReview(ctx, { card, remaining, course }) {
+  const back = course ? `/cards?course=${course}` : '/cards';
+  if (!card) {
+    return layout({ ...ctx, title: 'Review', here: '/cards' }, html`
+  <h1 class="page-title">All done</h1>
+  <p>No cards are due${course ? ` for ${course}` : ''}. Kwaai will bring each one back when it is time.</p>
+  <p><a class="btn" href="${back}">Back to your cards</a></p>`);
+  }
+  return layout({ ...ctx, title: 'Review', here: '/cards' }, html`
+  <p class="crumbs"><a href="${back}">Flashcards</a></p>
+  <h1 class="page-title">${card.course}</h1>
+  <p class="meta">${plural(remaining, 'card')} left today</p>
+  <section class="card panel" aria-label="Question">
+    <p class="announce-body"><strong>${card.front}</strong></p>
+    <details>
+      <summary class="btn btn-quiet">Show the answer</summary>
+      <p class="announce-body">${card.back}</p>
+      <form method="post" action="/cards/${card.id}/grade" class="study-form">
+        <input type="hidden" name="course" value="${course}">
+        <p class="meta">How well did you know it?</p>
+        <div class="form-actions">
+          <button class="btn btn-quiet" name="grade" value="again">Again</button>
+          <button class="btn btn-quiet" name="grade" value="hard">Hard</button>
+          <button class="btn" name="grade" value="good">Good</button>
+          <button class="btn btn-quiet" name="grade" value="easy">Easy</button>
+        </div>
+      </form>
+    </details>
+  </section>`);
+}
+
+module.exports = { cards, cardReview, demoLanding, universities, plan, week, year, marks, today, study, profile, leaderboard, groups, groupJoin, group, wrapped, rankPage, rankShareCard, rankGallery, adminLogin, adminTools, classes, classAdmin, classJoin, classPage, attendanceScreen, attendanceCheckIn, home, courses, course, reviewForm, lecturer, rankings, rules, login, checkEmail, confirmSignIn, takedown, message, mod, suggestLecturer, about, privacy, terms, account };
