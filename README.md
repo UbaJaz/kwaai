@@ -203,7 +203,20 @@ Limits are kept in memory, so they reset when the app restarts.
 
 Step-by-step email, contact and POPIA setup: [`docs/email-setup.md`](docs/email-setup.md).
 
-Hosting is Fly.io (decided November 2026): `jnb` region, one machine, the `lekker_data` volume. Render's free plan wipes the database on sleep, so it's only for demos.
+Hosting is Fly.io (decided 18 November 2026): `jnb` region, one machine, the `lekker_data` volume. Render's free plan wipes the database on sleep, so Render is only for demos.
+
+**Launch date: Monday 1 February 2027 (estimated).** UCT's 2027 first term starts on 8 February (`data/terms.json`), so this puts the site in front of students a week before lectures and orientation. Work back from it:
+
+| Target (estimated) | Milestone |
+|---|---|
+| Fri 4 Dec 2026 | Fly deployed with a real volume, the restore test below done |
+| Fri 18 Dec 2026 | Lawyer has `/privacy`, `/terms`, `/rules`; information officer named |
+| Fri 15 Jan 2027 | Domain, Brevo sender and contact address working; moderators agreed |
+| Mon 18 Jan 2027 | Soft launch to about 20 friendly students; fix what they hit |
+| Mon 1 Feb 2027 | Public launch |
+
+Slip the whole table if the lawyer's answer is late: don't launch Classes without it.
+
 
 - [ ] **Fly account and first deploy**, following [Fly.io](#flyio) above: create the app and the volume, set the secrets, `fly deploy`. Check the logs show `backed up to /data/backups/...`.
 - [ ] **Volume snapshots:** check `fly volumes snapshots list <volume-id>` shows daily snapshots, with retention of 30 days or less (the privacy notice promises deleted data leaves backups within 30 days).
@@ -217,4 +230,5 @@ Hosting is Fly.io (decided November 2026): `jnb` region, one machine, the `lekke
 - [ ] **Domain, Brevo and contact address**, following `docs/email-setup.md`. Send test sign-ins to a few myuct and uct addresses.
 - [ ] **Switch to production:** `NODE_ENV=production` and `TRUST_PROXY=1` come from the Dockerfile; don't set `DEMO_PASSWORD` or `TEST_TOOLS` (the server refuses `TEST_TOOLS=1`).
 - [ ] **Moderators:** check `/mod` daily, so removal requests get handled within the 48 hours the rules promise.
+- [ ] **Decide the review-anonymity wording.** `/privacy` now says plainly that the database links each review to an account (we can see it; nobody else can). If you want the stronger promise (the database can't link them), that's a schema change to do before launch, not after, then update `/privacy#anonymity`.
 - [ ] **Try a restore once:** download a backup, copy it (dev mode adds sample data to the file it opens), run `DB_FILE=<the copy> npm start` on your laptop, and check the reviews and classes are there.
