@@ -2,6 +2,7 @@
 // In production the server calls backupIfDue every hour, so there's a fresh copy each day; `npm run backup` makes one
 // now. Both copies sit on the same disk as the database, so also keep copies somewhere off the server.
 const fs = require('node:fs');
+const { DatabaseSync } = require('node:sqlite');
 const path = require('node:path');
 
 const DEFAULT_DIR = process.env.BACKUP_DIR || path.join(__dirname, '..', 'backups');
@@ -15,6 +16,18 @@ function backup(db, dir = DEFAULT_DIR) {
   fs.mkdirSync(dir, { recursive: true });
   const file = path.join(dir, `lekker-${new Date().toISOString().replace(/[:.]/g, '-')}.db`);
   db.exec(`VACUUM INTO '${file.replace(/'/g, "''")}'`);
+  // a copy that doesn't open and check out is worse than none: drop it and keep the older ones
+  let ok = false;
+  let copy;
+  try {
+    copy = new DatabaseSync(file, { readOnly: true });
+    ok = copy.prepare('PRAGMA integrity_check').get().integrity_check === 'ok';
+  } catch {}
+  copy?.close();
+  if (!ok) {
+    fs.rmSync(file, { force: true });
+    throw new Error(`backup ${file} failed its integrity check`);
+  }
   for (const old of backups(dir)) if (Date.now() - fs.statSync(old).mtimeMs > KEEP_DAYS * DAY) fs.unlinkSync(old);
   return file;
 }

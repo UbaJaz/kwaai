@@ -3549,3 +3549,17 @@ test('backups: a consistent copy, one a day, and none kept past 30 days', () => 
   db.close();
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+test('backups: a corrupt copy is deleted and reported, and older backups are kept', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { backup } = require('../scripts/backup');
+  const dir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'kwaai-backup-bad-'));
+  const keep = path.join(dir, 'lekker-keep.db');
+  fs.writeFileSync(keep, '');
+  fs.utimesSync(keep, new Date(0), new Date(0));
+  const broken = { exec: (sql) => fs.writeFileSync(sql.match(/INTO '(.*)'/)[1], 'not a database') };
+  assert.throws(() => backup(broken, dir), /integrity check/);
+  assert.deepEqual(fs.readdirSync(dir), ['lekker-keep.db']);
+  fs.rmSync(dir, { recursive: true, force: true });
+});

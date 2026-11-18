@@ -181,7 +181,7 @@ With `TEST_TOOLS=1` the admin also gets `/admin/tools` (linked in the header): s
 npm run backup
 ```
 
-In production the server backs itself up: once an hour it checks `BACKUP_DIR` (`/data/backups` in Docker), and if the newest backup is over 23 hours old it writes a new one, so a deploy or restart never skips a day. `npm run backup` makes one straight away. Either way it's a consistent copy taken while the site runs, and backups older than 30 days are deleted (the privacy notice promises deleted data is gone from backups within 30 days). A failed backup is logged as `Backup failed:` and the site keeps running.
+In production the server backs itself up: once an hour it checks `BACKUP_DIR` (`/data/backups` in Docker), and if the newest backup is over 23 hours old it writes a new one, so a deploy or restart never skips a day. `npm run backup` makes one straight away. Either way it's a consistent copy taken while the site runs, and backups older than 30 days are deleted (the privacy notice promises deleted data is gone from backups within 30 days). Each new copy is opened and integrity-checked; one that fails is deleted (the older ones stay). A failed backup is logged as `Backup failed:` and the site keeps running.
 
 These copies sit on the same volume as the database, so they don't survive losing the volume. Keep a copy off the server too, and keep any off-server copies and volume snapshots for 30 days or less. Thirty copies of today's 4 MB database fit easily on the 1 GB volume.
 
