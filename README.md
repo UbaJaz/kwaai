@@ -226,6 +226,7 @@ Slip the whole table if the lawyer's answer is late: don't launch Classes withou
   - Is processing attendance and "at risk" warnings on consent at join plus the lecturer's teaching purpose a sound legal basis?
   - Fly.io stores the data in Johannesburg but is a US company: is the section 72 wording right?
   - Class records (attendance, sessions) have no automatic deletion: they stay until the lecturer deletes the class. Should they expire, e.g. a year after the class's year ends?
+  - When a student leaves a class or is removed, their recorded attendance stays under their student number until the class or their account is deleted. Is that all right, or should leaving delete it?
 - [ ] **Name the information officer** (`INFORMATION_OFFICER`) and register them with the Information Regulator if the lawyer confirms it applies.
 - [ ] **Domain, Brevo and contact address**, following `docs/email-setup.md`. Send test sign-ins to a few myuct and uct addresses.
 - [ ] **Switch to production:** `NODE_ENV=production` comes from the Dockerfile and `TRUST_PROXY=2` from `fly.toml`; don't set `DEMO_PASSWORD` or `TEST_TOOLS` (the server refuses `TEST_TOOLS=1`).
