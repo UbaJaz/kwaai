@@ -3512,16 +3512,25 @@ test('the rank card: the rank, season, streak and quests, and a name only if the
   assert.match(await s.text('/study/rank'), /href="\/study\/rank\/card">Get your rank card/);
 }));
 
+// every variable set explicitly, so a developer's .env can't fill one in
+const productionEnv = (extra) => ({ ...process.env, NODE_ENV: 'production', TEST_TOOLS: '', BASE_URL: 'https://kwaai.test', EMAIL_FROM: 'Kwaai <a@kwaai.test>', MODERATORS: 'mod@myuct.ac.za',
+  CONTACT_EMAIL: 'a@kwaai.test', BREVO_API_KEY: 'test', RESEND_API_KEY: '', DEMO_PASSWORD: '', DEMO_MODE: '', PORT: '0', DB_FILE: require('node:path').join(require('node:os').tmpdir(), `kwaai-refuse-${process.pid}.db`), ...extra });
+const serverFile = require('node:path').join(__dirname, '..', 'server.js');
+// starting Node alone can take over 7 s on a busy Windows laptop; the refusal itself is immediate
+const startRefused = (extra) => require('node:child_process').spawnSync(process.execPath, [serverFile], { env: productionEnv(extra), encoding: 'utf8', timeout: 30_000, killSignal: 'SIGKILL' });
+
 test('the server refuses to start in production with TEST_TOOLS=1', () => {
-  const { spawnSync } = require('node:child_process');
-  const os = require('node:os');
-  // every variable set explicitly, so a developer's .env can't fill one in
-  const env = { ...process.env, NODE_ENV: 'production', TEST_TOOLS: '1', BASE_URL: 'https://kwaai.test', EMAIL_FROM: 'Kwaai <a@kwaai.test>', MODERATORS: 'mod@myuct.ac.za',
-    CONTACT_EMAIL: 'a@kwaai.test', BREVO_API_KEY: 'test', RESEND_API_KEY: '', DEMO_PASSWORD: '', PORT: '0', DB_FILE: require('node:path').join(os.tmpdir(), `kwaai-refuse-${process.pid}.db`) };
-  // starting Node alone can take over 7 s on a busy Windows laptop; the refusal itself is immediate
-  const r = spawnSync(process.execPath, [require('node:path').join(__dirname, '..', 'server.js')], { env, encoding: 'utf8', timeout: 30_000, killSignal: 'SIGKILL' });
+  const r = startRefused({ TEST_TOOLS: '1' });
   assert.equal(r.status, 1, r.stderr || r.stdout);
   assert.match(r.stderr, /TEST_TOOLS/);
+});
+
+test('the server refuses to start in production unless BASE_URL is a bare https address', () => {
+  for (const BASE_URL of ['kwaai.test', 'http://kwaai.test', 'https://kwaai.test/app']) {
+    const r = startRefused({ BASE_URL });
+    assert.equal(r.status, 1, `${BASE_URL}: ${r.stderr || r.stdout}`);
+    assert.match(r.stderr, /BASE_URL must look like/, BASE_URL);
+  }
 });
 
 test('every environment variable the code reads is in the README and .env.example', () => {

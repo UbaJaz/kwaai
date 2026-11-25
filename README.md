@@ -143,7 +143,7 @@ Backups: the server writes one to `/data/backups` every day by itself (see [Back
 | Variable | Required in production | What it is |
 |---|---|---|
 | `NODE_ENV` | yes | `production` (set by the Dockerfile) |
-| `BASE_URL` | yes, and whenever an email key is set | Public URL, e.g. `https://kwaai.co.za` or `https://<app>.fly.dev`. Sign-in links use it. |
+| `BASE_URL` | yes, and whenever an email key is set | Public URL, e.g. `https://kwaai.co.za` or `https://<app>.fly.dev`. Sign-in links and the share-preview image use it. In production it must start with `https://` and have no path. |
 | `BREVO_API_KEY` | this or `RESEND_API_KEY` | From [brevo.com](https://www.brevo.com). Free, and works with one verified sender address, no domain. Used first if both are set. |
 | `RESEND_API_KEY` | this or `BREVO_API_KEY` | From [resend.com](https://resend.com). Needs a verified domain to email students. |
 | `EMAIL_FROM` | yes, and whenever an email key is set | e.g. `Kwaai <kwaai.signin@gmail.com>`. Must be the sender verified in Brevo, or on the domain verified in Resend. |
