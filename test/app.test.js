@@ -3574,6 +3574,28 @@ test('backups: a consistent copy, one a day, and none kept past 30 days', () => 
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+test('backups: the production server makes one by itself when it starts', async (t) => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const dir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'kwaai-boot-'));
+  const out = path.join(dir, 'backups');
+  const child = require('node:child_process').spawn(process.execPath, [serverFile], { env: productionEnv({ DB_FILE: path.join(dir, 'live.db'), BACKUP_DIR: out }) });
+  t.after(async () => {
+    child.kill('SIGKILL');
+    if (child.exitCode === null && child.signalCode === null) await new Promise((r) => child.once('exit', r));
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+  let log = '';
+  await new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(`no start within 30 s: ${log}`)), 30_000);
+    child.stderr.on('data', (d) => { log += d; });
+    child.stdout.on('data', (d) => { log += d; if (log.includes('Kwaai running')) { clearTimeout(timer); resolve(); } });
+    child.once('exit', () => { clearTimeout(timer); reject(new Error(`server stopped: ${log}`)); });
+  });
+  assert.match(log, /backed up to/);
+  assert.equal(fs.readdirSync(out).length, 1);
+});
+
 test('backups: a corrupt copy is deleted and reported, and older backups are kept', () => {
   const fs = require('node:fs');
   const path = require('node:path');
