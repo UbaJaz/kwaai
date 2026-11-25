@@ -152,7 +152,7 @@ Backups: the server writes one to `/data/backups` every day by itself (see [Back
 | `OPERATOR` | no | Who runs the site (the POPIA responsible party), shown in the privacy notice. Defaults to "Ubayd Hattas and Jaswin Chinthala". |
 | `INFORMATION_OFFICER` | before launch | The one person named as POPIA information officer. Defaults to `OPERATOR`. |
 | `EMAIL_DAILY_CAP` | no | Sign-in emails per day before the site pauses sending. Defaults to 280, under Brevo's free 300. |
-| `TRUST_PROXY` | set by Dockerfile | `1` = trust one proxy hop, so rate limits see the real client IP. Set it to `0` only if nothing sits in front of the app. |
+| `TRUST_PROXY` | set by `fly.toml` / Dockerfile | How many proxy hops to trust, so rate limits see the real client IP. `2` on Fly (`fly.toml`; its proxy adds the app's own address after the visitor's), `1` otherwise (Dockerfile). `0` only if nothing sits in front of the app. |
 | `ADMIN_PASSWORD_HASH` | no | Turns on the admin sign-in at `/admin/login`. Make it with `npm run admin-hash` (see below). Never put the password itself here. |
 | `ADMIN_USERNAME` | no | The admin's username. Defaults to `kwaai`. |
 | `TEST_TOOLS` | no, and refused in production | `1` shows `/admin/tools` to the admin: fake study days, streaks and students for testing. The server won't start with it in production. |
@@ -228,7 +228,8 @@ Slip the whole table if the lawyer's answer is late: don't launch Classes withou
   - Class records (attendance, sessions) have no automatic deletion: they stay until the lecturer deletes the class. Should they expire, e.g. a year after the class's year ends?
 - [ ] **Name the information officer** (`INFORMATION_OFFICER`) and register them with the Information Regulator if the lawyer confirms it applies.
 - [ ] **Domain, Brevo and contact address**, following `docs/email-setup.md`. Send test sign-ins to a few myuct and uct addresses.
-- [ ] **Switch to production:** `NODE_ENV=production` and `TRUST_PROXY=1` come from the Dockerfile; don't set `DEMO_PASSWORD` or `TEST_TOOLS` (the server refuses `TEST_TOOLS=1`).
+- [ ] **Switch to production:** `NODE_ENV=production` comes from the Dockerfile and `TRUST_PROXY=2` from `fly.toml`; don't set `DEMO_PASSWORD` or `TEST_TOOLS` (the server refuses `TEST_TOOLS=1`).
+- [ ] **Check rate limits see real IPs** (after the admin password is set): on your phone on mobile data, try a wrong admin password 6 times until it says to wait. Then open `/admin/login` on your laptop on Wi-Fi and sign in. If the laptop is blocked too, `TRUST_PROXY` is wrong: don't launch.
 - [ ] **Moderators:** check `/mod` daily, so removal requests get handled within the 48 hours the rules promise.
 - [ ] **Decide the review-anonymity wording.** `/privacy` now says plainly that the database links each review to an account (we can see it; nobody else can). If you want the stronger promise (the database can't link them), that's a schema change to do before launch, not after, then update `/privacy#anonymity`.
 - [ ] **Try a restore once:** download a backup, copy it (dev mode adds sample data to the file it opens), run `DB_FILE=<the copy> npm start` on your laptop, and check the reviews and classes are there.

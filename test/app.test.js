@@ -1090,6 +1090,21 @@ test('wrong admin passwords from other connections cannot lock the admin out', a
   assert.equal(res.status, 303, 'the admin, on their own connection, still gets in');
 });
 
+test("on Fly, rate limits see the visitor's IP, not the app's own address that Fly adds after it", async (t) => {
+  const fs = require('node:fs');
+  const hops = /^\s*TRUST_PROXY = "(\d+)"/m.exec(fs.readFileSync(require('node:path').join(__dirname, '..', 'fly.toml'), 'utf8'))?.[1];
+  const srv = createApp(openDb(':memory:'), { devMode: true, trustProxy: hops, adminPasswordHash: Admin.hashPassword('test-only-password-123') }).listen(0);
+  t.after(() => srv.close());
+  await new Promise((r) => srv.once('listening', r));
+  const b = browser(() => `http://localhost:${srv.address().port}`);
+  const from = (ip) => ({ headers: { 'x-forwarded-for': `${ip}, 66.0.0.1` } });
+  const tryIn = (password, ip) => b.post('/admin/login', { username: 'kwaai', password }, from(ip));
+  for (let i = 0; i < 5; i++) await tryIn('wrong-password', '10.0.0.1');
+  assert.equal((await tryIn('wrong-password', '10.0.0.1')).status, 429);
+  assert.equal((await tryIn('wrong-password', '1.2.3.4, 10.0.0.1')).status, 429, 'a made-up address in front changes nothing');
+  assert.equal((await tryIn('test-only-password-123', '10.0.0.2')).status, 303, 'another visitor is not blocked');
+});
+
 test('sign in with the emailed code, back to the page you came from', async () => {
   const b = browser();
   const page = await (await b.post('/login', { email: 'cod001@myuct.ac.za', next: '/courses/CSC1015F#verdict' })).text();
