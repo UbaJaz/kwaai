@@ -7,6 +7,9 @@ primary_region = "jnb"
 
 [env]
   PORT = "3000"
+  # Fly's proxy adds two entries to X-Forwarded-For: the visitor's IP, then the app's own address (rightmost). With the
+  # Dockerfile's 1, every student would look like that one address and share the rate limits.
+  TRUST_PROXY = "2"
 
 [[mounts]]
   source = "lekker_data"

@@ -19,6 +19,11 @@ if (!devMode) {
     console.error(`Refusing to start in production. Missing env vars: ${missing.join(', ')} (see README).`);
     process.exit(1);
   }
+  // sign-in links and the share-preview image are built from it, so a missing https:// or an extra path breaks both
+  if (!/^https:\/\/[^/\s?#]+\/?$/.test(env.BASE_URL)) {
+    console.error('Refusing to start in production: BASE_URL must look like https://your.site (see README).');
+    process.exit(1);
+  }
   // the test tools make fake students and study data, which must never mix with real students'
   if (env.TEST_TOOLS === '1') {
     console.error('Refusing to start in production with TEST_TOOLS=1. Unset it (see README).');
