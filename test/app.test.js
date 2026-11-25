@@ -1815,9 +1815,10 @@ test('privacy, terms and about pages render, and every page says who makes Kwaai
   assert.doesNotMatch(privacy, /not which student wrote a review/, 'the people who run Kwaai can link a review to an account, so the notice must not say otherwise');
   assert.match(privacy, /id="anonymity"/, 'it says plainly who could find out who wrote a review');
   assert.equal(privacy.match(/Your study (timer )?sessions<\/strong>/g).length, 1, 'study sessions are described once');
-  for (const what of [/Classes you join<\/strong>/, /Class lists from lecturers/, /pulse check/i, /Staff accounts\.<\/strong>/, /random device id/, /by 31 January of the year after the class/])
+  for (const what of [/Classes you join<\/strong>/, /Class lists from lecturers/, /pulse check/i, /Staff accounts\.<\/strong>/, /random device id/, /by 31 January of the year after the class/, /attendance already recorded for you stays stored/, /A class rep, a student the lecturer picks/, /class announcements that members have reported/, /class records included/])
     assert.match(privacy, what, `the notice covers what classes collect: ${what}`);
   assert.match(await (await fetch(`${base}/terms`)).text(), /@uct\.ac\.za/, 'the terms mention staff accounts');
+  assert.match(await (await fetch(`${base}/terms`)).text(), /If you&#39;re a class rep|If you're a class rep/);
 });
 
 test('re-running the seed keeps real reviews and only swaps demo data', () => {
